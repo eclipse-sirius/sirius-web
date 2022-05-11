@@ -36,6 +36,7 @@ const defaultRadio: Radio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
+  iconURL: null,
   diagnostics: [],
   options: [
     {
@@ -56,6 +57,7 @@ const radioWithStyle: Radio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
+  iconURL: null,
   diagnostics: [],
   options: [
     {
@@ -83,6 +85,7 @@ const radioWithEmptyStyle: Radio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
+  iconURL: null,
   diagnostics: [],
   options: [
     {

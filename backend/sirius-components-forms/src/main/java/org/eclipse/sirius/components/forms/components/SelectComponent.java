@@ -50,6 +50,7 @@ public class SelectComponent implements IComponent {
 
         String id = selectDescription.getIdProvider().apply(variableManager);
         String label = selectDescription.getLabelProvider().apply(variableManager);
+        String iconURL = selectDescription.getIconURLProvider().apply(variableManager);
         List<?> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);
         String value = selectDescription.getValueProvider().apply(variableManager);
 
@@ -84,6 +85,9 @@ public class SelectComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (iconURL != null) {
+            selectElementPropsBuilder.iconURL(iconURL);
+        }
         if (selectStyle != null) {
             selectElementPropsBuilder.style(selectStyle);
         }

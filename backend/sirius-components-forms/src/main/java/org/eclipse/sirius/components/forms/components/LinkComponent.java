@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.elements.LinkElementProps;
+import org.eclipse.sirius.components.forms.elements.LinkElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -43,16 +44,20 @@ public class LinkComponent implements IComponent {
 
         String id = linkDescription.getIdProvider().apply(variableManager);
         String label = linkDescription.getLabelProvider().apply(variableManager);
+        String iconURL = linkDescription.getIconURLProvider().apply(variableManager);
         String url = linkDescription.getUrlProvider().apply(variableManager);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(linkDescription, variableManager)));
 
         // @formatter:off
-        LinkElementProps linkElementProps = LinkElementProps.newLinkElementProps(id)
+        Builder linkElementPropsBuilder = LinkElementProps.newLinkElementProps(id)
                 .label(label)
                 .url(url)
-                .children(children)
-                .build();
-        return new Element(LinkElementProps.TYPE, linkElementProps);
+                .children(children);
+
+        if (iconURL != null) {
+            linkElementPropsBuilder.iconURL(iconURL);
+        }
+        return new Element(LinkElementProps.TYPE, linkElementPropsBuilder.build());
         // @formatter:on
     }
 }

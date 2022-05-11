@@ -32,6 +32,7 @@ const defaultCheckbox: Checkbox = {
   __typename: 'Checkbox',
   id: 'checkboxId',
   label: 'CheckboxLabel',
+  iconURL: null,
   diagnostics: [],
   booleanValue: false,
   style: null,
@@ -41,6 +42,7 @@ const checkboxWithStyle: Checkbox = {
   __typename: 'Checkbox',
   id: 'checkboxId',
   label: 'CheckboxLabel',
+  iconURL: null,
   diagnostics: [],
   booleanValue: false,
   style: {
@@ -52,6 +54,7 @@ const checkboxWithEmptyStyle: Checkbox = {
   __typename: 'Checkbox',
   id: 'checkboxId',
   label: 'CheckboxLabel',
+  iconURL: null,
   diagnostics: [],
   booleanValue: false,
   style: {

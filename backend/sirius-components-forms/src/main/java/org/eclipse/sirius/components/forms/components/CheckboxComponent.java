@@ -47,6 +47,7 @@ public class CheckboxComponent implements IComponent {
 
         String id = checkboxDescription.getIdProvider().apply(variableManager);
         String label = checkboxDescription.getLabelProvider().apply(variableManager);
+        String iconURL = checkboxDescription.getIconURLProvider().apply(variableManager);
         Boolean value = checkboxDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, Boolean, IStatus> genericHandler = checkboxDescription.getNewValueHandler();
         Function<Boolean, IStatus> specializedHandler = newValue -> genericHandler.apply(variableManager, newValue);
@@ -61,6 +62,9 @@ public class CheckboxComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (iconURL != null) {
+            checkboxElementPropsBuilder.iconURL(iconURL);
+        }
         if (checkboxStyle != null) {
             checkboxElementPropsBuilder.style(checkboxStyle);
         }

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Link;
+import org.eclipse.sirius.components.forms.List.Builder;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
@@ -193,6 +194,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getIconURL() != null) {
+            checkboxBuilder.iconURL(props.getIconURL());
+        }
         if (props.getStyle() != null) {
             checkboxBuilder.style(props.getStyle());
         }
@@ -205,12 +209,16 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return org.eclipse.sirius.components.forms.List.newList(props.getId())
+        Builder listBuilder = org.eclipse.sirius.components.forms.List.newList(props.getId())
                 .label(props.getLabel())
+                .iconURL(props.getIconURL())
                 .items(props.getItems())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
         // @formatter:on
+        if (props.getIconURL() != null) {
+            listBuilder.iconURL(props.getIconURL());
+        }
+        return listBuilder.build();
     }
 
     private Radio instantiateRadio(RadioElementProps props, List<Object> children) {
@@ -223,6 +231,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getIconURL() != null) {
+            radioBuilder.iconURL(props.getIconURL());
+        }
         if (props.getStyle() != null) {
             radioBuilder.style(props.getStyle());
         }
@@ -242,6 +253,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getIconURL() != null) {
+            selectBuilder.iconURL(props.getIconURL());
+        }
         if (props.getStyle() != null) {
             selectBuilder.style(props.getStyle());
         }
@@ -261,6 +275,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValuesHandler(props.getNewValuesHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getIconURL() != null) {
+            multiSelectBuilder.iconURL(props.getIconURL());
+        }
         if (props.getStyle() != null) {
             multiSelectBuilder.style(props.getStyle());
         }
@@ -279,6 +296,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getIconURL() != null) {
+            textareaBuilder.iconURL(props.getIconURL());
+        }
         if (props.getStyle() != null) {
             textareaBuilder.style(props.getStyle());
         }
@@ -297,6 +317,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getIconURL() != null) {
+            textfieldBuilder.iconURL(props.getIconURL());
+        }
         if (props.getStyle() != null) {
             textfieldBuilder.style(props.getStyle());
         }
@@ -318,12 +341,16 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return Link.newLink(props.getId())
+        Link.Builder linkbuilder = Link.newLink(props.getId())
                  .label(props.getLabel())
                  .url(props.getUrl())
-                 .diagnostics(diagnostics)
-                 .build();
+                 .diagnostics(diagnostics);
        // @formatter:on
+
+        if (props.getIconURL() != null) {
+            linkbuilder.iconURL(props.getIconURL());
+        }
+        return linkbuilder.build();
     }
 
     private Object instantiateChartWidget(ChartWidgetElementProps props, List<Object> children) {
@@ -335,12 +362,15 @@ public class FormElementFactory implements IElementFactory {
                 .findFirst()
                 .orElse(null);
 
-        return ChartWidget.newChartWidget(props.getId())
+        ChartWidget.Builder chartBuilder = ChartWidget.newChartWidget(props.getId())
                 .label(props.getLabel())
                 .chart(chart)
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
         // @formatter:on
+        if (props.getIconURL() != null) {
+            chartBuilder.iconURL(props.getIconURL());
+        }
+        return chartBuilder.build();
     }
 
     private FlexboxContainer instantiateFlexboxContainer(FlexboxContainerElementProps props, List<Object> children) {

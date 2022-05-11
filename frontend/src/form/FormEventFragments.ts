@@ -101,6 +101,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment textfieldFields on Textfield {
     label
+    iconURL
     stringValue: value
     style {
       backgroundColor
@@ -115,6 +116,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment textareaFields on Textarea {
     label
+    iconURL
     stringValue: value
     style {
       backgroundColor
@@ -129,6 +131,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment checkboxFields on Checkbox {
     label
+    iconURL
     booleanValue: value
     style {
       color
@@ -137,6 +140,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment selectFields on Select {
     label
+    iconURL
     value
     options {
       id
@@ -155,6 +159,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment multiSelectFields on MultiSelect {
     label
+    iconURL
     values
     options {
       id
@@ -173,6 +178,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment radioFields on Radio {
     label
+    iconURL
     options {
       id
       label
@@ -190,6 +196,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment listFields on List {
     label
+    iconURL
     items {
       id
       label
@@ -201,6 +208,7 @@ export const formRefreshedEventPayloadFragment = gql`
 
   fragment linkFields on Link {
     label
+    iconURL
     url
   }
 

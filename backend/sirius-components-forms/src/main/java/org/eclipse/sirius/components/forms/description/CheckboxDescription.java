@@ -35,6 +35,8 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, Boolean> valueProvider;
 
     private BiFunction<VariableManager, Boolean, IStatus> newValueHandler;
@@ -51,6 +53,10 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, Boolean> getValueProvider() {
@@ -88,6 +94,8 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, Boolean> valueProvider;
 
         private BiFunction<VariableManager, Boolean, IStatus> newValueHandler;
@@ -111,6 +119,11 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -149,6 +162,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
             checkboxDescription.id = Objects.requireNonNull(this.id);
             checkboxDescription.idProvider = Objects.requireNonNull(this.idProvider);
             checkboxDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            checkboxDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             checkboxDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             checkboxDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkboxDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

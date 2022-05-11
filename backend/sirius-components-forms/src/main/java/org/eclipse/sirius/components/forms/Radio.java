@@ -71,6 +71,8 @@ public final class Radio extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private List<RadioOption> options;
 
         private Function<String, IStatus> newValueHandler;
@@ -85,6 +87,11 @@ public final class Radio extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -112,6 +119,7 @@ public final class Radio extends AbstractWidget {
             Radio radio = new Radio();
             radio.id = Objects.requireNonNull(this.id);
             radio.label = Objects.requireNonNull(this.label);
+            radio.iconURL = this.iconURL;
             radio.options = Objects.requireNonNull(this.options);
             radio.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             radio.style = this.style; // Optional on purpose

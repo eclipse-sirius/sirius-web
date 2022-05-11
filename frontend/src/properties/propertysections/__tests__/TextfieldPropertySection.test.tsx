@@ -36,6 +36,7 @@ const defaultTextField: Textfield = {
   __typename: 'Textfield',
   id: 'textfieldId',
   label: 'Name:',
+  iconURL: null,
   stringValue: 'Composite Processor',
   diagnostics: [],
   style: null,
@@ -45,6 +46,7 @@ const textFieldWithStyle: Textfield = {
   __typename: 'Textfield',
   id: 'textfieldId',
   label: 'Name:',
+  iconURL: null,
   stringValue: 'Composite Processor',
   diagnostics: [],
   style: {
@@ -62,6 +64,7 @@ const textFieldWithEmptyStyle: Textfield = {
   __typename: 'Textfield',
   id: 'textfieldId',
   label: 'Name:',
+  iconURL: null,
   stringValue: 'Composite Processor',
   diagnostics: [],
   style: {

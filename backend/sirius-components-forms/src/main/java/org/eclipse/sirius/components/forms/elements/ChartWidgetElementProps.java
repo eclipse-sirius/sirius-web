@@ -33,6 +33,8 @@ public final class ChartWidgetElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private List<Element> children;
 
     private ChartWidgetElementProps() {
@@ -45,6 +47,10 @@ public final class ChartWidgetElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     @Override
@@ -73,6 +79,8 @@ public final class ChartWidgetElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -84,17 +92,23 @@ public final class ChartWidgetElementProps implements IProps {
             return this;
         }
 
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
         }
 
         public ChartWidgetElementProps build() {
-            ChartWidgetElementProps linkElementProps = new ChartWidgetElementProps();
-            linkElementProps.id = Objects.requireNonNull(this.id);
-            linkElementProps.label = Objects.requireNonNull(this.label);
-            linkElementProps.children = Objects.requireNonNull(this.children);
-            return linkElementProps;
+            ChartWidgetElementProps chartElementProps = new ChartWidgetElementProps();
+            chartElementProps.id = Objects.requireNonNull(this.id);
+            chartElementProps.label = Objects.requireNonNull(this.label);
+            chartElementProps.iconURL = this.iconURL;
+            chartElementProps.children = Objects.requireNonNull(this.children);
+            return chartElementProps;
         }
     }
 }

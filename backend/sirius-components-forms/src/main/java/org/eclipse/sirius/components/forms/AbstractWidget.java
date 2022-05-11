@@ -26,6 +26,8 @@ public abstract class AbstractWidget {
 
     protected String label;
 
+    protected String iconURL;
+
     protected List<Diagnostic> diagnostics;
 
     public String getId() {
@@ -34,6 +36,10 @@ public abstract class AbstractWidget {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public List<Diagnostic> getDiagnostics() {

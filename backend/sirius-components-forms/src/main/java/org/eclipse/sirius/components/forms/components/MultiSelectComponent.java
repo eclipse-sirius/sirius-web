@@ -51,6 +51,7 @@ public class MultiSelectComponent implements IComponent {
 
         String id = multiSelectDescription.getIdProvider().apply(variableManager);
         String label = multiSelectDescription.getLabelProvider().apply(variableManager);
+        String iconURL = multiSelectDescription.getIconURLProvider().apply(variableManager);
         List<?> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);
         List<String> values = multiSelectDescription.getValuesProvider().apply(variableManager);
 
@@ -84,6 +85,10 @@ public class MultiSelectComponent implements IComponent {
                 .values(values)
                 .newValuesHandler(newValuesHandler)
                 .children(children);
+
+        if (iconURL != null) {
+            multiSelectElementPropsBuilder.iconURL(iconURL);
+        }
 
         if (multiSelectStyle != null) {
             multiSelectElementPropsBuilder.style(multiSelectStyle);

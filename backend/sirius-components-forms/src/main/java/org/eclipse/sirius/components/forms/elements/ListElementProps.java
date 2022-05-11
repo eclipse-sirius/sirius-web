@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,8 @@ public final class ListElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private List<ListItem> items;
 
     private List<Element> children;
@@ -48,6 +50,10 @@ public final class ListElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public List<ListItem> getItems() {
@@ -81,6 +87,8 @@ public final class ListElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private List<ListItem> items;
 
         private List<Element> children;
@@ -91,6 +99,11 @@ public final class ListElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -108,6 +121,7 @@ public final class ListElementProps implements IProps {
             ListElementProps listElementProps = new ListElementProps();
             listElementProps.id = Objects.requireNonNull(this.id);
             listElementProps.label = Objects.requireNonNull(this.label);
+            listElementProps.iconURL = this.iconURL;
             listElementProps.items = Objects.requireNonNull(this.items);
             listElementProps.children = Objects.requireNonNull(this.children);
             return listElementProps;

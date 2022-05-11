@@ -27,16 +27,10 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class ChartWidget extends AbstractWidget {
-    private String label;
-
     private IChart chart;
 
     private ChartWidget() {
         // Prevent instantiation
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public IChart getChart() {
@@ -64,6 +58,8 @@ public final class ChartWidget extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private IChart chart;
 
         private List<Diagnostic> diagnostics;
@@ -74,6 +70,11 @@ public final class ChartWidget extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -91,6 +92,7 @@ public final class ChartWidget extends AbstractWidget {
             ChartWidget link = new ChartWidget();
             link.id = Objects.requireNonNull(this.id);
             link.label = Objects.requireNonNull(this.label);
+            this.iconURL = this.iconURL;
             link.chart = Objects.requireNonNull(this.chart);
             link.diagnostics = Objects.requireNonNull(this.diagnostics);
             return link;

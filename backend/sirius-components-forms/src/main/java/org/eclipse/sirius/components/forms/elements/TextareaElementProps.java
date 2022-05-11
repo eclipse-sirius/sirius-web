@@ -36,6 +36,8 @@ public final class TextareaElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private String value;
 
     private Function<String, IStatus> newValueHandler;
@@ -54,6 +56,10 @@ public final class TextareaElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public String getValue() {
@@ -94,6 +100,8 @@ public final class TextareaElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private String value;
 
         private Function<String, IStatus> newValueHandler;
@@ -108,6 +116,11 @@ public final class TextareaElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -135,6 +148,7 @@ public final class TextareaElementProps implements IProps {
             TextareaElementProps textareaElementProps = new TextareaElementProps();
             textareaElementProps.id = Objects.requireNonNull(this.id);
             textareaElementProps.label = Objects.requireNonNull(this.label);
+            textareaElementProps.iconURL = this.iconURL;
             textareaElementProps.value = Objects.requireNonNull(this.value);
             textareaElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textareaElementProps.style = this.style; // Optional on purpose

@@ -37,6 +37,8 @@ public final class RadioElementProps implements IProps {
 
     private String label;
 
+    private String iconURL;
+
     private List<RadioOption> options;
 
     private Function<String, IStatus> newValueHandler;
@@ -55,6 +57,10 @@ public final class RadioElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     public List<RadioOption> getOptions() {
@@ -95,6 +101,8 @@ public final class RadioElementProps implements IProps {
 
         private String label;
 
+        private String iconURL;
+
         private List<RadioOption> options;
 
         private Function<String, IStatus> newValueHandler;
@@ -109,6 +117,11 @@ public final class RadioElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -136,6 +149,7 @@ public final class RadioElementProps implements IProps {
             RadioElementProps radioElementProps = new RadioElementProps();
             radioElementProps.id = Objects.requireNonNull(this.id);
             radioElementProps.label = Objects.requireNonNull(this.label);
+            radioElementProps.iconURL = this.iconURL;
             radioElementProps.options = Objects.requireNonNull(this.options);
             radioElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             radioElementProps.style = this.style; // Optional on purpose

@@ -40,6 +40,7 @@ public final class FlexboxContainer extends AbstractWidget {
         // Prevent instantiation
     }
 
+    @Override
     public String getLabel() {
         return this.label;
     }
@@ -81,6 +82,8 @@ public final class FlexboxContainer extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private String flexDirection;
 
         private String flexWrap;
@@ -97,6 +100,11 @@ public final class FlexboxContainer extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -129,6 +137,7 @@ public final class FlexboxContainer extends AbstractWidget {
             FlexboxContainer flexboxContainer = new FlexboxContainer();
             flexboxContainer.id = Objects.requireNonNull(this.id);
             flexboxContainer.label = Objects.requireNonNull(this.label);
+            flexboxContainer.iconURL = this.iconURL;
             flexboxContainer.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainer.flexWrap = Objects.requireNonNull(this.flexWrap);
             flexboxContainer.flexGrow = Objects.requireNonNull(this.flexGrow);

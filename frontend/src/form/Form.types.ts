@@ -38,6 +38,7 @@ export interface Group {
 export interface Widget {
   id: string;
   label: string;
+  iconURL: string | null;
   __typename: string;
   diagnostics: Diagnostic[];
 }

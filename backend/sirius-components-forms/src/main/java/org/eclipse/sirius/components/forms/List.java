@@ -56,6 +56,8 @@ public final class List extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private java.util.List<ListItem> items;
 
         private java.util.List<Diagnostic> diagnostics;
@@ -66,6 +68,11 @@ public final class List extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -83,6 +90,7 @@ public final class List extends AbstractWidget {
             List list = new List();
             list.id = Objects.requireNonNull(this.id);
             list.label = Objects.requireNonNull(this.label);
+            list.iconURL = this.iconURL;
             list.items = Objects.requireNonNull(this.items);
             list.diagnostics = Objects.requireNonNull(this.diagnostics);
             return list;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ public final class OptionDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, Boolean> selectedProvider;
 
     private OptionDescription() {
@@ -43,6 +45,10 @@ public final class OptionDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, Boolean> getSelectedProvider() {
@@ -70,6 +76,8 @@ public final class OptionDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, Boolean> selectedProvider;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
@@ -84,6 +92,11 @@ public final class OptionDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -111,6 +124,7 @@ public final class OptionDescription extends AbstractWidgetDescription {
             OptionDescription optionDescription = new OptionDescription();
             optionDescription.id = Objects.requireNonNull(this.id);
             optionDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            optionDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             optionDescription.selectedProvider = Objects.requireNonNull(this.selectedProvider);
             optionDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             optionDescription.kindProvider = Objects.requireNonNull(this.kindProvider);

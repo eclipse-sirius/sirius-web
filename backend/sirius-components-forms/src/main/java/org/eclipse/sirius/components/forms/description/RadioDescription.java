@@ -35,6 +35,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, List<?>> optionsProvider;
 
     private Function<VariableManager, String> optionIdProvider;
@@ -57,6 +59,10 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, List<?>> getOptionsProvider() {
@@ -106,6 +112,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, List<?>> optionsProvider;
 
         private Function<VariableManager, String> optionIdProvider;
@@ -135,6 +143,11 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -188,6 +201,7 @@ public final class RadioDescription extends AbstractWidgetDescription {
             radioDescription.id = Objects.requireNonNull(this.id);
             radioDescription.idProvider = Objects.requireNonNull(this.idProvider);
             radioDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            radioDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             radioDescription.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             radioDescription.optionIdProvider = Objects.requireNonNull(this.optionIdProvider);
             radioDescription.optionLabelProvider = Objects.requireNonNull(this.optionLabelProvider);

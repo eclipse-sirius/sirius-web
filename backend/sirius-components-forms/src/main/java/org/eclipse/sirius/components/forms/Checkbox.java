@@ -71,6 +71,8 @@ public final class Checkbox extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private boolean value;
 
         private Function<Boolean, IStatus> newValueHandler;
@@ -85,6 +87,11 @@ public final class Checkbox extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -112,6 +119,7 @@ public final class Checkbox extends AbstractWidget {
             Checkbox checkbox = new Checkbox();
             checkbox.id = Objects.requireNonNull(this.id);
             checkbox.label = Objects.requireNonNull(this.label);
+            checkbox.iconURL = this.iconURL;
             checkbox.value = Objects.requireNonNull(this.value);
             checkbox.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkbox.style = this.style; // Optional on purpose

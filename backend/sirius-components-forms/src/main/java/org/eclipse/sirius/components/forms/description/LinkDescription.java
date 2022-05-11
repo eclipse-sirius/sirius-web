@@ -31,6 +31,8 @@ public final class LinkDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, String> urlProvider;
 
     private LinkDescription() {
@@ -43,6 +45,10 @@ public final class LinkDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, String> getUrlProvider() {
@@ -72,6 +78,8 @@ public final class LinkDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, String> urlProvider;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
@@ -91,6 +99,11 @@ public final class LinkDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -119,6 +132,7 @@ public final class LinkDescription extends AbstractWidgetDescription {
             linkDescription.id = this.id;
             linkDescription.idProvider = Objects.requireNonNull(this.idProvider);
             linkDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            linkDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             linkDescription.urlProvider = Objects.requireNonNull(this.urlProvider);
             linkDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             linkDescription.kindProvider = Objects.requireNonNull(this.kindProvider);

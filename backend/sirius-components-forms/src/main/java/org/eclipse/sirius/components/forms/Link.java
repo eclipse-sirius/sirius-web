@@ -58,6 +58,8 @@ public final class Link extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private String url;
 
         private List<Diagnostic> diagnostics;
@@ -68,6 +70,11 @@ public final class Link extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -85,6 +92,7 @@ public final class Link extends AbstractWidget {
             Link link = new Link();
             link.id = Objects.requireNonNull(this.id);
             link.label = Objects.requireNonNull(this.label);
+            link.iconURL = this.iconURL;
             link.url = Objects.requireNonNull(this.url);
             link.diagnostics = Objects.requireNonNull(this.diagnostics);
             return link;

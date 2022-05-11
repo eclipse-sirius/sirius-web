@@ -77,6 +77,8 @@ public final class Select extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private List<SelectOption> options;
 
         private String value;
@@ -93,6 +95,11 @@ public final class Select extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -125,6 +132,7 @@ public final class Select extends AbstractWidget {
             Select select = new Select();
             select.id = Objects.requireNonNull(this.id);
             select.label = Objects.requireNonNull(this.label);
+            select.iconURL = this.iconURL;
             select.options = Objects.requireNonNull(this.options);
             select.value = this.value;
             select.newValueHandler = Objects.requireNonNull(this.newValueHandler);

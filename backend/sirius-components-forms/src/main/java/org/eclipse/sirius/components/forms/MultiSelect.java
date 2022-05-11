@@ -78,6 +78,8 @@ public final class MultiSelect extends AbstractWidget {
 
         private String label;
 
+        private String iconURL;
+
         private List<SelectOption> options;
 
         private List<String> values;
@@ -94,6 +96,11 @@ public final class MultiSelect extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder iconURL(String iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -126,6 +133,7 @@ public final class MultiSelect extends AbstractWidget {
             MultiSelect select = new MultiSelect();
             select.id = Objects.requireNonNull(this.id);
             select.label = Objects.requireNonNull(this.label);
+            select.iconURL = this.iconURL;
             select.options = Objects.requireNonNull(this.options);
             select.values = this.values;
             select.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);

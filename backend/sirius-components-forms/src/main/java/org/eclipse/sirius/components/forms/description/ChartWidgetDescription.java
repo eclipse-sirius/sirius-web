@@ -32,6 +32,8 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private IChartDescription chartDescription;
 
     private ChartWidgetDescription() {
@@ -44,6 +46,10 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public IChartDescription getChartDescription() {
@@ -73,6 +79,8 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private IChartDescription chartDescription;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
@@ -92,6 +100,11 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -116,15 +129,16 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
         }
 
         public ChartWidgetDescription build() {
-            ChartWidgetDescription linkDescription = new ChartWidgetDescription();
-            linkDescription.id = Objects.requireNonNull(this.id);
-            linkDescription.idProvider = Objects.requireNonNull(this.idProvider);
-            linkDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            linkDescription.chartDescription = Objects.requireNonNull(this.chartDescription);
-            linkDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
-            linkDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
-            linkDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
-            return linkDescription;
+            ChartWidgetDescription chartDescription = new ChartWidgetDescription();
+            chartDescription.id = Objects.requireNonNull(this.id);
+            chartDescription.idProvider = Objects.requireNonNull(this.idProvider);
+            chartDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            chartDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            chartDescription.chartDescription = Objects.requireNonNull(this.chartDescription);
+            chartDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
+            chartDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
+            chartDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            return chartDescription;
         }
     }
 }

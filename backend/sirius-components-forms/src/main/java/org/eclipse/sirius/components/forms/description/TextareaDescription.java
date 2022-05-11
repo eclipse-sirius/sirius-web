@@ -34,6 +34,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, String> iconURLProvider;
+
     private Function<VariableManager, String> valueProvider;
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -50,6 +52,10 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, String> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, String> getValueProvider() {
@@ -88,6 +94,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
         private Function<VariableManager, String> valueProvider;
 
         private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -111,6 +119,11 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -149,6 +162,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             textareaDescription.id = Objects.requireNonNull(this.id);
             textareaDescription.idProvider = Objects.requireNonNull(this.idProvider);
             textareaDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            textareaDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             textareaDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             textareaDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textareaDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
