@@ -1,0 +1,37 @@
+= ADR-058 - Compute dynamically the connector tools
+
+== Context
+
+As of now, to check if a tool can be applied on a diagram element (as a source or target of the tool), we check that its diagram description is within the candidates of the tool.
+The semantic object represented by the diagram element does not play a role in this checking process.
+Only when the tool is applied do we know if the tool will successfully apply to the semantic object.
+
+== Decision
+
+The `ContextualMenu` component will not receive its tools from those used in the `ContextualPalette` anymore, a specific API will be used to get the connector tools that can be used between a given source element and target element.
+
+=== Backend
+
+A new query field `connectorTools` will be added to the `DiagramDescription` type.
+A new provider interface for connector tools will be made available.
+
+A new event handler, event input and event payload will be introduced to handle the query to get connector tools.
+
+`InvokeSingleClickOnTwoDiagramElementsToolEventHandler` will allow tools contributed by a connector tools provider to be used even if they are not in a `ToolSection`
+
+=== Frontend
+
+The `ContextualMenu` component will not receive its tools from those used in the `ContextualPalette` anymore.
+
+A query will be launched by the `ContextualMenu` to get its own tools.
+
+`ContextualMenu` state will be managed by a new `ContextualMenuMachine` modeled on `ContextualPaletteMachine`
+
+== Status
+
+Accepted
+
+== Consequences
+
+- A new data fetcher will have to be implemented to handle the query to get connector tools.
+- Implementations for the connector tools providers will have to be made.

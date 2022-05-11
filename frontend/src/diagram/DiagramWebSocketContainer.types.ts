@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node } from './sprotty/Diagram.types';
+
 export interface GQLDiagramEventSubscription {
   diagramEvent: GQLDiagramEventPayload;
 }
@@ -59,8 +61,8 @@ export interface Palette {
 
 export interface Menu {
   canvasBounds: Bounds;
-  sourceElement: NodeDescription;
-  targetElement: NodeDescription;
+  sourceElement: Node;
+  targetElement: Node;
   tools: Tool[];
   startPosition: Position | null;
   endPosition: Position | null;

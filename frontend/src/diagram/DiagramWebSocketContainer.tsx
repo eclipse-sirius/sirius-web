@@ -1030,25 +1030,26 @@ export const DiagramWebSocketContainer = ({
   }
   let contextualMenuContent;
   if (!readOnly && contextualMenu) {
-    const { sourceElement, targetElement, canvasBounds, tools, startPosition, endPosition } = contextualMenu;
+    const { sourceElement, targetElement, canvasBounds, startPosition, endPosition } = contextualMenu;
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
     };
-    if (tools && tools.length > 1 && !!startPosition && !!endPosition) {
-      const invokeToolFromContextualMenu = (tool) => {
-        invokeTool(tool, sourceElement.id, targetElement.id, startPosition, endPosition);
-      };
-      contextualMenuContent = (
-        <div className={classes.contextualMenu} style={style}>
-          <ContextualMenu
-            tools={tools}
-            invokeTool={invokeToolFromContextualMenu}
-            invokeClose={resetTools}
-          ></ContextualMenu>
-        </div>
-      );
-    }
+    const invokeToolFromContextualMenu = (tool: Tool) => {
+      invokeTool(tool, sourceElement.id, targetElement.id, startPosition, endPosition);
+    };
+    contextualMenuContent = (
+      <div className={classes.contextualMenu} style={style}>
+        <ContextualMenu
+          editingContextId={editingContextId}
+          representationId={representationId}
+          sourceDiagramElement={sourceElement}
+          targetDiagramElement={targetElement}
+          invokeTool={invokeToolFromContextualMenu}
+          invokeClose={resetTools}
+        ></ContextualMenu>
+      </div>
+    );
   }
 
   let content = (
