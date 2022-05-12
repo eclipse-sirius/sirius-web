@@ -34,6 +34,8 @@ public final class Textfield extends AbstractWidget {
 
     private Function<String, IStatus> newValueHandler;
 
+    private TextfieldStyle style;
+
     private Textfield() {
         // Prevent instantiation
     }
@@ -48,6 +50,10 @@ public final class Textfield extends AbstractWidget {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public TextfieldStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newTextfield(String id) {
@@ -75,6 +81,8 @@ public final class Textfield extends AbstractWidget {
 
         private Function<String, IStatus> newValueHandler;
 
+        private TextfieldStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -96,6 +104,11 @@ public final class Textfield extends AbstractWidget {
             return this;
         }
 
+        public Builder style(TextfieldStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -107,6 +120,7 @@ public final class Textfield extends AbstractWidget {
             textfield.label = Objects.requireNonNull(this.label);
             textfield.value = Objects.requireNonNull(this.value);
             textfield.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            textfield.style = this.style; // Optional on purpose
             textfield.diagnostics = Objects.requireNonNull(this.diagnostics);
             return textfield;
         }

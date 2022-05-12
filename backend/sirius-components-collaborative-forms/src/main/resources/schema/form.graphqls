@@ -136,6 +136,12 @@ type Textfield implements Widget {
   diagnostics: [Diagnostic!]!
   label: String!
   value: String!
+  style: TextfieldStyle
+}
+
+type TextfieldStyle {
+  backgroundColor: String
+  foregroundColor: String
 }
 
 type Link implements Widget {

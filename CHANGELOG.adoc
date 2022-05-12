@@ -1,5 +1,24 @@
 = Changelog
 
+== v2022.7.0 (unrelased)
+
+=== Architectural decision records
+
+=== Deprecation warning
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add styling support on Textfield Widget in View DSL
+
+
 == v2022.5.0
 
 === Architectural decision records

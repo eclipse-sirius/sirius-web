@@ -49,6 +49,7 @@ import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
+import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -269,6 +270,10 @@ public class DynamicFormsTests {
         textfieldDescription.setLabelExpression("aql:'EClass name'"); //$NON-NLS-1$
         textfieldDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
         textfieldDescription.setName("Class Name"); //$NON-NLS-1$
+        TextfieldDescriptionStyle textfieldDescriptionStyle = ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
+        textfieldDescriptionStyle.setBackgroundColor(null);
+        textfieldDescriptionStyle.setForegroundColor(null);
+        textfieldDescription.setStyle(textfieldDescriptionStyle);
         formDescription.getWidgets().add(textfieldDescription);
 
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();

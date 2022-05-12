@@ -4,7 +4,7 @@ exports[`should display the edited value 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel-13"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -12,7 +12,7 @@ exports[`should display the edited value 1`] = `
         Name:
       </h6>
       <div
-        class="makeStyles-subscribers-8"
+        class="makeStyles-subscribers-14"
       />
     </div>
     <div
@@ -40,7 +40,7 @@ exports[`should display the edited value 2`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel-13"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -48,7 +48,7 @@ exports[`should display the edited value 2`] = `
         Name:
       </h6>
       <div
-        class="makeStyles-subscribers-8"
+        class="makeStyles-subscribers-14"
       />
     </div>
     <div
@@ -76,7 +76,7 @@ exports[`should display the edited value 3`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel-13"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -84,7 +84,7 @@ exports[`should display the edited value 3`] = `
         Name:
       </h6>
       <div
-        class="makeStyles-subscribers-8"
+        class="makeStyles-subscribers-14"
       />
     </div>
     <div
@@ -113,7 +113,7 @@ exports[`should display the error received 1`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-10"
+        class="makeStyles-propertySectionLabel-18"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -121,7 +121,7 @@ exports[`should display the error received 1`] = `
           Name:
         </h6>
         <div
-          class="makeStyles-subscribers-11"
+          class="makeStyles-subscribers-19"
         />
       </div>
       <div
@@ -151,7 +151,7 @@ exports[`should display the error received 2`] = `
   <div>
     <div>
       <div
-        class="makeStyles-propertySectionLabel-10"
+        class="makeStyles-propertySectionLabel-18"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -159,7 +159,7 @@ exports[`should display the error received 2`] = `
           Name:
         </h6>
         <div
-          class="makeStyles-subscribers-11"
+          class="makeStyles-subscribers-19"
         />
       </div>
       <div
@@ -233,7 +233,7 @@ exports[`should render a readOnly textfield 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-4"
+      class="makeStyles-propertySectionLabel-8"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -241,7 +241,7 @@ exports[`should render a readOnly textfield 1`] = `
         Name:
       </h6>
       <div
-        class="makeStyles-subscribers-5"
+        class="makeStyles-subscribers-9"
       />
     </div>
     <div
@@ -270,7 +270,7 @@ exports[`should render the textfield 1`] = `
 <div>
   <div>
     <div
-      class="makeStyles-propertySectionLabel-1"
+      class="makeStyles-propertySectionLabel-3"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -278,7 +278,7 @@ exports[`should render the textfield 1`] = `
         Name:
       </h6>
       <div
-        class="makeStyles-subscribers-2"
+        class="makeStyles-subscribers-4"
       />
     </div>
     <div
@@ -300,4 +300,118 @@ exports[`should render the textfield 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`should render the textfield with empty style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-33"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Name:
+        </h6>
+        <div
+          class="makeStyles-subscribers-34"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Name:"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-31 makeStyles-style-32 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the textfield with style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-28"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Name:
+        </h6>
+        <div
+          class="makeStyles-subscribers-29"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Name:"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-26 makeStyles-style-27 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the textfield without style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-23"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Name:
+        </h6>
+        <div
+          class="makeStyles-subscribers-24"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Name:"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 `;

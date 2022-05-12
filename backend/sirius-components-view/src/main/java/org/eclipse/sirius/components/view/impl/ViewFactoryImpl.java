@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
+import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -145,6 +146,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createTextAreaDescription();
         case ViewPackage.RADIO_DESCRIPTION:
             return this.createRadioDescription();
+        case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
+            return this.createTextfieldDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -483,6 +486,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public RadioDescription createRadioDescription() {
         RadioDescriptionImpl radioDescription = new RadioDescriptionImpl();
         return radioDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TextfieldDescriptionStyle createTextfieldDescriptionStyle() {
+        TextfieldDescriptionStyleImpl textfieldDescriptionStyle = new TextfieldDescriptionStyleImpl();
+        return textfieldDescriptionStyle;
     }
 
     /**

@@ -38,6 +38,31 @@ const defaultTextField: Textfield = {
   label: 'Name:',
   stringValue: 'Composite Processor',
   diagnostics: [],
+  style: null,
+};
+
+const textFieldWithStyle: Textfield = {
+  __typename: 'Textfield',
+  id: 'textfieldId',
+  label: 'Name:',
+  stringValue: 'Composite Processor',
+  diagnostics: [],
+  style: {
+    backgroundColor: '#de1000',
+    foregroundColor: '#fbb800',
+  },
+};
+
+const textFieldWithEmptyStyle: Textfield = {
+  __typename: 'Textfield',
+  id: 'textfieldId',
+  label: 'Name:',
+  stringValue: 'Composite Processor',
+  diagnostics: [],
+  style: {
+    backgroundColor: '',
+    foregroundColor: '',
+  },
 };
 
 const editTextfieldVariables: GQLEditTextfieldMutationVariables = {
@@ -210,4 +235,49 @@ test('should display the error received', async () => {
       expect(baseElement).toMatchSnapshot();
     });
   });
+});
+
+test('should render the textfield without style', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <TextfieldPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultTextField}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the textfield with style', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <TextfieldPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={textFieldWithStyle}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the textfield with empty style', async () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <TextfieldPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={textFieldWithEmptyStyle}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
 });

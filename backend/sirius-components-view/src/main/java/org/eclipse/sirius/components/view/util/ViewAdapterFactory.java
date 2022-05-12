@@ -48,11 +48,13 @@ import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
+import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -283,6 +285,16 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseRadioDescription(RadioDescription object) {
             return ViewAdapterFactory.this.createRadioDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
+            return ViewAdapterFactory.this.createWidgetDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object) {
+            return ViewAdapterFactory.this.createTextfieldDescriptionStyleAdapter();
         }
 
         @Override
@@ -783,6 +795,34 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRadioDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.WidgetDescriptionStyle
+     * <em>Widget Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.WidgetDescriptionStyle
+     * @generated
+     */
+    public Adapter createWidgetDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle
+     * <em>Textfield Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TextfieldDescriptionStyle
+     * @generated
+     */
+    public Adapter createTextfieldDescriptionStyleAdapter() {
         return null;
     }
 

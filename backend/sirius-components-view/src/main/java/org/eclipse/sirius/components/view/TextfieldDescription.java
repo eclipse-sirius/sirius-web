@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.TextfieldDescription#getValueExpression <em>Value Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.TextfieldDescription#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.TextfieldDescription#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescription()
@@ -64,5 +65,28 @@ public interface TextfieldDescription extends WidgetDescription {
      * @generated
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(TextfieldDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    TextfieldDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.TextfieldDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(TextfieldDescriptionStyle value);
 
 } // TextfieldDescription

@@ -160,6 +160,7 @@
     <genClasses ecoreClass="view.ecore#//TextfieldDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescription/valueExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/style"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//CheckboxDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CheckboxDescription/valueExpression"/>
@@ -186,6 +187,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/candidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/candidateLabelExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/body"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//WidgetDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//TextfieldDescriptionStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/backgroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/foregroundColor"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

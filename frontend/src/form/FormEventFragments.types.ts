@@ -119,6 +119,12 @@ export interface GQLDiagnostic {
 export interface GQLTextfield extends GQLWidget {
   label: string;
   stringValue: string;
+  style: GQLTextfieldStyle;
+}
+
+export interface GQLTextfieldStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
 }
 
 export interface GQLTextarea extends GQLWidget {
