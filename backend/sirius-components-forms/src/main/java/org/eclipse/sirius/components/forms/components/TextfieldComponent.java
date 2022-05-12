@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
+import org.eclipse.sirius.components.forms.elements.TextfieldElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -51,15 +52,23 @@ public class TextfieldComponent implements IComponent {
         Function<String, IStatus> specializedHandler = newValue -> {
             return genericHandler.apply(variableManager, newValue);
         };
+        var textfieldStyle = textfieldDescription.getStyleProvider().apply(variableManager);
+
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(textfieldDescription, variableManager)));
 
         // @formatter:off
-        TextfieldElementProps textfieldElementProps = TextfieldElementProps.newTextfieldElementProps(id)
+        Builder textfieldElementPropsBuilder = TextfieldElementProps.newTextfieldElementProps(id)
                 .label(label)
                 .value(value)
                 .newValueHandler(specializedHandler)
-                .children(children)
-                .build();
+                .children(children);
+
+        if (textfieldStyle != null) {
+            textfieldElementPropsBuilder.style(textfieldStyle);
+        }
+
+        TextfieldElementProps textfieldElementProps = textfieldElementPropsBuilder.build();
+
         return new Element(TextfieldElementProps.TYPE, textfieldElementProps);
         // @formatter:on
     }

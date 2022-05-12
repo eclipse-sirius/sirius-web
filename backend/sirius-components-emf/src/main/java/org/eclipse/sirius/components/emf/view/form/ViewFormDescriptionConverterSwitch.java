@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
+import org.eclipse.sirius.components.forms.description.TextfieldDescription.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Failure;
@@ -48,6 +49,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
 /**
@@ -76,18 +78,25 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(viewTextfieldDescription.getLabelExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(viewTextfieldDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(viewTextfieldDescription.getBody());
+        TextfieldDescriptionStyle textfieldDescriptionStyle = viewTextfieldDescription.getStyle();
 
         // @formatter:off
-        return TextfieldDescription.newTextfieldDescription(descriptionId)
+        Builder textfieldBuilder = TextfieldDescription.newTextfieldDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
-                .build();
+                .messageProvider(diagnostic -> ""); //$NON-NLS-1$
         // @formatter:on
+
+        if (textfieldDescriptionStyle != null) {
+            TextfieldStyleProvider styleProvider = new TextfieldStyleProvider(textfieldDescriptionStyle);
+            textfieldBuilder.styleProvider(styleProvider);
+        }
+
+        return textfieldBuilder.build();
     }
 
     @Override

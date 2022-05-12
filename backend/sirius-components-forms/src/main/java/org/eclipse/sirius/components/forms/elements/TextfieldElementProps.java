@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -38,6 +39,8 @@ public final class TextfieldElementProps implements IProps {
     private String value;
 
     private Function<String, IStatus> newValueHandler;
+
+    private TextfieldStyle style;
 
     private List<Element> children;
 
@@ -66,6 +69,10 @@ public final class TextfieldElementProps implements IProps {
         return this.newValueHandler;
     }
 
+    public TextfieldStyle getStyle() {
+        return this.style;
+    }
+
     public static Builder newTextfieldElementProps(String id) {
         return new Builder(id);
     }
@@ -91,6 +98,8 @@ public final class TextfieldElementProps implements IProps {
 
         private Function<String, IStatus> newValueHandler;
 
+        private TextfieldStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -112,6 +121,11 @@ public final class TextfieldElementProps implements IProps {
             return this;
         }
 
+        public Builder style(TextfieldStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -123,6 +137,7 @@ public final class TextfieldElementProps implements IProps {
             textfieldElementProps.label = Objects.requireNonNull(this.label);
             textfieldElementProps.value = Objects.requireNonNull(this.value);
             textfieldElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            textfieldElementProps.style = this.style;
             textfieldElementProps.children = Objects.requireNonNull(this.children);
             return textfieldElementProps;
         }

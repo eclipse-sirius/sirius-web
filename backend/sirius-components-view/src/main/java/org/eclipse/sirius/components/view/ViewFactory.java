@@ -246,6 +246,15 @@ public interface ViewFactory extends EFactory {
     RadioDescription createRadioDescription();
 
     /**
+     * Returns a new object of class '<em>Textfield Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Textfield Description Style</em>'.
+     * @generated
+     */
+    TextfieldDescriptionStyle createTextfieldDescriptionStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

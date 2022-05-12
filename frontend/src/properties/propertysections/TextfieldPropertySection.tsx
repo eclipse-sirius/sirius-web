@@ -13,6 +13,7 @@
 import { useMutation } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
@@ -42,6 +43,18 @@ import {
 } from 'properties/propertysections/TextfieldPropertySectionMachine';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
+
+export interface StyleProps {
+  backgroundColor: string;
+  foregroundColor: string;
+}
+
+const useStyle = makeStyles<Theme, StyleProps>(() => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+  },
+}));
 
 export const editTextfieldMutation = gql`
   mutation editTextfield($input: EditTextfieldInput!) {
@@ -80,6 +93,12 @@ export const TextfieldPropertySection = ({
   subscribers,
   readOnly,
 }: TextfieldPropertySectionProps) => {
+  const props: StyleProps = {
+    backgroundColor: widget.style?.backgroundColor ?? null,
+    foregroundColor: widget.style?.foregroundColor ?? null,
+  };
+  const classes = useStyle(props);
+
   const [{ value: schemaValue, context }, dispatch] = useMachine<
     TextfieldPropertySectionContext,
     TextfieldPropertySectionEvent
@@ -214,6 +233,13 @@ export const TextfieldPropertySection = ({
         disabled={readOnly}
         error={widget.diagnostics.length > 0}
         helperText={widget.diagnostics[0]?.message}
+        InputProps={
+          widget.style
+            ? {
+                className: classes.style,
+              }
+            : {}
+        }
       />
       <Snackbar
         anchorOrigin={{

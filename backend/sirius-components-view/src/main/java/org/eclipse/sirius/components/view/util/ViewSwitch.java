@@ -47,11 +47,13 @@ import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
+import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -424,6 +426,22 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseRadioDescription(radioDescription);
             if (result == null)
                 result = this.caseWidgetDescription(radioDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.WIDGET_DESCRIPTION_STYLE: {
+            WidgetDescriptionStyle widgetDescriptionStyle = (WidgetDescriptionStyle) theEObject;
+            T result = this.caseWidgetDescriptionStyle(widgetDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE: {
+            TextfieldDescriptionStyle textfieldDescriptionStyle = (TextfieldDescriptionStyle) theEObject;
+            T result = this.caseTextfieldDescriptionStyle(textfieldDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(textfieldDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -953,6 +971,36 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseRadioDescription(RadioDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Widget Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Widget Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Textfield Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Textfield Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object) {
         return null;
     }
 

@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.Textfield.Builder;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -207,12 +208,17 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return Textfield.newTextfield(props.getId())
+        Builder textfieldBuilder = Textfield.newTextfield(props.getId())
                 .label(props.getLabel())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            textfieldBuilder.style(props.getStyle());
+        }
+
+        return textfieldBuilder.build();
         // @formatter:on
     }
 

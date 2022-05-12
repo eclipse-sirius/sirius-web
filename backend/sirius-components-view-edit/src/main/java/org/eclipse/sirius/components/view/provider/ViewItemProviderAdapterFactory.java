@@ -700,6 +700,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected TextfieldDescriptionStyleItemProvider textfieldDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTextfieldDescriptionStyleAdapter() {
+        if (this.textfieldDescriptionStyleItemProvider == null) {
+            this.textfieldDescriptionStyleItemProvider = new TextfieldDescriptionStyleItemProvider(this);
+        }
+
+        return this.textfieldDescriptionStyleItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -853,6 +877,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.textAreaDescriptionItemProvider.dispose();
         if (this.radioDescriptionItemProvider != null)
             this.radioDescriptionItemProvider.dispose();
+        if (this.textfieldDescriptionStyleItemProvider != null)
+            this.textfieldDescriptionStyleItemProvider.dispose();
     }
 
 }

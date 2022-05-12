@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.TextfieldDescription;
+import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl#getValueExpression <em>Value
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionImpl#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @generated
@@ -70,6 +72,16 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * @ordered
      */
     protected EList<Operation> body;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getStyle()
+     * @generated
+     * @ordered
+     */
+    protected TextfieldDescriptionStyle style;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -132,10 +144,60 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * @generated
      */
     @Override
+    public TextfieldDescriptionStyle getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(TextfieldDescriptionStyle newStyle, NotificationChain msgs) {
+        TextfieldDescriptionStyle oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.TEXTFIELD_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(TextfieldDescriptionStyle newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.TEXTFIELD_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.TEXTFIELD_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.TEXTFIELD_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
             return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
+            return this.basicSetStyle(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -152,6 +214,8 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
             return this.getValueExpression();
         case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
             return this.getBody();
+        case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
+            return this.getStyle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -172,6 +236,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
             this.getBody().clear();
             this.getBody().addAll((Collection<? extends Operation>) newValue);
             return;
+        case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
+            this.setStyle((TextfieldDescriptionStyle) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -190,6 +257,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
         case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
             this.getBody().clear();
             return;
+        case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
+            this.setStyle((TextfieldDescriptionStyle) null);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -206,6 +276,8 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
             return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
         case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
             return this.body != null && !this.body.isEmpty();
+        case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
+            return this.style != null;
         }
         return super.eIsSet(featureID);
     }

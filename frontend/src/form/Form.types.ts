@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,11 +55,18 @@ export interface WidgetSubscription {
 export interface Textfield extends Widget {
   label: string;
   stringValue: string;
+  style: TextfieldStyle | null;
+}
+
+export interface TextfieldStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
 }
 
 export interface Textarea extends Widget {
   label: string;
   stringValue: string;
+  style: TextfieldStyle;
 }
 
 export interface Checkbox extends Widget {
