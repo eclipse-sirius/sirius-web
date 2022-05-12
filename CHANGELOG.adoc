@@ -13,6 +13,7 @@
 - [ADR-56] Add support for a form descriptions editor
 - [ADR-57] Add the ability to minimize the content of a site
 - [ADR-58] Compute dynamically the connector tools
+- [ADR-59] Add support for styling of the widgets and charts in the API, DSL, converter and compatibility layer
 
 === Deprecation warning
 
