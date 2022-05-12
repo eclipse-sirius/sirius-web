@@ -19,7 +19,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
 import { CheckboxWidget } from './CheckboxWidget';
-import { addWidgetMutation, deleteWidgetMutation } from './FormDescriptionEditorEventFragment';
+import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
@@ -28,8 +28,13 @@ import {
   GQLDeleteWidgetInput,
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
+  GQLDeleteWidgetPayload,
   GQLErrorPayload,
   GQLFormDescriptionEditorWidget,
+  GQLMoveWidgetInput,
+  GQLMoveWidgetMutationData,
+  GQLMoveWidgetMutationVariables,
+  GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { Kind } from './FormDescriptionEditorWebSocketContainer.types';
 import { MultiSelectWidget } from './MultiSelectWidget';
@@ -53,8 +58,9 @@ const useWidgetEntryStyles = makeStyles(() => ({
   },
 }));
 
-const isErrorPayload = (payload: GQLAddWidgetPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
+const isErrorPayload = (
+  payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
+): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
 const isKind = (value: string): value is Kind => {
   return (
@@ -133,6 +139,33 @@ export const WidgetEntry = ({
     }
   }, [deleteWidgetLoading, deleteWidgetData, deleteWidgetError]);
 
+  const [moveWidget, { loading: moveWidgetLoading, data: moveWidgetData, error: moveWidgetError }] = useMutation<
+    GQLMoveWidgetMutationData,
+    GQLMoveWidgetMutationVariables
+  >(moveWidgetMutation);
+
+  useEffect(() => {
+    if (!moveWidgetLoading) {
+      if (moveWidgetError) {
+        setState((prevState) => {
+          const newState = { ...prevState };
+          newState.message = moveWidgetError.message;
+          return newState;
+        });
+      }
+      if (moveWidgetData) {
+        const { moveWidget } = moveWidgetData;
+        if (isErrorPayload(moveWidget)) {
+          setState((prevState) => {
+            const newState = { ...prevState };
+            newState.message = moveWidget.message;
+            return newState;
+          });
+        }
+      }
+    }
+  }, [moveWidgetLoading, moveWidgetData, moveWidgetError]);
+
   const handleClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     const newSelection: Selection = {
       entries: [
@@ -160,6 +193,10 @@ export const WidgetEntry = ({
     }
   };
 
+  const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.dataTransfer.setData('text/plain', widget.id);
+  };
+
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.currentTarget.classList.add(classes.dragOver);
@@ -185,15 +222,31 @@ export const WidgetEntry = ({
       index = 0;
     }
 
-    const addWidgetInput: GQLAddWidgetInput = {
-      id: uuid(),
-      editingContextId,
-      representationId,
-      kind: isKind(id) ? id : 'Textfield',
-      index,
-    };
-    const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
-    addWidget({ variables: addWidgetVariables });
+    if (isKind(id)) {
+      const addWidgetInput: GQLAddWidgetInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        kind: id,
+        index,
+      };
+      const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
+      addWidget({ variables: addWidgetVariables });
+    } else {
+      const movedWidgetIndex = formDescriptionEditor.widgets.findIndex((w) => w.id === id);
+      if (movedWidgetIndex < index) {
+        index = index - 1;
+      }
+      const moveWidgetInput: GQLMoveWidgetInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        widgetId: id,
+        index,
+      };
+      const moveWidgetVariables: GQLMoveWidgetMutationVariables = { input: moveWidgetInput };
+      moveWidget({ variables: moveWidgetVariables });
+    }
   };
 
   let widgetElement = null;
@@ -259,7 +312,13 @@ export const WidgetEntry = ({
     );
   }
   return (
-    <div className={classes.widget} onClick={handleClick} onKeyDown={handleDelete}>
+    <div
+      className={classes.widget}
+      onClick={handleClick}
+      onKeyDown={handleDelete}
+      draggable="true"
+      onDragStart={handleDragStart}
+    >
       <div
         data-testid="WidgetEntry-DropArea"
         className={classes.placeholder}

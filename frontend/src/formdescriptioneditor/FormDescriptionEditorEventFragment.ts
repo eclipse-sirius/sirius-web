@@ -75,3 +75,17 @@ export const deleteWidgetMutation = gql`
     }
   }
 `;
+
+export const moveWidgetMutation = gql`
+  mutation moveWidget($input: MoveWidgetInput!) {
+    moveWidget(input: $input) {
+      __typename
+      ... on MoveWidgetSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;

@@ -32,6 +32,10 @@ import {
   GQLFormDescriptionEditorEventInput,
   GQLFormDescriptionEditorEventSubscription,
   GQLFormDescriptionEditorEventVariables,
+  GQLMoveWidgetInput,
+  GQLMoveWidgetMutationData,
+  GQLMoveWidgetMutationVariables,
+  GQLMoveWidgetPayload,
 } from 'formdescriptioneditor/FormDescriptionEditorEventFragment.types';
 import { Kind } from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer.types';
 import {
@@ -48,9 +52,13 @@ import { WidgetEntry } from 'formdescriptioneditor/WidgetEntry';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
-import { addWidgetMutation, formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
+import {
+  addWidgetMutation,
+  formDescriptionEditorEventSubscription,
+  moveWidgetMutation,
+} from './FormDescriptionEditorEventFragment';
 
-const isErrorPayload = (payload: GQLAddWidgetPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
@@ -197,6 +205,29 @@ export const FormDescriptionEditorWebSocketContainer = ({
     }
   }, [addWidgetLoading, addWidgetData, addWidgetError, dispatch]);
 
+  const [moveWidget, { loading: moveWidgetLoading, data: moveWidgetData, error: moveWidgetError }] = useMutation<
+    GQLMoveWidgetMutationData,
+    GQLMoveWidgetMutationVariables
+  >(moveWidgetMutation);
+
+  useEffect(() => {
+    if (!moveWidgetLoading) {
+      if (moveWidgetError) {
+        const message: string = moveWidgetError.message;
+        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+        dispatch(showToastEvent);
+      }
+      if (moveWidgetData) {
+        const { moveWidget } = moveWidgetData;
+        if (isErrorPayload(moveWidget)) {
+          const { message } = moveWidget;
+          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+          dispatch(showToastEvent);
+        }
+      }
+    }
+  }, [moveWidgetLoading, moveWidgetData, moveWidgetError, dispatch]);
+
   useEffect(() => {
     if (error) {
       const message: string = 'An error has occurred while trying to retrieve the form description editor';
@@ -234,15 +265,31 @@ export const FormDescriptionEditorWebSocketContainer = ({
 
     const id: string = event.dataTransfer.getData('text/plain');
 
-    const addWidgetInput: GQLAddWidgetInput = {
-      id: uuid(),
-      editingContextId,
-      representationId,
-      kind: isKind(id) ? id : 'Textfield',
-      index: formDescriptionEditor.widgets.length,
-    };
-    const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
-    addWidget({ variables: addWidgetVariables });
+    if (isKind(id)) {
+      const addWidgetInput: GQLAddWidgetInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        kind: id,
+        index: formDescriptionEditor.widgets.length,
+      };
+      const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
+      addWidget({ variables: addWidgetVariables });
+    } else {
+      let index = 0;
+      if (formDescriptionEditor.widgets.length > 0) {
+        index = formDescriptionEditor.widgets.length - 1;
+      }
+      const moveWidgetInput: GQLMoveWidgetInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        widgetId: id,
+        index,
+      };
+      const moveWidgetVariables: GQLMoveWidgetMutationVariables = { input: moveWidgetInput };
+      moveWidget({ variables: moveWidgetVariables });
+    }
   };
 
   let content: JSX.Element | null = null;

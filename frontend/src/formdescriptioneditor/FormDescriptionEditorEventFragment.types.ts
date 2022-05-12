@@ -125,6 +125,30 @@ export interface GQLDeleteWidgetSuccessPayload extends GQLDeleteWidgetPayload {
   id: string;
 }
 
-export interface GQLErrorPayload extends GQLAddWidgetPayload, GQLDeleteWidgetPayload {
+export interface GQLMoveWidgetInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  widgetId: string;
+  index: number;
+}
+
+export interface GQLMoveWidgetMutationVariables {
+  input: GQLMoveWidgetInput;
+}
+
+export interface GQLMoveWidgetMutationData {
+  moveWidget: GQLMoveWidgetPayload;
+}
+
+export interface GQLMoveWidgetPayload {
+  __typename: string;
+}
+
+export interface GQLMoveWidgetSuccessPayload extends GQLMoveWidgetPayload {
+  id: string;
+}
+
+export interface GQLErrorPayload extends GQLAddWidgetPayload, GQLDeleteWidgetPayload, GQLMoveWidgetPayload {
   message: string;
 }

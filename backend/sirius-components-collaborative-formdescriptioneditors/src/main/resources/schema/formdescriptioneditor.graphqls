@@ -35,6 +35,7 @@ type FormDescriptionEditorWidget {
 extend type Mutation {
   addWidget(input: AddWidgetInput!): AddWidgetPayload!
   deleteWidget(input: DeleteWidgetInput!): DeleteWidgetPayload!
+  moveWidget(input: MoveWidgetInput!): MoveWidgetPayload!
 }
 
 input AddWidgetInput {
@@ -61,5 +62,19 @@ input DeleteWidgetInput {
 union DeleteWidgetPayload = DeleteWidgetSuccessPayload | ErrorPayload
 
 type DeleteWidgetSuccessPayload {
+  id: ID!
+}
+
+input MoveWidgetInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  widgetId: String!
+  index: Int!
+}
+
+union MoveWidgetPayload = MoveWidgetSuccessPayload | ErrorPayload
+
+type MoveWidgetSuccessPayload {
   id: ID!
 }
