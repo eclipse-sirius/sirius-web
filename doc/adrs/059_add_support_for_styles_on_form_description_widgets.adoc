@@ -1,0 +1,130 @@
+= ADR-059 - Add support for styles and conditional styles on form description widgets in the View DSL
+
+== Context
+
+In the View DSL, it is now possible to create form descriptions, in addition to diagram descriptions.
+A form description contains a set of widgets (textfields, checkboxes, radio buttons...).
+We would like to be able to add styles and conditional styles on those widgets, the same way it is done for nodes and edges on diagram descriptions.
+The style of a widget would allow to customize the background/foreground color, font style, ... depending on the widget.
+
+== Decision
+
+As a first step, only one style, on the `Textfield` widget, will be supported.
+As a second step, styles will be supported on all other widgets supported.
+As a third steps, conditional styles will be supported.
+
+=== Frontend
+
+The InputProps of the widgets will be used to modify the style.
+For example, `TextfieldPrpertySection.tsx`:
+
+```
+export interface StyleProps {
+    backgroundColor: string;
+}
+
+const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
+  style: {
+    color: ({backgroundColor}) => backgroundColor ? backgroundColor : 'inherit',
+  },
+}));
+
+...
+export const TextfieldPropertySection = ({
+  editingContextId,
+  formId,
+  widget,
+  subscribers,
+  readOnly,
+  backgroundColor
+}: TextfieldPropertySectionProps) => {
+    
+    const props: StyleProps = {backgroundColor: backgroundColor}
+    const classes = useStyle(props);
+
+    ...
+
+    <TextField
+            name={widget.label}
+            ...
+            InputProps={widget.style ? {
+              className: classes.style
+            } : {} }
+          />
+```
+
+In the previous example, the `backgroundColor` is taken into account only if it has been provided by the specifier, otherwise the inherited value is taken.
+The MUI `Textfield` component also uses `InputProps` only if a style has been provided by the specifier.
+
+=== Backend
+
+The View DSL already contains some concepts that could be useful and may be reused:
+- `Style`
+- `LabelStyle`
+- `Conditional`
+
+The View DSL will be modified, introducing the following concepts:
+- `WidgetDescriptionStyle`
+- `TextfieldDescriptionStyle -> WidgetDescriptionStyle, LabelStyle`, `CheckboxDescriptionStyle -> WidgetDescriptionStyle`, ...
+- `ConditionalWidgetDescriptionStyle -> Conditional`
+- `ConditionalTextfieldDescriptionStyle -> ConditionalWidgetDescriptionStyle, TextfieldDescriptionStyle`, ...
+
+The View DSL converter will be update to take into account the styles and conditional styles of existing widgets.
+
+All `WidgetDescriptions` will be modified with a new style provider. For example, for the `org.eclipse.sirius.components.forms.description.TextfieldDescription` in `org.eclipse.sirius.components.emf.view.form.ViewFormDescriptionConverterSwitchorg.eclipse.sirius.components.emf.view.form.ViewFormDescriptionConverterSwitch`:
+
+```
+    . . .
+    TextfieldStyleProvider styleProvider = new TextfieldStyleProvider();
+    
+    return TextfieldDescription.newTextfieldDescription(descriptionId)
+            .idProvider(idProvider)
+            .labelProvider(labelProvider)
+            .valueProvider(valueProvider)
+            .newValueHandler(newValueHandler)
+            .diagnosticsProvider(variableManager -> List.of())
+            .kindProvider(diagnostic -> "") 
+            .messageProvider(diagnostic -> "") 
+            .styleProvider(styleProvider)
+            .build();
+```
+
+The new `TextfieldStyleProvider` :
+
+```
+	class TextfieldStyleProvider implements Function<VariableManager, TextfieldStyle> {
+		
+		private final org.eclipse.sirius.components.view.TextfieldDescriptionStyle viewStyle;
+		
+		public TextfieldStyleProvider(org.eclipse.sirius.components.view.TextfieldDescriptionStyle viewStyle) {
+			this.viewStyle = Objects.requireNonNull(viewStyle);
+	    }
+    
+		@Override
+		public TextfieldStyle apply(VariableManager variableManager) {
+	        ...
+	    }
+	}
+```
+
+The new `TextfieldStyle` :
+
+```
+	public final class TextfieldStyle {
+
+    		private String backgroundColor;
+
+    		private String foregroundColor;
+    }
+```
+
+
+The `TextfieldStyle` and `TextfieldStyleProvider` will be optional.
+The `backgroundColor` and `foregroundColor` will be optional.
+
+== Status
+
+WIP
+
+== Consequences
+
