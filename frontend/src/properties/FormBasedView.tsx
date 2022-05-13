@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSubscription } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -27,25 +27,25 @@ import {
   GQLPropertiesEventSubscription,
   GQLPropertiesEventVariables,
 } from 'form/FormEventFragments.types';
-import gql from 'graphql-tag';
-import { Properties } from 'properties/Properties';
 import {
+  FormBasedViewContext,
+  FormBasedViewEvent,
+  formBasedViewMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
-  PropertiesWebSocketContainerContext,
-  PropertiesWebSocketContainerEvent,
-  propertiesWebSocketContainerMachine,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
-} from 'properties/PropertiesWebSocketContainerMachine';
+} from 'properties/FormBasedViewMachine';
+import { Properties } from 'properties/Properties';
 import React, { useEffect } from 'react';
-import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
+import { FormBasedViewProps } from './FormBasedView.types';
 
-export const propertiesEventSubscription = gql`
-  subscription propertiesEvent($input: PropertiesEventInput!) {
-    propertiesEvent(input: $input) {
+export const getFormEventSubscription = (subscriptionName: string) => {
+  return `
+  subscription ${subscriptionName}($input: PropertiesEventInput!) {
+    ${subscriptionName}(input: $input) {
       __typename
       ... on SubscribersUpdatedEventPayload {
         ...subscribersUpdatedEventPayloadFragment
@@ -62,28 +62,27 @@ export const propertiesEventSubscription = gql`
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
   ${formRefreshedEventPayloadFragment}
 `;
+};
 
-const usePropertiesWebSocketContainerStyles = makeStyles((theme) => ({
+const useFormBasedViewStyles = makeStyles((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
 }));
 
 /**
- * Connect the Properties component to the GraphQL API over Web Socket.
+ * Used to define workbench views based on a form.
  */
-export const PropertiesWebSocketContainer = ({
+export const FormBasedView = ({
   editingContextId,
   selection,
   setSelection,
   readOnly,
-}: WorkbenchViewComponentProps) => {
-  const classes = usePropertiesWebSocketContainerStyles();
-  const [{ value, context }, dispatch] = useMachine<
-    PropertiesWebSocketContainerContext,
-    PropertiesWebSocketContainerEvent
-  >(propertiesWebSocketContainerMachine);
-  const { toast, propertiesWebSocketContainer } = value as SchemaValue;
+  subscriptionName,
+}: FormBasedViewProps) => {
+  const classes = useFormBasedViewStyles();
+  const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
+  const { toast, formBasedView } = value as SchemaValue;
   const { id, currentSelection, form, widgetSubscriptions, message } = context;
 
   /**
@@ -113,15 +112,15 @@ export const PropertiesWebSocketContainer = ({
   const variables: GQLPropertiesEventVariables = { input };
 
   const { error } = useSubscription<GQLPropertiesEventSubscription, GQLPropertiesEventVariables>(
-    propertiesEventSubscription,
+    gql(getFormEventSubscription(subscriptionName)),
     {
       variables,
       fetchPolicy: 'no-cache',
-      skip: propertiesWebSocketContainer === 'empty' || propertiesWebSocketContainer === 'unsupportedSelection',
+      skip: formBasedView === 'empty' || formBasedView === 'unsupportedSelection',
       onSubscriptionData: ({ subscriptionData }) => {
         const handleDataEvent: HandleSubscriptionResultEvent = {
           type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: subscriptionData,
+          result: subscriptionData.data[subscriptionName],
         };
         dispatch(handleDataEvent);
       },
@@ -141,18 +140,14 @@ export const PropertiesWebSocketContainer = ({
   }, [error, dispatch]);
 
   let content: JSX.Element | null = null;
-  if (
-    propertiesWebSocketContainer === 'empty' ||
-    propertiesWebSocketContainer === 'unsupportedSelection' ||
-    propertiesWebSocketContainer === 'complete'
-  ) {
+  if (formBasedView === 'empty' || formBasedView === 'unsupportedSelection' || formBasedView === 'complete') {
     content = (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
   }
-  if ((propertiesWebSocketContainer === 'idle' && form) || propertiesWebSocketContainer === 'ready') {
+  if ((formBasedView === 'idle' && form) || formBasedView === 'ready') {
     content = (
       <Properties
         editingContextId={editingContextId}

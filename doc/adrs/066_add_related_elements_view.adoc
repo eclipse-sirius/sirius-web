@@ -1,0 +1,103 @@
+= ADR-066 - Add a new "Related Elements" view
+
+== Context
+
+Capella provides a very useful __Semantic Browser_ view which gives end-users contextual informations about the currently selected element.
+When an element is selected this view displays 3 tree widgets:
+
+- _Referencing_: shows elements of interest that refer to the current selecion.
+- _Current_: shows elements directly associated to the current selection.
+- _Referenced_: shows elements of interest that the current selecion refers to.
+
+We want a similar view in Sirius Components that applications (like Sirius Web) can decide to intergrate (or not) in their workbench.
+It should be extensible so that the actual information displayed can be customized/extended for specific applications or domains.
+It should provide a default generic implementation that provides useful information for an arbirtary semantic element.
+
+== Decision
+
+We will provide a new _Related Elements_ view component that can be integrated into a workbench using a `WorkbenchViewContribution`:
+
+```
+<WorkbenchViewContribution
+    side="right"
+    title="Related Elements"
+    icon={<LinkIcon />}
+    component={RelatedElementsView}
+/>
+```
+
+This new view will behave almost exactly like the _Details_ view, in that it will display an arbitrary _Form_, synchronized with the (possibly multiple) selection.
+The only difference with the _Details_ view is that it will connect to a different (new) GraphQL subscription:
+
+```
+// In form.graphqls
+extend type Subscription {
+  propertiesEvent(input: PropertiesEventInput!): PropertiesEventPayload!      // existing
+  relatedElementsEvent(input: PropertiesEventInput!): PropertiesEventPayload! // added
+}
+```
+
+=== Generic PropertiesWebSocketContainer
+
+To avoid duplicating too much frontend code, the existing `PropertiesWebSocketContainer` will be made more generic and take the name of the GraphQL subscription to use as an argument.
+
+The two concrete views (_Details_ and _Related Elements_) will use this new generic component like this:
+
+```
+// Replaces the old, hard-coded PropertiesWebSocketContainer
+export const DetailsView = (props: WorkbenchViewComponentProps) => (
+  <PropertiesWebSocketContainer {...props} subscriptionName={'propertiesEvent'} />
+);
+
+export const RelatedElementsView = (props: WorkbenchViewComponentProps) => (
+  <PropertiesWebSocketContainer {...props} subscriptionName={'relatedElementsEvent'} />
+);
+```
+
+Applications which used to include the `PropertiesWebSocketContainer` component will need to be updated to use the new `DetailsView` component instead.
+
+NOTE: The `PropertiesWebSocketContainer` could be renamed with a more generic name, like `FormWebSocketContainer`, or more simply `FormBasedView` to reflect its more generic nature, but this is defered for later to reduce the impacts of this new feature.
+
+This change requires modifications in the `GQL*` types used by `PropertiesWebSocketContainer` as they currently hard-code in their structure the fact that the form data is inside a `propertiesEvent` subscription.
+Because the now generic/configurable name can not be encoded in the static type structure, the corresponding state machine must be modified so that `HandleSubscriptionResultEvent` takes the `GQLPropertiesEventPayload` directly as a `result`, instead of a `SubscriptionResult<GQLPropertiesEventSubscription>` where `GQLPropertiesEventSubscription` hard-code the `propertiesEvent` name.
+
+The GraphQL subscription used to be static (known at compile-time), and use the `gql` template literal tag from `'graphql-tag'` to parse it.
+Because the text of the subscription is now parameterized by a string, we must use the `gql` _function_ instead (as already done in `ExplorerWebSocketContainer` with `getTreeEventSubscription`).
+
+The `RepresentationsWebSocketContainer` is also impacted by this change, as it uses the GraphQL fragments defined in `FormEventFragments.ts`.
+
+=== IRelatedElementsDescriptionProvider
+
+On the backend, a new `RelatedElementsEventProcessorFactory` (which implements `IRepresentationEventProcessorFactory`) will be added.
+To keep things simple in the first version of this feature, we will assume there is a single, system-wide `IRelatedElementsDescriptionProvider` bean which provides the `FormDescription` to use for this view:
+
+```
+public interface IRelatedElementsDescriptionProvider {
+    FormDescription getFormDescription();
+}
+```
+
+Future versions may provide some ways to customize and/or extend the content of the new view for different semantic elements.
+
+Applications that want to use the new view will need to provide a single bean implementing this interface.
+
+=== Default implementation
+
+Sirius Web will provide a default implementation named `DefaultRelatedElementsDescriptionProvider`.
+
+It will display 3 _Tree_ widgets inside a single Group configured using the new `displayMode = TOGGLEABLE_AREAS`.
+
+* A tree named "Incoming", which displays all the elements that reference the current element.
+These referecing elements are organized into folders/categories that correspond to the (EMF) reference through which they reference the element.
+It is possible for a referencing element to appear in multiple categories if it references the current element multiple times.
+* A tree named "Current" with the following folders/categories:
+
+  - "Parent", with a single node for the parent of the current element
+  - One folder per containment reference (named after the reference) with all the direct children of the current element owned through that reference
+
+* A tree name "Outgoing", which displays all the elements referenced by the current element (exluding its children).
+As for the "Incoming" tree, the elements are organized into categories that correspond to the EMF reference.
+
+== Status
+
+Accepted.

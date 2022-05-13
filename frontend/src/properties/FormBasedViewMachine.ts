@@ -10,12 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { SubscriptionResult } from '@apollo/client';
 import { Form, Subscriber, WidgetSubscription } from 'form/Form.types';
 import {
   GQLFormRefreshedEventPayload,
   GQLPropertiesEventPayload,
-  GQLPropertiesEventSubscription,
   GQLSubscribersUpdatedEventPayload,
   GQLWidgetSubscriptionsUpdatedEventPayload,
 } from 'form/FormEventFragments.types';
@@ -23,7 +21,7 @@ import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
 import { assign, Machine } from 'xstate';
 
-export interface PropertiesWebSocketContainerStateSchema {
+export interface FormBasedViewStateSchema {
   states: {
     toast: {
       states: {
@@ -31,7 +29,7 @@ export interface PropertiesWebSocketContainerStateSchema {
         hidden: {};
       };
     };
-    propertiesWebSocketContainer: {
+    formBasedView: {
       states: {
         empty: {};
         unsupportedSelection: {};
@@ -45,10 +43,10 @@ export interface PropertiesWebSocketContainerStateSchema {
 
 export type SchemaValue = {
   toast: 'visible' | 'hidden';
-  propertiesWebSocketContainer: 'empty' | 'unsupportedSelection' | 'idle' | 'ready' | 'complete';
+  formBasedView: 'empty' | 'unsupportedSelection' | 'idle' | 'ready' | 'complete';
 };
 
-export interface PropertiesWebSocketContainerContext {
+export interface FormBasedViewContext {
   id: string;
   currentSelection: Selection | null;
   form: Form | null;
@@ -65,10 +63,10 @@ export type SwitchSelectionEvent = {
 };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
-  result: SubscriptionResult<GQLPropertiesEventSubscription>;
+  result: GQLPropertiesEventPayload;
 };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-export type PropertiesWebSocketContainerEvent =
+export type FormBasedViewEvent =
   | SwitchSelectionEvent
   | HandleSubscriptionResultEvent
   | HandleCompleteEvent
@@ -85,11 +83,7 @@ const isWidgetSubscriptionsUpdatedEventPayload = (
 ): payload is GQLWidgetSubscriptionsUpdatedEventPayload =>
   payload.__typename == 'WidgetSubscriptionsUpdatedEventPayload';
 
-export const propertiesWebSocketContainerMachine = Machine<
-  PropertiesWebSocketContainerContext,
-  PropertiesWebSocketContainerStateSchema,
-  PropertiesWebSocketContainerEvent
->(
+export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewStateSchema, FormBasedViewEvent>(
   {
     type: 'parallel',
     context: {
@@ -122,7 +116,7 @@ export const propertiesWebSocketContainerMachine = Machine<
           },
         },
       },
-      propertiesWebSocketContainer: {
+      formBasedView: {
         initial: 'empty',
         states: {
           empty: {
@@ -229,8 +223,7 @@ export const propertiesWebSocketContainerMachine = Machine<
     guards: {
       isFormRefreshedEventPayload: (_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
-        const { data } = result;
-        return isFormRefreshedEventPayload(data.propertiesEvent);
+        return isFormRefreshedEventPayload(result);
       },
       isSelectionUnsupported: (_, event) => {
         const { selection } = event as SwitchSelectionEvent;
@@ -247,15 +240,14 @@ export const propertiesWebSocketContainerMachine = Machine<
       }),
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
-        const { data } = result;
-        if (isFormRefreshedEventPayload(data.propertiesEvent)) {
-          const { form } = data.propertiesEvent;
+        if (isFormRefreshedEventPayload(result)) {
+          const { form } = result;
           return { form };
-        } else if (isSubscribersUpdatedEventPayload(data.propertiesEvent)) {
-          const { subscribers } = data.propertiesEvent;
+        } else if (isSubscribersUpdatedEventPayload(result)) {
+          const { subscribers } = result;
           return { subscribers };
-        } else if (isWidgetSubscriptionsUpdatedEventPayload(data.propertiesEvent)) {
-          const { widgetSubscriptions } = data.propertiesEvent;
+        } else if (isWidgetSubscriptionsUpdatedEventPayload(result)) {
+          const { widgetSubscriptions } = result;
           return { widgetSubscriptions };
         }
         return {};
