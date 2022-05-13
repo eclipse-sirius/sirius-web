@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useSubscription } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -23,7 +23,6 @@ import {
   subscribersUpdatedEventPayloadFragment,
   widgetSubscriptionsUpdatedEventPayloadFragment,
 } from 'form/FormEventFragments';
-import gql from 'graphql-tag';
 import { ListPropertySection } from 'properties/propertysections/ListPropertySection';
 import React, { useEffect } from 'react';
 import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
@@ -38,7 +37,7 @@ import {
   ShowToastEvent,
   SwitchSelectionEvent,
 } from './RepresentationsWebSocketContainerMachine';
-const representationsEventSubscription = gql`
+const representationsEventSubscription = gql(`
   subscription representationsEvent($input: RepresentationsEventInput!) {
     representationsEvent(input: $input) {
       __typename
@@ -56,7 +55,7 @@ const representationsEventSubscription = gql`
   ${subscribersUpdatedEventPayloadFragment}
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
   ${formRefreshedEventPayloadFragment}
-`;
+`);
 
 const useRepresentationsWebSocketContainerStyles = makeStyles((theme) => ({
   content: {

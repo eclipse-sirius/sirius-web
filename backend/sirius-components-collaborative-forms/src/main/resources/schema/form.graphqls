@@ -1,6 +1,7 @@
 extend type Subscription {
   formEvent(input: FormEventInput!): FormEventPayload!
   propertiesEvent(input: PropertiesEventInput!): PropertiesEventPayload!
+  relatedElementsEvent(input: PropertiesEventInput!): PropertiesEventPayload!
   representationsEvent(input: RepresentationsEventInput!): RepresentationsEventPayload!
 }
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSubscription } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -34,12 +34,11 @@ import {
   ShowToastEvent,
   SwitchFormEvent,
 } from 'form/FormWebSocketContainerMachine';
-import gql from 'graphql-tag';
 import { Properties } from 'properties/Properties';
 import React, { useEffect } from 'react';
 import { RepresentationComponentProps } from 'workbench/Workbench.types';
 
-const formEventSubscription = gql`
+const formEventSubscription = gql(`
   subscription formEvent($input: FormEventInput!) {
     formEvent(input: $input) {
       __typename
@@ -57,7 +56,7 @@ const formEventSubscription = gql`
   ${subscribersUpdatedEventPayloadFragment}
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
   ${formRefreshedEventPayloadFragment}
-`;
+`);
 
 const useFormWebSocketContainerStyles = makeStyles((theme) => ({
   complete: {

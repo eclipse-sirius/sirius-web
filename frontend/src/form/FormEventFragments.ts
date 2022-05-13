@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import gql from 'graphql-tag';
 
-export const subscribersUpdatedEventPayloadFragment = gql`
+export const subscribersUpdatedEventPayloadFragment = `
   fragment subscribersUpdatedEventPayloadFragment on SubscribersUpdatedEventPayload {
     id
     subscribers {
@@ -21,7 +20,7 @@ export const subscribersUpdatedEventPayloadFragment = gql`
   }
 `;
 
-export const widgetSubscriptionsUpdatedEventPayloadFragment = gql`
+export const widgetSubscriptionsUpdatedEventPayloadFragment = `
   fragment widgetSubscriptionsUpdatedEventPayloadFragment on WidgetSubscriptionsUpdatedEventPayload {
     id
     widgetSubscriptions {
@@ -33,7 +32,7 @@ export const widgetSubscriptionsUpdatedEventPayloadFragment = gql`
   }
 `;
 
-export const formRefreshedEventPayloadFragment = gql`
+export const formRefreshedEventPayloadFragment = `
   fragment formRefreshedEventPayloadFragment on FormRefreshedEventPayload {
     id
     form {

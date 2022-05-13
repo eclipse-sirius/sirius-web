@@ -10,11 +10,16 @@
 - [ADR-63] Simplify the Sprotty integration
 - [ADR-64] Add support for a ToggableAreaContainer in forms
 - [ADR-65] Add support for a tree widget in forms
+- [ADR-66] Add a new "Related Elements" view
 
 === Deprecation warnings
 
 
 === Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1141[#1141] [frontend] The `PropertiesWebSocketContainer` which was hard-coded to display the `propertiesEvent` subscription has been made more generic and renamed `FormBasedView`.
+It now takes an additional prop named `subscriptionName` so that it can be bound to other subscriptions (which must follow the same API/protocol and send Form payloads).
+To integrate the "Details" view inside a workbench, one must now use the new `DetailsView` component (which simply configures `FormBasedView` to listen to `propertiesEvent` as before).
 
 === Dependency update
 
@@ -33,6 +38,9 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription
 - https://github.com/eclipse-sirius/sirius-components/issues/1214[#1214] [forms] The mandatory label attribute which was available in all concrete widget types is now explicitly part of the common supertype.
 - https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [forms] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but icons (if present) are visible in the toggle buttons bar for groups using the new `displayMode = TOGGLEABLE_AREAS`.
+- https://github.com/eclipse-sirius/sirius-components/issues/1141[#1141] [workbench] It is now possible to add a "Related View" contribution to the workbench.
+It behaves like the "Details" view in that it reacts to the selection by displaying a Form, but is designed to display contextual information about the selected element (i.e. which elements it points to and which elements point to it for example).
+The actual definition of the application (e.g. Sirius Web), which must provide a single bean implementing the new `IRelatedElementsDescriptionProvider` interface.
 
 === New features
 

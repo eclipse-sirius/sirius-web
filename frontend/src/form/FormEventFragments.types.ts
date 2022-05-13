@@ -32,6 +32,10 @@ export interface GQLPropertiesEventSubscription {
   propertiesEvent: GQLPropertiesEventPayload;
 }
 
+export interface GQLRelatedElementsEventSubscription {
+  relatedElementsEvent: GQLPropertiesEventPayload;
+}
+
 export interface GQLPropertiesEventPayload {
   __typename: string;
 }
