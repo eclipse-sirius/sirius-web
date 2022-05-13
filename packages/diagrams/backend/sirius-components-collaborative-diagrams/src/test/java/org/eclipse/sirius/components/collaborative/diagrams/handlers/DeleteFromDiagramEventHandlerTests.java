@@ -38,6 +38,8 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramDescriptionBuilder;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -143,5 +145,10 @@ public class DeleteFromDiagramEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(DeleteFromDiagramSuccessPayload.class);
+
+        IDiagramEvent diagramEvent = diagramContext.getDiagramEvent();
+        assertThat(diagramEvent).isInstanceOf(RemoveEdgeEvent.class);
+        RemoveEdgeEvent removeEdgeEvent = (RemoveEdgeEvent) diagramEvent;
+        assertThat(removeEdgeEvent.getEdgeIds()).contains(EDGE_ID);
     }
 }

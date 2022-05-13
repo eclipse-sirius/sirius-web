@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -116,11 +117,13 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         List<String> errors = new ArrayList<>();
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
+        List<String> deletedEdgeIds = new ArrayList<>();
         for (String edgeId : diagramInput.getEdgeIds()) {
             var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
                 IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.getDeletionPolicy());
                 if (status instanceof Success) {
+                    deletedEdgeIds.add(edgeId);
                     atLeastOneOk = true;
                 } else {
                     errors.add(((Failure) status).getMessage());
@@ -145,6 +148,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             }
         }
 
+        RemoveEdgeEvent removeEdgeEvent = new RemoveEdgeEvent(deletedEdgeIds);
+        diagramContext.setDiagramEvent(removeEdgeEvent);
         this.sendResponse(payloadSink, changeDescriptionSink, errors, atLeastOneOk, diagramContext, diagramInput);
     }
 

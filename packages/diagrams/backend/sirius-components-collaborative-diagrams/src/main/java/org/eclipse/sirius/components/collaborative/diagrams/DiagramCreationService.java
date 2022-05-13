@@ -120,7 +120,8 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
-                .previousDiagram(optionalPreviousDiagram);
+                .previousDiagram(optionalPreviousDiagram)
+                .diagramEvent(optionalDiagramElementEvent);
         //@formatter:on
 
         DiagramComponentProps props = builder.build();

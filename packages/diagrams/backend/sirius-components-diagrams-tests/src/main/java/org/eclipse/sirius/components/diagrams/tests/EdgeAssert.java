@@ -20,6 +20,7 @@ import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.Ratio;
 
 /**
  * Custom assertion class used to perform some tests on an edge.
@@ -85,7 +86,21 @@ public class EdgeAssert extends AbstractAssert<EdgeAssert, Edge> {
             Position actualRoutingPoint = this.actual.getRoutingPoints().get(i);
             assertThat(actualRoutingPoint).isEqualTo(routingPoint);
         }
+        return this;
+    }
 
+    public EdgeAssert hasSourceAnchorRelativePositionRatio(Ratio expectedRatio) {
+        assertThat(this.actual.getSourceAnchorRelativePosition()).isEqualTo(expectedRatio);
+        return this;
+    }
+
+    public EdgeAssert hasTargetAnchorRelativePositionRatio(Ratio expectedRatio) {
+        assertThat(this.actual.getTargetAnchorRelativePosition()).isEqualTo(expectedRatio);
+        return this;
+    }
+
+    public EdgeAssert hasId(String expectedId) {
+        assertThat(this.actual.getId()).isEqualTo(expectedId);
         return this;
     }
 
