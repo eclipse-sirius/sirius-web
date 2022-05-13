@@ -9,18 +9,18 @@
 - [ADR-071] Add parametric SVG node style
 - [ADR-072] Add support for the edition of routing points
 - [ADR-072] Add support for intermodel references (inside the same project)
-
- - https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
  
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
 
-=== Dependency update
 
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having intermodel references
+- https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
+- https://github.com/eclipse-sirius/sirius-components/issues/931[#931] [layout] When the delete tool of an edge is used, the position of other edges are not affected.
+
 
 === Improvements
 
@@ -28,11 +28,12 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1385[#1385] [releng] Migrate Sirius Web to Sirius Component. The purpose of this migration is to facilitate the maintenance of these two projects (one pull request instead of two different).
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Edge routing points are not reset when one of the edge end is moving
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1316[#1316] [diagram] Support parametric svg node style
-
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Add support for edition of routing points in diagrams
+
 
 == v2022.9.0
 

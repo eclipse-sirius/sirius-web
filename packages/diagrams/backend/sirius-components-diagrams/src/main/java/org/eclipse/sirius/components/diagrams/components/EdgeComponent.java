@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
@@ -33,6 +34,8 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -59,15 +62,14 @@ public class EdgeComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         EdgeDescription edgeDescription = this.props.getEdgeDescription();
-        IEdgesRequestor edgesRequestor = this.props.getEdgesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
+        Optional<IDiagramEvent> optionalDiagramEvent = this.props.getDiagramEvent();
 
         List<Element> children = new ArrayList<>();
 
         // @formatter:off
         boolean hasCandidates = this.hasNodeCandidates(edgeDescription.getSourceNodeDescriptions(), cache)
                              && this.hasNodeCandidates(edgeDescription.getTargetNodeDescriptions(), cache);
-
         // @formatter:on
 
         if (hasCandidates) {
@@ -76,6 +78,7 @@ public class EdgeComponent implements IComponent {
             semanticElementsVariableManager.put(DiagramDescription.CACHE, cache);
 
             Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
+            List<String> lastPreviousRenderedEdgeIds = new ArrayList<>();
             List<?> semanticElements = edgeDescription.getSemanticElementsProvider().apply(semanticElementsVariableManager);
             for (Object semanticElement : semanticElements) {
                 VariableManager edgeVariableManager = variableManager.createChild();
@@ -95,8 +98,15 @@ public class EdgeComponent implements IComponent {
                             String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceNode, targetNode);
                             int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
 
-                            String id = this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
-                            var optionalPreviousEdge = edgesRequestor.getById(id);
+                            Function<Integer, String> edgeIdProvider = this.getEdgeIdProvider(edgeDescription, sourceNode, targetNode);
+                            String id = edgeIdProvider.apply(count);
+                            String sourceId = this.getId(sourceNode);
+                            String targetId = this.getId(targetNode);
+
+                            var optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, optionalDiagramEvent, edgeIdProvider, count);
+                            Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+                            Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+
                             var edgeInstanceVariableManager = edgeVariableManager.createChild();
                             edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, cache.getNodeToObject().get(sourceNode));
                             edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, cache.getNodeToObject().get(targetNode));
@@ -108,17 +118,12 @@ public class EdgeComponent implements IComponent {
                             if (shouldRender) {
                                 EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeInstanceVariableManager);
 
-                                String sourceId = this.getId(sourceNode);
-                                String targetId = this.getId(targetNode);
-
                                 // @formatter:off
                                 String edgeType = optionalPreviousEdge
                                         .map(Edge::getType)
                                         .orElse("edge:straight"); //$NON-NLS-1$
 
                                 List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
-                                Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                                Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
                                 List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeInstanceVariableManager, optionalPreviousEdge, id, routingPoints);
                                 EdgeElementProps edgeElementProps = EdgeElementProps.newEdgeElementProps(id)
                                         .type(edgeType)
@@ -139,6 +144,9 @@ public class EdgeComponent implements IComponent {
                                 Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
                                 children.add(edgeElement);
                                 edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
+                                if (optionalPreviousEdge.isPresent()) {
+                                    lastPreviousRenderedEdgeIds.add(optionalPreviousEdge.get().getId());
+                                }
                             }
                         }
                     }
@@ -148,6 +156,62 @@ public class EdgeComponent implements IComponent {
 
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
+    }
+
+    private Function<Integer, String> getEdgeIdProvider(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
+        return (count) -> {
+            return this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
+        };
+    }
+
+    /**
+     * Choose the right previous edge.
+     *
+     * If the edge being rendered is referenced by the supported diagram event or is present in the list of already
+     * rendered edges, then, the previous edge will be more likely the previous of an edge based on a count incremented.
+     * The potential previous edge is the first edge with an id not referenced by the diagram event nor contained in the
+     * list of already rendered edges.
+     *
+     * @param edgeId
+     *            The edge id being rendered
+     * @param lastPreviousRenderedEdgeIds
+     *            The list of id of last rendered edges
+     * @param optionalDiagramEvent
+     *            The optional diagram event used to check if the edge being rendered does not exist anymore
+     * @param possiblePreviousEdgeId
+     *            The edge id calculated with the incremented index.
+     * @return The optional previous edge.
+     */
+    private Optional<Edge> getPreviousEdge(String edgeId, List<String> lastPreviousRenderedEdgeIds, Optional<IDiagramEvent> optionalDiagramEvent, Function<Integer, String> edgeIdProvider,
+            int baseCount) {
+        String potentialPreviousEdgeId = edgeId;
+        int count = baseCount;
+        boolean foundPotentialPrevious = false;
+        boolean hasBeenRemoved = false;
+        boolean hasBeenRendered = false;
+
+        while (!foundPotentialPrevious) {
+            hasBeenRemoved = false;
+            hasBeenRendered = false;
+            if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof RemoveEdgeEvent) {
+                RemoveEdgeEvent removeEdgeEvent = (RemoveEdgeEvent) optionalDiagramEvent.get();
+
+                if (removeEdgeEvent.getEdgeIds().contains(potentialPreviousEdgeId)) {
+                    count++;
+                    potentialPreviousEdgeId = edgeIdProvider.apply(count);
+                    hasBeenRemoved = true;
+                }
+            }
+
+            if (lastPreviousRenderedEdgeIds.contains(potentialPreviousEdgeId)) {
+                count++;
+                potentialPreviousEdgeId = edgeIdProvider.apply(count);
+                hasBeenRendered = true;
+            }
+            foundPotentialPrevious = !hasBeenRemoved && !hasBeenRendered;
+        }
+
+        return this.props.getEdgesRequestor().getById(potentialPreviousEdgeId);
     }
 
     private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, Optional<Edge> optionalPreviousEdge, String edgeId, List<Position> routingPoints) {

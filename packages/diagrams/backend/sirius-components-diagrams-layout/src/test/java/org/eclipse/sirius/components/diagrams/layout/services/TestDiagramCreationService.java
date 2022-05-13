@@ -50,7 +50,7 @@ public class TestDiagramCreationService {
         this.layoutService = Objects.requireNonNull(layoutService);
     }
 
-    public Optional<Diagram> performRefresh(IEditingContext editingContext, Diagram previousDiagram) {
+    public Optional<Diagram> performRefresh(IEditingContext editingContext, Diagram previousDiagram, IDiagramEvent diagramEvent) {
         var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
 
         // @formatter:off
@@ -62,14 +62,15 @@ public class TestDiagramCreationService {
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            Diagram refreshedDiagram = this.doRefresh(previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(previousDiagram));
+            Diagram refreshedDiagram = this.doRefresh(previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(previousDiagram), Optional.ofNullable(diagramEvent));
             return Optional.of(refreshedDiagram);
 
         }
         return Optional.empty();
     }
 
-    private Diagram doRefresh(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<Diagram> optionalPreviousDiagram) {
+    private Diagram doRefresh(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<Diagram> optionalPreviousDiagram,
+            Optional<IDiagramEvent> optionalDiagramEvent) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(DiagramDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
@@ -81,7 +82,8 @@ public class TestDiagramCreationService {
                 .diagramDescription(diagramDescription)
                 .viewCreationRequests(List.of())
                 .viewDeletionRequests(List.of())
-                .previousDiagram(optionalPreviousDiagram);
+                .previousDiagram(optionalPreviousDiagram)
+                .diagramEvent(optionalDiagramEvent);
         //@formatter:on
 
         DiagramComponentProps props = builder.build();

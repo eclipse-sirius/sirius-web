@@ -157,6 +157,7 @@ public class DiagramRendererEdgeTests {
                 .viewCreationRequests(List.of())
                 .viewDeletionRequests(List.of())
                 .previousDiagram(Optional.empty())
+                .diagramEvent(Optional.empty())
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);

@@ -257,6 +257,7 @@ public class UnsynchronizedDiagramTests {
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
+                .diagramEvent(Optional.empty())
                 .build();
         // @formatter:on
         Element element = new Element(DiagramComponent.class, props);

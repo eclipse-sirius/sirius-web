@@ -136,7 +136,7 @@ public class DiagramLayoutTests {
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
-        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram);
+        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, null);
         assertThat(optionalRefreshedDiagram).isPresent();
         Diagram refreshedDiagram = optionalRefreshedDiagram.get();
         assertThat(refreshedDiagram.getNodes()).hasSize(2);
@@ -197,8 +197,9 @@ public class DiagramLayoutTests {
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
+        IDiagramEvent diagramEvent = new SinglePositionEvent(Position.at(300, 100));
 
-        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram);
+        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, diagramEvent);
         assertThat(optionalRefreshedDiagram).isNotEmpty();
         Diagram refreshedDiagram = optionalRefreshedDiagram.get();
 
@@ -230,7 +231,6 @@ public class DiagramLayoutTests {
         assertThat(secondToFirstEdge.getTargetAnchorRelativePosition()).isEqualTo(Ratio.of(0.1, 0.9));
         assertThat(secondToFirstEdge.getRoutingPoints()).isEmpty();
 
-        IDiagramEvent diagramEvent = new SinglePositionEvent(Position.at(300, 100));
         Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, refreshedDiagram, diagramEvent);
 
         Optional<Node> optionalLayoutedThirdParent = this.getNode(layoutedDiagram.getNodes(), "Third Parent"); //$NON-NLS-1$
@@ -272,7 +272,8 @@ public class DiagramLayoutTests {
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(initialLayoutedDiagram);
-        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, initialLayoutedDiagram);
+        DoublePositionEvent diagramEvent = new DoublePositionEvent(Position.at(20, 20), Position.at(60, 30));
+        Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, initialLayoutedDiagram, diagramEvent);
         assertThat(optionalRefreshedDiagram).isPresent();
         Diagram refreshedDiagram = optionalRefreshedDiagram.get();
         assertThat(refreshedDiagram.getEdges()).hasSize(2);
@@ -281,7 +282,7 @@ public class DiagramLayoutTests {
         assertThat(refreshedDiagram.getEdges().get(1).getSourceId()).isEqualTo(first.get().getId());
         assertThat(refreshedDiagram.getEdges().get(1).getTargetId()).isEqualTo(first.get().getId());
 
-        Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, refreshedDiagram, new DoublePositionEvent(Position.at(20, 20), Position.at(60, 30)));
+        Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, refreshedDiagram, diagramEvent);
         assertThat(layoutedDiagram.getEdges().get(1).getSourceAnchorRelativePosition().getX()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);
         assertThat(layoutedDiagram.getEdges().get(1).getSourceAnchorRelativePosition().getY()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);
         assertThat(layoutedDiagram.getEdges().get(1).getTargetAnchorRelativePosition().getX()).isGreaterThanOrEqualTo(0).isLessThanOrEqualTo(1);

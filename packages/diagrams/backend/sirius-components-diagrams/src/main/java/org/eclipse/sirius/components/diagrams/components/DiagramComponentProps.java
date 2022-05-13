@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -40,6 +41,8 @@ public final class DiagramComponentProps implements IProps {
     private List<ViewCreationRequest> viewCreationRequests;
 
     private List<ViewDeletionRequest> viewDeletionRequests;
+
+    private Optional<IDiagramEvent> diagramEvent;
 
     private DiagramComponentProps() {
         // Prevent instantiation
@@ -65,6 +68,10 @@ public final class DiagramComponentProps implements IProps {
         return this.viewDeletionRequests;
     }
 
+    public Optional<IDiagramEvent> getDiagramEvent() {
+        return this.diagramEvent;
+    }
+
     public static Builder newDiagramComponentProps() {
         return new Builder();
     }
@@ -85,6 +92,8 @@ public final class DiagramComponentProps implements IProps {
         private List<ViewCreationRequest> viewCreationRequests;
 
         private List<ViewDeletionRequest> viewDeletionRequests;
+
+        private Optional<IDiagramEvent> diagramEvent;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -111,6 +120,11 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
+        public Builder diagramEvent(Optional<IDiagramEvent> diagramEvent) {
+            this.diagramEvent = Objects.requireNonNull(diagramEvent);
+            return this;
+        }
+
         public DiagramComponentProps build() {
             DiagramComponentProps diagramComponentProps = new DiagramComponentProps();
             diagramComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -118,6 +132,7 @@ public final class DiagramComponentProps implements IProps {
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
             diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));
+            diagramComponentProps.diagramEvent = Objects.requireNonNull(this.diagramEvent);
             return diagramComponentProps;
         }
     }
