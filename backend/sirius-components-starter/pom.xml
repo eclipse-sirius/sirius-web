@@ -15,7 +15,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-starter</artifactId>
-	<version>2022.3.13</version>
+	<version>2022.3.14</version>
 	<name>sirius-components-starter</name>
 	<description>Sirius Components Starter</description>
 
@@ -55,62 +55,62 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-charts</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-layout</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-charts</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-selection</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-validation</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-compatibility</artifactId>
-			<version>2022.3.13</version>
+			<version>2022.3.14</version>
 		</dependency>
 	</dependencies>
 
