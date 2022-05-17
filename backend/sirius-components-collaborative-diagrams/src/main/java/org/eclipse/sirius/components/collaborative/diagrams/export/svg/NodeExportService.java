@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.export.svg;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -41,34 +42,38 @@ public class NodeExportService {
         this.elementExport = Objects.requireNonNull(elementExport);
     }
 
-    public StringBuilder export(Node node) {
+    public StringBuilder export(Node node, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder nodeExport = new StringBuilder();
         INodeStyle style = node.getStyle();
 
         if (style instanceof ImageNodeStyle) {
-            nodeExport.append(this.exportImage(node, (ImageNodeStyle) style));
+            nodeExport.append(this.exportImage(node, (ImageNodeStyle) style, id2NodeHierarchy));
         } else if (style instanceof ListNodeStyle) {
-            nodeExport.append(this.exportList(node, (ListNodeStyle) style));
+            nodeExport.append(this.exportList(node, (ListNodeStyle) style, id2NodeHierarchy));
         } else if (style instanceof ListItemNodeStyle) {
-            nodeExport.append(this.exportListItem(node, (ListItemNodeStyle) style));
+            nodeExport.append(this.exportListItem(node, (ListItemNodeStyle) style, id2NodeHierarchy));
         } else if (style instanceof RectangularNodeStyle) {
-            nodeExport.append(this.exportRectangle(node, (RectangularNodeStyle) style));
+            nodeExport.append(this.exportRectangle(node, (RectangularNodeStyle) style, id2NodeHierarchy));
         }
 
         return nodeExport;
     }
 
-    private StringBuilder exportChildren(Node node) {
+    private StringBuilder exportChildren(Node node, Map<String, NodeAndContainerId> id2NodeHierarchy) {
+        String nodeId = node.getId();
         StringBuilder childrenExport = new StringBuilder();
         // @formatter:off
         Stream.concat(node.getBorderNodes().stream(),
                       node.getChildNodes().stream())
-            .forEach(elt -> childrenExport.append(this.export(elt)));
+            .forEach(elt -> {
+                id2NodeHierarchy.put(elt.getId(), new NodeAndContainerId(nodeId, elt));
+                childrenExport.append(this.export(elt, id2NodeHierarchy));
+            });
         // @formatter:on
         return childrenExport;
     }
 
-    private StringBuilder exportImage(Node node, ImageNodeStyle style) {
+    private StringBuilder exportImage(Node node, ImageNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder imageExport = new StringBuilder();
         Size size = node.getSize();
         Label label = node.getLabel();
@@ -81,12 +86,12 @@ public class NodeExportService {
                 Optional.of(style.getBorderSize()), Optional.of(style.getBorderStyle())));
         imageExport.append(this.elementExport.exportImageElement(style.getImageURL(), 0, 0, Optional.of(size)));
         imageExport.append(this.elementExport.exportLabel(label));
-        imageExport.append(this.exportChildren(node));
+        imageExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return imageExport.append("</g>"); //$NON-NLS-1$
     }
 
-    private StringBuilder exportList(Node node, ListNodeStyle style) {
+    private StringBuilder exportList(Node node, ListNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder listExport = new StringBuilder();
 
         listExport.append(this.elementExport.exportGNodeElement(node));
@@ -94,7 +99,7 @@ public class NodeExportService {
                 Optional.of(style.getBorderSize()), Optional.of(style.getBorderStyle())));
         listExport.append(this.elementExport.exportLabel(node.getLabel()));
         listExport.append(this.exportHeaderSeparator(node, node.getLabel(), style));
-        listExport.append(this.exportChildren(node));
+        listExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return listExport.append("</g>"); //$NON-NLS-1$
     }
@@ -118,26 +123,26 @@ public class NodeExportService {
         return headerExport.append("/>"); //$NON-NLS-1$
     }
 
-    private StringBuilder exportListItem(Node node, ListItemNodeStyle style) {
+    private StringBuilder exportListItem(Node node, ListItemNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder rectangleExport = new StringBuilder();
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport
                 .append(this.elementExport.exportRectangleElement(node.getSize(), Optional.empty(), Optional.of(style.getBackgroundColor()), Optional.empty(), Optional.empty(), Optional.empty()));
         rectangleExport.append(this.elementExport.exportLabel(node.getLabel()));
-        rectangleExport.append(this.exportChildren(node));
+        rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return rectangleExport.append("</g>"); //$NON-NLS-1$
     }
 
-    private StringBuilder exportRectangle(Node node, RectangularNodeStyle style) {
+    private StringBuilder exportRectangle(Node node, RectangularNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder rectangleExport = new StringBuilder();
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Optional.of(style.getBorderRadius()), Optional.of(style.getColor()), Optional.of(style.getBorderColor()),
                 Optional.of(style.getBorderSize()), Optional.of(style.getBorderStyle())));
         rectangleExport.append(this.elementExport.exportLabel(node.getLabel()));
-        rectangleExport.append(this.exportChildren(node));
+        rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return rectangleExport.append("</g>"); //$NON-NLS-1$
     }

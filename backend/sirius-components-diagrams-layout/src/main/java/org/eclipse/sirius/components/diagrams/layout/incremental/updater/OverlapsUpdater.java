@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,11 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
+import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Bounds;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Geometry;
 
 /**
  * An algorithm dedicated to solve overlaps issues. Any node in a given container might be moved to avoid overlaps,
