@@ -41,6 +41,7 @@ See ADR-54 for the details.
 - https://github.com/eclipse-sirius/sirius-components/issues/1115[#1115] [workbench] Stop using the deprecated props `rowsMax`
 - https://github.com/eclipse-sirius/sirius-components/issues/1219[#1219] [diagram] Fixed diagram svg export diamond arrow path
 - https://github.com/eclipse-sirius/sirius-components/issues/1195[#1195] [diagram] Fix edge svg export
+- https://github.com/eclipse-sirius/sirius-components/issues/1194[#1194] [diagram] Fix empty diagram svg export
 
 === Improvements
 
