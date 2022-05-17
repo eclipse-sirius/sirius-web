@@ -72,4 +72,12 @@ public class DiagramExportServiceTests {
         assertThat(export).contains("<path d=\""); //$NON-NLS-1$
     }
 
+    @Test
+    public void testExportEmptyDiagram() throws URISyntaxException {
+        Diagram emptyDiagram = TestLayoutDiagramBuilder.diagram("Root").nodes().and().build(); //$NON-NLS-1$
+        DiagramExportService diagramExportService = this.getDiagramExportService();
+        String export = diagramExportService.export(emptyDiagram);
+        assertThat(export).isNotBlank();
+    }
+
 }

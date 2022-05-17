@@ -122,10 +122,10 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
         this.computeElementsCoordinates(diagram);
 
-        double minX = this.xBeginPositions.stream().min(Double::compare).get();
-        double minY = this.yBeginPositions.stream().min(Double::compare).get();
-        double maxX = this.xEndPositions.stream().max(Double::compare).get();
-        double maxY = this.yEndPositions.stream().max(Double::compare).get();
+        double minX = this.xBeginPositions.stream().min(Double::compare).orElse(0d);
+        double minY = this.yBeginPositions.stream().min(Double::compare).orElse(0d);
+        double maxX = this.xEndPositions.stream().max(Double::compare).orElse(0d);
+        double maxY = this.yEndPositions.stream().max(Double::compare).orElse(0d);
 
         int padding = 20;
         double width = Math.abs(minX - maxX) + diagram.getPosition().getX();
