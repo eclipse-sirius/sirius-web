@@ -30,6 +30,10 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
+import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
+import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
+import org.eclipse.sirius.components.diagrams.layout.api.PointOnRectangleInfo;
+import org.eclipse.sirius.components.diagrams.layout.api.RectangleSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -42,10 +46,6 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePo
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.updater.ContainmentUpdater;
 import org.eclipse.sirius.components.diagrams.layout.incremental.updater.OverlapsUpdater;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Bounds;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Geometry;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.PointOnRectangleInfo;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
 import org.springframework.stereotype.Service;
 
 /**

@@ -18,9 +18,9 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
+import org.eclipse.sirius.components.diagrams.layout.api.RectangleSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
 
 /**
  * Provides the position logic to apply to a BorderNode Label.

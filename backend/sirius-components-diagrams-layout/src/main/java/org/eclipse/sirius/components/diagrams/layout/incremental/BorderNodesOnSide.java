@@ -15,8 +15,8 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.diagrams.layout.api.RectangleSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.RectangleSide;
 
 /**
  * Class representing border node on a parent side.

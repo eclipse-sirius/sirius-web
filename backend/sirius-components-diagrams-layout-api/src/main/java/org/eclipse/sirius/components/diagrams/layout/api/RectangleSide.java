@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layout.incremental.utils;
+package org.eclipse.sirius.components.diagrams.layout.api;
 
 /**
  * Represents the 4 different sides of a rectangle.

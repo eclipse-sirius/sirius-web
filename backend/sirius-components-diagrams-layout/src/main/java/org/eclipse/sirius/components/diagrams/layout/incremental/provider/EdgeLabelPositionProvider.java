@@ -21,11 +21,11 @@ import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
+import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
+import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Bounds;
-import org.eclipse.sirius.components.diagrams.layout.incremental.utils.Geometry;
 
 /**
  * Provides the position to apply to an Edge Label.

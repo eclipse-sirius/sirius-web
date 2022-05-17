@@ -12,12 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.export.svg;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.Ratio;
+import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
+import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,17 +41,84 @@ public class EdgeExportService {
         this.elementExport = Objects.requireNonNull(elementExport);
     }
 
-    public StringBuilder export(Edge edge) {
+    public StringBuilder export(Edge edge, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder edgeExport = new StringBuilder();
         EdgeStyle style = edge.getStyle();
-        List<Position> lineRootingPoints = edge.getRoutingPoints();
+        List<Position> lineRoutingPoints = this.addEdgeEndPositions(edge, id2NodeHierarchy);
+        // Should add source and target intersection in routingPoints.
 
-        edgeExport.append("<g>"); //$NON-NLS-1$
-        edgeExport.append(this.exportLine(style, lineRootingPoints));
-        edgeExport.append(this.exportAdditionals(style, lineRootingPoints));
-        edgeExport.append(this.exportEdgeLabels(edge));
+        if (lineRoutingPoints.size() > 1) {
+            edgeExport.append("<g>"); //$NON-NLS-1$
+            edgeExport.append(this.exportLine(style, lineRoutingPoints));
+            edgeExport.append(this.exportAdditionals(style, lineRoutingPoints));
+            edgeExport.append(this.exportEdgeLabels(edge));
+            edgeExport.append("</g>"); //$NON-NLS-1$
+        }
 
-        return edgeExport.append("</g>"); //$NON-NLS-1$
+        return edgeExport;
+    }
+
+    private List<Position> addEdgeEndPositions(Edge edge, Map<String, NodeAndContainerId> id2NodeHierarchy) {
+        List<Position> routedPoint = new ArrayList<>();
+        String sourceId = edge.getSourceId();
+        String targetId = edge.getTargetId();
+
+        Optional<NodeAndContainerId> optionalSource = Optional.ofNullable(id2NodeHierarchy.get(sourceId));
+        Optional<NodeAndContainerId> optionalTarget = Optional.ofNullable(id2NodeHierarchy.get(targetId));
+
+        if (optionalSource.isPresent() && optionalTarget.isPresent()) {
+            NodeAndContainerId sourceNodeAndContainerId = optionalSource.get();
+            NodeAndContainerId targetNodeAndContainerId = optionalTarget.get();
+            Size sourceNodeSize = sourceNodeAndContainerId.getNode().getSize();
+            Size targetNodeSize = targetNodeAndContainerId.getNode().getSize();
+
+            Position sourceAbsolutePosition = this.getAbsolutePosition(sourceNodeAndContainerId, id2NodeHierarchy);
+            Position targetAbsolutePosition = this.getAbsolutePosition(targetNodeAndContainerId, id2NodeHierarchy);
+
+            Position sourceEdgeAnchorAbsolutePosition = this.getEdgeAnchorAbsolutePosition(edge.getSourceAnchorRelativePosition(), sourceAbsolutePosition, sourceNodeSize);
+            Position targetEdgeAnchorAbsolutePosition = this.getEdgeAnchorAbsolutePosition(edge.getTargetAnchorRelativePosition(), targetAbsolutePosition, targetNodeSize);
+
+            Position sourceDirectionPoint = sourceEdgeAnchorAbsolutePosition;
+            Position targetDirectionPoint = targetEdgeAnchorAbsolutePosition;
+            List<Position> routingPoints = edge.getRoutingPoints();
+            if (routingPoints.size() > 0) {
+                targetDirectionPoint = routingPoints.get(0);
+                sourceDirectionPoint = routingPoints.get(routingPoints.size() - 1);
+            }
+
+            Geometry geometry = new Geometry();
+            Bounds sourceBounds = Bounds.newBounds().position(sourceAbsolutePosition).size(sourceNodeSize).build();
+            Bounds targetBounds = Bounds.newBounds().position(targetAbsolutePosition).size(targetNodeSize).build();
+            Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetDirectionPoint, sourceEdgeAnchorAbsolutePosition, sourceBounds);
+            Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceDirectionPoint, targetEdgeAnchorAbsolutePosition, targetBounds);
+
+            if (optionalSourceIntersection.isPresent() && optionalTargetIntersection.isPresent()) {
+                routedPoint.add(optionalSourceIntersection.get());
+                routedPoint.addAll(routingPoints);
+                routedPoint.add(optionalTargetIntersection.get());
+            }
+        }
+
+        return routedPoint;
+    }
+
+    private Position getEdgeAnchorAbsolutePosition(Ratio edgeEndAnchorRelativePosition, Position edgeEndAbsolutePosition, Size edgeEndSize) {
+        double edgeAnchorAbsoluteX = edgeEndAbsolutePosition.getX() + edgeEndSize.getWidth() * edgeEndAnchorRelativePosition.getX();
+        double edgeAnchorAbsoluteY = edgeEndAbsolutePosition.getY() + edgeEndSize.getHeight() * edgeEndAnchorRelativePosition.getY();
+        return Position.at(edgeAnchorAbsoluteX, edgeAnchorAbsoluteY);
+    }
+
+    private Position getAbsolutePosition(NodeAndContainerId nodeAndContainerId, Map<String, NodeAndContainerId> id2NodeHierarchy) {
+        Position absolutePosition = nodeAndContainerId.getNode().getPosition();
+        Optional<NodeAndContainerId> optionalContainer = Optional.ofNullable(id2NodeHierarchy.get(nodeAndContainerId.getContainerId()));
+
+        while (optionalContainer.isPresent()) {
+            NodeAndContainerId container = optionalContainer.get();
+            absolutePosition = Position.at(absolutePosition.getX() + container.getNode().getPosition().getX(), absolutePosition.getY() + container.getNode().getPosition().getY());
+            optionalContainer = Optional.ofNullable(id2NodeHierarchy.get(container.getContainerId()));
+        }
+
+        return absolutePosition;
     }
 
     private StringBuilder exportEdgeLabels(Edge edge) {
@@ -98,10 +172,10 @@ public class EdgeExportService {
         return styleExport.append(this.exportStrokeDasharray(style));
     }
 
-    private StringBuilder exportLinePath(List<Position> rootingPoints) {
+    private StringBuilder exportLinePath(List<Position> routingPoints) {
         StringBuilder pathExport = new StringBuilder();
 
-        Position[] positions = rootingPoints.toArray(Position[]::new);
+        Position[] positions = routingPoints.toArray(Position[]::new);
         Position firstPoint = positions[0];
         pathExport.append("M "); //$NON-NLS-1$
         pathExport.append(firstPoint.getX());

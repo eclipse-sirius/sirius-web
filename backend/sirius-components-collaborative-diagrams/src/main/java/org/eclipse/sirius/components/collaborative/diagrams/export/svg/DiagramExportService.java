@@ -13,12 +13,15 @@
 package org.eclipse.sirius.components.collaborative.diagrams.export.svg;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.ISVGDiagramExportService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.springframework.stereotype.Service;
@@ -60,14 +63,20 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
         svg.append("<g transform=\"scale(1) translate(0,0)\">"); //$NON-NLS-1$ )
 
-        diagram.getNodes().forEach(node -> svg.append(this.nodeExport.export(node)));
-        diagram.getEdges().forEach(edge -> svg.append(this.edgeExport.export(edge)));
+        Map<String, NodeAndContainerId> id2NodeHierarchy = new HashMap<>();
+        diagram.getNodes().forEach(node -> this.exportNode(svg, node, diagram.getId(), id2NodeHierarchy));
+        diagram.getEdges().forEach(edge -> svg.append(this.edgeExport.export(edge, id2NodeHierarchy)));
 
         svg.append("</g>"); //$NON-NLS-1$
 
         svg.append(this.imageRegistry.getReferencedImageSymbols());
 
         return svg.append("</svg>").toString(); //$NON-NLS-1$
+    }
+
+    private void exportNode(StringBuilder svg, Node node, String diagramId, Map<String, NodeAndContainerId> id2NodeHierarchy) {
+        id2NodeHierarchy.put(node.getId(), new NodeAndContainerId(diagramId, node));
+        svg.append(this.nodeExport.export(node, id2NodeHierarchy));
     }
 
     private StringBuilder addSvgRoot(Diagram diagram) {
