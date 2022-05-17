@@ -120,7 +120,7 @@ public class EdgeExportService {
     private StringBuilder exportAdditionals(EdgeStyle style, List<Position> rootingPoints) {
         StringBuilder additionalsExport = new StringBuilder();
 
-        additionalsExport.append(this.exportArrow(rootingPoints.get(0), rootingPoints.get(1), style.getSourceArrow().toString(), style));
+        additionalsExport.append(this.exportArrow(rootingPoints.get(1), rootingPoints.get(0), style.getSourceArrow().toString(), style));
         return additionalsExport.append(this.exportArrow(rootingPoints.get(rootingPoints.size() - 2), rootingPoints.get(rootingPoints.size() - 1), style.getTargetArrow().toString(), style));
     }
 
@@ -328,7 +328,10 @@ public class EdgeExportService {
         basicDiamondPathExport.append(" L "); //$NON-NLS-1$
         basicDiamondPathExport.append(10 + strokeWidth * 2);
         basicDiamondPathExport.append(" 0 L "); //$NON-NLS-1$
-        return basicDiamondPathExport.append(5 + strokeWidth);
+        basicDiamondPathExport.append(5 + strokeWidth);
+        basicDiamondPathExport.append(" "); //$NON-NLS-1$
+        basicDiamondPathExport.append(3.5 + strokeWidth);
+        return basicDiamondPathExport.append(" z"); //$NON-NLS-1$
     }
 
     private StringBuilder exportOffsetArrowPath(int strokeWidth) {
