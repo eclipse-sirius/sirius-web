@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.representations.IRepresentation;
 
 /**
  * Used to search and retrieve the metadata of a representation.
@@ -24,7 +23,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  * @author sbegaudeau
  */
 public interface IRepresentationMetadataSearchService {
-    Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation);
+    Optional<RepresentationMetadata> findById(String editingContextId, String representationMetadataId);
 
     List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId);
 
@@ -36,7 +35,7 @@ public interface IRepresentationMetadataSearchService {
     class NoOp implements IRepresentationMetadataSearchService {
 
         @Override
-        public Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation) {
+        public Optional<RepresentationMetadata> findById(String editingContextId, String representationMetadataId) {
             return Optional.empty();
         }
 

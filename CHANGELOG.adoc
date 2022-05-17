@@ -25,6 +25,7 @@ See ADR-54 for the details.
 - https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [workbench] `WorkbenchViewContribution` now require an `icon` prop
 - https://github.com/eclipse-sirius/sirius-components/issues/1155[#1155] [core] The palette used by Sirius Components now require two additional colors for the navigation area. The type of the new palette is described in `frontend/src/materialui.ts`. Users of the fallback theme can upgrade without having to add those new colors since they are provided by default.
 - https://github.com/eclipse-sirius/sirius-components/issues/966[#966] [core] The source and target edge anchor are not considered as routing points anymore. Edges of old diagrams may have unexpected behavior since new edges will have two less routing points than existing edges in old diagrams. For further explanation see ADR-054.
+- https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Update `IRepresentationMetadataSearchService` to allow the retrieval of the `RepresentationMetadata` without having to retrieve the representation first
 
 === Dependency update
 
@@ -50,6 +51,7 @@ See ADR-54 for the details.
 - https://github.com/eclipse-sirius/sirius-components/issues/1138[#1138] [workbench] The left and right panels can be closed by clicking on the current view's icon or by resizing them to the minimum widht (showing only the icons).
 When closed, clicking on any of the views' icon will re-open the panel to make the selected view visible.
 - https://github.com/eclipse-sirius/sirius-components/issues/689[#689] [diagram] Add a variable containing objects ids to render for unsynchronized nodes rendering
+- https://github.com/eclipse-sirius/sirius-components/issues/699[#699] [core] Introduce an interface to let integrators persist `RepresentationMetadata`. Thanks to this first step, it should be soon possible to create representations which do not persist anything more than their metadata. Sirius Components will not provide an implementation of this interface since its behavior is specific to the persistence layer of the application integrating Sirius Components but it may start to use it soon. When this interface will be used, its implementation will be required by those who are integrating Sirius Components in their application. The `Form` representation may be a very good candidate for this interface. Widespread usage of this new interface should be the final nail necessary to remove the metadata fields from the representation objects (`Diagram`, `Form`, `Selection`, `Validation`, etc)
 
 === New features
 
