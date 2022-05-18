@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { DiagramWebSocketContainer } from 'diagram/DiagramWebSocketContainer';
 import { FormWebSocketContainer } from 'form/FormWebSocketContainer';
+import { FormDescriptionEditorWebSocketContainer } from 'formdescriptioneditor/FormDescriptionEditorWebSocketContainer';
 import React from 'react';
 import { RepresentationComponentRegistry } from 'workbench/RepresentationContext.types';
 import { RepresentationComponentProps } from './Workbench.types';
@@ -26,6 +27,8 @@ const registry: RepresentationComponentRegistry = {
       return DiagramWebSocketContainer;
     } else if (type === 'Form') {
       return FormWebSocketContainer;
+    } else if (type === 'FormDescriptionEditor') {
+      return FormDescriptionEditorWebSocketContainer;
     }
     return (props: RepresentationComponentProps) => null;
   },
