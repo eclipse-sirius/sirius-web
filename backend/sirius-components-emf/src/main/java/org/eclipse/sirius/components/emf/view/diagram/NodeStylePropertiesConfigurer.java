@@ -65,7 +65,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private static final String UNNAMED = "<unnamed>"; //$NON-NLS-1$
 
-    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
+    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).stream().collect(Collectors.toList());
 
     private final ICustomImageSearchService customImageSearchService;
 
@@ -260,8 +260,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
                     .filter(self -> self instanceof List<?>)
                     .map(self -> (List<?>) self)
-                    .flatMap(self -> self.stream().findFirst())
-                    .filter(self -> self instanceof NodeStyle && !(self instanceof ConditionalNodeStyle))
+                    .filter(selectedElements -> selectedElements.stream().anyMatch(self -> self instanceof NodeStyle && !(self instanceof ConditionalNodeStyle)))
                     .isPresent();
 
         return FormDescription.newFormDescription(formDescriptionId)
