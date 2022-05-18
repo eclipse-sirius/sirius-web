@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.forms.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
@@ -33,10 +32,6 @@ public class PropertiesDescriptionRegistry implements IPropertiesDescriptionRegi
     @Override
     public void add(FormDescription formDescription) {
         this.id2propertiesDescriptions.put(formDescription.getId(), formDescription);
-    }
-
-    public Optional<FormDescription> getPropertiesDescription(String id) {
-        return Optional.ofNullable(this.id2propertiesDescriptions.get(id));
     }
 
     public List<FormDescription> getPropertiesDescriptions() {

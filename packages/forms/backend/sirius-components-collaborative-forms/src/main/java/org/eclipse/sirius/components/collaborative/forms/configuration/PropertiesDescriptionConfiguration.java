@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.sirius.components.collaborative.forms.services.PropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.PropertiesDescriptionService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,8 +29,7 @@ import org.springframework.context.annotation.Configuration;
 public class PropertiesDescriptionConfiguration {
 
     @Bean
-    public PropertiesDescriptionService propertiesDescriptionService(List<IRepresentationDescriptionRegistryConfigurer> representationConfigurers,
-            List<IPropertiesDescriptionRegistryConfigurer> propertiesConfigurers) {
+    public PropertiesDescriptionService propertiesDescriptionService(List<IPropertiesDescriptionRegistryConfigurer> propertiesConfigurers) {
         PropertiesDescriptionRegistry registry = new PropertiesDescriptionRegistry();
         propertiesConfigurers.forEach(configurer -> configurer.addPropertiesDescriptions(registry));
         return new PropertiesDescriptionService(registry);
