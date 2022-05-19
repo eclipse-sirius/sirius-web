@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.forms.SelectOption;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
+import org.eclipse.sirius.components.forms.elements.SelectElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -73,15 +74,22 @@ public class SelectComponent implements IComponent {
         Function<String, IStatus> specializedHandler = newValue -> {
             return selectDescription.getNewValueHandler().apply(variableManager, newValue);
         };
+        var selectStyle = selectDescription.getStyleProvider().apply(variableManager);
 
         // @formatter:off
-        SelectElementProps selectElementProps = SelectElementProps.newSelectElementProps(id)
+        Builder selectElementPropsBuilder = SelectElementProps.newSelectElementProps(id)
                 .label(label)
                 .options(options)
                 .value(value)
                 .newValueHandler(specializedHandler)
-                .children(children)
-                .build();
+                .children(children);
+
+        if (selectStyle != null) {
+            selectElementPropsBuilder.style(selectStyle);
+        }
+
+        SelectElementProps selectElementProps = selectElementPropsBuilder.build();
+
         return new Element(SelectElementProps.TYPE, selectElementProps);
         // @formatter:on
     }

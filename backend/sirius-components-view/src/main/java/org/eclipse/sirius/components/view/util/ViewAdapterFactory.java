@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
+import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
@@ -37,16 +38,20 @@ import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
+import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
+import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
@@ -295,6 +300,31 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object) {
             return ViewAdapterFactory.this.createTextfieldDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseCheckboxDescriptionStyle(CheckboxDescriptionStyle object) {
+            return ViewAdapterFactory.this.createCheckboxDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseSelectDescriptionStyle(SelectDescriptionStyle object) {
+            return ViewAdapterFactory.this.createSelectDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiSelectDescriptionStyle(MultiSelectDescriptionStyle object) {
+            return ViewAdapterFactory.this.createMultiSelectDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseTextareaDescriptionStyle(TextareaDescriptionStyle object) {
+            return ViewAdapterFactory.this.createTextareaDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseRadioDescriptionStyle(RadioDescriptionStyle object) {
+            return ViewAdapterFactory.this.createRadioDescriptionStyleAdapter();
         }
 
         @Override
@@ -823,6 +853,76 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTextfieldDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle
+     * <em>Checkbox Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.CheckboxDescriptionStyle
+     * @generated
+     */
+    public Adapter createCheckboxDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle
+     * <em>Select Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.SelectDescriptionStyle
+     * @generated
+     */
+    public Adapter createSelectDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle <em>Multi Select Description Style</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle
+     * @generated
+     */
+    public Adapter createMultiSelectDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.TextareaDescriptionStyle
+     * <em>Textarea Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.TextareaDescriptionStyle
+     * @generated
+     */
+    public Adapter createTextareaDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RadioDescriptionStyle
+     * <em>Radio Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.RadioDescriptionStyle
+     * @generated
+     */
+    public Adapter createRadioDescriptionStyleAdapter() {
         return null;
     }
 

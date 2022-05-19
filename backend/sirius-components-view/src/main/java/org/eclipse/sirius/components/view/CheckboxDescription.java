@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.CheckboxDescription#getValueExpression <em>Value Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.CheckboxDescription#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.CheckboxDescription#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getCheckboxDescription()
@@ -64,5 +65,28 @@ public interface CheckboxDescription extends WidgetDescription {
      * @generated
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(CheckboxDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getCheckboxDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    CheckboxDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.CheckboxDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(CheckboxDescriptionStyle value);
 
 } // CheckboxDescription

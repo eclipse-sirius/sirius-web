@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
+import org.eclipse.sirius.components.forms.elements.TextareaElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -49,16 +50,23 @@ public class TextareaComponent implements IComponent {
         Function<String, IStatus> specializedHandler = newValue -> {
             return textareaDescription.getNewValueHandler().apply(variableManager, newValue);
         };
+        var textareaStyle = textareaDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(textareaDescription, variableManager)));
 
         // @formatter:off
-        TextareaElementProps textareaElementProps = TextareaElementProps.newTextareaElementProps(id)
+        Builder textareaElementPropsBuilder = TextareaElementProps.newTextareaElementProps(id)
                 .label(label)
                 .value(value)
                 .newValueHandler(specializedHandler)
-                .children(children)
-                .build();
+                .children(children);
+
+        if (textareaStyle != null) {
+            textareaElementPropsBuilder.style(textareaStyle);
+        }
+
+        TextareaElementProps textareaElementProps = textareaElementPropsBuilder.build();
+
         return new Element(TextareaElementProps.TYPE, textareaElementProps);
         // @formatter:on
     }

@@ -17,6 +17,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import {
@@ -33,6 +34,19 @@ import {
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+
+export interface StyleProps {
+  color: string | null;
+}
+
+const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : theme.palette.primary.light),
+    '&$checked': {
+      color: ({ color }) => (color ? color : theme.palette.primary.light),
+    },
+  },
+}));
 
 export const editCheckboxMutation = gql`
   mutation editCheckbox($input: EditCheckboxInput!) {
@@ -66,6 +80,11 @@ export const CheckboxPropertySection = ({
   subscribers,
   readOnly,
 }: CheckboxPropertySectionProps) => {
+  const props: StyleProps = {
+    color: widget.style?.color ?? null,
+  };
+  const classes = useStyle(props);
+
   const [message, setMessage] = useState(null);
 
   const [editCheckbox, { loading, error, data }] = useMutation<GQLEditCheckboxMutationData>(editCheckboxMutation);
@@ -140,13 +159,14 @@ export const CheckboxPropertySection = ({
       <FormGroup row>
         <Checkbox
           name={widget.label}
-          color="primary"
+          color="default"
           checked={widget.booleanValue}
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
           data-testid={widget.label}
           disabled={readOnly}
+          classes={{ root: classes.style }}
         />
       </FormGroup>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>

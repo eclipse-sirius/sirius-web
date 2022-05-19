@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.RadioOption;
+import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -40,6 +41,8 @@ public final class RadioElementProps implements IProps {
 
     private Function<String, IStatus> newValueHandler;
 
+    private RadioStyle style;
+
     private List<Element> children;
 
     private RadioElementProps() {
@@ -60,6 +63,10 @@ public final class RadioElementProps implements IProps {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public RadioStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -92,6 +99,8 @@ public final class RadioElementProps implements IProps {
 
         private Function<String, IStatus> newValueHandler;
 
+        private RadioStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -113,6 +122,11 @@ public final class RadioElementProps implements IProps {
             return this;
         }
 
+        public Builder style(RadioStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -124,6 +138,7 @@ public final class RadioElementProps implements IProps {
             radioElementProps.label = Objects.requireNonNull(this.label);
             radioElementProps.options = Objects.requireNonNull(this.options);
             radioElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            radioElementProps.style = this.style; // Optional on purpose
             radioElementProps.children = Objects.requireNonNull(this.children);
             return radioElementProps;
         }

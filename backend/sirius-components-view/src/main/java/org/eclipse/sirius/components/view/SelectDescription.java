@@ -115,4 +115,27 @@ public interface SelectDescription extends WidgetDescription {
      */
     EList<Operation> getBody();
 
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(SelectDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getSelectDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    SelectDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.SelectDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(SelectDescriptionStyle value);
+
 } // SelectDescription

@@ -326,7 +326,7 @@ public abstract class AbstractCodingRulesTests {
                 while (isConditionSatisfied && iterator.hasNext()) {
                     JavaMethod javaMethod = iterator.next();
                     String name = javaMethod.getName();
-                    if (name.startsWith(IS) && javaMethod.getRawReturnType().isAssignableTo(Boolean.class)) {
+                    if (name.startsWith(IS) && (javaMethod.getRawReturnType().isAssignableTo(Boolean.class) || javaMethod.getRawReturnType().isAssignableTo(boolean.class))) {
                         name = name.substring(IS.length());
                     } else if (name.startsWith(GET)) {
                         name = name.substring(GET.length());

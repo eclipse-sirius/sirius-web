@@ -43,16 +43,26 @@ import {
 } from 'properties/propertysections/TextfieldPropertySectionMachine';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
+import { getTextDecorationLineValue } from './WidgetOperations';
 
 export interface StyleProps {
-  backgroundColor: string;
-  foregroundColor: string;
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 const useStyle = makeStyles<Theme, StyleProps>(() => ({
   style: {
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
 }));
 
@@ -96,6 +106,11 @@ export const TextfieldPropertySection = ({
   const props: StyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
 

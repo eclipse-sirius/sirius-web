@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl#getValueExpression <em>Value
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @generated
@@ -70,6 +72,16 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
      * @ordered
      */
     protected EList<Operation> body;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getStyle()
+     * @generated
+     * @ordered
+     */
+    protected TextareaDescriptionStyle style;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -132,10 +144,60 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
      * @generated
      */
     @Override
+    public TextareaDescriptionStyle getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(TextareaDescriptionStyle newStyle, NotificationChain msgs) {
+        TextareaDescriptionStyle oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.TEXT_AREA_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(TextareaDescriptionStyle newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.TEXT_AREA_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.TEXT_AREA_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.TEXT_AREA_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
             return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+            return this.basicSetStyle(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -152,6 +214,8 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
             return this.getValueExpression();
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
             return this.getBody();
+        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+            return this.getStyle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -172,6 +236,9 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
             this.getBody().clear();
             this.getBody().addAll((Collection<? extends Operation>) newValue);
             return;
+        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+            this.setStyle((TextareaDescriptionStyle) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -190,6 +257,9 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
             this.getBody().clear();
             return;
+        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+            this.setStyle((TextareaDescriptionStyle) null);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -206,6 +276,8 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
             return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
             return this.body != null && !this.body.isEmpty();
+        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+            return this.style != null;
         }
         return super.eIsSet(featureID);
     }

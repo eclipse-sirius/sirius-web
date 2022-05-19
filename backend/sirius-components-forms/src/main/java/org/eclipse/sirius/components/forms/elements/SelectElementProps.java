@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.SelectOption;
+import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -41,6 +42,8 @@ public final class SelectElementProps implements IProps {
     private String value;
 
     private Function<String, IStatus> newValueHandler;
+
+    private SelectStyle style;
 
     private List<Element> children;
 
@@ -66,6 +69,10 @@ public final class SelectElementProps implements IProps {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public SelectStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -101,6 +108,8 @@ public final class SelectElementProps implements IProps {
 
         private Function<String, IStatus> newValueHandler;
 
+        private SelectStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -127,6 +136,11 @@ public final class SelectElementProps implements IProps {
             return this;
         }
 
+        public Builder style(SelectStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -139,6 +153,7 @@ public final class SelectElementProps implements IProps {
             selectElementProps.options = Objects.requireNonNull(this.options);
             selectElementProps.value = this.value;
             selectElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            selectElementProps.style = this.style; // Optional on purpose
             selectElementProps.children = Objects.requireNonNull(this.children);
             return selectElementProps;
         }

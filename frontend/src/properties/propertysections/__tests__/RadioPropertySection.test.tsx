@@ -49,6 +49,61 @@ const defaultRadio: Radio = {
       selected: false,
     },
   ],
+  style: null,
+};
+
+const radioWithStyle: Radio = {
+  __typename: 'Radio',
+  id: 'radioId',
+  label: 'Status:',
+  diagnostics: [],
+  options: [
+    {
+      id: '0',
+      label: 'inactive',
+      selected: true,
+    },
+    {
+      id: '1',
+      label: 'active',
+      selected: false,
+    },
+  ],
+  style: {
+    color: '#de1000',
+    fontSize: 20,
+    italic: true,
+    bold: true,
+    underline: true,
+    strikeThrough: true,
+  },
+};
+
+const radioWithEmptyStyle: Radio = {
+  __typename: 'Radio',
+  id: 'radioId',
+  label: 'Status:',
+  diagnostics: [],
+  options: [
+    {
+      id: '0',
+      label: 'inactive',
+      selected: true,
+    },
+    {
+      id: '1',
+      label: 'active',
+      selected: false,
+    },
+  ],
+  style: {
+    color: '',
+    fontSize: 14,
+    italic: false,
+    bold: false,
+    underline: false,
+    strikeThrough: false,
+  },
 };
 
 const editRadioVariables: GQLEditRadioMutationVariables = {
@@ -238,4 +293,49 @@ test('should display the error received', async () => {
       expect(baseElement).toMatchSnapshot();
     });
   });
+});
+
+test('should render the radio without style', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <RadioPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultRadio}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the radio with style', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <RadioPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={radioWithStyle}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the radio with empty style', async () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <RadioPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={radioWithEmptyStyle}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
 });

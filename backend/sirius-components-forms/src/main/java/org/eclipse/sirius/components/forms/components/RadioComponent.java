@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.forms.RadioOption;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.elements.RadioElementProps;
+import org.eclipse.sirius.components.forms.elements.RadioElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -77,14 +78,21 @@ public class RadioComponent implements IComponent {
         Function<String, IStatus> specializedHandler = newValue -> {
             return genericHandler.apply(variableManager, newValue);
         };
+        var radioStyle = radioDescription.getStyleProvider().apply(variableManager);
 
         // @formatter:off
-        RadioElementProps radioElementProps = RadioElementProps.newRadioElementProps(id)
+        Builder radioElementPropsBuilder = RadioElementProps.newRadioElementProps(id)
                 .label(label)
                 .options(options)
                 .newValueHandler(specializedHandler)
-                .children(children)
-                .build();
+                .children(children);
+
+        if (radioStyle != null) {
+            radioElementPropsBuilder.style(radioStyle);
+        }
+
+        RadioElementProps radioElementProps = radioElementPropsBuilder.build();
+
         return new Element(RadioElementProps.TYPE, radioElementProps);
         // @formatter:on
     }

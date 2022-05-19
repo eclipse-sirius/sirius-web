@@ -30,7 +30,7 @@ package org.eclipse.sirius.components.view;
  * @model
  * @generated
  */
-public interface TextfieldDescriptionStyle extends WidgetDescriptionStyle {
+public interface TextfieldDescriptionStyle extends WidgetDescriptionStyle, LabelStyle {
     /**
      * Returns the value of the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->

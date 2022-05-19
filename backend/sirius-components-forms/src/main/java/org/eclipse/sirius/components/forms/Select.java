@@ -36,6 +36,8 @@ public final class Select extends AbstractWidget {
 
     private Function<String, IStatus> newValueHandler;
 
+    private SelectStyle style;
+
     private Select() {
         // Prevent instantiation
     }
@@ -54,6 +56,10 @@ public final class Select extends AbstractWidget {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public SelectStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newSelect(String id) {
@@ -83,6 +89,8 @@ public final class Select extends AbstractWidget {
 
         private Function<String, IStatus> newValueHandler;
 
+        private SelectStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -109,6 +117,11 @@ public final class Select extends AbstractWidget {
             return this;
         }
 
+        public Builder style(SelectStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -121,6 +134,7 @@ public final class Select extends AbstractWidget {
             select.options = Objects.requireNonNull(this.options);
             select.value = this.value;
             select.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            select.style = this.style; // Optional on purposes
             select.diagnostics = Objects.requireNonNull(this.diagnostics);
             return select;
         }

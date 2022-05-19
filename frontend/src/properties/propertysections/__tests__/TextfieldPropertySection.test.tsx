@@ -50,6 +50,11 @@ const textFieldWithStyle: Textfield = {
   style: {
     backgroundColor: '#de1000',
     foregroundColor: '#fbb800',
+    fontSize: 14,
+    italic: false,
+    bold: false,
+    underline: false,
+    strikeThrough: false,
   },
 };
 
@@ -62,6 +67,11 @@ const textFieldWithEmptyStyle: Textfield = {
   style: {
     backgroundColor: '',
     foregroundColor: '',
+    fontSize: 14,
+    italic: false,
+    bold: false,
+    underline: false,
+    strikeThrough: false,
   },
 };
 

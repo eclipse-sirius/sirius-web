@@ -72,6 +72,11 @@ type Checkbox implements Widget {
   diagnostics: [Diagnostic!]!
   label: String!
   value: Boolean!
+  style: CheckboxStyle
+}
+
+type CheckboxStyle {
+  color: String
 }
 
 type List implements Widget {
@@ -95,6 +100,17 @@ type MultiSelect implements Widget {
   label: String!
   options: [SelectOption!]!
   values: [String]
+  style: MultiSelectStyle
+}
+
+type MultiSelectStyle {
+  backgroundColor: String
+  foregroundColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
 }
 
 type Radio implements Widget {
@@ -102,6 +118,7 @@ type Radio implements Widget {
   diagnostics: [Diagnostic!]!
   label: String!
   options: [RadioOption!]!
+  style: RadioStyle
 }
 
 type RadioOption {
@@ -110,6 +127,14 @@ type RadioOption {
   selected: Boolean!
 }
 
+type RadioStyle {
+  color: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
 
 type Select implements Widget {
   id: ID!
@@ -117,6 +142,7 @@ type Select implements Widget {
   label: String!
   options: [SelectOption!]!
   value: String
+  style: SelectStyle
 }
 
 type SelectOption {
@@ -124,12 +150,34 @@ type SelectOption {
   label: String!
 }
 
+type SelectStyle {
+  backgroundColor: String
+  foregroundColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
+
 type Textarea implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
   label: String!
   value: String!
+  style: TextareaStyle
 }
+
+type TextareaStyle {
+  backgroundColor: String
+  foregroundColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
+
 
 type Textfield implements Widget {
   id: ID!
@@ -142,6 +190,11 @@ type Textfield implements Widget {
 type TextfieldStyle {
   backgroundColor: String
   foregroundColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
 }
 
 type Link implements Widget {

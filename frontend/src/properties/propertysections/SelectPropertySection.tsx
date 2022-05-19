@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
@@ -29,6 +30,28 @@ import {
 } from 'properties/propertysections/SelectPropertySection.types';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { getTextDecorationLineValue } from './WidgetOperations';
+
+export interface StyleProps {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
+const useStyle = makeStyles<Theme, StyleProps>(() => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
+}));
 
 export const editSelectMutation = gql`
   mutation editSelect($input: EditSelectInput!) {
@@ -62,6 +85,17 @@ export const SelectPropertySection = ({
   subscribers,
   readOnly,
 }: SelectPropertySectionProps) => {
+  const props: StyleProps = {
+    backgroundColor: widget.style?.backgroundColor ?? null,
+    foregroundColor: widget.style?.foregroundColor ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyle(props);
+
   const [message, setMessage] = useState(null);
   const [isFocused, setFocus] = useState(false);
 
@@ -149,12 +183,38 @@ export const SelectPropertySection = ({
         fullWidth
         data-testid={widget.label}
         disabled={readOnly}
+        inputProps={
+          widget.style
+            ? {
+                className: classes.style,
+              }
+            : {}
+        }
       >
-        <MenuItem value="">
+        <MenuItem
+          value=""
+          classes={
+            widget.style
+              ? {
+                  root: classes.style,
+                }
+              : {}
+          }
+        >
           <em>None</em>
         </MenuItem>
         {widget.options.map((option) => (
-          <MenuItem value={option.id} key={option.id}>
+          <MenuItem
+            value={option.id}
+            key={option.id}
+            classes={
+              widget.style
+                ? {
+                    root: classes.style,
+                  }
+                : {}
+            }
+          >
             {option.label}
           </MenuItem>
         ))}

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -114,6 +115,16 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
      * @ordered
      */
     protected EList<Operation> body;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getStyle()
+     * @generated
+     * @ordered
+     */
+    protected RadioDescriptionStyle style;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -222,10 +233,60 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
      * @generated
      */
     @Override
+    public RadioDescriptionStyle getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(RadioDescriptionStyle newStyle, NotificationChain msgs) {
+        RadioDescriptionStyle oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.RADIO_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(RadioDescriptionStyle newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.RADIO_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.RADIO_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RADIO_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.RADIO_DESCRIPTION__BODY:
             return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        case ViewPackage.RADIO_DESCRIPTION__STYLE:
+            return this.basicSetStyle(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -246,6 +307,8 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
             return this.getCandidateLabelExpression();
         case ViewPackage.RADIO_DESCRIPTION__BODY:
             return this.getBody();
+        case ViewPackage.RADIO_DESCRIPTION__STYLE:
+            return this.getStyle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -272,6 +335,9 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
             this.getBody().clear();
             this.getBody().addAll((Collection<? extends Operation>) newValue);
             return;
+        case ViewPackage.RADIO_DESCRIPTION__STYLE:
+            this.setStyle((RadioDescriptionStyle) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -296,6 +362,9 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
         case ViewPackage.RADIO_DESCRIPTION__BODY:
             this.getBody().clear();
             return;
+        case ViewPackage.RADIO_DESCRIPTION__STYLE:
+            this.setStyle((RadioDescriptionStyle) null);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -316,6 +385,8 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
             return CANDIDATE_LABEL_EXPRESSION_EDEFAULT == null ? this.candidateLabelExpression != null : !CANDIDATE_LABEL_EXPRESSION_EDEFAULT.equals(this.candidateLabelExpression);
         case ViewPackage.RADIO_DESCRIPTION__BODY:
             return this.body != null && !this.body.isEmpty();
+        case ViewPackage.RADIO_DESCRIPTION__STYLE:
+            return this.style != null;
         }
         return super.eIsSet(featureID);
     }

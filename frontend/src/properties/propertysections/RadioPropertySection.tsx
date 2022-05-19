@@ -18,7 +18,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
@@ -36,6 +37,7 @@ import {
 } from 'properties/propertysections/RadioPropertySection.types';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { getTextDecorationLineValue } from './WidgetOperations';
 
 export const editRadioMutation = gql`
   mutation editRadio($input: EditRadioInput!) {
@@ -58,10 +60,25 @@ export const updateWidgetFocusMutation = gql`
     }
   }
 `;
+export interface StyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
 
-const useRadioPropertySectionStyles = makeStyles((theme) => ({
+const useRadioPropertySectionStyles = makeStyles<Theme, StyleProps>(() => ({
   radioGroupRoot: {
     flexDirection: 'row',
+  },
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
 }));
 
@@ -75,7 +92,16 @@ export const RadioPropertySection = ({
   subscribers,
   readOnly,
 }: RadioPropertySectionProps) => {
-  const classes = useRadioPropertySectionStyles();
+  const props: StyleProps = {
+    color: widget.style?.color ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useRadioPropertySectionStyles(props);
+
   const [message, setMessage] = useState(null);
 
   const [editRadio, { loading, error, data }] = useMutation<GQLEditRadioMutationData>(editRadioMutation);
@@ -158,7 +184,19 @@ export const RadioPropertySection = ({
           <FormControlLabel
             value={option.id}
             control={<Radio color="primary" onFocus={onFocus} onBlur={onBlur} data-testid={option.label} />}
-            label={option.label}
+            label={
+              <Typography
+                classes={
+                  widget.style
+                    ? {
+                        root: classes.style,
+                      }
+                    : {}
+                }
+              >
+                {option.label}
+              </Typography>
+            }
             key={option.id}
             disabled={readOnly}
           />

@@ -125,29 +125,73 @@ export interface GQLTextfield extends GQLWidget {
 export interface GQLTextfieldStyle {
   backgroundColor: string | null;
   foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLTextarea extends GQLWidget {
   label: string;
   stringValue: string;
+  style: GQLTextareaStyle;
+}
+
+export interface GQLTextareaStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLCheckbox extends GQLWidget {
   label: string;
   booleanValue: boolean;
+  style: GQLCheckboxStyle;
+}
+
+export interface GQLCheckboxStyle {
+  color: string | null;
 }
 
 export interface GQLSelect extends GQLWidget {
   label: string;
   value: string;
   options: GQLSelectOption[];
+  style: GQLSelectStyle;
+}
+
+export interface GQLSelectStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLMultiSelect extends GQLWidget {
   label: string;
   values: string[];
   options: GQLSelectOption[];
+  style: GQLMultiSelectStyle;
 }
+
+export interface GQLMultiSelectStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface GQLSelectOption {
   id: string;
   label: string;
@@ -156,6 +200,16 @@ export interface GQLSelectOption {
 export interface GQLRadio extends GQLWidget {
   label: string;
   options: GQLRadioOption[];
+  style: GQLRadioStyle;
+}
+
+export interface GQLRadioStyle {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLRadioOption {

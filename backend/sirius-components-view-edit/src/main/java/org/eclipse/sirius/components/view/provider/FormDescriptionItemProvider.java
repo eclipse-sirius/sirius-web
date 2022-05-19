@@ -20,7 +20,12 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.MultiSelectDescription;
+import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.SelectDescription;
+import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -150,15 +155,25 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         textfieldDescription.setStyle(ViewFactory.eINSTANCE.createTextfieldDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, textfieldDescription));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createCheckboxDescription()));
+        CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
+        checkboxDescription.setStyle(ViewFactory.eINSTANCE.createCheckboxDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, checkboxDescription));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createSelectDescription()));
+        SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
+        selectDescription.setStyle(ViewFactory.eINSTANCE.createSelectDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, selectDescription));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createMultiSelectDescription()));
+        MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
+        multiSelectDescription.setStyle(ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, multiSelectDescription));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createTextAreaDescription()));
+        TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
+        textareaDescription.setStyle(ViewFactory.eINSTANCE.createTextareaDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, textareaDescription));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, ViewFactory.eINSTANCE.createRadioDescription()));
+        RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
+        radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, radioDescription));
     }
 
 }

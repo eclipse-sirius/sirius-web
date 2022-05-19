@@ -29,6 +29,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescription#getCandidateLabelExpression <em>Candidate Label
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescription#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescription#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescription()
@@ -117,4 +118,27 @@ public interface MultiSelectDescription extends WidgetDescription {
      * @generated
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(MultiSelectDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    MultiSelectDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.MultiSelectDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(MultiSelectDescriptionStyle value);
 } // MultiSelectDescription

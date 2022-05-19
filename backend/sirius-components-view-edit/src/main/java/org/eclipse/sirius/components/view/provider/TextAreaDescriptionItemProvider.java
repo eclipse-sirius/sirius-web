@@ -82,6 +82,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY);
+            this.childrenFeatures.add(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE);
         }
         return this.childrenFeatures;
     }
@@ -147,6 +148,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
+        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -176,6 +178,8 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createTextareaDescriptionStyle()));
     }
 
 }

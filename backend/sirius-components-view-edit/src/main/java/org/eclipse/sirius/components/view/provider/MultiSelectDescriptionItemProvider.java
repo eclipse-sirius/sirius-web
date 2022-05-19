@@ -110,6 +110,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__BODY);
+            this.childrenFeatures.add(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__STYLE);
         }
         return this.childrenFeatures;
     }
@@ -177,6 +178,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -206,6 +208,8 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle()));
     }
 
 }

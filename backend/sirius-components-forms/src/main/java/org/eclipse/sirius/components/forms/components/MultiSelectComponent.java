@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.forms.SelectOption;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.elements.MultiSelectElementProps;
+import org.eclipse.sirius.components.forms.elements.MultiSelectElementProps.Builder;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -74,16 +75,23 @@ public class MultiSelectComponent implements IComponent {
         Function<List<String>, IStatus> newValuesHandler = newValues -> {
             return multiSelectDescription.getNewValuesHandler().apply(variableManager, newValues);
         };
+        var multiSelectStyle = multiSelectDescription.getStyleProvider().apply(variableManager);
 
         // @formatter:off
-        MultiSelectElementProps selectElementProps = MultiSelectElementProps.newMultiSelectElementProps(id)
+        Builder multiSelectElementPropsBuilder = MultiSelectElementProps.newMultiSelectElementProps(id)
                 .label(label)
                 .options(options)
                 .values(values)
                 .newValuesHandler(newValuesHandler)
-                .children(children)
-                .build();
-        return new Element(MultiSelectElementProps.TYPE, selectElementProps);
+                .children(children);
+
+        if (multiSelectStyle != null) {
+            multiSelectElementPropsBuilder.style(multiSelectStyle);
+        }
+
+        MultiSelectElementProps multiSelectElementProps = multiSelectElementPropsBuilder.build();
+
+        return new Element(MultiSelectElementProps.TYPE, multiSelectElementProps);
         // @formatter:on
     }
 }

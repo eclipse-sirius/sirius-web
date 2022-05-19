@@ -45,8 +45,21 @@ public class TextfieldStyleProvider implements Function<VariableManager, Textfie
         if (foregroundColor != null && !foregroundColor.isBlank()) {
             textfieldStyleBuilder.foregroundColor(foregroundColor);
         }
+        int fontSize = this.viewStyle.getFontSize();
+        boolean italic = this.viewStyle.isItalic();
+        boolean bold = this.viewStyle.isBold();
+        boolean underline = this.viewStyle.isUnderline();
+        boolean strikeThrough = this.viewStyle.isStrikeThrough();
 
-        return textfieldStyleBuilder.build();
+        // @formatter:off
+        return textfieldStyleBuilder
+                .fontSize(fontSize)
+                .italic(italic)
+                .bold(bold)
+                .underline(underline)
+                .strikeThrough(strikeThrough)
+                .build();
+        // @formatter:on
     }
 
 }

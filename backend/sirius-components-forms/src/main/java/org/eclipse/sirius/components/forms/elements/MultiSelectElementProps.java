@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.SelectOption;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -43,6 +44,8 @@ public final class MultiSelectElementProps implements IProps {
 
     private Function<List<String>, IStatus> newValuesHandler;
 
+    private MultiSelectStyle style;
+
     private List<Element> children;
 
     private MultiSelectElementProps() {
@@ -67,6 +70,10 @@ public final class MultiSelectElementProps implements IProps {
 
     public Function<List<String>, IStatus> getNewValuesHandler() {
         return this.newValuesHandler;
+    }
+
+    public MultiSelectStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -102,6 +109,8 @@ public final class MultiSelectElementProps implements IProps {
 
         private Function<List<String>, IStatus> newValuesHandler;
 
+        private MultiSelectStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -128,6 +137,11 @@ public final class MultiSelectElementProps implements IProps {
             return this;
         }
 
+        public Builder style(MultiSelectStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -140,6 +154,7 @@ public final class MultiSelectElementProps implements IProps {
             multiSelectElementProps.options = Objects.requireNonNull(this.options);
             multiSelectElementProps.values = List.copyOf(this.values);
             multiSelectElementProps.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);
+            multiSelectElementProps.style = this.style; // Optional on purpose
             multiSelectElementProps.children = Objects.requireNonNull(this.children);
             return multiSelectElementProps;
         }

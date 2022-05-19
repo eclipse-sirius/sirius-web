@@ -255,6 +255,49 @@ public interface ViewFactory extends EFactory {
     TextfieldDescriptionStyle createTextfieldDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Checkbox Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Checkbox Description Style</em>'.
+     * @generated
+     */
+    CheckboxDescriptionStyle createCheckboxDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Select Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Select Description Style</em>'.
+     * @generated
+     */
+    SelectDescriptionStyle createSelectDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Multi Select Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Multi Select Description Style</em>'.
+     * @generated
+     */
+    MultiSelectDescriptionStyle createMultiSelectDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Textarea Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Textarea Description Style</em>'.
+     * @generated
+     */
+    TextareaDescriptionStyle createTextareaDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Radio Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Radio Description Style</em>'.
+     * @generated
+     */
+    RadioDescriptionStyle createRadioDescriptionStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

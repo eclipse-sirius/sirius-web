@@ -137,7 +137,7 @@ public final class TextfieldElementProps implements IProps {
             textfieldElementProps.label = Objects.requireNonNull(this.label);
             textfieldElementProps.value = Objects.requireNonNull(this.value);
             textfieldElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
-            textfieldElementProps.style = this.style;
+            textfieldElementProps.style = this.style; // Optional on purpose
             textfieldElementProps.children = Objects.requireNonNull(this.children);
             return textfieldElementProps;
         }

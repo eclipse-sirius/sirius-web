@@ -34,6 +34,8 @@ public final class Radio extends AbstractWidget {
 
     private Function<String, IStatus> newValueHandler;
 
+    private RadioStyle style;
+
     private Radio() {
         // Prevent instantiation
     }
@@ -48,6 +50,10 @@ public final class Radio extends AbstractWidget {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public RadioStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newRadio(String id) {
@@ -75,6 +81,8 @@ public final class Radio extends AbstractWidget {
 
         private Function<String, IStatus> newValueHandler;
 
+        private RadioStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -96,6 +104,11 @@ public final class Radio extends AbstractWidget {
             return this;
         }
 
+        public Builder style(RadioStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -107,6 +120,7 @@ public final class Radio extends AbstractWidget {
             radio.label = Objects.requireNonNull(this.label);
             radio.options = Objects.requireNonNull(this.options);
             radio.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            radio.style = this.style; // Optional on purpose
             radio.diagnostics = Objects.requireNonNull(this.diagnostics);
             return radio;
         }

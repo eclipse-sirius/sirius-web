@@ -61,15 +61,32 @@ export const formRefreshedEventPayloadFragment = gql`
               style {
                 backgroundColor
                 foregroundColor
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
               }
             }
             ... on Textarea {
               label
               stringValue: value
+              style {
+                backgroundColor
+                foregroundColor
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
+              }
             }
             ... on Checkbox {
               label
               booleanValue: value
+              style {
+                color
+              }
             }
             ... on Select {
               label
@@ -77,6 +94,15 @@ export const formRefreshedEventPayloadFragment = gql`
               options {
                 id
                 label
+              }
+              style {
+                backgroundColor
+                foregroundColor
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
               }
             }
             ... on MultiSelect {
@@ -86,6 +112,15 @@ export const formRefreshedEventPayloadFragment = gql`
                 id
                 label
               }
+              style {
+                backgroundColor
+                foregroundColor
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
+              }
             }
             ... on Radio {
               label
@@ -93,6 +128,14 @@ export const formRefreshedEventPayloadFragment = gql`
                 id
                 label
                 selected
+              }
+              style {
+                color
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
               }
             }
             ... on List {
