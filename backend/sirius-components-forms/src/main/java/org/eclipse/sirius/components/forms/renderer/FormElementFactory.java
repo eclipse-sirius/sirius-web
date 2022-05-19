@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
-import org.eclipse.sirius.components.forms.Textfield.Builder;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -129,12 +128,17 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return Checkbox.newCheckbox(props.getId())
+        Checkbox.Builder checkboxBuilder = Checkbox.newCheckbox(props.getId())
                 .label(props.getLabel())
                 .value(props.isValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            checkboxBuilder.style(props.getStyle());
+        }
+
+        return checkboxBuilder.build();
         // @formatter:on
     }
 
@@ -154,12 +158,17 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return Radio.newRadio(props.getId())
+        Radio.Builder radioBuilder = Radio.newRadio(props.getId())
                 .label(props.getLabel())
                 .options(props.getOptions())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            radioBuilder.style(props.getStyle());
+        }
+
+        return radioBuilder.build();
         // @formatter:on
     }
 
@@ -167,13 +176,18 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return Select.newSelect(props.getId())
+        Select.Builder selectBuilder = Select.newSelect(props.getId())
                 .label(props.getLabel())
                 .options(props.getOptions())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            selectBuilder.style(props.getStyle());
+        }
+
+        return selectBuilder.build();
         // @formatter:on
     }
 
@@ -181,13 +195,18 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return MultiSelect.newMultiSelect(props.getId())
+        MultiSelect.Builder multiSelectBuilder = MultiSelect.newMultiSelect(props.getId())
                 .label(props.getLabel())
                 .options(props.getOptions())
                 .values(props.getValues())
                 .newValuesHandler(props.getNewValuesHandler())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            multiSelectBuilder.style(props.getStyle());
+        }
+
+        return multiSelectBuilder.build();
         // @formatter:on
     }
 
@@ -195,12 +214,17 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return Textarea.newTextarea(props.getId())
+        Textarea.Builder textareaBuilder = Textarea.newTextarea(props.getId())
                 .label(props.getLabel())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            textareaBuilder.style(props.getStyle());
+        }
+
+        return textareaBuilder.build();
         // @formatter:on
     }
 
@@ -208,7 +232,7 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        Builder textfieldBuilder = Textfield.newTextfield(props.getId())
+        Textfield.Builder textfieldBuilder = Textfield.newTextfield(props.getId())
                 .label(props.getLabel())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())

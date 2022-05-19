@@ -37,6 +37,8 @@ public final class MultiSelect extends AbstractWidget {
 
     private Function<List<String>, IStatus> newValuesHandler;
 
+    private MultiSelectStyle style;
+
     private MultiSelect() {
         // Prevent instantiation
     }
@@ -55,6 +57,10 @@ public final class MultiSelect extends AbstractWidget {
 
     public Function<List<String>, IStatus> getNewValuesHandler() {
         return this.newValuesHandler;
+    }
+
+    public MultiSelectStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newMultiSelect(String id) {
@@ -84,6 +90,8 @@ public final class MultiSelect extends AbstractWidget {
 
         private Function<List<String>, IStatus> newValuesHandler;
 
+        private MultiSelectStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -110,6 +118,11 @@ public final class MultiSelect extends AbstractWidget {
             return this;
         }
 
+        public Builder style(MultiSelectStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -122,6 +135,7 @@ public final class MultiSelect extends AbstractWidget {
             select.options = Objects.requireNonNull(this.options);
             select.values = this.values;
             select.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);
+            select.style = this.style; // Optional on purpose
             select.diagnostics = Objects.requireNonNull(this.diagnostics);
             return select;
         }

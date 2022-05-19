@@ -7,7 +7,7 @@ exports[`should display the error received 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-22"
+        class="makeStyles-propertySectionLabel-30"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -15,7 +15,7 @@ exports[`should display the error received 1`] = `
           CheckboxLabel
         </h6>
         <div
-          class="makeStyles-subscribers-23"
+          class="makeStyles-subscribers-31"
         />
       </div>
       <div
@@ -23,14 +23,14 @@ exports[`should display the error received 1`] = `
       >
         <span
           aria-disabled="false"
-          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-25 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-33 MuiCheckbox-root makeStyles-style-28 makeStyles-style-29"
           data-testid="CheckboxLabel"
         >
           <span
             class="MuiIconButton-label"
           >
             <input
-              class="PrivateSwitchBase-input-28"
+              class="PrivateSwitchBase-input-36"
               data-indeterminate="false"
               name="CheckboxLabel"
               type="checkbox"
@@ -67,7 +67,7 @@ exports[`should display the error received 2`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-22"
+        class="makeStyles-propertySectionLabel-30"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -75,7 +75,7 @@ exports[`should display the error received 2`] = `
           CheckboxLabel
         </h6>
         <div
-          class="makeStyles-subscribers-23"
+          class="makeStyles-subscribers-31"
         />
       </div>
       <div
@@ -83,14 +83,14 @@ exports[`should display the error received 2`] = `
       >
         <span
           aria-disabled="false"
-          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-25 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-33 MuiCheckbox-root makeStyles-style-28 makeStyles-style-29"
           data-testid="CheckboxLabel"
         >
           <span
             class="MuiIconButton-label"
           >
             <input
-              class="PrivateSwitchBase-input-28"
+              class="PrivateSwitchBase-input-36"
               data-indeterminate="false"
               name="CheckboxLabel"
               type="checkbox"
@@ -171,7 +171,7 @@ exports[`should render a readOnly checkbox 1`] = `
     class="MuiFormControl-root"
   >
     <div
-      class="makeStyles-propertySectionLabel-8"
+      class="makeStyles-propertySectionLabel-12"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -179,7 +179,7 @@ exports[`should render a readOnly checkbox 1`] = `
         CheckboxLabel
       </h6>
       <div
-        class="makeStyles-subscribers-9"
+        class="makeStyles-subscribers-13"
       />
     </div>
     <div
@@ -187,7 +187,7 @@ exports[`should render a readOnly checkbox 1`] = `
     >
       <span
         aria-disabled="true"
-        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-11 MuiCheckbox-root MuiCheckbox-colorPrimary PrivateSwitchBase-disabled-13 Mui-disabled MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-15 MuiCheckbox-root makeStyles-style-10 makeStyles-style-11 PrivateSwitchBase-disabled-17 Mui-disabled Mui-disabled Mui-disabled"
         data-testid="CheckboxLabel"
         tabindex="-1"
       >
@@ -195,7 +195,7 @@ exports[`should render a readOnly checkbox 1`] = `
           class="MuiIconButton-label"
         >
           <input
-            class="PrivateSwitchBase-input-14"
+            class="PrivateSwitchBase-input-18"
             data-indeterminate="false"
             disabled=""
             name="CheckboxLabel"
@@ -228,7 +228,7 @@ exports[`should render the checkbox 1`] = `
     class="MuiFormControl-root"
   >
     <div
-      class="makeStyles-propertySectionLabel-1"
+      class="makeStyles-propertySectionLabel-3"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -236,7 +236,7 @@ exports[`should render the checkbox 1`] = `
         CheckboxLabel
       </h6>
       <div
-        class="makeStyles-subscribers-2"
+        class="makeStyles-subscribers-4"
       />
     </div>
     <div
@@ -244,14 +244,14 @@ exports[`should render the checkbox 1`] = `
     >
       <span
         aria-disabled="false"
-        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-4 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-6 MuiCheckbox-root makeStyles-style-1 makeStyles-style-2"
         data-testid="CheckboxLabel"
       >
         <span
           class="MuiIconButton-label"
         >
           <input
-            class="PrivateSwitchBase-input-7"
+            class="PrivateSwitchBase-input-9"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
@@ -280,13 +280,193 @@ exports[`should render the checkbox 1`] = `
 </div>
 `;
 
+exports[`should render the checkbox with empty style 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-57"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          CheckboxLabel
+        </h6>
+        <div
+          class="makeStyles-subscribers-58"
+        />
+      </div>
+      <div
+        class="MuiFormGroup-root MuiFormGroup-row"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-60 MuiCheckbox-root makeStyles-style-55 makeStyles-style-56"
+          data-testid="CheckboxLabel"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-63"
+              data-indeterminate="false"
+              name="CheckboxLabel"
+              type="checkbox"
+              value=""
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+      </div>
+      <p
+        class="MuiFormHelperText-root"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the checkbox with style 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-48"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          CheckboxLabel
+        </h6>
+        <div
+          class="makeStyles-subscribers-49"
+        />
+      </div>
+      <div
+        class="MuiFormGroup-root MuiFormGroup-row"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-51 MuiCheckbox-root makeStyles-style-46 makeStyles-style-47"
+          data-testid="CheckboxLabel"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-54"
+              data-indeterminate="false"
+              name="CheckboxLabel"
+              type="checkbox"
+              value=""
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+      </div>
+      <p
+        class="MuiFormHelperText-root"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the checkbox without style 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-39"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          CheckboxLabel
+        </h6>
+        <div
+          class="makeStyles-subscribers-40"
+        />
+      </div>
+      <div
+        class="MuiFormGroup-root MuiFormGroup-row"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-42 MuiCheckbox-root makeStyles-style-37 makeStyles-style-38"
+          data-testid="CheckboxLabel"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              class="PrivateSwitchBase-input-45"
+              data-indeterminate="false"
+              name="CheckboxLabel"
+              type="checkbox"
+              value=""
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+      </div>
+      <p
+        class="MuiFormHelperText-root"
+      />
+    </div>
+  </div>
+</body>
+`;
+
 exports[`should send mutation when clicked 1`] = `
 <div>
   <div
     class="MuiFormControl-root"
   >
     <div
-      class="makeStyles-propertySectionLabel-15"
+      class="makeStyles-propertySectionLabel-21"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -294,7 +474,7 @@ exports[`should send mutation when clicked 1`] = `
         CheckboxLabel
       </h6>
       <div
-        class="makeStyles-subscribers-16"
+        class="makeStyles-subscribers-22"
       />
     </div>
     <div
@@ -302,14 +482,14 @@ exports[`should send mutation when clicked 1`] = `
     >
       <span
         aria-disabled="false"
-        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-18 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-24 MuiCheckbox-root makeStyles-style-19 makeStyles-style-20"
         data-testid="CheckboxLabel"
       >
         <span
           class="MuiIconButton-label"
         >
           <input
-            class="PrivateSwitchBase-input-21"
+            class="PrivateSwitchBase-input-27"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
@@ -344,7 +524,7 @@ exports[`should send mutation when clicked 2`] = `
     class="MuiFormControl-root"
   >
     <div
-      class="makeStyles-propertySectionLabel-15"
+      class="makeStyles-propertySectionLabel-21"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -352,7 +532,7 @@ exports[`should send mutation when clicked 2`] = `
         CheckboxLabel
       </h6>
       <div
-        class="makeStyles-subscribers-16"
+        class="makeStyles-subscribers-22"
       />
     </div>
     <div
@@ -360,14 +540,14 @@ exports[`should send mutation when clicked 2`] = `
     >
       <span
         aria-disabled="false"
-        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-18 MuiCheckbox-root MuiCheckbox-colorPrimary MuiIconButton-colorPrimary"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-24 MuiCheckbox-root makeStyles-style-19 makeStyles-style-20"
         data-testid="CheckboxLabel"
       >
         <span
           class="MuiIconButton-label"
         >
           <input
-            class="PrivateSwitchBase-input-21"
+            class="PrivateSwitchBase-input-27"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"

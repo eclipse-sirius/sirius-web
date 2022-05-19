@@ -115,4 +115,27 @@ public interface RadioDescription extends WidgetDescription {
      */
     EList<Operation> getBody();
 
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(RadioDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getRadioDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    RadioDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.RadioDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(RadioDescriptionStyle value);
+
 } // RadioDescription

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -44,6 +45,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
     private Function<VariableManager, List<String>> valuesProvider;
 
     private BiFunction<VariableManager, List<String>, IStatus> newValuesHandler;
+
+    private Function<VariableManager, MultiSelectStyle> styleProvider;
 
     private MultiSelectDescription() {
         // Prevent instantiation
@@ -75,6 +78,10 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     public BiFunction<VariableManager, List<String>, IStatus> getNewValuesHandler() {
         return this.newValuesHandler;
+    }
+
+    public Function<VariableManager, MultiSelectStyle> getStyleProvider() {
+        return this.styleProvider;
     }
 
     public static Builder newMultiSelectDescription(String id) {
@@ -116,6 +123,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
+
+        private Function<VariableManager, MultiSelectStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -171,6 +180,11 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, MultiSelectStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public MultiSelectDescription build() {
             MultiSelectDescription multiSelectDescription = new MultiSelectDescription();
             multiSelectDescription.id = Objects.requireNonNull(this.id);
@@ -184,6 +198,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             multiSelectDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             multiSelectDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             multiSelectDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            multiSelectDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return multiSelectDescription;
         }
 

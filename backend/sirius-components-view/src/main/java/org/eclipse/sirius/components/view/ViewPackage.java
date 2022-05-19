@@ -2278,13 +2278,22 @@ public interface ViewPackage extends EPackage {
     int CHECKBOX_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Checkbox Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CHECKBOX_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+    int CHECKBOX_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Checkbox Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2359,13 +2368,22 @@ public interface ViewPackage extends EPackage {
     int SELECT_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Select Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Select Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2440,13 +2458,22 @@ public interface ViewPackage extends EPackage {
     int MULTI_SELECT_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Multi Select Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int MULTI_SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Multi Select Description</em>' class. <!-- begin-user-doc --> <!--
@@ -2503,13 +2530,22 @@ public interface ViewPackage extends EPackage {
     int TEXT_AREA_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_AREA_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Text Area Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TEXT_AREA_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+    int TEXT_AREA_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Text Area Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2584,13 +2620,22 @@ public interface ViewPackage extends EPackage {
     int RADIO_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Radio Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RADIO_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int RADIO_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Radio Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2639,13 +2684,53 @@ public interface ViewPackage extends EPackage {
     int TEXTFIELD_DESCRIPTION_STYLE = 37;
 
     /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+    int TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2654,7 +2739,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+    int TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
 
     /**
      * The number of structural features of the '<em>Textfield Description Style</em>' class. <!-- begin-user-doc -->
@@ -2663,7 +2748,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+    int TEXTFIELD_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Textfield Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2675,6 +2760,376 @@ public interface ViewPackage extends EPackage {
     int TEXTFIELD_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
+     * <em>Checkbox Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
+     * @generated
+     */
+    int CHECKBOX_DESCRIPTION_STYLE = 38;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE__COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Checkbox Description Style</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Checkbox Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
+     * @generated
+     */
+    int SELECT_DESCRIPTION_STYLE = 39;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Select Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Select Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
+     * <em>Multi Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
+     * @generated
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE = 40;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Multi Select Description Style</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Multi Select Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
+     * <em>Textarea Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
+     * @generated
+     */
+    int TEXTAREA_DESCRIPTION_STYLE = 41;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Textarea Description Style</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Textarea Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
+     * @generated
+     */
+    int RADIO_DESCRIPTION_STYLE = 42;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE__COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The number of structural features of the '<em>Radio Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The number of operations of the '<em>Radio Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2682,7 +3137,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 38;
+    int ARROW_STYLE = 43;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -2692,7 +3147,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 39;
+    int LINE_STYLE = 44;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -2702,7 +3157,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 40;
+    int SYNCHRONIZATION_POLICY = 45;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -3877,6 +4332,18 @@ public interface ViewPackage extends EPackage {
     EReference getCheckboxDescription_Body();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.CheckboxDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.CheckboxDescription#getStyle()
+     * @see #getCheckboxDescription()
+     * @generated
+     */
+    EReference getCheckboxDescription_Style();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.SelectDescription <em>Select
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3933,6 +4400,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getSelectDescription_Body();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.SelectDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.SelectDescription#getStyle()
+     * @see #getSelectDescription()
+     * @generated
+     */
+    EReference getSelectDescription_Style();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.MultiSelectDescription <em>Multi
@@ -3993,6 +4472,18 @@ public interface ViewPackage extends EPackage {
     EReference getMultiSelectDescription_Body();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.MultiSelectDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescription#getStyle()
+     * @see #getMultiSelectDescription()
+     * @generated
+     */
+    EReference getMultiSelectDescription_Style();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.TextAreaDescription <em>Text Area
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4025,6 +4516,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getTextAreaDescription_Body();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.TextAreaDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.TextAreaDescription#getStyle()
+     * @see #getTextAreaDescription()
+     * @generated
+     */
+    EReference getTextAreaDescription_Style();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.RadioDescription <em>Radio
@@ -4085,6 +4588,18 @@ public interface ViewPackage extends EPackage {
     EReference getRadioDescription_Body();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.RadioDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.RadioDescription#getStyle()
+     * @see #getRadioDescription()
+     * @generated
+     */
+    EReference getRadioDescription_Style();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.WidgetDescriptionStyle <em>Widget
      * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4127,6 +4642,152 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getTextfieldDescriptionStyle_ForegroundColor();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle
+     * <em>Checkbox Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Checkbox Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.CheckboxDescriptionStyle
+     * @generated
+     */
+    EClass getCheckboxDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle#getColor <em>Color</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Color</em>'.
+     * @see org.eclipse.sirius.components.view.CheckboxDescriptionStyle#getColor()
+     * @see #getCheckboxDescriptionStyle()
+     * @generated
+     */
+    EAttribute getCheckboxDescriptionStyle_Color();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle <em>Select
+     * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Select Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.SelectDescriptionStyle
+     * @generated
+     */
+    EClass getSelectDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getBackgroundColor <em>Background Color</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @see org.eclipse.sirius.components.view.SelectDescriptionStyle#getBackgroundColor()
+     * @see #getSelectDescriptionStyle()
+     * @generated
+     */
+    EAttribute getSelectDescriptionStyle_BackgroundColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getForegroundColor <em>Foreground Color</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @see org.eclipse.sirius.components.view.SelectDescriptionStyle#getForegroundColor()
+     * @see #getSelectDescriptionStyle()
+     * @generated
+     */
+    EAttribute getSelectDescriptionStyle_ForegroundColor();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle
+     * <em>Multi Select Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Multi Select Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle
+     * @generated
+     */
+    EClass getMultiSelectDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getBackgroundColor <em>Background
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getBackgroundColor()
+     * @see #getMultiSelectDescriptionStyle()
+     * @generated
+     */
+    EAttribute getMultiSelectDescriptionStyle_BackgroundColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getForegroundColor <em>Foreground
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getForegroundColor()
+     * @see #getMultiSelectDescriptionStyle()
+     * @generated
+     */
+    EAttribute getMultiSelectDescriptionStyle_ForegroundColor();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.TextareaDescriptionStyle
+     * <em>Textarea Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Textarea Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.TextareaDescriptionStyle
+     * @generated
+     */
+    EClass getTextareaDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextareaDescriptionStyle#getBackgroundColor <em>Background
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @see org.eclipse.sirius.components.view.TextareaDescriptionStyle#getBackgroundColor()
+     * @see #getTextareaDescriptionStyle()
+     * @generated
+     */
+    EAttribute getTextareaDescriptionStyle_BackgroundColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.TextareaDescriptionStyle#getForegroundColor <em>Foreground
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @see org.eclipse.sirius.components.view.TextareaDescriptionStyle#getForegroundColor()
+     * @see #getTextareaDescriptionStyle()
+     * @generated
+     */
+    EAttribute getTextareaDescriptionStyle_ForegroundColor();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.RadioDescriptionStyle <em>Radio
+     * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Radio Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.RadioDescriptionStyle
+     * @generated
+     */
+    EClass getRadioDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.RadioDescriptionStyle#getColor <em>Color</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Color</em>'.
+     * @see org.eclipse.sirius.components.view.RadioDescriptionStyle#getColor()
+     * @see #getRadioDescriptionStyle()
+     * @generated
+     */
+    EAttribute getRadioDescriptionStyle_Color();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'.
@@ -5093,6 +5754,14 @@ public interface ViewPackage extends EPackage {
         EReference CHECKBOX_DESCRIPTION__BODY = eINSTANCE.getCheckboxDescription_Body();
 
         /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CHECKBOX_DESCRIPTION__STYLE = eINSTANCE.getCheckboxDescription_Style();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionImpl
          * <em>Select Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -5133,6 +5802,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference SELECT_DESCRIPTION__BODY = eINSTANCE.getSelectDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SELECT_DESCRIPTION__STYLE = eINSTANCE.getSelectDescription_Style();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionImpl
@@ -5177,6 +5854,14 @@ public interface ViewPackage extends EPackage {
         EReference MULTI_SELECT_DESCRIPTION__BODY = eINSTANCE.getMultiSelectDescription_Body();
 
         /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference MULTI_SELECT_DESCRIPTION__STYLE = eINSTANCE.getMultiSelectDescription_Style();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl
          * <em>Text Area Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -5201,6 +5886,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference TEXT_AREA_DESCRIPTION__BODY = eINSTANCE.getTextAreaDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TEXT_AREA_DESCRIPTION__STYLE = eINSTANCE.getTextAreaDescription_Style();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionImpl
@@ -5245,6 +5938,14 @@ public interface ViewPackage extends EPackage {
         EReference RADIO_DESCRIPTION__BODY = eINSTANCE.getRadioDescription_Body();
 
         /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference RADIO_DESCRIPTION__STYLE = eINSTANCE.getRadioDescription_Style();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionStyleImpl
          * <em>Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -5279,6 +5980,121 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getTextfieldDescriptionStyle_ForegroundColor();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
+         * <em>Checkbox Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
+         * @generated
+         */
+        EClass CHECKBOX_DESCRIPTION_STYLE = eINSTANCE.getCheckboxDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CHECKBOX_DESCRIPTION_STYLE__COLOR = eINSTANCE.getCheckboxDescriptionStyle_Color();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl
+         * <em>Select Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
+         * @generated
+         */
+        EClass SELECT_DESCRIPTION_STYLE = eINSTANCE.getSelectDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_BackgroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_ForegroundColor();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl <em>Multi Select Description
+         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
+         * @generated
+         */
+        EClass MULTI_SELECT_DESCRIPTION_STYLE = eINSTANCE.getMultiSelectDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_BackgroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_ForegroundColor();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
+         * <em>Textarea Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
+         * @generated
+         */
+        EClass TEXTAREA_DESCRIPTION_STYLE = eINSTANCE.getTextareaDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getTextareaDescriptionStyle_BackgroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getTextareaDescriptionStyle_ForegroundColor();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl
+         * <em>Radio Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
+         * @generated
+         */
+        EClass RADIO_DESCRIPTION_STYLE = eINSTANCE.getRadioDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute RADIO_DESCRIPTION_STYLE__COLOR = eINSTANCE.getRadioDescriptionStyle_Color();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'

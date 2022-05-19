@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
+import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
@@ -37,14 +38,18 @@ import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
+import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescription;
+import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.UnsetValue;
@@ -148,6 +153,16 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createRadioDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
             return this.createTextfieldDescriptionStyle();
+        case ViewPackage.CHECKBOX_DESCRIPTION_STYLE:
+            return this.createCheckboxDescriptionStyle();
+        case ViewPackage.SELECT_DESCRIPTION_STYLE:
+            return this.createSelectDescriptionStyle();
+        case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE:
+            return this.createMultiSelectDescriptionStyle();
+        case ViewPackage.TEXTAREA_DESCRIPTION_STYLE:
+            return this.createTextareaDescriptionStyle();
+        case ViewPackage.RADIO_DESCRIPTION_STYLE:
+            return this.createRadioDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -497,6 +512,61 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public TextfieldDescriptionStyle createTextfieldDescriptionStyle() {
         TextfieldDescriptionStyleImpl textfieldDescriptionStyle = new TextfieldDescriptionStyleImpl();
         return textfieldDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CheckboxDescriptionStyle createCheckboxDescriptionStyle() {
+        CheckboxDescriptionStyleImpl checkboxDescriptionStyle = new CheckboxDescriptionStyleImpl();
+        return checkboxDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SelectDescriptionStyle createSelectDescriptionStyle() {
+        SelectDescriptionStyleImpl selectDescriptionStyle = new SelectDescriptionStyleImpl();
+        return selectDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MultiSelectDescriptionStyle createMultiSelectDescriptionStyle() {
+        MultiSelectDescriptionStyleImpl multiSelectDescriptionStyle = new MultiSelectDescriptionStyleImpl();
+        return multiSelectDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TextareaDescriptionStyle createTextareaDescriptionStyle() {
+        TextareaDescriptionStyleImpl textareaDescriptionStyle = new TextareaDescriptionStyleImpl();
+        return textareaDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public RadioDescriptionStyle createRadioDescriptionStyle() {
+        RadioDescriptionStyleImpl radioDescriptionStyle = new RadioDescriptionStyleImpl();
+        return radioDescriptionStyle;
     }
 
     /**

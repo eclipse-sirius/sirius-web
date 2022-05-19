@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -43,6 +44,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
     private Function<VariableManager, Boolean> optionSelectedProvider;
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
+
+    private Function<VariableManager, RadioStyle> styleProvider;
 
     private RadioDescription() {
         // Prevent instantiation
@@ -74,6 +77,10 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
     public BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public Function<VariableManager, RadioStyle> getStyleProvider() {
+        return this.styleProvider;
     }
 
     public static Builder newRadioDescription(String id) {
@@ -114,6 +121,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
+
+        private Function<VariableManager, RadioStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -169,6 +178,11 @@ public final class RadioDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, RadioStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public RadioDescription build() {
             RadioDescription radioDescription = new RadioDescription();
             radioDescription.id = Objects.requireNonNull(this.id);
@@ -182,6 +196,7 @@ public final class RadioDescription extends AbstractWidgetDescription {
             radioDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             radioDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             radioDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            radioDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return radioDescription;
         }
 

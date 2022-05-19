@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -36,6 +37,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
     private Function<VariableManager, String> valueProvider;
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
+
+    private Function<VariableManager, TextareaStyle> styleProvider;
 
     private TextareaDescription() {
         // Prevent instantiation
@@ -55,6 +58,10 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
     public BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public Function<VariableManager, TextareaStyle> getStyleProvider() {
+        return this.styleProvider;
     }
 
     public static Builder newTextareaDescription(String id) {
@@ -90,6 +97,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
+
+        private Function<VariableManager, TextareaStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -130,6 +139,11 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, TextareaStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public TextareaDescription build() {
             TextareaDescription textareaDescription = new TextareaDescription();
             textareaDescription.id = Objects.requireNonNull(this.id);
@@ -140,6 +154,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             textareaDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             textareaDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             textareaDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            textareaDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return textareaDescription;
         }
     }

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
+import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
@@ -36,16 +37,20 @@ import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
+import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
+import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.Style;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
@@ -442,6 +447,61 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseTextfieldDescriptionStyle(textfieldDescriptionStyle);
             if (result == null)
                 result = this.caseWidgetDescriptionStyle(textfieldDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(textfieldDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CHECKBOX_DESCRIPTION_STYLE: {
+            CheckboxDescriptionStyle checkboxDescriptionStyle = (CheckboxDescriptionStyle) theEObject;
+            T result = this.caseCheckboxDescriptionStyle(checkboxDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(checkboxDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.SELECT_DESCRIPTION_STYLE: {
+            SelectDescriptionStyle selectDescriptionStyle = (SelectDescriptionStyle) theEObject;
+            T result = this.caseSelectDescriptionStyle(selectDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(selectDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(selectDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE: {
+            MultiSelectDescriptionStyle multiSelectDescriptionStyle = (MultiSelectDescriptionStyle) theEObject;
+            T result = this.caseMultiSelectDescriptionStyle(multiSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(multiSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(multiSelectDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.TEXTAREA_DESCRIPTION_STYLE: {
+            TextareaDescriptionStyle textareaDescriptionStyle = (TextareaDescriptionStyle) theEObject;
+            T result = this.caseTextareaDescriptionStyle(textareaDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(textareaDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(textareaDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.RADIO_DESCRIPTION_STYLE: {
+            RadioDescriptionStyle radioDescriptionStyle = (RadioDescriptionStyle) theEObject;
+            T result = this.caseRadioDescriptionStyle(radioDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(radioDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(radioDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1001,6 +1061,81 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Checkbox Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Checkbox Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCheckboxDescriptionStyle(CheckboxDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Select Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Select Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSelectDescriptionStyle(SelectDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Multi Select Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Multi Select Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMultiSelectDescriptionStyle(MultiSelectDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Textarea Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Textarea Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTextareaDescriptionStyle(TextareaDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Radio Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Radio Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRadioDescriptionStyle(RadioDescriptionStyle object) {
         return null;
     }
 

@@ -724,6 +724,125 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected CheckboxDescriptionStyleItemProvider checkboxDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCheckboxDescriptionStyleAdapter() {
+        if (this.checkboxDescriptionStyleItemProvider == null) {
+            this.checkboxDescriptionStyleItemProvider = new CheckboxDescriptionStyleItemProvider(this);
+        }
+
+        return this.checkboxDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.SelectDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectDescriptionStyleItemProvider selectDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.SelectDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSelectDescriptionStyleAdapter() {
+        if (this.selectDescriptionStyleItemProvider == null) {
+            this.selectDescriptionStyleItemProvider = new SelectDescriptionStyleItemProvider(this);
+        }
+
+        return this.selectDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected MultiSelectDescriptionStyleItemProvider multiSelectDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMultiSelectDescriptionStyleAdapter() {
+        if (this.multiSelectDescriptionStyleItemProvider == null) {
+            this.multiSelectDescriptionStyleItemProvider = new MultiSelectDescriptionStyleItemProvider(this);
+        }
+
+        return this.multiSelectDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.TextareaDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected TextareaDescriptionStyleItemProvider textareaDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextareaDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTextareaDescriptionStyleAdapter() {
+        if (this.textareaDescriptionStyleItemProvider == null) {
+            this.textareaDescriptionStyleItemProvider = new TextareaDescriptionStyleItemProvider(this);
+        }
+
+        return this.textareaDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.RadioDescriptionStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected RadioDescriptionStyleItemProvider radioDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.RadioDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createRadioDescriptionStyleAdapter() {
+        if (this.radioDescriptionStyleItemProvider == null) {
+            this.radioDescriptionStyleItemProvider = new RadioDescriptionStyleItemProvider(this);
+        }
+
+        return this.radioDescriptionStyleItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -879,6 +998,16 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.radioDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionStyleItemProvider != null)
             this.textfieldDescriptionStyleItemProvider.dispose();
+        if (this.checkboxDescriptionStyleItemProvider != null)
+            this.checkboxDescriptionStyleItemProvider.dispose();
+        if (this.selectDescriptionStyleItemProvider != null)
+            this.selectDescriptionStyleItemProvider.dispose();
+        if (this.multiSelectDescriptionStyleItemProvider != null)
+            this.multiSelectDescriptionStyleItemProvider.dispose();
+        if (this.textareaDescriptionStyleItemProvider != null)
+            this.textareaDescriptionStyleItemProvider.dispose();
+        if (this.radioDescriptionStyleItemProvider != null)
+            this.radioDescriptionStyleItemProvider.dispose();
     }
 
 }

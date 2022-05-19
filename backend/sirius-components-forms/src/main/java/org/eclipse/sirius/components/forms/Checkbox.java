@@ -34,6 +34,8 @@ public final class Checkbox extends AbstractWidget {
 
     private Function<Boolean, IStatus> newValueHandler;
 
+    private CheckboxStyle style;
+
     private Checkbox() {
         // Prevent instantiation
     }
@@ -48,6 +50,10 @@ public final class Checkbox extends AbstractWidget {
 
     public Function<Boolean, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public CheckboxStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newCheckbox(String id) {
@@ -75,6 +81,8 @@ public final class Checkbox extends AbstractWidget {
 
         private Function<Boolean, IStatus> newValueHandler;
 
+        private CheckboxStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -96,6 +104,11 @@ public final class Checkbox extends AbstractWidget {
             return this;
         }
 
+        public Builder style(CheckboxStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -107,6 +120,7 @@ public final class Checkbox extends AbstractWidget {
             checkbox.label = Objects.requireNonNull(this.label);
             checkbox.value = Objects.requireNonNull(this.value);
             checkbox.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            checkbox.style = this.style; // Optional on purpose
             checkbox.diagnostics = Objects.requireNonNull(this.diagnostics);
             return checkbox;
         }

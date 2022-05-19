@@ -34,6 +34,29 @@ const defaultCheckbox: Checkbox = {
   label: 'CheckboxLabel',
   diagnostics: [],
   booleanValue: false,
+  style: null,
+};
+
+const checkboxWithStyle: Checkbox = {
+  __typename: 'Checkbox',
+  id: 'checkboxId',
+  label: 'CheckboxLabel',
+  diagnostics: [],
+  booleanValue: false,
+  style: {
+    color: '#de1000',
+  },
+};
+
+const checkboxWithEmptyStyle: Checkbox = {
+  __typename: 'Checkbox',
+  id: 'checkboxId',
+  label: 'CheckboxLabel',
+  diagnostics: [],
+  booleanValue: false,
+  style: {
+    color: '',
+  },
 };
 
 const editCheckboxVariables: GQLEditCheckboxMutationVariables = {
@@ -217,4 +240,49 @@ test('should display the error received', async () => {
       expect(baseElement).toMatchSnapshot();
     });
   });
+});
+
+test('should render the checkbox without style', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <CheckboxPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultCheckbox}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the checkbox with style', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <CheckboxPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={checkboxWithStyle}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the checkbox with empty style', async () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <CheckboxPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={checkboxWithEmptyStyle}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
 });

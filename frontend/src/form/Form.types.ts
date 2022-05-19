@@ -61,29 +61,71 @@ export interface Textfield extends Widget {
 export interface TextfieldStyle {
   backgroundColor: string | null;
   foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface Textarea extends Widget {
   label: string;
   stringValue: string;
-  style: TextfieldStyle;
+  style: TextareaStyle | null;
+}
+
+export interface TextareaStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface Checkbox extends Widget {
   label: string;
   booleanValue: boolean;
+  style: CheckboxStyle | null;
+}
+
+export interface CheckboxStyle {
+  color: string | null;
 }
 
 export interface Select extends Widget {
   label: string;
   value: string;
   options: SelectOption[];
+  style: SelectStyle | null;
+}
+
+export interface SelectStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface MultiSelect extends Widget {
   label: string;
   values: string[];
   options: SelectOption[];
+  style: MultiSelectStyle | null;
+}
+
+export interface MultiSelectStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface SelectOption {
@@ -94,12 +136,22 @@ export interface SelectOption {
 export interface Radio extends Widget {
   label: string;
   options: RadioOption[];
+  style: RadioStyle | null;
 }
 
 export interface RadioOption {
   id: string;
   label: string;
   selected: boolean;
+}
+
+export interface RadioStyle {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface List extends Widget {

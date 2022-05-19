@@ -40,15 +40,19 @@ import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
-import org.eclipse.sirius.components.forms.description.TextfieldDescription.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -81,7 +85,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         TextfieldDescriptionStyle textfieldDescriptionStyle = viewTextfieldDescription.getStyle();
 
         // @formatter:off
-        Builder textfieldBuilder = TextfieldDescription.newTextfieldDescription(descriptionId)
+        TextfieldDescription.Builder textfieldBuilder = TextfieldDescription.newTextfieldDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
@@ -107,17 +111,24 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String valueExpression = Optional.ofNullable(viewCheckboxDescription.getValueExpression()).orElse(""); //$NON-NLS-1$
         BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewCheckboxDescription.getBody());
+        CheckboxDescriptionStyle checkboxDescriptionStyle = viewCheckboxDescription.getStyle();
 
         // @formatter:off
-        return CheckboxDescription.newCheckboxDescription(descriptionId)
+        CheckboxDescription.Builder checkboxBuilder = CheckboxDescription.newCheckboxDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
-                .build();
+                .messageProvider(diagnostic -> ""); //$NON-NLS-1$
+
+        if (checkboxDescriptionStyle != null) {
+            CheckboxStyleProvider styleProvider = new CheckboxStyleProvider(checkboxDescriptionStyle);
+            checkboxBuilder.styleProvider(styleProvider);
+        }
+
+        return checkboxBuilder.build();
         // @formatter:on
     }
 
@@ -134,8 +145,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             return this.interpreter.evaluateExpression(variableManager.getVariables(), candidateExpression).asObjects().orElse(new ArrayList<>());
         };
         BiFunction<VariableManager, String, IStatus> selectNewValueHandler = this.getSelectNewValueHandler(viewSelectDescription.getBody());
+        SelectDescriptionStyle selectDescriptionStyle = viewSelectDescription.getStyle();
+
         // @formatter:off
-        return SelectDescription.newSelectDescription(descriptionId)
+        SelectDescription.Builder selectBuilder = SelectDescription.newSelectDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
@@ -145,8 +158,14 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .newValueHandler(selectNewValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
-                .build();
+                .messageProvider(diagnostic -> ""); //$NON-NLS-1$
+
+        if (selectDescriptionStyle != null) {
+            SelectStyleProvider styleProvider = new SelectStyleProvider(selectDescriptionStyle);
+            selectBuilder.styleProvider(styleProvider);
+        }
+
+        return selectBuilder.build();
         // @formatter:on
     }
 
@@ -157,17 +176,24 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(textAreaDescription.getLabelExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(textAreaDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(textAreaDescription.getBody());
+        TextareaDescriptionStyle textareaDescriptionStyle = textAreaDescription.getStyle();
 
         // @formatter:off
-        return TextareaDescription.newTextareaDescription(descriptionId)
+        TextareaDescription.Builder textareaBuilder = TextareaDescription.newTextareaDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
-                .build();
+                .messageProvider(diagnostic -> ""); //$NON-NLS-1$
+
+        if (textareaDescriptionStyle != null) {
+            TextareaStyleProvider styleProvider = new TextareaStyleProvider(textareaDescriptionStyle);
+            textareaBuilder.styleProvider(styleProvider);
+        }
+
+        return textareaBuilder.build();
         // @formatter:on
     }
 
@@ -184,8 +210,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             return this.interpreter.evaluateExpression(variableManager.getVariables(), candidateExpression).asObjects().orElse(new ArrayList<>());
         };
         BiFunction<VariableManager, List<String>, IStatus> multiSelectNewValueHandler = this.getMultiSelectNewValuesHandler(multiSelectDescription.getBody());
+        MultiSelectDescriptionStyle multiSelectDescriptionStyle = multiSelectDescription.getStyle();
+
         // @formatter:off
-        return MultiSelectDescription.newMultiSelectDescription(descriptionId)
+        MultiSelectDescription.Builder multiSelectBuilder = MultiSelectDescription.newMultiSelectDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valuesProvider(valuesProvider)
@@ -195,8 +223,14 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .newValuesHandler(multiSelectNewValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
-                .build();
+                .messageProvider(diagnostic -> ""); //$NON-NLS-1$
+
+        if (multiSelectDescriptionStyle != null) {
+            MultiSelectStyleProvider styleProvider = new MultiSelectStyleProvider(multiSelectDescriptionStyle);
+            multiSelectBuilder.styleProvider(styleProvider);
+        }
+
+        return multiSelectBuilder.build();
         // @formatter:on
     }
 
@@ -220,8 +254,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         };
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getSelectNewValueHandler(radioDescription.getBody());
+        RadioDescriptionStyle radioDescriptionStyle = radioDescription.getStyle();
+
         // @formatter:off
-        return RadioDescription.newRadioDescription(descriptionId)
+        RadioDescription.Builder radioBuilder = RadioDescription.newRadioDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .optionIdProvider(optionIdProvider)
@@ -231,8 +267,14 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
-                .build();
+                .messageProvider(object -> ""); //$NON-NLS-1$
+
+        if (radioDescriptionStyle != null) {
+            RadioStyleProvider styleProvider = new RadioStyleProvider(radioDescriptionStyle);
+            radioBuilder.styleProvider(styleProvider);
+        }
+
+        return radioBuilder.build();
         // @formatter:on
 
     }

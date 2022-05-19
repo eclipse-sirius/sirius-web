@@ -26,15 +26,22 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.view.form.ViewFormDescriptionConverter;
+import org.eclipse.sirius.components.forms.AbstractFontStyle;
 import org.eclipse.sirius.components.forms.Checkbox;
+import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.MultiSelect;
+import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
+import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.Textarea;
+import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
@@ -42,12 +49,17 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.CheckboxDescription;
+import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
+import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescription;
+import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.TextAreaDescription;
+import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.UnsetValue;
@@ -73,7 +85,7 @@ public class DynamicFormsTests {
     void testRenderEcoreForm() throws Exception {
 
         this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription();
+        FormDescription eClassFormDescription = this.createClassFormDescription(false);
         Form result = this.render(eClassFormDescription, this.eClass1);
 
         assertThat(result).isNotNull();
@@ -91,21 +103,81 @@ public class DynamicFormsTests {
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        this.testNoStyle(textfield);
 
         assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
         assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
+        this.testNoStyle(textarea);
 
         assertThat(multiSelect.getOptions()).hasSize(3);
         assertThat(multiSelect.getValues()).hasSize(2);
         assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
         assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        this.testNoStyle(multiSelect);
 
         assertThat(checkBox.isValue()).isTrue();
         assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        this.testNoStyle(checkBox);
 
         assertThat(select.getOptions()).hasSize(3);
         assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
         assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
+        this.testNoStyle(select);
+
+        assertThat(radio.getOptions()).hasSize(3);
+        assertThat(radio.getOptions()).allSatisfy(option -> {
+            if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
+                assertThat(option.isSelected()).isTrue();
+            } else {
+                assertThat(option.isSelected()).isFalse();
+            }
+        });
+        assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        this.testNoStyle(radio);
+    }
+
+    @Test
+    void testRenderEcoreFormWithStyle() throws Exception {
+
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(true);
+        Form result = this.render(eClassFormDescription, this.eClass1);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPages()).hasSize(1);
+        assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
+
+        Group group = result.getPages().get(0).getGroups().get(0);
+        assertThat(group.getWidgets()).hasSize(6);
+        Textfield textfield = (Textfield) group.getWidgets().get(0);
+        Textarea textarea = (Textarea) group.getWidgets().get(1);
+        MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
+        Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
+        Select select = (Select) group.getWidgets().get(4);
+        Radio radio = (Radio) group.getWidgets().get(5);
+
+        assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        this.testStyle(textfield);
+
+        assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
+        assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
+        this.testStyle(textarea);
+
+        assertThat(multiSelect.getOptions()).hasSize(3);
+        assertThat(multiSelect.getValues()).hasSize(2);
+        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        this.testStyle(multiSelect);
+
+        assertThat(checkBox.isValue()).isTrue();
+        assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        this.testStyle(checkBox);
+
+        assertThat(select.getOptions()).hasSize(3);
+        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
+        assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
+        this.testStyle(select);
 
         assertThat(radio.getOptions()).hasSize(3);
         radio.getOptions().forEach(option -> {
@@ -116,13 +188,14 @@ public class DynamicFormsTests {
             }
         });
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        this.testStyle(radio);
 
     }
 
     @Test
     void testEditingEcoreForm() throws Exception {
         this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription();
+        FormDescription eClassFormDescription = this.createClassFormDescription(false);
         Form form = this.render(eClassFormDescription, this.eClass1);
         assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(6);
 
@@ -175,26 +248,36 @@ public class DynamicFormsTests {
 
     }
 
-    private FormDescription createClassFormDescription() {
+    private FormDescription createClassFormDescription(boolean withStyle) {
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
         formDescription.setName("Simple Ecore Form"); //$NON-NLS-1$
         formDescription.setTitleExpression("aql:self.name"); //$NON-NLS-1$
         formDescription.setDomainType("ecore::EClass"); //$NON-NLS-1$
-        this.createTextfield(formDescription);
-        this.createTextArea(formDescription);
-        this.createMultiSelect(formDescription);
-        this.createCheckbox(formDescription);
-        this.createSelect(formDescription);
-        this.createRadio(formDescription);
+        this.createTextfield(formDescription, withStyle);
+        this.createTextArea(formDescription, withStyle);
+        this.createMultiSelect(formDescription, withStyle);
+        this.createCheckbox(formDescription, withStyle);
+        this.createSelect(formDescription, withStyle);
+        this.createRadio(formDescription, withStyle);
         return formDescription;
     }
 
-    private void createRadio(FormDescription formDescription) {
+    private void createRadio(FormDescription formDescription, boolean withStyle) {
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
         radioDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
         radioDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
         radioDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
         radioDescription.setCandidateLabelExpression("aql:candidate.name"); //$NON-NLS-1$
+        if (withStyle) {
+            RadioDescriptionStyle style = ViewFactory.eINSTANCE.createRadioDescriptionStyle();
+            style.setColor("#de1000"); //$NON-NLS-1$
+            style.setFontSize(20);
+            style.setItalic(true);
+            style.setBold(true);
+            style.setUnderline(true);
+            style.setStrikeThrough(true);
+            radioDescription.setStyle(style);
+        }
         formDescription.getWidgets().add(radioDescription);
 
         SetValue radioSetValue = ViewFactory.eINSTANCE.createSetValue();
@@ -203,12 +286,23 @@ public class DynamicFormsTests {
         radioDescription.getBody().add(radioSetValue);
     }
 
-    private void createSelect(FormDescription formDescription) {
+    private void createSelect(FormDescription formDescription, boolean withStyle) {
         SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
         selectDescription.setLabelExpression("aql:'eSuper Types'"); //$NON-NLS-1$
         selectDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
         selectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
         selectDescription.setCandidateLabelExpression("aql:candidate.name"); //$NON-NLS-1$
+        if (withStyle) {
+            SelectDescriptionStyle style = ViewFactory.eINSTANCE.createSelectDescriptionStyle();
+            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
+            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setFontSize(20);
+            style.setItalic(true);
+            style.setBold(true);
+            style.setUnderline(true);
+            style.setStrikeThrough(true);
+            selectDescription.setStyle(style);
+        }
         formDescription.getWidgets().add(selectDescription);
 
         UnsetValue selectUnsetValue = ViewFactory.eINSTANCE.createUnsetValue();
@@ -222,10 +316,15 @@ public class DynamicFormsTests {
         selectUnsetValue.getChildren().add(selectSetValue);
     }
 
-    private void createCheckbox(FormDescription formDescription) {
+    private void createCheckbox(FormDescription formDescription, boolean withStyle) {
         CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setLabelExpression("is Abstract"); //$NON-NLS-1$
-        checkboxDescription.setValueExpression("aql:self.abstract"); //$NON-NLS-1$ 7
+        checkboxDescription.setValueExpression("aql:self.abstract"); //$NON-NLS-1$
+        if (withStyle) {
+            CheckboxDescriptionStyle style = ViewFactory.eINSTANCE.createCheckboxDescriptionStyle();
+            style.setColor("#de1000"); //$NON-NLS-1$
+            checkboxDescription.setStyle(style);
+        }
         formDescription.getWidgets().add(checkboxDescription);
 
         SetValue checkboxSetValue = ViewFactory.eINSTANCE.createSetValue();
@@ -234,12 +333,23 @@ public class DynamicFormsTests {
         checkboxDescription.getBody().add(checkboxSetValue);
     }
 
-    private void createMultiSelect(FormDescription formDescription) {
+    private void createMultiSelect(FormDescription formDescription, boolean withStyle) {
         MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
         multiSelectDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
         multiSelectDescription.setValueExpression("aql:self.eSuperTypes"); //$NON-NLS-1$
         multiSelectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
         multiSelectDescription.setCandidateLabelExpression("aql:candidate.name"); //$NON-NLS-1$
+        if (withStyle) {
+            MultiSelectDescriptionStyle style = ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle();
+            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
+            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setFontSize(20);
+            style.setItalic(true);
+            style.setBold(true);
+            style.setUnderline(true);
+            style.setStrikeThrough(true);
+            multiSelectDescription.setStyle(style);
+        }
         formDescription.getWidgets().add(multiSelectDescription);
 
         UnsetValue multiSelectUnsetValue = ViewFactory.eINSTANCE.createUnsetValue();
@@ -253,10 +363,21 @@ public class DynamicFormsTests {
         multiSelectUnsetValue.getChildren().add(multiSelectSetValue);
     }
 
-    private void createTextArea(FormDescription formDescription) {
+    private void createTextArea(FormDescription formDescription, boolean withStyle) {
         TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
         textareaDescription.setLabelExpression("aql:'Instance Class Name'"); //$NON-NLS-1$
         textareaDescription.setValueExpression("aql:self.instanceClassName"); //$NON-NLS-1$
+        if (withStyle) {
+            TextareaDescriptionStyle style = ViewFactory.eINSTANCE.createTextareaDescriptionStyle();
+            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
+            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setFontSize(20);
+            style.setItalic(true);
+            style.setBold(true);
+            style.setUnderline(true);
+            style.setStrikeThrough(true);
+            textareaDescription.setStyle(style);
+        }
         formDescription.getWidgets().add(textareaDescription);
 
         SetValue textareaSetValue = ViewFactory.eINSTANCE.createSetValue();
@@ -265,21 +386,111 @@ public class DynamicFormsTests {
         textareaDescription.getBody().add(textareaSetValue);
     }
 
-    private void createTextfield(FormDescription formDescription) {
+    private void createTextfield(FormDescription formDescription, boolean withStyle) {
         TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setLabelExpression("aql:'EClass name'"); //$NON-NLS-1$
         textfieldDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
         textfieldDescription.setName("Class Name"); //$NON-NLS-1$
-        TextfieldDescriptionStyle textfieldDescriptionStyle = ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
-        textfieldDescriptionStyle.setBackgroundColor(null);
-        textfieldDescriptionStyle.setForegroundColor(null);
-        textfieldDescription.setStyle(textfieldDescriptionStyle);
+        if (withStyle) {
+            TextfieldDescriptionStyle style = ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
+            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
+            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setFontSize(20);
+            style.setItalic(true);
+            style.setBold(true);
+            style.setUnderline(true);
+            style.setStrikeThrough(true);
+            textfieldDescription.setStyle(style);
+        }
         formDescription.getWidgets().add(textfieldDescription);
 
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
         setValue.setFeatureName("name"); //$NON-NLS-1$
         setValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         textfieldDescription.getBody().add(setValue);
+    }
+
+    private void testStyle(Textfield textfield) {
+        TextfieldStyle textfieldStyle = textfield.getStyle();
+        assertThat(textfieldStyle).isNotNull();
+        assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        this.testFontStyle(textfieldStyle);
+    }
+
+    private void testNoStyle(Textfield textfield) {
+        TextfieldStyle textfieldStyle = textfield.getStyle();
+        assertThat(textfieldStyle).isNull();
+    }
+
+    private void testStyle(Textarea textarea) {
+        TextareaStyle textareaStyle = textarea.getStyle();
+        assertThat(textareaStyle).isNotNull();
+        assertThat(textareaStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(textareaStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        this.testFontStyle(textareaStyle);
+    }
+
+    private void testNoStyle(Textarea textarea) {
+        TextareaStyle textareaStyle = textarea.getStyle();
+        assertThat(textareaStyle).isNull();
+    }
+
+    private void testStyle(Radio radio) {
+        RadioStyle radioStyle = radio.getStyle();
+        assertThat(radioStyle).isNotNull();
+        assertThat(radioStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        this.testFontStyle(radioStyle);
+    }
+
+    private void testNoStyle(Radio radio) {
+        RadioStyle radioStyle = radio.getStyle();
+        assertThat(radioStyle).isNull();
+    }
+
+    private void testStyle(Select select) {
+        SelectStyle selectStyle = select.getStyle();
+        assertThat(selectStyle).isNotNull();
+        assertThat(selectStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(selectStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        this.testFontStyle(selectStyle);
+    }
+
+    private void testNoStyle(Select select) {
+        SelectStyle selectStyle = select.getStyle();
+        assertThat(selectStyle).isNull();
+    }
+
+    private void testStyle(Checkbox checkBox) {
+        CheckboxStyle checkBoxStyle = checkBox.getStyle();
+        assertThat(checkBoxStyle).isNotNull();
+        assertThat(checkBoxStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+    }
+
+    private void testNoStyle(Checkbox checkBox) {
+        CheckboxStyle checkBoxStyle = checkBox.getStyle();
+        assertThat(checkBoxStyle).isNull();
+    }
+
+    private void testStyle(MultiSelect multiSelect) {
+        MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
+        assertThat(multiSelectStyle).isNotNull();
+        assertThat(multiSelectStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(multiSelectStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        this.testFontStyle(multiSelectStyle);
+    }
+
+    private void testNoStyle(MultiSelect multiSelect) {
+        MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
+        assertThat(multiSelectStyle).isNull();
+    }
+
+    private void testFontStyle(AbstractFontStyle fontStyle) {
+        assertThat(fontStyle.getFontSize()).isEqualTo(20);
+        assertThat(fontStyle.isItalic()).isTrue();
+        assertThat(fontStyle.isBold()).isTrue();
+        assertThat(fontStyle.isUnderline()).isTrue();
+        assertThat(fontStyle.isStrikeThrough()).isTrue();
     }
 
     private EPackage buildFixture() {

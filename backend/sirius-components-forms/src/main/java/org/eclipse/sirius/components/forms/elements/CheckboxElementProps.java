@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -39,6 +40,8 @@ public final class CheckboxElementProps implements IProps {
 
     private Function<Boolean, IStatus> newValueHandler;
 
+    private CheckboxStyle style;
+
     private List<Element> children;
 
     private CheckboxElementProps() {
@@ -59,6 +62,10 @@ public final class CheckboxElementProps implements IProps {
 
     public Function<Boolean, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public CheckboxStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -91,6 +98,8 @@ public final class CheckboxElementProps implements IProps {
 
         private Function<Boolean, IStatus> newValueHandler;
 
+        private CheckboxStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -112,6 +121,11 @@ public final class CheckboxElementProps implements IProps {
             return this;
         }
 
+        public Builder style(CheckboxStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -123,6 +137,7 @@ public final class CheckboxElementProps implements IProps {
             checkboxElementProps.label = Objects.requireNonNull(this.label);
             checkboxElementProps.value = Objects.requireNonNull(this.value);
             checkboxElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            checkboxElementProps.style = this.style; // Optional on purpose
             checkboxElementProps.children = Objects.requireNonNull(this.children);
             return checkboxElementProps;
         }

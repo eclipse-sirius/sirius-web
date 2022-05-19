@@ -34,6 +34,8 @@ public final class Textarea extends AbstractWidget {
 
     private Function<String, IStatus> newValueHandler;
 
+    private TextareaStyle style;
+
     private Textarea() {
         // Prevent instantiation
     }
@@ -48,6 +50,10 @@ public final class Textarea extends AbstractWidget {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public TextareaStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newTextarea(String id) {
@@ -75,6 +81,8 @@ public final class Textarea extends AbstractWidget {
 
         private Function<String, IStatus> newValueHandler;
 
+        private TextareaStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -96,6 +104,11 @@ public final class Textarea extends AbstractWidget {
             return this;
         }
 
+        public Builder style(TextareaStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -107,6 +120,7 @@ public final class Textarea extends AbstractWidget {
             textarea.label = Objects.requireNonNull(this.label);
             textarea.value = Objects.requireNonNull(this.value);
             textarea.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            textarea.style = this.style; // Optional on purpose
             textarea.diagnostics = Objects.requireNonNull(this.diagnostics);
             return textarea;
         }

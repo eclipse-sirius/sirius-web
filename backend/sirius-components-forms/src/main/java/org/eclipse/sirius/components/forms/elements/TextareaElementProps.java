@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -39,6 +40,8 @@ public final class TextareaElementProps implements IProps {
 
     private Function<String, IStatus> newValueHandler;
 
+    private TextareaStyle style;
+
     private List<Element> children;
 
     private TextareaElementProps() {
@@ -59,6 +62,10 @@ public final class TextareaElementProps implements IProps {
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public TextareaStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -91,6 +98,8 @@ public final class TextareaElementProps implements IProps {
 
         private Function<String, IStatus> newValueHandler;
 
+        private TextareaStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -112,6 +121,11 @@ public final class TextareaElementProps implements IProps {
             return this;
         }
 
+        public Builder style(TextareaStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -123,6 +137,7 @@ public final class TextareaElementProps implements IProps {
             textareaElementProps.label = Objects.requireNonNull(this.label);
             textareaElementProps.value = Objects.requireNonNull(this.value);
             textareaElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            textareaElementProps.style = this.style; // Optional on purpose
             textareaElementProps.children = Objects.requireNonNull(this.children);
             return textareaElementProps;
         }

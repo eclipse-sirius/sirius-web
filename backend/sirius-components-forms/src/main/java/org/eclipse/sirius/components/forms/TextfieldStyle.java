@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author arichard
  */
 @Immutable
-public final class TextfieldStyle {
+public final class TextfieldStyle extends AbstractFontStyle {
 
     private String backgroundColor;
 
@@ -47,8 +47,8 @@ public final class TextfieldStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'backgroundColor: {1}, foregroundcolor: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.backgroundColor, this.foregroundColor);
+        String pattern = "{0} '{'backgroundColor: {1}, foregroundColor: {2}, fontSize: {3}, italic: {4}, bold: {5}, underline: {6}, strikeThrough: {7},'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.backgroundColor, this.foregroundColor, this.fontSize, this.italic, this.bold, this.underline, this.strikeThrough);
     }
 
     /**
@@ -61,6 +61,16 @@ public final class TextfieldStyle {
         private String backgroundColor;
 
         private String foregroundColor;
+
+        private int fontSize;
+
+        private boolean italic;
+
+        private boolean bold;
+
+        private boolean underline;
+
+        private boolean strikeThrough;
 
         private Builder() {
         }
@@ -75,10 +85,40 @@ public final class TextfieldStyle {
             return this;
         }
 
+        public Builder fontSize(int fontSize) {
+            this.fontSize = fontSize;
+            return this;
+        }
+
+        public Builder italic(boolean italic) {
+            this.italic = italic;
+            return this;
+        }
+
+        public Builder bold(boolean bold) {
+            this.bold = bold;
+            return this;
+        }
+
+        public Builder underline(boolean underline) {
+            this.underline = underline;
+            return this;
+        }
+
+        public Builder strikeThrough(boolean strikeThrough) {
+            this.strikeThrough = strikeThrough;
+            return this;
+        }
+
         public TextfieldStyle build() {
             TextfieldStyle textfieldStyle = new TextfieldStyle();
             textfieldStyle.backgroundColor = this.backgroundColor;
             textfieldStyle.foregroundColor = this.foregroundColor;
+            textfieldStyle.fontSize = this.fontSize;
+            textfieldStyle.italic = this.italic;
+            textfieldStyle.bold = this.bold;
+            textfieldStyle.underline = this.underline;
+            textfieldStyle.strikeThrough = this.strikeThrough;
             return textfieldStyle;
         }
 

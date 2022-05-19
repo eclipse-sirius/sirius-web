@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import {
@@ -31,6 +32,29 @@ import {
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { getTextDecorationLineValue } from './WidgetOperations';
+
+export interface StyleProps {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
+const useStyle = makeStyles<Theme, StyleProps>(() => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
+}));
+
 export const editMultiSelectMutation = gql`
   mutation editMultiSelect($input: EditMultiSelectInput!) {
     editMultiSelect(input: $input) {
@@ -63,6 +87,17 @@ export const MultiSelectPropertySection = ({
   subscribers,
   readOnly,
 }: MultiSelectPropertySectionProps) => {
+  const props: StyleProps = {
+    backgroundColor: widget.style?.backgroundColor ?? null,
+    foregroundColor: widget.style?.foregroundColor ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyle(props);
+
   const [message, setMessage] = useState(null);
   const [isFocused, setFocus] = useState(false);
 
@@ -160,11 +195,27 @@ export const MultiSelectPropertySection = ({
             .join(', ')
         }
         multiple
+        inputProps={
+          widget.style
+            ? {
+                className: classes.style,
+              }
+            : {}
+        }
       >
         {widget.options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
             <Checkbox checked={widget.values.indexOf(option.id) > -1} />
-            <ListItemText primary={option.label} />
+            <ListItemText
+              primary={option.label}
+              primaryTypographyProps={
+                widget.style
+                  ? {
+                      className: classes.style,
+                    }
+                  : {}
+              }
+            />
           </MenuItem>
         ))}
       </Select>
