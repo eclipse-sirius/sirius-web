@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms.services;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.forms.description.FormDescription;
  */
 public class PropertiesDescriptionRegistry implements IPropertiesDescriptionRegistry {
 
-    private final Map<String, FormDescription> id2propertiesDescriptions = new HashMap<>();
+    private final Map<String, FormDescription> id2propertiesDescriptions = new LinkedHashMap<>();
 
     @Override
     public void add(FormDescription formDescription) {
@@ -40,7 +40,7 @@ public class PropertiesDescriptionRegistry implements IPropertiesDescriptionRegi
     }
 
     public List<FormDescription> getPropertiesDescriptions() {
-        return this.id2propertiesDescriptions.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(this.id2propertiesDescriptions.values());
     }
 
 }
