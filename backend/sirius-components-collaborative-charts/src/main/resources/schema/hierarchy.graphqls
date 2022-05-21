@@ -15,11 +15,24 @@ type HierarchyRefreshedEventPayload {
   hierarchy: Hierarchy!
 }
 
+union Chart = Hierarchy | BarChart
+
 type Hierarchy implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
   targetObjectId: ID!
   children: [HierarchyNode!]!
+}
+
+type BarChart implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  entries: [BarChartEntry!]!
+}
+
+type BarChartEntry {
+  key: String!
+  value: Float!
 }
 
 type HierarchyNode {

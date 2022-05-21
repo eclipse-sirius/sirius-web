@@ -13,6 +13,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {
+  ChartWidget,
   Checkbox,
   Link,
   List,
@@ -34,6 +35,7 @@ import { SelectPropertySection } from 'properties/propertysections/SelectPropert
 import { TextfieldPropertySection } from 'properties/propertysections/TextfieldPropertySection';
 import React from 'react';
 import { Selection } from 'workbench/Workbench.types';
+import { ChartWidgetPropertySection } from './propertysections/ChartWidgetPropertySection';
 
 const useGroupStyles = makeStyles((theme) => ({
   group: {
@@ -79,6 +81,7 @@ const isMultiSelect = (widget: Widget): widget is MultiSelect => widget.__typena
 const isRadio = (widget: Widget): widget is Radio => widget.__typename === 'Radio';
 const isList = (widget: Widget): widget is List => widget.__typename === 'List';
 const isLink = (widget: Widget): widget is Link => widget.__typename === 'Link';
+const isChartWidget = (widget: Widget): widget is ChartWidget => widget.__typename === 'ChartWidget';
 
 const widgetToPropertySection = (
   editingContextId: string,
@@ -163,6 +166,8 @@ const widgetToPropertySection = (
     );
   } else if (isLink(widget)) {
     propertySection = <LinkPropertySection widget={widget} key={widget.id} />;
+  } else if (isChartWidget(widget)) {
+    propertySection = <ChartWidgetPropertySection widget={widget} key={widget.id} />;
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);
   }
