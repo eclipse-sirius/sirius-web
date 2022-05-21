@@ -15,7 +15,10 @@ package org.eclipse.sirius.components.forms.renderer;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.charts.IChart;
+import org.eclipse.sirius.components.charts.hierarchy.renderer.HierarchyElementFactory;
 import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
@@ -26,6 +29,7 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -48,6 +52,8 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author sbegaudeau
  */
 public class FormElementFactory implements IElementFactory {
+
+    private final HierarchyElementFactory hierarchyElementFactory = new HierarchyElementFactory();
 
     @Override
     public Object instantiateElement(String type, IProps props, List<Object> children) {
@@ -76,7 +82,12 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateDiagnostic((DiagnosticElementProps) props, children);
         } else if (LinkElementProps.TYPE.equals(type) && props instanceof LinkElementProps) {
             object = this.instantiateLink((LinkElementProps) props, children);
+        } else if (ChartWidgetElementProps.TYPE.equals(type) && props instanceof ChartWidgetElementProps) {
+            object = this.instantiateChartWidget((ChartWidgetElementProps) props, children);
+        } else {
+            object = this.hierarchyElementFactory.instantiateElement(type, props, children);
         }
+
         return object;
     }
 
@@ -235,6 +246,23 @@ public class FormElementFactory implements IElementFactory {
                  .diagnostics(diagnostics)
                  .build();
        // @formatter:on
+    }
+
+    private Object instantiateChartWidget(ChartWidgetElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+        // @formatter:off
+        var chart = children.stream()
+                .filter(IChart.class::isInstance)
+                .map(IChart.class::cast)
+                .findFirst()
+                .orElse(null);
+
+        return ChartWidget.newChartWidget(props.getId())
+                .label(props.getLabel())
+                .chart(chart)
+                .diagnostics(diagnostics)
+                .build();
+        // @formatter:on
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {

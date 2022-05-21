@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.renderer;
 
+import org.eclipse.sirius.components.charts.hierarchy.renderer.HierarchyInstancePropsValidator;
+import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -62,6 +64,10 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof DiagnosticElementProps;
         } else if (LinkElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof LinkElementProps;
+        } else if (ChartWidgetElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof ChartWidgetElementProps;
+        } else {
+            checkValidProps = new HierarchyInstancePropsValidator().validateInstanceProps(type, props);
         }
 
         return checkValidProps;

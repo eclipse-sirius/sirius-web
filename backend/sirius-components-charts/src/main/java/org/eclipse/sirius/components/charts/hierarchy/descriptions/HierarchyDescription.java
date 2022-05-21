@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author sbegaudeau
  */
-public class HierarchyDescription implements IRepresentationDescription {
+public class HierarchyDescription implements IChartDescription {
     public static final String LABEL = "label"; //$NON-NLS-1$
 
     private String id;

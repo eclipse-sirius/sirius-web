@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
 /**
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  *
  * @author sbegaudeau
  */
-public class Hierarchy implements IRepresentation, ISemanticRepresentation {
+public class Hierarchy implements IChart, ISemanticRepresentation {
 
     private String id;
 

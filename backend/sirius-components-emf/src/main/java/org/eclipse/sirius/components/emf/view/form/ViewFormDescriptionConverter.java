@@ -12,26 +12,32 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.view.form;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
+import org.eclipse.sirius.components.charts.hierarchy.descriptions.HierarchyDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.compatibility.DomainClassPredicate;
 import org.eclipse.sirius.components.emf.view.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
+import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
+import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -68,28 +74,33 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
         ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
         // @formatter:off
-        List<AbstractControlDescription> textfieldDescriptions = viewFormDescription.getWidgets().stream()
+        List<AbstractControlDescription> controlDescriptions = viewFormDescription.getWidgets().stream()
                 .map(dispatcher::doSwitch)
                 .collect(Collectors.toList());
 
-        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream()
-                .collect(Collectors.toList());
+
+         var zoomableCirclePackingDescription = this.getZoomableCirclePackingDescription();
+        // @formatter:off
+        controlDescriptions.add(ChartWidgetDescription.newChartWidgetDescription("myChart") //$NON-NLS-1$
+                .chartDescription(zoomableCirclePackingDescription)
+                .idProvider(variableManger -> "id") //$NON-NLS-1$
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "kind") //$NON-NLS-1$
+                .labelProvider(variableManager -> "label") //$NON-NLS-1$
+                .messageProvider(object -> "message") //$NON-NLS-1$
+                .build());
+
+        // @formatter:on
+
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
 
         String descriptionId = this.getDescriptionId(viewFormDescription);
         GroupDescription groupDescription = GroupDescription.newGroupDescription(descriptionId + "_group") //$NON-NLS-1$
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
-                .semanticElementsProvider(semanticElementsProvider)
-                .controlDescriptions(textfieldDescriptions)
-                .build();
+                .idProvider(new GetOrCreateRandomIdProvider()).labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
+                .semanticElementsProvider(semanticElementsProvider).controlDescriptions(controlDescriptions).build();
         PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page") //$NON-NLS-1$
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
-                .semanticElementsProvider(semanticElementsProvider)
-                .canCreatePredicate(variableManager -> true)
-                .groupDescriptions(List.of(groupDescription))
-                .build();
-
+                .idProvider(new GetOrCreateRandomIdProvider()).labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
+                .semanticElementsProvider(semanticElementsProvider).canCreatePredicate(variableManager -> true).groupDescriptions(List.of(groupDescription)).build();
 
         // @formatter:on
         List<GroupDescription> groupDescriptions = List.of(groupDescription);
@@ -115,6 +126,37 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .groupDescriptions(groupDescriptions)
                 .build();
         // @formatter:on
+    }
+
+    private HierarchyDescription getHierarchyDescription(String id, String label, String kind) {
+        // @formatter:off
+           Predicate<VariableManager> canCreatePredicate = variableManager -> true;
+
+           Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                   .map(this.objectService::getId)
+                   .orElse(null);
+
+           Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                   .map(this.objectService::getLabel)
+                   .orElse(null);
+
+           Function<VariableManager, List<Object>> childSemanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, EObject.class)
+                   .map(eObject -> {
+                       List<Object> objects = new ArrayList<>();
+                       objects.addAll(eObject.eContents());
+                       return objects;
+                   })
+                   .orElse(List.of());
+
+           // @formatter:on
+        return new HierarchyDescription(id, label, kind, canCreatePredicate, targetObjectIdProvider, labelProvider, childSemanticElementsProvider);
+    }
+
+    private IChartDescription getZoomableCirclePackingDescription() {
+        UUID id = UUID.nameUUIDFromBytes("ZoomableCirclePacking".getBytes()); //$NON-NLS-1$
+        String label = "ZoomableCirclePacking"; //$NON-NLS-1$
+
+        return this.getHierarchyDescription(id.toString(), label, IRepresentation.KIND_PREFIX + "?type=ZoomableCirclePacking"); //$NON-NLS-1$
     }
 
     private String computeFormLabel(org.eclipse.sirius.components.view.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
