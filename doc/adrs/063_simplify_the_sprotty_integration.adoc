@@ -1,0 +1,25 @@
+= ADR-063 - Simplify the Sprotty integration
+
+== Context
+
+The integration of Sprotty in our code is way more complex than it should.
+We will simplify it by moving tightly related pieces of code closer from one another.
+
+== Decision
+
+`DiagramWebSocketContainer` has no reason to manipulate any mutation and it will thus stop from doing so.
+As a result, components will be more responsible of their interactions with the server.
+For example, the palette and the contextual menu of the connector tool should perform all their queries and mutations by themselves.
+It will thus be easier to test the complete lifecycle of each part of the diagram using unit tests.
+
+The `DiagramServer` will also call the backend directly without relying on atomic callbacks from `DiagramWebSocketContainer`.
+We will also reduce the number of calls to the action dispatcher inside of the `DiagramServer` since some of them are quite useless.
+
+== Status
+
+WIP
+
+== Consequences
+
+The `DiagramServer` will need to know the `editingContextId` and the `representationId` in order to perform its requests to the backend.
+We will also reduce the amount of data stored in the state machine of the `DiagramWebSocketContainer`.
