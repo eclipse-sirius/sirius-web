@@ -6,6 +6,7 @@
 
 - [ADR-60] Add support for d3 bars data-structure and bar-chart representation
 - [ADR-61] Add support for flexbox containers on form description
+- [ADR-62] Switch to a monorepo layout
 
 === Deprecation warning
 

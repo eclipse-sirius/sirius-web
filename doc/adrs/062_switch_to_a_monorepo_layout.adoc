@@ -1,0 +1,98 @@
+= ADR-062 - Switch to a monorepo layout
+
+== Context
+
+We want to speed up our development process.
+Our development process is too linear, too monolithic and its https://en.wikipedia.org/wiki/Bus_factor[bus factor] is way too low.
+
+== Decision
+
+We will switch to a monorepo layout for Sirius Components.
+As a result, this repository will now host multiple packages.
+Each package will have the ability to perform a release without automatically releasing all the packages at once.
+As such, downstream projects may not be impacted by the release of a package.
+There will be various code owners for the different packages.
+
+=== Packages
+
+The Git repository will now have a layout organized by packages.
+Inside of the folder dedicated to a package, we will find both its backend and frontend code.
+The frontend folder will contain all the frontend code for the package while the backend folder will have all the backend projects which are used server side.
+
+* `sirius-components`
+  ** `packages`
+    *** `PACKAGE_NAME`
+      **** `backend`
+        ***** `sirius-components-xxx`
+        ***** `sirius-components-yyy`
+        ***** `sirius-components-zzz`
+      **** `frontend`
+
+
+For example, the diagram package will have the following layout:
+
+* `sirius-components`
+  ** `packages`
+    *** `diagrams`
+      **** `backend`
+        ***** `sirius-components-diagrams`
+        ***** `sirius-components-diagrams-layout`
+        ***** `sirius-components-diagrams-layout-api`
+        ***** `sirius-components-diagrams-tests`
+      **** `frontend`
+
+Existing backend projects will just be moved inside of the Git repository.
+This will not have any impact on their content.
+Frontend packages on the other side will be extracted from the package `@eclipse-sirius/sirius-components`.
+
+The various packages will be:
+
+- core
+- charts
+- compatibility
+- domains
+- diagrams
+- emf
+- formdescriptioneditors
+- forms
+- selection
+- trees
+- validation
+- views
+
+Some packages may only have frontend resources while other may only come with backend resources.
+Frontend packages will be named `@eclipse-sirius/sirius-components-packagename` such as `@eclipse-sirius/sirius-components-core`.
+
+=== Releases
+
+Packages will perform a release when it will be considered necessary by the codeowners.
+During an iteration, we may end up with:
+
+- `@eclipse-sirius/sirius-components-core v2022.5.4`
+- `@eclipse-sirius/sirius-components-diagrams v2022.5.12`
+- `@eclipse-sirius/sirius-components-validation v2022.5.0`
+
+Since all the packages will be located in the same repository, the build and tests will be executed for the whole repository at once.
+There cannot be any incompatibilities between the various packages.
+As such, an API break in one package reused by another package will have to be considered as one change accross the Git repository otherwise the code will not compile.
+
+At the end of each iteration, the simultaneous release will be done by upgrading all the packages to the version number of the iteration, for example `2022.5.0`.
+Downstream projects may not depend on everything at once and thus may choose to only follow the updates of the parts they need from Sirius Components.
+
+=== Build
+
+We will switch to a Vite based build in order to speed up our build and lower its complexity.
+We will build every packages at once when a build is performed to ensure that everything stay consistent.
+
+== Status
+
+WIP
+
+== Consequences
+
+The packages of the backend will be moved inside of the Git repository.
+As a result, all contributors will have to import once again all the projects in their development environment.
+
+The frontend will be separated into multiple npm packages.
+Downstream projects will have to update their import declarations to consume this new version of Sirius Components.
+The development process of the frontend will be updated with new tools such as Vite, npm workspaces and Turborepo.
