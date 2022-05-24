@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-edit</artifactId>
-	<version>2022.3.15</version>
+	<version>2022.3.16</version>
 	<name>sirius-components-view-edit</name>
 	<description>Sirius Components View Definition DSL - Edit Support</description>
 
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2022.3.15</version>
+			<version>2022.3.16</version>
 		</dependency>
 	</dependencies>
 	
