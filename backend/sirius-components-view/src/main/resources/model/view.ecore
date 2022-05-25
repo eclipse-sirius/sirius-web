@@ -213,6 +213,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//TextfieldDescriptionStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalTextfieldDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -220,6 +222,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//CheckboxDescriptionStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalCheckboxDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -230,6 +234,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//SelectDescriptionStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalSelectDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -240,6 +246,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//MultiSelectDescriptionStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalMultiSelectDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextAreaDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -247,6 +255,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//TextareaDescriptionStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalTextareaDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RadioDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -257,28 +267,40 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//RadioDescriptionStyle"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalRadioDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescriptionStyle" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextfieldDescriptionStyle"
+      eSuperTypes="#//Conditional #//TextfieldDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalCheckboxDescriptionStyle"
+      eSuperTypes="#//Conditional #//CheckboxDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalSelectDescriptionStyle" eSuperTypes="#//Conditional #//SelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalMultiSelectDescriptionStyle"
+      eSuperTypes="#//Conditional #//MultiSelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextareaDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextareaDescriptionStyle"
+      eSuperTypes="#//Conditional #//TextareaDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="RadioDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalRadioDescriptionStyle" eSuperTypes="#//Conditional #//RadioDescriptionStyle"/>
 </ecore:EPackage>

@@ -725,6 +725,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalTextfieldDescriptionStyleItemProvider conditionalTextfieldDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalTextfieldDescriptionStyleAdapter() {
+        if (this.conditionalTextfieldDescriptionStyleItemProvider == null) {
+            this.conditionalTextfieldDescriptionStyleItemProvider = new ConditionalTextfieldDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalTextfieldDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -745,6 +769,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.checkboxDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalCheckboxDescriptionStyleItemProvider conditionalCheckboxDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalCheckboxDescriptionStyleAdapter() {
+        if (this.conditionalCheckboxDescriptionStyleItemProvider == null) {
+            this.conditionalCheckboxDescriptionStyleItemProvider = new ConditionalCheckboxDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalCheckboxDescriptionStyleItemProvider;
     }
 
     /**
@@ -773,6 +821,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalSelectDescriptionStyleItemProvider conditionalSelectDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalSelectDescriptionStyleAdapter() {
+        if (this.conditionalSelectDescriptionStyleItemProvider == null) {
+            this.conditionalSelectDescriptionStyleItemProvider = new ConditionalSelectDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalSelectDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -793,6 +865,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.multiSelectDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalMultiSelectDescriptionStyleItemProvider conditionalMultiSelectDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalMultiSelectDescriptionStyleAdapter() {
+        if (this.conditionalMultiSelectDescriptionStyleItemProvider == null) {
+            this.conditionalMultiSelectDescriptionStyleItemProvider = new ConditionalMultiSelectDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalMultiSelectDescriptionStyleItemProvider;
     }
 
     /**
@@ -820,6 +916,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalTextareaDescriptionStyleItemProvider conditionalTextareaDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalTextareaDescriptionStyleAdapter() {
+        if (this.conditionalTextareaDescriptionStyleItemProvider == null) {
+            this.conditionalTextareaDescriptionStyleItemProvider = new ConditionalTextareaDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalTextareaDescriptionStyleItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.RadioDescriptionStyle}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -840,6 +960,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.radioDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalRadioDescriptionStyleItemProvider conditionalRadioDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalRadioDescriptionStyleAdapter() {
+        if (this.conditionalRadioDescriptionStyleItemProvider == null) {
+            this.conditionalRadioDescriptionStyleItemProvider = new ConditionalRadioDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalRadioDescriptionStyleItemProvider;
     }
 
     /**
@@ -998,16 +1142,28 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.radioDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionStyleItemProvider != null)
             this.textfieldDescriptionStyleItemProvider.dispose();
+        if (this.conditionalTextfieldDescriptionStyleItemProvider != null)
+            this.conditionalTextfieldDescriptionStyleItemProvider.dispose();
         if (this.checkboxDescriptionStyleItemProvider != null)
             this.checkboxDescriptionStyleItemProvider.dispose();
+        if (this.conditionalCheckboxDescriptionStyleItemProvider != null)
+            this.conditionalCheckboxDescriptionStyleItemProvider.dispose();
         if (this.selectDescriptionStyleItemProvider != null)
             this.selectDescriptionStyleItemProvider.dispose();
+        if (this.conditionalSelectDescriptionStyleItemProvider != null)
+            this.conditionalSelectDescriptionStyleItemProvider.dispose();
         if (this.multiSelectDescriptionStyleItemProvider != null)
             this.multiSelectDescriptionStyleItemProvider.dispose();
+        if (this.conditionalMultiSelectDescriptionStyleItemProvider != null)
+            this.conditionalMultiSelectDescriptionStyleItemProvider.dispose();
         if (this.textareaDescriptionStyleItemProvider != null)
             this.textareaDescriptionStyleItemProvider.dispose();
+        if (this.conditionalTextareaDescriptionStyleItemProvider != null)
+            this.conditionalTextareaDescriptionStyleItemProvider.dispose();
         if (this.radioDescriptionStyleItemProvider != null)
             this.radioDescriptionStyleItemProvider.dispose();
+        if (this.conditionalRadioDescriptionStyleItemProvider != null)
+            this.conditionalRadioDescriptionStyleItemProvider.dispose();
     }
 
 }

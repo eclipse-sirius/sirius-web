@@ -138,4 +138,16 @@ public interface SelectDescription extends WidgetDescription {
      */
     void setStyle(SelectDescriptionStyle value);
 
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getSelectDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalSelectDescriptionStyle> getConditionalStyles();
+
 } // SelectDescription

@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
@@ -125,6 +126,16 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
      * @ordered
      */
     protected RadioDescriptionStyle style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalRadioDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -281,12 +292,27 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
      * @generated
      */
     @Override
+    public EList<ConditionalRadioDescriptionStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalRadioDescriptionStyle.class, this, ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.RADIO_DESCRIPTION__BODY:
             return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
         case ViewPackage.RADIO_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
+        case ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES:
+            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -309,6 +335,8 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
             return this.getBody();
         case ViewPackage.RADIO_DESCRIPTION__STYLE:
             return this.getStyle();
+        case ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -338,6 +366,10 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
         case ViewPackage.RADIO_DESCRIPTION__STYLE:
             this.setStyle((RadioDescriptionStyle) newValue);
             return;
+        case ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            this.getConditionalStyles().addAll((Collection<? extends ConditionalRadioDescriptionStyle>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -365,6 +397,9 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
         case ViewPackage.RADIO_DESCRIPTION__STYLE:
             this.setStyle((RadioDescriptionStyle) null);
             return;
+        case ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -387,6 +422,8 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
             return this.body != null && !this.body.isEmpty();
         case ViewPackage.RADIO_DESCRIPTION__STYLE:
             return this.style != null;
+        case ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

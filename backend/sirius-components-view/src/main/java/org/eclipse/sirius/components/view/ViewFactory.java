@@ -255,6 +255,15 @@ public interface ViewFactory extends EFactory {
     TextfieldDescriptionStyle createTextfieldDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Conditional Textfield Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Textfield Description Style</em>'.
+     * @generated
+     */
+    ConditionalTextfieldDescriptionStyle createConditionalTextfieldDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Checkbox Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -264,12 +273,30 @@ public interface ViewFactory extends EFactory {
     CheckboxDescriptionStyle createCheckboxDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Conditional Checkbox Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Checkbox Description Style</em>'.
+     * @generated
+     */
+    ConditionalCheckboxDescriptionStyle createConditionalCheckboxDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Select Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Select Description Style</em>'.
      * @generated
      */
     SelectDescriptionStyle createSelectDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Select Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Select Description Style</em>'.
+     * @generated
+     */
+    ConditionalSelectDescriptionStyle createConditionalSelectDescriptionStyle();
 
     /**
      * Returns a new object of class '<em>Multi Select Description Style</em>'. <!-- begin-user-doc --> <!--
@@ -281,6 +308,15 @@ public interface ViewFactory extends EFactory {
     MultiSelectDescriptionStyle createMultiSelectDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Conditional Multi Select Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Multi Select Description Style</em>'.
+     * @generated
+     */
+    ConditionalMultiSelectDescriptionStyle createConditionalMultiSelectDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Textarea Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -290,12 +326,30 @@ public interface ViewFactory extends EFactory {
     TextareaDescriptionStyle createTextareaDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Conditional Textarea Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Textarea Description Style</em>'.
+     * @generated
+     */
+    ConditionalTextareaDescriptionStyle createConditionalTextareaDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Radio Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Radio Description Style</em>'.
      * @generated
      */
     RadioDescriptionStyle createRadioDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Radio Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Radio Description Style</em>'.
+     * @generated
+     */
+    ConditionalRadioDescriptionStyle createConditionalRadioDescriptionStyle();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
