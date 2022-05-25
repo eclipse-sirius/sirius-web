@@ -20,8 +20,14 @@ import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.CreateView;
 import org.eclipse.sirius.components.view.DeleteElement;
@@ -453,11 +459,39 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE: {
+            ConditionalTextfieldDescriptionStyle conditionalTextfieldDescriptionStyle = (ConditionalTextfieldDescriptionStyle) theEObject;
+            T result = this.caseConditionalTextfieldDescriptionStyle(conditionalTextfieldDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalTextfieldDescriptionStyle);
+            if (result == null)
+                result = this.caseTextfieldDescriptionStyle(conditionalTextfieldDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalTextfieldDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalTextfieldDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.CHECKBOX_DESCRIPTION_STYLE: {
             CheckboxDescriptionStyle checkboxDescriptionStyle = (CheckboxDescriptionStyle) theEObject;
             T result = this.caseCheckboxDescriptionStyle(checkboxDescriptionStyle);
             if (result == null)
                 result = this.caseWidgetDescriptionStyle(checkboxDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE: {
+            ConditionalCheckboxDescriptionStyle conditionalCheckboxDescriptionStyle = (ConditionalCheckboxDescriptionStyle) theEObject;
+            T result = this.caseConditionalCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalCheckboxDescriptionStyle);
+            if (result == null)
+                result = this.caseCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalCheckboxDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -473,6 +507,21 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.CONDITIONAL_SELECT_DESCRIPTION_STYLE: {
+            ConditionalSelectDescriptionStyle conditionalSelectDescriptionStyle = (ConditionalSelectDescriptionStyle) theEObject;
+            T result = this.caseConditionalSelectDescriptionStyle(conditionalSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseSelectDescriptionStyle(conditionalSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalSelectDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE: {
             MultiSelectDescriptionStyle multiSelectDescriptionStyle = (MultiSelectDescriptionStyle) theEObject;
             T result = this.caseMultiSelectDescriptionStyle(multiSelectDescriptionStyle);
@@ -480,6 +529,21 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(multiSelectDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(multiSelectDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE: {
+            ConditionalMultiSelectDescriptionStyle conditionalMultiSelectDescriptionStyle = (ConditionalMultiSelectDescriptionStyle) theEObject;
+            T result = this.caseConditionalMultiSelectDescriptionStyle(conditionalMultiSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalMultiSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseMultiSelectDescriptionStyle(conditionalMultiSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalMultiSelectDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalMultiSelectDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -495,6 +559,21 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE: {
+            ConditionalTextareaDescriptionStyle conditionalTextareaDescriptionStyle = (ConditionalTextareaDescriptionStyle) theEObject;
+            T result = this.caseConditionalTextareaDescriptionStyle(conditionalTextareaDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalTextareaDescriptionStyle);
+            if (result == null)
+                result = this.caseTextareaDescriptionStyle(conditionalTextareaDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalTextareaDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalTextareaDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.RADIO_DESCRIPTION_STYLE: {
             RadioDescriptionStyle radioDescriptionStyle = (RadioDescriptionStyle) theEObject;
             T result = this.caseRadioDescriptionStyle(radioDescriptionStyle);
@@ -502,6 +581,21 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(radioDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(radioDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE: {
+            ConditionalRadioDescriptionStyle conditionalRadioDescriptionStyle = (ConditionalRadioDescriptionStyle) theEObject;
+            T result = this.caseConditionalRadioDescriptionStyle(conditionalRadioDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalRadioDescriptionStyle);
+            if (result == null)
+                result = this.caseRadioDescriptionStyle(conditionalRadioDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalRadioDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalRadioDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1065,6 +1159,22 @@ public class ViewSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Textfield Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Textfield Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalTextfieldDescriptionStyle(ConditionalTextfieldDescriptionStyle object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Checkbox Description Style</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -1076,6 +1186,22 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseCheckboxDescriptionStyle(CheckboxDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Checkbox Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Checkbox Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalCheckboxDescriptionStyle(ConditionalCheckboxDescriptionStyle object) {
         return null;
     }
 
@@ -1095,6 +1221,21 @@ public class ViewSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Select Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Select Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalSelectDescriptionStyle(ConditionalSelectDescriptionStyle object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Multi Select Description Style</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -1106,6 +1247,22 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseMultiSelectDescriptionStyle(MultiSelectDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Multi Select Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Multi Select Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalMultiSelectDescriptionStyle(ConditionalMultiSelectDescriptionStyle object) {
         return null;
     }
 
@@ -1125,6 +1282,22 @@ public class ViewSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Textarea Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Textarea Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalTextareaDescriptionStyle(ConditionalTextareaDescriptionStyle object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Radio Description Style</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -1136,6 +1309,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseRadioDescriptionStyle(RadioDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Radio Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Radio Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object) {
         return null;
     }
 

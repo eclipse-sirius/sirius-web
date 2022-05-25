@@ -22,8 +22,14 @@ import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.CreateView;
 import org.eclipse.sirius.components.view.DeleteElement;
@@ -153,16 +159,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createRadioDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
             return this.createTextfieldDescriptionStyle();
+        case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
+            return this.createConditionalTextfieldDescriptionStyle();
         case ViewPackage.CHECKBOX_DESCRIPTION_STYLE:
             return this.createCheckboxDescriptionStyle();
+        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE:
+            return this.createConditionalCheckboxDescriptionStyle();
         case ViewPackage.SELECT_DESCRIPTION_STYLE:
             return this.createSelectDescriptionStyle();
+        case ViewPackage.CONDITIONAL_SELECT_DESCRIPTION_STYLE:
+            return this.createConditionalSelectDescriptionStyle();
         case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE:
             return this.createMultiSelectDescriptionStyle();
+        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE:
+            return this.createConditionalMultiSelectDescriptionStyle();
         case ViewPackage.TEXTAREA_DESCRIPTION_STYLE:
             return this.createTextareaDescriptionStyle();
+        case ViewPackage.CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE:
+            return this.createConditionalTextareaDescriptionStyle();
         case ViewPackage.RADIO_DESCRIPTION_STYLE:
             return this.createRadioDescriptionStyle();
+        case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE:
+            return this.createConditionalRadioDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -520,9 +538,31 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
+    public ConditionalTextfieldDescriptionStyle createConditionalTextfieldDescriptionStyle() {
+        ConditionalTextfieldDescriptionStyleImpl conditionalTextfieldDescriptionStyle = new ConditionalTextfieldDescriptionStyleImpl();
+        return conditionalTextfieldDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public CheckboxDescriptionStyle createCheckboxDescriptionStyle() {
         CheckboxDescriptionStyleImpl checkboxDescriptionStyle = new CheckboxDescriptionStyleImpl();
         return checkboxDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalCheckboxDescriptionStyle createConditionalCheckboxDescriptionStyle() {
+        ConditionalCheckboxDescriptionStyleImpl conditionalCheckboxDescriptionStyle = new ConditionalCheckboxDescriptionStyleImpl();
+        return conditionalCheckboxDescriptionStyle;
     }
 
     /**
@@ -542,9 +582,31 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
+    public ConditionalSelectDescriptionStyle createConditionalSelectDescriptionStyle() {
+        ConditionalSelectDescriptionStyleImpl conditionalSelectDescriptionStyle = new ConditionalSelectDescriptionStyleImpl();
+        return conditionalSelectDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public MultiSelectDescriptionStyle createMultiSelectDescriptionStyle() {
         MultiSelectDescriptionStyleImpl multiSelectDescriptionStyle = new MultiSelectDescriptionStyleImpl();
         return multiSelectDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalMultiSelectDescriptionStyle createConditionalMultiSelectDescriptionStyle() {
+        ConditionalMultiSelectDescriptionStyleImpl conditionalMultiSelectDescriptionStyle = new ConditionalMultiSelectDescriptionStyleImpl();
+        return conditionalMultiSelectDescriptionStyle;
     }
 
     /**
@@ -564,9 +626,31 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
+    public ConditionalTextareaDescriptionStyle createConditionalTextareaDescriptionStyle() {
+        ConditionalTextareaDescriptionStyleImpl conditionalTextareaDescriptionStyle = new ConditionalTextareaDescriptionStyleImpl();
+        return conditionalTextareaDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public RadioDescriptionStyle createRadioDescriptionStyle() {
         RadioDescriptionStyleImpl radioDescriptionStyle = new RadioDescriptionStyleImpl();
         return radioDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalRadioDescriptionStyle createConditionalRadioDescriptionStyle() {
+        ConditionalRadioDescriptionStyleImpl conditionalRadioDescriptionStyle = new ConditionalRadioDescriptionStyleImpl();
+        return conditionalRadioDescriptionStyle;
     }
 
     /**

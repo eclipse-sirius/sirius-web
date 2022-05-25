@@ -83,6 +83,7 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.CHECKBOX_DESCRIPTION__BODY);
             this.childrenFeatures.add(ViewPackage.Literals.CHECKBOX_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(ViewPackage.Literals.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -149,6 +150,7 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
             return;
         case ViewPackage.CHECKBOX_DESCRIPTION__BODY:
         case ViewPackage.CHECKBOX_DESCRIPTION__STYLE:
+        case ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -180,6 +182,30 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.CHECKBOX_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.CHECKBOX_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createCheckboxDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.CHECKBOX_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.CHECKBOX_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

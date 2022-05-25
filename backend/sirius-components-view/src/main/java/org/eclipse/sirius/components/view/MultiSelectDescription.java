@@ -30,6 +30,8 @@ import org.eclipse.emf.common.util.EList;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescription#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescription()
@@ -141,4 +143,16 @@ public interface MultiSelectDescription extends WidgetDescription {
      * @generated
      */
     void setStyle(MultiSelectDescriptionStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalMultiSelectDescriptionStyle> getConditionalStyles();
 } // MultiSelectDescription

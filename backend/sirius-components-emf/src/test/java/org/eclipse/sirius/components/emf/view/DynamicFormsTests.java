@@ -50,7 +50,14 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
@@ -85,7 +92,7 @@ public class DynamicFormsTests {
     void testRenderEcoreForm() throws Exception {
 
         this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(false);
+        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form result = this.render(eClassFormDescription, this.eClass1);
 
         assertThat(result).isNotNull();
@@ -140,7 +147,7 @@ public class DynamicFormsTests {
     void testRenderEcoreFormWithStyle() throws Exception {
 
         this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(true);
+        FormDescription eClassFormDescription = this.createClassFormDescription(true, false);
         Form result = this.render(eClassFormDescription, this.eClass1);
 
         assertThat(result).isNotNull();
@@ -189,13 +196,67 @@ public class DynamicFormsTests {
         });
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testStyle(radio);
+    }
 
+    @Test
+    void testRenderEcoreFormWithConditionalStyle() throws Exception {
+
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(true, true);
+        Form result = this.render(eClassFormDescription, this.eClass1);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPages()).hasSize(1);
+        assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
+
+        Group group = result.getPages().get(0).getGroups().get(0);
+        assertThat(group.getWidgets()).hasSize(6);
+        Textfield textfield = (Textfield) group.getWidgets().get(0);
+        Textarea textarea = (Textarea) group.getWidgets().get(1);
+        MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
+        Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
+        Select select = (Select) group.getWidgets().get(4);
+        Radio radio = (Radio) group.getWidgets().get(5);
+
+        assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        this.testConditionalStyle(textfield);
+
+        assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
+        assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
+        this.testConditionalStyle(textarea);
+
+        assertThat(multiSelect.getOptions()).hasSize(3);
+        assertThat(multiSelect.getValues()).hasSize(2);
+        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        this.testConditionalStyle(multiSelect);
+
+        assertThat(checkBox.isValue()).isTrue();
+        assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        this.testConditionalStyle(checkBox);
+
+        assertThat(select.getOptions()).hasSize(3);
+        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
+        assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
+        this.testConditionalStyle(select);
+
+        assertThat(radio.getOptions()).hasSize(3);
+        assertThat(radio.getOptions()).allSatisfy(option -> {
+            if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
+                assertThat(option.isSelected()).isTrue();
+            } else {
+                assertThat(option.isSelected()).isFalse();
+            }
+        });
+        assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        this.testConditionalStyle(radio);
     }
 
     @Test
     void testEditingEcoreForm() throws Exception {
         this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(false);
+        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClass1);
         assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(6);
 
@@ -248,21 +309,21 @@ public class DynamicFormsTests {
 
     }
 
-    private FormDescription createClassFormDescription(boolean withStyle) {
+    private FormDescription createClassFormDescription(boolean withStyle, boolean withConditionalStyle) {
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
         formDescription.setName("Simple Ecore Form"); //$NON-NLS-1$
         formDescription.setTitleExpression("aql:self.name"); //$NON-NLS-1$
         formDescription.setDomainType("ecore::EClass"); //$NON-NLS-1$
-        this.createTextfield(formDescription, withStyle);
-        this.createTextArea(formDescription, withStyle);
-        this.createMultiSelect(formDescription, withStyle);
-        this.createCheckbox(formDescription, withStyle);
-        this.createSelect(formDescription, withStyle);
-        this.createRadio(formDescription, withStyle);
+        this.createTextfield(formDescription, withStyle, withConditionalStyle);
+        this.createTextArea(formDescription, withStyle, withConditionalStyle);
+        this.createMultiSelect(formDescription, withStyle, withConditionalStyle);
+        this.createCheckbox(formDescription, withStyle, withConditionalStyle);
+        this.createSelect(formDescription, withStyle, withConditionalStyle);
+        this.createRadio(formDescription, withStyle, withConditionalStyle);
         return formDescription;
     }
 
-    private void createRadio(FormDescription formDescription, boolean withStyle) {
+    private void createRadio(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
         radioDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
         radioDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
@@ -271,12 +332,15 @@ public class DynamicFormsTests {
         if (withStyle) {
             RadioDescriptionStyle style = ViewFactory.eINSTANCE.createRadioDescriptionStyle();
             style.setColor("#de1000"); //$NON-NLS-1$
-            style.setFontSize(20);
-            style.setItalic(true);
-            style.setBold(true);
-            style.setUnderline(true);
-            style.setStrikeThrough(true);
+            this.setFontStyle(style);
             radioDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalRadioDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalRadioDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            radioDescription.getConditionalStyles().add(conditionalStyle);
         }
         formDescription.getWidgets().add(radioDescription);
 
@@ -286,7 +350,7 @@ public class DynamicFormsTests {
         radioDescription.getBody().add(radioSetValue);
     }
 
-    private void createSelect(FormDescription formDescription, boolean withStyle) {
+    private void createSelect(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
         SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
         selectDescription.setLabelExpression("aql:'eSuper Types'"); //$NON-NLS-1$
         selectDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
@@ -296,12 +360,16 @@ public class DynamicFormsTests {
             SelectDescriptionStyle style = ViewFactory.eINSTANCE.createSelectDescriptionStyle();
             style.setBackgroundColor("#de1000"); //$NON-NLS-1$
             style.setForegroundColor("#777777"); //$NON-NLS-1$
-            style.setFontSize(20);
-            style.setItalic(true);
-            style.setBold(true);
-            style.setUnderline(true);
-            style.setStrikeThrough(true);
+            this.setFontStyle(style);
             selectDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalSelectDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalSelectDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            selectDescription.getConditionalStyles().add(conditionalStyle);
         }
         formDescription.getWidgets().add(selectDescription);
 
@@ -316,7 +384,7 @@ public class DynamicFormsTests {
         selectUnsetValue.getChildren().add(selectSetValue);
     }
 
-    private void createCheckbox(FormDescription formDescription, boolean withStyle) {
+    private void createCheckbox(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
         CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setLabelExpression("is Abstract"); //$NON-NLS-1$
         checkboxDescription.setValueExpression("aql:self.abstract"); //$NON-NLS-1$
@@ -324,6 +392,12 @@ public class DynamicFormsTests {
             CheckboxDescriptionStyle style = ViewFactory.eINSTANCE.createCheckboxDescriptionStyle();
             style.setColor("#de1000"); //$NON-NLS-1$
             checkboxDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalCheckboxDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            checkboxDescription.getConditionalStyles().add(conditionalStyle);
         }
         formDescription.getWidgets().add(checkboxDescription);
 
@@ -333,7 +407,7 @@ public class DynamicFormsTests {
         checkboxDescription.getBody().add(checkboxSetValue);
     }
 
-    private void createMultiSelect(FormDescription formDescription, boolean withStyle) {
+    private void createMultiSelect(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
         MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
         multiSelectDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
         multiSelectDescription.setValueExpression("aql:self.eSuperTypes"); //$NON-NLS-1$
@@ -343,12 +417,16 @@ public class DynamicFormsTests {
             MultiSelectDescriptionStyle style = ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle();
             style.setBackgroundColor("#de1000"); //$NON-NLS-1$
             style.setForegroundColor("#777777"); //$NON-NLS-1$
-            style.setFontSize(20);
-            style.setItalic(true);
-            style.setBold(true);
-            style.setUnderline(true);
-            style.setStrikeThrough(true);
+            this.setFontStyle(style);
             multiSelectDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalMultiSelectDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalMultiSelectDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            multiSelectDescription.getConditionalStyles().add(conditionalStyle);
         }
         formDescription.getWidgets().add(multiSelectDescription);
 
@@ -363,7 +441,7 @@ public class DynamicFormsTests {
         multiSelectUnsetValue.getChildren().add(multiSelectSetValue);
     }
 
-    private void createTextArea(FormDescription formDescription, boolean withStyle) {
+    private void createTextArea(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
         TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
         textareaDescription.setLabelExpression("aql:'Instance Class Name'"); //$NON-NLS-1$
         textareaDescription.setValueExpression("aql:self.instanceClassName"); //$NON-NLS-1$
@@ -371,12 +449,16 @@ public class DynamicFormsTests {
             TextareaDescriptionStyle style = ViewFactory.eINSTANCE.createTextareaDescriptionStyle();
             style.setBackgroundColor("#de1000"); //$NON-NLS-1$
             style.setForegroundColor("#777777"); //$NON-NLS-1$
-            style.setFontSize(20);
-            style.setItalic(true);
-            style.setBold(true);
-            style.setUnderline(true);
-            style.setStrikeThrough(true);
+            this.setFontStyle(style);
             textareaDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalTextareaDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            textareaDescription.getConditionalStyles().add(conditionalStyle);
         }
         formDescription.getWidgets().add(textareaDescription);
 
@@ -386,7 +468,7 @@ public class DynamicFormsTests {
         textareaDescription.getBody().add(textareaSetValue);
     }
 
-    private void createTextfield(FormDescription formDescription, boolean withStyle) {
+    private void createTextfield(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
         TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setLabelExpression("aql:'EClass name'"); //$NON-NLS-1$
         textfieldDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
@@ -395,12 +477,16 @@ public class DynamicFormsTests {
             TextfieldDescriptionStyle style = ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
             style.setBackgroundColor("#de1000"); //$NON-NLS-1$
             style.setForegroundColor("#777777"); //$NON-NLS-1$
-            style.setFontSize(20);
-            style.setItalic(true);
-            style.setBold(true);
-            style.setUnderline(true);
-            style.setStrikeThrough(true);
+            this.setFontStyle(style);
             textfieldDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalTextfieldDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            textfieldDescription.getConditionalStyles().add(conditionalStyle);
         }
         formDescription.getWidgets().add(textfieldDescription);
 
@@ -410,12 +496,36 @@ public class DynamicFormsTests {
         textfieldDescription.getBody().add(setValue);
     }
 
+    private void setFontStyle(LabelStyle labelStyle) {
+        labelStyle.setFontSize(20);
+        labelStyle.setItalic(true);
+        labelStyle.setBold(true);
+        labelStyle.setUnderline(true);
+        labelStyle.setStrikeThrough(true);
+    }
+
+    private void setConditionalFontStyle(LabelStyle labelStyle) {
+        labelStyle.setFontSize(30);
+        labelStyle.setItalic(true);
+        labelStyle.setBold(false);
+        labelStyle.setUnderline(true);
+        labelStyle.setStrikeThrough(false);
+    }
+
     private void testStyle(Textfield textfield) {
         TextfieldStyle textfieldStyle = textfield.getStyle();
         assertThat(textfieldStyle).isNotNull();
         assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
         assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
         this.testFontStyle(textfieldStyle);
+    }
+
+    private void testConditionalStyle(Textfield textfield) {
+        TextfieldStyle textfieldStyle = textfield.getStyle();
+        assertThat(textfieldStyle).isNotNull();
+        assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        this.testConditionalFontStyle(textfieldStyle);
     }
 
     private void testNoStyle(Textfield textfield) {
@@ -431,6 +541,14 @@ public class DynamicFormsTests {
         this.testFontStyle(textareaStyle);
     }
 
+    private void testConditionalStyle(Textarea textarea) {
+        TextareaStyle textareaStyle = textarea.getStyle();
+        assertThat(textareaStyle).isNotNull();
+        assertThat(textareaStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(textareaStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        this.testConditionalFontStyle(textareaStyle);
+    }
+
     private void testNoStyle(Textarea textarea) {
         TextareaStyle textareaStyle = textarea.getStyle();
         assertThat(textareaStyle).isNull();
@@ -441,6 +559,13 @@ public class DynamicFormsTests {
         assertThat(radioStyle).isNotNull();
         assertThat(radioStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
         this.testFontStyle(radioStyle);
+    }
+
+    private void testConditionalStyle(Radio radio) {
+        RadioStyle radioStyle = radio.getStyle();
+        assertThat(radioStyle).isNotNull();
+        assertThat(radioStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        this.testConditionalFontStyle(radioStyle);
     }
 
     private void testNoStyle(Radio radio) {
@@ -456,6 +581,14 @@ public class DynamicFormsTests {
         this.testFontStyle(selectStyle);
     }
 
+    private void testConditionalStyle(Select select) {
+        SelectStyle selectStyle = select.getStyle();
+        assertThat(selectStyle).isNotNull();
+        assertThat(selectStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(selectStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        this.testConditionalFontStyle(selectStyle);
+    }
+
     private void testNoStyle(Select select) {
         SelectStyle selectStyle = select.getStyle();
         assertThat(selectStyle).isNull();
@@ -465,6 +598,12 @@ public class DynamicFormsTests {
         CheckboxStyle checkBoxStyle = checkBox.getStyle();
         assertThat(checkBoxStyle).isNotNull();
         assertThat(checkBoxStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+    }
+
+    private void testConditionalStyle(Checkbox checkBox) {
+        CheckboxStyle checkBoxStyle = checkBox.getStyle();
+        assertThat(checkBoxStyle).isNotNull();
+        assertThat(checkBoxStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
     }
 
     private void testNoStyle(Checkbox checkBox) {
@@ -480,6 +619,14 @@ public class DynamicFormsTests {
         this.testFontStyle(multiSelectStyle);
     }
 
+    private void testConditionalStyle(MultiSelect multiSelect) {
+        MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
+        assertThat(multiSelectStyle).isNotNull();
+        assertThat(multiSelectStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(multiSelectStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        this.testConditionalFontStyle(multiSelectStyle);
+    }
+
     private void testNoStyle(MultiSelect multiSelect) {
         MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
         assertThat(multiSelectStyle).isNull();
@@ -491,6 +638,14 @@ public class DynamicFormsTests {
         assertThat(fontStyle.isBold()).isTrue();
         assertThat(fontStyle.isUnderline()).isTrue();
         assertThat(fontStyle.isStrikeThrough()).isTrue();
+    }
+
+    private void testConditionalFontStyle(AbstractFontStyle fontStyle) {
+        assertThat(fontStyle.getFontSize()).isEqualTo(30);
+        assertThat(fontStyle.isItalic()).isTrue();
+        assertThat(fontStyle.isBold()).isFalse();
+        assertThat(fontStyle.isUnderline()).isTrue();
+        assertThat(fontStyle.isStrikeThrough()).isFalse();
     }
 
     private EPackage buildFixture() {

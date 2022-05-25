@@ -111,6 +111,7 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.RADIO_DESCRIPTION__BODY);
             this.childrenFeatures.add(ViewPackage.Literals.RADIO_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(ViewPackage.Literals.RADIO_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -179,6 +180,7 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
             return;
         case ViewPackage.RADIO_DESCRIPTION__BODY:
         case ViewPackage.RADIO_DESCRIPTION__STYLE:
+        case ViewPackage.RADIO_DESCRIPTION__CONDITIONAL_STYLES:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -210,6 +212,30 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.RADIO_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.RADIO_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createRadioDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.RADIO_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalRadioDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.RADIO_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalRadioDescriptionStyle()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.RADIO_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.RADIO_DESCRIPTION__CONDITIONAL_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

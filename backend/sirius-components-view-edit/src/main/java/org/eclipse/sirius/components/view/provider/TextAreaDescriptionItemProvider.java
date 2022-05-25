@@ -83,6 +83,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY);
             this.childrenFeatures.add(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -149,6 +150,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
             return;
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
         case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -180,6 +182,30 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createTextareaDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

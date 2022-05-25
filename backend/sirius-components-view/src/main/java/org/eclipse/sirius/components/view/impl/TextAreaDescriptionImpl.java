@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
@@ -38,6 +39,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.TextAreaDescriptionImpl#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @generated
@@ -82,6 +85,16 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
      * @ordered
      */
     protected TextareaDescriptionStyle style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalTextareaDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -192,12 +205,28 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
      * @generated
      */
     @Override
+    public EList<ConditionalTextareaDescriptionStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalTextareaDescriptionStyle.class, this,
+                    ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
             return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
         case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
+        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
+            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -216,6 +245,8 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
             return this.getBody();
         case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
             return this.getStyle();
+        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -239,6 +270,10 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
         case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
             this.setStyle((TextareaDescriptionStyle) newValue);
             return;
+        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            this.getConditionalStyles().addAll((Collection<? extends ConditionalTextareaDescriptionStyle>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -260,6 +295,9 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
         case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
             this.setStyle((TextareaDescriptionStyle) null);
             return;
+        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -278,6 +316,8 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
             return this.body != null && !this.body.isEmpty();
         case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
             return this.style != null;
+        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

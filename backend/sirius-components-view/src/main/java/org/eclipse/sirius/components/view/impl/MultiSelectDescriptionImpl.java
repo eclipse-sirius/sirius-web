@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
@@ -42,6 +43,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <em>Candidate Label Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionImpl#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionImpl#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @generated
@@ -126,6 +129,16 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
      * @ordered
      */
     protected MultiSelectDescriptionStyle style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalMultiSelectDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -282,12 +295,28 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
      * @generated
      */
     @Override
+    public EList<ConditionalMultiSelectDescriptionStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this,
+                    ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
             return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
         case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
+        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -310,6 +339,8 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
             return this.getBody();
         case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
             return this.getStyle();
+        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -339,6 +370,10 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
         case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
             this.setStyle((MultiSelectDescriptionStyle) newValue);
             return;
+        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            this.getConditionalStyles().addAll((Collection<? extends ConditionalMultiSelectDescriptionStyle>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -366,6 +401,9 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
         case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
             this.setStyle((MultiSelectDescriptionStyle) null);
             return;
+        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+            this.getConditionalStyles().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -388,6 +426,8 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
             return this.body != null && !this.body.isEmpty();
         case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
             return this.style != null;
+        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

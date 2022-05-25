@@ -25,6 +25,8 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.view.TextAreaDescription#getValueExpression <em>Value Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.TextAreaDescription#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.TextAreaDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.TextAreaDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getTextAreaDescription()
@@ -89,4 +91,16 @@ public interface TextAreaDescription extends WidgetDescription {
      * @generated
      */
     void setStyle(TextareaDescriptionStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getTextAreaDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalTextareaDescriptionStyle> getConditionalStyles();
 } // TextAreaDescription

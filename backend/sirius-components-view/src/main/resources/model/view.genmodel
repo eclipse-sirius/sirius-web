@@ -161,11 +161,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescription/valueExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//CheckboxDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CheckboxDescription/valueExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//CheckboxDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//CheckboxDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//CheckboxDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//SelectDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescription/valueExpression"/>
@@ -173,6 +175,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescription/candidateLabelExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//SelectDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//SelectDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//SelectDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//MultiSelectDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescription/valueExpression"/>
@@ -180,11 +183,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescription/candidateLabelExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//TextAreaDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextAreaDescription/valueExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextAreaDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextAreaDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextAreaDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//RadioDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/valueExpression"/>
@@ -192,29 +197,36 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/candidateLabelExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/conditionalStyles"/>
     </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextfieldDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/backgroundColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/foregroundColor"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalTextfieldDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//CheckboxDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CheckboxDescriptionStyle/color"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalCheckboxDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//SelectDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescriptionStyle/backgroundColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescriptionStyle/foregroundColor"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalSelectDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//MultiSelectDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescriptionStyle/backgroundColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescriptionStyle/foregroundColor"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalMultiSelectDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextareaDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextareaDescriptionStyle/backgroundColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextareaDescriptionStyle/foregroundColor"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalTextareaDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//RadioDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescriptionStyle/color"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalRadioDescriptionStyle"/>
   </genPackages>
 </genmodel:GenModel>
