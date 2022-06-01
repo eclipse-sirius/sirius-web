@@ -4,6 +4,8 @@
 
 === Architectural decision records
 
+- [ADR-60] Add support for d3 bars data-structure and bar-chart representation
+
 === Deprecation warning
 
 === Breaking changes

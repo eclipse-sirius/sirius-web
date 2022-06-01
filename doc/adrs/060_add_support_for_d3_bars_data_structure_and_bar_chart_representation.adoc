@@ -1,0 +1,103 @@
+= ADR-060 - Add support for d3 bars data-structure and bar-chart representation
+
+== Context
+
+We need the ability to define chart widgets in the Form Representation. This ADR is related to the front-end support. 
+The back-end supported is treated by another issue (https://github.com/eclipse-sirius/sirius-components/issues/1228[#1228]). 
+
+We will support the D3 Bars data structure and the bar-chart representation.
+
+== Decision
+
+This feature does not aim to create a new standalone representation. The D3 bar-chart will be integrated into a Form Property Section. 
+A new `ChartWidgetPropertySection` will be created. It will render the appropriate d3 chart according to the representation type.
+
+=== Data Structure ===
+
+The Bar-chart like representations need the following data structure (copied from the d3 example):
+
+```
+alphabet = Array(26) [
+  0: Object {letter: "A", frequency: 0.08167}
+  1: Object {letter: "B", frequency: 0.01492}
+  2: Object {letter: "C", frequency: 0.02782}
+  3: Object {letter: "D", frequency: 0.04253}
+  4: Object {letter: "E", frequency: 0.12702}
+  5: Object {letter: "F", frequency: 0.02288}
+  6: Object {letter: "G", frequency: 0.02015}
+  7: Object {letter: "H", frequency: 0.06094}
+  8: Object {letter: "I", frequency: 0.06966}
+  9: Object {letter: "J", frequency: 0.00153}
+  10: Object {letter: "K", frequency: 0.00772}
+  11: Object {letter: "L", frequency: 0.04025}
+  12: Object {letter: "M", frequency: 0.02406}
+  13: Object {letter: "N", frequency: 0.06749}
+  14: Object {letter: "O", frequency: 0.07507}
+  15: Object {letter: "P", frequency: 0.01929}
+  16: Object {letter: "Q", frequency: 0.00095}
+  17: Object {letter: "R", frequency: 0.05987}
+  18: Object {letter: "S", frequency: 0.06327}
+  19: Object {letter: "T", frequency: 0.09056}
+  20: Object {letter: "U", frequency: 0.02758}
+  21: Object {letter: "V", frequency: 0.00978}
+  22: Object {letter: "W", frequency: 0.0236}
+  23: Object {letter: "X", frequency: 0.0015}
+  24: Object {letter: "Y", frequency: 0.01974}
+  25: Object {letter: "Z", frequency: 0.00074}
+  columns: Array(2) ["letter", "frequency"]
+]
+```
+
+A new `Chart` and `BarChart` types will be created in `Sirius-Component` frontend. 
+To match the needed data-structure, the `BarChart` will define a field representing an array of [key, value] objects.
+The label field value will be displayed on the bar-chart y axis. 
+It will match the GraphQL Schema described in _GraphQL Schema_ section.
+
+```
+export interface Chart extends GQLRepresentation {
+  metadata: GQLRepresentationMetadata;
+}
+
+export interface BarChart extends Chart {
+  label: String;
+  entries: BarChartEntry[];
+}
+
+export interface BarChartEntry {
+  key: string;
+  value: number;
+}
+```
+
+=== Needed parameters === 
+
+The D3 Bar-Chart representation needs some parameters that depend on the provided data: 
+* Width and height : as a first step, a maximum height of 250px will be defined. The chart ratio will be 400x250px.
+* Y Axis label: retrived from the description label provider. There is no label on the X axis.
+* The data format: allows to compute the axis tick. See D3 Format for more details (https://github.com/d3/d3-format)
+* (optional) Bars color.
+
+=== GraphQL Schema ===
+
+The GraphQL schema will be updated (currently named hierarchy.graphqls) with the new following types:
+
+```
+type BarChart implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  label: String!
+  entries: [BarChartEntry!]!
+}
+
+type BarChartEntry {
+  key: String!
+  value: Float!
+}
+```
+== Status
+
+WIP.
+
+== Consequences
+
+A new bar-chart widget will be displayed in Form representations if the graphQL data contains a chartWidget.
