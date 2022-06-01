@@ -25,6 +25,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add styling support on Textfield Widget in View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1233[#1233] [form] Handle styling of the View DSL widgets
 - https://github.com/eclipse-sirius/sirius-components/issues/1236[#1236] [form] Handle conditional styling of the View DSL widgets 
+- https://github.com/eclipse-sirius/sirius-components/issues/1203[#1203] [charts] Add support for d3 bars data-structure and bar-chart representation
 
 == v2022.5.0
 
@@ -95,7 +96,7 @@ When closed, clicking on any of the views' icon will re-open the panel to make t
 - https://github.com/eclipse-sirius/sirius-components/issues/1181[#1181] [form] Add backend for a form description editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1201[#1201] [charts] Prepare support for charts in Sirius Components
 - https://github.com/eclipse-sirius/sirius-components/issues/1180[#1180] [diagram] Add support for the dynamic computation of the connector tools to control the tools displayed in the contextual menu.
-- https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add support for styling of the View DSL widgets 
+- https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add support for styling of the View DSL widgets
 
 == v2022.3.0
 
