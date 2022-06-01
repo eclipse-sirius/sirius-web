@@ -14,6 +14,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription
+
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add styling support on Textfield Widget in View DSL
