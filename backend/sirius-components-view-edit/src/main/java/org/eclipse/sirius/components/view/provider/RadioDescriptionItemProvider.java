@@ -132,11 +132,11 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
     /**
      * This returns RadioDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RadioDescription")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RadioDescription.svg")); //$NON-NLS-1$
     }
 
     /**

@@ -104,11 +104,11 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
     /**
      * This returns TextfieldDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TextfieldDescription")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TextfieldDescription.svg")); //$NON-NLS-1$
     }
 
     /**

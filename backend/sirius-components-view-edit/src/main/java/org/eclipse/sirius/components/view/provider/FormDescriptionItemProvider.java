@@ -93,11 +93,11 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     /**
      * This returns FormDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FormDescription")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FormDescription.svg")); //$NON-NLS-1$
     }
 
     /**
