@@ -12,10 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.renderer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.charts.IChart;
+import org.eclipse.sirius.components.charts.barchart.BarChart;
+import org.eclipse.sirius.components.charts.barchart.BarChartEntry;
+import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
 import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
@@ -26,6 +32,7 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -76,8 +83,31 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateDiagnostic((DiagnosticElementProps) props, children);
         } else if (LinkElementProps.TYPE.equals(type) && props instanceof LinkElementProps) {
             object = this.instantiateLink((LinkElementProps) props, children);
+        } else if (ChartWidgetElementProps.TYPE.equals(type) && props instanceof ChartWidgetElementProps) {
+            object = this.instantiateChartWidget((ChartWidgetElementProps) props, children);
+        } else if (BarChartElementProps.TYPE.equals(type) && props instanceof BarChartElementProps) {
+            object = this.instantiateBarChart((BarChartElementProps) props);
         }
+
         return object;
+    }
+
+    public Object instantiateBarChart(BarChartElementProps props) {
+        BarChartElementProps barChartElementProps = props;
+        List<BarChartEntry> entries = this.getEntries(barChartElementProps);
+        return new BarChart(barChartElementProps.getId(), barChartElementProps.getDescriptionId(), barChartElementProps.getLabel(), entries);
+    }
+
+    private List<BarChartEntry> getEntries(BarChartElementProps barChartElementProps) {
+        List<BarChartEntry> entries = new ArrayList<>();
+        List<String> keys = barChartElementProps.getKeys();
+        List<Number> values = barChartElementProps.getValues();
+        if (values.size() == keys.size()) {
+            for (int i = 0; i < values.size(); i++) {
+                entries.add(new BarChartEntry(keys.get(i), values.get(i)));
+            }
+        }
+        return entries;
     }
 
     private Form instantiateForm(FormElementProps props, List<Object> children) {
@@ -265,6 +295,23 @@ public class FormElementFactory implements IElementFactory {
                  .diagnostics(diagnostics)
                  .build();
        // @formatter:on
+    }
+
+    private Object instantiateChartWidget(ChartWidgetElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+        // @formatter:off
+        var chart = children.stream()
+                .filter(IChart.class::isInstance)
+                .map(IChart.class::cast)
+                .findFirst()
+                .orElse(null);
+
+        return ChartWidget.newChartWidget(props.getId())
+                .label(props.getLabel())
+                .chart(chart)
+                .diagnostics(diagnostics)
+                .build();
+        // @formatter:on
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {

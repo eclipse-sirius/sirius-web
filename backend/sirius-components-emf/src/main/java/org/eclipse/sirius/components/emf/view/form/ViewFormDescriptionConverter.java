@@ -68,19 +68,18 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
         ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
         // @formatter:off
-        List<AbstractControlDescription> textfieldDescriptions = viewFormDescription.getWidgets().stream()
+        List<AbstractControlDescription> controlDescriptions = viewFormDescription.getWidgets().stream()
                 .map(dispatcher::doSwitch)
                 .collect(Collectors.toList());
 
-        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream()
-                .collect(Collectors.toList());
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
 
         String descriptionId = this.getDescriptionId(viewFormDescription);
         GroupDescription groupDescription = GroupDescription.newGroupDescription(descriptionId + "_group") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
                 .semanticElementsProvider(semanticElementsProvider)
-                .controlDescriptions(textfieldDescriptions)
+                .controlDescriptions(controlDescriptions)
                 .build();
         PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -89,7 +88,6 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .canCreatePredicate(variableManager -> true)
                 .groupDescriptions(List.of(groupDescription))
                 .build();
-
 
         // @formatter:on
         List<GroupDescription> groupDescriptions = List.of(groupDescription);

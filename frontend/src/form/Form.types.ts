@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
+import { Chart } from 'charts/Charts.types';
 export interface RepresentationMetadata {
   label: string;
 }
@@ -170,4 +170,9 @@ export interface ListItem {
 export interface Link extends Widget {
   label: string;
   url: string;
+}
+
+export interface ChartWidget extends Widget {
+  label: string;
+  chart: Chart;
 }

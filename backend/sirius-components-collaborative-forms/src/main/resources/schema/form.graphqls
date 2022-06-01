@@ -204,6 +204,15 @@ type Link implements Widget {
   url: String!
 }
 
+union Chart = BarChart
+
+type ChartWidget implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  chart: Chart!
+}
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
