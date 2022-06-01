@@ -152,6 +152,22 @@ export const formRefreshedEventPayloadFragment = gql`
               label
               url
             }
+            ... on ChartWidget {
+              label
+              chart {
+                ... on BarChart {
+                  metadata {
+                    label
+                    kind
+                  }
+                  label
+                  entries {
+                    key
+                    value
+                  }
+                }
+              }
+            }
           }
         }
       }

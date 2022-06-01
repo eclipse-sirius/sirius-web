@@ -22,6 +22,18 @@ type Hierarchy implements Representation {
   children: [HierarchyNode!]!
 }
 
+type BarChart implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  label: String!
+  entries: [BarChartEntry!]!
+}
+
+type BarChartEntry {
+  key: String!
+  value: Float!
+}
+
 type HierarchyNode {
   id: ID!
   label: String!
