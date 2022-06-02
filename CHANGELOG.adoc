@@ -28,6 +28,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1233[#1233] [form] Handle styling of the View DSL widgets
 - https://github.com/eclipse-sirius/sirius-components/issues/1236[#1236] [form] Handle conditional styling of the View DSL widgets 
 - https://github.com/eclipse-sirius/sirius-components/issues/1203[#1203] [charts] Add support for d3 bars data-structure and bar-chart representation
+- https://github.com/eclipse-sirius/sirius-components/issues/1228[#1228] [charts] Add support for bar-chart in view DSL
 
 == v2022.5.0
 

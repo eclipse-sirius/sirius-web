@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
@@ -174,6 +175,9 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
         radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, radioDescription));
+
+        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, barChartDescription));
     }
 
 }

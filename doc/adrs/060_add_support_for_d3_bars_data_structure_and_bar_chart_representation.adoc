@@ -2,8 +2,7 @@
 
 == Context
 
-We need the ability to define chart widgets in the Form Representation. This ADR is related to the front-end support. 
-The back-end supported is treated by another issue (https://github.com/eclipse-sirius/sirius-components/issues/1228[#1228]). 
+We need the ability to define chart widgets in the Form Representation. This ADR is related to the bar-chart support in both front-end and back-end.
 
 We will support the D3 Bars data structure and the bar-chart representation.
 
@@ -54,12 +53,12 @@ The label field value will be displayed on the bar-chart y axis.
 It will match the GraphQL Schema described in _GraphQL Schema_ section.
 
 ```
-export interface Chart extends GQLRepresentation {
-  metadata: GQLRepresentationMetadata;
+export interface Chart extends Representation {
+  metadata: RepresentationMetadata;
 }
 
 export interface BarChart extends Chart {
-  label: String;
+  label: string;
   entries: BarChartEntry[];
 }
 
@@ -94,6 +93,16 @@ type BarChartEntry {
   value: Float!
 }
 ```
+
+=== View DSL ===
+
+A new `BarChartDescription` will be added. It will inherit from `WidgetDescription`
+
+The `BarChartDescription` will contain 3 expressions:
+* `yAxisLabelExpression`: used to compute the label displayed on the Y-Axis.
+* `keysExpression`: an expression that should return an ordered list of String, representing the keys of the bar-chart data structure.
+* `valuesExpression`: an expression that should return an ordered list of Number, representing the values of the bar-chart data structure.
+
 == Status
 
 WIP.

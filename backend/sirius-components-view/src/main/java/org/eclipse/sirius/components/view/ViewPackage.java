@@ -3692,6 +3692,77 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_RADIO_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl <em>Bar Chart
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
+     * @generated
+     */
+    int BAR_CHART_DESCRIPTION = 49;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__NAME = WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__LABEL_EXPRESSION = WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Values Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__VALUES_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Keys Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__KEYS_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>YAxis Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Bar Chart Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Bar Chart Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3699,7 +3770,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 49;
+    int ARROW_STYLE = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -3709,7 +3780,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 50;
+    int LINE_STYLE = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -3719,7 +3790,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 51;
+    int SYNCHRONIZATION_POLICY = 52;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -5485,6 +5556,52 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalRadioDescriptionStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BarChartDescription <em>Bar Chart
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Bar Chart Description</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription
+     * @generated
+     */
+    EClass getBarChartDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getValuesExpression <em>Values Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Values Expression</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getValuesExpression()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_ValuesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression <em>Keys Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Keys Expression</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_KeysExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression <em>YAxis Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>YAxis Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_YAxisLabelExpression();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6904,6 +7021,40 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass CONDITIONAL_RADIO_DESCRIPTION_STYLE = eINSTANCE.getConditionalRadioDescriptionStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
+         * <em>Bar Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
+         * @generated
+         */
+        EClass BAR_CHART_DESCRIPTION = eINSTANCE.getBarChartDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Values Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__VALUES_EXPRESSION = eINSTANCE.getBarChartDescription_ValuesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Keys Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__KEYS_EXPRESSION = eINSTANCE.getBarChartDescription_KeysExpression();
+
+        /**
+         * The meta object literal for the '<em><b>YAxis Label Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION = eINSTANCE.getBarChartDescription_YAxisLabelExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'

@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
@@ -361,6 +362,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalRadioDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseBarChartDescription(BarChartDescription object) {
+            return ViewAdapterFactory.this.createBarChartDescriptionAdapter();
         }
 
         @Override
@@ -1047,6 +1053,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalRadioDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.BarChartDescription
+     * <em>Bar Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.BarChartDescription
+     * @generated
+     */
+    public Adapter createBarChartDescriptionAdapter() {
         return null;
     }
 

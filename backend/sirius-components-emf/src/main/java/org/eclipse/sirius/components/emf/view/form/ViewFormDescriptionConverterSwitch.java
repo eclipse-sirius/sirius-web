@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.emf.view.form;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +23,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
+import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
@@ -160,10 +162,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         Function<VariableManager, String> valueProvider = this.getSelectValueProvider(viewSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(viewSelectDescription.getCandidateLabelExpression());
-        Function<VariableManager, List<?>> optionsProvider = variableManager -> {
-            String candidateExpression = viewSelectDescription.getCandidatesExpression();
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), candidateExpression).asObjects().orElse(new ArrayList<>());
-        };
+        String candidateExpression = viewSelectDescription.getCandidatesExpression();
+        Function<VariableManager, List<?>> optionsProvider = this.getMultiValueProvider(candidateExpression);
         BiFunction<VariableManager, String, IStatus> selectNewValueHandler = this.getSelectNewValueHandler(viewSelectDescription.getBody());
         Function<VariableManager, SelectStyle> styleProvider = variableManager -> {
             // @formatter:off
@@ -239,10 +239,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         Function<VariableManager, List<String>> valuesProvider = this.getMultiSelectValuesProvider(multiSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(multiSelectDescription.getCandidateLabelExpression());
-        Function<VariableManager, List<?>> optionsProvider = variableManager -> {
-            String candidateExpression = multiSelectDescription.getCandidatesExpression();
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), candidateExpression).asObjects().orElse(new ArrayList<>());
-        };
+        String candidateExpression = multiSelectDescription.getCandidatesExpression();
+        Function<VariableManager, List<? extends Object>> optionsProvider = this.getMultiValueProvider(candidateExpression);
         BiFunction<VariableManager, List<String>, IStatus> multiSelectNewValueHandler = this.getMultiSelectNewValuesHandler(multiSelectDescription.getBody());
         Function<VariableManager, MultiSelectStyle> styleProvider = variableManager -> {
             // @formatter:off
@@ -289,10 +287,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             return optionalResult.map(candidate::equals).orElse(Boolean.FALSE);
         };
 
-        Function<VariableManager, List<?>> optionsProvider = variableManager -> {
-            Optional<List<Object>> optional = this.interpreter.evaluateExpression(variableManager.getVariables(), radioDescription.getCandidatesExpression()).asObjects();
-            return optional.orElse(Collections.emptyList());
-        };
+        String candidatesExpression = radioDescription.getCandidatesExpression();
+        Function<VariableManager, List<? extends Object>> optionsProvider = this.getMultiValueProvider(candidatesExpression);
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getSelectNewValueHandler(radioDescription.getBody());
         Function<VariableManager, RadioStyle> styleProvider = variableManager -> {
@@ -325,6 +321,53 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .build();
         // @formatter:on
 
+    }
+
+    private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
+        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
+        return variableManager -> {
+            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
+        };
+    }
+
+    private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
+        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
+        return variableManager -> {
+            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).collect(Collectors.toList());
+        };
+    }
+
+    @Override
+    public AbstractWidgetDescription caseBarChartDescription(org.eclipse.sirius.components.view.BarChartDescription viewBarChartDescription) {
+        String labelExpression = viewBarChartDescription.getYAxisLabelExpression();
+        String keysExpression = viewBarChartDescription.getKeysExpression();
+        String valuesExpression = viewBarChartDescription.getValuesExpression();
+        // @formatter:off
+        IChartDescription chartDescription = BarChartDescription.newBarChartDescription(this.getDescriptionId(viewBarChartDescription))
+                .label(viewBarChartDescription.getName())
+                .labelProvider(this.getStringValueProvider(labelExpression))
+                .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
+                .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
+                .build();
+        // @formatter:on
+        return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);
+    }
+
+    private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, IChartDescription chartDescription) {
+        String descriptionId = this.getDescriptionId(widgetDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(widgetDescription.getLabelExpression());
+
+        // @formatter:off
+        return ChartWidgetDescription.newChartWidgetDescription(descriptionId)
+                .labelProvider(labelProvider)
+                .idProvider(idProvider)
+                .chartDescription(chartDescription)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
+                .build();
+        // @formatter:on
     }
 
     private Function<VariableManager, String> getOptionIdProvider() {

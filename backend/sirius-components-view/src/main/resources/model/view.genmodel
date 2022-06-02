@@ -228,5 +228,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalRadioDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//BarChartDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/valuesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/keysExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/yAxisLabelExpression"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
