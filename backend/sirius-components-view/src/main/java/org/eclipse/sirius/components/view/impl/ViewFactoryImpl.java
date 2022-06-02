@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.ArrowStyle;
+import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
@@ -181,6 +182,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createRadioDescriptionStyle();
         case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE:
             return this.createConditionalRadioDescriptionStyle();
+        case ViewPackage.BAR_CHART_DESCRIPTION:
+            return this.createBarChartDescription();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -651,6 +654,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalRadioDescriptionStyle createConditionalRadioDescriptionStyle() {
         ConditionalRadioDescriptionStyleImpl conditionalRadioDescriptionStyle = new ConditionalRadioDescriptionStyleImpl();
         return conditionalRadioDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public BarChartDescription createBarChartDescription() {
+        BarChartDescriptionImpl barChartDescription = new BarChartDescriptionImpl();
+        return barChartDescription;
     }
 
     /**

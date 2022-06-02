@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
@@ -596,6 +597,15 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalRadioDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalRadioDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.BAR_CHART_DESCRIPTION: {
+            BarChartDescription barChartDescription = (BarChartDescription) theEObject;
+            T result = this.caseBarChartDescription(barChartDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(barChartDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1324,6 +1334,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Bar Chart Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Bar Chart Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseBarChartDescription(BarChartDescription object) {
         return null;
     }
 

@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ArrowStyle;
+import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
@@ -421,6 +422,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalRadioDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass barChartDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2090,6 +2098,46 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getBarChartDescription() {
+        return this.barChartDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBarChartDescription_ValuesExpression() {
+        return (EAttribute) this.barChartDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBarChartDescription_KeysExpression() {
+        return (EAttribute) this.barChartDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBarChartDescription_YAxisLabelExpression() {
+        return (EAttribute) this.barChartDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -2350,6 +2398,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.conditionalRadioDescriptionStyleEClass = this.createEClass(CONDITIONAL_RADIO_DESCRIPTION_STYLE);
 
+        this.barChartDescriptionEClass = this.createEClass(BAR_CHART_DESCRIPTION);
+        this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__VALUES_EXPRESSION);
+        this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__KEYS_EXPRESSION);
+        this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
@@ -2438,6 +2491,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.radioDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalRadioDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalRadioDescriptionStyleEClass.getESuperTypes().add(this.getRadioDescriptionStyle());
+        this.barChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -2761,6 +2815,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.initEClass(this.conditionalRadioDescriptionStyleEClass, ConditionalRadioDescriptionStyle.class, "ConditionalRadioDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
                 IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.barChartDescriptionEClass, BarChartDescription.class, "BarChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getBarChartDescription_ValuesExpression(), this.ecorePackage.getEString(), "valuesExpression", null, 0, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBarChartDescription_KeysExpression(), this.ecorePackage.getEString(), "keysExpression", null, 0, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBarChartDescription_YAxisLabelExpression(), this.ecorePackage.getEString(), "yAxisLabelExpression", null, 0, 1, BarChartDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle"); //$NON-NLS-1$

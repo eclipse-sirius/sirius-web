@@ -11,6 +11,33 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export interface GQLRepresentationMetadata {
+  id: string;
+  label: string;
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+}
+export interface GQLRepresentation {
+  id: string;
+}
+export interface GQLChart extends GQLRepresentation {
+  metadata: GQLRepresentationMetadata;
+}
+
+export interface GQLBarChart extends GQLChart {
+  label: string;
+  entries: GQLBarChartEntry[];
+}
+
+export interface GQLBarChartEntry {
+  key: string;
+  value: number;
+}
+
 export interface RepresentationMetadata {
   kind: string;
   description: RepresentationDescription;

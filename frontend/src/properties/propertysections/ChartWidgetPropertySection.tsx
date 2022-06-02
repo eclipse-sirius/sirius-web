@@ -23,7 +23,6 @@ import { PropertySectionLabel } from './PropertySectionLabel';
 /**
  * Defines the content of a Link property section.
  */
-
 export const ChartWidgetPropertySection = ({ widget, subscribers }: ChartWidgetPropertySectionProps) => {
   var chartComponent: JSX.Element;
   const { chart } = widget;
@@ -119,7 +118,9 @@ const BarChart = ({ width, height, chart }: BarChartProps) => {
         .attr('height', (i) => yScale(0) - yScale(Y[i]))
         .attr('width', xScale.bandwidth());
 
-      if (title) bar.append('title').text(title);
+      if (title) {
+        bar.append('title').text(title);
+      }
 
       svg
         .append('g')

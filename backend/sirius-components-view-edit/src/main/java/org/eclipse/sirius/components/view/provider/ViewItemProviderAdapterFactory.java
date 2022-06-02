@@ -987,6 +987,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected BarChartDescriptionItemProvider barChartDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.BarChartDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createBarChartDescriptionAdapter() {
+        if (this.barChartDescriptionItemProvider == null) {
+            this.barChartDescriptionItemProvider = new BarChartDescriptionItemProvider(this);
+        }
+
+        return this.barChartDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1164,6 +1187,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.radioDescriptionStyleItemProvider.dispose();
         if (this.conditionalRadioDescriptionStyleItemProvider != null)
             this.conditionalRadioDescriptionStyleItemProvider.dispose();
+        if (this.barChartDescriptionItemProvider != null)
+            this.barChartDescriptionItemProvider.dispose();
     }
 
 }

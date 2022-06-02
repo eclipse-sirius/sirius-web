@@ -22,11 +22,15 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.sirius.components.charts.IChart;
+import org.eclipse.sirius.components.charts.barchart.BarChart;
+import org.eclipse.sirius.components.charts.barchart.BarChartEntry;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.view.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.forms.AbstractFontStyle;
+import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.Form;
@@ -48,6 +52,7 @@ import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
@@ -100,13 +105,14 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(6);
+        assertThat(group.getWidgets()).hasSize(7);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         Select select = (Select) group.getWidgets().get(4);
         Radio radio = (Radio) group.getWidgets().get(5);
+        ChartWidget chartWidget = (ChartWidget) group.getWidgets().get(6);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -141,6 +147,22 @@ public class DynamicFormsTests {
         });
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testNoStyle(radio);
+
+        assertThat(chartWidget.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
+        IChart chart = chartWidget.getChart();
+        assertThat(chart).isInstanceOf(BarChart.class);
+        BarChart barChart = (BarChart) chart;
+        assertThat(barChart.getLabel()).isEqualTo("the values"); //$NON-NLS-1$
+        List<BarChartEntry> entries = barChart.getEntries();
+        this.checkEntry(entries, 0, "a", 1); //$NON-NLS-1$
+        this.checkEntry(entries, 1, "b", 3); //$NON-NLS-1$
+        this.checkEntry(entries, 2, "c", 5); //$NON-NLS-1$
+        this.checkEntry(entries, 3, "d", 7); //$NON-NLS-1$
+    }
+
+    private void checkEntry(List<BarChartEntry> entries, int index, String expectedKey, Number expectedValue) {
+        assertThat(entries.get(index)).extracting(BarChartEntry::getKey).isEqualTo(expectedKey);
+        assertThat(entries.get(index)).extracting(BarChartEntry::getValue).isEqualTo(expectedValue);
     }
 
     @Test
@@ -155,7 +177,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(6);
+        assertThat(group.getWidgets()).hasSize(7);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -210,7 +232,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(6);
+        assertThat(group.getWidgets()).hasSize(7);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -258,14 +280,14 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClass1);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(6);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(7);
 
         this.checkValuesEditing(this.eClass1, form);
     }
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(6);
+        assertThat(group.getWidgets()).hasSize(7);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -320,7 +342,18 @@ public class DynamicFormsTests {
         this.createCheckbox(formDescription, withStyle, withConditionalStyle);
         this.createSelect(formDescription, withStyle, withConditionalStyle);
         this.createRadio(formDescription, withStyle, withConditionalStyle);
+        this.createBarChart(formDescription);
         return formDescription;
+    }
+
+    private void createBarChart(FormDescription formDescription) {
+        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        barChartDescription.setName("barChart"); //$NON-NLS-1$
+        barChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
+        barChartDescription.setYAxisLabelExpression("aql:'the values'"); //$NON-NLS-1$
+        barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
+        barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
+        formDescription.getWidgets().add(barChartDescription);
     }
 
     private void createRadio(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
