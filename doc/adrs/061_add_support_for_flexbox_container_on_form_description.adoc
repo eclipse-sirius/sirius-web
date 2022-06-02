@@ -1,0 +1,45 @@
+= ADR-060 - Add support for flexbox container on form description
+
+== Context
+
+In the View DSL, it is now possible to create form descriptions, in addition to diagram descriptions.
+A form description contains a set of widgets (textfields, checkboxes, radio buttons...).
+We would like to be able to add flexbox container (row/column/row-reverse-/column-reverse) on those widgets.
+The FormDescriptionEditor representation should also be able to handle those new layouts.
+
+== Decision
+
+As a first step, the FormDescription will be modified to handle this new widget.
+As a second step, the FormDescriptionEditor will be modified to handle this new widget.
+Flexbox Container should be considered as new widget, containing other widgets.
+No style/conditional style have to be applied on this new widget.
+
+=== Frontend
+
+The CSS flexbox will be used to handle the layout.
+
+=== Backend
+
+The View DSL will be modified, introducing the following concepts:
+- new EClass : `FlexboxContainerDescription -> WidgetDescription`
+- new EEnum : `FlexDirection` containing four literals : row, row-reverse, column, column-reverse.
+
+The View DSL converter will be updated to take into account the new widget.
+
+The new `FlexboxContainerDescription` :
+
+```
+	public final class FlexboxContainerDescription extends WidgetDescription {
+
+    		private FlexDirection flexDirection;
+
+    		private List<WidgetDescription> children;
+  }
+```
+
+== Status
+
+WIP
+
+== Consequences
+
