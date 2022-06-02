@@ -206,9 +206,11 @@ export const WidgetEntry = ({
     event.currentTarget.classList.add(classes.dragOver);
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
     onDropBefore(event, widget);
   };
