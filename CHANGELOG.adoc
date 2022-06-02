@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-60] Add support for d3 bars data-structure and bar-chart representation
+- [ADR-61] Add support for flexbox containers on form description
 
 === Deprecation warning
 
