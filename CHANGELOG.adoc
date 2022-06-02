@@ -12,6 +12,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1245[#1245] [form] Fix Dropping widget from FormDescriptionEditor opens new tab on Firefox
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription

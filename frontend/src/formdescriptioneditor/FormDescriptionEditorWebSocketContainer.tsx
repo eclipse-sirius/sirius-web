@@ -258,9 +258,11 @@ export const FormDescriptionEditorWebSocketContainer = ({
     event.currentTarget.classList.add(classes.dragOver);
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
 
     const id: string = event.dataTransfer.getData('text/plain');
