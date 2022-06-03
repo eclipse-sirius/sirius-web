@@ -21,6 +21,9 @@ import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponent;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponentProps;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
+import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartComponent;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartComponentProps;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
@@ -54,6 +57,8 @@ public class ChartWidgetComponent implements IComponent {
         List<Element> children = new ArrayList<>();
         if (chartDescription instanceof BarChartDescription) {
             children.add(new Element(BarChartComponent.class, new BarChartComponentProps(variableManager, (BarChartDescription) chartDescription, Optional.empty())));
+        } else if (chartDescription instanceof PieChartDescription) {
+            children.add(new Element(PieChartComponent.class, new PieChartComponentProps(variableManager, (PieChartDescription) chartDescription, Optional.empty())));
         }
         children.add(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(chartWidgetDescription, variableManager)));
 

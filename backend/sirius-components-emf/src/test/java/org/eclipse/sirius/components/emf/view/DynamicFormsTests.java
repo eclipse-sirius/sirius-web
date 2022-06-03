@@ -25,6 +25,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
 import org.eclipse.sirius.components.charts.barchart.BarChartEntry;
+import org.eclipse.sirius.components.charts.piechart.PieChart;
+import org.eclipse.sirius.components.charts.piechart.PieChartEntry;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -65,6 +67,7 @@ import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescription;
@@ -105,14 +108,15 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(7);
+        assertThat(group.getWidgets()).hasSize(8);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         Select select = (Select) group.getWidgets().get(4);
         Radio radio = (Radio) group.getWidgets().get(5);
-        ChartWidget chartWidget = (ChartWidget) group.getWidgets().get(6);
+        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
+        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -148,21 +152,36 @@ public class DynamicFormsTests {
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testNoStyle(radio);
 
-        assertThat(chartWidget.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
-        IChart chart = chartWidget.getChart();
+        assertThat(chartWidgetWithBarChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
+        IChart chart = chartWidgetWithBarChart.getChart();
         assertThat(chart).isInstanceOf(BarChart.class);
         BarChart barChart = (BarChart) chart;
         assertThat(barChart.getLabel()).isEqualTo("the values"); //$NON-NLS-1$
-        List<BarChartEntry> entries = barChart.getEntries();
-        this.checkEntry(entries, 0, "a", 1); //$NON-NLS-1$
-        this.checkEntry(entries, 1, "b", 3); //$NON-NLS-1$
-        this.checkEntry(entries, 2, "c", 5); //$NON-NLS-1$
-        this.checkEntry(entries, 3, "d", 7); //$NON-NLS-1$
+        List<BarChartEntry> barChartEntries = barChart.getEntries();
+        this.checkBarChartEntry(barChartEntries, 0, "a", 1); //$NON-NLS-1$
+        this.checkBarChartEntry(barChartEntries, 1, "b", 3); //$NON-NLS-1$
+        this.checkBarChartEntry(barChartEntries, 2, "c", 5); //$NON-NLS-1$
+        this.checkBarChartEntry(barChartEntries, 3, "d", 7); //$NON-NLS-1$
+
+        assertThat(chartWidgetWithPieChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
+        chart = chartWidgetWithPieChart.getChart();
+        assertThat(chart).isInstanceOf(PieChart.class);
+        PieChart pieChart = (PieChart) chart;
+        List<PieChartEntry> pieChartEntries = pieChart.getEntries();
+        this.checkPieChartEntry(pieChartEntries, 0, "a", 1); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 1, "b", 3); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 2, "c", 5); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 3, "d", 7); //$NON-NLS-1$
     }
 
-    private void checkEntry(List<BarChartEntry> entries, int index, String expectedKey, Number expectedValue) {
+    private void checkBarChartEntry(List<BarChartEntry> entries, int index, String expectedKey, Number expectedValue) {
         assertThat(entries.get(index)).extracting(BarChartEntry::getKey).isEqualTo(expectedKey);
         assertThat(entries.get(index)).extracting(BarChartEntry::getValue).isEqualTo(expectedValue);
+    }
+
+    private void checkPieChartEntry(List<PieChartEntry> entries, int index, String expectedKey, Number expectedValue) {
+        assertThat(entries.get(index)).extracting(PieChartEntry::getKey).isEqualTo(expectedKey);
+        assertThat(entries.get(index)).extracting(PieChartEntry::getValue).isEqualTo(expectedValue);
     }
 
     @Test
@@ -177,7 +196,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(7);
+        assertThat(group.getWidgets()).hasSize(8);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -232,7 +251,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(7);
+        assertThat(group.getWidgets()).hasSize(8);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -280,14 +299,14 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClass1);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(7);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(8);
 
         this.checkValuesEditing(this.eClass1, form);
     }
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(7);
+        assertThat(group.getWidgets()).hasSize(8);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -343,6 +362,7 @@ public class DynamicFormsTests {
         this.createSelect(formDescription, withStyle, withConditionalStyle);
         this.createRadio(formDescription, withStyle, withConditionalStyle);
         this.createBarChart(formDescription);
+        this.createPieChart(formDescription);
         return formDescription;
     }
 
@@ -354,6 +374,16 @@ public class DynamicFormsTests {
         barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
         barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
         formDescription.getWidgets().add(barChartDescription);
+    }
+
+    private void createPieChart(FormDescription formDescription) {
+        PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
+        pieChartDescription.setName("chartWidget"); //$NON-NLS-1$
+        pieChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
+        pieChartDescription.setName("pieChart"); //$NON-NLS-1$
+        pieChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
+        pieChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
+        formDescription.getWidgets().add(pieChartDescription);
     }
 
     private void createRadio(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {

@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.forms.renderer;
 
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponent;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponentProps;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartComponent;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartComponentProps;
 import org.eclipse.sirius.components.forms.components.ChartWidgetComponent;
 import org.eclipse.sirius.components.forms.components.ChartWidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.CheckboxComponent;
@@ -94,6 +96,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof ChartWidgetComponentProps;
         } else if (BarChartComponent.class.equals(componentType)) {
             checkValidProps = props instanceof BarChartComponentProps;
+        } else if (PieChartComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof PieChartComponentProps;
         }
 
         return checkValidProps;

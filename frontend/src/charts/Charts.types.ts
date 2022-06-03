@@ -38,6 +38,16 @@ export interface GQLBarChartEntry {
   value: number;
 }
 
+export interface GQLPieChart extends GQLChart {
+  label: string;
+  entries: GQLPieChartEntry[];
+}
+
+export interface GQLPieChartEntry {
+  key: string;
+  value: number;
+}
+
 export interface RepresentationMetadata {
   kind: string;
   description: RepresentationDescription;
@@ -57,8 +67,16 @@ export interface BarChart extends Chart {
   label: string;
   entries: BarChartEntry[];
 }
-
 export interface BarChartEntry {
+  key: string;
+  value: number;
+}
+
+export interface PieChart extends Chart {
+  entries: PieChartEntry[];
+}
+
+export interface PieChartEntry {
   key: string;
   value: number;
 }

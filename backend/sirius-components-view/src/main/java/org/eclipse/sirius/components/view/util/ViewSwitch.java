@@ -49,6 +49,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -606,6 +607,15 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseBarChartDescription(barChartDescription);
             if (result == null)
                 result = this.caseWidgetDescription(barChartDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.PIE_CHART_DESCRIPTION: {
+            PieChartDescription pieChartDescription = (PieChartDescription) theEObject;
+            T result = this.casePieChartDescription(pieChartDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(pieChartDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1349,6 +1359,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseBarChartDescription(BarChartDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Pie Chart Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Pie Chart Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePieChartDescription(PieChartDescription object) {
         return null;
     }
 

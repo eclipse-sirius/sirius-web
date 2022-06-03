@@ -233,5 +233,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/keysExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/yAxisLabelExpression"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//PieChartDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/valuesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/keysExpression"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
