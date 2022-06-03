@@ -166,6 +166,16 @@ export const formRefreshedEventPayloadFragment = gql`
                     value
                   }
                 }
+                ... on PieChart {
+                  metadata {
+                    label
+                    kind
+                  }
+                  entries {
+                    key
+                    value
+                  }
+                }
               }
             }
           }

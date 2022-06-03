@@ -20,6 +20,9 @@ import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
 import org.eclipse.sirius.components.charts.barchart.BarChartEntry;
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
+import org.eclipse.sirius.components.charts.piechart.PieChart;
+import org.eclipse.sirius.components.charts.piechart.PieChartEntry;
+import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementProps;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
@@ -87,6 +90,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateChartWidget((ChartWidgetElementProps) props, children);
         } else if (BarChartElementProps.TYPE.equals(type) && props instanceof BarChartElementProps) {
             object = this.instantiateBarChart((BarChartElementProps) props);
+        } else if (PieChartElementProps.TYPE.equals(type) && props instanceof PieChartElementProps) {
+            object = this.instantiatePieChart((PieChartElementProps) props);
         }
 
         return object;
@@ -94,17 +99,37 @@ public class FormElementFactory implements IElementFactory {
 
     public Object instantiateBarChart(BarChartElementProps props) {
         BarChartElementProps barChartElementProps = props;
-        List<BarChartEntry> entries = this.getEntries(barChartElementProps);
+        List<BarChartEntry> entries = this.getBarChartEntries(barChartElementProps);
         return new BarChart(barChartElementProps.getId(), barChartElementProps.getDescriptionId(), barChartElementProps.getLabel(), entries);
     }
 
-    private List<BarChartEntry> getEntries(BarChartElementProps barChartElementProps) {
+    public Object instantiatePieChart(PieChartElementProps props) {
+        PieChartElementProps pieChartElementProps = props;
+        List<PieChartEntry> entries = this.getPieChartEntries(pieChartElementProps);
+        // The label is not used for pieChart. This attribute is inherited from IRepresentation
+        String label = "pieChart"; //$NON-NLS-1$
+        return new PieChart(pieChartElementProps.getId(), pieChartElementProps.getDescriptionId(), label, entries);
+    }
+
+    private List<BarChartEntry> getBarChartEntries(BarChartElementProps barChartElementProps) {
         List<BarChartEntry> entries = new ArrayList<>();
         List<String> keys = barChartElementProps.getKeys();
         List<Number> values = barChartElementProps.getValues();
         if (values.size() == keys.size()) {
             for (int i = 0; i < values.size(); i++) {
                 entries.add(new BarChartEntry(keys.get(i), values.get(i)));
+            }
+        }
+        return entries;
+    }
+
+    private List<PieChartEntry> getPieChartEntries(PieChartElementProps pieChartElementProps) {
+        List<PieChartEntry> entries = new ArrayList<>();
+        List<String> keys = pieChartElementProps.getKeys();
+        List<Number> values = pieChartElementProps.getValues();
+        if (values.size() == keys.size()) {
+            for (int i = 0; i < values.size(); i++) {
+                entries.add(new PieChartEntry(keys.get(i), values.get(i)));
             }
         }
         return entries;

@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
+import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.TextAreaDescription;
@@ -178,6 +179,10 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
 
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, barChartDescription));
+
+        PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, pieChartDescription));
+
     }
 
 }

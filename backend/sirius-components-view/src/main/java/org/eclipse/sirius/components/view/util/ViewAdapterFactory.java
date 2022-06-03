@@ -50,6 +50,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -367,6 +368,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseBarChartDescription(BarChartDescription object) {
             return ViewAdapterFactory.this.createBarChartDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter casePieChartDescription(PieChartDescription object) {
+            return ViewAdapterFactory.this.createPieChartDescriptionAdapter();
         }
 
         @Override
@@ -1067,6 +1073,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createBarChartDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.PieChartDescription
+     * <em>Pie Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.PieChartDescription
+     * @generated
+     */
+    public Adapter createPieChartDescriptionAdapter() {
         return null;
     }
 
