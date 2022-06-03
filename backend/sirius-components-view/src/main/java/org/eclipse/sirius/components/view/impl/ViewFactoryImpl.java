@@ -49,6 +49,7 @@ import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescription;
@@ -184,6 +185,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createConditionalRadioDescriptionStyle();
         case ViewPackage.BAR_CHART_DESCRIPTION:
             return this.createBarChartDescription();
+        case ViewPackage.PIE_CHART_DESCRIPTION:
+            return this.createPieChartDescription();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -665,6 +668,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public BarChartDescription createBarChartDescription() {
         BarChartDescriptionImpl barChartDescription = new BarChartDescriptionImpl();
         return barChartDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PieChartDescription createPieChartDescription() {
+        PieChartDescriptionImpl pieChartDescription = new PieChartDescriptionImpl();
+        return pieChartDescription;
     }
 
     /**

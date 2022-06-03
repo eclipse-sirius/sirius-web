@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
+import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
@@ -351,6 +352,20 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .build();
         // @formatter:on
         return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);
+    }
+
+    @Override
+    public AbstractWidgetDescription casePieChartDescription(org.eclipse.sirius.components.view.PieChartDescription viewPieChartDescription) {
+        String keysExpression = viewPieChartDescription.getKeysExpression();
+        String valuesExpression = viewPieChartDescription.getValuesExpression();
+        // @formatter:off
+        IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(this.getDescriptionId(viewPieChartDescription))
+                .label(viewPieChartDescription.getName())
+                .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
+                .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
+                .build();
+        // @formatter:on
+        return this.createChartWidgetDescription(viewPieChartDescription, chartDescription);
     }
 
     private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, IChartDescription chartDescription) {

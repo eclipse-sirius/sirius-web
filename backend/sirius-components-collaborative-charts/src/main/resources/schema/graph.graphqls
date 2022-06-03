@@ -29,6 +29,12 @@ type BarChart implements Representation {
   entries: [BarChartEntry!]!
 }
 
+type PieChart implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  entries: [BarChartEntry!]!
+}
+
 type BarChartEntry {
   key: String!
   value: Float!

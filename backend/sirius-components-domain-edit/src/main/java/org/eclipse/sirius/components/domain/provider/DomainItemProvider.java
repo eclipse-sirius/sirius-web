@@ -26,8 +26,8 @@ import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Entity;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Domain} object. <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Domain} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */

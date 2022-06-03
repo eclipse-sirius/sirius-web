@@ -204,7 +204,7 @@ type Link implements Widget {
   url: String!
 }
 
-union Chart = BarChart
+union Chart = BarChart | PieChart
 
 type ChartWidget implements Widget {
   id: ID!

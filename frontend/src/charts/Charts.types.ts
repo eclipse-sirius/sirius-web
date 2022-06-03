@@ -28,10 +28,14 @@ export interface Chart extends Representation {
 
 export interface BarChart extends Chart {
   label: string;
-  entries: BarChartEntry[];
+  entries: KeyNumberEntry[];
 }
 
-export interface BarChartEntry {
+export interface PieChart extends Chart {
+  entries: KeyNumberEntry[];
+}
+
+export interface KeyNumberEntry {
   key: string;
   value: number;
 }

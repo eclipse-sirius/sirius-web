@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms.renderer;
 
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
+import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementProps;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
@@ -68,6 +69,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof ChartWidgetElementProps;
         } else if (BarChartElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof BarChartElementProps;
+        } else if (PieChartElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof PieChartElementProps;
         }
 
         return checkValidProps;
