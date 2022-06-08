@@ -31,6 +31,8 @@ public class AddWidgetInput implements IFormDescriptionEditorInput {
 
     private String representationId;
 
+    private String containerId;
+
     private String kind;
 
     private int index;
@@ -39,10 +41,13 @@ public class AddWidgetInput implements IFormDescriptionEditorInput {
         // Used by jackson
     }
 
-    public AddWidgetInput(UUID id, String editingContextId, String representationId) {
+    public AddWidgetInput(UUID id, String editingContextId, String representationId, String containerId, String kind, int index) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
+        this.containerId = containerId;
+        this.kind = Objects.requireNonNull(kind);
+        this.index = Objects.requireNonNull(index);
     }
 
     @Override
@@ -59,6 +64,10 @@ public class AddWidgetInput implements IFormDescriptionEditorInput {
         return this.editingContextId;
     }
 
+    public String getContainerId() {
+        return this.containerId;
+    }
+
     public String getKind() {
         return this.kind;
     }
@@ -69,8 +78,8 @@ public class AddWidgetInput implements IFormDescriptionEditorInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}; kind: {4}, index: {5}}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.kind, this.index);
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, containerId: {4}, kind: {5}, index: {6}}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.containerId, this.kind, this.index);
     }
 
 }

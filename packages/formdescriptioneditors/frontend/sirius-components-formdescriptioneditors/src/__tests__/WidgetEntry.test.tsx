@@ -22,7 +22,6 @@ import {
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
   GQLDeleteWidgetSuccessPayload,
-  GQLFormDescriptionEditor,
   GQLFormDescriptionEditorWidget,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
@@ -46,6 +45,7 @@ const addWidgetVariables: GQLAddWidgetMutationVariables = {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
+    containerId: null,
     kind: 'Textfield',
     index: 0,
   },
@@ -84,6 +84,7 @@ const moveWidgetVariables: GQLMoveWidgetMutationVariables = {
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
     widgetId: 'Textfield2',
+    containerId: null,
     index: 0,
   },
 };
@@ -94,17 +95,6 @@ const moveWidgetSuccessPayload: GQLMoveWidgetSuccessPayload = {
 const moveWidgetSuccessData: GQLMoveWidgetMutationData = { moveWidget: moveWidgetSuccessPayload };
 
 test('should drop the Textfield in the drop area', async () => {
-  const formDescriptionEditor: GQLFormDescriptionEditor = {
-    id: 'FormDescriptionEditor',
-    widgets: [{ id: 'TextfieldDescription', kind: 'TextfieldDescription', label: 'Textfield1' }],
-    metadata: {
-      id: 'FormDescriptionEditor',
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor',
-      description: { id: 'FormDescriptionEditorDescription' },
-    },
-  };
-
   const textfieldWidget: GQLFormDescriptionEditorWidget = {
     id: 'Textfield1',
     label: 'Textfield1',
@@ -130,7 +120,10 @@ test('should drop the Textfield in the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
+        containerId={null}
+        siblings={[]}
+        flexDirection={'row'}
+        flexGrow={0}
         widget={textfieldWidget}
         selection={emptySelection}
         setSelection={emptySetSelection}
@@ -153,17 +146,6 @@ test('should drop the Textfield in the drop area', async () => {
 });
 
 test('should delete the Textfield from the drop area', async () => {
-  const formDescriptionEditor: GQLFormDescriptionEditor = {
-    id: 'FormDescriptionEditor',
-    widgets: [{ id: 'TextfieldDescription', kind: 'TextfieldDescription', label: 'Textfield1' }],
-    metadata: {
-      id: 'FormDescriptionEditor',
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor',
-      description: { id: 'FormDescriptionEditorDescription' },
-    },
-  };
-
   const textfieldWidget: GQLFormDescriptionEditorWidget = {
     id: 'Textfield1',
     label: 'Textfield1',
@@ -189,7 +171,10 @@ test('should delete the Textfield from the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
+        containerId={null}
+        siblings={[]}
+        flexDirection={'row'}
+        flexGrow={0}
         widget={textfieldWidget}
         selection={emptySelection}
         setSelection={emptySetSelection}
@@ -211,17 +196,6 @@ test('should delete the Textfield from the drop area', async () => {
 });
 
 test('should delete the PieChart from the drop area', async () => {
-  const formDescriptionEditor: GQLFormDescriptionEditor = {
-    id: 'FormDescriptionEditor',
-    widgets: [{ id: 'PieChartDescription', kind: 'PieChartDescription', label: 'PieChart1' }],
-    metadata: {
-      id: 'FormDescriptionEditor',
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor',
-      description: { id: 'FormDescriptionEditorDescription' },
-    },
-  };
-
   const pieChartWidget: GQLFormDescriptionEditorWidget = {
     id: 'PieChart1',
     label: 'PieChart1',
@@ -247,7 +221,10 @@ test('should delete the PieChart from the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
+        containerId={null}
+        siblings={[]}
+        flexDirection={'row'}
+        flexGrow={0}
         widget={pieChartWidget}
         selection={emptySelection}
         setSelection={emptySetSelection}
@@ -268,20 +245,6 @@ test('should delete the PieChart from the drop area', async () => {
 });
 
 test('should move the existing Textfield from/into the drop area', async () => {
-  const formDescriptionEditor: GQLFormDescriptionEditor = {
-    id: 'FormDescriptionEditor',
-    widgets: [
-      { id: 'Textfield1', kind: 'TextfieldDescription', label: 'Textfield1' },
-      { id: 'Textfield2', kind: 'TextfieldDescription', label: 'Textfield2' },
-    ],
-    metadata: {
-      id: 'FormDescriptionEditor',
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor',
-      description: { id: 'FormDescriptionEditorDescription' },
-    },
-  };
-
   const textfieldWidget: GQLFormDescriptionEditorWidget = {
     id: 'Textfield1',
     label: 'Textfield1',
@@ -307,7 +270,10 @@ test('should move the existing Textfield from/into the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
+        containerId={null}
+        siblings={[]}
+        flexDirection={'row'}
+        flexGrow={0}
         widget={textfieldWidget}
         selection={emptySelection}
         setSelection={emptySetSelection}

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -30,8 +31,11 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.view.FlexDirection;
+import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
 import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 import org.springframework.stereotype.Service;
@@ -81,9 +85,10 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof AddWidgetInput) {
+            String containerId = ((AddWidgetInput) formDescriptionEditorInput).getContainerId();
             String kind = ((AddWidgetInput) formDescriptionEditorInput).getKind();
             int index = ((AddWidgetInput) formDescriptionEditorInput).getIndex();
-            boolean addWidget = this.addWidget(editingContext, formDescriptionEditorContext, kind, index);
+            boolean addWidget = this.addWidget(editingContext, formDescriptionEditorContext, containerId, kind, index);
             if (addWidget) {
                 payload = new AddWidgetSuccessPayload(formDescriptionEditorInput.getId());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
@@ -94,23 +99,35 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    protected boolean addWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String kind, int index) {
-        var optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
+    private boolean addWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String containerId, String kind, int index) {
+        boolean success = false;
+        var optionalSelf = Optional.empty();
+        if (containerId != null) {
+            optionalSelf = this.objectService.getObject(editingContext, containerId);
+        } else {
+            optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
+        }
         if (optionalSelf.isPresent()) {
-            Object formDescription = optionalSelf.get();
-            if (formDescription instanceof FormDescription) {
-                EClassifier eClassifier = ViewFactory.eINSTANCE.getEPackage().getEClassifier(kind + "Description"); //$NON-NLS-1$
-                if (eClassifier instanceof EClass) {
-                    var widgetDescription = ViewFactory.eINSTANCE.create((EClass) eClassifier);
-                    if (widgetDescription instanceof WidgetDescription) {
-                        this.createStyle((WidgetDescription) widgetDescription);
-                        ((FormDescription) formDescription).getWidgets().add(index, (WidgetDescription) widgetDescription);
-                        return true;
+            Object container = optionalSelf.get();
+            EClassifier eClassifier = ViewPackage.eINSTANCE.getEClassifier(kind + "Description"); //$NON-NLS-1$
+            if (eClassifier instanceof EClass) {
+                var widgetDescription = ViewFactory.eINSTANCE.create((EClass) eClassifier);
+                if (widgetDescription instanceof FlexboxContainerDescription) {
+                    ((FlexboxContainerDescription) widgetDescription).setFlexDirection(FlexDirection.get(kind));
+                }
+                if (widgetDescription instanceof WidgetDescription) {
+                    this.createStyle((WidgetDescription) widgetDescription);
+                    if (container instanceof FormDescription) {
+                        ((FormDescription) container).getWidgets().add(index, (WidgetDescription) widgetDescription);
+                        success = true;
+                    } else if (container instanceof FlexboxContainerDescription) {
+                        ((FlexboxContainerDescription) container).getChildren().add(index, (WidgetDescription) widgetDescription);
+                        success = true;
                     }
                 }
             }
         }
-        return false;
+        return success;
     }
 
     private void createStyle(WidgetDescription widgetDescription) {

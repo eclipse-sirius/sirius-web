@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
+import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorFlexboxContainerElementProps;
+import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorWidgetElementProps;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -29,6 +31,10 @@ public class FormDescriptionEditorInstancePropsValidator implements IInstancePro
 
         if (FormDescriptionEditorElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof FormDescriptionEditorElementProps;
+        } else if (FormDescriptionEditorWidgetElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof FormDescriptionEditorWidgetElementProps;
+        } else if (FormDescriptionEditorFlexboxContainerElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof FormDescriptionEditorFlexboxContainerElementProps;
         }
         return checkValidProps;
     }

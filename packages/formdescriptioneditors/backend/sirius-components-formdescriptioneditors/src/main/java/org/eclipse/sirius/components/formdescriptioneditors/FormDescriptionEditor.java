@@ -42,7 +42,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     private String descriptionId;
 
-    private List<FormDescriptionEditorWidget> widgets;
+    private List<AbstractFormDescriptionEditorWidget> widgets;
 
     private FormDescriptionEditor() {
         // Prevent instantiation
@@ -73,7 +73,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
         return this.descriptionId;
     }
 
-    public List<FormDescriptionEditorWidget> getWidgets() {
+    public List<AbstractFormDescriptionEditorWidget> getWidgets() {
         return this.widgets;
     }
 
@@ -108,7 +108,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
         private String descriptionId;
 
-        private List<FormDescriptionEditorWidget> widgets;
+        private List<AbstractFormDescriptionEditorWidget> widgets;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -137,7 +137,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             return this;
         }
 
-        public Builder widgets(List<FormDescriptionEditorWidget> widgets) {
+        public Builder widgets(List<AbstractFormDescriptionEditorWidget> widgets) {
             this.widgets = Objects.requireNonNull(widgets);
             return this;
         }

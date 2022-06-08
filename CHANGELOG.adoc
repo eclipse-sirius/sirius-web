@@ -38,6 +38,10 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram]
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Store code coverage results for the frontend packages just like backend packages
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Fix every unit tests provided in the various frontend packages
 
+=== New features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1265[#1265] [form] Add support for flexbox containers on FormDescriptionEditors
+
 == v2022.7.0
 
 === Architectural decision records

@@ -18,7 +18,7 @@ type FormDescriptionEditorRefreshedEventPayload {
 type FormDescriptionEditor implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
-  widgets: [FormDescriptionEditorWidget!]!
+  widgets: [AbstractFormDescriptionEditorWidget!]!
 }
 
 type FormDescriptionEditorDescription implements RepresentationDescription {
@@ -26,10 +26,26 @@ type FormDescriptionEditorDescription implements RepresentationDescription {
   label: String!
 }
 
-type FormDescriptionEditorWidget {
+interface AbstractFormDescriptionEditorWidget {
+  id: ID!
+  kind: String!
+  label: String!
+}
+
+type FormDescriptionEditorWidget implements AbstractFormDescriptionEditorWidget {
 	id: ID!
 	kind: String!
 	label: String!
+}
+
+type FormDescriptionEditorFlexboxContainer implements AbstractFormDescriptionEditorWidget {
+	id: ID!
+	kind: String!
+	label: String!
+	flexDirection: String!
+	flexWrap: String!
+	flexGrow: Int!
+	children: [AbstractFormDescriptionEditorWidget!]!
 }
 
 extend type Mutation {
@@ -42,6 +58,7 @@ input AddWidgetInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
+  containerId: ID
   kind: String!
   index: Int!
 }
@@ -69,6 +86,7 @@ input MoveWidgetInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
+  containerId: ID
   widgetId: String!
   index: Int!
 }

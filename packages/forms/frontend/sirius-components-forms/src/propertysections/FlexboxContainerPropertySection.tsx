@@ -18,7 +18,7 @@ import {
 import { PropertySection } from './PropertySection';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useWidgetContainerPropertySectionStyles = makeStyles<Theme, FlexboxContainerPropertySectionStyleProps>(
+const useFlexboxContainerPropertySectionStyles = makeStyles<Theme, FlexboxContainerPropertySectionStyleProps>(
   (theme) => ({
     container: {
       display: 'flex',
@@ -42,7 +42,7 @@ export const FlexboxContainerPropertySection = ({
   setSelection,
   readOnly,
 }: FlexboxContainerPropertySectionProps) => {
-  const classes = useWidgetContainerPropertySectionStyles({
+  const classes = useFlexboxContainerPropertySectionStyles({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
     flexGrow: widget.flexGrow,

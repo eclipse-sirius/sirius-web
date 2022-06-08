@@ -10,13 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type Kind =
-  | 'Textfield'
-  | 'TextArea'
-  | 'Checkbox'
-  | 'Radio'
-  | 'Select'
-  | 'MultiSelect'
-  | 'BarChart'
-  | 'PieChart'
-  | 'FlexboxContainer';
+import { Kind } from './FormDescriptionEditorRepresentation.types';
+
+export const isKind = (value: string): value is Kind => {
+  return (
+    value === 'Textfield' ||
+    value === 'TextArea' ||
+    value === 'Checkbox' ||
+    value === 'Radio' ||
+    value === 'Select' ||
+    value === 'MultiSelect' ||
+    value === 'BarChart' ||
+    value === 'PieChart' ||
+    value === 'FlexboxContainer'
+  );
+};

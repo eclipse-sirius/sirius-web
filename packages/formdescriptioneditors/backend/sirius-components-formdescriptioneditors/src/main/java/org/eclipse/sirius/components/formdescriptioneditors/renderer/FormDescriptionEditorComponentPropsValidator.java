@@ -14,6 +14,10 @@ package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorWidgetComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorWidgetComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorFlexboxContainerComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorFlexboxContainerComponentProps;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -30,6 +34,10 @@ public class FormDescriptionEditorComponentPropsValidator implements IComponentP
 
         if (FormDescriptionEditorComponent.class.equals(componentType)) {
             checkValidProps = props instanceof FormDescriptionEditorComponentProps;
+        } else if (FormDescriptionEditorWidgetComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorWidgetComponentProps;
+        } else if (FormDescriptionEditorFlexboxContainerComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorFlexboxContainerComponentProps;
         }
         return checkValidProps;
     }

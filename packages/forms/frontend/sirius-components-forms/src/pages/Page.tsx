@@ -21,6 +21,7 @@ const usePageStyles = makeStyles((theme) => ({
     '& > *': {
       marginBottom: theme.spacing(2),
     },
+    overflowY: 'auto',
   },
 }));
 
