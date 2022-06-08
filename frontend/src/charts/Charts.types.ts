@@ -23,12 +23,11 @@ export interface GQLRepresentationDescription {
 }
 export interface GQLRepresentation {
   id: string;
-}
-export interface GQLChart extends GQLRepresentation {
   metadata: GQLRepresentationMetadata;
 }
+export type GQLChart = GQLBarChart | GQLPieChart;
 
-export interface GQLBarChart extends GQLChart {
+export interface GQLBarChart extends GQLRepresentation {
   label: string;
   entries: GQLBarChartEntry[];
 }
@@ -38,7 +37,7 @@ export interface GQLBarChartEntry {
   value: number;
 }
 
-export interface GQLPieChart extends GQLChart {
+export interface GQLPieChart extends GQLRepresentation {
   label: string;
   entries: GQLPieChartEntry[];
 }
@@ -58,12 +57,12 @@ export interface RepresentationDescription {
 }
 export interface Representation {
   id: string;
-}
-export interface Chart extends Representation {
   metadata: RepresentationMetadata;
 }
 
-export interface BarChart extends Chart {
+export type Chart = BarChart | PieChart;
+
+export interface BarChart extends Representation {
   label: string;
   entries: BarChartEntry[];
 }
@@ -72,7 +71,7 @@ export interface BarChartEntry {
   value: number;
 }
 
-export interface PieChart extends Chart {
+export interface PieChart extends Representation {
   entries: PieChartEntry[];
 }
 

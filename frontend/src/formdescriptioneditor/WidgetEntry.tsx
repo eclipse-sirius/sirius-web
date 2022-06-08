@@ -18,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Selection } from 'workbench/Workbench.types';
+import { BarChartWidget } from './BarChartWidget';
 import { CheckboxWidget } from './CheckboxWidget';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -38,6 +39,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { Kind } from './FormDescriptionEditorWebSocketContainer.types';
 import { MultiSelectWidget } from './MultiSelectWidget';
+import { PieChartWidget } from './PieChartWidget';
 import { RadioWidget } from './RadioWidget';
 import { SelectWidget } from './SelectWidget';
 import { TextAreaWidget } from './TextAreaWidget';
@@ -69,7 +71,9 @@ const isKind = (value: string): value is Kind => {
     value === 'Checkbox' ||
     value === 'Radio' ||
     value === 'Select' ||
-    value === 'MultiSelect'
+    value === 'MultiSelect' ||
+    value === 'BarChart' ||
+    value === 'PieChart'
   );
 };
 
@@ -251,7 +255,7 @@ export const WidgetEntry = ({
     }
   };
 
-  let widgetElement = null;
+  let widgetElement: JSX.Element | null = null;
   if (widget.kind === 'Textfield') {
     widgetElement = (
       <TextfieldWidget
@@ -305,6 +309,26 @@ export const WidgetEntry = ({
   } else if (widget.kind === 'MultiSelect') {
     widgetElement = (
       <MultiSelectWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'BarChart') {
+    widgetElement = (
+      <BarChartWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'PieChart') {
+    widgetElement = (
+      <PieChartWidget
         data-testid={widget.id}
         widget={widget}
         selection={selection}
