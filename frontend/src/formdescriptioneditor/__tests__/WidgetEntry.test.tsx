@@ -58,12 +58,20 @@ const addWidgetSuccessPayload: GQLAddWidgetSuccessPayload = {
 };
 const addWidgetSuccessData: GQLAddWidgetMutationData = { addWidget: addWidgetSuccessPayload };
 
-const deleteWidgetVariables: GQLDeleteWidgetMutationVariables = {
+const deleteTextfieldWidgetVariables: GQLDeleteWidgetMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
     widgetId: 'Textfield1',
+  },
+};
+const deletePieChartWidgetVariables: GQLDeleteWidgetMutationVariables = {
+  input: {
+    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+    editingContextId: 'editingContextId',
+    representationId: 'formDescriptionEditorId',
+    widgetId: 'PieChart1',
   },
 };
 const deleteWidgetSuccessPayload: GQLDeleteWidgetSuccessPayload = {
@@ -168,7 +176,7 @@ test('should delete the Textfield from the drop area', async () => {
   const deleteWidgetSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
       query: deleteWidgetMutation,
-      variables: deleteWidgetVariables,
+      variables: deleteTextfieldWidgetVariables,
     },
     result: () => {
       deleteWidgetCalled = true;
@@ -197,6 +205,63 @@ test('should delete the Textfield from the drop area', async () => {
   await act(async () => {
     textfield1.focus();
     fireEvent.keyDown(textfield1, { key: 'Delete', code: 'NumpadDecimal' });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await waitFor(() => {
+      expect(deleteWidgetCalled).toBeTruthy();
+    });
+  });
+});
+
+test('should delete the PieChart from the drop area', async () => {
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'FormDescriptionEditor',
+    widgets: [{ id: 'PieChartDescription', kind: 'PieChartDescription', label: 'PieChart1' }],
+    metadata: {
+      id: 'FormDescriptionEditor',
+      kind: 'FormDescriptionEditor',
+      label: 'FormDescriptionEditor',
+      description: { id: 'FormDescriptionEditorDescription' },
+    },
+  };
+
+  const pieChartWidget: GQLFormDescriptionEditorWidget = {
+    id: 'PieChart1',
+    label: 'PieChart1',
+    kind: 'PieChart',
+  };
+
+  let deleteWidgetCalled: boolean = false;
+  const deleteWidgetSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: deleteWidgetMutation,
+      variables: deletePieChartWidgetVariables,
+    },
+    result: () => {
+      deleteWidgetCalled = true;
+      return { data: deleteWidgetSuccessData };
+    },
+  };
+
+  const mocks: MockedResponse<Record<string, any>>[] = [deleteWidgetSuccessMock];
+
+  render(
+    <MockedProvider mocks={mocks}>
+      <WidgetEntry
+        editingContextId="editingContextId"
+        representationId="formDescriptionEditorId"
+        formDescriptionEditor={formDescriptionEditor}
+        widget={pieChartWidget}
+        selection={emptySelection}
+        setSelection={emptySetSelection}
+      />
+    </MockedProvider>
+  );
+
+  const pieChart1: HTMLElement = screen.getByTestId('PieChart1');
+  expect(pieChart1).not.toBeUndefined();
+  await act(async () => {
+    pieChart1.focus();
+    fireEvent.keyDown(pieChart1, { key: 'Delete', code: 'NumpadDecimal' });
     await new Promise((resolve) => setTimeout(resolve, 0));
     await waitFor(() => {
       expect(deleteWidgetCalled).toBeTruthy();

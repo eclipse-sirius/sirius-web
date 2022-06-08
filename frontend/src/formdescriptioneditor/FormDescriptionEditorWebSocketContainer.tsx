@@ -18,8 +18,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
+import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CloseIcon from '@material-ui/icons/Close';
+import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import { useMachine } from '@xstate/react';
@@ -137,7 +139,9 @@ const isKind = (value: string): value is Kind => {
     value === 'Checkbox' ||
     value === 'Radio' ||
     value === 'Select' ||
-    value === 'MultiSelect'
+    value === 'MultiSelect' ||
+    value === 'BarChart' ||
+    value === 'PieChart'
   );
 };
 
@@ -371,6 +375,30 @@ export const FormDescriptionEditorWebSocketContainer = ({
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               MultiSelect
+            </Typography>
+          </div>
+          <div
+            id="BarChart"
+            data-testid="FormDescriptionEditor-BarChart"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <BarChartIcon />
+            <Typography variant="caption" gutterBottom>
+              BarChart
+            </Typography>
+          </div>
+          <div
+            id="PieChart"
+            data-testid="FormDescriptionEditor-PieChart"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <PieChartIcon />
+            <Typography variant="caption" gutterBottom>
+              PieChart
             </Typography>
           </div>
         </div>

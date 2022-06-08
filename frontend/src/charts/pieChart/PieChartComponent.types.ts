@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ChartWidget, Subscriber } from 'form/Form.types';
-
-export interface ChartWidgetPropertySectionProps {
-  subscribers: Subscriber[];
-  widget: ChartWidget;
+import { PieChart } from 'charts/Charts.types';
+export interface PieChartProps {
+  width: number;
+  height: number;
+  chart: PieChart;
 }
