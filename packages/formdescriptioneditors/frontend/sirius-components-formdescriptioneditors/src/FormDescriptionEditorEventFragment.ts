@@ -41,6 +41,36 @@ export const formDescriptionEditorEventSubscription = gql`
             id
             label
             kind
+            ... on FormDescriptionEditorFlexboxContainer {
+              flexDirection
+              flexWrap
+              flexGrow
+              children {
+                id
+                label
+                kind
+                ... on FormDescriptionEditorFlexboxContainer {
+                  flexDirection
+                  flexWrap
+                  flexGrow
+                  children {
+                    id
+                    label
+                    kind
+                    ... on FormDescriptionEditorFlexboxContainer {
+                      flexDirection
+                      flexWrap
+                      flexGrow
+                      children {
+                        id
+                        label
+                        kind
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

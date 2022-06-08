@@ -47,7 +47,6 @@ import {
   GQLMoveWidgetMutationVariables,
   GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { Kind } from './FormDescriptionEditorRepresentation.types';
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
@@ -59,7 +58,8 @@ import {
   ShowToastEvent,
 } from './FormDescriptionEditorRepresentationMachine';
 import { WidgetEntry } from './WidgetEntry';
-
+import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import { isKind } from './WidgetOperations';
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
@@ -98,6 +98,7 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     width: '100%',
     padding: '4px 8px 4px 8px',
     overflowX: 'auto',
+    overflowY: 'scroll',
   },
   body: {
     display: 'flex',
@@ -132,19 +133,6 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     justifyItems: 'center',
   },
 }));
-
-const isKind = (value: string): value is Kind => {
-  return (
-    value === 'Textfield' ||
-    value === 'TextArea' ||
-    value === 'Checkbox' ||
-    value === 'Radio' ||
-    value === 'Select' ||
-    value === 'MultiSelect' ||
-    value === 'BarChart' ||
-    value === 'PieChart'
-  );
-};
 
 export const FormDescriptionEditorRepresentation = ({
   editingContextId,
@@ -271,26 +259,28 @@ export const FormDescriptionEditorRepresentation = ({
     event.currentTarget.classList.remove(classes.dragOver);
 
     const id: string = event.dataTransfer.getData('text/plain');
+    let index = formDescriptionEditor.widgets.length;
 
     if (isKind(id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: uuid(),
         editingContextId,
         representationId,
+        containerId: null,
         kind: id,
-        index: formDescriptionEditor.widgets.length,
+        index,
       };
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
     } else {
-      let index = 0;
-      if (formDescriptionEditor.widgets.length > 0) {
-        index = formDescriptionEditor.widgets.length - 1;
+      if (formDescriptionEditor.widgets.find((w) => w.id === id)) {
+        index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
         id: uuid(),
         editingContextId,
         representationId,
+        containerId: null,
         widgetId: id,
         index,
       };
@@ -402,6 +392,18 @@ export const FormDescriptionEditorRepresentation = ({
               PieChart
             </Typography>
           </div>
+          <div
+            id="FlexboxContainer"
+            data-testid="FormDescriptionEditor-FlexboxContainer"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
+            <Typography variant="caption" gutterBottom align="center">
+              Flexbox Container
+            </Typography>
+          </div>
         </div>
         <div className={classes.preview}>
           <Typography>Preview</Typography>
@@ -411,10 +413,13 @@ export const FormDescriptionEditorRepresentation = ({
                 key={widget.id}
                 editingContextId={editingContextId}
                 representationId={representationId}
-                formDescriptionEditor={formDescriptionEditor}
+                containerId={null}
+                siblings={formDescriptionEditor.widgets}
                 widget={widget}
                 selection={selection}
                 setSelection={setSelection}
+                flexDirection={'column'}
+                flexGrow={1}
               />
             ))}
             <div

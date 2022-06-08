@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.WidgetDescription;
 import org.springframework.stereotype.Service;
@@ -77,9 +78,10 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof MoveWidgetInput) {
+            String containerId = ((MoveWidgetInput) formDescriptionEditorInput).getContainerId();
             String widgetId = ((MoveWidgetInput) formDescriptionEditorInput).getWidgetId();
             int index = ((MoveWidgetInput) formDescriptionEditorInput).getIndex();
-            boolean moveWidget = this.moveWidget(editingContext, formDescriptionEditorContext, widgetId, index);
+            boolean moveWidget = this.moveWidget(editingContext, formDescriptionEditorContext, containerId, widgetId, index);
             if (moveWidget) {
                 payload = new MoveWidgetSuccessPayload(formDescriptionEditorInput.getId());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
@@ -90,18 +92,36 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    protected boolean moveWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String widgetId, int index) {
-        var optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
+    private boolean moveWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String containerId, String widgetId, int index) {
+        boolean success = false;
+        var optionalSelf = Optional.empty();
+        if (containerId != null) {
+            optionalSelf = this.objectService.getObject(editingContext, containerId);
+        } else {
+            optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
+        }
         if (optionalSelf.isPresent()) {
-            Object formDescription = optionalSelf.get();
-            if (formDescription instanceof FormDescription) {
-                Optional<Object> widgetToMove = this.objectService.getObject(editingContext, widgetId);
-                if (widgetToMove.filter(WidgetDescription.class::isInstance).isPresent()) {
-                    ((FormDescription) formDescription).getWidgets().move(index, (WidgetDescription) widgetToMove.get());
-                    return true;
+            Object container = optionalSelf.get();
+            var objectToMove = this.objectService.getObject(editingContext, widgetId);
+            if (objectToMove.filter(WidgetDescription.class::isInstance).isPresent()) {
+                WidgetDescription widgetToMove = (WidgetDescription) objectToMove.get();
+                if (container instanceof FormDescription) {
+                    if (container.equals(widgetToMove.eContainer())) {
+                        ((FormDescription) container).getWidgets().move(index, widgetToMove);
+                    } else {
+                        ((FormDescription) container).getWidgets().add(index, widgetToMove);
+                    }
+                    success = true;
+                } else if (container instanceof FlexboxContainerDescription) {
+                    if (container.equals(widgetToMove.eContainer())) {
+                        ((FlexboxContainerDescription) container).getChildren().move(index, widgetToMove);
+                    } else {
+                        ((FlexboxContainerDescription) container).getChildren().add(index, widgetToMove);
+                    }
+                    success = true;
                 }
             }
         }
-        return false;
+        return success;
     }
 }

@@ -10,13 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type Kind =
-  | 'Textfield'
-  | 'TextArea'
-  | 'Checkbox'
-  | 'Radio'
-  | 'Select'
-  | 'MultiSelect'
-  | 'BarChart'
-  | 'PieChart'
-  | 'FlexboxContainer';
+
+import { GQLFlexDirection, GQLFlexWrap } from '@eclipse-sirius/sirius-components-forms';
+
+export interface FlexboxContainerWidgetState {
+  message: string | null;
+  selected: boolean;
+}
+
+export interface FlexboxContainerWidgetStyleProps {
+  flexDirection: GQLFlexDirection;
+  flexWrap: GQLFlexWrap;
+}

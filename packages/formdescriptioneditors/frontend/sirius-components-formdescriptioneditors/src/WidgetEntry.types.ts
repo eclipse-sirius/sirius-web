@@ -11,16 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLFlexDirection } from '@eclipse-sirius/sirius-components-forms';
 import React from 'react';
-import { GQLFormDescriptionEditor, GQLFormDescriptionEditorWidget } from './FormDescriptionEditorEventFragment.types';
+import {
+  GQLAbstractFormDescriptionEditorWidget,
+  GQLFormDescriptionEditorFlexboxContainer,
+  GQLFormDescriptionEditorWidget,
+} from './FormDescriptionEditorEventFragment.types';
 
 export interface WidgetEntryProps {
   editingContextId: string;
   representationId: string;
-  formDescriptionEditor: GQLFormDescriptionEditor;
-  widget: GQLFormDescriptionEditorWidget;
+  containerId: string | null;
+  siblings: GQLAbstractFormDescriptionEditorWidget[];
+  widget: GQLAbstractFormDescriptionEditorWidget;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
+  flexDirection: GQLFlexDirection;
+  flexGrow: number;
 }
 
 export interface WidgetProps {
@@ -30,6 +38,19 @@ export interface WidgetProps {
   onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => void;
 }
 
+export interface FlexboxContainerWidgetProps {
+  editingContextId: string;
+  representationId: string;
+  widget: GQLFormDescriptionEditorFlexboxContainer;
+  selection: Selection;
+  setSelection: (newSelection: Selection) => void;
+}
+
 export interface WidgetEntryState {
   message: string | null;
+}
+
+export interface WidgetEntryStyleProps {
+  flexDirection: GQLFlexDirection;
+  flexGrow: number;
 }

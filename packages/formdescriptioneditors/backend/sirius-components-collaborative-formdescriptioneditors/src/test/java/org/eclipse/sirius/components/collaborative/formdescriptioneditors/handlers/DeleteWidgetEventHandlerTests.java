@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handl
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -22,13 +21,13 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.FormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.TestFormDescriptionEditorBuilder;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetSuccessPayload;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeleteWidgetInput;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeleteWidgetSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -37,21 +36,20 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Tests of the add widget event handler.
+ * Tests of the delete widget event handler.
  *
  * @author arichard
  */
-public class AddWidgetEventHandlerTests {
+public class DeleteWidgetEventHandlerTests {
     @Test
-    public void testAddWidget() {
-        var objectService = new IObjectService.NoOp() {
+    public void testDeleteWidget() {
+        var handler = new DeleteWidgetEventHandler(new IObjectService.NoOp(), new IEditService.NoOp(), new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry()) {
             @Override
-            public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-                return Optional.of(ViewFactory.eINSTANCE.createFlexboxContainerDescription());
+            protected boolean deleteWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String widgetId) {
+                return true;
             }
         };
-        var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        var input = new DeleteWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "widgetId"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -65,6 +63,6 @@ public class AddWidgetEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(AddWidgetSuccessPayload.class);
+        assertThat(payload).isInstanceOf(DeleteWidgetSuccessPayload.class);
     }
 }

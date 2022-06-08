@@ -14,12 +14,13 @@ import { useMutation } from '@apollo/client';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { BarChartWidget } from './BarChartWidget';
 import { CheckboxWidget } from './CheckboxWidget';
+import { FlexboxContainerWidget } from './FlexboxContainerWidget';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
@@ -31,29 +32,35 @@ import {
   GQLDeleteWidgetMutationVariables,
   GQLDeleteWidgetPayload,
   GQLErrorPayload,
+  GQLFormDescriptionEditorFlexboxContainer,
   GQLFormDescriptionEditorWidget,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
   GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { Kind } from './FormDescriptionEditorRepresentation.types';
 import { MultiSelectWidget } from './MultiSelectWidget';
 import { PieChartWidget } from './PieChartWidget';
 import { RadioWidget } from './RadioWidget';
 import { SelectWidget } from './SelectWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
-import { WidgetEntryProps, WidgetEntryState } from './WidgetEntry.types';
+import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
+import { isKind } from './WidgetOperations';
 
-const useWidgetEntryStyles = makeStyles(() => ({
+const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>(() => ({
   widget: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
+    flexDirection: ({ flexDirection }) => flexDirection,
+    flexGrow: ({ flexGrow }) => flexGrow,
+  },
+  widgetElement: {
+    flexGrow: ({ flexGrow }) => flexGrow,
   },
   placeholder: {
-    height: '8px',
+    height: ({ flexDirection }) =>
+      flexDirection === 'column' || flexDirection === 'column-reverse' ? '10px' : 'inherit',
+    width: ({ flexDirection }) => (flexDirection === 'row' || flexDirection === 'row-reverse' ? '10px' : 'inherit'),
   },
   dragOver: {
     border: 'dashed 1px red',
@@ -64,28 +71,18 @@ const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
 ): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
-const isKind = (value: string): value is Kind => {
-  return (
-    value === 'Textfield' ||
-    value === 'TextArea' ||
-    value === 'Checkbox' ||
-    value === 'Radio' ||
-    value === 'Select' ||
-    value === 'MultiSelect' ||
-    value === 'BarChart' ||
-    value === 'PieChart'
-  );
-};
-
 export const WidgetEntry = ({
   editingContextId,
   representationId,
-  formDescriptionEditor,
+  containerId,
+  siblings,
   widget,
   selection,
   setSelection,
+  flexDirection,
+  flexGrow,
 }: WidgetEntryProps) => {
-  const classes = useWidgetEntryStyles();
+  const classes = useWidgetEntryStyles({ flexDirection, flexGrow });
 
   const initialState: WidgetEntryState = { message: null };
   const [state, setState] = useState<WidgetEntryState>(initialState);
@@ -100,18 +97,14 @@ export const WidgetEntry = ({
     if (!addWidgetLoading) {
       if (addWidgetError) {
         setState((prevState) => {
-          const newState = { ...prevState };
-          newState.message = addWidgetError.message;
-          return newState;
+          return { ...prevState, message: addWidgetError.message };
         });
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
           setState((prevState) => {
-            const newState = { ...prevState };
-            newState.message = addWidget.message;
-            return newState;
+            return { ...prevState, message: addWidget.message };
           });
         }
       }
@@ -125,18 +118,14 @@ export const WidgetEntry = ({
     if (!deleteWidgetLoading) {
       if (deleteWidgetError) {
         setState((prevState) => {
-          const newState = { ...prevState };
-          newState.message = deleteWidgetError.message;
-          return newState;
+          return { ...prevState, message: deleteWidgetError.message };
         });
       }
       if (deleteWidgetData) {
         const { deleteWidget } = deleteWidgetData;
         if (isErrorPayload(deleteWidget)) {
           setState((prevState) => {
-            const newState = { ...prevState };
-            newState.message = deleteWidget.message;
-            return newState;
+            return { ...prevState, message: deleteWidget.message };
           });
         }
       }
@@ -152,18 +141,14 @@ export const WidgetEntry = ({
     if (!moveWidgetLoading) {
       if (moveWidgetError) {
         setState((prevState) => {
-          const newState = { ...prevState };
-          newState.message = moveWidgetError.message;
-          return newState;
+          return { ...prevState, message: moveWidgetError.message };
         });
       }
       if (moveWidgetData) {
         const { moveWidget } = moveWidgetData;
         if (isErrorPayload(moveWidget)) {
           setState((prevState) => {
-            const newState = { ...prevState };
-            newState.message = moveWidget.message;
-            return newState;
+            return { ...prevState, message: moveWidget.message };
           });
         }
       }
@@ -181,6 +166,7 @@ export const WidgetEntry = ({
       ],
     };
     setSelection(newSelection);
+    event.stopPropagation();
   };
 
   const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -194,13 +180,14 @@ export const WidgetEntry = ({
       };
       const deleteWidgetVariables: GQLDeleteWidgetMutationVariables = { input: deleteWidgetInput };
       deleteWidget({ variables: deleteWidgetVariables });
+      event.stopPropagation();
     }
   };
 
   const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.dataTransfer.setData('text/plain', widget.id);
+    event.stopPropagation();
   };
-
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.currentTarget.classList.add(classes.dragOver);
@@ -222,8 +209,7 @@ export const WidgetEntry = ({
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => {
     const id: string = event.dataTransfer.getData('text/plain');
 
-    const existingWidgets: GQLFormDescriptionEditorWidget[] = formDescriptionEditor.widgets;
-    let index: number = existingWidgets.indexOf(widget);
+    let index: number = siblings.indexOf(widget);
     if (index <= 0) {
       index = 0;
     }
@@ -233,20 +219,22 @@ export const WidgetEntry = ({
         id: uuid(),
         editingContextId,
         representationId,
+        containerId,
         kind: id,
         index,
       };
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
     } else {
-      const movedWidgetIndex = formDescriptionEditor.widgets.findIndex((w) => w.id === id);
-      if (movedWidgetIndex < index) {
-        index = index - 1;
+      const movedWidgetIndex = siblings.findIndex((w) => w.id === id);
+      if (movedWidgetIndex > -1 && movedWidgetIndex < index) {
+        index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
         id: uuid(),
         editingContextId,
         representationId,
+        containerId,
         widgetId: id,
         index,
       };
@@ -336,6 +324,17 @@ export const WidgetEntry = ({
         onDropBefore={onDropBefore}
       />
     );
+  } else if (widget.kind === 'FlexboxContainer') {
+    widgetElement = (
+      <FlexboxContainerWidget
+        data-testid={widget.id}
+        editingContextId={editingContextId}
+        representationId={representationId}
+        widget={widget as GQLFormDescriptionEditorFlexboxContainer}
+        selection={selection}
+        setSelection={setSelection}
+      />
+    );
   }
   return (
     <div
@@ -353,7 +352,7 @@ export const WidgetEntry = ({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       />
-      {widgetElement}
+      <div className={classes.widgetElement}>{widgetElement}</div>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

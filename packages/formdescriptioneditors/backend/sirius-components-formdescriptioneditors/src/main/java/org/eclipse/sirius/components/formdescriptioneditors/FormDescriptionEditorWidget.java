@@ -18,36 +18,15 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 
 /**
- * Any widget contained in the form description editor representation.
+ * Any widget contained in the form description editor widget.
  *
  * @author arichard
  */
 @Immutable
-public final class FormDescriptionEditorWidget implements IFormDescriptionEditorWidget {
-
-    private String id;
-
-    private String kind;
-
-    private String label;
+public final class FormDescriptionEditorWidget extends AbstractFormDescriptionEditorWidget {
 
     private FormDescriptionEditorWidget() {
         // Prevent instantiation
-    }
-
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    @Override
-    public String getKind() {
-        return this.kind;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     public static Builder newFormDescriptionEditorWidget(String id) {

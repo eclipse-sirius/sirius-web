@@ -19,27 +19,28 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.view.FlexDirection;
 
 /**
- * The properties of the form description editor widget element.
+ * The properties of the form description editor flexbox container element.
  *
  * @author arichard
  */
 @Immutable
-public final class FormDescriptionEditorElementProps implements IProps {
-    public static final String TYPE = "FormDescriptionEditor"; //$NON-NLS-1$
+public final class FormDescriptionEditorFlexboxContainerElementProps implements IProps {
+    public static final String TYPE = "FormDescriptionEditorFlexboxContainer"; //$NON-NLS-1$
 
     private String id;
 
     private String label;
 
-    private String targetObjectId;
+    private String kind;
 
-    private String descriptionId;
+    private FlexDirection flexDirection;
 
     private List<Element> children;
 
-    private FormDescriptionEditorElementProps() {
+    private FormDescriptionEditorFlexboxContainerElementProps() {
         // Prevent instantiation
     }
 
@@ -51,12 +52,12 @@ public final class FormDescriptionEditorElementProps implements IProps {
         return this.label;
     }
 
-    public String getTargetObjectId() {
-        return this.targetObjectId;
+    public String getKind() {
+        return this.kind;
     }
 
-    public String getDescriptionId() {
-        return this.descriptionId;
+    public FlexDirection getFlexDirection() {
+        return this.flexDirection;
     }
 
     @Override
@@ -64,18 +65,18 @@ public final class FormDescriptionEditorElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newFormDescriptionEditorElementProps(String id) {
+    public static Builder newFormDescriptionEditorFlexboxContainerElementProps(String id) {
         return new Builder(id);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
+        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, flexDirection: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.kind, this.flexDirection);
     }
 
     /**
-     * The builder of the form description editor widget element props.
+     * The builder of the form description editor flexbox container element props.
      *
      * @author arichard
      */
@@ -85,9 +86,9 @@ public final class FormDescriptionEditorElementProps implements IProps {
 
         private String label;
 
-        private String targetObjectId;
+        private String kind;
 
-        private String descriptionId;
+        private FlexDirection flexDirection;
 
         private List<Element> children;
 
@@ -100,13 +101,13 @@ public final class FormDescriptionEditorElementProps implements IProps {
             return this;
         }
 
-        public Builder targetObjectId(String targetObjectId) {
-            this.targetObjectId = Objects.requireNonNull(targetObjectId);
+        public Builder kind(String kind) {
+            this.kind = Objects.requireNonNull(kind);
             return this;
         }
 
-        public Builder descriptionId(String descriptionId) {
-            this.descriptionId = Objects.requireNonNull(descriptionId);
+        public Builder flexDirection(FlexDirection flexDirection) {
+            this.flexDirection = Objects.requireNonNull(flexDirection);
             return this;
         }
 
@@ -115,14 +116,14 @@ public final class FormDescriptionEditorElementProps implements IProps {
             return this;
         }
 
-        public FormDescriptionEditorElementProps build() {
-            FormDescriptionEditorElementProps formDescriptionEditorElementProps = new FormDescriptionEditorElementProps();
-            formDescriptionEditorElementProps.id = Objects.requireNonNull(this.id);
-            formDescriptionEditorElementProps.label = Objects.requireNonNull(this.label);
-            formDescriptionEditorElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
-            formDescriptionEditorElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
-            formDescriptionEditorElementProps.children = Objects.requireNonNull(this.children);
-            return formDescriptionEditorElementProps;
+        public FormDescriptionEditorFlexboxContainerElementProps build() {
+            FormDescriptionEditorFlexboxContainerElementProps fdeFlexboxContainerElementProps = new FormDescriptionEditorFlexboxContainerElementProps();
+            fdeFlexboxContainerElementProps.id = Objects.requireNonNull(this.id);
+            fdeFlexboxContainerElementProps.label = Objects.requireNonNull(this.label);
+            fdeFlexboxContainerElementProps.kind = Objects.requireNonNull(this.kind);
+            fdeFlexboxContainerElementProps.flexDirection = Objects.requireNonNull(this.flexDirection);
+            fdeFlexboxContainerElementProps.children = Objects.requireNonNull(this.children);
+            return fdeFlexboxContainerElementProps;
         }
     }
 }

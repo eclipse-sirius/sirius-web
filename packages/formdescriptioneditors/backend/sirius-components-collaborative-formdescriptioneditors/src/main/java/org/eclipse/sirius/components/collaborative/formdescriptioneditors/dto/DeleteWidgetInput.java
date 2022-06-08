@@ -37,10 +37,11 @@ public class DeleteWidgetInput implements IFormDescriptionEditorInput {
         // Used by jackson
     }
 
-    public DeleteWidgetInput(UUID id, String editingContextId, String representationId) {
+    public DeleteWidgetInput(UUID id, String editingContextId, String representationId, String widgetId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
+        this.widgetId = Objects.requireNonNull(widgetId);
     }
 
     @Override

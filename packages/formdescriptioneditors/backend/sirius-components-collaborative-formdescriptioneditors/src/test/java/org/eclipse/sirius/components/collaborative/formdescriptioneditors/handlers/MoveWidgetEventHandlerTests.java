@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.FormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.TestFormDescriptionEditorBuilder;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetSuccessPayload;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.MoveWidgetInput;
+import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.MoveWidgetSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -37,21 +37,22 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Tests of the add widget event handler.
+ * Tests of the move widget event handler.
  *
  * @author arichard
  */
-public class AddWidgetEventHandlerTests {
+public class MoveWidgetEventHandlerTests {
     @Test
-    public void testAddWidget() {
+    public void testMoveWidget() {
         var objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(ViewFactory.eINSTANCE.createFlexboxContainerDescription());
             }
         };
-        var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+        var handler = new MoveWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+        var input = new MoveWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "widgetId", 0); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -65,6 +66,6 @@ public class AddWidgetEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(AddWidgetSuccessPayload.class);
+        assertThat(payload).isInstanceOf(MoveWidgetSuccessPayload.class);
     }
 }
