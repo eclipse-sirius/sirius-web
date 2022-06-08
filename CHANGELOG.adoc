@@ -13,6 +13,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1245[#1245] [form] Fix Dropping widget from FormDescriptionEditor opens new tab on Firefox
+- https://github.com/eclipse-sirius/sirius-components/issues/1253[#1253] [studio] Fix the computation of unsynchronized semantic elements in studios (which broke the use of the Create View operation)
 
 === Improvements
 
@@ -22,7 +23,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1212[#1212] [form] Add styling support on Textfield Widget in View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1233[#1233] [form] Handle styling of the View DSL widgets
-- https://github.com/eclipse-sirius/sirius-components/issues/1236[#1236] [form] Handle conditional styling of the View DSL widgets 
+- https://github.com/eclipse-sirius/sirius-components/issues/1236[#1236] [form] Handle conditional styling of the View DSL widgets
 
 == v2022.5.0
 

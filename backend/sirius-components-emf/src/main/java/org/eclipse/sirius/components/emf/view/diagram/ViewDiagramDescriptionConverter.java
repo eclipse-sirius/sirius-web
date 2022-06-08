@@ -441,7 +441,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 return semanticElementIds.stream()
                         .filter(String.class::isInstance)
                         .map(String.class::cast)
-                        .map(id -> this.objectService.getObject(editingContext, id))
+                        .flatMap(id -> this.objectService.getObject(editingContext, id).stream())
                         .collect(Collectors.toList());
                 //@formatter:on
             }
