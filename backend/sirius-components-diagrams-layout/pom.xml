@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-diagrams-layout</artifactId>
-	<version>2022.5.1</version>
+	<version>2022.5.2</version>
 	<name>sirius-components-diagrams-layout</name>
 	<description>Sirius Components Diagrams layout</description>
 
@@ -65,17 +65,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-layout-api</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.elk</groupId>
@@ -112,7 +112,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -127,18 +127,18 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2022.5.1</version>
+			<version>2022.5.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
