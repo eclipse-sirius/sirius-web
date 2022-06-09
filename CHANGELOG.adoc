@@ -17,6 +17,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1245[#1245] [form] Fix Dropping widget from FormDescriptionEditor opens new tab on Firefox
 - https://github.com/eclipse-sirius/sirius-components/issues/1253[#1253] [studio] Fix the computation of unsynchronized semantic elements in studios (which broke the use of the Create View operation)
 - https://github.com/eclipse-sirius/sirius-components/issues/1193[#1193] [layout] Fix edge layout on diagrams with node lists.
+- https://github.com/eclipse-sirius/sirius-components/issues/1260[#1260] [workbench] Fix download project fails when model contains a Form Description Editor
 
 === Improvements
 
