@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.charts.piechart.elements;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author fbarbin
  */
+@Immutable
 public final class PieChartElementProps implements IProps {
 
     public static final String TYPE = "PieChart"; //$NON-NLS-1$
