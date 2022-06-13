@@ -184,9 +184,11 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, buttonDescription));
 
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, barChartDescription));
 
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
+        pieChartDescription.setStyle(ViewFactory.eINSTANCE.createPieChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, pieChartDescription));
 
         FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();

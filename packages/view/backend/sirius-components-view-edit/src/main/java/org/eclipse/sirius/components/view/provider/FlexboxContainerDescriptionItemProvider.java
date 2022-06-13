@@ -205,9 +205,11 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, buttonDescription));
 
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, barChartDescription));
 
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
+        pieChartDescription.setStyle(ViewFactory.eINSTANCE.createPieChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, pieChartDescription));
 
         FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();

@@ -369,6 +369,42 @@ public interface ViewFactory extends EFactory {
     ConditionalButtonDescriptionStyle createConditionalButtonDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Bar Chart Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Bar Chart Description Style</em>'.
+     * @generated
+     */
+    BarChartDescriptionStyle createBarChartDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Bar Chart Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Bar Chart Description Style</em>'.
+     * @generated
+     */
+    ConditionalBarChartDescriptionStyle createConditionalBarChartDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Pie Chart Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Pie Chart Description Style</em>'.
+     * @generated
+     */
+    PieChartDescriptionStyle createPieChartDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Pie Chart Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Pie Chart Description Style</em>'.
+     * @generated
+     */
+    ConditionalPieChartDescriptionStyle createConditionalPieChartDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Bar Chart Description</em>'.

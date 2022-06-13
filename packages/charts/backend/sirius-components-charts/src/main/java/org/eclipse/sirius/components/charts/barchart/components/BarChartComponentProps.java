@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.charts.barchart.BarChart;
-import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
+import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 

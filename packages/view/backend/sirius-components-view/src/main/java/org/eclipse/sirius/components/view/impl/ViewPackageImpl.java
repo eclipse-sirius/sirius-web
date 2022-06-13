@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
@@ -27,11 +28,13 @@ import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
@@ -60,6 +63,7 @@ import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.PieChartDescription;
+import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -442,6 +446,34 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalButtonDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass barChartDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalBarChartDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass pieChartDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalPieChartDescriptionStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2186,6 +2218,86 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getBarChartDescriptionStyle() {
+        return this.barChartDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBarChartDescriptionStyle_BarsColor() {
+        return (EAttribute) this.barChartDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalBarChartDescriptionStyle() {
+        return this.conditionalBarChartDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getPieChartDescriptionStyle() {
+        return this.pieChartDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPieChartDescriptionStyle_Colors() {
+        return (EAttribute) this.pieChartDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPieChartDescriptionStyle_StrokeWidth() {
+        return (EAttribute) this.pieChartDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPieChartDescriptionStyle_StrokeColor() {
+        return (EAttribute) this.pieChartDescriptionStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalPieChartDescriptionStyle() {
+        return this.conditionalPieChartDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescription() {
         return this.barChartDescriptionEClass;
     }
@@ -2226,6 +2338,26 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EReference getBarChartDescription_Style() {
+        return (EReference) this.barChartDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getBarChartDescription_ConditionalStyles() {
+        return (EReference) this.barChartDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getPieChartDescription() {
         return this.pieChartDescriptionEClass;
     }
@@ -2248,6 +2380,26 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EAttribute getPieChartDescription_KeysExpression() {
         return (EAttribute) this.pieChartDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPieChartDescription_Style() {
+        return (EReference) this.pieChartDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPieChartDescription_ConditionalStyles() {
+        return (EReference) this.pieChartDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2584,10 +2736,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__VALUES_EXPRESSION);
         this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__KEYS_EXPRESSION);
         this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION);
+        this.createEReference(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__STYLE);
+        this.createEReference(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.pieChartDescriptionEClass = this.createEClass(PIE_CHART_DESCRIPTION);
         this.createEAttribute(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__VALUES_EXPRESSION);
         this.createEAttribute(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__KEYS_EXPRESSION);
+        this.createEReference(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__STYLE);
+        this.createEReference(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.flexboxContainerDescriptionEClass = this.createEClass(FLEXBOX_CONTAINER_DESCRIPTION);
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
@@ -2641,6 +2797,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR);
 
         this.conditionalButtonDescriptionStyleEClass = this.createEClass(CONDITIONAL_BUTTON_DESCRIPTION_STYLE);
+
+        this.barChartDescriptionStyleEClass = this.createEClass(BAR_CHART_DESCRIPTION_STYLE);
+        this.createEAttribute(this.barChartDescriptionStyleEClass, BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR);
+
+        this.conditionalBarChartDescriptionStyleEClass = this.createEClass(CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE);
+
+        this.pieChartDescriptionStyleEClass = this.createEClass(PIE_CHART_DESCRIPTION_STYLE);
+        this.createEAttribute(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__COLORS);
+        this.createEAttribute(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH);
+        this.createEAttribute(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR);
+
+        this.conditionalPieChartDescriptionStyleEClass = this.createEClass(CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -2739,6 +2907,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.buttonDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(this.getButtonDescriptionStyle());
+        this.barChartDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.barChartDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
+        this.conditionalBarChartDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalBarChartDescriptionStyleEClass.getESuperTypes().add(this.getBarChartDescriptionStyle());
+        this.pieChartDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.pieChartDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
+        this.conditionalPieChartDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalPieChartDescriptionStyleEClass.getESuperTypes().add(this.getPieChartDescriptionStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -3018,12 +3194,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getBarChartDescription_YAxisLabelExpression(), this.ecorePackage.getEString(), "yAxisLabelExpression", null, 0, 1, BarChartDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getBarChartDescription_Style(), this.getBarChartDescriptionStyle(), null, "style", null, 0, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getBarChartDescription_ConditionalStyles(), this.getConditionalBarChartDescriptionStyle(), null, "conditionalStyles", null, 0, -1, BarChartDescription.class, //$NON-NLS-1$
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pieChartDescriptionEClass, PieChartDescription.class, "PieChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getPieChartDescription_ValuesExpression(), this.ecorePackage.getEString(), "valuesExpression", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPieChartDescription_KeysExpression(), this.ecorePackage.getEString(), "keysExpression", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPieChartDescription_Style(), this.getPieChartDescriptionStyle(), null, "style", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPieChartDescription_ConditionalStyles(), this.getConditionalPieChartDescriptionStyle(), null, "conditionalStyles", null, 0, -1, PieChartDescription.class, //$NON-NLS-1$
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.flexboxContainerDescriptionEClass, FlexboxContainerDescription.class, "FlexboxContainerDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEReference(this.getFlexboxContainerDescription_Children(), this.getWidgetDescription(), null, "children", null, 0, -1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
@@ -3102,6 +3286,24 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalButtonDescriptionStyleEClass, ConditionalButtonDescriptionStyle.class, "ConditionalButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+                IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.barChartDescriptionStyleEClass, BarChartDescriptionStyle.class, "BarChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getBarChartDescriptionStyle_BarsColor(), this.ecorePackage.getEString(), "barsColor", null, 0, 1, BarChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalBarChartDescriptionStyleEClass, ConditionalBarChartDescriptionStyle.class, "ConditionalBarChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+                IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.pieChartDescriptionStyleEClass, PieChartDescriptionStyle.class, "PieChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getPieChartDescriptionStyle_Colors(), this.ecorePackage.getEString(), "colors", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeWidth(), this.ecorePackage.getEString(), "strokeWidth", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeColor(), this.ecorePackage.getEString(), "strokeColor", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalPieChartDescriptionStyleEClass, ConditionalPieChartDescriptionStyle.class, "ConditionalPieChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
                 IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals

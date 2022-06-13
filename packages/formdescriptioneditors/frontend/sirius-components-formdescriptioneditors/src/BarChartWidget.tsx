@@ -54,6 +54,7 @@ export const BarChartWidget = ({ widget, selection }: WidgetProps) => {
       { key: 'Y', value: 0.01974 },
       { key: 'Z', value: 0.00074 },
     ],
+    style: null,
   };
   const [selected, setSelected] = useState<boolean>(false);
 

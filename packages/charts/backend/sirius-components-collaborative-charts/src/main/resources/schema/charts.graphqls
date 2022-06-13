@@ -27,6 +27,7 @@ type BarChart implements Representation {
   metadata: RepresentationMetadata!
   label: String!
   entries: [BarChartEntry!]!
+  style: BarChartStyle
 }
 
 type BarChartEntry {
@@ -34,15 +35,37 @@ type BarChartEntry {
   value: Float!
 }
 
+type BarChartStyle {
+  barsColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
+
 type PieChart implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
   entries: [PieChartEntry!]!
+  style: PieChartStyle
 }
 
 type PieChartEntry {
   key: String!
   value: Float!
+}
+
+
+type PieChartStyle {
+  colors: [String]!
+  strokeColor: String
+  strokeWidth: Float
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
 }
 
 type HierarchyNode {

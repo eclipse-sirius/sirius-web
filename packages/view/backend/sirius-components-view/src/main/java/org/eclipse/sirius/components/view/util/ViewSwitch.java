@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
@@ -23,11 +24,13 @@ import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
@@ -54,6 +57,7 @@ import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.PieChartDescription;
+import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -664,6 +668,58 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalButtonDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalButtonDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE: {
+            BarChartDescriptionStyle barChartDescriptionStyle = (BarChartDescriptionStyle) theEObject;
+            T result = this.caseBarChartDescriptionStyle(barChartDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(barChartDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(barChartDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE: {
+            ConditionalBarChartDescriptionStyle conditionalBarChartDescriptionStyle = (ConditionalBarChartDescriptionStyle) theEObject;
+            T result = this.caseConditionalBarChartDescriptionStyle(conditionalBarChartDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalBarChartDescriptionStyle);
+            if (result == null)
+                result = this.caseBarChartDescriptionStyle(conditionalBarChartDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalBarChartDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalBarChartDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.PIE_CHART_DESCRIPTION_STYLE: {
+            PieChartDescriptionStyle pieChartDescriptionStyle = (PieChartDescriptionStyle) theEObject;
+            T result = this.casePieChartDescriptionStyle(pieChartDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(pieChartDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(pieChartDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE: {
+            ConditionalPieChartDescriptionStyle conditionalPieChartDescriptionStyle = (ConditionalPieChartDescriptionStyle) theEObject;
+            T result = this.caseConditionalPieChartDescriptionStyle(conditionalPieChartDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalPieChartDescriptionStyle);
+            if (result == null)
+                result = this.casePieChartDescriptionStyle(conditionalPieChartDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalPieChartDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalPieChartDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1422,6 +1478,68 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalButtonDescriptionStyle(ConditionalButtonDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Bar Chart Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Bar Chart Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseBarChartDescriptionStyle(BarChartDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Bar Chart Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Bar Chart Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalBarChartDescriptionStyle(ConditionalBarChartDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Pie Chart Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Pie Chart Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePieChartDescriptionStyle(PieChartDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Pie Chart Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Pie Chart Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalPieChartDescriptionStyle(ConditionalPieChartDescriptionStyle object) {
         return null;
     }
 

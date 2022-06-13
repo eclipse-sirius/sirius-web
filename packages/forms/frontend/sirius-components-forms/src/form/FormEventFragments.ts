@@ -246,6 +246,14 @@ export const formRefreshedEventPayloadFragment = `
           key
           value
         }
+        style {
+          barsColor
+          fontSize
+          italic
+          bold
+          underline
+          strikeThrough
+        }
       }
       ... on PieChart {
         metadata {
@@ -255,6 +263,16 @@ export const formRefreshedEventPayloadFragment = `
         entries {
           key
           value
+        }
+        style {
+          colors
+          strokeColor
+          strokeWidth
+          fontSize
+          italic
+          bold
+          underline
+          strikeThrough
         }
       }
     }

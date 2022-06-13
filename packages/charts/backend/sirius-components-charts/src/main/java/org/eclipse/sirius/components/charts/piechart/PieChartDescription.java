@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -36,8 +37,10 @@ public final class PieChartDescription implements IChartDescription {
 
     private Function<VariableManager, List<String>> keysProvider;
 
+    private Function<VariableManager, PieChartStyle> styleProvider;
+
     private PieChartDescription() {
-        // prevent instantiation;
+        // prevent instantiation
     }
 
     @Override
@@ -56,6 +59,10 @@ public final class PieChartDescription implements IChartDescription {
 
     public Function<VariableManager, List<String>> getKeysProvider() {
         return this.keysProvider;
+    }
+
+    public Function<VariableManager, PieChartStyle> getStyleProvider() {
+        return this.styleProvider;
     }
 
     public static Builder newPieChartDescription(String id) {
@@ -77,6 +84,8 @@ public final class PieChartDescription implements IChartDescription {
 
         private Function<VariableManager, List<String>> keysProvider;
 
+        private Function<VariableManager, PieChartStyle> styleProvider;
+
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -96,12 +105,18 @@ public final class PieChartDescription implements IChartDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, PieChartStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public PieChartDescription build() {
             PieChartDescription pieChartDescription = new PieChartDescription();
             pieChartDescription.id = Objects.requireNonNull(this.id);
             pieChartDescription.label = Objects.requireNonNull(this.label);
             pieChartDescription.valuesProvider = Objects.requireNonNull(this.valuesProvider);
             pieChartDescription.keysProvider = Objects.requireNonNull(this.keysProvider);
+            pieChartDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return pieChartDescription;
         }
     }

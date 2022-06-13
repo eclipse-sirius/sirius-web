@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
@@ -35,6 +36,8 @@ public final class PieChartElementProps implements IProps {
     private List<Number> values;
 
     private List<String> keys;
+
+    private PieChartStyle style;
 
     private PieChartElementProps() {
         // prevent instantiation
@@ -56,6 +59,10 @@ public final class PieChartElementProps implements IProps {
         return this.keys;
     }
 
+    public PieChartStyle getStyle() {
+        return this.style;
+    }
+
     public static Builder newPieChartElementProps(String id) {
         return new Builder(id);
     }
@@ -74,6 +81,8 @@ public final class PieChartElementProps implements IProps {
         private List<Number> values;
 
         private List<String> keys;
+
+        private PieChartStyle style;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -94,12 +103,18 @@ public final class PieChartElementProps implements IProps {
             return this;
         }
 
+        public Builder style(PieChartStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public PieChartElementProps build() {
             PieChartElementProps pieChartElementProps = new PieChartElementProps();
             pieChartElementProps.id = Objects.requireNonNull(this.id);
             pieChartElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             pieChartElementProps.values = Objects.requireNonNull(this.values);
             pieChartElementProps.keys = Objects.requireNonNull(this.keys);
+            pieChartElementProps.style = this.style; // Optional on purpose
             return pieChartElementProps;
         }
     }

@@ -20,16 +20,19 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
@@ -55,6 +58,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.PieChartDescription;
+import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescription;
@@ -200,6 +204,14 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createButtonDescriptionStyle();
         case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE:
             return this.createConditionalButtonDescriptionStyle();
+        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE:
+            return this.createBarChartDescriptionStyle();
+        case ViewPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE:
+            return this.createConditionalBarChartDescriptionStyle();
+        case ViewPackage.PIE_CHART_DESCRIPTION_STYLE:
+            return this.createPieChartDescriptionStyle();
+        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE:
+            return this.createConditionalPieChartDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -696,6 +708,50 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalButtonDescriptionStyle createConditionalButtonDescriptionStyle() {
         ConditionalButtonDescriptionStyleImpl conditionalButtonDescriptionStyle = new ConditionalButtonDescriptionStyleImpl();
         return conditionalButtonDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public BarChartDescriptionStyle createBarChartDescriptionStyle() {
+        BarChartDescriptionStyleImpl barChartDescriptionStyle = new BarChartDescriptionStyleImpl();
+        return barChartDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalBarChartDescriptionStyle createConditionalBarChartDescriptionStyle() {
+        ConditionalBarChartDescriptionStyleImpl conditionalBarChartDescriptionStyle = new ConditionalBarChartDescriptionStyleImpl();
+        return conditionalBarChartDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PieChartDescriptionStyle createPieChartDescriptionStyle() {
+        PieChartDescriptionStyleImpl pieChartDescriptionStyle = new PieChartDescriptionStyleImpl();
+        return pieChartDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalPieChartDescriptionStyle createConditionalPieChartDescriptionStyle() {
+        ConditionalPieChartDescriptionStyleImpl conditionalPieChartDescriptionStyle = new ConditionalPieChartDescriptionStyleImpl();
+        return conditionalPieChartDescriptionStyle;
     }
 
     /**

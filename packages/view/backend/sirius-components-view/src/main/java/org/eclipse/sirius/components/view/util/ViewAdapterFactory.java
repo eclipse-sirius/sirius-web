@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
@@ -24,11 +25,13 @@ import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
@@ -55,6 +58,7 @@ import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.PieChartDescription;
+import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -397,6 +401,26 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalButtonDescriptionStyle(ConditionalButtonDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalButtonDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseBarChartDescriptionStyle(BarChartDescriptionStyle object) {
+            return ViewAdapterFactory.this.createBarChartDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalBarChartDescriptionStyle(ConditionalBarChartDescriptionStyle object) {
+            return ViewAdapterFactory.this.createConditionalBarChartDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter casePieChartDescriptionStyle(PieChartDescriptionStyle object) {
+            return ViewAdapterFactory.this.createPieChartDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalPieChartDescriptionStyle(ConditionalPieChartDescriptionStyle object) {
+            return ViewAdapterFactory.this.createConditionalPieChartDescriptionStyleAdapter();
         }
 
         @Override
@@ -1111,6 +1135,64 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalButtonDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.BarChartDescriptionStyle
+     * <em>Bar Chart Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.BarChartDescriptionStyle
+     * @generated
+     */
+    public Adapter createBarChartDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle <em>Conditional Bar Chart
+     * Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalBarChartDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.PieChartDescriptionStyle
+     * <em>Pie Chart Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.PieChartDescriptionStyle
+     * @generated
+     */
+    public Adapter createPieChartDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle <em>Conditional Pie Chart
+     * Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalPieChartDescriptionStyleAdapter() {
         return null;
     }
 

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { FontStyle } from '../Charts.types';
+
 export interface PieChartProps {
   width: number;
   height: number;
@@ -19,9 +21,16 @@ export interface PieChartProps {
 
 export interface PieChartRepresentation {
   entries: PieChartRepresentationEntry[];
+  style: PieChartStyle | null;
 }
 
 export interface PieChartRepresentationEntry {
   key: string;
   value: number;
+}
+
+export interface PieChartStyle extends FontStyle {
+  colors: string[] | null;
+  strokeColor: string | null;
+  strokeWidth: number | null;
 }

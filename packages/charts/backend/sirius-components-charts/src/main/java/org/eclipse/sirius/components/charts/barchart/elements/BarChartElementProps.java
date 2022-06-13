@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
@@ -37,6 +38,8 @@ public final class BarChartElementProps implements IProps {
     private List<Number> values;
 
     private List<String> keys;
+
+    private BarChartStyle style;
 
     private BarChartElementProps() {
         // prevent instantiation
@@ -62,6 +65,10 @@ public final class BarChartElementProps implements IProps {
         return this.keys;
     }
 
+    public BarChartStyle getStyle() {
+        return this.style;
+    }
+
     public static Builder newBarChartElementProps(String id) {
         return new Builder(id);
     }
@@ -82,6 +89,8 @@ public final class BarChartElementProps implements IProps {
         private List<Number> values;
 
         private List<String> keys;
+
+        private BarChartStyle style;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -107,6 +116,11 @@ public final class BarChartElementProps implements IProps {
             return this;
         }
 
+        public Builder style(BarChartStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public BarChartElementProps build() {
             BarChartElementProps barChartElementProps = new BarChartElementProps();
             barChartElementProps.id = Objects.requireNonNull(this.id);
@@ -114,6 +128,7 @@ public final class BarChartElementProps implements IProps {
             barChartElementProps.label = Objects.requireNonNull(this.label);
             barChartElementProps.values = Objects.requireNonNull(this.values);
             barChartElementProps.keys = Objects.requireNonNull(this.keys);
+            barChartElementProps.style = this.style; // Optional on purpose
             return barChartElementProps;
         }
     }

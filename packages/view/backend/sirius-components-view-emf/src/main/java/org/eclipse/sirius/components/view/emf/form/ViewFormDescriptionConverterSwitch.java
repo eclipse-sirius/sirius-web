@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
+import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
+import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
@@ -334,12 +336,16 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String labelExpression = viewBarChartDescription.getYAxisLabelExpression();
         String keysExpression = viewBarChartDescription.getKeysExpression();
         String valuesExpression = viewBarChartDescription.getValuesExpression();
+
+        Function<VariableManager, BarChartStyle> styleProvider = new BarChartStyleProvider(this.interpreter, viewBarChartDescription);
+
         // @formatter:off
         IChartDescription chartDescription = BarChartDescription.newBarChartDescription(this.getDescriptionId(viewBarChartDescription))
                 .label(viewBarChartDescription.getName())
                 .labelProvider(this.getStringValueProvider(labelExpression))
                 .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
+                .styleProvider(styleProvider)
                 .build();
         // @formatter:on
         return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);
@@ -349,11 +355,13 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     public AbstractWidgetDescription casePieChartDescription(org.eclipse.sirius.components.view.PieChartDescription viewPieChartDescription) {
         String keysExpression = viewPieChartDescription.getKeysExpression();
         String valuesExpression = viewPieChartDescription.getValuesExpression();
+        Function<VariableManager, PieChartStyle> styleProvider = new PieChartStyleProvider(this.interpreter, viewPieChartDescription);
         // @formatter:off
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(this.getDescriptionId(viewPieChartDescription))
                 .label(viewPieChartDescription.getName())
                 .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
+                .styleProvider(styleProvider)
                 .build();
         // @formatter:on
         return this.createChartWidgetDescription(viewPieChartDescription, chartDescription);
