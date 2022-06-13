@@ -11,24 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { FontStyle } from '../Charts.types';
-
-export interface BarChartProps {
-  width: number;
-  height: number;
-  chart: BarChartRepresentation;
-}
-
-export interface BarChartRepresentation {
-  label: string;
-  entries: BarChartRepresentationEntry[];
-  style: BarChartStyle | null;
-}
-export interface BarChartRepresentationEntry {
-  key: string;
-  value: number;
-}
-
-export interface BarChartStyle extends FontStyle {
-  barsColor: string | null;
+export interface FontStyle {
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }

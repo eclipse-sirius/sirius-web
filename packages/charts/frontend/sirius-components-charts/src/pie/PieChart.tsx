@@ -11,27 +11,33 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 // This comment will be removed in the future but we should not have to wait to solve
-// all d3 relatd typing issues in order to move forward with our TypeScript checks
+// all d3 related typing issues in order to move forward with our TypeScript checks
 // @ts-nocheck
+import { PieChartStyle } from 'charts/Charts.types';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { getFontSize, getFontStyle, getFontWeight, getTextDecoration } from '../chartOperations';
 import { PieChartProps } from './PieChart.types';
 
 export const PieChart = ({ width, height, chart }: PieChartProps) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
-    const { entries: data } = chart;
+    const { entries: data, style } = chart;
     const name = (d) => d.key; // given d in data, returns the (ordinal) label
     const value = (d) => d.value; // given d in data, returns the (quantitative) value
     const innerRadius = 0; // inner radius of pie, in pixels (non-zero for donut)
     const outerRadius = Math.min(width, height) / 2; // outer radius of pie, in pixels
     const labelRadius = innerRadius * 0.2 + outerRadius * 0.8; // center radius of labels
     const format = ','; // a format specifier for values (in the label)
-    const stroke = innerRadius > 0 ? 'none' : 'white'; // stroke separating widths
-    const strokeWidth = 1; // width of stroke separating wedges
     const strokeLinejoin = 'round'; // line join of stroke separating wedges
+    const stroke = innerRadius > 0 ? 'none' : getStrokeColorValue(style); // stroke separating widths
     const padAngle = stroke === 'none' ? 1 / outerRadius : 0; // angular separation between wedges
+    const strokeWidth = getStrokeWidth(style); // width of stroke separating wedges
+    const fontWeight: string = getFontWeight(style);
+    const fontStyle: string = getFontStyle(style);
+    const textDecoration: string = getTextDecoration(style);
+    const fontSize: number = getFontSize(style);
     // Compute values.
     const N = d3.map(data, name);
     const V = d3.map(data, value);
@@ -40,9 +46,10 @@ export const PieChart = ({ width, height, chart }: PieChartProps) => {
     // Unique the names.
     const names = new d3.InternSet(N);
 
-    // Chose a default color scheme based on cardinality.
-    let colors = d3.schemeSpectral[names.size];
-    if (colors === undefined) colors = d3.quantize((t) => d3.interpolateSpectral(t * 0.8 + 0.1), names.size);
+    let colors: string[] = style?.colors;
+    if (colors === undefined || colors.length === 0) {
+      colors = d3.quantize((t) => d3.interpolateSpectral(t * 0.8 + 0.1), names.size);
+    }
 
     // Construct scales.
     const color = d3.scaleOrdinal(names, colors);
@@ -95,7 +102,10 @@ export const PieChart = ({ width, height, chart }: PieChartProps) => {
     svg
       .append('g')
       .attr('font-family', 'sans-serif')
-      .attr('font-size', 10)
+      .attr('font-size', fontSize)
+      .attr('font-style', fontStyle)
+      .attr('text-decoration', textDecoration)
+      .attr('font-weight', fontWeight)
       .attr('text-anchor', 'middle')
       .selectAll('text')
       .data(arcs)
@@ -111,6 +121,14 @@ export const PieChart = ({ width, height, chart }: PieChartProps) => {
 
     Object.assign(svg.node(), { scales: { color } });
   }, [width, height, chart, d3Container]);
+
+  const getStrokeColorValue = (style: PieChartStyle | null): string => {
+    return style?.strokeColor ?? 'white';
+  };
+
+  const getStrokeWidth = (style: PieChartStyle | null): number => {
+    return style?.strokeWidth ?? 1;
+  };
 
   return <svg ref={d3Container} />;
 };

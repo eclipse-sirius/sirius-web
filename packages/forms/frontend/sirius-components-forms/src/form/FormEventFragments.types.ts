@@ -270,6 +270,19 @@ export type GQLChart = GQLBarChart | GQLPieChart;
 export interface GQLBarChart extends GQLRepresentation {
   label: string;
   entries: GQLBarChartEntry[];
+  style: GQLBarChartStyle | null;
+}
+
+export interface GQLFontStyle {
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
+export interface GQLBarChartStyle extends GQLFontStyle {
+  barsColor: string | null;
 }
 
 export interface GQLBarChartEntry {
@@ -280,6 +293,13 @@ export interface GQLBarChartEntry {
 export interface GQLPieChart extends GQLRepresentation {
   label: string;
   entries: GQLPieChartEntry[];
+  style: GQLPieChartStyle | null;
+}
+
+export interface GQLPieChartStyle extends GQLFontStyle {
+  colors: string[] | null;
+  strokeColor: string | null;
+  strokeWidth: number | null;
 }
 
 export interface GQLPieChartEntry {

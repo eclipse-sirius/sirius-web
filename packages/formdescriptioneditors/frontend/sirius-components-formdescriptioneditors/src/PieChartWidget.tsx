@@ -45,6 +45,7 @@ export const PieChartWidget = ({ widget, selection }: WidgetProps) => {
       { key: '80-84', value: 5811429 },
       { key: '≥85', value: 5938752 },
     ],
+    style: null,
   };
   const [selected, setSelected] = useState<boolean>(false);
 

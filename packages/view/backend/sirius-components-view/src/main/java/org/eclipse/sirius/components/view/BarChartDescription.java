@@ -12,6 +12,8 @@
  */
 package org.eclipse.sirius.components.view;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Bar Chart Description</b></em>'. <!--
  * end-user-doc -->
@@ -25,6 +27,9 @@ package org.eclipse.sirius.components.view;
  * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getKeysExpression <em>Keys Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getYAxisLabelExpression <em>YAxis Label
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription()
@@ -100,5 +105,40 @@ public interface BarChartDescription extends WidgetDescription {
      * @generated
      */
     void setYAxisLabelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(BarChartDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    BarChartDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.BarChartDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(BarChartDescriptionStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalBarChartDescriptionStyle> getConditionalStyles();
 
 } // BarChartDescription

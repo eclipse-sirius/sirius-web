@@ -1035,6 +1035,102 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.BarChartDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected BarChartDescriptionStyleItemProvider barChartDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.BarChartDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createBarChartDescriptionStyleAdapter() {
+        if (this.barChartDescriptionStyleItemProvider == null) {
+            this.barChartDescriptionStyleItemProvider = new BarChartDescriptionStyleItemProvider(this);
+        }
+
+        return this.barChartDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalBarChartDescriptionStyleItemProvider conditionalBarChartDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalBarChartDescriptionStyleAdapter() {
+        if (this.conditionalBarChartDescriptionStyleItemProvider == null) {
+            this.conditionalBarChartDescriptionStyleItemProvider = new ConditionalBarChartDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalBarChartDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.PieChartDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected PieChartDescriptionStyleItemProvider pieChartDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.PieChartDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPieChartDescriptionStyleAdapter() {
+        if (this.pieChartDescriptionStyleItemProvider == null) {
+            this.pieChartDescriptionStyleItemProvider = new PieChartDescriptionStyleItemProvider(this);
+        }
+
+        return this.pieChartDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalPieChartDescriptionStyleItemProvider conditionalPieChartDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalPieChartDescriptionStyleAdapter() {
+        if (this.conditionalPieChartDescriptionStyleItemProvider == null) {
+            this.conditionalPieChartDescriptionStyleItemProvider = new ConditionalPieChartDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalPieChartDescriptionStyleItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1317,6 +1413,14 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.buttonDescriptionStyleItemProvider.dispose();
         if (this.conditionalButtonDescriptionStyleItemProvider != null)
             this.conditionalButtonDescriptionStyleItemProvider.dispose();
+        if (this.barChartDescriptionStyleItemProvider != null)
+            this.barChartDescriptionStyleItemProvider.dispose();
+        if (this.conditionalBarChartDescriptionStyleItemProvider != null)
+            this.conditionalBarChartDescriptionStyleItemProvider.dispose();
+        if (this.pieChartDescriptionStyleItemProvider != null)
+            this.pieChartDescriptionStyleItemProvider.dispose();
+        if (this.conditionalPieChartDescriptionStyleItemProvider != null)
+            this.conditionalPieChartDescriptionStyleItemProvider.dispose();
     }
 
 }

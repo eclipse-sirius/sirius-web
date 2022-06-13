@@ -25,8 +25,10 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
 import org.eclipse.sirius.components.charts.barchart.BarChartEntry;
+import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.piechart.PieChart;
 import org.eclipse.sirius.components.charts.piechart.PieChartEntry;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -58,13 +60,16 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
@@ -75,6 +80,7 @@ import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.PieChartDescription;
+import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescription;
@@ -164,8 +170,8 @@ public class DynamicFormsTests {
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testNoStyle(radio);
 
-        this.checkBarChart(chartWidgetWithBarChart);
-        this.checkPieChart(chartWidgetWithPieChart);
+        this.checkBarChart(chartWidgetWithBarChart, false, false);
+        this.checkPieChart(chartWidgetWithPieChart, false, false);
 
         this.renderEcoreFormOnWidgetContainer(flexboxContainer);
         this.renderEcoreFormOnButton(button);
@@ -177,7 +183,41 @@ public class DynamicFormsTests {
         this.testNoStyle(button);
     }
 
-    private void checkBarChart(ChartWidget chartWidgetWithBarChart) {
+    private void checkPieChart(ChartWidget chartWidgetWithPieChart, boolean checkStyle, boolean checkConditionalStyle) {
+        assertThat(chartWidgetWithPieChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
+        IChart chart = chartWidgetWithPieChart.getChart();
+        assertThat(chart).isInstanceOf(PieChart.class);
+        PieChart pieChart = (PieChart) chart;
+        List<PieChartEntry> pieChartEntries = pieChart.getEntries();
+        this.checkPieChartEntry(pieChartEntries, 0, "a", 1); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 1, "b", 3); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 2, "c", 5); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 3, "d", 7); //$NON-NLS-1$
+        PieChartStyle style = pieChart.getStyle();
+        if (checkStyle) {
+            assertThat(style).isNotNull();
+            assertThat(style.getColors()).isEqualTo(List.of("AliceBlue", "AntiqueWhite", "DarkMagenta", "DarkGreen")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+            assertThat(style.getStrokeColor()).isEqualTo("Orchid"); //$NON-NLS-1$
+            assertThat(style.getStrokeWidth()).isEqualTo(3);
+            assertThat(style.getFontSize()).isEqualTo(20);
+            assertThat(style.isItalic()).isTrue();
+            assertThat(style.isBold()).isTrue();
+            assertThat(style.isUnderline()).isTrue();
+            assertThat(style.isStrikeThrough()).isTrue();
+        } else if (checkConditionalStyle) {
+            assertThat(style).isNotNull();
+            assertThat(style.getColors()).isEqualTo(List.of("CadetBlue", "AntiqueWhite", "DarkMagenta", "Coral")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+            assertThat(style.getStrokeColor()).isEqualTo("PaleGoldenRod"); //$NON-NLS-1$
+            assertThat(style.getStrokeWidth()).isEqualTo(2);
+            assertThat(style.getFontSize()).isEqualTo(30);
+            assertThat(style.isItalic()).isTrue();
+            assertThat(style.isBold()).isFalse();
+            assertThat(style.isUnderline()).isTrue();
+            assertThat(style.isStrikeThrough()).isFalse();
+        }
+    }
+
+    private void checkBarChart(ChartWidget chartWidgetWithBarChart, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(chartWidgetWithBarChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
         IChart chart = chartWidgetWithBarChart.getChart();
         assertThat(chart).isInstanceOf(BarChart.class);
@@ -188,18 +228,24 @@ public class DynamicFormsTests {
         this.checkBarChartEntry(barChartEntries, 1, "b", 3); //$NON-NLS-1$
         this.checkBarChartEntry(barChartEntries, 2, "c", 5); //$NON-NLS-1$
         this.checkBarChartEntry(barChartEntries, 3, "d", 7); //$NON-NLS-1$
-    }
-
-    private void checkPieChart(ChartWidget chartWidgetWithPieChart) {
-        assertThat(chartWidgetWithPieChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
-        IChart chart = chartWidgetWithPieChart.getChart();
-        assertThat(chart).isInstanceOf(PieChart.class);
-        PieChart pieChart = (PieChart) chart;
-        List<PieChartEntry> pieChartEntries = pieChart.getEntries();
-        this.checkPieChartEntry(pieChartEntries, 0, "a", 1); //$NON-NLS-1$
-        this.checkPieChartEntry(pieChartEntries, 1, "b", 3); //$NON-NLS-1$
-        this.checkPieChartEntry(pieChartEntries, 2, "c", 5); //$NON-NLS-1$
-        this.checkPieChartEntry(pieChartEntries, 3, "d", 7); //$NON-NLS-1$
+        BarChartStyle style = barChart.getStyle();
+        if (checkStyle) {
+            assertThat(style).isNotNull();
+            assertThat(style.getBarsColor()).isEqualTo("Orchid"); //$NON-NLS-1$
+            assertThat(style.getFontSize()).isEqualTo(20);
+            assertThat(style.isItalic()).isTrue();
+            assertThat(style.isBold()).isTrue();
+            assertThat(style.isUnderline()).isTrue();
+            assertThat(style.isStrikeThrough()).isTrue();
+        } else if (checkConditionalStyle) {
+            assertThat(style).isNotNull();
+            assertThat(style.getBarsColor()).isEqualTo("PaleGoldenRod"); //$NON-NLS-1$
+            assertThat(style.getFontSize()).isEqualTo(30);
+            assertThat(style.isItalic()).isTrue();
+            assertThat(style.isBold()).isFalse();
+            assertThat(style.isUnderline()).isTrue();
+            assertThat(style.isStrikeThrough()).isFalse();
+        }
     }
 
     private void checkBarChartEntry(List<BarChartEntry> entries, int index, String expectedKey, Number expectedValue) {
@@ -249,6 +295,8 @@ public class DynamicFormsTests {
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         Select select = (Select) group.getWidgets().get(4);
         Radio radio = (Radio) group.getWidgets().get(5);
+        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
+        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
 
@@ -291,6 +339,9 @@ public class DynamicFormsTests {
         assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
         this.testStyle(button);
+        this.checkBarChart(chartWidgetWithBarChart, true, false);
+
+        this.checkPieChart(chartWidgetWithPieChart, true, false);
     }
 
     private void renderEcoreFormWithStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
@@ -330,6 +381,8 @@ public class DynamicFormsTests {
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         Select select = (Select) group.getWidgets().get(4);
         Radio radio = (Radio) group.getWidgets().get(5);
+        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
+        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
 
@@ -373,6 +426,9 @@ public class DynamicFormsTests {
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
         this.testConditionalStyle(button);
 
+        this.checkBarChart(chartWidgetWithBarChart, false, true);
+
+        this.checkPieChart(chartWidgetWithPieChart, false, true);
     }
 
     private void renderEcoreFormWithConditionalStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
@@ -502,9 +558,9 @@ public class DynamicFormsTests {
         formDescription.getWidgets().add(selectDescription);
         RadioDescription radioDescription = this.createRadio(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(radioDescription);
-        BarChartDescription barChartDescription = this.createBarChart();
+        BarChartDescription barChartDescription = this.createBarChart(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(barChartDescription);
-        PieChartDescription pieChartDescription = this.createPieChart();
+        PieChartDescription pieChartDescription = this.createPieChart(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(pieChartDescription);
         FlexboxContainerDescription flexboxContainerDescription = this.createFlexboxContainer(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(flexboxContainerDescription);
@@ -513,23 +569,55 @@ public class DynamicFormsTests {
         return formDescription;
     }
 
-    private BarChartDescription createBarChart() {
+    private BarChartDescription createBarChart(boolean withStyle, boolean withConditionalStyle) {
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
         barChartDescription.setName("barChart"); //$NON-NLS-1$
         barChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
         barChartDescription.setYAxisLabelExpression("aql:'the values'"); //$NON-NLS-1$
         barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
         barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
+        if (withStyle) {
+            BarChartDescriptionStyle style = ViewFactory.eINSTANCE.createBarChartDescriptionStyle();
+            style.setBarsColor("Orchid"); //$NON-NLS-1$
+            this.setFontStyle(style);
+            barChartDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalBarChartDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalBarChartDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setBarsColor("PaleGoldenRod"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            barChartDescription.getConditionalStyles().add(conditionalStyle);
+        }
+
         return barChartDescription;
     }
 
-    private PieChartDescription createPieChart() {
+    private PieChartDescription createPieChart(boolean withStyle, boolean withConditionalStyle) {
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
         pieChartDescription.setName("chartWidget"); //$NON-NLS-1$
         pieChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
         pieChartDescription.setName("pieChart"); //$NON-NLS-1$
         pieChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
         pieChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
+
+        if (withStyle) {
+            PieChartDescriptionStyle style = ViewFactory.eINSTANCE.createPieChartDescriptionStyle();
+            style.setColors("aql:Sequence{'AliceBlue','AntiqueWhite','DarkMagenta','DarkGreen'}"); //$NON-NLS-1$
+            style.setStrokeColor("Orchid"); //$NON-NLS-1$
+            style.setStrokeWidth("3"); //$NON-NLS-1$
+            this.setFontStyle(style);
+            pieChartDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalPieChartDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalPieChartDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setColors("aql:Sequence{'CadetBlue','AntiqueWhite','DarkMagenta','Coral'}"); //$NON-NLS-1$
+            conditionalStyle.setStrokeColor("PaleGoldenRod"); //$NON-NLS-1$
+            conditionalStyle.setStrokeWidth("2"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            pieChartDescription.getConditionalStyles().add(conditionalStyle);
+        }
         return pieChartDescription;
     }
 

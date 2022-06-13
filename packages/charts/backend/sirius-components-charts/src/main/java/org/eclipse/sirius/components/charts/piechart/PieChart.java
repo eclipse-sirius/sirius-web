@@ -17,14 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.charts.IChart;
+import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 
 /**
  * Root concept of the pie-chart representation.
  *
  * @author fbarbin
  */
-public class PieChart implements IChart {
+@Immutable
+public final class PieChart implements IChart {
     public static final String KIND = "PieChart"; //$NON-NLS-1$
 
     private String id;
@@ -37,16 +40,10 @@ public class PieChart implements IChart {
 
     private List<PieChartEntry> entries;
 
-    public PieChart() {
-        // Used by Jackson
-    }
+    private PieChartStyle style;
 
-    public PieChart(String id, String descriptionId, String label, List<PieChartEntry> entries) {
-        this.id = Objects.requireNonNull(id);
-        this.descriptionId = Objects.requireNonNull(descriptionId);
-        this.label = Objects.requireNonNull(label);
-        this.kind = KIND;
-        this.entries = new ArrayList<>(Objects.requireNonNull(entries));
+    private PieChart() {
+        // prevent instantiation
     }
 
     @Override
@@ -73,10 +70,74 @@ public class PieChart implements IChart {
         return this.entries;
     }
 
+    public PieChartStyle getStyle() {
+        return this.style;
+    }
+
+    public static Builder newPieChart(String id) {
+        return new Builder(id);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}'}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind);
+    }
+
+    /**
+     * The builder of the pie-chart.
+     *
+     * @author fbarbin
+     */
+    @SuppressWarnings("checkstyle:HiddenField")
+    public static final class Builder {
+
+        private String id;
+
+        private String descriptionId;
+
+        private String label;
+
+        private String kind = KIND;
+
+        private List<PieChartEntry> entries;
+
+        private PieChartStyle style;
+
+        public Builder(String id) {
+            this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder descriptionId(String descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
+            return this;
+        }
+
+        public Builder label(String label) {
+            this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder entries(List<PieChartEntry> entries) {
+            this.entries = new ArrayList<>(Objects.requireNonNull(entries));
+            return this;
+        }
+
+        public Builder style(PieChartStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
+        public PieChart build() {
+            PieChart pieChart = new PieChart();
+            pieChart.id = Objects.requireNonNull(this.id);
+            pieChart.label = Objects.requireNonNull(this.label);
+            pieChart.descriptionId = Objects.requireNonNull(this.descriptionId);
+            pieChart.kind = Objects.requireNonNull(this.kind);
+            pieChart.entries = Objects.requireNonNull(this.entries);
+            pieChart.style = this.style; // Optional on purpose
+            return pieChart;
+        }
     }
 
 }

@@ -12,6 +12,7 @@
  *******************************************************************************/
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
+import { getFontSize, getFontStyle, getFontWeight, getTextDecoration } from '../chartOperations';
 import { BarChartProps } from './BarChart.types';
 
 export const BarChart = ({ width, height, chart }: BarChartProps) => {
@@ -29,10 +30,19 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
     const yFormat = 'f';
 
     if (d3Container.current && chart) {
-      const { entries: data, label: yLabel } = chart;
+      const { entries: data, label: yLabel, style } = chart;
+      const fontSize = getFontSize(style);
+      const fontStyle = getFontStyle(style);
+      const fontWeight = getFontWeight(style);
+      const textDecoration = getTextDecoration(style);
       const x = (d) => d.key;
       const y = (d) => d.value;
-      const color = 'steelblue';
+      let color: string;
+      if (style?.barsColor != null && style?.barsColor.length > 0) {
+        color = style?.barsColor;
+      } else {
+        color = 'steelblue';
+      }
       // Compute values.
       const X = d3.map(data, x);
       const Y = d3.map(data, y);
@@ -63,6 +73,10 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
       svg
         .append('g')
         .attr('transform', `translate(${marginLeft},0)`)
+        .attr(
+          'style',
+          `font-size:${fontSize}; font-style: ${fontStyle}; text-decoration: ${textDecoration}; font-weight: ${fontWeight}`
+        )
         .call(yAxis)
         .call((g) => g.select('.domain').remove())
         .call((g) =>
@@ -100,6 +114,10 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
       svg
         .append('g')
         .attr('transform', `translate(0,${height - marginBottom})`)
+        .attr(
+          'style',
+          `font-size:${fontSize}; font-style: ${fontStyle}; text-decoration: ${textDecoration}; font-weight: ${fontWeight}`
+        )
         .call(xAxis);
     }
   }, [width, height, chart, d3Container]);

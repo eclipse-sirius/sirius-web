@@ -18,8 +18,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.charts.barchart.BarChart;
-import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
+import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
+import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps.Builder;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -47,16 +48,20 @@ public class BarChartComponent implements IComponent {
         String label = barChartDescription.getLabelProvider().apply(variableManager);
         List<Number> values = barChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = barChartDescription.getKeysProvider().apply(variableManager);
+        BarChartStyle barChartStyle = barChartDescription.getStyleProvider().apply(variableManager);
 
         // @formatter:off
-        BarChartElementProps barChartElementProps = BarChartElementProps.newBarChartElementProps(id)
+        Builder builder = BarChartElementProps.newBarChartElementProps(id)
                 .label(label)
                 .descriptionId(barChartDescription.getId())
                 .values(values)
-                .keys(keys)
-                .build();
+                .keys(keys);
         // @formatter:on
 
+        if (barChartStyle != null) {
+            builder.style(barChartStyle);
+        }
+        BarChartElementProps barChartElementProps = builder.build();
         return new Element(BarChartElementProps.TYPE, barChartElementProps);
     }
 

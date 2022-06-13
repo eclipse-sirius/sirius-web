@@ -12,6 +12,8 @@
  */
 package org.eclipse.sirius.components.view;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Pie Chart Description</b></em>'. <!--
  * end-user-doc -->
@@ -23,6 +25,9 @@ package org.eclipse.sirius.components.view;
  * <li>{@link org.eclipse.sirius.components.view.PieChartDescription#getValuesExpression <em>Values
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.PieChartDescription#getKeysExpression <em>Keys Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.PieChartDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.PieChartDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getPieChartDescription()
@@ -75,5 +80,40 @@ public interface PieChartDescription extends WidgetDescription {
      * @generated
      */
     void setKeysExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(PieChartDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getPieChartDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    PieChartDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.PieChartDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(PieChartDescriptionStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getPieChartDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalPieChartDescriptionStyle> getConditionalStyles();
 
 } // PieChartDescription

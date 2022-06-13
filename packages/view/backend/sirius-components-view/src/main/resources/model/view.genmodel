@@ -209,10 +209,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/valuesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/keysExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/yAxisLabelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//BarChartDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//BarChartDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//PieChartDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/valuesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/keysExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//PieChartDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//PieChartDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//FlexboxContainerDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FlexboxContainerDescription/children"/>
@@ -259,5 +263,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ButtonDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalButtonDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//BarChartDescriptionStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescriptionStyle/barsColor"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalBarChartDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//PieChartDescriptionStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescriptionStyle/colors"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescriptionStyle/strokeWidth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescriptionStyle/strokeColor"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalPieChartDescriptionStyle"/>
   </genPackages>
 </genmodel:GenModel>

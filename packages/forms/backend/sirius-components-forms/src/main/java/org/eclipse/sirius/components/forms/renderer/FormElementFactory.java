@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
+import org.eclipse.sirius.components.charts.barchart.BarChart.Builder;
 import org.eclipse.sirius.components.charts.barchart.BarChartEntry;
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
 import org.eclipse.sirius.components.charts.piechart.PieChart;
@@ -31,7 +32,6 @@ import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Link;
-import org.eclipse.sirius.components.forms.List.Builder;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
@@ -110,18 +110,38 @@ public class FormElementFactory implements IElementFactory {
         return object;
     }
 
-    public Object instantiateBarChart(BarChartElementProps props) {
+    private Object instantiateBarChart(BarChartElementProps props) {
         BarChartElementProps barChartElementProps = props;
         List<BarChartEntry> entries = this.getBarChartEntries(barChartElementProps);
-        return new BarChart(barChartElementProps.getId(), barChartElementProps.getDescriptionId(), barChartElementProps.getLabel(), entries);
+        // @formatter:off
+        Builder builder = BarChart.newBarChart(barChartElementProps.getId())
+                .descriptionId(barChartElementProps.getDescriptionId())
+                .label(barChartElementProps.getLabel())
+                .entries(entries);
+        // @formatter:on
+
+        if (props.getStyle() != null) {
+            builder.style(props.getStyle());
+        }
+        return builder.build();
     }
 
-    public Object instantiatePieChart(PieChartElementProps props) {
+    private Object instantiatePieChart(PieChartElementProps props) {
         PieChartElementProps pieChartElementProps = props;
         List<PieChartEntry> entries = this.getPieChartEntries(pieChartElementProps);
         // The label is not used for pieChart. This attribute is inherited from IRepresentation
         String label = "pieChart"; //$NON-NLS-1$
-        return new PieChart(pieChartElementProps.getId(), pieChartElementProps.getDescriptionId(), label, entries);
+        // @formatter:off
+        org.eclipse.sirius.components.charts.piechart.PieChart.Builder builder = PieChart.newPieChart(pieChartElementProps.getId())
+                .descriptionId(pieChartElementProps.getDescriptionId())
+                .label(label)
+                .entries(entries);
+        // @formatter:on
+
+        if (props.getStyle() != null) {
+            builder.style(props.getStyle());
+        }
+        return builder.build();
     }
 
     private List<BarChartEntry> getBarChartEntries(BarChartElementProps barChartElementProps) {
@@ -218,7 +238,7 @@ public class FormElementFactory implements IElementFactory {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        Builder listBuilder = org.eclipse.sirius.components.forms.List.newList(props.getId())
+        org.eclipse.sirius.components.forms.List.Builder listBuilder = org.eclipse.sirius.components.forms.List.newList(props.getId())
                 .label(props.getLabel())
                 .items(props.getItems())
                 .diagnostics(diagnostics);

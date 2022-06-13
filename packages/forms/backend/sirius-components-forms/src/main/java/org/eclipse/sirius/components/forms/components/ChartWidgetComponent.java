@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.charts.barchart.BarChartDescription;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponent;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponentProps;
+import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartComponent;

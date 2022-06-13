@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.charts.barchart;
+package org.eclipse.sirius.components.charts.barchart.descriptions;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -38,8 +39,10 @@ public final class BarChartDescription implements IChartDescription {
 
     private Function<VariableManager, List<String>> keysProvider;
 
+    private Function<VariableManager, BarChartStyle> styleProvider;
+
     private BarChartDescription() {
-        // prevent instantiation;
+        // prevent instantiation
     }
 
     @Override
@@ -64,6 +67,10 @@ public final class BarChartDescription implements IChartDescription {
         return this.keysProvider;
     }
 
+    public Function<VariableManager, BarChartStyle> getStyleProvider() {
+        return this.styleProvider;
+    }
+
     public static Builder newBarChartDescription(String id) {
         return new Builder(id);
     }
@@ -84,6 +91,8 @@ public final class BarChartDescription implements IChartDescription {
         private Function<VariableManager, List<Number>> valuesProvider;
 
         private Function<VariableManager, List<String>> keysProvider;
+
+        private Function<VariableManager, BarChartStyle> styleProvider = variableManager -> null;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -109,6 +118,11 @@ public final class BarChartDescription implements IChartDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, BarChartStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public BarChartDescription build() {
             BarChartDescription barChartDescription = new BarChartDescription();
             barChartDescription.id = Objects.requireNonNull(this.id);
@@ -116,6 +130,7 @@ public final class BarChartDescription implements IChartDescription {
             barChartDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             barChartDescription.valuesProvider = Objects.requireNonNull(this.valuesProvider);
             barChartDescription.keysProvider = Objects.requireNonNull(this.keysProvider);
+            barChartDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return barChartDescription;
         }
     }
