@@ -48,135 +48,213 @@ export const formRefreshedEventPayloadFragment = gql`
           id
           label
           widgets {
-            id
-            __typename
-            diagnostics {
-              id
-              kind
-              message
+            ...widgetFields
+            ... on FlexboxContainer {
+              ...flexboxContainerFields
             }
-            ... on Textfield {
-              label
-              stringValue: value
-              style {
-                backgroundColor
-                foregroundColor
-                fontSize
-                italic
-                bold
-                underline
-                strikeThrough
-              }
-            }
-            ... on Textarea {
-              label
-              stringValue: value
-              style {
-                backgroundColor
-                foregroundColor
-                fontSize
-                italic
-                bold
-                underline
-                strikeThrough
-              }
-            }
-            ... on Checkbox {
-              label
-              booleanValue: value
-              style {
-                color
-              }
-            }
-            ... on Select {
-              label
-              value
-              options {
-                id
-                label
-              }
-              style {
-                backgroundColor
-                foregroundColor
-                fontSize
-                italic
-                bold
-                underline
-                strikeThrough
-              }
-            }
-            ... on MultiSelect {
-              label
-              values
-              options {
-                id
-                label
-              }
-              style {
-                backgroundColor
-                foregroundColor
-                fontSize
-                italic
-                bold
-                underline
-                strikeThrough
-              }
-            }
-            ... on Radio {
-              label
-              options {
-                id
-                label
-                selected
-              }
-              style {
-                color
-                fontSize
-                italic
-                bold
-                underline
-                strikeThrough
-              }
-            }
-            ... on List {
-              label
-              items {
-                id
-                label
-                kind
-                imageURL
-                deletable
-              }
-            }
-            ... on Link {
-              label
-              url
-            }
-            ... on ChartWidget {
-              label
-              chart {
-                ... on BarChart {
-                  metadata {
-                    label
-                    kind
-                  }
-                  label
-                  entries {
-                    key
-                    value
-                  }
-                }
-                ... on PieChart {
-                  metadata {
-                    label
-                    kind
-                  }
-                  entries {
-                    key
-                    value
-                  }
-                }
-              }
+          }
+        }
+      }
+    }
+  }
+
+  fragment widgetFields on Widget {
+    ...commonFields
+    ... on Textfield {
+      ...textfieldFields
+    }
+    ... on Textarea {
+      ...textareaFields
+    }
+    ... on Checkbox {
+      ...checkboxFields
+    }
+    ... on Select {
+      ...selectFields
+    }
+    ... on MultiSelect {
+      ...multiSelectFields
+    }
+    ... on Radio {
+      ...radioFields
+    }
+    ... on List {
+      ...listFields
+    }
+    ... on Link {
+      ...linkFields
+    }
+    ... on ChartWidget {
+      ...chartWidgetFields
+    }
+  }
+
+  fragment commonFields on Widget {
+    id
+    __typename
+    diagnostics {
+      id
+      kind
+      message
+    }
+  }
+
+  fragment textfieldFields on Textfield {
+    label
+    stringValue: value
+    style {
+      backgroundColor
+      foregroundColor
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
+  }
+
+  fragment textareaFields on Textarea {
+    label
+    stringValue: value
+    style {
+      backgroundColor
+      foregroundColor
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
+  }
+
+  fragment checkboxFields on Checkbox {
+    label
+    booleanValue: value
+    style {
+      color
+    }
+  }
+
+  fragment selectFields on Select {
+    label
+    value
+    options {
+      id
+      label
+    }
+    style {
+      backgroundColor
+      foregroundColor
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
+  }
+
+  fragment multiSelectFields on MultiSelect {
+    label
+    values
+    options {
+      id
+      label
+    }
+    style {
+      backgroundColor
+      foregroundColor
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
+  }
+
+  fragment radioFields on Radio {
+    label
+    options {
+      id
+      label
+      selected
+    }
+    style {
+      color
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
+  }
+
+  fragment listFields on List {
+    label
+    items {
+      id
+      label
+      kind
+      imageURL
+      deletable
+    }
+  }
+
+  fragment linkFields on Link {
+    label
+    url
+  }
+
+  fragment chartWidgetFields on ChartWidget {
+    label
+    chart {
+      ... on BarChart {
+        metadata {
+          label
+          kind
+        }
+        label
+        entries {
+          key
+          value
+        }
+      }
+      ... on PieChart {
+        metadata {
+          label
+          kind
+        }
+        entries {
+          key
+          value
+        }
+      }
+    }
+  }
+
+  fragment flexboxContainerFields on FlexboxContainer {
+    ...commonFields
+    label
+    flexDirection
+    flexWrap
+    flexGrow
+    children {
+      ...widgetFields
+      ... on FlexboxContainer {
+        ...commonFields
+        label
+        flexDirection
+        flexWrap
+        flexGrow
+        children {
+          ...widgetFields
+          ... on FlexboxContainer {
+            ...commonFields
+            label
+            flexDirection
+            flexWrap
+            flexGrow
+            children {
+              ...widgetFields
             }
           }
         }

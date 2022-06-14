@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
@@ -301,6 +302,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseBarChartDescription(BarChartDescription object) {
+            return ViewAdapterFactory.this.createBarChartDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter casePieChartDescription(PieChartDescription object) {
+            return ViewAdapterFactory.this.createPieChartDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseFlexboxContainerDescription(FlexboxContainerDescription object) {
+            return ViewAdapterFactory.this.createFlexboxContainerDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
             return ViewAdapterFactory.this.createWidgetDescriptionStyleAdapter();
         }
@@ -363,16 +379,6 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalRadioDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseBarChartDescription(BarChartDescription object) {
-            return ViewAdapterFactory.this.createBarChartDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter casePieChartDescription(PieChartDescription object) {
-            return ViewAdapterFactory.this.createPieChartDescriptionAdapter();
         }
 
         @Override
@@ -1087,6 +1093,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPieChartDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription <em>Flexbox Container Description</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription
+     * @generated
+     */
+    public Adapter createFlexboxContainerDescriptionAdapter() {
         return null;
     }
 

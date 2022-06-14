@@ -176,3 +176,15 @@ export interface ChartWidget extends Widget {
   label: string;
   chart: Chart;
 }
+
+export interface FlexboxContainer extends Widget {
+  label: string;
+  flexDirection: FlexDirection;
+  flexWrap: FlexWrap;
+  flexGrow: number;
+  children: Widget[];
+}
+
+export type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
+export type FlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';

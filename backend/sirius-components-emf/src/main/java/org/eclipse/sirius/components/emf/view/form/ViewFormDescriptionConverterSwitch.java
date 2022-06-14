@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.view.OperationInterpreter;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
+import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.SelectStyle;
@@ -44,6 +45,7 @@ import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
+import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
@@ -324,20 +326,6 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     }
 
-    private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
-        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
-        return variableManager -> {
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
-        };
-    }
-
-    private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
-        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
-        return variableManager -> {
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).collect(Collectors.toList());
-        };
-    }
-
     @Override
     public AbstractWidgetDescription caseBarChartDescription(org.eclipse.sirius.components.view.BarChartDescription viewBarChartDescription) {
         String labelExpression = viewBarChartDescription.getYAxisLabelExpression();
@@ -366,6 +354,44 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .build();
         // @formatter:on
         return this.createChartWidgetDescription(viewPieChartDescription, chartDescription);
+    }
+
+    @Override
+    public AbstractWidgetDescription caseFlexboxContainerDescription(org.eclipse.sirius.components.view.FlexboxContainerDescription flexboxContainerDescription) {
+        String descriptionId = this.getDescriptionId(flexboxContainerDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(flexboxContainerDescription.getLabelExpression());
+        FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
+        List<AbstractWidgetDescription> children = new ArrayList<>();
+        flexboxContainerDescription.getChildren().forEach(widget -> {
+            children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget));
+        });
+
+        // @formatter:off
+        return FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .flexDirection(flexDirection)
+                .children(children)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
+                .build();
+        // @formatter:on
+    }
+
+    private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
+        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
+        return variableManager -> {
+            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
+        };
+    }
+
+    private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
+        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
+        return variableManager -> {
+            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).collect(Collectors.toList());
+        };
     }
 
     private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, IChartDescription chartDescription) {

@@ -12,30 +12,9 @@
  *******************************************************************************/
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import {
-  ChartWidget,
-  Checkbox,
-  Link,
-  List,
-  MultiSelect,
-  Radio,
-  Select,
-  Textarea,
-  Textfield,
-  Widget,
-  WidgetSubscription,
-} from 'form/Form.types';
 import { GroupProps } from 'properties/Group.types';
-import { CheckboxPropertySection } from 'properties/propertysections/CheckboxPropertySection';
-import { LinkPropertySection } from 'properties/propertysections/LinkPropertySection';
-import { ListPropertySection } from 'properties/propertysections/ListPropertySection';
-import { MultiSelectPropertySection } from 'properties/propertysections/MultiSelectPropertySection';
-import { RadioPropertySection } from 'properties/propertysections/RadioPropertySection';
-import { SelectPropertySection } from 'properties/propertysections/SelectPropertySection';
-import { TextfieldPropertySection } from 'properties/propertysections/TextfieldPropertySection';
 import React from 'react';
-import { Selection } from 'workbench/Workbench.types';
-import { ChartWidgetPropertySection } from './propertysections/ChartWidgetPropertySection';
+import { widgetToPropertySection } from './PropertySectionOperations';
 
 const useGroupStyles = makeStyles((theme) => ({
   group: {
@@ -58,7 +37,6 @@ const useGroupStyles = makeStyles((theme) => ({
 
 export const Group = ({ editingContextId, formId, group, widgetSubscriptions, setSelection, readOnly }: GroupProps) => {
   const classes = useGroupStyles();
-
   let propertySections = group.widgets.map((widget) =>
     widgetToPropertySection(editingContextId, formId, widget, widgetSubscriptions, setSelection, readOnly)
   );
@@ -71,105 +49,4 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
       <div className={classes.sections}>{propertySections}</div>
     </div>
   );
-};
-
-const isTextfield = (widget: Widget): widget is Textfield => widget.__typename === 'Textfield';
-const isTextarea = (widget: Widget): widget is Textarea => widget.__typename === 'Textarea';
-const isCheckbox = (widget: Widget): widget is Checkbox => widget.__typename === 'Checkbox';
-const isSelect = (widget: Widget): widget is Select => widget.__typename === 'Select';
-const isMultiSelect = (widget: Widget): widget is MultiSelect => widget.__typename === 'MultiSelect';
-const isRadio = (widget: Widget): widget is Radio => widget.__typename === 'Radio';
-const isList = (widget: Widget): widget is List => widget.__typename === 'List';
-const isLink = (widget: Widget): widget is Link => widget.__typename === 'Link';
-const isChartWidget = (widget: Widget): widget is ChartWidget => widget.__typename === 'ChartWidget';
-
-const widgetToPropertySection = (
-  editingContextId: string,
-  formId: string,
-  widget: Widget,
-  widgetSubscriptions: WidgetSubscription[],
-  setSelection: (selection: Selection) => void,
-  readOnly: boolean
-) => {
-  let subscribers = [];
-  widgetSubscriptions
-    .filter((subscription) => subscription.widgetId === widget.id)
-    .forEach((subscription) => subscribers.push(...subscription.subscribers));
-
-  let propertySection = null;
-  if (isTextfield(widget) || isTextarea(widget)) {
-    propertySection = (
-      <TextfieldPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-        key={widget.id}
-        readOnly={readOnly}
-      />
-    );
-  } else if (isCheckbox(widget)) {
-    propertySection = (
-      <CheckboxPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-        key={widget.id}
-        readOnly={readOnly}
-      />
-    );
-  } else if (isSelect(widget)) {
-    propertySection = (
-      <SelectPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-        key={widget.id}
-        readOnly={readOnly}
-      />
-    );
-  } else if (isMultiSelect(widget)) {
-    propertySection = (
-      <MultiSelectPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-        key={widget.id}
-        readOnly={readOnly}
-      />
-    );
-  } else if (isRadio(widget)) {
-    propertySection = (
-      <RadioPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-        key={widget.id}
-        readOnly={readOnly}
-      />
-    );
-  } else if (isList(widget)) {
-    propertySection = (
-      <ListPropertySection
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        key={widget.id}
-        subscribers={subscribers}
-        setSelection={setSelection}
-        readOnly={readOnly}
-      />
-    );
-  } else if (isLink(widget)) {
-    propertySection = <LinkPropertySection widget={widget} key={widget.id} />;
-  } else if (isChartWidget(widget)) {
-    propertySection = <ChartWidgetPropertySection widget={widget} subscribers={subscribers} key={widget.id} />;
-  } else {
-    console.error(`Unsupported widget type ${widget.__typename}`);
-  }
-  return propertySection;
 };

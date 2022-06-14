@@ -36,6 +36,12 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/SYNCHRONIZED"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/UNSYNCHRONIZED"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//FlexDirection">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/row"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/rowReverse"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/column"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/columnReverse"/>
+    </genEnums>
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
     </genClasses>
@@ -199,6 +205,19 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RadioDescription/conditionalStyles"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//BarChartDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/valuesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/keysExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/yAxisLabelExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//PieChartDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/valuesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/keysExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//FlexboxContainerDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FlexboxContainerDescription/children"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//FlexboxContainerDescription/flexDirection"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextfieldDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/backgroundColor"/>
@@ -228,14 +247,5 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalRadioDescriptionStyle"/>
-    <genClasses ecoreClass="view.ecore#//BarChartDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/valuesExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/keysExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/yAxisLabelExpression"/>
-    </genClasses>
-    <genClasses ecoreClass="view.ecore#//PieChartDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/valuesExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/keysExpression"/>
-    </genClasses>
   </genPackages>
 </genmodel:GenModel>

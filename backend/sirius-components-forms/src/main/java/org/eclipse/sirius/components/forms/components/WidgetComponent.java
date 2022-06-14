@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
+import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -78,6 +79,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof ChartWidgetDescription) {
             ChartWidgetComponentProps chartComponentProps = new ChartWidgetComponentProps(variableManager, (ChartWidgetDescription) widgetDescription);
             element = new Element(ChartWidgetComponent.class, chartComponentProps);
+        } else if (widgetDescription instanceof FlexboxContainerDescription) {
+            FlexboxContainerComponentProps flexboxContainerProps = new FlexboxContainerComponentProps(variableManager, (FlexboxContainerDescription) widgetDescription);
+            element = new Element(FlexboxContainerComponent.class, flexboxContainerProps);
         } else {
             String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
             this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());

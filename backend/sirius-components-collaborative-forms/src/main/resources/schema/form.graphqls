@@ -213,6 +213,16 @@ type ChartWidget implements Widget {
   chart: Chart!
 }
 
+type FlexboxContainer implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  flexDirection: String!
+  flexWrap: String!
+  flexGrow: Int!
+  children: [Widget!]! 
+}
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
