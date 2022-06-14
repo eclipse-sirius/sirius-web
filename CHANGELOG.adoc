@@ -39,6 +39,7 @@ This allows representation precondition expressions to be more precise as they k
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1287[#1287] [form] Fix wrong VariableManager scope usage in ViewFormDescriptionConverterSwitch.
+- https://github.com/eclipse-sirius/sirius-components/issues/1250[#1250] [diagram] Fix invoke tool effect hooks dependencies (to avoid evaluating the same tool result multiple times)
 
 === Improvements
 
