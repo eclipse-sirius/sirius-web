@@ -18,4 +18,5 @@ export interface DropAreaProps {
   invokeHover: (id: string, mouseIsHover: boolean) => void;
   convertInSprottyCoordinate: (x: number, y: number) => Promise<{ x: number; y: number }>;
   children: React.ReactNode;
+  readOnly: boolean;
 }
