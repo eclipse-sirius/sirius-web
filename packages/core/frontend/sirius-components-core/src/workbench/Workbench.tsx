@@ -16,7 +16,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { Panels } from './Panels';
 import { RepresentationContext } from './RepresentationContext';
 import { RepresentationNavigation } from './RepresentationNavigation';
@@ -115,17 +115,20 @@ export const Workbench = ({
     }
   }, [error, dispatch]);
 
-  const setSelection = (selection: Selection) => {
-    const representations: Representation[] = selection.entries.filter((entry) =>
-      entry.kind.startsWith('siriusComponents://representation')
-    );
-    const updateSelectionEvent: UpdateSelectionEvent = {
-      type: 'UPDATE_SELECTION',
-      selection,
-      representations,
-    };
-    dispatch(updateSelectionEvent);
-  };
+  const setSelection = useCallback(
+    (selection: Selection) => {
+      const representations: Representation[] = selection.entries.filter((entry) =>
+        entry.kind.startsWith('siriusComponents://representation')
+      );
+      const updateSelectionEvent: UpdateSelectionEvent = {
+        type: 'UPDATE_SELECTION',
+        selection,
+        representations,
+      };
+      dispatch(updateSelectionEvent);
+    },
+    [dispatch]
+  );
 
   const onRepresentationClick = (representation: Representation) => {
     setSelection({ entries: [{ id: representation.id, label: representation.label, kind: representation.kind }] });

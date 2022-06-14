@@ -877,7 +877,6 @@ export const DiagramRepresentation = ({
     handleError,
     resetTools,
     setSelection,
-    selection,
   ]);
   useEffect(() => {
     handleError(
@@ -900,7 +899,6 @@ export const DiagramRepresentation = ({
     invokeSingleClickOnTwoDiagramElementsToolError,
     handleError,
     setSelection,
-    selection,
   ]);
   useEffect(() => {
     handleError(arrangeAllLoading, arrangeAllData, arrangeAllError);
