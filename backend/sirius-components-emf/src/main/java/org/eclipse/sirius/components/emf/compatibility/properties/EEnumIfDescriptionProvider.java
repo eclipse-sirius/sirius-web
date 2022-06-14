@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -135,7 +135,7 @@ public class EEnumIfDescriptionProvider {
         return variableManager -> {
             Object litteral = variableManager.getVariables().get(SelectComponent.CANDIDATE_VARIABLE);
             if (litteral instanceof Enumerator) {
-                return ((Enumerator) litteral).getName();
+                return ((Enumerator) litteral).getLiteral();
             }
             return ""; //$NON-NLS-1$
         };
@@ -180,7 +180,7 @@ public class EEnumIfDescriptionProvider {
                         EEnum eEnum = (EEnum) eType;
                         EEnumLiteral literal = eEnum.getEEnumLiteral(id);
                         if (literal != null) {
-                            Object value = EcoreUtil.createFromString(eEnum, literal.getName());
+                            Object value = EcoreUtil.createFromString(eEnum, literal.getLiteral());
                             eObject.eSet(eAttribute, value);
                         }
                     }
