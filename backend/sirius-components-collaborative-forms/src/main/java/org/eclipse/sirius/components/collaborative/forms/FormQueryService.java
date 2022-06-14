@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,7 +42,7 @@ public class FormQueryService implements IFormQueryService {
         // @formatter:off
         Optional<AbstractWidget> optionalWidget = form.getPages().stream()
                 .flatMap(page -> page.getGroups().stream())
-                .flatMap(group -> group.getWidgets().stream())
+                .flatMap(group -> this.getAllWidgets(group).stream())
                 .filter(widget -> Objects.equals(widgetId, widget.getId()))
                 .findFirst();
         // @formatter:on
@@ -50,4 +54,27 @@ public class FormQueryService implements IFormQueryService {
         return optionalWidget;
     }
 
+    private List<AbstractWidget> getAllWidgets(Group group) {
+        List<AbstractWidget> widgets = new ArrayList<>();
+        group.getWidgets().forEach(widget -> {
+            if (widget instanceof FlexboxContainer) {
+                widgets.addAll(this.getAllWidgets((FlexboxContainer) widget));
+            } else {
+                widgets.add(widget);
+            }
+        });
+        return widgets;
+    }
+
+    private List<AbstractWidget> getAllWidgets(FlexboxContainer flexboxContainer) {
+        List<AbstractWidget> widgets = new ArrayList<>();
+        flexboxContainer.getChildren().forEach(widget -> {
+            if (widget instanceof FlexboxContainer) {
+                widgets.addAll(this.getAllWidgets((FlexboxContainer) widget));
+            } else {
+                widgets.add(widget);
+            }
+        });
+        return widgets;
+    }
 }

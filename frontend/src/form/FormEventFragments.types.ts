@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLChart } from 'charts/ChartsFragments.types';
+import { GQLChart } from 'charts/Charts.types';
 export interface GQLFormEventSubscription {
   formEvent: GQLFormEventPayload;
 }
@@ -234,7 +234,20 @@ export interface GQLLink extends GQLWidget {
   label: string;
   url: string;
 }
+
 export interface GQLChartWidget extends GQLWidget {
   label: string;
   chart: GQLChart;
 }
+
+export interface GQLFlexboxContainer extends GQLWidget {
+  label: string;
+  flexDirection: GQLFlexDirection;
+  flexWrap: GQLFlexWrap;
+  flexGrow: number;
+  children: GQLWidget[];
+}
+
+export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
+export type GQLFlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';

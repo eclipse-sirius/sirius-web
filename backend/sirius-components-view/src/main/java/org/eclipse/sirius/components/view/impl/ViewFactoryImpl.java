@@ -41,6 +41,8 @@ import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FlexDirection;
+import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
@@ -159,6 +161,12 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createTextAreaDescription();
         case ViewPackage.RADIO_DESCRIPTION:
             return this.createRadioDescription();
+        case ViewPackage.BAR_CHART_DESCRIPTION:
+            return this.createBarChartDescription();
+        case ViewPackage.PIE_CHART_DESCRIPTION:
+            return this.createPieChartDescription();
+        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION:
+            return this.createFlexboxContainerDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
             return this.createTextfieldDescriptionStyle();
         case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
@@ -183,10 +191,6 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createRadioDescriptionStyle();
         case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE:
             return this.createConditionalRadioDescriptionStyle();
-        case ViewPackage.BAR_CHART_DESCRIPTION:
-            return this.createBarChartDescription();
-        case ViewPackage.PIE_CHART_DESCRIPTION:
-            return this.createPieChartDescription();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -206,6 +210,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createLineStyleFromString(eDataType, initialValue);
         case ViewPackage.SYNCHRONIZATION_POLICY:
             return this.createSynchronizationPolicyFromString(eDataType, initialValue);
+        case ViewPackage.FLEX_DIRECTION:
+            return this.createFlexDirectionFromString(eDataType, initialValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -225,6 +231,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.convertLineStyleToString(eDataType, instanceValue);
         case ViewPackage.SYNCHRONIZATION_POLICY:
             return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
+        case ViewPackage.FLEX_DIRECTION:
+            return this.convertFlexDirectionToString(eDataType, instanceValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -686,6 +694,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      *
      * @generated
      */
+    @Override
+    public FlexboxContainerDescription createFlexboxContainerDescription() {
+        FlexboxContainerDescriptionImpl flexboxContainerDescription = new FlexboxContainerDescriptionImpl();
+        return flexboxContainerDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public ArrowStyle createArrowStyleFromString(EDataType eDataType, String initialValue) {
         ArrowStyle result = ArrowStyle.get(initialValue);
         if (result == null)
@@ -741,6 +760,27 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     public String convertSynchronizationPolicyToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public FlexDirection createFlexDirectionFromString(EDataType eDataType, String initialValue) {
+        FlexDirection result = FlexDirection.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertFlexDirectionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

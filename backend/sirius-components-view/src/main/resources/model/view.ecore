@@ -270,6 +270,27 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalRadioDescriptionStyle" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BarChartDescription" eSuperTypes="#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="yAxisLabelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PieChartDescription" eSuperTypes="#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FlexboxContainerDescription" eSuperTypes="#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//WidgetDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexDirection" lowerBound="1"
+        eType="#//FlexDirection" defaultValueLiteral="row"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FlexDirection">
+    <eLiterals name="row" literal="row"/>
+    <eLiterals name="rowReverse" value="1" literal="row-reverse"/>
+    <eLiterals name="column" value="2" literal="column"/>
+    <eLiterals name="columnReverse" value="3" literal="column-reverse"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescriptionStyle" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -303,13 +324,4 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalRadioDescriptionStyle" eSuperTypes="#//Conditional #//RadioDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BarChartDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="yAxisLabelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PieChartDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
 </ecore:EPackage>

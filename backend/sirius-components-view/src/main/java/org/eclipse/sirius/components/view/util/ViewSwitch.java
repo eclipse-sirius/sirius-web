@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
@@ -443,6 +444,33 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.BAR_CHART_DESCRIPTION: {
+            BarChartDescription barChartDescription = (BarChartDescription) theEObject;
+            T result = this.caseBarChartDescription(barChartDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(barChartDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.PIE_CHART_DESCRIPTION: {
+            PieChartDescription pieChartDescription = (PieChartDescription) theEObject;
+            T result = this.casePieChartDescription(pieChartDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(pieChartDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION: {
+            FlexboxContainerDescription flexboxContainerDescription = (FlexboxContainerDescription) theEObject;
+            T result = this.caseFlexboxContainerDescription(flexboxContainerDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(flexboxContainerDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.WIDGET_DESCRIPTION_STYLE: {
             WidgetDescriptionStyle widgetDescriptionStyle = (WidgetDescriptionStyle) theEObject;
             T result = this.caseWidgetDescriptionStyle(widgetDescriptionStyle);
@@ -598,24 +626,6 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalRadioDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalRadioDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.BAR_CHART_DESCRIPTION: {
-            BarChartDescription barChartDescription = (BarChartDescription) theEObject;
-            T result = this.caseBarChartDescription(barChartDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(barChartDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.PIE_CHART_DESCRIPTION: {
-            PieChartDescription pieChartDescription = (PieChartDescription) theEObject;
-            T result = this.casePieChartDescription(pieChartDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(pieChartDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1374,6 +1384,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePieChartDescription(PieChartDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Flexbox Container Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Flexbox Container Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFlexboxContainerDescription(FlexboxContainerDescription object) {
         return null;
     }
 

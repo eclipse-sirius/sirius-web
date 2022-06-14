@@ -1033,6 +1033,30 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.FlexboxContainerDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected FlexboxContainerDescriptionItemProvider flexboxContainerDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.FlexboxContainerDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFlexboxContainerDescriptionAdapter() {
+        if (this.flexboxContainerDescriptionItemProvider == null) {
+            this.flexboxContainerDescriptionItemProvider = new FlexboxContainerDescriptionItemProvider(this);
+        }
+
+        return this.flexboxContainerDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1186,6 +1210,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.textAreaDescriptionItemProvider.dispose();
         if (this.radioDescriptionItemProvider != null)
             this.radioDescriptionItemProvider.dispose();
+        if (this.barChartDescriptionItemProvider != null)
+            this.barChartDescriptionItemProvider.dispose();
+        if (this.pieChartDescriptionItemProvider != null)
+            this.pieChartDescriptionItemProvider.dispose();
+        if (this.flexboxContainerDescriptionItemProvider != null)
+            this.flexboxContainerDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionStyleItemProvider != null)
             this.textfieldDescriptionStyleItemProvider.dispose();
         if (this.conditionalTextfieldDescriptionStyleItemProvider != null)
@@ -1210,10 +1240,6 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.radioDescriptionStyleItemProvider.dispose();
         if (this.conditionalRadioDescriptionStyleItemProvider != null)
             this.conditionalRadioDescriptionStyleItemProvider.dispose();
-        if (this.barChartDescriptionItemProvider != null)
-            this.barChartDescriptionItemProvider.dispose();
-        if (this.pieChartDescriptionItemProvider != null)
-            this.pieChartDescriptionItemProvider.dispose();
     }
 
 }

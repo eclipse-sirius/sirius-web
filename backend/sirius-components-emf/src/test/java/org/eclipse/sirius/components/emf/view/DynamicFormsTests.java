@@ -32,9 +32,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.view.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.forms.AbstractFontStyle;
+import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
+import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.MultiSelect;
@@ -63,6 +65,7 @@ import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
@@ -108,7 +111,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(8);
+        assertThat(group.getWidgets()).hasSize(9);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -117,6 +120,7 @@ public class DynamicFormsTests {
         Radio radio = (Radio) group.getWidgets().get(5);
         ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
         ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
+        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -152,6 +156,13 @@ public class DynamicFormsTests {
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testNoStyle(radio);
 
+        this.checkBarChart(chartWidgetWithBarChart);
+        this.checkPieChart(chartWidgetWithPieChart);
+
+        this.renderEcoreFormOnWidgetContainer(flexboxContainer);
+    }
+
+    private void checkBarChart(ChartWidget chartWidgetWithBarChart) {
         assertThat(chartWidgetWithBarChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
         IChart chart = chartWidgetWithBarChart.getChart();
         assertThat(chart).isInstanceOf(BarChart.class);
@@ -162,9 +173,11 @@ public class DynamicFormsTests {
         this.checkBarChartEntry(barChartEntries, 1, "b", 3); //$NON-NLS-1$
         this.checkBarChartEntry(barChartEntries, 2, "c", 5); //$NON-NLS-1$
         this.checkBarChartEntry(barChartEntries, 3, "d", 7); //$NON-NLS-1$
+    }
 
+    private void checkPieChart(ChartWidget chartWidgetWithPieChart) {
         assertThat(chartWidgetWithPieChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
-        chart = chartWidgetWithPieChart.getChart();
+        IChart chart = chartWidgetWithPieChart.getChart();
         assertThat(chart).isInstanceOf(PieChart.class);
         PieChart pieChart = (PieChart) chart;
         List<PieChartEntry> pieChartEntries = pieChart.getEntries();
@@ -184,6 +197,24 @@ public class DynamicFormsTests {
         assertThat(entries.get(index)).extracting(PieChartEntry::getValue).isEqualTo(expectedValue);
     }
 
+    private void renderEcoreFormOnWidgetContainer(FlexboxContainer flexboxContainer) {
+        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
+        List<AbstractWidget> children = flexboxContainer.getChildren();
+        assertThat(children).hasSize(2);
+        assertThat(children.get(0)).isInstanceOf(Textfield.class);
+        assertThat(children.get(1)).isInstanceOf(Checkbox.class);
+
+        Textfield childrenTextfield = (Textfield) children.get(0);
+        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        this.testNoStyle(childrenTextfield);
+
+        Checkbox childrenCheckbox = (Checkbox) children.get(1);
+        assertThat(childrenCheckbox.isValue()).isTrue();
+        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        this.testNoStyle(childrenCheckbox);
+    }
+
     @Test
     void testRenderEcoreFormWithStyle() throws Exception {
 
@@ -196,13 +227,14 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(8);
+        assertThat(group.getWidgets()).hasSize(9);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         Select select = (Select) group.getWidgets().get(4);
         Radio radio = (Radio) group.getWidgets().get(5);
+        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -237,6 +269,26 @@ public class DynamicFormsTests {
         });
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testStyle(radio);
+
+        this.renderEcoreFormWithStyleOnWidgetContainer(flexboxContainer);
+    }
+
+    private void renderEcoreFormWithStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
+        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
+        List<AbstractWidget> children = flexboxContainer.getChildren();
+        assertThat(children).hasSize(2);
+        assertThat(children.get(0)).isInstanceOf(Textfield.class);
+        assertThat(children.get(1)).isInstanceOf(Checkbox.class);
+
+        Textfield childrenTextfield = (Textfield) children.get(0);
+        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        this.testStyle(childrenTextfield);
+
+        Checkbox childrenCheckbox = (Checkbox) children.get(1);
+        assertThat(childrenCheckbox.isValue()).isTrue();
+        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        this.testStyle(childrenCheckbox);
     }
 
     @Test
@@ -251,13 +303,14 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(8);
+        assertThat(group.getWidgets()).hasSize(9);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         Select select = (Select) group.getWidgets().get(4);
         Radio radio = (Radio) group.getWidgets().get(5);
+        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -292,6 +345,26 @@ public class DynamicFormsTests {
         });
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
         this.testConditionalStyle(radio);
+
+        this.renderEcoreFormWithConditionalStyleOnWidgetContainer(flexboxContainer);
+    }
+
+    private void renderEcoreFormWithConditionalStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
+        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
+        List<AbstractWidget> children = flexboxContainer.getChildren();
+        assertThat(children).hasSize(2);
+        assertThat(children.get(0)).isInstanceOf(Textfield.class);
+        assertThat(children.get(1)).isInstanceOf(Checkbox.class);
+
+        Textfield childrenTextfield = (Textfield) children.get(0);
+        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        this.testConditionalStyle(childrenTextfield);
+
+        Checkbox childrenCheckbox = (Checkbox) children.get(1);
+        assertThat(childrenCheckbox.isValue()).isTrue();
+        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        this.testConditionalStyle(childrenCheckbox);
     }
 
     @Test
@@ -299,14 +372,14 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClass1);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(8);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(9);
 
         this.checkValuesEditing(this.eClass1, form);
     }
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(8);
+        assertThat(group.getWidgets()).hasSize(9);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -348,6 +421,22 @@ public class DynamicFormsTests {
             }
         });
 
+        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
+        assertThat(flexboxContainer.getChildren()).hasSize(2);
+        assertThat(flexboxContainer.getChildren().get(0)).isInstanceOf(Textfield.class);
+        assertThat(flexboxContainer.getChildren().get(1)).isInstanceOf(Checkbox.class);
+
+        Textfield childrenTextfield = (Textfield) flexboxContainer.getChildren().get(0);
+        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(eClass.getName()).isEqualTo("my New Value"); //$NON-NLS-1$
+        childrenTextfield.getNewValueHandler().apply("my New Value 2"); //$NON-NLS-1$
+        assertThat(eClass.getName()).isEqualTo("my New Value 2"); //$NON-NLS-1$
+
+        Checkbox childrenCheckbox = (Checkbox) flexboxContainer.getChildren().get(1);
+        assertThat(childrenCheckbox.isValue()).isTrue();
+        assertThat(eClass.isAbstract()).isFalse();
+        childrenCheckbox.getNewValueHandler().apply(true);
+        assertThat(eClass.isAbstract()).isTrue();
     }
 
     private FormDescription createClassFormDescription(boolean withStyle, boolean withConditionalStyle) {
@@ -355,38 +444,58 @@ public class DynamicFormsTests {
         formDescription.setName("Simple Ecore Form"); //$NON-NLS-1$
         formDescription.setTitleExpression("aql:self.name"); //$NON-NLS-1$
         formDescription.setDomainType("ecore::EClass"); //$NON-NLS-1$
-        this.createTextfield(formDescription, withStyle, withConditionalStyle);
-        this.createTextArea(formDescription, withStyle, withConditionalStyle);
-        this.createMultiSelect(formDescription, withStyle, withConditionalStyle);
-        this.createCheckbox(formDescription, withStyle, withConditionalStyle);
-        this.createSelect(formDescription, withStyle, withConditionalStyle);
-        this.createRadio(formDescription, withStyle, withConditionalStyle);
-        this.createBarChart(formDescription);
-        this.createPieChart(formDescription);
+        TextfieldDescription textfieldDescription = this.createTextfield(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(textfieldDescription);
+        TextAreaDescription textAreaDescription = this.createTextArea(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(textAreaDescription);
+        MultiSelectDescription multiSelectDescription = this.createMultiSelect(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(multiSelectDescription);
+        CheckboxDescription checkboxDescription = this.createCheckbox(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(checkboxDescription);
+        SelectDescription selectDescription = this.createSelect(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(selectDescription);
+        RadioDescription radioDescription = this.createRadio(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(radioDescription);
+        BarChartDescription barChartDescription = this.createBarChart();
+        formDescription.getWidgets().add(barChartDescription);
+        PieChartDescription pieChartDescription = this.createPieChart();
+        formDescription.getWidgets().add(pieChartDescription);
+        FlexboxContainerDescription flexboxContainerDescription = this.createFlexboxContainer(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(flexboxContainerDescription);
         return formDescription;
     }
 
-    private void createBarChart(FormDescription formDescription) {
+    private BarChartDescription createBarChart() {
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
         barChartDescription.setName("barChart"); //$NON-NLS-1$
         barChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
         barChartDescription.setYAxisLabelExpression("aql:'the values'"); //$NON-NLS-1$
         barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
         barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
-        formDescription.getWidgets().add(barChartDescription);
+        return barChartDescription;
     }
 
-    private void createPieChart(FormDescription formDescription) {
+    private PieChartDescription createPieChart() {
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
         pieChartDescription.setName("chartWidget"); //$NON-NLS-1$
         pieChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
         pieChartDescription.setName("pieChart"); //$NON-NLS-1$
         pieChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
         pieChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
-        formDescription.getWidgets().add(pieChartDescription);
+        return pieChartDescription;
     }
 
-    private void createRadio(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
+    private FlexboxContainerDescription createFlexboxContainer(boolean withStyle, boolean withConditionalStyle) {
+        FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
+        flexboxContainerDescription.setLabelExpression("aql:'A Widget Container'"); //$NON-NLS-1$
+        TextfieldDescription textfieldDescription = this.createTextfield(withStyle, withConditionalStyle);
+        flexboxContainerDescription.getChildren().add(textfieldDescription);
+        CheckboxDescription checkboxDescription = this.createCheckbox(withStyle, withConditionalStyle);
+        flexboxContainerDescription.getChildren().add(checkboxDescription);
+        return flexboxContainerDescription;
+    }
+
+    private RadioDescription createRadio(boolean withStyle, boolean withConditionalStyle) {
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
         radioDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
         radioDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
@@ -405,15 +514,15 @@ public class DynamicFormsTests {
             this.setConditionalFontStyle(conditionalStyle);
             radioDescription.getConditionalStyles().add(conditionalStyle);
         }
-        formDescription.getWidgets().add(radioDescription);
 
         SetValue radioSetValue = ViewFactory.eINSTANCE.createSetValue();
         radioSetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
         radioSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         radioDescription.getBody().add(radioSetValue);
+        return radioDescription;
     }
 
-    private void createSelect(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
+    private SelectDescription createSelect(boolean withStyle, boolean withConditionalStyle) {
         SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
         selectDescription.setLabelExpression("aql:'eSuper Types'"); //$NON-NLS-1$
         selectDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
@@ -434,7 +543,6 @@ public class DynamicFormsTests {
             this.setConditionalFontStyle(conditionalStyle);
             selectDescription.getConditionalStyles().add(conditionalStyle);
         }
-        formDescription.getWidgets().add(selectDescription);
 
         UnsetValue selectUnsetValue = ViewFactory.eINSTANCE.createUnsetValue();
         selectUnsetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
@@ -445,9 +553,10 @@ public class DynamicFormsTests {
         selectSetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
         selectSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         selectUnsetValue.getChildren().add(selectSetValue);
+        return selectDescription;
     }
 
-    private void createCheckbox(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
+    private CheckboxDescription createCheckbox(boolean withStyle, boolean withConditionalStyle) {
         CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setLabelExpression("is Abstract"); //$NON-NLS-1$
         checkboxDescription.setValueExpression("aql:self.abstract"); //$NON-NLS-1$
@@ -462,15 +571,15 @@ public class DynamicFormsTests {
             conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
             checkboxDescription.getConditionalStyles().add(conditionalStyle);
         }
-        formDescription.getWidgets().add(checkboxDescription);
 
         SetValue checkboxSetValue = ViewFactory.eINSTANCE.createSetValue();
         checkboxSetValue.setFeatureName("abstract"); //$NON-NLS-1$
         checkboxSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         checkboxDescription.getBody().add(checkboxSetValue);
+        return checkboxDescription;
     }
 
-    private void createMultiSelect(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
+    private MultiSelectDescription createMultiSelect(boolean withStyle, boolean withConditionalStyle) {
         MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
         multiSelectDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
         multiSelectDescription.setValueExpression("aql:self.eSuperTypes"); //$NON-NLS-1$
@@ -491,7 +600,6 @@ public class DynamicFormsTests {
             this.setConditionalFontStyle(conditionalStyle);
             multiSelectDescription.getConditionalStyles().add(conditionalStyle);
         }
-        formDescription.getWidgets().add(multiSelectDescription);
 
         UnsetValue multiSelectUnsetValue = ViewFactory.eINSTANCE.createUnsetValue();
         multiSelectUnsetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
@@ -502,9 +610,10 @@ public class DynamicFormsTests {
         multiSelectSetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
         multiSelectSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         multiSelectUnsetValue.getChildren().add(multiSelectSetValue);
+        return multiSelectDescription;
     }
 
-    private void createTextArea(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
+    private TextAreaDescription createTextArea(boolean withStyle, boolean withConditionalStyle) {
         TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
         textareaDescription.setLabelExpression("aql:'Instance Class Name'"); //$NON-NLS-1$
         textareaDescription.setValueExpression("aql:self.instanceClassName"); //$NON-NLS-1$
@@ -523,15 +632,15 @@ public class DynamicFormsTests {
             this.setConditionalFontStyle(conditionalStyle);
             textareaDescription.getConditionalStyles().add(conditionalStyle);
         }
-        formDescription.getWidgets().add(textareaDescription);
 
         SetValue textareaSetValue = ViewFactory.eINSTANCE.createSetValue();
         textareaSetValue.setFeatureName("instanceClassName"); //$NON-NLS-1$
         textareaSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         textareaDescription.getBody().add(textareaSetValue);
+        return textareaDescription;
     }
 
-    private void createTextfield(FormDescription formDescription, boolean withStyle, boolean withConditionalStyle) {
+    private TextfieldDescription createTextfield(boolean withStyle, boolean withConditionalStyle) {
         TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setLabelExpression("aql:'EClass name'"); //$NON-NLS-1$
         textfieldDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
@@ -551,12 +660,12 @@ public class DynamicFormsTests {
             this.setConditionalFontStyle(conditionalStyle);
             textfieldDescription.getConditionalStyles().add(conditionalStyle);
         }
-        formDescription.getWidgets().add(textfieldDescription);
 
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
         setValue.setFeatureName("name"); //$NON-NLS-1$
         setValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
         textfieldDescription.getBody().add(setValue);
+        return textfieldDescription;
     }
 
     private void setFontStyle(LabelStyle labelStyle) {

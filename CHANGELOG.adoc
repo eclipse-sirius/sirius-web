@@ -33,6 +33,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1228[#1228] [charts] Add support for bar-chart in view DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1248[#1248] [charts] Add support for pie-chart in Form representation
 - https://github.com/eclipse-sirius/sirius-components/issues/1255[#1255] [form] Add support for charts in form descriptions editor
+- https://github.com/eclipse-sirius/sirius-components/issues/1244[#1244] [form] Add support for flexbox containers on FormDescriptions
 
 == v2022.5.0
 

@@ -368,6 +368,15 @@ public interface ViewFactory extends EFactory {
     PieChartDescription createPieChartDescription();
 
     /**
+     * Returns a new object of class '<em>Flexbox Container Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Flexbox Container Description</em>'.
+     * @generated
+     */
+    FlexboxContainerDescription createFlexboxContainerDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

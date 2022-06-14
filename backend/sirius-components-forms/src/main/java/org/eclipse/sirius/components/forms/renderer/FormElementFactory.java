@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementPro
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
+import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Link;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
+import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
 import org.eclipse.sirius.components.forms.elements.LinkElementProps;
@@ -92,6 +94,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateBarChart((BarChartElementProps) props);
         } else if (PieChartElementProps.TYPE.equals(type) && props instanceof PieChartElementProps) {
             object = this.instantiatePieChart((PieChartElementProps) props);
+        } else if (FlexboxContainerElementProps.TYPE.equals(type) && props instanceof FlexboxContainerElementProps) {
+            object = this.instantiateFlexboxContainer((FlexboxContainerElementProps) props, children);
         }
 
         return object;
@@ -337,6 +341,26 @@ public class FormElementFactory implements IElementFactory {
                 .diagnostics(diagnostics)
                 .build();
         // @formatter:on
+    }
+
+    private FlexboxContainer instantiateFlexboxContainer(FlexboxContainerElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        List<AbstractWidget> widgets = children.stream()
+                .filter(AbstractWidget.class::isInstance)
+                .map(AbstractWidget.class::cast)
+                .collect(Collectors.toList());
+
+        return FlexboxContainer.newFlexboxContainer(props.getId())
+                 .label(props.getLabel())
+                 .flexDirection(props.getFlexDirection().toString())
+                 .flexWrap("wrap") //$NON-NLS-1$
+                 .flexGrow(1)
+                 .children(widgets)
+                 .diagnostics(diagnostics)
+                 .build();
+       // @formatter:on
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {
