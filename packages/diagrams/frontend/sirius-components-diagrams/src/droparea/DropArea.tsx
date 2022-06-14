@@ -65,6 +65,7 @@ export const DropArea = ({
   invokeHover,
   convertInSprottyCoordinate,
   children,
+  readOnly,
 }: DropAreaProps) => {
   const [{ value, context }, dispatch] = useMachine<DropAreaContext, DropEvent>(dropAreaMachine);
   const { toast } = value as SchemaValue;
@@ -150,17 +151,25 @@ export const DropArea = ({
 
   const handleDrop = (event) => {
     event.preventDefault();
-    const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
-    if (dragSourcesStringified) {
-      const sources = JSON.parse(dragSourcesStringified);
-      if (Array.isArray(sources)) {
-        const sourceIds = sources.filter((source) => source?.id).map((source) => source.id);
-        if (sourceIds.length > 0) {
-          const diagramElementId = searchId(event.target);
-          if (diagramElementId) {
-            dropElement(sourceIds, event.clientX, event.clientY, diagramElementId);
-          } else {
-            dropElement(sourceIds, event.clientX, event.clientY);
+    if (readOnly) {
+      const showToastEvent: ShowToastEvent = {
+        type: 'SHOW_TOAST',
+        message: 'This representation is currently read-only',
+      };
+      dispatch(showToastEvent);
+    } else {
+      const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
+      if (dragSourcesStringified) {
+        const sources = JSON.parse(dragSourcesStringified);
+        if (Array.isArray(sources)) {
+          const sourceIds = sources.filter((source) => source?.id).map((source) => source.id);
+          if (sourceIds.length > 0) {
+            const diagramElementId = searchId(event.target);
+            if (diagramElementId) {
+              dropElement(sourceIds, event.clientX, event.clientY, diagramElementId);
+            } else {
+              dropElement(sourceIds, event.clientX, event.clientY);
+            }
           }
         }
       }

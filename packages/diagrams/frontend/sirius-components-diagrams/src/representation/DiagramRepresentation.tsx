@@ -1053,7 +1053,8 @@ export const DiagramRepresentation = ({
         editingContextId={editingContextId}
         representationId={representationId}
         invokeHover={invokeHover}
-        convertInSprottyCoordinate={convertInSprottyCoordinate}>
+        convertInSprottyCoordinate={convertInSprottyCoordinate}
+        readOnly={readOnly}>
         <div id="diagram-wrapper" className={classes.diagramWrapper}>
           <div ref={diagramDomElement} id="diagram" className={classes.diagram} />
           {contextualPaletteContent}
