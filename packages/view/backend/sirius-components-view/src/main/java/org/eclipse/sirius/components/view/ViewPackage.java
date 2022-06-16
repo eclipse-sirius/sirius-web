@@ -2707,7 +2707,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescriptionStyle()
      * @generated
      */
-    int WIDGET_DESCRIPTION_STYLE = 39;
+    int WIDGET_DESCRIPTION_STYLE = 40;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
@@ -2717,7 +2717,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 40;
+    int TEXTFIELD_DESCRIPTION_STYLE = 41;
 
     /**
      * The meta object id for the
@@ -2728,7 +2728,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 41;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 42;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
@@ -2738,7 +2738,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 42;
+    int CHECKBOX_DESCRIPTION_STYLE = 43;
 
     /**
      * The meta object id for the
@@ -2749,7 +2749,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 43;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 44;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
@@ -2759,7 +2759,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 44;
+    int SELECT_DESCRIPTION_STYLE = 45;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
@@ -2769,7 +2769,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 45;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 46;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
@@ -2779,7 +2779,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 46;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 47;
 
     /**
      * The meta object id for the
@@ -2790,7 +2790,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 47;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 48;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
@@ -2800,7 +2800,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 48;
+    int TEXTAREA_DESCRIPTION_STYLE = 49;
 
     /**
      * The meta object id for the
@@ -2811,7 +2811,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 49;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
@@ -2821,7 +2821,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 50;
+    int RADIO_DESCRIPTION_STYLE = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
@@ -2831,7 +2831,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 51;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl <em>Bar Chart
@@ -3027,6 +3027,96 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int FLEXBOX_CONTAINER_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl <em>Button
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
+     * @generated
+     */
+    int BUTTON_DESCRIPTION = 39;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__NAME = WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__LABEL_EXPRESSION = WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Button Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Image Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__IMAGE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The number of structural features of the '<em>Button Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The number of operations of the '<em>Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3887,6 +3977,186 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_RADIO_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ButtonDescriptionStyleImpl <em>Button
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ButtonDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescriptionStyle()
+     * @generated
+     */
+    int BUTTON_DESCRIPTION_STYLE = 53;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Button Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Button Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalButtonDescriptionStyleImpl
+     * <em>Conditional Button Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalButtonDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalButtonDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 54;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__CONDITION = CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__ITALIC = CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__BOLD = CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__UNDERLINE = CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR = CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR = CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Conditional Button Description Style</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Conditional Button Description Style</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3894,7 +4164,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 52;
+    int ARROW_STYLE = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -3904,7 +4174,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 53;
+    int LINE_STYLE = 56;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -3914,7 +4184,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 54;
+    int SYNCHRONIZATION_POLICY = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -3924,7 +4194,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 55;
+    int FLEX_DIRECTION = 58;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -5690,6 +5960,50 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalRadioDescriptionStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle <em>Button
+     * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Button Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescriptionStyle
+     * @generated
+     */
+    EClass getButtonDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle#getBackgroundColor <em>Background Color</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescriptionStyle#getBackgroundColor()
+     * @see #getButtonDescriptionStyle()
+     * @generated
+     */
+    EAttribute getButtonDescriptionStyle_BackgroundColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle#getForegroundColor <em>Foreground Color</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescriptionStyle#getForegroundColor()
+     * @see #getButtonDescriptionStyle()
+     * @generated
+     */
+    EAttribute getButtonDescriptionStyle_ForegroundColor();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle
+     * <em>Conditional Button Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Button Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle
+     * @generated
+     */
+    EClass getConditionalButtonDescriptionStyle();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BarChartDescription <em>Bar Chart
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5802,6 +6116,76 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getFlexboxContainerDescription_FlexDirection();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ButtonDescription <em>Button
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Button Description</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription
+     * @generated
+     */
+    EClass getButtonDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getButtonLabelExpression <em>Button Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Button Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getButtonLabelExpression()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EAttribute getButtonDescription_ButtonLabelExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getBody <em>Body</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getBody()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EReference getButtonDescription_Body();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getImageExpression <em>Image Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Image Expression</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getImageExpression()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EAttribute getButtonDescription_ImageExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getStyle()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EReference getButtonDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.ButtonDescription#getConditionalStyles <em>Conditional Styles</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.ButtonDescription#getConditionalStyles()
+     * @see #getButtonDescription()
+     * @generated
+     */
+    EReference getButtonDescription_ConditionalStyles();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'.
@@ -7235,6 +7619,43 @@ public interface ViewPackage extends EPackage {
         EClass CONDITIONAL_RADIO_DESCRIPTION_STYLE = eINSTANCE.getConditionalRadioDescriptionStyle();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ButtonDescriptionStyleImpl
+         * <em>Button Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ButtonDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescriptionStyle()
+         * @generated
+         */
+        EClass BUTTON_DESCRIPTION_STYLE = eINSTANCE.getButtonDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getButtonDescriptionStyle_BackgroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getButtonDescriptionStyle_ForegroundColor();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.ConditionalButtonDescriptionStyleImpl <em>Conditional Button
+         * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ConditionalButtonDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalButtonDescriptionStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_BUTTON_DESCRIPTION_STYLE = eINSTANCE.getConditionalButtonDescriptionStyle();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
          * <em>Bar Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -7320,6 +7741,56 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION = eINSTANCE.getFlexboxContainerDescription_FlexDirection();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
+         * <em>Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ButtonDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
+         * @generated
+         */
+        EClass BUTTON_DESCRIPTION = eINSTANCE.getButtonDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Button Label Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION = eINSTANCE.getButtonDescription_ButtonLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BUTTON_DESCRIPTION__BODY = eINSTANCE.getButtonDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Image Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION__IMAGE_EXPRESSION = eINSTANCE.getButtonDescription_ImageExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BUTTON_DESCRIPTION__STYLE = eINSTANCE.getButtonDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference BUTTON_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getButtonDescription_ConditionalStyles();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}'

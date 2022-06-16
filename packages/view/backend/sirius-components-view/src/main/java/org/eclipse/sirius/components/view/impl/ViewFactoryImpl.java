@@ -20,9 +20,12 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.ButtonDescription;
+import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
@@ -167,6 +170,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createPieChartDescription();
         case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION:
             return this.createFlexboxContainerDescription();
+        case ViewPackage.BUTTON_DESCRIPTION:
+            return this.createButtonDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
             return this.createTextfieldDescriptionStyle();
         case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
@@ -191,6 +196,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createRadioDescriptionStyle();
         case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE:
             return this.createConditionalRadioDescriptionStyle();
+        case ViewPackage.BUTTON_DESCRIPTION_STYLE:
+            return this.createButtonDescriptionStyle();
+        case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE:
+            return this.createConditionalButtonDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -673,6 +682,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
+    public ButtonDescriptionStyle createButtonDescriptionStyle() {
+        ButtonDescriptionStyleImpl buttonDescriptionStyle = new ButtonDescriptionStyleImpl();
+        return buttonDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalButtonDescriptionStyle createConditionalButtonDescriptionStyle() {
+        ConditionalButtonDescriptionStyleImpl conditionalButtonDescriptionStyle = new ConditionalButtonDescriptionStyleImpl();
+        return conditionalButtonDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public BarChartDescription createBarChartDescription() {
         BarChartDescriptionImpl barChartDescription = new BarChartDescriptionImpl();
         return barChartDescription;
@@ -698,6 +729,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public FlexboxContainerDescription createFlexboxContainerDescription() {
         FlexboxContainerDescriptionImpl flexboxContainerDescription = new FlexboxContainerDescriptionImpl();
         return flexboxContainerDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ButtonDescription createButtonDescription() {
+        ButtonDescriptionImpl buttonDescription = new ButtonDescriptionImpl();
+        return buttonDescription;
     }
 
     /**

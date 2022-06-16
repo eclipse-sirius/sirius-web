@@ -14,8 +14,10 @@ package org.eclipse.sirius.components.forms.renderer;
 
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
 import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementProps;
+import org.eclipse.sirius.components.forms.elements.ButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
+import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
 import org.eclipse.sirius.components.forms.elements.LinkElementProps;
@@ -26,7 +28,6 @@ import org.eclipse.sirius.components.forms.elements.RadioElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
-import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
@@ -67,6 +68,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof DiagnosticElementProps;
         } else if (LinkElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof LinkElementProps;
+        } else if (ButtonElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof ButtonElementProps;
         } else if (ChartWidgetElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof ChartWidgetElementProps;
         } else if (BarChartElementProps.TYPE.equals(type)) {

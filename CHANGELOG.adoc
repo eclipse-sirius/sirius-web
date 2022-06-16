@@ -41,6 +41,7 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram]
 === New features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1265[#1265] [form] Add support for flexbox containers on FormDescriptionEditors
+- https://github.com/eclipse-sirius/sirius-components/issues/1272[#1272] [form] Add support for button widget on FormDescriptions
 
 == v2022.7.0
 

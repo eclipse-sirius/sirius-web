@@ -48,16 +48,13 @@ public class LinkComponent implements IComponent {
         String url = linkDescription.getUrlProvider().apply(variableManager);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(linkDescription, variableManager)));
 
+        // @formatter:on
+        Builder linkElementPropsBuilder = LinkElementProps.newLinkElementProps(id).label(label).url(url).children(children);
         // @formatter:off
-        Builder linkElementPropsBuilder = LinkElementProps.newLinkElementProps(id)
-                .label(label)
-                .url(url)
-                .children(children);
 
         if (iconURL != null) {
             linkElementPropsBuilder.iconURL(iconURL);
         }
         return new Element(LinkElementProps.TYPE, linkElementPropsBuilder.build());
-        // @formatter:on
     }
 }

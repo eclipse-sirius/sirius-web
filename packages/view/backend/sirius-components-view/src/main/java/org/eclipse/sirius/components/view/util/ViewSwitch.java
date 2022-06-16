@@ -17,10 +17,13 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BorderStyle;
+import org.eclipse.sirius.components.view.ButtonDescription;
+import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
@@ -471,6 +474,15 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
+        case ViewPackage.BUTTON_DESCRIPTION: {
+            ButtonDescription buttonDescription = (ButtonDescription) theEObject;
+            T result = this.caseButtonDescription(buttonDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(buttonDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
         case ViewPackage.WIDGET_DESCRIPTION_STYLE: {
             WidgetDescriptionStyle widgetDescriptionStyle = (WidgetDescriptionStyle) theEObject;
             T result = this.caseWidgetDescriptionStyle(widgetDescriptionStyle);
@@ -626,6 +638,32 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalRadioDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalRadioDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.BUTTON_DESCRIPTION_STYLE: {
+            ButtonDescriptionStyle buttonDescriptionStyle = (ButtonDescriptionStyle) theEObject;
+            T result = this.caseButtonDescriptionStyle(buttonDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(buttonDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(buttonDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE: {
+            ConditionalButtonDescriptionStyle conditionalButtonDescriptionStyle = (ConditionalButtonDescriptionStyle) theEObject;
+            T result = this.caseConditionalButtonDescriptionStyle(conditionalButtonDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalButtonDescriptionStyle);
+            if (result == null)
+                result = this.caseButtonDescriptionStyle(conditionalButtonDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalButtonDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalButtonDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1358,6 +1396,36 @@ public class ViewSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Button Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Button Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseButtonDescriptionStyle(ButtonDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Button Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Button Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalButtonDescriptionStyle(ConditionalButtonDescriptionStyle object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Bar Chart Description</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -1399,6 +1467,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseFlexboxContainerDescription(FlexboxContainerDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Button Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Button Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseButtonDescription(ButtonDescription object) {
         return null;
     }
 

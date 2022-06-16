@@ -239,6 +239,23 @@ export interface GQLLink extends GQLWidget {
   url: string;
 }
 
+export interface GQLButton extends GQLWidget {
+  label: string;
+  buttonLabel: string | null;
+  imageURL: string | null;
+  style: GQLButtonStyle;
+}
+
+export interface GQLButtonStyle {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface GQLChartWidget extends GQLWidget {
   label: string;
   chart: GQLChart;

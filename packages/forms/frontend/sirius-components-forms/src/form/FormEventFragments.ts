@@ -84,6 +84,9 @@ export const formRefreshedEventPayloadFragment = `
     ... on Link {
       ...linkFields
     }
+    ... on Button {
+      ...buttonFields
+    }
     ... on ChartWidget {
       ...chartWidgetFields
     }
@@ -213,6 +216,21 @@ export const formRefreshedEventPayloadFragment = `
     label
     iconURL
     url
+  }
+
+  fragment buttonFields on Button {
+    label
+    buttonLabel
+    imageURL
+    style {
+      backgroundColor
+      foregroundColor
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
   }
 
   fragment chartWidgetFields on ChartWidget {

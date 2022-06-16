@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.charts.piechart.PieChart;
 import org.eclipse.sirius.components.charts.piechart.PieChartEntry;
 import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementProps;
 import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.Button;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
@@ -37,8 +38,9 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
-import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.TreeWidget;
+import org.eclipse.sirius.components.forms.elements.ButtonElementProps;
+import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
@@ -91,6 +93,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateDiagnostic((DiagnosticElementProps) props, children);
         } else if (LinkElementProps.TYPE.equals(type) && props instanceof LinkElementProps) {
             object = this.instantiateLink((LinkElementProps) props, children);
+        } else if (ButtonElementProps.TYPE.equals(type) && props instanceof ButtonElementProps) {
+            object = this.instantiateButton((ButtonElementProps) props, children);
         } else if (ChartWidgetElementProps.TYPE.equals(type) && props instanceof ChartWidgetElementProps) {
             object = this.instantiateChartWidget((ChartWidgetElementProps) props, children);
         } else if (BarChartElementProps.TYPE.equals(type) && props instanceof BarChartElementProps) {
@@ -355,6 +359,31 @@ public class FormElementFactory implements IElementFactory {
             linkbuilder.iconURL(props.getIconURL());
         }
         return linkbuilder.build();
+    }
+
+    private Button instantiateButton(ButtonElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        Button.Builder buttonBuilder = Button.newButton(props.getId())
+                 .label(props.getLabel())
+                 .pushButtonHandler(props.getPushButtonHandler())
+                 .diagnostics(diagnostics);
+        // @formatter:on
+        if (props.getIconURL() != null) {
+            buttonBuilder.iconURL(props.getIconURL());
+        }
+        if (props.getButtonLabel() != null) {
+            buttonBuilder.buttonLabel(props.getButtonLabel());
+        }
+        if (props.getImageURL() != null) {
+            buttonBuilder.imageURL(props.getImageURL());
+        }
+        if (props.getStyle() != null) {
+            buttonBuilder.style(props.getStyle());
+        }
+
+        return buttonBuilder.build();
     }
 
     private Object instantiateChartWidget(ChartWidgetElementProps props, List<Object> children) {

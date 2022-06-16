@@ -987,6 +987,54 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ButtonDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected ButtonDescriptionStyleItemProvider buttonDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ButtonDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createButtonDescriptionStyleAdapter() {
+        if (this.buttonDescriptionStyleItemProvider == null) {
+            this.buttonDescriptionStyleItemProvider = new ButtonDescriptionStyleItemProvider(this);
+        }
+
+        return this.buttonDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalButtonDescriptionStyleItemProvider conditionalButtonDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalButtonDescriptionStyleAdapter() {
+        if (this.conditionalButtonDescriptionStyleItemProvider == null) {
+            this.conditionalButtonDescriptionStyleItemProvider = new ConditionalButtonDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalButtonDescriptionStyleItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1054,6 +1102,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
         }
 
         return this.flexboxContainerDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ButtonDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ButtonDescriptionItemProvider buttonDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ButtonDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createButtonDescriptionAdapter() {
+        if (this.buttonDescriptionItemProvider == null) {
+            this.buttonDescriptionItemProvider = new ButtonDescriptionItemProvider(this);
+        }
+
+        return this.buttonDescriptionItemProvider;
     }
 
     /**
@@ -1216,6 +1287,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.pieChartDescriptionItemProvider.dispose();
         if (this.flexboxContainerDescriptionItemProvider != null)
             this.flexboxContainerDescriptionItemProvider.dispose();
+        if (this.buttonDescriptionItemProvider != null)
+            this.buttonDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionStyleItemProvider != null)
             this.textfieldDescriptionStyleItemProvider.dispose();
         if (this.conditionalTextfieldDescriptionStyleItemProvider != null)
@@ -1240,6 +1313,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.radioDescriptionStyleItemProvider.dispose();
         if (this.conditionalRadioDescriptionStyleItemProvider != null)
             this.conditionalRadioDescriptionStyleItemProvider.dispose();
+        if (this.buttonDescriptionStyleItemProvider != null)
+            this.buttonDescriptionStyleItemProvider.dispose();
+        if (this.conditionalButtonDescriptionStyleItemProvider != null)
+            this.conditionalButtonDescriptionStyleItemProvider.dispose();
     }
 
 }

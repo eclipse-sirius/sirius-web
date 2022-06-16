@@ -285,6 +285,17 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexDirection" lowerBound="1"
         eType="#//FlexDirection" defaultValueLiteral="row"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ButtonDescription" eSuperTypes="#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="buttonLabelExpression"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//ButtonDescriptionStyle"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalButtonDescriptionStyle" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="FlexDirection">
     <eLiterals name="row" literal="row"/>
     <eLiterals name="rowReverse" value="1" literal="row-reverse"/>
@@ -324,4 +335,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalRadioDescriptionStyle" eSuperTypes="#//Conditional #//RadioDescriptionStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ButtonDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalButtonDescriptionStyle" eSuperTypes="#//Conditional #//ButtonDescriptionStyle"/>
 </ecore:EPackage>
