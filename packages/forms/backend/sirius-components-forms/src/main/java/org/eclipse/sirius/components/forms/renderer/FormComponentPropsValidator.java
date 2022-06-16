@@ -16,10 +16,14 @@ import org.eclipse.sirius.components.charts.barchart.components.BarChartComponen
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponentProps;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartComponent;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartComponentProps;
+import org.eclipse.sirius.components.forms.components.ButtonComponent;
+import org.eclipse.sirius.components.forms.components.ButtonComponentProps;
 import org.eclipse.sirius.components.forms.components.ChartWidgetComponent;
 import org.eclipse.sirius.components.forms.components.ChartWidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.CheckboxComponent;
 import org.eclipse.sirius.components.forms.components.CheckboxComponentProps;
+import org.eclipse.sirius.components.forms.components.FlexboxContainerComponent;
+import org.eclipse.sirius.components.forms.components.FlexboxContainerComponentProps;
 import org.eclipse.sirius.components.forms.components.ForComponent;
 import org.eclipse.sirius.components.forms.components.ForComponentProps;
 import org.eclipse.sirius.components.forms.components.FormComponent;
@@ -48,8 +52,6 @@ import org.eclipse.sirius.components.forms.components.TreeComponent;
 import org.eclipse.sirius.components.forms.components.TreeComponentProps;
 import org.eclipse.sirius.components.forms.components.WidgetComponent;
 import org.eclipse.sirius.components.forms.components.WidgetComponentProps;
-import org.eclipse.sirius.components.forms.components.FlexboxContainerComponent;
-import org.eclipse.sirius.components.forms.components.FlexboxContainerComponentProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
@@ -96,6 +98,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof DiagnosticComponentProps;
         } else if (LinkComponent.class.equals(componentType)) {
             checkValidProps = props instanceof LinkComponentProps;
+        } else if (ButtonComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof ButtonComponentProps;
         } else if (ChartWidgetComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ChartWidgetComponentProps;
         } else if (BarChartComponent.class.equals(componentType)) {

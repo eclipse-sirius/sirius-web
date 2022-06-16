@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
@@ -42,6 +43,7 @@ import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
@@ -56,6 +58,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
@@ -380,6 +383,43 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         // @formatter:on
     }
 
+    @Override
+    public AbstractWidgetDescription caseButtonDescription(org.eclipse.sirius.components.view.ButtonDescription viewButtonDescription) {
+        String descriptionId = this.getDescriptionId(viewButtonDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewButtonDescription.getLabelExpression());
+        StringValueProvider buttonLabelProvider = this.getStringValueProvider(viewButtonDescription.getButtonLabelExpression());
+        StringValueProvider imageURLProvider = this.getStringValueProvider(viewButtonDescription.getImageExpression());
+        Function<VariableManager, IStatus> pushButtonHandler = this.getOperationsHandler(viewButtonDescription.getBody());
+        Function<VariableManager, ButtonStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewButtonDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(ButtonDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewButtonDescription::getStyle);
+            // @formatter:on
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new ButtonStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
+        // @formatter:off
+        return ButtonDescription.newButtonDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .buttonLabelProvider(buttonLabelProvider)
+                .imageURLProvider(imageURLProvider)
+                .pushButtonHandler(pushButtonHandler)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "") //$NON-NLS-1$
+                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .styleProvider(styleProvider)
+                .build();
+        // @formatter:on
+    }
+
     private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
         String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
         return variableManager -> {
@@ -470,6 +510,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 return result.asObject().map(this.objectService::getId).orElse(""); //$NON-NLS-1$
             }
             return ""; //$NON-NLS-1$
+        };
+    }
+
+    private Function<VariableManager, IStatus> getOperationsHandler(List<Operation> operations) {
+        return (variableManager) -> {
+            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+            if (optionalVariableManager.isEmpty()) {
+                return new Failure("Something went wrong while handling the widget operations execution."); //$NON-NLS-1$
+            } else {
+                return new Success();
+            }
         };
     }
 

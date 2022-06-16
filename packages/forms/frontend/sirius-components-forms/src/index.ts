@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export * from './form/FormEventFragments.types';
 export * from './representations/FormRepresentation';
 export * from './views/DetailsView';
 export * from './views/RelatedElementsView';
 export * from './views/RepresentationsView';
-export * from './form/FormEventFragments.types';

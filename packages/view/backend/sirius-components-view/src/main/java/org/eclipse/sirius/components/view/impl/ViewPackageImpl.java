@@ -21,10 +21,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BorderStyle;
+import org.eclipse.sirius.components.view.ButtonDescription;
+import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
@@ -431,6 +434,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EClass buttonDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalButtonDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass barChartDescriptionEClass = null;
 
     /**
@@ -446,6 +463,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass flexboxContainerDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass buttonDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2122,6 +2146,46 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getButtonDescriptionStyle() {
+        return this.buttonDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getButtonDescriptionStyle_BackgroundColor() {
+        return (EAttribute) this.buttonDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getButtonDescriptionStyle_ForegroundColor() {
+        return (EAttribute) this.buttonDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalButtonDescriptionStyle() {
+        return this.conditionalButtonDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescription() {
         return this.barChartDescriptionEClass;
     }
@@ -2214,6 +2278,66 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EAttribute getFlexboxContainerDescription_FlexDirection() {
         return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getButtonDescription() {
+        return this.buttonDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getButtonDescription_ButtonLabelExpression() {
+        return (EAttribute) this.buttonDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getButtonDescription_Body() {
+        return (EReference) this.buttonDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getButtonDescription_ImageExpression() {
+        return (EAttribute) this.buttonDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getButtonDescription_Style() {
+        return (EReference) this.buttonDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getButtonDescription_ConditionalStyles() {
+        return (EReference) this.buttonDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -2469,6 +2593,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
         this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION);
 
+        this.buttonDescriptionEClass = this.createEClass(BUTTON_DESCRIPTION);
+        this.createEAttribute(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION);
+        this.createEReference(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__BODY);
+        this.createEAttribute(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__IMAGE_EXPRESSION);
+        this.createEReference(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__STYLE);
+        this.createEReference(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__CONDITIONAL_STYLES);
+
         this.widgetDescriptionStyleEClass = this.createEClass(WIDGET_DESCRIPTION_STYLE);
 
         this.textfieldDescriptionStyleEClass = this.createEClass(TEXTFIELD_DESCRIPTION_STYLE);
@@ -2504,6 +2635,12 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.radioDescriptionStyleEClass, RADIO_DESCRIPTION_STYLE__COLOR);
 
         this.conditionalRadioDescriptionStyleEClass = this.createEClass(CONDITIONAL_RADIO_DESCRIPTION_STYLE);
+
+        this.buttonDescriptionStyleEClass = this.createEClass(BUTTON_DESCRIPTION_STYLE);
+        this.createEAttribute(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEAttribute(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+
+        this.conditionalButtonDescriptionStyleEClass = this.createEClass(CONDITIONAL_BUTTON_DESCRIPTION_STYLE);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -2574,6 +2711,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.barChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.pieChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.flexboxContainerDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
+        this.buttonDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
@@ -2597,6 +2735,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.radioDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalRadioDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalRadioDescriptionStyleEClass.getESuperTypes().add(this.getRadioDescriptionStyle());
+        this.buttonDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.buttonDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
+        this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(this.getButtonDescriptionStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -2889,6 +3031,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEAttribute(this.getFlexboxContainerDescription_FlexDirection(), this.getFlexDirection(), "flexDirection", "row", 1, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.buttonDescriptionEClass, ButtonDescription.class, "ButtonDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getButtonDescription_ButtonLabelExpression(), this.ecorePackage.getEString(), "buttonLabelExpression", null, 0, 1, ButtonDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getButtonDescription_Body(), this.getOperation(), null, "body", null, 0, -1, ButtonDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getButtonDescription_ImageExpression(), this.ecorePackage.getEString(), "imageExpression", null, 0, 1, ButtonDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getButtonDescription_Style(), this.getButtonDescriptionStyle(), null, "style", null, 0, 1, ButtonDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getButtonDescription_ConditionalStyles(), this.getConditionalButtonDescriptionStyle(), null, "conditionalStyles", null, 0, -1, ButtonDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
         this.initEClass(this.textfieldDescriptionStyleEClass, TextfieldDescriptionStyle.class, "TextfieldDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -2939,6 +3093,15 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalRadioDescriptionStyleEClass, ConditionalRadioDescriptionStyle.class, "ConditionalRadioDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+                IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.buttonDescriptionStyleEClass, ButtonDescriptionStyle.class, "ButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getButtonDescriptionStyle_BackgroundColor(), this.ecorePackage.getEString(), "backgroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getButtonDescriptionStyle_ForegroundColor(), this.ecorePackage.getEString(), "foregroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalButtonDescriptionStyleEClass, ConditionalButtonDescriptionStyle.class, "ConditionalButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
                 IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals

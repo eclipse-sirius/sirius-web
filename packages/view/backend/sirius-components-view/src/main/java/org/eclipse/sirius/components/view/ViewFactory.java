@@ -352,6 +352,23 @@ public interface ViewFactory extends EFactory {
     ConditionalRadioDescriptionStyle createConditionalRadioDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Button Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Button Description Style</em>'.
+     * @generated
+     */
+    ButtonDescriptionStyle createButtonDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Button Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Button Description Style</em>'.
+     * @generated
+     */
+    ConditionalButtonDescriptionStyle createConditionalButtonDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Bar Chart Description</em>'.
@@ -375,6 +392,14 @@ public interface ViewFactory extends EFactory {
      * @generated
      */
     FlexboxContainerDescription createFlexboxContainerDescription();
+
+    /**
+     * Returns a new object of class '<em>Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Button Description</em>'.
+     * @generated
+     */
+    ButtonDescription createButtonDescription();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

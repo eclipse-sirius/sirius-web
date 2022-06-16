@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  GQLButton,
   GQLChartWidget,
   GQLCheckbox,
   GQLFlexboxContainer,
@@ -24,6 +25,7 @@ import {
   GQLTree,
   GQLWidget,
 } from '../form/FormEventFragments.types';
+import { ButtonPropertySection } from './ButtonPropertySection';
 import { ChartWidgetPropertySection } from './ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './CheckboxPropertySection';
 import { FlexboxContainerPropertySection } from './FlexboxContainerPropertySection';
@@ -44,6 +46,7 @@ const isMultiSelect = (widget: GQLWidget): widget is GQLMultiSelect => widget.__
 const isRadio = (widget: GQLWidget): widget is GQLRadio => widget.__typename === 'Radio';
 const isList = (widget: GQLWidget): widget is GQLList => widget.__typename === 'List';
 const isLink = (widget: GQLWidget): widget is GQLLink => widget.__typename === 'Link';
+const isButton = (widget: GQLWidget): widget is GQLButton => widget.__typename === 'Button';
 const isChartWidget = (widget: GQLWidget): widget is GQLChartWidget => widget.__typename === 'ChartWidget';
 const isFlexboxContainer = (widget: GQLWidget): widget is GQLFlexboxContainer =>
   widget.__typename === 'FlexboxContainer';
@@ -133,6 +136,17 @@ export const PropertySection = ({
     );
   } else if (isLink(widget)) {
     propertySection = <LinkPropertySection widget={widget} key={widget.id} />;
+  } else if (isButton(widget)) {
+    propertySection = (
+      <ButtonPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        subscribers={subscribers}
+        readOnly={readOnly}
+      />
+    );
   } else if (isChartWidget(widget)) {
     propertySection = <ChartWidgetPropertySection widget={widget} subscribers={subscribers} key={widget.id} />;
   } else if (isFlexboxContainer(widget)) {

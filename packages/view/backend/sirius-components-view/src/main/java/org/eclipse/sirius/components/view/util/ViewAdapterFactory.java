@@ -18,10 +18,13 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BorderStyle;
+import org.eclipse.sirius.components.view.ButtonDescription;
+import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
@@ -317,6 +320,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseButtonDescription(ButtonDescription object) {
+            return ViewAdapterFactory.this.createButtonDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
             return ViewAdapterFactory.this.createWidgetDescriptionStyleAdapter();
         }
@@ -379,6 +387,16 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalRadioDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseButtonDescriptionStyle(ButtonDescriptionStyle object) {
+            return ViewAdapterFactory.this.createButtonDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalButtonDescriptionStyle(ConditionalButtonDescriptionStyle object) {
+            return ViewAdapterFactory.this.createConditionalButtonDescriptionStyleAdapter();
         }
 
         @Override
@@ -1069,6 +1087,34 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle
+     * <em>Button Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ButtonDescriptionStyle
+     * @generated
+     */
+    public Adapter createButtonDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle <em>Conditional Button Description
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalButtonDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.BarChartDescription
      * <em>Bar Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
@@ -1107,6 +1153,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFlexboxContainerDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ButtonDescription
+     * <em>Button Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ButtonDescription
+     * @generated
+     */
+    public Adapter createButtonDescriptionAdapter() {
         return null;
     }
 

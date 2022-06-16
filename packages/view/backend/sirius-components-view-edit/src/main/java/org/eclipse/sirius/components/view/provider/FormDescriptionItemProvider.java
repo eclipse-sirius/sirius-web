@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
@@ -177,6 +178,10 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
         radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, radioDescription));
+
+        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        buttonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, buttonDescription));
 
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, barChartDescription));

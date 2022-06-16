@@ -23,6 +23,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.BarChartDescription;
+import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
@@ -198,6 +199,10 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
         radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, radioDescription));
+
+        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        buttonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, buttonDescription));
 
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, barChartDescription));

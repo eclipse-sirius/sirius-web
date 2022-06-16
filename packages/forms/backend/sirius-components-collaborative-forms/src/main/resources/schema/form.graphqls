@@ -221,6 +221,26 @@ type Link implements Widget {
   url: String!
 }
 
+type Button implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  buttonLabel: String
+  imageURL: String
+  iconURL: String
+  style: ButtonStyle
+}
+
+type ButtonStyle {
+  backgroundColor: String
+  foregroundColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
+
 union Chart = BarChart | PieChart
 
 type ChartWidget implements Widget {
@@ -273,6 +293,7 @@ extend type Mutation {
   editTextfield(input: EditTextfieldInput!): EditTextfieldPayload!
   updateWidgetFocus(input: UpdateWidgetFocusInput!): UpdateWidgetFocusPayload!
   deleteListItem(input: DeleteListItemInput!): DeleteListItemPayload!
+  pushButton(input: PushButtonInput!): PushButtonPayload!
 }
 
 input EditCheckboxInput {
@@ -373,3 +394,16 @@ type DeleteListItemSuccessPayload {
 }
 
 union DeleteListItemPayload = ErrorPayload | DeleteListItemSuccessPayload
+
+input PushButtonInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  buttonId: ID!
+}
+
+type PushButtonSuccessPayload {
+  id: ID!
+}
+
+union PushButtonPayload = ErrorPayload | PushButtonSuccessPayload

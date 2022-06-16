@@ -1,0 +1,360 @@
+// Vitest Snapshot v1
+
+exports[`should display the error received 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-26"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-27"
+        />
+      </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-22 makeStyles-style-24 MuiButton-contained MuiButton-containedPrimary"
+        data-testid="ButtonLabel"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should display the error received 2`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-26"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-27"
+        />
+      </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-22 makeStyles-style-24 MuiButton-contained MuiButton-containedPrimary"
+        data-testid="ButtonLabel"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <div
+        class="MuiSnackbar-root MuiSnackbar-anchorOriginBottomRight"
+        data-testid="error"
+      >
+        <div
+          class="MuiPaper-root MuiSnackbarContent-root MuiPaper-elevation6"
+          direction="up"
+          role="alert"
+          style="opacity: 1; transform: scale(1, 1); transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+        >
+          <div
+            class="MuiSnackbarContent-message"
+          >
+            An error has occurred, please refresh the page
+          </div>
+          <div
+            class="MuiSnackbarContent-action"
+          >
+            <button
+              aria-label="close"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-sizeSmall"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render a readOnly button 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-12"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-13"
+      />
+    </div>
+    <button
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-8 makeStyles-style-10 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
+      data-testid="ButtonLabel"
+      disabled=""
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        ButtonLabel
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`should render the button 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-5"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-6"
+      />
+    </div>
+    <button
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-1 makeStyles-style-3 MuiButton-contained MuiButton-containedPrimary"
+      data-testid="ButtonLabel"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        ButtonLabel
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`should render the button with empty style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-47"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-48"
+        />
+      </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-43 makeStyles-style-45 MuiButton-contained MuiButton-containedPrimary"
+        data-testid="ButtonLabel"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the button with style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-40"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-41"
+        />
+      </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-36 makeStyles-style-38 MuiButton-contained MuiButton-containedPrimary"
+        data-testid="ButtonLabel"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the button without style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-33"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-34"
+        />
+      </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-29 makeStyles-style-31 MuiButton-contained MuiButton-containedPrimary"
+        data-testid="ButtonLabel"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should send mutation when clicked 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-19"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-20"
+      />
+    </div>
+    <button
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-15 makeStyles-style-17 MuiButton-contained MuiButton-containedPrimary"
+      data-testid="ButtonLabel"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        ButtonLabel
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 2`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-19"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-20"
+      />
+    </div>
+    <button
+      class="MuiButtonBase-root MuiButton-root makeStyles-style-15 makeStyles-style-17 MuiButton-contained MuiButton-containedPrimary"
+      data-testid="ButtonLabel"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        ButtonLabel
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</div>
+`;
