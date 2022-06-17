@@ -31,7 +31,10 @@ import graphql.schema.DataFetchingEnvironment;
 public class ButtonImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
-        Button item = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + item.getImageURL();
+        Button button = environment.getSource();
+        if (button.getImageURL() != null && !button.getImageURL().isBlank()) {
+            return URLConstants.IMAGE_BASE_PATH + button.getImageURL();
+        }
+        return null;
     }
 }

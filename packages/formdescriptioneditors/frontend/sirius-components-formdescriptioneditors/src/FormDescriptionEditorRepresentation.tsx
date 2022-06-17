@@ -14,6 +14,7 @@ import { useMutation, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import { Button } from './icons/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -366,6 +367,18 @@ export const FormDescriptionEditorRepresentation = ({
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               MultiSelect
+            </Typography>
+          </div>
+          <div
+            id="Button"
+            data-testid="FormDescriptionEditor-Button"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}
+          >
+            <Button width={'24px'} height={'24px'} color={'secondary'} />
+            <Typography variant="caption" gutterBottom>
+              Button
             </Typography>
           </div>
           <div
