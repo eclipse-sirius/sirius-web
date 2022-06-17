@@ -17,6 +17,7 @@ export type Kind =
   | 'Radio'
   | 'Select'
   | 'MultiSelect'
+  | 'Button'
   | 'BarChart'
   | 'PieChart'
   | 'FlexboxContainer';
