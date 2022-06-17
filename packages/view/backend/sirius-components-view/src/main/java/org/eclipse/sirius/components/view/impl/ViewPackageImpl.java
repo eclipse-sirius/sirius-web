@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -53,6 +54,8 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.LabelDescription;
+import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
@@ -474,6 +477,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalPieChartDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass labelDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass labelDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalLabelDescriptionStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2298,6 +2322,76 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getLabelDescription() {
+        return this.labelDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelDescription_ValueExpression() {
+        return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getLabelDescription_Style() {
+        return (EReference) this.labelDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getLabelDescription_ConditionalStyles() {
+        return (EReference) this.labelDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getLabelDescriptionStyle() {
+        return this.labelDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelDescriptionStyle_Color() {
+        return (EAttribute) this.labelDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalLabelDescriptionStyle() {
+        return this.conditionalLabelDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescription() {
         return this.barChartDescriptionEClass;
     }
@@ -2810,6 +2904,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.conditionalPieChartDescriptionStyleEClass = this.createEClass(CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE);
 
+        this.labelDescriptionEClass = this.createEClass(LABEL_DESCRIPTION);
+        this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__VALUE_EXPRESSION);
+        this.createEReference(this.labelDescriptionEClass, LABEL_DESCRIPTION__STYLE);
+        this.createEReference(this.labelDescriptionEClass, LABEL_DESCRIPTION__CONDITIONAL_STYLES);
+
+        this.labelDescriptionStyleEClass = this.createEClass(LABEL_DESCRIPTION_STYLE);
+        this.createEAttribute(this.labelDescriptionStyleEClass, LABEL_DESCRIPTION_STYLE__COLOR);
+
+        this.conditionalLabelDescriptionStyleEClass = this.createEClass(CONDITIONAL_LABEL_DESCRIPTION_STYLE);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
@@ -2915,6 +3019,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.pieChartDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalPieChartDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalPieChartDescriptionStyleEClass.getESuperTypes().add(this.getPieChartDescriptionStyle());
+        this.labelDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
+        this.labelDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.labelDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
+        this.conditionalLabelDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalLabelDescriptionStyleEClass.getESuperTypes().add(this.getLabelDescriptionStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -3304,6 +3413,21 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalPieChartDescriptionStyleEClass, ConditionalPieChartDescriptionStyle.class, "ConditionalPieChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+                IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.labelDescriptionEClass, LabelDescription.class, "LabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getLabelDescription_ValueExpression(), this.ecorePackage.getEString(), "valueExpression", null, 0, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLabelDescription_Style(), this.getLabelDescriptionStyle(), null, "style", null, 0, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLabelDescription_ConditionalStyles(), this.getConditionalLabelDescriptionStyle(), null, "conditionalStyles", null, 0, -1, LabelDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.labelDescriptionStyleEClass, LabelDescriptionStyle.class, "LabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getLabelDescriptionStyle_Color(), this.ecorePackage.getEString(), "color", null, 0, 1, LabelDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalLabelDescriptionStyleEClass, ConditionalLabelDescriptionStyle.class, "ConditionalLabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
                 IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals

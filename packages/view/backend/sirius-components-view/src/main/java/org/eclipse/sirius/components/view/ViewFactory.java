@@ -405,6 +405,31 @@ public interface ViewFactory extends EFactory {
     ConditionalPieChartDescriptionStyle createConditionalPieChartDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Label Description</em>'.
+     * @generated
+     */
+    LabelDescription createLabelDescription();
+
+    /**
+     * Returns a new object of class '<em>Label Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Label Description Style</em>'.
+     * @generated
+     */
+    LabelDescriptionStyle createLabelDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Label Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Label Description Style</em>'.
+     * @generated
+     */
+    ConditionalLabelDescriptionStyle createConditionalLabelDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Bar Chart Description</em>'.

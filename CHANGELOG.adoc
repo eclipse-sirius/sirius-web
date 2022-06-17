@@ -58,6 +58,7 @@ This allows representation precondition expressions to be more precise as they k
 - https://github.com/eclipse-sirius/sirius-components/issues/1272[#1272] [form] Add support for button widget on FormDescriptions
 - https://github.com/eclipse-sirius/sirius-components/issues/1273[#1273] [form] Add support for button widget on FormDescriptionEditors
 - https://github.com/eclipse-sirius/sirius-components/issues/1266[#1266] [form] Add styling support on bar-chart and pie-chart Widgets in View DSL
+- https://github.com/eclipse-sirius/sirius-components/issues/1275[#1275] [form] Add support for label widget in forms
 
 == v2022.7.0
 

@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
@@ -81,6 +82,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof ButtonDescription) {
             ButtonComponentProps buttonProps = new ButtonComponentProps(variableManager, (ButtonDescription) widgetDescription);
             element = new Element(ButtonComponent.class, buttonProps);
+        } else if (widgetDescription instanceof LabelDescription) {
+            LabelWidgetComponentProps labelProps = new LabelWidgetComponentProps(variableManager, (LabelDescription) widgetDescription);
+            element = new Element(LabelWidgetComponent.class, labelProps);
         } else if (widgetDescription instanceof ChartWidgetDescription) {
             ChartWidgetComponentProps chartComponentProps = new ChartWidgetComponentProps(variableManager, (ChartWidgetDescription) widgetDescription);
             element = new Element(ChartWidgetComponent.class, chartComponentProps);

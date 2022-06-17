@@ -1,0 +1,49 @@
+// Vitest Snapshot v1
+
+exports[`render label widget 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-3"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myLabel
+      </h6>
+      <div
+        class="makeStyles-subscribers-4"
+      />
+    </div>
+    <p
+      class="MuiTypography-root makeStyles-style-1 makeStyles-style-2 MuiTypography-body1"
+    >
+      theLabelValue
+    </p>
+  </div>
+</div>
+`;
+
+exports[`render label widget with style 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-8"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myLabel
+      </h6>
+      <div
+        class="makeStyles-subscribers-9"
+      />
+    </div>
+    <p
+      class="MuiTypography-root makeStyles-style-6 makeStyles-style-7 MuiTypography-body1"
+    >
+      theLabelValue
+    </p>
+  </div>
+</div>
+`;

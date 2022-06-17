@@ -65,7 +65,7 @@ type Group {
 }
 
 enum GroupDisplayMode {
-  LIST,
+  LIST
   TOGGLEABLE_AREAS
 }
 
@@ -193,7 +193,6 @@ type TextareaStyle {
   strikeThrough: Boolean
 }
 
-
 type Textfield implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
@@ -206,6 +205,24 @@ type Textfield implements Widget {
 type TextfieldStyle {
   backgroundColor: String
   foregroundColor: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
+
+type LabelWidget implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  value: String!
+  style: LabelWidgetStyle
+}
+
+type LabelWidgetStyle {
+  color: String
   fontSize: Int
   italic: Boolean
   bold: Boolean
@@ -259,7 +276,7 @@ type FlexboxContainer implements Widget {
   flexDirection: String!
   flexWrap: String!
   flexGrow: Int!
-  children: [Widget!]! 
+  children: [Widget!]!
 }
 
 type TreeWidget implements Widget {
@@ -332,7 +349,7 @@ input EditRadioInput {
   newValue: ID!
 }
 
-union EditRadioPayload = ErrorPayload|EditRadioSuccessPayload
+union EditRadioPayload = ErrorPayload | EditRadioSuccessPayload
 
 type EditRadioSuccessPayload {
   id: ID!

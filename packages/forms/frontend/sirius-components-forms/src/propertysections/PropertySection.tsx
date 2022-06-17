@@ -15,6 +15,7 @@ import {
   GQLChartWidget,
   GQLCheckbox,
   GQLFlexboxContainer,
+  GQLLabelWidget,
   GQLLink,
   GQLList,
   GQLMultiSelect,
@@ -29,6 +30,7 @@ import { ButtonPropertySection } from './ButtonPropertySection';
 import { ChartWidgetPropertySection } from './ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './CheckboxPropertySection';
 import { FlexboxContainerPropertySection } from './FlexboxContainerPropertySection';
+import { LabelWidgetPropertySection } from './LabelWidgetPropertySection';
 import { LinkPropertySection } from './LinkPropertySection';
 import { ListPropertySection } from './ListPropertySection';
 import { MultiSelectPropertySection } from './MultiSelectPropertySection';
@@ -47,6 +49,7 @@ const isRadio = (widget: GQLWidget): widget is GQLRadio => widget.__typename ===
 const isList = (widget: GQLWidget): widget is GQLList => widget.__typename === 'List';
 const isLink = (widget: GQLWidget): widget is GQLLink => widget.__typename === 'Link';
 const isButton = (widget: GQLWidget): widget is GQLButton => widget.__typename === 'Button';
+const isLabelWidget = (widget: GQLWidget): widget is GQLLabelWidget => widget.__typename === 'LabelWidget';
 const isChartWidget = (widget: GQLWidget): widget is GQLChartWidget => widget.__typename === 'ChartWidget';
 const isFlexboxContainer = (widget: GQLWidget): widget is GQLFlexboxContainer =>
   widget.__typename === 'FlexboxContainer';
@@ -147,6 +150,8 @@ export const PropertySection = ({
         readOnly={readOnly}
       />
     );
+  } else if (isLabelWidget(widget)) {
+    propertySection = <LabelWidgetPropertySection widget={widget} subscribers={subscribers} key={widget.id} />;
   } else if (isChartWidget(widget)) {
     propertySection = <ChartWidgetPropertySection widget={widget} subscribers={subscribers} key={widget.id} />;
   } else if (isFlexboxContainer(widget)) {

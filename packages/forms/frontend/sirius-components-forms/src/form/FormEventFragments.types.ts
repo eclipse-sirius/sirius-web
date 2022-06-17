@@ -306,7 +306,20 @@ export interface GQLPieChartEntry {
   key: string;
   value: number;
 }
+export interface GQLLabelWidget extends GQLWidget {
+  label: string;
+  stringValue: string;
+  style: GQLLabelWidgetStyle;
+}
 
+export interface GQLLabelWidgetStyle {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
 export interface GQLFlexboxContainer extends GQLWidget {
   label: string;
   flexDirection: GQLFlexDirection;

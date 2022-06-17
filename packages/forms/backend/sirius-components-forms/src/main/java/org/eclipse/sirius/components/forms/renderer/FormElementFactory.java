@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
+import org.eclipse.sirius.components.forms.elements.LabelWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.LinkElementProps;
 import org.eclipse.sirius.components.forms.elements.ListElementProps;
 import org.eclipse.sirius.components.forms.elements.MultiSelectElementProps;
@@ -95,6 +97,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateLink((LinkElementProps) props, children);
         } else if (ButtonElementProps.TYPE.equals(type) && props instanceof ButtonElementProps) {
             object = this.instantiateButton((ButtonElementProps) props, children);
+        } else if (LabelWidgetElementProps.TYPE.equals(type) && props instanceof LabelWidgetElementProps) {
+            object = this.instantiateLabel((LabelWidgetElementProps) props, children);
         } else if (ChartWidgetElementProps.TYPE.equals(type) && props instanceof ChartWidgetElementProps) {
             object = this.instantiateChartWidget((ChartWidgetElementProps) props, children);
         } else if (BarChartElementProps.TYPE.equals(type) && props instanceof BarChartElementProps) {
@@ -404,6 +408,23 @@ public class FormElementFactory implements IElementFactory {
         }
 
         return buttonBuilder.build();
+    }
+
+    private LabelWidget instantiateLabel(LabelWidgetElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        LabelWidget.Builder labelBuilder = LabelWidget.newLabelWidget(props.getId())
+                .label(props.getLabel())
+                .value(props.getValue())
+                .diagnostics(diagnostics);
+
+        if (props.getStyle() != null) {
+            labelBuilder.style(props.getStyle());
+        }
+
+        return labelBuilder.build();
+        // @formatter:on
     }
 
     private Object instantiateChartWidget(ChartWidgetElementProps props, List<Object> children) {

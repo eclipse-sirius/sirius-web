@@ -87,6 +87,9 @@ export const formRefreshedEventPayloadFragment = `
     ... on Button {
       ...buttonFields
     }
+    ... on LabelWidget {
+      ...labelFields
+    }
     ... on ChartWidget {
       ...chartWidgetFields
     }
@@ -275,6 +278,19 @@ export const formRefreshedEventPayloadFragment = `
           strikeThrough
         }
       }
+    }
+  } 
+  
+  fragment labelFields on LabelWidget {
+    label
+    stringValue: value
+    style {
+      color
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
     }
   }
 
