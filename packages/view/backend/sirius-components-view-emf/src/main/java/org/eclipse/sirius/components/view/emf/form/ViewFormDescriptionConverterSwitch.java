@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.SelectStyle;
@@ -49,6 +50,7 @@ import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
@@ -62,6 +64,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
@@ -420,6 +423,39 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .buttonLabelProvider(buttonLabelProvider)
                 .imageURLProvider(imageURLProvider)
                 .pushButtonHandler(pushButtonHandler)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "") //$NON-NLS-1$
+                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .styleProvider(styleProvider)
+                .build();
+        // @formatter:on
+    }
+
+    @Override
+    public AbstractWidgetDescription caseLabelDescription(org.eclipse.sirius.components.view.LabelDescription viewLabelDescription) {
+        String descriptionId = this.getDescriptionId(viewLabelDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewLabelDescription.getLabelExpression());
+        StringValueProvider valueProvider = this.getStringValueProvider(viewLabelDescription.getValueExpression());
+        Function<VariableManager, LabelWidgetStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewLabelDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(LabelDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewLabelDescription::getStyle);
+            // @formatter:on
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new LabelStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
+        // @formatter:off
+        return LabelDescription.newLabelDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .valueProvider(valueProvider)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
                 .messageProvider(diagnostic -> "") //$NON-NLS-1$

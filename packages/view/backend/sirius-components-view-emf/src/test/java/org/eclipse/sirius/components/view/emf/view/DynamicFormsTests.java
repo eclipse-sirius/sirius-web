@@ -42,6 +42,8 @@ import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.LabelWidget;
+import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.Page;
@@ -68,6 +70,7 @@ import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
@@ -76,6 +79,8 @@ import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.LabelDescription;
+import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
@@ -124,7 +129,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(10);
+        assertThat(group.getWidgets()).hasSize(11);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -135,6 +140,7 @@ public class DynamicFormsTests {
         ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
+        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -158,6 +164,10 @@ public class DynamicFormsTests {
         assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
         assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
         this.testNoStyle(select);
+
+        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
+        this.testNoStyle(labelWidget);
 
         assertThat(radio.getOptions()).hasSize(3);
         assertThat(radio.getOptions()).allSatisfy(option -> {
@@ -288,7 +298,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(10);
+        assertThat(group.getWidgets()).hasSize(11);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -299,6 +309,7 @@ public class DynamicFormsTests {
         ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
+        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -335,6 +346,10 @@ public class DynamicFormsTests {
         this.testStyle(radio);
 
         this.renderEcoreFormWithStyleOnWidgetContainer(flexboxContainer);
+
+        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
+        this.testStyle(labelWidget);
 
         assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -374,7 +389,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(10);
+        assertThat(group.getWidgets()).hasSize(11);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -385,6 +400,7 @@ public class DynamicFormsTests {
         ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
+        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -426,6 +442,10 @@ public class DynamicFormsTests {
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
         this.testConditionalStyle(button);
 
+        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
+        this.testConditionalStyle(labelWidget);
+
         this.checkBarChart(chartWidgetWithBarChart, false, true);
 
         this.checkPieChart(chartWidgetWithPieChart, false, true);
@@ -454,7 +474,7 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClass1);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(10);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(11);
 
         this.checkValuesEditing(this.eClass1, form);
     }
@@ -474,7 +494,7 @@ public class DynamicFormsTests {
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(10);
+        assertThat(group.getWidgets()).hasSize(11);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -566,6 +586,8 @@ public class DynamicFormsTests {
         formDescription.getWidgets().add(flexboxContainerDescription);
         ButtonDescription buttonDescription = this.createButton(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(buttonDescription);
+        LabelDescription labelDescription = this.createLabel(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(labelDescription);
         return formDescription;
     }
 
@@ -832,6 +854,28 @@ public class DynamicFormsTests {
         return buttonDescription;
     }
 
+    private LabelDescription createLabel(boolean withStyle, boolean withConditionalStyle) {
+        LabelDescription labelDescription = ViewFactory.eINSTANCE.createLabelDescription();
+        labelDescription.setLabelExpression("aql:'Label EClass name'"); //$NON-NLS-1$
+        labelDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
+        labelDescription.setName("Class Name"); //$NON-NLS-1$
+        if (withStyle) {
+            LabelDescriptionStyle style = ViewFactory.eINSTANCE.createLabelDescriptionStyle();
+            style.setColor("#de1000"); //$NON-NLS-1$
+            this.setFontStyle(style);
+            labelDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalLabelDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalLabelDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            labelDescription.getConditionalStyles().add(conditionalStyle);
+        }
+
+        return labelDescription;
+    }
+
     private void setFontStyle(LabelStyle labelStyle) {
         labelStyle.setFontSize(20);
         labelStyle.setItalic(true);
@@ -888,6 +932,25 @@ public class DynamicFormsTests {
     private void testNoStyle(Textarea textarea) {
         TextareaStyle textareaStyle = textarea.getStyle();
         assertThat(textareaStyle).isNull();
+    }
+
+    private void testNoStyle(LabelWidget labelWidget) {
+        LabelWidgetStyle labelWidgetStyle = labelWidget.getStyle();
+        assertThat(labelWidgetStyle).isNull();
+    }
+
+    private void testStyle(LabelWidget labelWidget) {
+        LabelWidgetStyle labelWidgetStyle = labelWidget.getStyle();
+        assertThat(labelWidgetStyle).isNotNull();
+        assertThat(labelWidgetStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        this.testFontStyle(labelWidgetStyle);
+    }
+
+    private void testConditionalStyle(LabelWidget labelWidget) {
+        LabelWidgetStyle labelWidgetStyle = labelWidget.getStyle();
+        assertThat(labelWidgetStyle).isNotNull();
+        assertThat(labelWidgetStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        this.testConditionalFontStyle(labelWidgetStyle);
     }
 
     private void testStyle(Radio radio) {

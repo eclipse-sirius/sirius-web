@@ -1131,6 +1131,76 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.LabelDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected LabelDescriptionItemProvider labelDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.LabelDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createLabelDescriptionAdapter() {
+        if (this.labelDescriptionItemProvider == null) {
+            this.labelDescriptionItemProvider = new LabelDescriptionItemProvider(this);
+        }
+
+        return this.labelDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.LabelDescriptionStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected LabelDescriptionStyleItemProvider labelDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.LabelDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createLabelDescriptionStyleAdapter() {
+        if (this.labelDescriptionStyleItemProvider == null) {
+            this.labelDescriptionStyleItemProvider = new LabelDescriptionStyleItemProvider(this);
+        }
+
+        return this.labelDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalLabelDescriptionStyleItemProvider conditionalLabelDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalLabelDescriptionStyleAdapter() {
+        if (this.conditionalLabelDescriptionStyleItemProvider == null) {
+            this.conditionalLabelDescriptionStyleItemProvider = new ConditionalLabelDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalLabelDescriptionStyleItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1421,6 +1491,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.pieChartDescriptionStyleItemProvider.dispose();
         if (this.conditionalPieChartDescriptionStyleItemProvider != null)
             this.conditionalPieChartDescriptionStyleItemProvider.dispose();
+        if (this.labelDescriptionItemProvider != null)
+            this.labelDescriptionItemProvider.dispose();
+        if (this.labelDescriptionStyleItemProvider != null)
+            this.labelDescriptionStyleItemProvider.dispose();
+        if (this.conditionalLabelDescriptionStyleItemProvider != null)
+            this.conditionalLabelDescriptionStyleItemProvider.dispose();
     }
 
 }

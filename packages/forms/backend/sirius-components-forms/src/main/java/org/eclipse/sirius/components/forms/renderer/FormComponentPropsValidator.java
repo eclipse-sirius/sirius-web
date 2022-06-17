@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.forms.components.GroupComponent;
 import org.eclipse.sirius.components.forms.components.GroupComponentProps;
 import org.eclipse.sirius.components.forms.components.IfComponent;
 import org.eclipse.sirius.components.forms.components.IfComponentProps;
+import org.eclipse.sirius.components.forms.components.LabelWidgetComponent;
+import org.eclipse.sirius.components.forms.components.LabelWidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.LinkComponent;
 import org.eclipse.sirius.components.forms.components.LinkComponentProps;
 import org.eclipse.sirius.components.forms.components.ListComponent;
@@ -100,6 +102,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof LinkComponentProps;
         } else if (ButtonComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ButtonComponentProps;
+        } else if (LabelWidgetComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof LabelWidgetComponentProps;
         } else if (ChartWidgetComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ChartWidgetComponentProps;
         } else if (BarChartComponent.class.equals(componentType)) {

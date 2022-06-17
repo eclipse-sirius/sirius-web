@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -48,6 +49,8 @@ import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.LabelDescription;
+import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
@@ -720,6 +723,41 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalPieChartDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalPieChartDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LABEL_DESCRIPTION: {
+            LabelDescription labelDescription = (LabelDescription) theEObject;
+            T result = this.caseLabelDescription(labelDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(labelDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LABEL_DESCRIPTION_STYLE: {
+            LabelDescriptionStyle labelDescriptionStyle = (LabelDescriptionStyle) theEObject;
+            T result = this.caseLabelDescriptionStyle(labelDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(labelDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(labelDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE: {
+            ConditionalLabelDescriptionStyle conditionalLabelDescriptionStyle = (ConditionalLabelDescriptionStyle) theEObject;
+            T result = this.caseConditionalLabelDescriptionStyle(conditionalLabelDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalLabelDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelDescriptionStyle(conditionalLabelDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalLabelDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalLabelDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1540,6 +1578,51 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalPieChartDescriptionStyle(ConditionalPieChartDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Label Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Label Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLabelDescription(LabelDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Label Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Label Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLabelDescriptionStyle(LabelDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Label Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Label Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalLabelDescriptionStyle(ConditionalLabelDescriptionStyle object) {
         return null;
     }
 

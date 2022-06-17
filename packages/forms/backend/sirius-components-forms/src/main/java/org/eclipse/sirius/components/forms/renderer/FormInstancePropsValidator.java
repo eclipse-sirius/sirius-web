@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
+import org.eclipse.sirius.components.forms.elements.LabelWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.LinkElementProps;
 import org.eclipse.sirius.components.forms.elements.ListElementProps;
 import org.eclipse.sirius.components.forms.elements.MultiSelectElementProps;
@@ -70,6 +71,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof LinkElementProps;
         } else if (ButtonElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof ButtonElementProps;
+        } else if (LabelWidgetElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof LabelWidgetElementProps;
         } else if (ChartWidgetElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof ChartWidgetElementProps;
         } else if (BarChartElementProps.TYPE.equals(type)) {

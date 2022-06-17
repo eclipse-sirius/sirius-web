@@ -360,4 +360,17 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalPieChartDescriptionStyle"
       eSuperTypes="#//Conditional #//PieChartDescriptionStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LabelDescription" eSuperTypes="#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="aql:value"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//LabelDescriptionStyle"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalLabelDescriptionStyle" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LabelDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalLabelDescriptionStyle" eSuperTypes="#//Conditional #//LabelDescriptionStyle"/>
 </ecore:EPackage>

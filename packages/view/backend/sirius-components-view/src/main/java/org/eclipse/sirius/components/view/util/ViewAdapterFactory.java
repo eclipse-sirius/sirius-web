@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -49,6 +50,8 @@ import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.LabelDescription;
+import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
@@ -421,6 +424,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalPieChartDescriptionStyle(ConditionalPieChartDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalPieChartDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseLabelDescription(LabelDescription object) {
+            return ViewAdapterFactory.this.createLabelDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseLabelDescriptionStyle(LabelDescriptionStyle object) {
+            return ViewAdapterFactory.this.createLabelDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalLabelDescriptionStyle(ConditionalLabelDescriptionStyle object) {
+            return ViewAdapterFactory.this.createConditionalLabelDescriptionStyleAdapter();
         }
 
         @Override
@@ -1193,6 +1211,48 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalPieChartDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelDescription
+     * <em>Label Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.LabelDescription
+     * @generated
+     */
+    public Adapter createLabelDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelDescriptionStyle
+     * <em>Label Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.LabelDescriptionStyle
+     * @generated
+     */
+    public Adapter createLabelDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle <em>Conditional Label Description
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalLabelDescriptionStyleAdapter() {
         return null;
     }
 

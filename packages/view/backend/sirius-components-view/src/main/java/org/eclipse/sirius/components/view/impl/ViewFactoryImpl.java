@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -50,6 +51,8 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.LabelDescription;
+import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
@@ -212,6 +215,12 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createPieChartDescriptionStyle();
         case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE:
             return this.createConditionalPieChartDescriptionStyle();
+        case ViewPackage.LABEL_DESCRIPTION:
+            return this.createLabelDescription();
+        case ViewPackage.LABEL_DESCRIPTION_STYLE:
+            return this.createLabelDescriptionStyle();
+        case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE:
+            return this.createConditionalLabelDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -752,6 +761,39 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalPieChartDescriptionStyle createConditionalPieChartDescriptionStyle() {
         ConditionalPieChartDescriptionStyleImpl conditionalPieChartDescriptionStyle = new ConditionalPieChartDescriptionStyleImpl();
         return conditionalPieChartDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LabelDescription createLabelDescription() {
+        LabelDescriptionImpl labelDescription = new LabelDescriptionImpl();
+        return labelDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LabelDescriptionStyle createLabelDescriptionStyle() {
+        LabelDescriptionStyleImpl labelDescriptionStyle = new LabelDescriptionStyleImpl();
+        return labelDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalLabelDescriptionStyle createConditionalLabelDescriptionStyle() {
+        ConditionalLabelDescriptionStyleImpl conditionalLabelDescriptionStyle = new ConditionalLabelDescriptionStyleImpl();
+        return conditionalLabelDescriptionStyle;
     }
 
     /**
