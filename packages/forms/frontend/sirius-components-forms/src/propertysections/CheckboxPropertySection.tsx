@@ -41,7 +41,7 @@ export interface StyleProps {
 const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
   style: {
     color: ({ color }) => (color ? color : theme.palette.primary.light),
-    '&$checked': {
+    '&.Mui-checked': {
       color: ({ color }) => (color ? color : theme.palette.primary.light),
     },
   },
