@@ -48,6 +48,7 @@ import { TextfieldWidget } from './TextfieldWidget';
 import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
 import { isKind } from './WidgetOperations';
 import { ButtonWidget } from './ButtonWidget';
+import { LabelWidget } from './LabelWidget';
 
 const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>(() => ({
   widget: {
@@ -308,6 +309,16 @@ export const WidgetEntry = ({
   } else if (widget.kind === 'Button') {
     widgetElement = (
       <ButtonWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'Label') {
+    widgetElement = (
+      <LabelWidget
         data-testid={widget.id}
         widget={widget}
         selection={selection}

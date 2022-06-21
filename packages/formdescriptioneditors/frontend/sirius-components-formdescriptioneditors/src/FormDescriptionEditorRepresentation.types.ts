@@ -18,6 +18,7 @@ export type Kind =
   | 'Select'
   | 'MultiSelect'
   | 'Button'
+  | 'Label'
   | 'BarChart'
   | 'PieChart'
   | 'FlexboxContainer';
