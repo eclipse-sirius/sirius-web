@@ -22,6 +22,7 @@ import Typography from '@material-ui/core/Typography';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
@@ -361,6 +362,17 @@ export const FormDescriptionEditorRepresentation = ({
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               MultiSelect
+            </Typography>
+          </div>
+          <div
+            id="Label"
+            data-testid="FormDescriptionEditor-Label"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <LabelOutlinedIcon />
+            <Typography variant="caption" gutterBottom>
+              Label
             </Typography>
           </div>
           <div
