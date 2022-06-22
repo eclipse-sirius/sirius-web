@@ -275,7 +275,6 @@
     <genClasses ecoreClass="view.ecore#//ConditionalPieChartDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//LabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelDescription/valueExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelDescription/displayExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//LabelDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//LabelDescription/conditionalStyles"/>
     </genClasses>
@@ -283,5 +282,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalLabelDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//LinkDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LinkDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//LinkDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//LinkDescription/conditionalStyles"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//LinkDescriptionStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LinkDescriptionStyle/color"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalLinkDescriptionStyle"/>
   </genPackages>
 </genmodel:GenModel>

@@ -219,6 +219,14 @@ export const formRefreshedEventPayloadFragment = `
     label
     iconURL
     url
+    style {
+      color
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
   }
 
   fragment buttonFields on Button {

@@ -1201,6 +1201,76 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.LinkDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected LinkDescriptionItemProvider linkDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.LinkDescription}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createLinkDescriptionAdapter() {
+        if (this.linkDescriptionItemProvider == null) {
+            this.linkDescriptionItemProvider = new LinkDescriptionItemProvider(this);
+        }
+
+        return this.linkDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.LinkDescriptionStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected LinkDescriptionStyleItemProvider linkDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.LinkDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createLinkDescriptionStyleAdapter() {
+        if (this.linkDescriptionStyleItemProvider == null) {
+            this.linkDescriptionStyleItemProvider = new LinkDescriptionStyleItemProvider(this);
+        }
+
+        return this.linkDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalLinkDescriptionStyleItemProvider conditionalLinkDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalLinkDescriptionStyleAdapter() {
+        if (this.conditionalLinkDescriptionStyleItemProvider == null) {
+            this.conditionalLinkDescriptionStyleItemProvider = new ConditionalLinkDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalLinkDescriptionStyleItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1497,6 +1567,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.labelDescriptionStyleItemProvider.dispose();
         if (this.conditionalLabelDescriptionStyleItemProvider != null)
             this.conditionalLabelDescriptionStyleItemProvider.dispose();
+        if (this.linkDescriptionItemProvider != null)
+            this.linkDescriptionItemProvider.dispose();
+        if (this.linkDescriptionStyleItemProvider != null)
+            this.linkDescriptionStyleItemProvider.dispose();
+        if (this.conditionalLinkDescriptionStyleItemProvider != null)
+            this.conditionalLinkDescriptionStyleItemProvider.dispose();
     }
 
 }

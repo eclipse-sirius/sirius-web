@@ -24,6 +24,10 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram]
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [core] Some code remain in the soon to be deprecated Sirius Component package `@eclipse-sirius/sirius-components`. Most of this code will either be moved to Sirius Web or be removed entirely (such as the old non MaterialUI widgets)
 - https://github.com/eclipse-sirius/sirius-components/issues/1288[#1288] [core] The `representationDescriptions` GraphQL has been renamed into `representationCreationDescriptions` and now takes an `objectId: ID` as argument instead of just the object's `kind: ID`.
 This allows representation precondition expressions to be more precise as they know the actual candidate instance, not just its type.
+- https://github.com/eclipse-sirius/sirius-components/issues/1281[#1281] [form] The `LinkDescription` now requires a `displayProvider` and a `styleProvider`. The `displayProvider` is used to display the text of the hyperLink.
+The GraphQL API has also been changed with two additional fields on the type `Link`: `display` and `style` (optional). The front-end use the `display` value instead of the `label` value to display the hyperlink text.
+The `label` value is displayed before the widget to be consistent with other properties sections.
+
 
 === Dependency update
 
@@ -58,7 +62,8 @@ This allows representation precondition expressions to be more precise as they k
 - https://github.com/eclipse-sirius/sirius-components/issues/1272[#1272] [form] Add support for button widget on FormDescriptions
 - https://github.com/eclipse-sirius/sirius-components/issues/1273[#1273] [form] Add support for button widget on FormDescriptionEditors
 - https://github.com/eclipse-sirius/sirius-components/issues/1266[#1266] [form] Add styling support on bar-chart and pie-chart Widgets in View DSL
-- https://github.com/eclipse-sirius/sirius-components/issues/1275[#1275] [form] Add support for label widget in forms
+- https://github.com/eclipse-sirius/sirius-components/issues/1275[#1275] [form] Add support for Label widget in Form representation
+- https://github.com/eclipse-sirius/sirius-components/issues/1281[#1281] [form] Add support for Link widget in Form representation
 
 == v2022.7.0
 

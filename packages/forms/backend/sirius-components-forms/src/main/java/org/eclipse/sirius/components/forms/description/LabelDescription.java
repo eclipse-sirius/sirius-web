@@ -29,8 +29,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class LabelDescription extends AbstractWidgetDescription {
 
-    public static final String VALUE = "value"; //$NON-NLS-1$
-
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;

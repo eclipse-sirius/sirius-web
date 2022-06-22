@@ -49,6 +49,7 @@ import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './Wid
 import { isKind } from './WidgetOperations';
 import { ButtonWidget } from './ButtonWidget';
 import { LabelWidget } from './LabelWidget';
+import { LinkWidget } from './LinkWidget';
 
 const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>(() => ({
   widget: {
@@ -319,6 +320,16 @@ export const WidgetEntry = ({
   } else if (widget.kind === 'Label') {
     widgetElement = (
       <LabelWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'Link') {
+    widgetElement = (
+      <LinkWidget
         data-testid={widget.id}
         widget={widget}
         selection={selection}

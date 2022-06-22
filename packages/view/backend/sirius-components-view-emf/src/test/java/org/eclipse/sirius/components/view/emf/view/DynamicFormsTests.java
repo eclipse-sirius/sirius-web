@@ -44,6 +44,8 @@ import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
+import org.eclipse.sirius.components.forms.Link;
+import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.Page;
@@ -71,6 +73,7 @@ import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
@@ -82,6 +85,8 @@ import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.LinkDescription;
+import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.PieChartDescription;
@@ -129,7 +134,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(11);
+        assertThat(group.getWidgets()).hasSize(12);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -141,6 +146,7 @@ public class DynamicFormsTests {
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
+        Link link = (Link) group.getWidgets().get(11);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -168,6 +174,10 @@ public class DynamicFormsTests {
         assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
         this.testNoStyle(labelWidget);
+
+        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
+        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
+        this.testNoStyle(link);
 
         assertThat(radio.getOptions()).hasSize(3);
         assertThat(radio.getOptions()).allSatisfy(option -> {
@@ -298,7 +308,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(11);
+        assertThat(group.getWidgets()).hasSize(12);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -310,6 +320,7 @@ public class DynamicFormsTests {
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
+        Link link = (Link) group.getWidgets().get(11);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -354,6 +365,11 @@ public class DynamicFormsTests {
         assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
         this.testStyle(button);
+
+        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
+        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
+        this.testStyle(link);
+
         this.checkBarChart(chartWidgetWithBarChart, true, false);
 
         this.checkPieChart(chartWidgetWithPieChart, true, false);
@@ -389,7 +405,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(11);
+        assertThat(group.getWidgets()).hasSize(12);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -401,6 +417,7 @@ public class DynamicFormsTests {
         FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
         Button button = (Button) group.getWidgets().get(9);
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
+        Link link = (Link) group.getWidgets().get(11);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -446,6 +463,10 @@ public class DynamicFormsTests {
         assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
         this.testConditionalStyle(labelWidget);
 
+        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
+        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
+        this.testConditionalStyle(link);
+
         this.checkBarChart(chartWidgetWithBarChart, false, true);
 
         this.checkPieChart(chartWidgetWithPieChart, false, true);
@@ -474,7 +495,7 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClass1);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(11);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(12);
 
         this.checkValuesEditing(this.eClass1, form);
     }
@@ -494,7 +515,7 @@ public class DynamicFormsTests {
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(11);
+        assertThat(group.getWidgets()).hasSize(12);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -588,6 +609,8 @@ public class DynamicFormsTests {
         formDescription.getWidgets().add(buttonDescription);
         LabelDescription labelDescription = this.createLabel(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(labelDescription);
+        LinkDescription linkDescription = this.createLink(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(linkDescription);
         return formDescription;
     }
 
@@ -876,6 +899,28 @@ public class DynamicFormsTests {
         return labelDescription;
     }
 
+    private LinkDescription createLink(boolean withStyle, boolean withConditionalStyle) {
+        LinkDescription linkDescription = ViewFactory.eINSTANCE.createLinkDescription();
+        linkDescription.setLabelExpression("aql:'Label EClass link'"); //$NON-NLS-1$
+        linkDescription.setValueExpression("myHyperLink"); //$NON-NLS-1$
+        linkDescription.setName("Class Name"); //$NON-NLS-1$
+        if (withStyle) {
+            LinkDescriptionStyle style = ViewFactory.eINSTANCE.createLinkDescriptionStyle();
+            style.setColor("#de1000"); //$NON-NLS-1$
+            this.setFontStyle(style);
+            linkDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalLinkDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalLinkDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            linkDescription.getConditionalStyles().add(conditionalStyle);
+        }
+
+        return linkDescription;
+    }
+
     private void setFontStyle(LabelStyle labelStyle) {
         labelStyle.setFontSize(20);
         labelStyle.setItalic(true);
@@ -951,6 +996,25 @@ public class DynamicFormsTests {
         assertThat(labelWidgetStyle).isNotNull();
         assertThat(labelWidgetStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
         this.testConditionalFontStyle(labelWidgetStyle);
+    }
+
+    private void testNoStyle(Link link) {
+        LinkStyle linkStyle = link.getStyle();
+        assertThat(linkStyle).isNull();
+    }
+
+    private void testStyle(Link link) {
+        LinkStyle linkStyle = link.getStyle();
+        assertThat(linkStyle).isNotNull();
+        assertThat(linkStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        this.testFontStyle(linkStyle);
+    }
+
+    private void testConditionalStyle(Link link) {
+        LinkStyle linkStyle = link.getStyle();
+        assertThat(linkStyle).isNotNull();
+        assertThat(linkStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        this.testConditionalFontStyle(linkStyle);
     }
 
     private void testStyle(Radio radio) {

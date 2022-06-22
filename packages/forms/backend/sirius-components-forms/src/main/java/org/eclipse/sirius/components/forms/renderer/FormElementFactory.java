@@ -348,6 +348,7 @@ public class FormElementFactory implements IElementFactory {
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
+        // @formatter:on
 
         if (props.getIconURL() != null) {
             textfieldBuilder.iconURL(props.getIconURL());
@@ -357,7 +358,6 @@ public class FormElementFactory implements IElementFactory {
         }
 
         return textfieldBuilder.build();
-        // @formatter:on
     }
 
     private Object instantiateDiagnostic(DiagnosticElementProps props, List<Object> children) {
@@ -377,8 +377,11 @@ public class FormElementFactory implements IElementFactory {
                  .label(props.getLabel())
                  .url(props.getUrl())
                  .diagnostics(diagnostics);
-       // @formatter:on
+        // @formatter:on
 
+        if (props.getStyle() != null) {
+            linkbuilder.style(props.getStyle());
+        }
         if (props.getIconURL() != null) {
             linkbuilder.iconURL(props.getIconURL());
         }

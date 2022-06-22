@@ -22,30 +22,28 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.view.CheckboxDescription;
-import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.LinkDescription;
+import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Checkbox Description</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Link Description</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionImpl#getValueExpression <em>Value
+ * <li>{@link org.eclipse.sirius.components.view.impl.LinkDescriptionImpl#getValueExpression <em>Value
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionImpl#getBody <em>Body</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionImpl#getStyle <em>Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionImpl#getConditionalStyles <em>Conditional
+ * <li>{@link org.eclipse.sirius.components.view.impl.LinkDescriptionImpl#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.LinkDescriptionImpl#getConditionalStyles <em>Conditional
  * Styles</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements CheckboxDescription {
+public class LinkDescriptionImpl extends WidgetDescriptionImpl implements LinkDescription {
     /**
      * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -67,16 +65,6 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
-    protected EList<Operation> body;
-
-    /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -84,7 +72,7 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * @generated
      * @ordered
      */
-    protected CheckboxDescriptionStyle style;
+    protected LinkDescriptionStyle style;
 
     /**
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
@@ -94,14 +82,14 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * @generated
      * @ordered
      */
-    protected EList<ConditionalCheckboxDescriptionStyle> conditionalStyles;
+    protected EList<ConditionalLinkDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected CheckboxDescriptionImpl() {
+    protected LinkDescriptionImpl() {
         super();
     }
 
@@ -112,7 +100,7 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.CHECKBOX_DESCRIPTION;
+        return ViewPackage.Literals.LINK_DESCRIPTION;
     }
 
     /**
@@ -135,7 +123,7 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
         String oldValueExpression = this.valueExpression;
         this.valueExpression = newValueExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION, oldValueExpression, this.valueExpression));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.LINK_DESCRIPTION__VALUE_EXPRESSION, oldValueExpression, this.valueExpression));
     }
 
     /**
@@ -144,20 +132,7 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * @generated
      */
     @Override
-    public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, ViewPackage.CHECKBOX_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public CheckboxDescriptionStyle getStyle() {
+    public LinkDescriptionStyle getStyle() {
         return this.style;
     }
 
@@ -166,11 +141,11 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(CheckboxDescriptionStyle newStyle, NotificationChain msgs) {
-        CheckboxDescriptionStyle oldStyle = this.style;
+    public NotificationChain basicSetStyle(LinkDescriptionStyle newStyle, NotificationChain msgs) {
+        LinkDescriptionStyle oldStyle = this.style;
         this.style = newStyle;
         if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.CHECKBOX_DESCRIPTION__STYLE, oldStyle, newStyle);
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.LINK_DESCRIPTION__STYLE, oldStyle, newStyle);
             if (msgs == null)
                 msgs = notification;
             else
@@ -185,18 +160,18 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * @generated
      */
     @Override
-    public void setStyle(CheckboxDescriptionStyle newStyle) {
+    public void setStyle(LinkDescriptionStyle newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
             if (this.style != null)
-                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.CHECKBOX_DESCRIPTION__STYLE, null, msgs);
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.LINK_DESCRIPTION__STYLE, null, msgs);
             if (newStyle != null)
-                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.CHECKBOX_DESCRIPTION__STYLE, null, msgs);
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.LINK_DESCRIPTION__STYLE, null, msgs);
             msgs = this.basicSetStyle(newStyle, msgs);
             if (msgs != null)
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CHECKBOX_DESCRIPTION__STYLE, newStyle, newStyle));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.LINK_DESCRIPTION__STYLE, newStyle, newStyle));
     }
 
     /**
@@ -205,10 +180,9 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * @generated
      */
     @Override
-    public EList<ConditionalCheckboxDescriptionStyle> getConditionalStyles() {
+    public EList<ConditionalLinkDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalCheckboxDescriptionStyle.class, this,
-                    ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalLinkDescriptionStyle.class, this, ViewPackage.LINK_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }
@@ -221,11 +195,9 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.CHECKBOX_DESCRIPTION__BODY:
-            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        case ViewPackage.CHECKBOX_DESCRIPTION__STYLE:
+        case ViewPackage.LINK_DESCRIPTION__STYLE:
             return this.basicSetStyle(null, msgs);
-        case ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
+        case ViewPackage.LINK_DESCRIPTION__CONDITIONAL_STYLES:
             return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -239,13 +211,11 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION:
+        case ViewPackage.LINK_DESCRIPTION__VALUE_EXPRESSION:
             return this.getValueExpression();
-        case ViewPackage.CHECKBOX_DESCRIPTION__BODY:
-            return this.getBody();
-        case ViewPackage.CHECKBOX_DESCRIPTION__STYLE:
+        case ViewPackage.LINK_DESCRIPTION__STYLE:
             return this.getStyle();
-        case ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
+        case ViewPackage.LINK_DESCRIPTION__CONDITIONAL_STYLES:
             return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -260,19 +230,15 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION:
+        case ViewPackage.LINK_DESCRIPTION__VALUE_EXPRESSION:
             this.setValueExpression((String) newValue);
             return;
-        case ViewPackage.CHECKBOX_DESCRIPTION__BODY:
-            this.getBody().clear();
-            this.getBody().addAll((Collection<? extends Operation>) newValue);
+        case ViewPackage.LINK_DESCRIPTION__STYLE:
+            this.setStyle((LinkDescriptionStyle) newValue);
             return;
-        case ViewPackage.CHECKBOX_DESCRIPTION__STYLE:
-            this.setStyle((CheckboxDescriptionStyle) newValue);
-            return;
-        case ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
+        case ViewPackage.LINK_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalCheckboxDescriptionStyle>) newValue);
+            this.getConditionalStyles().addAll((Collection<? extends ConditionalLinkDescriptionStyle>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -286,16 +252,13 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION:
+        case ViewPackage.LINK_DESCRIPTION__VALUE_EXPRESSION:
             this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
             return;
-        case ViewPackage.CHECKBOX_DESCRIPTION__BODY:
-            this.getBody().clear();
+        case ViewPackage.LINK_DESCRIPTION__STYLE:
+            this.setStyle((LinkDescriptionStyle) null);
             return;
-        case ViewPackage.CHECKBOX_DESCRIPTION__STYLE:
-            this.setStyle((CheckboxDescriptionStyle) null);
-            return;
-        case ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
+        case ViewPackage.LINK_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
             return;
         }
@@ -310,13 +273,11 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION:
+        case ViewPackage.LINK_DESCRIPTION__VALUE_EXPRESSION:
             return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
-        case ViewPackage.CHECKBOX_DESCRIPTION__BODY:
-            return this.body != null && !this.body.isEmpty();
-        case ViewPackage.CHECKBOX_DESCRIPTION__STYLE:
+        case ViewPackage.LINK_DESCRIPTION__STYLE:
             return this.style != null;
-        case ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
+        case ViewPackage.LINK_DESCRIPTION__CONDITIONAL_STYLES:
             return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
@@ -339,4 +300,4 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
         return result.toString();
     }
 
-} // CheckboxDescriptionImpl
+} // LinkDescriptionImpl

@@ -22,6 +22,7 @@ export const isKind = (value: string): value is Kind => {
     value === 'MultiSelect' ||
     value === 'Button' ||
     value === 'Label' ||
+    value === 'Link' ||
     value === 'BarChart' ||
     value === 'PieChart' ||
     value === 'FlexboxContainer'
