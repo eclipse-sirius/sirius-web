@@ -4778,6 +4778,237 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_LABEL_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LinkDescriptionImpl <em>Link
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.LinkDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescription()
+     * @generated
+     */
+    int LINK_DESCRIPTION = 62;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION__NAME = WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION__LABEL_EXPRESSION = WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION__VALUE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION__STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Link Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Link Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LinkDescriptionStyleImpl <em>Link
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.LinkDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescriptionStyle()
+     * @generated
+     */
+    int LINK_DESCRIPTION_STYLE = 63;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE__FONT_SIZE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE__UNDERLINE = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE__COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The number of structural features of the '<em>Link Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The number of operations of the '<em>Link Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION_STYLE_OPERATION_COUNT = WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalLinkDescriptionStyleImpl
+     * <em>Conditional Link Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ConditionalLinkDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLinkDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 64;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__CONDITION = CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__FONT_SIZE = CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__ITALIC = CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__BOLD = CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__UNDERLINE = CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE__COLOR = CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The number of structural features of the '<em>Conditional Link Description Style</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The number of operations of the '<em>Conditional Link Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4785,7 +5016,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 62;
+    int ARROW_STYLE = 65;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -4795,7 +5026,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 63;
+    int LINE_STYLE = 66;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -4805,7 +5036,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 64;
+    int SYNCHRONIZATION_POLICY = 67;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -4815,7 +5046,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 65;
+    int FLEX_DIRECTION = 68;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -6791,6 +7022,84 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalLabelDescriptionStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LinkDescription <em>Link
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Link Description</em>'.
+     * @see org.eclipse.sirius.components.view.LinkDescription
+     * @generated
+     */
+    EClass getLinkDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.LinkDescription#getValueExpression <em>Value Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.LinkDescription#getValueExpression()
+     * @see #getLinkDescription()
+     * @generated
+     */
+    EAttribute getLinkDescription_ValueExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.LinkDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.LinkDescription#getStyle()
+     * @see #getLinkDescription()
+     * @generated
+     */
+    EReference getLinkDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.LinkDescription#getConditionalStyles <em>Conditional Styles</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.LinkDescription#getConditionalStyles()
+     * @see #getLinkDescription()
+     * @generated
+     */
+    EReference getLinkDescription_ConditionalStyles();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LinkDescriptionStyle <em>Link
+     * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Link Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.LinkDescriptionStyle
+     * @generated
+     */
+    EClass getLinkDescriptionStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.LinkDescriptionStyle#getColor <em>Color</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Color</em>'.
+     * @see org.eclipse.sirius.components.view.LinkDescriptionStyle#getColor()
+     * @see #getLinkDescriptionStyle()
+     * @generated
+     */
+    EAttribute getLinkDescriptionStyle_Color();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle
+     * <em>Conditional Link Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Link Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle
+     * @generated
+     */
+    EClass getConditionalLinkDescriptionStyle();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BarChartDescription <em>Bar Chart
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8626,6 +8935,69 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass CONDITIONAL_LABEL_DESCRIPTION_STYLE = eINSTANCE.getConditionalLabelDescriptionStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LinkDescriptionImpl <em>Link
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.LinkDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescription()
+         * @generated
+         */
+        EClass LINK_DESCRIPTION = eINSTANCE.getLinkDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LINK_DESCRIPTION__VALUE_EXPRESSION = eINSTANCE.getLinkDescription_ValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LINK_DESCRIPTION__STYLE = eINSTANCE.getLinkDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LINK_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getLinkDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LinkDescriptionStyleImpl
+         * <em>Link Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.LinkDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescriptionStyle()
+         * @generated
+         */
+        EClass LINK_DESCRIPTION_STYLE = eINSTANCE.getLinkDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LINK_DESCRIPTION_STYLE__COLOR = eINSTANCE.getLinkDescriptionStyle_Color();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.ConditionalLinkDescriptionStyleImpl <em>Conditional Link
+         * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ConditionalLinkDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLinkDescriptionStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_LINK_DESCRIPTION_STYLE = eINSTANCE.getConditionalLinkDescriptionStyle();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl

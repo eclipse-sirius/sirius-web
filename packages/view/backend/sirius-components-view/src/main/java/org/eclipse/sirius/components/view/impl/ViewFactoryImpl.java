@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -55,6 +56,8 @@ import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.LinkDescription;
+import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -221,6 +224,12 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createLabelDescriptionStyle();
         case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE:
             return this.createConditionalLabelDescriptionStyle();
+        case ViewPackage.LINK_DESCRIPTION:
+            return this.createLinkDescription();
+        case ViewPackage.LINK_DESCRIPTION_STYLE:
+            return this.createLinkDescriptionStyle();
+        case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE:
+            return this.createConditionalLinkDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -794,6 +803,39 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalLabelDescriptionStyle createConditionalLabelDescriptionStyle() {
         ConditionalLabelDescriptionStyleImpl conditionalLabelDescriptionStyle = new ConditionalLabelDescriptionStyleImpl();
         return conditionalLabelDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LinkDescription createLinkDescription() {
+        LinkDescriptionImpl linkDescription = new LinkDescriptionImpl();
+        return linkDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LinkDescriptionStyle createLinkDescriptionStyle() {
+        LinkDescriptionStyleImpl linkDescriptionStyle = new LinkDescriptionStyleImpl();
+        return linkDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalLinkDescriptionStyle createConditionalLinkDescriptionStyle() {
+        ConditionalLinkDescriptionStyleImpl conditionalLinkDescriptionStyle = new ConditionalLinkDescriptionStyleImpl();
+        return conditionalLinkDescriptionStyle;
     }
 
     /**

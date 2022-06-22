@@ -236,6 +236,16 @@ type Link implements Widget {
   label: String!
   iconURL: String
   url: String!
+  style: LinkStyle
+}
+
+type LinkStyle {
+  color: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
 }
 
 type Button implements Widget {

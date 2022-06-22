@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -36,6 +37,8 @@ public final class LinkElementProps implements IProps {
     private String iconURL;
 
     private String url;
+
+    private LinkStyle style;
 
     private List<Element> children;
 
@@ -57,6 +60,10 @@ public final class LinkElementProps implements IProps {
 
     public String getUrl() {
         return this.url;
+    }
+
+    public LinkStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -89,6 +96,8 @@ public final class LinkElementProps implements IProps {
 
         private String url;
 
+        private LinkStyle style;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -110,6 +119,11 @@ public final class LinkElementProps implements IProps {
             return this;
         }
 
+        public Builder style(LinkStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -121,6 +135,7 @@ public final class LinkElementProps implements IProps {
             linkElementProps.label = Objects.requireNonNull(this.label);
             linkElementProps.iconURL = this.iconURL;
             linkElementProps.url = Objects.requireNonNull(this.url);
+            linkElementProps.style = this.style; // Optional on purpose
             linkElementProps.children = Objects.requireNonNull(this.children);
             return linkElementProps;
         }

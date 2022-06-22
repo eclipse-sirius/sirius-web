@@ -237,6 +237,16 @@ export interface GQLListItem {
 
 export interface GQLLink extends GQLWidget {
   url: string;
+  style: GQLLinkStyle;
+}
+
+export interface GQLLinkStyle {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLButton extends GQLWidget {

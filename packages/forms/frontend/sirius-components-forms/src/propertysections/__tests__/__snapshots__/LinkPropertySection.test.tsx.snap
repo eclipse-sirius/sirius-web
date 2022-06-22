@@ -1,0 +1,33 @@
+// Vitest Snapshot v1
+
+exports[`render label widget 1`] = `
+<div>
+  <div>
+    <a
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-1 makeStyles-style-2 MuiTypography-colorPrimary"
+      href="the/url/value"
+      id="labelId"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      myLabel
+    </a>
+  </div>
+</div>
+`;
+
+exports[`render label widget with style 1`] = `
+<div>
+  <div>
+    <a
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-3 makeStyles-style-4 MuiTypography-colorPrimary"
+      href="the/url/value"
+      id="labelId"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      myLabel
+    </a>
+  </div>
+</div>
+`;

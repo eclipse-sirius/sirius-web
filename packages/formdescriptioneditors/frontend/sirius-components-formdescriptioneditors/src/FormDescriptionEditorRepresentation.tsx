@@ -23,6 +23,7 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
+import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
@@ -384,6 +385,17 @@ export const FormDescriptionEditorRepresentation = ({
             <Button width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
               Button
+            </Typography>
+          </div>
+          <div
+            id="Link"
+            data-testid="FormDescriptionEditor-Link"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <LinkIcon />
+            <Typography variant="caption" gutterBottom>
+              Link
             </Typography>
           </div>
           <div

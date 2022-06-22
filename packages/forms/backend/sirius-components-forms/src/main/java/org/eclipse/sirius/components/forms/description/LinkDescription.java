@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class LinkDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
@@ -34,6 +36,8 @@ public final class LinkDescription extends AbstractWidgetDescription {
     private Function<VariableManager, String> iconURLProvider;
 
     private Function<VariableManager, String> urlProvider;
+
+    private Function<VariableManager, LinkStyle> styleProvider;
 
     private LinkDescription() {
         // Prevent instantiation
@@ -53,6 +57,10 @@ public final class LinkDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getUrlProvider() {
         return this.urlProvider;
+    }
+
+    public Function<VariableManager, LinkStyle> getStyleProvider() {
+        return this.styleProvider;
     }
 
     public static Builder newLinkDescription(String id) {
@@ -81,6 +89,8 @@ public final class LinkDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
 
         private Function<VariableManager, String> urlProvider;
+
+        private Function<VariableManager, LinkStyle> styleProvider;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
 
@@ -112,6 +122,11 @@ public final class LinkDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, LinkStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public Builder diagnosticsProvider(Function<VariableManager, List<?>> diagnosticsProvider) {
             this.diagnosticsProvider = Objects.requireNonNull(diagnosticsProvider);
             return this;
@@ -134,6 +149,7 @@ public final class LinkDescription extends AbstractWidgetDescription {
             linkDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             linkDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             linkDescription.urlProvider = Objects.requireNonNull(this.urlProvider);
+            linkDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             linkDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             linkDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             linkDescription.messageProvider = Objects.requireNonNull(this.messageProvider);

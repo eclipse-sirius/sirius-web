@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -53,6 +54,8 @@ import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.LinkDescription;
+import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -758,6 +761,41 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalLabelDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalLabelDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LINK_DESCRIPTION: {
+            LinkDescription linkDescription = (LinkDescription) theEObject;
+            T result = this.caseLinkDescription(linkDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(linkDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LINK_DESCRIPTION_STYLE: {
+            LinkDescriptionStyle linkDescriptionStyle = (LinkDescriptionStyle) theEObject;
+            T result = this.caseLinkDescriptionStyle(linkDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(linkDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(linkDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE: {
+            ConditionalLinkDescriptionStyle conditionalLinkDescriptionStyle = (ConditionalLinkDescriptionStyle) theEObject;
+            T result = this.caseConditionalLinkDescriptionStyle(conditionalLinkDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalLinkDescriptionStyle);
+            if (result == null)
+                result = this.caseLinkDescriptionStyle(conditionalLinkDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalLinkDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalLinkDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1623,6 +1661,51 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalLabelDescriptionStyle(ConditionalLabelDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Link Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Link Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLinkDescription(LinkDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Link Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Link Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLinkDescriptionStyle(LinkDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Link Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Link Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalLinkDescriptionStyle(ConditionalLinkDescriptionStyle object) {
         return null;
     }
 

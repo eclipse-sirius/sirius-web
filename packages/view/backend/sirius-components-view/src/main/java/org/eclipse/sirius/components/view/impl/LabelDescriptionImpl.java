@@ -36,8 +36,6 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.LabelDescriptionImpl#getValueExpression <em>Value
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.LabelDescriptionImpl#getDisplayExpression <em>Display
- * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.LabelDescriptionImpl#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.LabelDescriptionImpl#getConditionalStyles <em>Conditional
  * Styles</em>}</li>

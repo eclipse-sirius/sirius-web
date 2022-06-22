@@ -29,12 +29,18 @@ public final class Link extends AbstractWidget {
 
     private String url;
 
+    private LinkStyle style;
+
     private Link() {
         // Prevent instantiation
     }
 
     public String getUrl() {
         return this.url;
+    }
+
+    public LinkStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newLink(String id) {
@@ -62,6 +68,8 @@ public final class Link extends AbstractWidget {
 
         private String url;
 
+        private LinkStyle style;
+
         private List<Diagnostic> diagnostics;
 
         private Builder(String id) {
@@ -83,6 +91,11 @@ public final class Link extends AbstractWidget {
             return this;
         }
 
+        public Builder style(LinkStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -94,6 +107,7 @@ public final class Link extends AbstractWidget {
             link.label = Objects.requireNonNull(this.label);
             link.iconURL = this.iconURL;
             link.url = Objects.requireNonNull(this.url);
+            link.style = this.style; // Optional on purpose
             link.diagnostics = Objects.requireNonNull(this.diagnostics);
             return link;
         }

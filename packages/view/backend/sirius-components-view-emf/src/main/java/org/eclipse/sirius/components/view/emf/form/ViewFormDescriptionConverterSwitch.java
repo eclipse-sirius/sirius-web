@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
+import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.SelectStyle;
@@ -51,6 +52,7 @@ import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
+import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
@@ -65,6 +67,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
+import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
@@ -460,6 +463,39 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
                 .messageProvider(diagnostic -> "") //$NON-NLS-1$
                 .styleProvider(styleProvider)
+                .build();
+        // @formatter:on
+    }
+
+    @Override
+    public AbstractWidgetDescription caseLinkDescription(org.eclipse.sirius.components.view.LinkDescription viewLinkDescription) {
+        String descriptionId = this.getDescriptionId(viewLinkDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewLinkDescription.getLabelExpression());
+        StringValueProvider valueProvider = this.getStringValueProvider(viewLinkDescription.getValueExpression());
+        Function<VariableManager, LinkStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewLinkDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(LinkDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewLinkDescription::getStyle);
+            // @formatter:on
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new LinkStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
+        // @formatter:off
+        return LinkDescription.newLinkDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .urlProvider(valueProvider)
+                .styleProvider(styleProvider)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "") //$NON-NLS-1$
+                .messageProvider(diagnostic -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
     }
