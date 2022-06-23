@@ -26,6 +26,7 @@ import {
   widgetSubscriptionsUpdatedEventPayloadFragment,
 } from '../form/FormEventFragments';
 import { GQLFormEventSubscription } from '../form/FormEventFragments.types';
+import { Page } from '../pages/Page';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
@@ -58,7 +59,11 @@ const formEventSubscription = gql(`
   ${formRefreshedEventPayloadFragment}
 `);
 
-const useFormRepresentationStyles = makeStyles(() => ({
+const useFormRepresentationStyles = makeStyles((theme) => ({
+  page: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
   complete: {
     display: 'flex',
     alignItems: 'center',
@@ -129,15 +134,30 @@ export const FormRepresentation = ({
 
   let content = null;
   if (formRepresentation === 'ready') {
-    content = (
-      <Form
-        editingContextId={editingContextId}
-        form={form}
-        widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
-        readOnly={readOnly}
-      />
-    );
+    if (form.pages.length > 1) {
+      content = (
+        <Form
+          editingContextId={editingContextId}
+          form={form}
+          widgetSubscriptions={widgetSubscriptions}
+          setSelection={setSelection}
+          readOnly={readOnly}
+        />
+      );
+    } else {
+      content = (
+        <div data-testid="page" className={classes.page}>
+          <Page
+            editingContextId={editingContextId}
+            formId={form.id}
+            page={form.pages[0]}
+            widgetSubscriptions={widgetSubscriptions}
+            setSelection={setSelection}
+            readOnly={readOnly}
+          />
+        </div>
+      );
+    }
   } else if (formRepresentation === 'complete') {
     content = (
       <div className={classes.complete}>
