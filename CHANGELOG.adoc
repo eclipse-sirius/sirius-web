@@ -30,6 +30,9 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram]
 - [backend] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v2.7.2[Spring Boot 2.7.2]
 - [backend] Switch to the managed version of GraphQL Java, as of Spring Boot 2.7.2, we will thus use GraphQL Java 18.2
 
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1282[#1282] [form] Let users switch form description editors properly
 
 === Improvements
 

@@ -57,10 +57,12 @@ import {
   InitializeRepresentationEvent,
   SchemaValue,
   ShowToastEvent,
+  SwitchFormDescriptionEditorEvent,
 } from './FormDescriptionEditorRepresentationMachine';
 import { WidgetEntry } from './WidgetEntry';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { isKind } from './WidgetOperations';
+
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
@@ -128,10 +130,10 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     height: theme.spacing(3),
   },
   noFormDescriptionEditor: {
+    flexGrow: 1,
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -148,7 +150,7 @@ export const FormDescriptionEditorRepresentation = ({
     FormDescriptionEditorRepresentationEvent
   >(formDescriptionEditorRepresentationMachine);
   const { toast, formDescriptionEditorRepresentation } = value as SchemaValue;
-  const { id, formDescriptionEditor, subscribers, message } = context;
+  const { id, formDescriptionEditorId, formDescriptionEditor, subscribers, message } = context;
 
   const input: GQLFormDescriptionEditorEventInput = {
     id,
@@ -221,6 +223,19 @@ export const FormDescriptionEditorRepresentation = ({
       }
     }
   }, [moveWidgetLoading, moveWidgetData, moveWidgetError, dispatch]);
+
+  /**
+   * Displays another form description editor if the selection indicates that we should display another representation.
+   */
+  useEffect(() => {
+    if (formDescriptionEditorId !== representationId) {
+      const switchFormDescriptionEditorEvent: SwitchFormDescriptionEditorEvent = {
+        type: 'SWITCH_FORM_DESCRIPTION_EDITOR',
+        formDescriptionEditorId: representationId,
+      };
+      dispatch(switchFormDescriptionEditorEvent);
+    }
+  }, [representationId, formDescriptionEditorId, dispatch]);
 
   useEffect(() => {
     if (error) {
@@ -451,7 +466,7 @@ export const FormDescriptionEditorRepresentation = ({
 
   if (formDescriptionEditorRepresentation === 'complete') {
     content = (
-      <div className={classes.main + ' ' + classes.noFormDescriptionEditor}>
+      <div className={classes.noFormDescriptionEditor}>
         <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
           The form description editor does not exist
         </Typography>

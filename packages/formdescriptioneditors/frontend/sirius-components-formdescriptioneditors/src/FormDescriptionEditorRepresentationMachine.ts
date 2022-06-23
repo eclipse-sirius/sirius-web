@@ -48,12 +48,17 @@ export type SchemaValue = {
 
 export interface FormDescriptionEditorRepresentationContext {
   id: string;
+  formDescriptionEditorId: string;
   formDescriptionEditor: GQLFormDescriptionEditor;
   subscribers: Subscriber[];
   message: string | null;
 }
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
+export type SwitchFormDescriptionEditorEvent = {
+  type: 'SWITCH_FORM_DESCRIPTION_EDITOR';
+  formDescriptionEditorId: string;
+};
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
   result: SubscriptionResult<GQLFormDescriptionEditorEventSubscription>;
@@ -67,6 +72,7 @@ export type InitializeRepresentationEvent = {
 export type FormDescriptionEditorRepresentationEvent =
   | ShowToastEvent
   | HideToastEvent
+  | SwitchFormDescriptionEditorEvent
   | CompleteEvent
   | InitializeRepresentationEvent
   | HandleSubscriptionResultEvent;
@@ -88,6 +94,7 @@ export const formDescriptionEditorRepresentationMachine = Machine<
     type: 'parallel',
     context: {
       id: uuid(),
+      formDescriptionEditorId: null,
       formDescriptionEditor: null,
       subscribers: [],
       message: null,
@@ -130,6 +137,12 @@ export const formDescriptionEditorRepresentationMachine = Machine<
           },
           ready: {
             on: {
+              SWITCH_FORM_DESCRIPTION_EDITOR: [
+                {
+                  target: 'loading',
+                  actions: 'switchFormDescriptionEditor',
+                },
+              ],
               HANDLE_SUBSCRIPTION_RESULT: [
                 {
                   actions: 'handleSubscriptionResult',
@@ -143,7 +156,16 @@ export const formDescriptionEditorRepresentationMachine = Machine<
               ],
             },
           },
-          complete: {},
+          complete: {
+            on: {
+              SWITCH_FORM_DESCRIPTION_EDITOR: [
+                {
+                  target: 'loading',
+                  actions: 'switchFormDescriptionEditor',
+                },
+              ],
+            },
+          },
         },
       },
     },
@@ -154,6 +176,10 @@ export const formDescriptionEditorRepresentationMachine = Machine<
         return {
           message: undefined,
         };
+      }),
+      switchFormDescriptionEditor: assign((_, event) => {
+        const { formDescriptionEditorId } = event as SwitchFormDescriptionEditorEvent;
+        return { id: uuid(), formDescriptionEditorId };
       }),
       handleComplete: assign((_) => {
         return {};
