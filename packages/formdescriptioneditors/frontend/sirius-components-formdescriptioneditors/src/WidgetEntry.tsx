@@ -19,6 +19,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { BarChartWidget } from './BarChartWidget';
+import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
 import { FlexboxContainerWidget } from './FlexboxContainerWidget';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
@@ -39,6 +40,9 @@ import {
   GQLMoveWidgetMutationVariables,
   GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
+import { LabelWidget } from './LabelWidget';
+import { LinkWidget } from './LinkWidget';
+import { ListWidget } from './ListWidget';
 import { MultiSelectWidget } from './MultiSelectWidget';
 import { PieChartWidget } from './PieChartWidget';
 import { RadioWidget } from './RadioWidget';
@@ -47,9 +51,6 @@ import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
 import { isKind } from './WidgetOperations';
-import { ButtonWidget } from './ButtonWidget';
-import { LabelWidget } from './LabelWidget';
-import { LinkWidget } from './LinkWidget';
 
 const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>(() => ({
   widget: {
@@ -330,6 +331,16 @@ export const WidgetEntry = ({
   } else if (widget.kind === 'Link') {
     widgetElement = (
       <LinkWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.kind === 'List') {
+    widgetElement = (
+      <ListWidget
         data-testid={widget.id}
         widget={widget}
         selection={selection}

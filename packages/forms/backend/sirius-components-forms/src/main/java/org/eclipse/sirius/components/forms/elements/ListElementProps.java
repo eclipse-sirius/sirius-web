@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.ListItem;
+import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -35,6 +36,8 @@ public final class ListElementProps implements IProps {
     private String label;
 
     private String iconURL;
+
+    private ListStyle style;
 
     private List<ListItem> items;
 
@@ -54,6 +57,10 @@ public final class ListElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public ListStyle getStyle() {
+        return this.style;
     }
 
     public List<ListItem> getItems() {
@@ -89,6 +96,8 @@ public final class ListElementProps implements IProps {
 
         private String iconURL;
 
+        private ListStyle style;
+
         private List<ListItem> items;
 
         private List<Element> children;
@@ -107,6 +116,11 @@ public final class ListElementProps implements IProps {
             return this;
         }
 
+        public Builder style(ListStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder items(List<ListItem> items) {
             this.items = Objects.requireNonNull(items);
             return this;
@@ -122,6 +136,7 @@ public final class ListElementProps implements IProps {
             listElementProps.id = Objects.requireNonNull(this.id);
             listElementProps.label = Objects.requireNonNull(this.label);
             listElementProps.iconURL = this.iconURL;
+            listElementProps.style = this.style; // Optional on purpose
             listElementProps.items = Objects.requireNonNull(this.items);
             listElementProps.children = Objects.requireNonNull(this.children);
             return listElementProps;

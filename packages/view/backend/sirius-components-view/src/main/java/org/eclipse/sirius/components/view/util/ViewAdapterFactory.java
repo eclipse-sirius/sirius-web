@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -57,6 +58,8 @@ import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ListDescription;
+import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -457,6 +460,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalLinkDescriptionStyle(ConditionalLinkDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalLinkDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseListDescription(ListDescription object) {
+            return ViewAdapterFactory.this.createListDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseListDescriptionStyle(ListDescriptionStyle object) {
+            return ViewAdapterFactory.this.createListDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalListDescriptionStyle(ConditionalListDescriptionStyle object) {
+            return ViewAdapterFactory.this.createConditionalListDescriptionStyleAdapter();
         }
 
         @Override
@@ -1312,6 +1330,47 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalLinkDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ListDescription <em>List
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ListDescription
+     * @generated
+     */
+    public Adapter createListDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ListDescriptionStyle
+     * <em>List Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ListDescriptionStyle
+     * @generated
+     */
+    public Adapter createListDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.ConditionalListDescriptionStyle <em>Conditional List Description
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ConditionalListDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalListDescriptionStyleAdapter() {
         return null;
     }
 

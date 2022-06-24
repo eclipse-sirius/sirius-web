@@ -68,6 +68,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1266[#1266] [form] Add styling support on bar-chart and pie-chart Widgets in View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1275[#1275] [form] Add support for Label widget in Form representation
 - https://github.com/eclipse-sirius/sirius-components/issues/1281[#1281] [form] Add support for Link widget in Form representation
+- https://github.com/eclipse-sirius/sirius-components/issues/1292[#1292] [form] Add support for List widget in Form representation
 
 == v2022.7.0
 

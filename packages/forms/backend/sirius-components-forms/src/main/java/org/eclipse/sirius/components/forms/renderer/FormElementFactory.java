@@ -250,6 +250,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getIconURL() != null) {
             listBuilder.iconURL(props.getIconURL());
         }
+        if (props.getStyle() != null) {
+            listBuilder.style(props.getStyle());
+        }
         return listBuilder.build();
     }
 

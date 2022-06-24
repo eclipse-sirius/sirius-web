@@ -26,8 +26,29 @@ export interface GQLDeleteListItemMutationData {
   deleteListItem: GQLDeleteListItemPayload;
 }
 
+export interface GQLClickListItemMutationData {
+  clickListItem: GQLClickListItemPayload;
+}
+
 export interface GQLDeleteListItemPayload {
   __typename: string;
+}
+
+export interface GQLClickListItemPayload {
+  __typename: string;
+}
+
+export interface GQLClickListItemMutationVariables {
+  input: GQLClickListItemInput;
+}
+
+export interface GQLClickListItemInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  listId: string;
+  listItemId: string;
+  clickEventKind: 'SINGLE_CLICK' | 'DOUBLE_CLICK';
 }
 
 export interface GQLErrorPayload extends GQLDeleteListItemPayload {

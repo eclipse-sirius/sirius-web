@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LinkDescription;
+import org.eclipse.sirius.components.view.ListDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
@@ -192,6 +193,10 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         LinkDescription linkDescription = ViewFactory.eINSTANCE.createLinkDescription();
         linkDescription.setStyle(ViewFactory.eINSTANCE.createLinkDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, linkDescription));
+
+        ListDescription listDescription = ViewFactory.eINSTANCE.createListDescription();
+        listDescription.setStyle(ViewFactory.eINSTANCE.createListDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, listDescription));
 
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
         barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());

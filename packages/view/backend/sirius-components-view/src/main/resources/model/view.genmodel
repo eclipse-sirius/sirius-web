@@ -291,5 +291,17 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LinkDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalLinkDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//ListDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListDescription/displayExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListDescription/isDeletableExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ListDescription/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ListDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ListDescription/conditionalStyles"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ListDescriptionStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListDescriptionStyle/color"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ConditionalListDescriptionStyle"/>
   </genPackages>
 </genmodel:GenModel>

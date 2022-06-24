@@ -95,8 +95,17 @@ type List implements Widget {
   label: String!
   iconURL: String
   items: [ListItem!]!
+  style: ListStyle
 }
 
+type ListStyle {
+  color: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+}
 type ListItem {
   id: ID!
   label: String!
@@ -319,6 +328,7 @@ extend type Mutation {
   editSelect(input: EditSelectInput!): EditSelectPayload!
   editTextfield(input: EditTextfieldInput!): EditTextfieldPayload!
   updateWidgetFocus(input: UpdateWidgetFocusInput!): UpdateWidgetFocusPayload!
+  clickListItem(input: ClickListItemInput!): ClickListItemPayload!
   deleteListItem(input: DeleteListItemInput!): DeleteListItemPayload!
   pushButton(input: PushButtonInput!): PushButtonPayload!
 }
@@ -421,6 +431,26 @@ type DeleteListItemSuccessPayload {
 }
 
 union DeleteListItemPayload = ErrorPayload | DeleteListItemSuccessPayload
+
+input ClickListItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  listId: ID!
+  listItemId: ID!
+  clickEventKind: ClickEventKind!
+}
+
+enum ClickEventKind {
+  SINGLE_CLICK
+  DOUBLE_CLICK
+}
+
+type ClickListItemSuccessPayload {
+  id: ID!
+}
+
+union ClickListItemPayload = ErrorPayload | ClickListItemSuccessPayload
 
 input PushButtonInput {
   id: ID!

@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -62,6 +63,8 @@ import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ListDescription;
+import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -522,6 +525,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalLinkDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass listDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass listDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalListDescriptionStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2486,6 +2510,106 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getListDescription() {
+        return this.listDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getListDescription_ValueExpression() {
+        return (EAttribute) this.listDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getListDescription_DisplayExpression() {
+        return (EAttribute) this.listDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getListDescription_IsDeletableExpression() {
+        return (EAttribute) this.listDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getListDescription_Body() {
+        return (EReference) this.listDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getListDescription_Style() {
+        return (EReference) this.listDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getListDescription_ConditionalStyles() {
+        return (EReference) this.listDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getListDescriptionStyle() {
+        return this.listDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getListDescriptionStyle_Color() {
+        return (EAttribute) this.listDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalListDescriptionStyle() {
+        return this.conditionalListDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescription() {
         return this.barChartDescriptionEClass;
     }
@@ -3018,6 +3142,19 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.conditionalLinkDescriptionStyleEClass = this.createEClass(CONDITIONAL_LINK_DESCRIPTION_STYLE);
 
+        this.listDescriptionEClass = this.createEClass(LIST_DESCRIPTION);
+        this.createEAttribute(this.listDescriptionEClass, LIST_DESCRIPTION__VALUE_EXPRESSION);
+        this.createEAttribute(this.listDescriptionEClass, LIST_DESCRIPTION__DISPLAY_EXPRESSION);
+        this.createEAttribute(this.listDescriptionEClass, LIST_DESCRIPTION__IS_DELETABLE_EXPRESSION);
+        this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__BODY);
+        this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__STYLE);
+        this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__CONDITIONAL_STYLES);
+
+        this.listDescriptionStyleEClass = this.createEClass(LIST_DESCRIPTION_STYLE);
+        this.createEAttribute(this.listDescriptionStyleEClass, LIST_DESCRIPTION_STYLE__COLOR);
+
+        this.conditionalListDescriptionStyleEClass = this.createEClass(CONDITIONAL_LIST_DESCRIPTION_STYLE);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
@@ -3133,6 +3270,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.linkDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalLinkDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalLinkDescriptionStyleEClass.getESuperTypes().add(this.getLinkDescriptionStyle());
+        this.listDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
+        this.listDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.listDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
+        this.conditionalListDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
+        this.conditionalListDescriptionStyleEClass.getESuperTypes().add(this.getListDescriptionStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -3552,6 +3694,26 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalLinkDescriptionStyleEClass, ConditionalLinkDescriptionStyle.class, "ConditionalLinkDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+        this.initEClass(this.listDescriptionEClass, ListDescription.class, "ListDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getListDescription_ValueExpression(), this.ecorePackage.getEString(), "valueExpression", null, 0, 1, ListDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getListDescription_DisplayExpression(), this.ecorePackage.getEString(), "displayExpression", null, 0, 1, ListDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getListDescription_IsDeletableExpression(), this.ecorePackage.getEString(), "isDeletableExpression", null, 0, 1, ListDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getListDescription_Body(), this.getOperation(), null, "body", null, 0, -1, ListDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getListDescription_Style(), this.getListDescriptionStyle(), null, "style", null, 0, 1, ListDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getListDescription_ConditionalStyles(), this.getConditionalListDescriptionStyle(), null, "conditionalStyles", null, 0, -1, ListDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.listDescriptionStyleEClass, ListDescriptionStyle.class, "ListDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getListDescriptionStyle_Color(), this.ecorePackage.getEString(), "color", null, 0, 1, ListDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalListDescriptionStyleEClass, ConditionalListDescriptionStyle.class, "ConditionalListDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle"); //$NON-NLS-1$

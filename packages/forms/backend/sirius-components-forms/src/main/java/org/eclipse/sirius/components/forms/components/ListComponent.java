@@ -18,7 +18,9 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.ListItem;
+import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.elements.ListElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
@@ -37,6 +39,8 @@ public class ListComponent implements IComponent {
 
     public static final String CANDIDATE_VARIABLE = "candidate"; //$NON-NLS-1$
 
+    public static final String CLICK_EVENT_KIND_VARIABLE = "clickEventKind"; //$NON-NLS-1$
+
     private ListComponentProps props;
 
     public ListComponent(ListComponentProps props) {
@@ -52,6 +56,7 @@ public class ListComponent implements IComponent {
         String label = listDescription.getLabelProvider().apply(variableManager);
         String iconURL = listDescription.getIconURLProvider().apply(variableManager);
         List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
+        ListStyle style = listDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(listDescription, variableManager)));
 
@@ -65,9 +70,15 @@ public class ListComponent implements IComponent {
             String itemKind = listDescription.getItemKindProvider().apply(itemVariableManager);
             String itemImageURL = listDescription.getItemImageURLProvider().apply(itemVariableManager);
             boolean isItemDeletable = listDescription.getItemDeletableProvider().apply(itemVariableManager);
-            Function<VariableManager, IStatus> genericHandler = listDescription.getItemDeleteHandlerProvider();
-            Supplier<IStatus> specializedHandler = () -> {
-                return genericHandler.apply(itemVariableManager);
+            Function<VariableManager, IStatus> clickHandlerProvider = listDescription.getItemClickHandlerProvider();
+            Function<VariableManager, IStatus> deleteHandlerProvider = listDescription.getItemDeleteHandlerProvider();
+            Supplier<IStatus> deleteHandler = () -> {
+                return deleteHandlerProvider.apply(itemVariableManager);
+            };
+            Function<ClickEventKind, IStatus> clickHandler = (clickEventKind) -> {
+                VariableManager clickHandlerVariableManager = itemVariableManager.createChild();
+                clickHandlerVariableManager.put(CLICK_EVENT_KIND_VARIABLE, clickEventKind.toString());
+                return clickHandlerProvider.apply(clickHandlerVariableManager);
             };
 
             // @formatter:off
@@ -76,7 +87,8 @@ public class ListComponent implements IComponent {
                     .kind(itemKind)
                     .imageURL(itemImageURL)
                     .deletable(isItemDeletable)
-                    .deleteHandler(specializedHandler)
+                    .clickHandler(clickHandler)
+                    .deleteHandler(deleteHandler)
                     .build();
             // @formatter:on
 
@@ -91,6 +103,9 @@ public class ListComponent implements IComponent {
         // @formatter:on
         if (iconURL != null) {
             listElementPropsBuilder.iconURL(iconURL);
+        }
+        if (style != null) {
+            listElementPropsBuilder.style(style);
         }
         return new Element(ListElementProps.TYPE, listElementPropsBuilder.build());
     }

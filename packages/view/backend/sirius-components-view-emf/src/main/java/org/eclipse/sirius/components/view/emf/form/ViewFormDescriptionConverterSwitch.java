@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.emf.form;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescri
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
+import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
@@ -39,11 +41,13 @@ import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
+import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
+import org.eclipse.sirius.components.forms.components.ListComponent;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -53,6 +57,7 @@ import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.forms.description.LinkDescription;
+import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
@@ -68,6 +73,7 @@ import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
@@ -500,6 +506,80 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         // @formatter:on
     }
 
+    @Override
+    public AbstractWidgetDescription caseListDescription(org.eclipse.sirius.components.view.ListDescription viewListDescription) {
+        String descriptionId = this.getDescriptionId(viewListDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewListDescription.getLabelExpression());
+        Function<VariableManager, List<?>> valueProvider = this.getMultiValueProvider(viewListDescription.getValueExpression());
+        StringValueProvider displayProvider = this.getStringValueProvider(viewListDescription.getDisplayExpression());
+        BooleanValueProvider isDeletableProvider = this.getBooleanValueProvider(viewListDescription.getIsDeletableExpression());
+        Function<VariableManager, String> itemIdProvider = this::getItemId;
+        Function<VariableManager, String> itemKindProvider = this::getKind;
+        Function<VariableManager, IStatus> itemDeleteHandlerProvider = this::handleItemDeletion;
+        Function<VariableManager, IStatus> itemClickHandlerProvider = variableManager -> this.getListItemClickHandler(variableManager, viewListDescription.getBody());
+        Function<VariableManager, String> itemImageUrlProvider = this::getListItemImageURL;
+
+        Function<VariableManager, ListStyle> styleProvider = variableManager -> {
+            // @formatter:off
+            var effectiveStyle = viewListDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(ListDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewListDescription::getStyle);
+            // @formatter:on
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new ListStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
+        // @formatter:off
+        ListDescription.Builder builder = ListDescription.newListDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .itemsProvider(valueProvider)
+                .itemKindProvider(itemKindProvider)
+                .itemDeleteHandlerProvider(itemDeleteHandlerProvider)
+                .itemImageURLProvider(itemImageUrlProvider)
+                .itemIdProvider(itemIdProvider)
+                .itemLabelProvider(displayProvider)
+                .itemDeletableProvider(isDeletableProvider)
+                .itemClickHandlerProvider(itemClickHandlerProvider)
+                .styleProvider(styleProvider)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> ""); //$NON-NLS-1$
+        // @formatter:on
+
+        return builder.build();
+    }
+
+    private IStatus handleItemDeletion(VariableManager variableManager) {
+        variableManager.get(ListComponent.CANDIDATE_VARIABLE, Object.class).ifPresent(this.editService::delete);
+        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+    }
+
+    private IStatus getListItemClickHandler(VariableManager variableManager, List<Operation> operations) {
+        OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
+        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+        if (optionalVariableManager.isEmpty()) {
+            return new Failure("Something went wrong while handling the item click."); //$NON-NLS-1$
+        } else {
+            return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+        }
+    }
+
+    private String getKind(VariableManager variableManager) {
+        Object candidate = variableManager.getVariables().get(ListComponent.CANDIDATE_VARIABLE);
+        return this.objectService.getKind(candidate);
+    }
+
+    private String getItemId(VariableManager variableManager) {
+        Object candidate = variableManager.getVariables().get(ListComponent.CANDIDATE_VARIABLE);
+        return this.objectService.getId(candidate);
+    }
+
     private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
         String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
         return variableManager -> {
@@ -583,6 +663,12 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         return new StringValueProvider(this.interpreter, safeValueExpression);
     }
 
+    private BooleanValueProvider getBooleanValueProvider(String valueExpression) {
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse(""); //$NON-NLS-1$
+        return new BooleanValueProvider(this.interpreter, safeValueExpression);
+
+    }
+
     private Function<VariableManager, String> getSelectValueProvider(String valueExpression) {
         String safeValueExpression = Optional.ofNullable(valueExpression).orElse(""); //$NON-NLS-1$
         return variableManager -> {
@@ -647,7 +733,16 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
     }
 
+    private String getListItemImageURL(VariableManager variablemanager) {
+        // @formatter:off
+        return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
+                .map(candidate -> this.objectService.getImagePath(candidate))
+                .orElse(""); //$NON-NLS-1$
+        // @formatter:on
+    }
+
     private boolean matches(String condition, VariableManager variableManager) {
         return this.interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
+
 }
