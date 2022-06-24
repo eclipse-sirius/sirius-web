@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentat
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
@@ -56,11 +57,14 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
 
     private final IEMFMessageService emfMessageService;
 
+    private final IObjectService objectService;
+
     public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IEMFKindService emfKindService,
-            IEMFMessageService emfMessageService) {
+            IEMFMessageService emfMessageService, IObjectService objectService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
@@ -70,9 +74,14 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+        var optionalObject = Optional.empty();
         if (input instanceof EditingContextRepresentationDescriptionsInput) {
             EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput = (EditingContextRepresentationDescriptionsInput) input;
-            var result = this.findAllCompatibleRepresentationDescriptions(editingContext, editingContextRepresentationDescriptionsInput.getKind());
+            String objectId = editingContextRepresentationDescriptionsInput.getObjectId();
+            optionalObject = this.objectService.getObject(editingContext, objectId);
+        }
+        if (optionalObject.isPresent()) {
+            var result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
             payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.getId(), result));
         } else {
             String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
@@ -81,8 +90,9 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input));
     }
 
-    private List<IRepresentationDescription> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, String kind) {
+    private List<IRepresentationDescription> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, Object object) {
         List<IRepresentationDescription> result = new ArrayList<>();
+        var kind = this.objectService.getKind(object);
 
         Optional<Object> optionalClazz = this.resolveKind(editingContext, kind);
         if (optionalClazz.isPresent()) {
@@ -90,6 +100,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
 
             for (IRepresentationDescription description : allRepresentationDescriptions.values()) {
                 VariableManager variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
                 variableManager.put(IRepresentationDescription.CLASS, optionalClazz.get());
                 Predicate<VariableManager> canCreatePredicate = description.getCanCreatePredicate();
                 boolean canCreate = canCreatePredicate.test(variableManager);

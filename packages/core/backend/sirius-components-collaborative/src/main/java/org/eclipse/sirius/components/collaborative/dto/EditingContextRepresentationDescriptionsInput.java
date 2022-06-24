@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.dto;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,12 +28,12 @@ public final class EditingContextRepresentationDescriptionsInput implements IInp
 
     private final String editingContextId;
 
-    private final String kind;
+    private final String objectId;
 
-    public EditingContextRepresentationDescriptionsInput(UUID id, String editingContextId, String kind) {
+    public EditingContextRepresentationDescriptionsInput(UUID id, String editingContextId, String objectId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
-        this.kind = Objects.requireNonNull(kind);
+        this.objectId = Objects.requireNonNull(objectId);
     }
 
     @Override
@@ -44,7 +45,13 @@ public final class EditingContextRepresentationDescriptionsInput implements IInp
         return this.editingContextId;
     }
 
-    public String getKind() {
-        return this.kind;
+    public String getObjectId() {
+        return this.objectId;
+    }
+
+    @Override
+    public String toString() {
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, objectId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.objectId);
     }
 }

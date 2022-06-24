@@ -70,10 +70,10 @@ const createRepresentationMutation = gql`
 `;
 
 const getRepresentationDescriptionsQuery = gql`
-  query getRepresentationDescriptions($editingContextId: ID!, $kind: ID!) {
+  query getRepresentationDescriptions($editingContextId: ID!, $objectId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        representationDescriptions(kind: $kind) {
+        representationCreationDescriptions(objectId: $objectId) {
           edges {
             node {
               id
@@ -134,7 +134,7 @@ export const NewRepresentationModal = ({
     error: representationDescriptionsError,
   } = useQuery<GQLGetRepresentationDescriptionsQueryData, GQLGetRepresentationDescriptionsQueryVariables>(
     getRepresentationDescriptionsQuery,
-    { variables: { editingContextId, kind: item.kind } }
+    { variables: { editingContextId, objectId: item.id } }
   );
 
   useEffect(() => {
