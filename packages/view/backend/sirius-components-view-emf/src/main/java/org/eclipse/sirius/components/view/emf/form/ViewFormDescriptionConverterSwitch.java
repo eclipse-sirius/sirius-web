@@ -470,9 +470,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                         .flatMap(Optional::stream)
                         .collect(Collectors.toList());
                 // @formatter:on
-                variableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
                 OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-                Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+                Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
                 if (optionalVariableManager.isEmpty()) {
                     status = new Failure("Something went wrong while handling the MultiSelect widget new values."); //$NON-NLS-1$
                 } else {
@@ -527,9 +528,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private <T> BiFunction<VariableManager, T, IStatus> getNewValueHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
-            variableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValue);
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValue);
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
                 return new Failure("Something went wrong while handling the widget new value."); //$NON-NLS-1$
             } else {
@@ -547,9 +549,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
                         .orElse(null);
             }
-            variableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValueObject);
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValueObject);
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
                 status = new Failure("Something went wrong while handling the Select widget new value."); //$NON-NLS-1$
             } else {
