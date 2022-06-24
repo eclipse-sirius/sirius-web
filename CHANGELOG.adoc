@@ -47,6 +47,7 @@ This allows representation precondition expressions to be more precise as they k
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Store code coverage results for the frontend packages just like backend packages
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Fix every unit tests provided in the various frontend packages
 - https://github.com/eclipse-sirius/sirius-components/issues/1318[#1318] [studio] Java service classes used by studios (via `IJavaServiceProvider`) can now ask to be injected with any Spring bean available in the application context (for example `IObjectService` or other Sirius Components services they need for their implementation).
+- https://github.com/eclipse-sirius/sirius-components/issues/1288[#1288] [core] Improve support for precondition expression from representation description
 
 === New features
 

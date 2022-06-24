@@ -19,7 +19,7 @@ import { MainAreaComponentProps } from 'workbench/Workbench.types';
 import styles from './OnboardArea.module.css';
 
 const getOnboardDataQuery = gql`
-  query getOnboardData($editingContextId: ID!, $kind: ID!) {
+  query getOnboardData($editingContextId: ID!, $objectId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         stereotypeDescriptions {
@@ -31,7 +31,7 @@ const getOnboardDataQuery = gql`
             }
           }
         }
-        representationDescriptions(kind: $kind) {
+        representationCreationDescriptions(objectId: $objectId) {
           edges {
             node {
               id
@@ -72,19 +72,19 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, editingContextActions, representationDescriptions, representations } = state;
 
-  const kind = selection.entries.length > 0 ? selection.entries[0].kind : '';
+  const objectId = selection.entries.length > 0 ? selection.entries[0].id : '';
 
   const [getOnboardData, { loading, data, error }] = useLazyQuery(getOnboardDataQuery);
   useEffect(() => {
-    getOnboardData({ variables: { editingContextId, kind } });
-  }, [editingContextId, kind, getOnboardData]);
+    getOnboardData({ variables: { editingContextId, objectId } });
+  }, [editingContextId, objectId, getOnboardData]);
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
       const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
       const stereotypeDescriptions = viewer.editingContext.stereotypeDescriptions.edges.map((edge) => edge.node);
       const editingContextActions = viewer.editingContext.actions.edges.map((edge) => edge.node);
-      const representationDescriptions = viewer.editingContext.representationDescriptions.edges.map(
+      const representationDescriptions = viewer.editingContext.representationCreationDescriptions.edges.map(
         (edge) => edge.node
       );
 
@@ -95,7 +95,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         representationDescriptions,
       });
     }
-  }, [editingContextId, kind, loading, data, error]);
+  }, [editingContextId, objectId, loading, data, error]);
 
   return (
     <div className={styles.onboardArea}>

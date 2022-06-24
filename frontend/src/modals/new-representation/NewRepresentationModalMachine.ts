@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -215,7 +215,7 @@ export const newRepresentationModalMachine = Machine<
       updateRepresentationDescriptions: assign((_, event) => {
         const { data } = event as FetchedRepresentationDescriptionsEvent;
         const representationDescriptions = new Array<GQLRepresentationDescriptionNode>();
-        data.viewer.editingContext.representationDescriptions.edges.forEach((edge) =>
+        data.viewer.editingContext.representationCreationDescriptions.edges.forEach((edge) =>
           representationDescriptions.push(edge.node)
         );
         const selectedRepresentationDescriptionId =

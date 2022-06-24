@@ -16,7 +16,7 @@ type EditingContext {
   domains: [Domain!]!
   representation(representationId: ID!): RepresentationMetadata
   representations: EditingContextRepresentationConnection!
-  representationDescriptions(kind: ID!): EditingContextRepresentationDescriptionConnection!
+  representationCreationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
   childCreationDescriptions(kind: ID!): [ChildCreationDescription!]!
@@ -71,11 +71,11 @@ type EditingContextRepresentationEdge {
 }
 
 type EditingContextRepresentationDescriptionConnection {
-  edges: [EditingContextRepresentationDescriptionEdge!]!
+  edges: [EditingContextRepresentationCreationDescriptionEdge!]!
   pageInfo: PageInfo!
 }
 
-type EditingContextRepresentationDescriptionEdge {
+type EditingContextRepresentationCreationDescriptionEdge {
   node: RepresentationDescription!
 }
 
