@@ -4,7 +4,8 @@
 
 === Architectural decision records
 
-* [ADR-067] Add support for injecting platform services/beans into Java service classes used by studios
+- [ADR-067] Add support for injecting platform services/beans into Java service classes used by studios
+- [ADR-068] Improve support for precondition expression from representation description
 
 === Breaking changes
 
@@ -21,7 +22,8 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbenc
 https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbench] Move the workbench related code to `@eclipse-sirius/sirius-components-core`. This move includes components such as `Workbench`, `RepresentationContext`, `WorkbenchViewContribution` for example
 https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram] Move the code of the diagram and the selection wizard in the packages `@eclipse-sirius/sirius-components-diagrams` and `@eclipse-sirius/sirius-components-selection`
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [core] Some code remain in the soon to be deprecated Sirius Component package `@eclipse-sirius/sirius-components`. Most of this code will either be moved to Sirius Web or be removed entirely (such as the old non MaterialUI widgets)
-
+- https://github.com/eclipse-sirius/sirius-components/issues/1288[#1288] [core] The `representationDescriptions` GraphQL has been renamed into `representationCreationDescriptions` and now takes an `objectId: ID` as argument instead of just the object's `kind: ID`.
+This allows representation precondition expressions to be more precise as they know the actual candidate instance, not just its type.
 
 === Dependency update
 
