@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -48,6 +49,10 @@ public final class ListDescription extends AbstractWidgetDescription {
     private Function<VariableManager, Boolean> itemDeletableProvider;
 
     private Function<VariableManager, IStatus> itemDeleteHandlerProvider;
+
+    private Function<VariableManager, IStatus> itemClickHandlerProvider;
+
+    private Function<VariableManager, ListStyle> styleProvider;
 
     private ListDescription() {
         // Prevent instantiation
@@ -93,6 +98,14 @@ public final class ListDescription extends AbstractWidgetDescription {
         return this.itemDeleteHandlerProvider;
     }
 
+    public Function<VariableManager, IStatus> getItemClickHandlerProvider() {
+        return this.itemClickHandlerProvider;
+    }
+
+    public Function<VariableManager, ListStyle> getStyleProvider() {
+        return this.styleProvider;
+    }
+
     public static Builder newListDescription(String id) {
         return new Builder(id);
     }
@@ -131,6 +144,10 @@ public final class ListDescription extends AbstractWidgetDescription {
         private Function<VariableManager, Boolean> itemDeletableProvider;
 
         private Function<VariableManager, IStatus> itemDeleteHandlerProvider;
+
+        private Function<VariableManager, IStatus> itemClickHandlerProvider;
+
+        private Function<VariableManager, ListStyle> styleProvider;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
 
@@ -192,6 +209,16 @@ public final class ListDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder itemClickHandlerProvider(Function<VariableManager, IStatus> itemClickHandlerProvider) {
+            this.itemClickHandlerProvider = Objects.requireNonNull(itemClickHandlerProvider);
+            return this;
+        }
+
+        public Builder styleProvider(Function<VariableManager, ListStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public Builder diagnosticsProvider(Function<VariableManager, List<?>> diagnosticsProvider) {
             this.diagnosticsProvider = Objects.requireNonNull(diagnosticsProvider);
             return this;
@@ -220,6 +247,8 @@ public final class ListDescription extends AbstractWidgetDescription {
             listDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
             listDescription.itemDeletableProvider = Objects.requireNonNull(this.itemDeletableProvider);
             listDescription.itemDeleteHandlerProvider = Objects.requireNonNull(this.itemDeleteHandlerProvider);
+            listDescription.itemClickHandlerProvider = Objects.requireNonNull(this.itemClickHandlerProvider);
+            listDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             listDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             listDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             listDescription.messageProvider = Objects.requireNonNull(this.messageProvider);

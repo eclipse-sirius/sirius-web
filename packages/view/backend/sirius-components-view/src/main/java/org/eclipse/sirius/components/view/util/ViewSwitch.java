@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -56,6 +57,8 @@ import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ListDescription;
+import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -796,6 +799,41 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.caseWidgetDescriptionStyle(conditionalLinkDescriptionStyle);
             if (result == null)
                 result = this.caseLabelStyle(conditionalLinkDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LIST_DESCRIPTION: {
+            ListDescription listDescription = (ListDescription) theEObject;
+            T result = this.caseListDescription(listDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(listDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LIST_DESCRIPTION_STYLE: {
+            ListDescriptionStyle listDescriptionStyle = (ListDescriptionStyle) theEObject;
+            T result = this.caseListDescriptionStyle(listDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(listDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(listDescriptionStyle);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE: {
+            ConditionalListDescriptionStyle conditionalListDescriptionStyle = (ConditionalListDescriptionStyle) theEObject;
+            T result = this.caseConditionalListDescriptionStyle(conditionalListDescriptionStyle);
+            if (result == null)
+                result = this.caseConditional(conditionalListDescriptionStyle);
+            if (result == null)
+                result = this.caseListDescriptionStyle(conditionalListDescriptionStyle);
+            if (result == null)
+                result = this.caseWidgetDescriptionStyle(conditionalListDescriptionStyle);
+            if (result == null)
+                result = this.caseLabelStyle(conditionalListDescriptionStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1706,6 +1744,51 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalLinkDescriptionStyle(ConditionalLinkDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>List Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>List Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseListDescription(ListDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>List Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>List Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseListDescriptionStyle(ListDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional List Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional List Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalListDescriptionStyle(ConditionalListDescriptionStyle object) {
         return null;
     }
 

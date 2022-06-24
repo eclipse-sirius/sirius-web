@@ -10,17 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type Kind =
-  | 'Textfield'
-  | 'TextArea'
-  | 'Checkbox'
-  | 'Radio'
-  | 'Select'
-  | 'MultiSelect'
-  | 'Button'
-  | 'Label'
-  | 'Link'
-  | 'List'
-  | 'BarChart'
-  | 'PieChart'
-  | 'FlexboxContainer';
+package org.eclipse.sirius.components.forms;
+
+/**
+ * The selection click event kind.
+ *
+ * @author fbarbin
+ */
+public enum ClickEventKind {
+    SINGLE_CLICK, DOUBLE_CLICK
+}

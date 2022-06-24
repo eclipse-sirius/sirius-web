@@ -14,7 +14,6 @@ import { useMutation, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import { Button } from './icons/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -22,12 +21,14 @@ import Typography from '@material-ui/core/Typography';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CloseIcon from '@material-ui/icons/Close';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
 import LinkIcon from '@material-ui/icons/Link';
-import CloseIcon from '@material-ui/icons/Close';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
+import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
@@ -60,8 +61,8 @@ import {
   SchemaValue,
   ShowToastEvent,
 } from './FormDescriptionEditorRepresentationMachine';
+import { Button } from './icons/Button';
 import { WidgetEntry } from './WidgetEntry';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { isKind } from './WidgetOperations';
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -396,6 +397,17 @@ export const FormDescriptionEditorRepresentation = ({
             <LinkIcon />
             <Typography variant="caption" gutterBottom>
               Link
+            </Typography>
+          </div>
+          <div
+            id="List"
+            data-testid="FormDescriptionEditor-List"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <FormatListBulletedIcon />
+            <Typography variant="caption" gutterBottom>
+              List
             </Typography>
           </div>
           <div

@@ -27,12 +27,18 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
 public final class List extends AbstractWidget {
     private java.util.List<ListItem> items;
 
+    private ListStyle style;
+
     private List() {
         // Prevent instantiation
     }
 
     public java.util.List<ListItem> getItems() {
         return this.items;
+    }
+
+    public ListStyle getStyle() {
+        return this.style;
     }
 
     public static Builder newList(String id) {
@@ -58,6 +64,8 @@ public final class List extends AbstractWidget {
 
         private String iconURL;
 
+        private ListStyle style;
+
         private java.util.List<ListItem> items;
 
         private java.util.List<Diagnostic> diagnostics;
@@ -76,6 +84,11 @@ public final class List extends AbstractWidget {
             return this;
         }
 
+        public Builder style(ListStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder items(java.util.List<ListItem> items) {
             this.items = Objects.requireNonNull(items);
             return this;
@@ -91,6 +104,7 @@ public final class List extends AbstractWidget {
             list.id = Objects.requireNonNull(this.id);
             list.label = Objects.requireNonNull(this.label);
             list.iconURL = this.iconURL;
+            list.style = this.style; // Optional on purpose
             list.items = Objects.requireNonNull(this.items);
             list.diagnostics = Objects.requireNonNull(this.diagnostics);
             return list;

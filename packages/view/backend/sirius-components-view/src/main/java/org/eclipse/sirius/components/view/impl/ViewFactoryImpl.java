@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
@@ -58,6 +59,8 @@ import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ListDescription;
+import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -230,6 +233,12 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createLinkDescriptionStyle();
         case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE:
             return this.createConditionalLinkDescriptionStyle();
+        case ViewPackage.LIST_DESCRIPTION:
+            return this.createListDescription();
+        case ViewPackage.LIST_DESCRIPTION_STYLE:
+            return this.createListDescriptionStyle();
+        case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE:
+            return this.createConditionalListDescriptionStyle();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -836,6 +845,39 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalLinkDescriptionStyle createConditionalLinkDescriptionStyle() {
         ConditionalLinkDescriptionStyleImpl conditionalLinkDescriptionStyle = new ConditionalLinkDescriptionStyleImpl();
         return conditionalLinkDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ListDescription createListDescription() {
+        ListDescriptionImpl listDescription = new ListDescriptionImpl();
+        return listDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ListDescriptionStyle createListDescriptionStyle() {
+        ListDescriptionStyleImpl listDescriptionStyle = new ListDescriptionStyleImpl();
+        return listDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalListDescriptionStyle createConditionalListDescriptionStyle() {
+        ConditionalListDescriptionStyleImpl conditionalListDescriptionStyle = new ConditionalListDescriptionStyleImpl();
+        return conditionalListDescriptionStyle;
     }
 
     /**

@@ -455,6 +455,31 @@ public interface ViewFactory extends EFactory {
     ConditionalLinkDescriptionStyle createConditionalLinkDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>List Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>List Description</em>'.
+     * @generated
+     */
+    ListDescription createListDescription();
+
+    /**
+     * Returns a new object of class '<em>List Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>List Description Style</em>'.
+     * @generated
+     */
+    ListDescriptionStyle createListDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional List Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional List Description Style</em>'.
+     * @generated
+     */
+    ConditionalListDescriptionStyle createConditionalListDescriptionStyle();
+
+    /**
      * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Bar Chart Description</em>'.

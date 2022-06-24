@@ -225,6 +225,16 @@ export interface GQLRadioOption {
 
 export interface GQLList extends GQLWidget {
   items: GQLListItem[];
+  style: GQLListStyle;
+}
+
+export interface GQLListStyle {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLListItem {

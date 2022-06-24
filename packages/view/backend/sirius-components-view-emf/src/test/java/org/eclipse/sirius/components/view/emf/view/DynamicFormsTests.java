@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
+import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
@@ -46,6 +47,8 @@ import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.LinkStyle;
+import org.eclipse.sirius.components.forms.ListItem;
+import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.Page;
@@ -67,6 +70,7 @@ import org.eclipse.sirius.components.view.BarChartDescription;
 import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
+import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
@@ -74,6 +78,7 @@ import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
@@ -87,6 +92,8 @@ import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.ListDescription;
+import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.PieChartDescription;
@@ -116,25 +123,21 @@ import org.springframework.context.support.StaticApplicationContext;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DynamicFormsTests {
 
-    private EClass eClass1;
-
-    private EClass eClass2;
-
-    private EClass eClass3;
+    private EClass[] eClasses = new EClass[3];
 
     @Test
     void testRenderEcoreForm() throws Exception {
 
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
-        Form result = this.render(eClassFormDescription, this.eClass1);
+        Form result = this.render(eClassFormDescription, this.eClasses[0]);
 
         assertThat(result).isNotNull();
         assertThat(result.getPages()).hasSize(1);
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(12);
+        assertThat(group.getWidgets()).hasSize(13);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -147,6 +150,7 @@ public class DynamicFormsTests {
         Button button = (Button) group.getWidgets().get(9);
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
+        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -179,6 +183,8 @@ public class DynamicFormsTests {
         assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
         this.testNoStyle(link);
 
+        this.checkList(list, false, false);
+
         assertThat(radio.getOptions()).hasSize(3);
         assertThat(radio.getOptions()).allSatisfy(option -> {
             if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
@@ -201,6 +207,28 @@ public class DynamicFormsTests {
         assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
         this.testNoStyle(button);
+    }
+
+    private void checkList(org.eclipse.sirius.components.forms.List list, boolean checkStyle, boolean checkConditionalStyle) {
+        assertThat(list.getLabel()).isEqualTo("Label EClass List"); //$NON-NLS-1$
+        List<ListItem> items = list.getItems();
+        assertThat(items).hasSize(3);
+        for (int i = 0; i < 3; i++) {
+            assertThat(items.get(i).getLabel()).isEqualTo("Class" + (i + 1)); //$NON-NLS-1$ ;
+            assertThat(items.get(i).isDeletable()).isTrue();
+            items.get(i).getClickHandler().apply(ClickEventKind.DOUBLE_CLICK);
+            assertThat(this.eClasses[i].getName()).isEqualTo("Class" + (i + 1) + " click event kind: DOUBLE_CLICK"); //$NON-NLS-1$ //$NON-NLS-2$
+            items.get(i).getClickHandler().apply(ClickEventKind.SINGLE_CLICK);
+            assertThat(this.eClasses[i].getName()).isEqualTo("Class" + (i + 1) + " click event kind: DOUBLE_CLICK click event kind: SINGLE_CLICK"); //$NON-NLS-1$ //$NON-NLS-2$
+            this.eClasses[i].setName("Class" + (i + 1)); //$NON-NLS-1$
+        }
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(list);
+        } else if (checkStyle) {
+            this.testStyle(list);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(list);
+        }
     }
 
     private void checkPieChart(ChartWidget chartWidgetWithPieChart, boolean checkStyle, boolean checkConditionalStyle) {
@@ -301,14 +329,14 @@ public class DynamicFormsTests {
 
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(true, false);
-        Form result = this.render(eClassFormDescription, this.eClass1);
+        Form result = this.render(eClassFormDescription, this.eClasses[0]);
 
         assertThat(result).isNotNull();
         assertThat(result.getPages()).hasSize(1);
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(12);
+        assertThat(group.getWidgets()).hasSize(13);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -321,6 +349,7 @@ public class DynamicFormsTests {
         Button button = (Button) group.getWidgets().get(9);
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
+        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -370,6 +399,8 @@ public class DynamicFormsTests {
         assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
         this.testStyle(link);
 
+        this.checkList(list, true, false);
+
         this.checkBarChart(chartWidgetWithBarChart, true, false);
 
         this.checkPieChart(chartWidgetWithPieChart, true, false);
@@ -398,14 +429,14 @@ public class DynamicFormsTests {
 
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(true, true);
-        Form result = this.render(eClassFormDescription, this.eClass1);
+        Form result = this.render(eClassFormDescription, this.eClasses[0]);
 
         assertThat(result).isNotNull();
         assertThat(result.getPages()).hasSize(1);
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(12);
+        assertThat(group.getWidgets()).hasSize(13);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -418,6 +449,7 @@ public class DynamicFormsTests {
         Button button = (Button) group.getWidgets().get(9);
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
+        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -467,6 +499,8 @@ public class DynamicFormsTests {
         assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
         this.testConditionalStyle(link);
 
+        this.checkList(list, false, true);
+
         this.checkBarChart(chartWidgetWithBarChart, false, true);
 
         this.checkPieChart(chartWidgetWithPieChart, false, true);
@@ -494,28 +528,28 @@ public class DynamicFormsTests {
     void testEditingEcoreForm() throws Exception {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
-        Form form = this.render(eClassFormDescription, this.eClass1);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(12);
+        Form form = this.render(eClassFormDescription, this.eClasses[0]);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(13);
 
-        this.checkValuesEditing(this.eClass1, form);
+        this.checkValuesEditing(this.eClasses[0], form);
     }
 
     @Test
     void testSetNullOnSelectEcoreForm() throws Exception {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
-        Form form = this.render(eClassFormDescription, this.eClass1);
+        Form form = this.render(eClassFormDescription, this.eClasses[0]);
         Group group = form.getPages().get(0).getGroups().get(0);
         Select select = (Select) group.getWidgets().get(4);
         assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
-        assertThat(this.eClass1.getESuperTypes().isEmpty()).isFalse();
+        assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isFalse();
         select.getNewValueHandler().apply(null);
-        assertThat(this.eClass1.getESuperTypes().isEmpty()).isTrue();
+        assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isTrue();
     }
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(12);
+        assertThat(group.getWidgets()).hasSize(13);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -533,7 +567,7 @@ public class DynamicFormsTests {
         assertThat(multiSelect.getValues()).hasSize(2);
         assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$//$NON-NLS-2$
         multiSelect.getNewValuesHandler().apply(List.of("Class2")); //$NON-NLS-1$
-        assertThat(eClass.getESuperTypes()).containsExactlyInAnyOrder(this.eClass2);
+        assertThat(eClass.getESuperTypes()).containsExactlyInAnyOrder(this.eClasses[1]);
 
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
         assertThat(checkBox.isValue()).isTrue();
@@ -545,7 +579,7 @@ public class DynamicFormsTests {
         assertThat(select.getOptions()).hasSize(3);
         assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
         select.getNewValueHandler().apply("Class3"); //$NON-NLS-1$
-        assertThat(this.eClass1.getESuperTypes()).containsExactlyInAnyOrder(this.eClass3);
+        assertThat(this.eClasses[0].getESuperTypes()).containsExactlyInAnyOrder(this.eClasses[2]);
 
         Radio radio = (Radio) group.getWidgets().get(5);
         assertThat(radio.getOptions()).hasSize(3);
@@ -611,6 +645,8 @@ public class DynamicFormsTests {
         formDescription.getWidgets().add(labelDescription);
         LinkDescription linkDescription = this.createLink(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(linkDescription);
+        ListDescription listDescription = this.createList(withStyle, withConditionalStyle);
+        formDescription.getWidgets().add(listDescription);
         return formDescription;
     }
 
@@ -921,6 +957,39 @@ public class DynamicFormsTests {
         return linkDescription;
     }
 
+    private ListDescription createList(boolean withStyle, boolean withConditionalStyle) {
+        ListDescription listDescription = ViewFactory.eINSTANCE.createListDescription();
+        listDescription.setLabelExpression("aql:'Label EClass List'"); //$NON-NLS-1$
+        listDescription.setName("Classes list"); //$NON-NLS-1$
+        listDescription.setValueExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
+        listDescription.setDisplayExpression("aql:candidate.name"); //$NON-NLS-1$
+        listDescription.setIsDeletableExpression("aql:true"); //$NON-NLS-1$
+
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:candidate"); //$NON-NLS-1$
+        SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
+        setValue.setFeatureName("name"); //$NON-NLS-1$
+        setValue.setValueExpression("aql:self.name + ' click event kind: ' + clickEventKind"); //$NON-NLS-1$
+        changeContext.getChildren().add(setValue);
+        listDescription.getBody().add(changeContext);
+
+        if (withStyle) {
+            ListDescriptionStyle style = ViewFactory.eINSTANCE.createListDescriptionStyle();
+            style.setColor("lightBlue"); //$NON-NLS-1$
+            this.setFontStyle(style);
+            listDescription.setStyle(style);
+        }
+        if (withConditionalStyle) {
+            ConditionalListDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalListDescriptionStyle();
+            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
+            conditionalStyle.setColor("orange"); //$NON-NLS-1$
+            this.setConditionalFontStyle(conditionalStyle);
+            listDescription.getConditionalStyles().add(conditionalStyle);
+        }
+
+        return listDescription;
+    }
+
     private void setFontStyle(LabelStyle labelStyle) {
         labelStyle.setFontSize(20);
         labelStyle.setItalic(true);
@@ -1082,6 +1151,25 @@ public class DynamicFormsTests {
         this.testFontStyle(multiSelectStyle);
     }
 
+    private void testNoStyle(org.eclipse.sirius.components.forms.List list) {
+        ListStyle listStyle = list.getStyle();
+        assertThat(listStyle).isNull();
+    }
+
+    private void testStyle(org.eclipse.sirius.components.forms.List list) {
+        ListStyle listStyle = list.getStyle();
+        assertThat(listStyle).isNotNull();
+        assertThat(listStyle.getColor()).isEqualTo("lightBlue"); //$NON-NLS-1$
+        this.testFontStyle(listStyle);
+    }
+
+    private void testConditionalStyle(org.eclipse.sirius.components.forms.List list) {
+        ListStyle listStyle = list.getStyle();
+        assertThat(listStyle).isNotNull();
+        assertThat(listStyle.getColor()).isEqualTo("orange"); //$NON-NLS-1$
+        this.testConditionalFontStyle(listStyle);
+    }
+
     private void testConditionalStyle(MultiSelect multiSelect) {
         MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
         assertThat(multiSelectStyle).isNotNull();
@@ -1135,20 +1223,24 @@ public class DynamicFormsTests {
     private EPackage buildFixture() {
         EPackage fixture = EcoreFactory.eINSTANCE.createEPackage();
         fixture.setName("fixture"); //$NON-NLS-1$
-        this.eClass1 = EcoreFactory.eINSTANCE.createEClass();
-        this.eClass1.setName("Class1"); //$NON-NLS-1$
-        this.eClass1.setAbstract(true);
-        this.eClass1.setInstanceClassName("Class1Instance"); //$NON-NLS-1$
-        fixture.getEClassifiers().add(this.eClass1);
-        this.eClass2 = EcoreFactory.eINSTANCE.createEClass();
-        this.eClass2.setName("Class2"); //$NON-NLS-1$
-        fixture.getEClassifiers().add(this.eClass2);
-        this.eClass3 = EcoreFactory.eINSTANCE.createEClass();
-        this.eClass3.setName("Class3"); //$NON-NLS-1$
-        fixture.getEClassifiers().add(this.eClass3);
+        EClass eClass1 = EcoreFactory.eINSTANCE.createEClass();
+        eClass1.setName("Class1"); //$NON-NLS-1$
+        eClass1.setAbstract(true);
+        eClass1.setInstanceClassName("Class1Instance"); //$NON-NLS-1$
+        this.eClasses[0] = eClass1;
 
-        this.eClass1.getESuperTypes().add(this.eClass2);
-        this.eClass1.getESuperTypes().add(this.eClass3);
+        fixture.getEClassifiers().add(eClass1);
+        EClass eClass2 = EcoreFactory.eINSTANCE.createEClass();
+        eClass2.setName("Class2"); //$NON-NLS-1$
+        this.eClasses[1] = eClass2;
+        fixture.getEClassifiers().add(eClass2);
+        EClass eClass3 = EcoreFactory.eINSTANCE.createEClass();
+        eClass3.setName("Class3"); //$NON-NLS-1$
+        this.eClasses[2] = eClass3;
+        fixture.getEClassifiers().add(eClass3);
+
+        eClass1.getESuperTypes().add(eClass2);
+        eClass1.getESuperTypes().add(eClass3);
         return fixture;
     }
 
@@ -1171,13 +1263,13 @@ public class DynamicFormsTests {
                 Optional<Object> optional = Optional.empty();
                 switch (objectId) {
                 case "Class1": //$NON-NLS-1$
-                    optional = Optional.of(DynamicFormsTests.this.eClass1);
+                    optional = Optional.of(DynamicFormsTests.this.eClasses[0]);
                     break;
                 case "Class2": //$NON-NLS-1$
-                    optional = Optional.of(DynamicFormsTests.this.eClass2);
+                    optional = Optional.of(DynamicFormsTests.this.eClasses[1]);
                     break;
                 case "Class3": //$NON-NLS-1$
-                    optional = Optional.of(DynamicFormsTests.this.eClass3);
+                    optional = Optional.of(DynamicFormsTests.this.eClasses[2]);
                     break;
                 default:
                     break;

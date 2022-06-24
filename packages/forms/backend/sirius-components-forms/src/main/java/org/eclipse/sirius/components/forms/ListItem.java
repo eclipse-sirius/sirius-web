@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.forms;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -35,6 +36,8 @@ public final class ListItem {
     private String imageURL;
 
     private boolean deletable;
+
+    private Function<ClickEventKind, IStatus> clickHandler;
 
     private Supplier<IStatus> deleteHandler;
 
@@ -60,6 +63,10 @@ public final class ListItem {
 
     public boolean isDeletable() {
         return this.deletable;
+    }
+
+    public Function<ClickEventKind, IStatus> getClickHandler() {
+        return this.clickHandler;
     }
 
     public Supplier<IStatus> getDeleteHandler() {
@@ -93,6 +100,8 @@ public final class ListItem {
 
         private boolean deletable;
 
+        private Function<ClickEventKind, IStatus> clickHandler;
+
         private Supplier<IStatus> deleteHandler;
 
         private Builder(String id) {
@@ -119,6 +128,11 @@ public final class ListItem {
             return this;
         }
 
+        public Builder clickHandler(Function<ClickEventKind, IStatus> clickHandler) {
+            this.clickHandler = Objects.requireNonNull(clickHandler);
+            return this;
+        }
+
         public Builder deleteHandler(Supplier<IStatus> deleteHandler) {
             this.deleteHandler = Objects.requireNonNull(deleteHandler);
             return this;
@@ -130,6 +144,7 @@ public final class ListItem {
             listItem.label = Objects.requireNonNull(this.label);
             listItem.kind = Objects.requireNonNull(this.kind);
             listItem.deletable = Objects.requireNonNull(this.deletable);
+            listItem.clickHandler = Objects.requireNonNull(this.clickHandler);
             listItem.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             listItem.imageURL = Objects.requireNonNull(this.imageURL);
             return listItem;
