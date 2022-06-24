@@ -1,0 +1,73 @@
+= ADR-068 - Improve support for precondition expression from representation description
+
+== Context
+
+From the View DSL or from the compatibility layer, a representation description may have a precondition expression.
+This precondition expression (typically an AQL expression) only supports 'class' variable, not even 'self'.
+This means the precondition can not test against properties of a specific candidate instance, only on its type.
+
+== Decision
+
+We will improve the evaluation context of precondition expressions support by adding the support of 'self' variable.
+
+=== Frontend
+
+The queries and GraphQL data types involved in the retrieving of the precondition expression will be modified.
+Th `kind` parameter is not enough either and will be replaced by the `objectId` on which the query is executed.
+It will allow to put the `objectId` as `self` variable in the VariableManager on the backend.
+
+The `getRepresentationDescriptionsQuery` query in `NewRepresentationModel.tsx`will be modified from:
+```
+query getRepresentationDescriptions($editingContextId: ID!, $kind: ID!) {
+	...
+	representationDescriptions(kind: $kind) {
+		...
+	}
+	...
+}
+```
+to
+```
+query getRepresentationDescriptions($editingContextId: ID!, $objectId: ID!) {
+	...
+	representationDescriptions(objectId: $objectId) {
+		...
+	}
+	...
+}
+```
+
+The `getOnboardDataQuery` query in `OnboardArea.tsx` will be modified from
+```
+query getOnboardData($editingContextId: ID!, $kind: ID!) {
+	...
+	representationDescriptions(kind: $kind) {
+		...
+	}
+	...
+}
+```
+to
+```
+query getOnboardData($editingContextId: ID!, $objectId: ID!) {
+	...
+	representationDescriptions(objectId: $objectId) {
+		...
+	}
+	...
+}
+```
+
+=== Backend
+
+The `EditingContextRepresentationDescriptionsEventHandler.java` and `EditingContextRepresentationDescriptionsInput.java` will be updated to reflect the changes from `kind` to `objectId`, and the addition of the `self` variable.
+
+== Status
+
+Accepted
+
+== Consequences
+
+This is an API break. The CHANGELOG will be updated to reflect this change.
+
+Applications (e.g. Sirius Web) will need to adapt their data fetcher implementation for the `representationDescriptions` query to take an `objectId: string` as argument instead of `kind: string`.
