@@ -74,6 +74,12 @@ public final class TestLayoutDiagramBuilder {
         return edgeBuilder;
     }
 
+    public EdgeBuilder edge() {
+        EdgeBuilder edgeBuilder = new EdgeBuilder(this, this.edgeIdPrefixToCount);
+        this.edgeBuilders.add(edgeBuilder);
+        return edgeBuilder;
+    }
+
     public Diagram build() {
         Map<String, String> targetObjectIdToNodeId = new HashMap<>();
         List<Node> nodes = this.nodesBuilder.build(targetObjectIdToNodeId);

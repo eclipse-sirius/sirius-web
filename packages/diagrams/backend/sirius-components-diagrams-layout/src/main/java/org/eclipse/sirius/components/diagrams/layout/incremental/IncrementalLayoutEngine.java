@@ -100,9 +100,18 @@ public class IncrementalLayoutEngine {
 
         // finally we recompute the edges that needs to
         for (EdgeLayoutData edge : diagram.getEdges()) {
-            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget()) || !this.isLabelPositioned(edge) || !this.isEdgePositioned(edge)) {
+            if (this.hasChanged(edge.getSource()) || this.hasChanged(edge.getTarget()) || !this.isEdgePositioned(edge)) {
                 this.layoutEdge(optionalDiagramElementEvent, edge);
             }
+            if (this.shouldLayoutEdgeLabel(edge)) {
+                this.layoutEdgeLabel(edge);
+            }
+        }
+    }
+
+    private void layoutEdgeLabel(EdgeLayoutData edge) {
+        if (edge.getCenterLabel() != null) {
+            edge.getCenterLabel().setPosition(this.edgeLabelPositionProvider.getCenterPosition(edge, edge.getCenterLabel()));
         }
     }
 
@@ -112,13 +121,14 @@ public class IncrementalLayoutEngine {
      * This can be removed when we will consider all diagram should have been migrated
      */
     private boolean isEdgePositioned(EdgeLayoutData edge) {
-        return edge.getSourceAnchorRelativePosition() != null && edge.getTargetAnchorRelativePosition() != null;
+        return edge.getSourceAnchorRelativePosition() != null && edge.getTargetAnchorRelativePosition() != null && !edge.getSourceAnchorRelativePosition().equals(Ratio.UNDEFINED)
+                && !edge.getTargetAnchorRelativePosition().equals(Ratio.UNDEFINED);
     }
 
-    private boolean isLabelPositioned(EdgeLayoutData edge) {
+    private boolean shouldLayoutEdgeLabel(EdgeLayoutData edge) {
         if (edge.getCenterLabel() != null) {
             Position position = edge.getCenterLabel().getPosition();
-            return position.getX() != -1 || position.getY() != -1;
+            return position.getX() == -1 && position.getY() == -1;
         }
         return false;
     }
@@ -376,11 +386,6 @@ public class IncrementalLayoutEngine {
 
         // recompute the edge routing points
         edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(edge));
-
-        // recompute edge labels
-        if (edge.getCenterLabel() != null) {
-            edge.getCenterLabel().setPosition(this.edgeLabelPositionProvider.getCenterPosition(edge, edge.getCenterLabel()));
-        }
     }
 
     /**

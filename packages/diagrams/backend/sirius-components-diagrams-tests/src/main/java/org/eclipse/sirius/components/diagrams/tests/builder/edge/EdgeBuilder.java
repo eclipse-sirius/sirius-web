@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
@@ -37,7 +38,7 @@ import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
 public final class EdgeBuilder {
     private TestLayoutDiagramBuilder diagramBuilder;
 
-    private Label centerLabel;
+    private Optional<Label> centerLabel;
 
     private EdgeEndBuilder sourceEdgeBuilder;
 
@@ -49,7 +50,13 @@ public final class EdgeBuilder {
 
     public EdgeBuilder(TestLayoutDiagramBuilder diagramBuilder, String edgeCenterLabel, Map<String, Integer> edgeIdPrefixToCount) {
         this.diagramBuilder = Objects.requireNonNull(diagramBuilder);
-        this.centerLabel = new LabelBuilder().basicLabel(edgeCenterLabel, LabelType.EDGE_CENTER);
+        this.centerLabel = Optional.of(new LabelBuilder().basicLabel(edgeCenterLabel, LabelType.EDGE_CENTER));
+        this.edgeIdPrefixToCount = edgeIdPrefixToCount;
+    }
+
+    public EdgeBuilder(TestLayoutDiagramBuilder diagramBuilder, Map<String, Integer> edgeIdPrefixToCount) {
+        this.diagramBuilder = Objects.requireNonNull(diagramBuilder);
+        this.centerLabel = Optional.empty();
         this.edgeIdPrefixToCount = edgeIdPrefixToCount;
     }
 
@@ -111,14 +118,14 @@ public final class EdgeBuilder {
                 .sourceAnchorRelativePosition(sourceEdgeEnd.getEndRatio())
                 .targetAnchorRelativePosition(targetEdgeEnd.getEndRatio())
                 .beginLabel(null)
-                .centerLabel(this.centerLabel)
+                .centerLabel(this.centerLabel.orElse(null))
                 .endLabel(null)
                 .descriptionId(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)
                 .routingPoints(this.routingPoints)
                 .style(edgeStyle)
                 .targetObjectId(sourceEdgeEnd.getEndId())
                 .targetObjectKind("") //$NON-NLS-1$
-                .targetObjectLabel(this.centerLabel.getText())
+                .targetObjectLabel(this.centerLabel.map(Label::getText).orElse("")) //$NON-NLS-1$
                 .build();
         // @formatter:on
     }
