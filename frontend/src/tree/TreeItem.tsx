@@ -198,10 +198,11 @@ export const TreeItem = ({
   // Context menu handling
   const openContextMenu = (event) => {
     if (!showContextMenu) {
+      const { currentTarget } = event;
       setState((prevState) => {
         return {
           showContextMenu: true,
-          menuAnchor: event.currentTarget,
+          menuAnchor: currentTarget,
           editingMode: false,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
