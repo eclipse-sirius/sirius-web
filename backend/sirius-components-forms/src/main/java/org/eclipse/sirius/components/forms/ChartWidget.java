@@ -89,13 +89,13 @@ public final class ChartWidget extends AbstractWidget {
         }
 
         public ChartWidget build() {
-            ChartWidget link = new ChartWidget();
-            link.id = Objects.requireNonNull(this.id);
-            link.label = Objects.requireNonNull(this.label);
-            this.iconURL = this.iconURL;
-            link.chart = Objects.requireNonNull(this.chart);
-            link.diagnostics = Objects.requireNonNull(this.diagnostics);
-            return link;
+            ChartWidget chartWidget = new ChartWidget();
+            chartWidget.id = Objects.requireNonNull(this.id);
+            chartWidget.label = Objects.requireNonNull(this.label);
+            chartWidget.iconURL = this.iconURL;
+            chartWidget.chart = Objects.requireNonNull(this.chart);
+            chartWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
+            return chartWidget;
         }
     }
 }
