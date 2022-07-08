@@ -1,0 +1,180 @@
+= ADR-067 - Add support for compartment in diagram
+
+== Context
+
+We need to support the UML class diagram. For that, we need to be able to spread node list items of a node list into multiple compartment. We will need to support only row compartments.
+In the first implementation we will not support the expand/collapse of compartment.
+We should focus the implementation to support the View DSL to be able to define multiple compartment for a Node List. We should also focus on the compatibility layer to be able to convert the definition of the class diagram description from a Sirius VSM.
+
+== Decision
+
+We will support three new type of nodes:
+- The compartment container ('comp:container')
+- The free form compartment ('comp:free-form')
+- The list compartment ('comp:list')
+
+=== Backend
+
+==== Data structure
+
+We will introduce three new node style. the `CompartmentContainerNodeStyle`, the `FreeFormCompartmentNodeStyle` and the `ListCompartmentNodeStyle`.
+
+```java
+
+public final class CompartmentContainerNodeStyle implements INodeStyle {
+    private String color;
+
+    private String borderColor;
+
+    private int borderSize;
+
+    private int borderRadius;
+
+    private LineStyle borderStyle;
+
+    private String compartmentDirection;
+}
+
+```
+
+NOTE: compartmentDirection string value will be `row` at first. It will include `column` when we will support the column direction.
+
+```java
+
+public final class FreeFormCompartmentNodeStyle implements INodeStyle {
+    private boolean displayLabel;
+}
+
+```
+
+```java
+
+public final class ListCompartmentNodeStyle implements INodeStyle {
+    private boolean displayLabel;
+}
+
+```
+
+==== Graphql
+
+The file `diagram.graphqls` should be updated according to the new data structure
+
+```graphql
+
+type CompartmentContainerNodeStyle {
+    color: String!
+    borderColor: String!
+    borderSize: Int!
+    borderRadius: Int!
+    borderStyle: LineStyle!
+    compartmentDirection: String!
+}
+
+type FreeFormCompartmentNodeStyle {
+    displaylabel: Boolean!
+}
+
+type ListCompartmentNodeStyle {
+    displaylabel: Boolean!
+}
+
+union INodeStyle = ... | CompartmentContainerNodeStyle | FreeFormCompartmentNodeStyle | ListCompartmentNodeStyle
+
+
+```
+
+==== Layout
+
+We will need to contribute the default layout for the tree type of nodes in `LayoutConfiguratorRegistry`. We will need to contribute the incremental layout behavior as well considering that in the first version it will not be possible to modify the graphical view through sprotty, but only by updating the semantic model. In the first version we should implement that behavior like the node list which match is content only.
+
+=== Frontend
+
+==== Data structure
+
+We will need to add the following types:
+
+- in `DiagramWebSocketContainer.types.ts`:
+
+```typescript
+export interface GQLCompartmentContainerNodeStyle extends GQLINodeStyle {
+    color: string;
+    borderColor: string;
+    borderSize: number;
+    borderRadius: number;
+    borderStyle: GQLLineStyle;
+    compartmentDirection: GQLCompartmentDirection;
+}
+
+export interface GQLFreeFormCompartmentNodeStyle extends GQLINodeStyle {
+
+}
+
+export interface GQLListCompartmentNodeStyle extends GQLINodeStyle {
+
+}
+
+export type GQLCompartmentDirection = 'row';
+
+```
+
+- in `Diagram.types.ts`:
+
+```typescript
+
+export interface CompartmentContainerNodeStyle extends INodeStyle {
+    color: string;
+    borderColor: string;
+    borderSize: number;
+    borderRadius: number;
+    borderStyle: LineStyle;
+    compartmentDirection: CompartmentDirection!
+}
+
+export interface FreeFormCompartmentNodeStyle extends INodeStyle {
+
+}
+
+export interface ListCompartmentNodeStyle extends INodeStyle {
+
+}
+
+export type CompartmentDirection = 'row';
+
+```
+
+==== Sprotty
+
+We will support three new sprotty views, each one associated with the sprotty type `Node`:
+- `export class CompartmentContainerView extends RectangularNodeView`
+- `export class FreeFormCompartmentView extends ShapeView`
+- `export class ListCompartmentView extends ShapeView`
+
+
+
+Each sprotty view will be registered in `DependencyInjection.ts`:
+
+```typescript
+configureModelElement(context, 'comp:container', Node, CompartmentContainerView);
+configureModelElement(context, 'comp:free-form', Node, FreeFormCompartmentView);
+configureModelElement(context, 'comp:list', Node, ListCompartmentView);
+
+```
+
+In the first version of the compartment, `converDiagram.ts` will create node without any sprotty feature. They will be activated one by one.
+
+
+=== ViewDSL
+
+We will need to support the tree types of compartments in the view dsl. We will need to improve how node style are described.
+The existing `NodeStyle` will become an abstract class extended by `ImageNodeStyle`, `ListItemNodeStyle`, `ListNodeStyle`, `RectangularNodeStyle`, `CompartmentContainerNodeStyle`, `FreeFormCompartmentNodeStyle` and the `ListCompartmentNodeStyle`.
+
+The existing `listMode` attribute on `NodeList` will be removed in favor of `ListNodeStyle` listed right above.
+Each style will have their own properties, even if some of them are duplicated among the different styles.
+
+== Status
+
+WIP
+
+== Consequences
+
+- Once the ViewDSL has been implemented, View models containing diagram description and at least one `NodeStyle` will not work anymore.
