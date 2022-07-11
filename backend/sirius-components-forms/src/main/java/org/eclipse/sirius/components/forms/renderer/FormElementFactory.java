@@ -212,7 +212,6 @@ public class FormElementFactory implements IElementFactory {
         // @formatter:off
         Builder listBuilder = org.eclipse.sirius.components.forms.List.newList(props.getId())
                 .label(props.getLabel())
-                .iconURL(props.getIconURL())
                 .items(props.getItems())
                 .diagnostics(diagnostics);
         // @formatter:on
