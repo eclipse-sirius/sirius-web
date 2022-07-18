@@ -86,6 +86,7 @@ It behaves like the "Details" view in that it reacts to the selection by display
 The actual definition of the application (e.g. Sirius Web), which must provide a single bean implementing the new `IRelatedElementsDescriptionProvider` interface.
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to
 JSONResourceFactoryImpl.
+- https://github.com/eclipse-sirius/sirius-emf-json/issues/9[#9] [releng] Update emfjson dependency.
 
 === New features
 
