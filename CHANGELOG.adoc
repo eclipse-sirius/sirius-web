@@ -84,6 +84,8 @@ To integrate the "Details" view inside a workbench, one must now use the new `De
 - https://github.com/eclipse-sirius/sirius-components/issues/1141[#1141] [workbench] It is now possible to add a "Related View" contribution to the workbench.
 It behaves like the "Details" view in that it reacts to the selection by displaying a Form, but is designed to display contextual information about the selected element (i.e. which elements it points to and which elements point to it for example).
 The actual definition of the application (e.g. Sirius Web), which must provide a single bean implementing the new `IRelatedElementsDescriptionProvider` interface.
+- https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to
+JSONResourceFactoryImpl.
 
 === New features
 
