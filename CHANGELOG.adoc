@@ -1,6 +1,12 @@
 = Changelog
 
-== v2022.9.0 (unreleased)
+== v2022.11.0 (unreleased)
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
+
+== v2022.9.0
 
 === Architectural decision records
 
