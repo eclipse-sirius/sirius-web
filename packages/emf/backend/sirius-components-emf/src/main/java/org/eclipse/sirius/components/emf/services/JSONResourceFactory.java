@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,12 +21,12 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 
 /**
- * Special factory for {@link JsonResource} for Sirius Web.</br>
+ * Special factory for {@link JsonResource}.</br>
  * This factory ensures that objects in that resource are identified by their uuid.
  *
  * @author lfasani
  */
-public class SiriusWebJSONResourceFactoryImpl extends ResourceFactoryImpl {
+public class JSONResourceFactory extends ResourceFactoryImpl {
 
     @Override
     public JsonResource createResource(URI uri) {

@@ -6,21 +6,28 @@
 
 - [ADR-069] Add support for children layout strategy
 - [ADR-070] How to contribute a new diagram node style
-- [ADR-071] - Add parametric SVG node style
+- [ADR-071] Add parametric SVG node style
 - [ADR-072] Add support for the edition of routing points
 
  - https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
+ 
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
+
+=== Dependency update
+
+=== Bug fixes
 
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1339[#1339] [layout] Add concept of layout strategy. The purpose of layout strategy is to split the style of a node from the way a node lays out its children.
-- https://github.com/eclipse-sirius/sirius-components/issues/1385[#1385] [releng] Migrate Sirius Web to Sirius Component. The purpose of this migration is to facilate the maintenance of these two projects (one pull request instead of two different).
+- https://github.com/eclipse-sirius/sirius-components/issues/1385[#1385] [releng] Migrate Sirius Web to Sirius Component. The purpose of this migration is to facilitate the maintenance of these two projects (one pull request instead of two different).
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Edge routing points are not reset when one of the edge end is moving
 
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1316[#1316] [diagram] Support parametric svg node style
-
 
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Add support for edition of routing points in diagrams
 
