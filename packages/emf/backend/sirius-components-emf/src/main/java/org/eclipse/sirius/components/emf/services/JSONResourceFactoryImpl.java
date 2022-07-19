@@ -33,6 +33,8 @@ public class JSONResourceFactoryImpl extends ResourceFactoryImpl {
         Map<String, Object> options = new HashMap<>();
 
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
+        options.put(JsonResource.OPTION_DISPLAY_DYNAMIC_INSTANCES, true);
+
         return new JsonResourceImpl(uri, options);
     }
 }

@@ -1,0 +1,26 @@
+= ADR-067 - Add suport for intermodel references
+
+== Context
+
+The context is an EMF editing context with a ResourceSet containing at least two models and references between the models.
+We should be have to load and save properly those models.
+
+Currently, the URI used to add resources in the ResourceSet is the id of the document.
+That is an issue because IllegalArgumentException are raised from some EMF code part (such as URI.resolve(URI)).
+A valid URI must contain a scheme.
+So the URI of the resources added to the resourceSet should be on the form:
+`<scheme>:///<id de la resource>`
+
+For the URI, corresponding to document added in the project, loaded as JSONResource, the URI scheme is arbitrary : 
+``sirius``
+Example: `sirius:///a264d307-97d9-451d-90f5-46d38668b69c`
+
+== Decision
+
+For the URI, corresponding to document added in the project, loaded as JSONResource, the URI scheme is arbitrary : 
+``sirius``
+Example: `sirius:///a264d307-97d9-451d-90f5-46d38668b69c`
+
+== Status
+
+Accepted.

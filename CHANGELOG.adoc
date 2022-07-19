@@ -55,6 +55,7 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram]
 - [ADR-64] Add support for a ToggableAreaContainer in forms
 - [ADR-65] Add support for a tree widget in forms
 - [ADR-66] Add a new "Related Elements" view
+- [ADR-67] Add support for having inter model references
 
 === Breaking changes
 
@@ -87,6 +88,7 @@ The actual definition of the application (e.g. Sirius Web), which must provide a
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to
 JSONResourceFactoryImpl.
 - https://github.com/eclipse-sirius/sirius-emf-json/issues/9[#9] [releng] Update emfjson dependency.
+- https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having inter model references.
 
 === New features
 
