@@ -8,6 +8,7 @@
 - [ADR-070] How to contribute a new diagram node style
 - [ADR-071] Add parametric SVG node style
 - [ADR-072] Add support for the edition of routing points
+- [ADR-072] Add support for intermodel references (inside the same project)
 
  - https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
  
@@ -18,6 +19,8 @@
 === Dependency update
 
 === Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having intermodel references
 
 === Improvements
 
