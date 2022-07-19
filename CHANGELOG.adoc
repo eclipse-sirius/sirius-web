@@ -2,9 +2,17 @@
 
 == v2022.11.0 (unreleased)
 
+=== Architectural decision records
+
+- [ADR-069] Add support for intermodel references
+
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having intermodel references
 
 == v2022.9.0
 
@@ -124,7 +132,7 @@ To integrate the "Details" view inside a workbench, one must now use the new `De
 - https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [forms] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but icons (if present) are visible in the toggle buttons bar for groups using the new `displayMode = TOGGLEABLE_AREAS`.
 - https://github.com/eclipse-sirius/sirius-components/issues/1141[#1141] [workbench] It is now possible to add a "Related View" contribution to the workbench.
 It behaves like the "Details" view in that it reacts to the selection by displaying a Form, but is designed to display contextual information about the selected element (i.e. which elements it points to and which elements point to it for example).
-The actual definition of the application (e.g. Sirius Web), which must provide a single bean implementing the new `IRelatedElementsDescriptionProvider` interface.
+The actual definition of the application (e.g. Sirius Web), which must provide a single bean implementing the new `IRelatedElementsDescriptionProvider` interface
 
 === New features
 

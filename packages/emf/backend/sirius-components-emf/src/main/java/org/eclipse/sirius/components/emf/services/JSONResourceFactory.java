@@ -33,6 +33,31 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
         Map<String, Object> options = new HashMap<>();
 
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
+        options.put(JsonResource.OPTION_DISPLAY_DYNAMIC_INSTANCES, true);
+
         return new JsonResourceImpl(uri, options);
+    }
+
+    /**
+     * Create a resource which URI is made of a correct scheme and the given id as path.
+     *
+     * @param resourceId
+     *            the id of the resource
+     */
+    public JsonResource createResource(String resourceId) {
+        URI uri = this.createResourceURI(resourceId);
+
+        return this.createResource(uri);
+    }
+
+    /**
+     * Create an URI with a correct scheme and the given id as path.
+     *
+     * @param resourceId
+     *            the id of the resource
+     */
+    public URI createResourceURI(String resourceId) {
+        // There are three slashes because the URI authority is empty
+        return URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + resourceId); //$NON-NLS-1$
     }
 }
