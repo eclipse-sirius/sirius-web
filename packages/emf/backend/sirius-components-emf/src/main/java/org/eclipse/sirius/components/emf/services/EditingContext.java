@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,12 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  * @author sbegaudeau
  */
 public class EditingContext implements IEditingContext {
+
+    /**
+     * This scheme should be used to create an URI of a resource that corresponds to a document added in the
+     * EditingContext ResourceSet.
+     */
+    public static final String RESOURCE_SCHEME = "sirius"; //$NON-NLS-1$
 
     private final String id;
 

@@ -1,0 +1,41 @@
+= ADR-072 - Add support for intermodel references (inside a same project)
+
+== Context
+
+The context is an EMF editing context with a ResourceSet containing at least two models and references between the models.
+We should be able to load and save properly those models.
+
+=== The resource URI
+
+Currently, the URI used to add resources in the ResourceSet is the id of the document.
+That is an issue because IllegalArgumentException are raised from some EMF code part (such as URI.resolve(URI)).
+A valid URI must contain a scheme.
+So the URI of the resources added to the resourceSet should be on the form:
+`<scheme>:///<id of the resource>`
+
+For the URI, corresponding to document added in the project, loaded as JSONResource, the URI scheme is arbitrary: 
+``sirius``
+Example: `sirius:///a264d307-97d9-451d-90f5-46d38668b69c`
+
+=== The unresolvable proxies
+Let's say the EditingContext contains two resources A and B with aObj in A referencing bObj in B.
+Currently, if bObj or B is removed, aObj still references bObj and once the project is closed and reponed aObj holds a proxy to bObj that can not be resolved.
+We should not have unresolvable proxies.
+
+Note that the issue is already present with a single resource containing two objects with one referencing the other.
+
+== Decision
+
+=== The resource URI
+
+For the URI, corresponding to document added in the project, loaded as JSONResource, the URI scheme is arbitrary: 
+``sirius``
+Example: `sirius:///a264d307-97d9-451d-90f5-46d38668b69c`
+
+=== Cleaning the proxies
+
+A new ECrossReferenceAdapter capable of cleaning inverse reference proxies is created and should be installed by the application on the ResourceSet used to load the edited models.
+
+== Status
+
+Accepted.
