@@ -15,7 +15,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components</artifactId>
-	<version>2022.5.7</version>
+	<version>2022.5.8</version>
 
 	<name>sirius-components</name>
 	<description>Sirius Components</description>
