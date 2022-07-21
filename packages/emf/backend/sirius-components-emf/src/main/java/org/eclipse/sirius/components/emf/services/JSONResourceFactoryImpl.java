@@ -37,4 +37,17 @@ public class JSONResourceFactoryImpl extends ResourceFactoryImpl {
 
         return new JsonResourceImpl(uri, options);
     }
+
+    /**
+     * Create a resource which URI is made of a correct scheme and the given id as path.
+     *
+     * @param resourceId
+     *            the id of the resource
+     */
+    public JsonResource createResource(String resourceId) {
+        // There are three slashes because the URI authority is empty
+        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + resourceId); //$NON-NLS-1$
+
+        return this.createResource(uri);
+    }
 }
