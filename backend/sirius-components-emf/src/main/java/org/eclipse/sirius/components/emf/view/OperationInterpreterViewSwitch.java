@@ -113,11 +113,14 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
         var optionalSelf = this.variableManager.get(VariableManager.SELF, EObject.class);
         if (optionalSelf.isPresent()) {
             Result newValue = this.interpreter.evaluateExpression(this.variableManager.getVariables(), setValueOperation.getValueExpression());
+            Object instance = null;
             if (newValue.asObject().isPresent()) {
-                Object instance = this.ecore.eAdd(optionalSelf.get(), setValueOperation.getFeatureName(), newValue.asObject().get());
-                if (instance != null) {
-                    return this.operationInterpreter.executeOperations(setValueOperation.getChildren(), this.variableManager);
-                }
+                instance = this.ecore.eAdd(optionalSelf.get(), setValueOperation.getFeatureName(), newValue.asObject().get());
+            } else {
+                instance = this.ecore.eClear(optionalSelf.get(), setValueOperation.getFeatureName());
+            }
+            if (instance != null) {
+                return this.operationInterpreter.executeOperations(setValueOperation.getChildren(), this.variableManager);
             }
         }
         return Optional.empty();

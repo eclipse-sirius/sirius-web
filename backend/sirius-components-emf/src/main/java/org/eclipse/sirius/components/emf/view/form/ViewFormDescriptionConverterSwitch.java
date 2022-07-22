@@ -489,17 +489,19 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     private BiFunction<VariableManager, String, IStatus> getSelectNewValueHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
             IStatus status = new Failure("An error occured while handling the new selected value."); //$NON-NLS-1$
-            Optional<Object> optionalNewValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                    .flatMap(editingContext -> this.objectService.getObject(editingContext, newValue));
-            if (optionalNewValueObject.isPresent()) {
-                variableManager.put(ViewFormDescriptionConverter.NEW_VALUE, optionalNewValueObject.get());
-                OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-                Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
-                if (optionalVariableManager.isEmpty()) {
-                    status = new Failure("Something went wrong while handling the Select widget new value."); //$NON-NLS-1$
-                } else {
-                    status = new Success();
-                }
+
+            Object newValueObject = null;
+            if (newValue != null && !newValue.isBlank()) {
+                newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
+                        .orElse(null);
+            }
+            variableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValueObject);
+            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+            if (optionalVariableManager.isEmpty()) {
+                status = new Failure("Something went wrong while handling the Select widget new value."); //$NON-NLS-1$
+            } else {
+                status = new Success();
             }
             return status;
         };

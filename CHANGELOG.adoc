@@ -33,6 +33,7 @@ To integrate the "Details" view inside a workbench, one must now use the new `De
 - https://github.com/eclipse-sirius/sirius-components/issues/1260[#1260] [workbench] Fix download project fails when model contains a Form Description Editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1268[#1268] [form] Use literal instead of name for Enum label & newValue
 - https://github.com/eclipse-sirius/sirius-components/issues/1308[#1308] [workbench] Fix the vertical overflow issue on the view header
+- https://github.com/eclipse-sirius/sirius-components/issues/1306[#1306] [form] Fix unable to set None value from a Select widget from View Form
 
 === Improvements
 
