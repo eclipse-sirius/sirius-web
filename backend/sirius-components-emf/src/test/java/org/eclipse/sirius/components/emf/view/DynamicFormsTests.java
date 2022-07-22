@@ -377,6 +377,19 @@ public class DynamicFormsTests {
         this.checkValuesEditing(this.eClass1, form);
     }
 
+    @Test
+    void testSetNullOnSelectEcoreForm() throws Exception {
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
+        Form form = this.render(eClassFormDescription, this.eClass1);
+        Group group = form.getPages().get(0).getGroups().get(0);
+        Select select = (Select) group.getWidgets().get(4);
+        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
+        assertThat(this.eClass1.getESuperTypes().isEmpty()).isFalse();
+        select.getNewValueHandler().apply(null);
+        assertThat(this.eClass1.getESuperTypes().isEmpty()).isTrue();
+    }
+
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
         assertThat(group.getWidgets()).hasSize(9);
