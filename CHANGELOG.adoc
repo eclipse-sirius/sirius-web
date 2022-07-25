@@ -32,6 +32,7 @@ To integrate the "Details" view inside a workbench, one must now use the new `De
 - https://github.com/eclipse-sirius/sirius-components/issues/1193[#1193] [layout] Fix edge layout on diagrams with node lists.
 - https://github.com/eclipse-sirius/sirius-components/issues/1260[#1260] [workbench] Fix download project fails when model contains a Form Description Editor
 - https://github.com/eclipse-sirius/sirius-components/issues/1268[#1268] [form] Use literal instead of name for Enum label & newValue
+- https://github.com/eclipse-sirius/sirius-components/issues/1308[#1308] [workbench] Fix the vertical overflow issue on the view header
 
 === Improvements
 
