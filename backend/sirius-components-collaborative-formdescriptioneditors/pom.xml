@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
-	<version>2022.5.8</version>
+	<version>2022.7.0</version>
 	<name>sirius-components-collaborative-formdescriptioneditors</name>
 	<description>Sirius Components Collaborative FormDescriptionEditors</description>
 
@@ -50,23 +50,23 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-formdescriptioneditors</artifactId>
-			<version>2022.5.8</version>
+			<version>2022.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2022.5.8</version>
+			<version>2022.7.0</version>
 		</dependency>
 		<dependency>
     		<groupId>org.eclipse.sirius</groupId>
     		<artifactId>sirius-components-tests</artifactId>
-    		<version>2022.5.8</version>
+    		<version>2022.7.0</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
     		<groupId>org.eclipse.sirius</groupId>
     		<artifactId>sirius-components-spring-tests</artifactId>
-    		<version>2022.5.8</version>
+    		<version>2022.7.0</version>
     		<scope>test</scope>
     	</dependency>
     	<dependency>
