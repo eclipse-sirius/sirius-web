@@ -76,7 +76,6 @@ const useSiteStyles = makeStyles((theme) => ({
     borderBottomColor: theme.palette.divider,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
-    overflow: 'auto',
   },
   viewHeaderIcon: {
     margin: theme.spacing(1),
