@@ -33,5 +33,6 @@
 
 	<modules>
 		<module>sirius-components-compatibility</module>
+		<module>sirius-components-compatibility-emf</module>
 	</modules>
 </project>

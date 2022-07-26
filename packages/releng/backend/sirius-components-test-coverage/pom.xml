@@ -57,6 +57,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-compatibility-emf</artifactId>
+			<version>2022.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-charts</artifactId>
 			<version>2022.7.0</version>
 		</dependency>
