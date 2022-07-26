@@ -1,5 +1,5 @@
 #!/bin/sh
 
 VERSION="$1"
-mvn versions:set -DnewVersion="$VERSION" -DprocessAllModules -f backend/pom.xml
+mvn versions:set -DnewVersion="$VERSION" -DprocessAllModules -f packages/pom.xml
 cd frontend && npm version "$VERSION"

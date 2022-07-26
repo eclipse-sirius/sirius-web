@@ -35,4 +35,4 @@ jobs:
         env:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -U -B -e clean verify -f backend/pom.xml --settings settings.xml -Pverify-iplog
+        run: mvn -U -B -e clean verify -f packages/pom.xml --settings settings.xml -Pverify-iplog
