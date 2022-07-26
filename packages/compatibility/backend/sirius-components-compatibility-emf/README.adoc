@@ -1,0 +1,10 @@
+= sirius-components-compatibility-emf
+
+== Goal
+
+This project provides support for EMF with Sirius desktop odesign.
+
+== Dependencies
+
+- Eclipse EMF
+- Sirius Desktop
