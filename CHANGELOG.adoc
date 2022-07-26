@@ -1,6 +1,13 @@
 = Changelog
 
-== v2022.7.0 (unreleased)
+== v2022.9.0 (unreleased)
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Organize backend projects into scope-specific packages
+
+
+== v2022.7.0
 
 === Architectural decision records
 
@@ -11,9 +18,6 @@
 - [ADR-64] Add support for a ToggableAreaContainer in forms
 - [ADR-65] Add support for a tree widget in forms
 - [ADR-66] Add a new "Related Elements" view
-
-=== Deprecation warnings
-
 
 === Breaking changes
 

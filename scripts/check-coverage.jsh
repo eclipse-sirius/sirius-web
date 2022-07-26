@@ -4,7 +4,7 @@ var totalStart = "<td>Total</td>";
 var resultStart = "<td class=\"ctr2\">";
 var resultEnd = "%</td>";
 
-var path = Paths.get("backend/sirius-components-test-coverage/target/site/jacoco-aggregate/index.html");
+var path = Paths.get("packages/releng/backend/sirius-components-test-coverage/target/site/jacoco-aggregate/index.html");
 var optionalLine = Files.readAllLines(path).stream().filter(line -> line.contains(totalStart)).findFirst();
 if (optionalLine.isPresent()) {
   var line = optionalLine.get();
@@ -16,4 +16,4 @@ if (optionalLine.isPresent()) {
   coverage = Double.parseDouble(result.trim());
   System.out.println(coverage + " % global code coverage");
 }
-/exit coverage > 38.0 ? 0 : 1
+/exit coverage > 41.0 ? 0 : 1

@@ -29,7 +29,7 @@ const bumpVersionCommand = `sh ${scriptPath} ${version}`;
 console.log(bumpVersionCommand);
 childProcess.execSync(bumpVersionCommand, { stdio: 'inherit' });
 
-const gitAddCommand = `git add backend frontend`;
+const gitAddCommand = `git add packages frontend`;
 console.log(gitAddCommand);
 childProcess.execSync(gitAddCommand, { stdio: 'inherit' });
 
