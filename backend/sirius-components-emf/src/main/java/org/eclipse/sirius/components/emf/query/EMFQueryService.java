@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,16 @@ import org.eclipse.sirius.components.emf.query.api.IQueryJavaServiceProvider;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
+
+import graphql.language.Argument;
+import graphql.language.Field;
+import graphql.language.Selection;
+import graphql.language.SelectionSet;
+import graphql.language.StringValue;
+import graphql.language.Value;
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * A specific implementation of {@link IQueryService} for EMF.
@@ -106,13 +116,69 @@ public class EMFQueryService implements IQueryService {
 
     @Override
     public IPayload execute(IEditingContext editingContext, QueryBasedObjectsInput input) {
-        Result result = this.executeQuery(editingContext, input.getQuery(), input.getVariables());
-        Optional<List<Object>> optionalObjects = result.asObjects();
-        if (optionalObjects.isPresent()) {
-            return new QueryBasedObjectsSuccessPayload(input.getId(), optionalObjects.get());
-        } else {
-            return new ErrorPayload(input.getId(), EVALUATION_ERROR_MESSAGE + result.getStatus());
+        DataFetchingEnvironment environment = input.getEnvironment();
+        Object fieldValue = this.getFieldValue(environment.getField(), editingContext, new HashMap<>());
+        if (fieldValue instanceof List<?>) {
+            List<Object> objects = new ArrayList<>((List<?>) fieldValue);
+            return new QueryBasedObjectsSuccessPayload(input.getId(), objects);
         }
+        return new QueryBasedObjectsSuccessPayload(input.getId(), List.of());
+    }
+
+    private Object getFieldValue(Field field, IEditingContext editingContext, Map<String, Object> variables) {
+        Map<String, Value> arguments = field.getArguments().stream().collect(Collectors.toMap(Argument::getName, Argument::getValue));
+
+        if (field.getName().equals("queryBasedObjects")) { //$NON-NLS-1$
+            String query = this.getStringArgument("query", arguments).orElse(""); //$NON-NLS-1$//$NON-NLS-2$
+            String variableName = this.getStringArgument("variableName", arguments).orElse(VariableManager.SELF); //$NON-NLS-1$
+
+            List<Object> results = new ArrayList<>();
+
+            Result result = this.executeQuery(editingContext, query, variables);
+            List<Object> objects = result.asObjects().orElse(List.of());
+            for (Object object : objects) {
+                Map<String, Object> objectResult = new HashMap<>();
+
+                SelectionSet selectionSet = field.getSelectionSet();
+                List<Selection> selections = selectionSet.getSelections();
+                for (Selection selection : selections) {
+                    if (selection instanceof Field) {
+                        Field childField = (Field) selection;
+
+                        Map<String, Object> childVariables = new HashMap<>(variables);
+                        childVariables.put(variableName, object);
+                        Object fieldValue = this.getFieldValue(childField, editingContext, childVariables);
+
+                        objectResult.put(childField.getResultKey(), fieldValue);
+                    }
+                }
+                results.add(objectResult);
+            }
+
+            return results;
+        } else if (field.getName().equals("queryBasedString")) { //$NON-NLS-1$
+            String query = this.getStringArgument("query", arguments).orElse(""); //$NON-NLS-1$//$NON-NLS-2$
+
+            Result result = this.executeQuery(editingContext, query, variables);
+            String value = result.asString().orElse(null);
+            return value;
+        } else if (field.getName().equals("queryBasedBoolean")) { //$NON-NLS-1$
+            String query = this.getStringArgument("query", arguments).orElse(""); //$NON-NLS-1$//$NON-NLS-2$
+
+            Result result = this.executeQuery(editingContext, query, variables);
+            Boolean value = result.asBoolean().orElse(Boolean.FALSE);
+            return value;
+        }
+        return null;
+    }
+
+    private Optional<String> getStringArgument(String name, Map<String, Value> arguments) {
+        // @formatter:off
+        return Optional.ofNullable(arguments.get(name))
+                .filter(StringValue.class::isInstance)
+                .map(StringValue.class::cast)
+                .map(StringValue::getValue);
+        // @formatter:on
     }
 
     private Result executeQuery(IEditingContext editingContext, String query, Map<String, Object> providedVariables) {
