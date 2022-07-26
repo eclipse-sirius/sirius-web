@@ -1,0 +1,9 @@
+= sirius-components-domain-emf
+
+== Goal
+
+This project provides support for the Domain DSL.
+
+== Dependencies
+
+None.

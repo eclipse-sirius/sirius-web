@@ -1,0 +1,10 @@
+= sirius-components-view-emf
+
+== Goal
+
+This project provides support for the View DSL.
+
+== Dependencies
+
+- Eclipse EMF
+- View DSL

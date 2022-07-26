@@ -1,15 +1,9 @@
-= sirius-components-annotations
+= sirius-components-emf
 
 == Goal
 
-This project provides some annotations which can be used to decorate our code.
-
-Among those annotations, there are some dedicated to GraphQL.
-They can be used to annotate some POJOs in order to create more easily our GraphQL schema.
-Some parts of our GraphQL schema will be very static and they will have to look exactly as some of our POJOS.
-For those specific parts of the schema, we can use a reflective approach in order to create the necessary types and fields of the schema.
-This project contains the annotations to do so. 
+This project provides support for EMF.
 
 == Dependencies
 
-None.
+- Eclipse EMF

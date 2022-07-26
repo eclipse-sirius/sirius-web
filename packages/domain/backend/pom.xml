@@ -35,5 +35,6 @@
 		<module>sirius-components-domain</module>
 		<module>sirius-components-domain-design</module>
 		<module>sirius-components-domain-edit</module>
+		<module>sirius-components-domain-emf</module>
 	</modules>
 </project>
