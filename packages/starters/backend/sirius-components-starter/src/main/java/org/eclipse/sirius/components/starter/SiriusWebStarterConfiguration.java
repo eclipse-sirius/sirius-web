@@ -12,13 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.starter;
 
+import java.util.concurrent.Executors;
+
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.forms.WidgetSubscriptionManager;
 import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
+import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
@@ -65,7 +67,14 @@ public class SiriusWebStarterConfiguration {
     @Bean
     @ConditionalOnMissingBean(IEditingContextEventProcessorExecutorServiceProvider.class)
     public IEditingContextEventProcessorExecutorServiceProvider editingContextEventProcessorExecutorServiceProvider() {
-        return new EditingContextEventProcessorExecutorServiceProvider();
+        return editingContext -> {
+            var executorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
+                Thread thread = Executors.defaultThreadFactory().newThread(runnable);
+                thread.setName("Editing context " + editingContext.getId()); //$NON-NLS-1$
+                return thread;
+            });
+            return new DelegatingRequestContextExecutorService(executorService);
+        };
     }
 
     @Bean

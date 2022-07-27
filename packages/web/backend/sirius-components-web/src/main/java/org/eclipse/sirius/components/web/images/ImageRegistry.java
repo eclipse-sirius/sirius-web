@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.export.svg;
+package org.eclipse.sirius.components.web.images;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -33,7 +33,7 @@ import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,13 +42,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
 /**
- * Registers the images referenced in a {@link Diagram} for later retrieval as \<symbol\>.
+ * Registers the images for later retrieval as \<symbol\>.
  *
  * @author rpage
  */
 @Service
 @RequestScope
-public class ImageRegistry {
+public class ImageRegistry implements IImageRegistry {
     private final Map<URI, UUID> imageRegistry = new HashMap<>();
 
     private final HttpClient imageFetcher;
@@ -78,6 +78,7 @@ public class ImageRegistry {
         return optionalRequestURL.orElse(request.getRequestURL().toString());
     }
 
+    @Override
     public UUID registerImage(String imageURL) {
         try {
             URI imageFullPath = new URI(this.imageBasePath.toString() + imageURL);
@@ -93,6 +94,7 @@ public class ImageRegistry {
         }
     }
 
+    @Override
     public StringBuilder getReferencedImageSymbols() {
         StringBuilder symbols = new StringBuilder();
         this.imageRegistry.entrySet().forEach(entry -> symbols.append(this.getReferencedImage(entry.getKey(), entry.getValue())));

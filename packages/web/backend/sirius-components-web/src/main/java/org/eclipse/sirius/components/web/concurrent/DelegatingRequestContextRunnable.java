@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.requestcontext;
+package org.eclipse.sirius.components.web.concurrent;
 
 import java.util.Objects;
 

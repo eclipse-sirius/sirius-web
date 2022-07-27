@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.collaborative.requestcontext.DelegatingRequestContextExecutorService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -110,7 +109,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
         this.danglingRepresentationDeletionService = parameters.getDanglingRepresentationDeletionService();
-        this.executorService = new DelegatingRequestContextExecutorService(parameters.getExecutorServiceProvider().getExecutorService(this.editingContext));
+        this.executorService = parameters.getExecutorServiceProvider().getExecutorService(this.editingContext);
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 

@@ -16,15 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URISyntaxException;
 
+import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.export.svg.DiagramElementExportService;
 import org.eclipse.sirius.components.collaborative.diagrams.export.svg.DiagramExportService;
 import org.eclipse.sirius.components.collaborative.diagrams.export.svg.EdgeExportService;
-import org.eclipse.sirius.components.collaborative.diagrams.export.svg.ImageRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.export.svg.NodeExportService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * Test class for the diagram svg export.
@@ -34,16 +33,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 public class DiagramExportServiceTests {
 
     private DiagramExportService getDiagramExportService() throws URISyntaxException {
-        MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
-
-        ImageRegistry imageRegistry = new ImageRegistry(httpServletRequest, false);
-
+        IImageRegistry imageRegistry = new IImageRegistry.NoOp();
         DiagramElementExportService diagramElementExportService = new DiagramElementExportService(imageRegistry);
-
         EdgeExportService edgeExportService = new EdgeExportService(diagramElementExportService);
-
         NodeExportService nodeExportService = new NodeExportService(diagramElementExportService);
-
         DiagramExportService diagramExportService = new DiagramExportService(nodeExportService, edgeExportService, imageRegistry);
 
         return diagramExportService;
