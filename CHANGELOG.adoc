@@ -6,6 +6,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1311[#1311] [releng] Allow reusing `sirius-components-emf` without dependencies to the domain or view DSL. As a result, two new projects `sirius-components-domain-emf` and `sirius-components-view-emf` have been introduced in order to connect the EMF compatibility layer with the domain and view DSL. Consumers of `sirius-components-emf` may have to update their import. The behavior of the code has not been modified
 - https://github.com/eclipse-sirius/sirius-components/issues/1311[#1311] [releng] Allow reusing `sirius-component-emf` without dependencies to Sirius Desktop. As a result, a new project `sirius-components-compatibility-emf` has been added in order to provide EMF support for the Sirius desktop compatibility layer. Consumers of `sirius-components-emf` may have to update their import. The behavior of the code has not been modified
+- https://github.com/eclipse-sirius/sirius-components/issues/1237[#1237] [releng] Remove the two hardcoded dependencies to Spring MVC from Sirius Components. As such, reusing most components from Sirius Components without Spring MVC will be easier. The only projects with a dependency to Spring MVC are located in the `web` package
 
 
 === Improvements

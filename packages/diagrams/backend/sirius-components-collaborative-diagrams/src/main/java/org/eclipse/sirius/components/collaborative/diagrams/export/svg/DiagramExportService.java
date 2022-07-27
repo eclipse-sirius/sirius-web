@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.ISVGDiagramExportService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -40,7 +41,7 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
     private final EdgeExportService edgeExport;
 
-    private final ImageRegistry imageRegistry;
+    private final IImageRegistry imageRegistry;
 
     private final List<Double> xBeginPositions = new ArrayList<>();
 
@@ -50,7 +51,7 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
     private final List<Double> yEndPositions = new ArrayList<>();
 
-    public DiagramExportService(NodeExportService nodeExport, EdgeExportService edgeExport, ImageRegistry imageRegistry) {
+    public DiagramExportService(NodeExportService nodeExport, EdgeExportService edgeExport, IImageRegistry imageRegistry) {
         this.nodeExport = Objects.requireNonNull(nodeExport);
         this.edgeExport = Objects.requireNonNull(edgeExport);
         this.imageRegistry = Objects.requireNonNull(imageRegistry);

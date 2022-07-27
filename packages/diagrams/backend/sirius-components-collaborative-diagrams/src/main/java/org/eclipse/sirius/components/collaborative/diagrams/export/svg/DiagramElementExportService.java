@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -32,9 +33,9 @@ import org.springframework.stereotype.Service;
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramElementExportService {
-    private final ImageRegistry imageRegistry;
+    private final IImageRegistry imageRegistry;
 
-    public DiagramElementExportService(ImageRegistry imageRegistry) {
+    public DiagramElementExportService(IImageRegistry imageRegistry) {
         this.imageRegistry = Objects.requireNonNull(imageRegistry);
     }
 

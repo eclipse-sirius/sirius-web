@@ -33,5 +33,6 @@
 
 	<modules>
 		<module>sirius-components-graphql</module>
+		<module>sirius-components-web</module>
 	</modules>
 </project>

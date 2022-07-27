@@ -1,0 +1,11 @@
+= sirius-components-web
+
+== Goal
+
+This project is used to encapsulate the core components which require a dependency to Spring MVC.
+
+== Dependencies
+
+- Spring MVC
+
+This project should not depend on anything else without a good reason to do so.
