@@ -69,11 +69,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-graphql-utils</artifactId>
-			<version>2022.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
 			<version>2022.7.1</version>
 		</dependency>
