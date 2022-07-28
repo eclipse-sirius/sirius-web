@@ -34,5 +34,6 @@
 	<modules>
 		<module>sirius-components-validation</module>
 		<module>sirius-components-collaborative-validation</module>
+		<module>sirius-components-validation-graphql</module>
 	</modules>
 </project>

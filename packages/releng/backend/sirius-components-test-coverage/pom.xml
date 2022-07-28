@@ -122,11 +122,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-graphql-utils</artifactId>
-			<version>2022.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-interpreter</artifactId>
 			<version>2022.7.1</version>
 		</dependency>
@@ -173,6 +168,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-validation</artifactId>
+			<version>2022.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-validation-graphql</artifactId>
 			<version>2022.7.1</version>
 		</dependency>
 		<dependency>

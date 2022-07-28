@@ -38,6 +38,5 @@
 		<module>sirius-components-core</module>
 		<module>sirius-components-collaborative</module>
 		<module>sirius-components-graphql-api</module>
-		<module>sirius-components-graphql-utils</module>
 	</modules>
 </project>
