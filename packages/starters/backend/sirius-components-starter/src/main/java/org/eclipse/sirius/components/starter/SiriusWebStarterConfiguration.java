@@ -24,16 +24,21 @@ import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscription
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
+import org.eclipse.sirius.components.starter.services.EditingContextDispatcher;
 import org.eclipse.sirius.components.starter.services.ExceptionWrapper;
 import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -62,6 +67,16 @@ import reactor.core.publisher.Flux;
 )
 // @formatter:on
 public class SiriusWebStarterConfiguration {
+
+    private static final String PATH = "messages/sirius-components-starter"; //$NON-NLS-1$
+
+    @Bean
+    public MessageSourceAccessor siriusComponentsStarterMessageSourceAccessor() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.addBasenames(PATH);
+        return new MessageSourceAccessor(messageSource);
+    }
+
     @Bean
     @ConditionalOnMissingBean(ISubscriptionManagerFactory.class)
     public ISubscriptionManagerFactory subscriptionManagerFactory() {
@@ -130,5 +145,12 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean
     public IExceptionWrapper exceptionWrapper() {
         return new ExceptionWrapper();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IEditingContextDispatcher editingContextDispatcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+            @Qualifier("siriusComponentsStarterMessageSourceAccessor") MessageSourceAccessor messageSourceAccessor) {
+        return new EditingContextDispatcher(editingContextEventProcessorRegistry, messageSourceAccessor);
     }
 }
