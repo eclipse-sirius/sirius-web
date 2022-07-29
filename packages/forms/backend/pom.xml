@@ -34,6 +34,7 @@
 	<modules>
 		<module>sirius-components-forms</module>
 		<module>sirius-components-collaborative-forms</module>
+		<module>sirius-components-forms-graphql</module>
 		<module>sirius-components-forms-tests</module>
 	</modules>
 </project>
