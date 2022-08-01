@@ -37,5 +37,6 @@
 		<module>sirius-components-diagrams-layout</module>
 		<module>sirius-components-diagrams-tests</module>
 		<module>sirius-components-collaborative-diagrams</module>
+		<module>sirius-components-diagrams-graphql</module>
 	</modules>
 </project>

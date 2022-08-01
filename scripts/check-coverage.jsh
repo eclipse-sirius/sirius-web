@@ -16,4 +16,4 @@ if (optionalLine.isPresent()) {
   coverage = Double.parseDouble(result.trim());
   System.out.println(coverage + " % global code coverage");
 }
-/exit coverage > 41.0 ? 0 : 1
+/exit coverage >= 41.0 ? 0 : 1

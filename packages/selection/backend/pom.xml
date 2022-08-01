@@ -34,5 +34,6 @@
 	<modules>
 		<module>sirius-components-selection</module>
 		<module>sirius-components-collaborative-selection</module>
+		<module>sirius-components-selection-graphql</module>
 	</modules>
 </project>
