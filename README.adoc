@@ -21,7 +21,7 @@ To build the components in this repository on your own, you will need the follow
 ** Java 11 (Java 12 or later are currently not supported)
 ** https://maven.apache.org[Apache Maven 3.6.3]
 * To build the frontend components:
-** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 16.6 is required along with npm >= 7.20.
+** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
 ** https://rollupjs.org/[rollup] (`npm install -g rollup`)
 ** https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
 

@@ -10,6 +10,12 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1312[#1312] [graphql] Provide the datafetchers used by the representations. Starting with the validation representation, we will provide datafetchers directly in Sirius Components to simplify the integration of Sirius Components in various applications. The project `sirius-components-graphql-utils` has been merged into `sirius-components-graphql-api` since they had similar dependencies.
 
 
+=== Dependency update
+
+- [frontend] Update the format of the `package-lock.json` by moving to node 18.7.0 and npm 8.15.0. This will allow us to use the latest version of npm which comes with improvements for its workspace support. This will also help us move beyond the change in behavior of https://github.com/npm/cli/issues/4998[node 16.15.1 and npm 8.6]
+- [frontend] Update the version of `jest-transform-css` used in order to fix the long standing issues of its incompatibility with the version of `postcss`` that we use. We will thus use `postcss 8.4.14` and `jest-transform-css 4.0.1` now
+- [frontend] Remove our dependency to `ts-transform-graphql-tag` since it is not maintained and its dependencies are outdated and since it is used to lower the dependency with `graphql-tag` which we will stop using soon
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Organize backend projects into scope-specific packages
