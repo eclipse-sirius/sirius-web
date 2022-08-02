@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import { eslint } from 'rollup-plugin-eslint';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import typescript from 'rollup-plugin-typescript2';
-import { getTransformer } from 'ts-transform-graphql-tag';
 
 const packageJson = require('./package.json');
 
@@ -33,10 +32,6 @@ const esm = {
   sourcemap: true,
 };
 
-const graphQLTransformer = () => ({
-  before: [getTransformer()],
-});
-
 export default {
   input: 'src/index.ts',
   output: [cjs, esm],
@@ -45,7 +40,7 @@ export default {
     resolve(),
     commonjs(),
     eslint(),
-    typescript({ useTsconfigDeclarationDir: true, transformers: [graphQLTransformer] }),
+    typescript({ useTsconfigDeclarationDir: true }),
     postcss({
       modules: true,
       minimize: true,
