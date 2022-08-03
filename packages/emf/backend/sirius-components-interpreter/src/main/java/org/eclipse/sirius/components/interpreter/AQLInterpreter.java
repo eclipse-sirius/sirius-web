@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,15 +71,34 @@ public class AQLInterpreter {
      *            classes for java service that can called by AQLInterpreter
      * @param ePackages
      *            Additional meta-models. A typical use case will be to register semantic meta-models so that reference
-     *            to classes, such as <semanticMM>::<AClass>, can be interpreted.
+     *            to classes, such as {@code <semanticMM>::<AClass>}, can be interpreted.
      */
     public AQLInterpreter(List<Class<?>> classes, List<EPackage> ePackages) {
+        this(classes, List.of(), ePackages);
+    }
+
+    /**
+     * The constructor.
+     *
+     * @param classes
+     *            classes for java service that can called by AQLInterpreter
+     * @param instances
+     *            instances for java service that can called by AQLInterpreter
+     * @param ePackages
+     *            Additional meta-models. A typical use case will be to register semantic meta-models so that reference
+     *            to classes, such as {@code <semanticMM>::<AClass>}, can be interpreted.
+     */
+    public AQLInterpreter(List<Class<?>> classes, List<Object> instances, List<EPackage> ePackages) {
         this.queryEnvironment = Query.newEnvironmentWithDefaultServices(new SimpleCrossReferenceProvider());
         this.queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
         this.queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
         for (Class<?> aClass : classes) {
             Set<IService> services = ServiceUtils.getServices(this.queryEnvironment, aClass);
+            ServiceUtils.registerServices(this.queryEnvironment, services);
+        }
+        for (Object instance : instances) {
+            Set<IService> services = ServiceUtils.getServices(this.queryEnvironment, instance);
             ServiceUtils.registerServices(this.queryEnvironment, services);
         }
 

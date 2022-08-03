@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,6 +106,22 @@ public class AQLInterpreterTests {
         Result result = interpreter.evaluateExpression(Map.of(), ""); //$NON-NLS-1$
         assertThat(result).isNotNull();
         assertThat(result.asBoolean()).contains(Boolean.TRUE);
+    }
+
+    @Test
+    public void testInvokeServiceFromClass() {
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(TestServices.class), List.of(EcorePackage.eINSTANCE));
+        Result result = interpreter.evaluateExpression(Map.of(SELF, EcorePackage.eINSTANCE), "aql:self.getCreationMessage()"); //$NON-NLS-1$
+        assertThat(result).isNotNull();
+        assertThat(result.asString()).contains("none"); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testInvokeServiceFromInstance() {
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new TestServices("instance")), List.of(EcorePackage.eINSTANCE)); //$NON-NLS-1$
+        Result result = interpreter.evaluateExpression(Map.of(SELF, EcorePackage.eINSTANCE), "aql:self.getCreationMessage()"); //$NON-NLS-1$
+        assertThat(result).isNotNull();
+        assertThat(result.asString()).contains("instance"); //$NON-NLS-1$
     }
 
 }
