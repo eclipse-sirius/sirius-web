@@ -23,7 +23,10 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 
 /**
@@ -35,7 +38,7 @@ public final class StylesFactory {
 
     private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
 
-    public LabelStyleDescription createLabelStyleDescription(NodeStyle nodeStyle) {
+    public LabelStyleDescription createLabelStyleDescription(NodeStyleDescription nodeStyle) {
         // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                                     .colorProvider(variableManager -> nodeStyle.getLabelColor())
@@ -75,23 +78,22 @@ public final class StylesFactory {
         // @formatter:on
     }
 
-    public String getNodeType(NodeStyle nodeStyle) {
+    public String getNodeType(NodeStyleDescription nodeStyle) {
         String type = NodeType.NODE_RECTANGLE;
-        if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
-                && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
+        if (nodeStyle instanceof IconLabelNodeStyleDescription) {
             type = NodeType.NODE_ICON_LABEL;
-        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
+        } else if (nodeStyle instanceof ImageNodeStyleDescription) {
             type = NodeType.NODE_IMAGE;
         }
         return type;
     }
 
-    public INodeStyle createNodeStyle(NodeStyle nodeStyle, Optional<String> optionalEditingContextId) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
         INodeStyle result = null;
-        if (nodeStyle.isListMode()) {
+        if (nodeStyle instanceof RectangularNodeStyleDescription) {
             // @formatter:off
             result = RectangularNodeStyle.newRectangularNodeStyle()
-                   .withHeader(true)
+                   .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
                    .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
                    .borderSize(nodeStyle.getBorderSize())
@@ -99,25 +101,13 @@ public final class StylesFactory {
                    .borderRadius(nodeStyle.getBorderRadius())
                    .build();
             // @formatter:on
-        } else if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
-                && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
+        } else if (nodeStyle instanceof IconLabelNodeStyleDescription) {
             result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
-        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
+        } else if (nodeStyle instanceof ImageNodeStyleDescription) {
             // @formatter:off
             result = ImageNodeStyle.newImageNodeStyle()
                     .scalingFactor(1)
-                    .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + nodeStyle.getShape()) //$NON-NLS-1$ //$NON-NLS-2$
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                    .borderSize(nodeStyle.getBorderSize())
-                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                    .borderRadius(nodeStyle.getBorderRadius())
-                    .build();
-            // @formatter:on
-        } else {
-         // @formatter:off
-            result = RectangularNodeStyle.newRectangularNodeStyle()
-                    .withHeader(false)
-                    .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                    .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$ //$NON-NLS-2$
                     .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
                     .borderSize(nodeStyle.getBorderSize())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
@@ -125,6 +115,7 @@ public final class StylesFactory {
                     .build();
             // @formatter:on
         }
+
         return result;
     }
     // CHECKSTYLE:ON

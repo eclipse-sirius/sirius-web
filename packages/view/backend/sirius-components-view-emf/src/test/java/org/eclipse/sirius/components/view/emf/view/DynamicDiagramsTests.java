@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -69,7 +69,7 @@ public class DynamicDiagramsTests {
     }
 
     private void setBasicNodeStyle(NodeDescription nodeDescription, String color) {
-        NodeStyle eClassNodeStyle = ViewFactory.eINSTANCE.createNodeStyle();
+        NodeStyleDescription eClassNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         eClassNodeStyle.setColor(color);
         nodeDescription.setStyle(eClassNodeStyle);
     }

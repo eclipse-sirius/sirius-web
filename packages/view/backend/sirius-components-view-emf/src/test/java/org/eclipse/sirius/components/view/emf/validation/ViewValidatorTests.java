@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,8 @@ import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator;
@@ -54,7 +55,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDefaultValuesAreValid() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeStyle nodeStyle = ViewFactory.eINSTANCE.createNodeStyle();
+        NodeStyleDescription nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(nodeStyle.eClass(), nodeStyle, diagnosticChain, defaultContext);
@@ -66,7 +67,7 @@ public class ViewValidatorTests {
     @Test
     public void testConditionalNodeStyleDefaultValuesAreValid() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
@@ -79,7 +80,6 @@ public class ViewValidatorTests {
     public void testConditionalConditionIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
-        conditionalNodeStyle.setColor("black"); //$NON-NLS-1$
         conditionalNodeStyle.setCondition(""); //$NON-NLS-1$
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
@@ -102,9 +102,33 @@ public class ViewValidatorTests {
     }
 
     @Test
-    public void testNodeStyleColorIsAbsent() {
+    public void testConditionalStyleIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+
+        BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
+        // @formatter:off
+        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
+                SIRIUS_COMPONENTS_EMF_PACKAGE,
+                0,
+                "The style should not be empty", //$NON-NLS-1$
+                new Object [] {
+                        conditionalNodeStyle,
+                        ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+        })
+                );
+        // @formatter:on
+
+        BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
+        boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
+        assertThat(validationResult).isFalse();
+        assertThat(diagnosticChain).isEqualTo(expected);
+    }
+
+    @Test
+    public void testNodeStyleColorIsAbsent() {
+        Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
+        RectangularNodeStyleDescription conditionalNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         conditionalNodeStyle.setColor(""); //$NON-NLS-1$
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);

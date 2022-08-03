@@ -52,24 +52,30 @@ import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.ListDescription;
 import org.eclipse.sirius.components.view.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
@@ -183,8 +189,38 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseNodeStyle(NodeStyle object) {
-            return ViewAdapterFactory.this.createNodeStyleAdapter();
+        public Adapter caseNodeStyleDescription(NodeStyleDescription object) {
+            return ViewAdapterFactory.this.createNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseRectangularNodeStyleDescription(RectangularNodeStyleDescription object) {
+            return ViewAdapterFactory.this.createRectangularNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseImageNodeStyleDescription(ImageNodeStyleDescription object) {
+            return ViewAdapterFactory.this.createImageNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseIconLabelNodeStyleDescription(IconLabelNodeStyleDescription object) {
+            return ViewAdapterFactory.this.createIconLabelNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseLayoutStrategyDescription(LayoutStrategyDescription object) {
+            return ViewAdapterFactory.this.createLayoutStrategyDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseFreeFormLayoutStrategyDescription(FreeFormLayoutStrategyDescription object) {
+            return ViewAdapterFactory.this.createFreeFormLayoutStrategyDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseListLayoutStrategyDescription(ListLayoutStrategyDescription object) {
+            return ViewAdapterFactory.this.createListLayoutStrategyDescriptionAdapter();
         }
 
         @Override
@@ -617,15 +653,100 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodeStyle <em>Node
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodeStyleDescription
+     * <em>Node Style Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription
+     * @generated
+     */
+    public Adapter createNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.RectangularNodeStyleDescription <em>Rectangular Node Style
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.NodeStyle
+     * @see org.eclipse.sirius.components.view.RectangularNodeStyleDescription
      * @generated
      */
-    public Adapter createNodeStyleAdapter() {
+    public Adapter createRectangularNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ImageNodeStyleDescription
+     * <em>Image Node Style Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ImageNodeStyleDescription
+     * @generated
+     */
+    public Adapter createImageNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.IconLabelNodeStyleDescription <em>Icon Label Node Style
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.IconLabelNodeStyleDescription
+     * @generated
+     */
+    public Adapter createIconLabelNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LayoutStrategyDescription
+     * <em>Layout Strategy Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.LayoutStrategyDescription
+     * @generated
+     */
+    public Adapter createLayoutStrategyDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription <em>Free Form Layout Strategy
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription
+     * @generated
+     */
+    public Adapter createFreeFormLayoutStrategyDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.ListLayoutStrategyDescription <em>List Layout Strategy
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ListLayoutStrategyDescription
+     * @generated
+     */
+    public Adapter createListLayoutStrategyDescriptionAdapter() {
         return null;
     }
 

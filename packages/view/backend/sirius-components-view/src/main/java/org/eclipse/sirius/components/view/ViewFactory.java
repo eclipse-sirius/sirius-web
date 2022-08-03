@@ -62,12 +62,49 @@ public interface ViewFactory extends EFactory {
     EdgeDescription createEdgeDescription();
 
     /**
-     * Returns a new object of class '<em>Node Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns a new object of class '<em>Rectangular Node Style Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
-     * @return a new object of class '<em>Node Style</em>'.
+     * @return a new object of class '<em>Rectangular Node Style Description</em>'.
      * @generated
      */
-    NodeStyle createNodeStyle();
+    RectangularNodeStyleDescription createRectangularNodeStyleDescription();
+
+    /**
+     * Returns a new object of class '<em>Image Node Style Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Image Node Style Description</em>'.
+     * @generated
+     */
+    ImageNodeStyleDescription createImageNodeStyleDescription();
+
+    /**
+     * Returns a new object of class '<em>Icon Label Node Style Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Icon Label Node Style Description</em>'.
+     * @generated
+     */
+    IconLabelNodeStyleDescription createIconLabelNodeStyleDescription();
+
+    /**
+     * Returns a new object of class '<em>Free Form Layout Strategy Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Free Form Layout Strategy Description</em>'.
+     * @generated
+     */
+    FreeFormLayoutStrategyDescription createFreeFormLayoutStrategyDescription();
+
+    /**
+     * Returns a new object of class '<em>List Layout Strategy Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>List Layout Strategy Description</em>'.
+     * @generated
+     */
+    ListLayoutStrategyDescription createListLayoutStrategyDescription();
 
     /**
      * Returns a new object of class '<em>Edge Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
