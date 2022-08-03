@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -18,7 +18,6 @@ import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { Textarea, Widget } from 'form/Form.types';
-import gql from 'graphql-tag';
 import { PropertySectionLabel } from 'properties/propertysections/PropertySectionLabel';
 import {
   GQLEditTextfieldInput,

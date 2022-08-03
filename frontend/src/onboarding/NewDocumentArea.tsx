@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { LinkButton } from 'core/linkbutton/LinkButton';
 import { Select } from 'core/select/Select';
-import gql from 'graphql-tag';
 import { NewDocument } from 'icons';
 import {
   GQLCreateDocumentMutationInput,

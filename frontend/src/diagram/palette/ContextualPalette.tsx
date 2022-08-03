@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,7 +35,6 @@ import {
 } from 'diagram/palette/ContextualPaletteMachine';
 import { ToolSection } from 'diagram/palette/tool-section/ToolSection';
 import { Tool } from 'diagram/palette/tool/Tool';
-import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import closeImagePath from './icons/close.svg';
 import connectorImagePath from './icons/connector.svg';

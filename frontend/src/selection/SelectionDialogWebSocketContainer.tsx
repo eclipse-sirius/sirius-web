@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSubscription } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -27,7 +27,6 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { httpOrigin } from 'common/URL';
-import gql from 'graphql-tag';
 import { NoIcon } from 'icons';
 import React, { useEffect } from 'react';
 import { SelectionDialogWebSocketContainerProps } from './SelectionDialogWebSocketContainer.types';

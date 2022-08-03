@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -19,7 +19,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import gql from 'graphql-tag';
 import {
   CheckboxPropertySectionProps,
   GQLEditCheckboxInput,

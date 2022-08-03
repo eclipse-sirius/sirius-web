@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { gql } from '@apollo/client';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -23,7 +24,6 @@ import { useMachine } from '@xstate/react';
 import { sendFile } from 'common/sendFile';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import { Form } from 'core/form/Form';
-import gql from 'graphql-tag';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { GQLErrorPayload, GQLUploadDocumentPayload, UploadDocumentModalProps } from './UploadDocumentModal.types';

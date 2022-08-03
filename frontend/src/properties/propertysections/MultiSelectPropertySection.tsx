@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -21,7 +21,6 @@ import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import gql from 'graphql-tag';
 import {
   GQLEditMultiSelectMutationData,
   GQLEditMultiSelectPayload,
