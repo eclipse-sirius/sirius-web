@@ -29,7 +29,6 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<graphql-java.version>18.0</graphql-java.version>
 	</properties>
 
 	<distributionManagement>
@@ -44,7 +43,6 @@
 		<dependency>
 			<groupId>com.graphql-java</groupId>
 			<artifactId>graphql-java</artifactId>
-			<version>${graphql-java.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
