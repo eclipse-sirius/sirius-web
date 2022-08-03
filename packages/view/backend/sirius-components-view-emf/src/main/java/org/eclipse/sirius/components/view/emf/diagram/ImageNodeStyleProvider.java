@@ -1,0 +1,108 @@
+/*******************************************************************************
+ * Copyright (c) 2022 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.components.view.emf.diagram;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
+import org.eclipse.sirius.components.collaborative.diagrams.api.ParametricSVGImage;
+import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
+import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.springframework.stereotype.Service;
+
+/**
+ * This class provides style information for the svg node style.
+ *
+ * @author lfasani
+ */
+@Service
+public class ImageNodeStyleProvider implements INodeStyleProvider {
+
+    private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
+
+    private static final String DEFAULT_BACKGROUND_COLOR = "white"; //$NON-NLS-1$
+
+    private static final String DEFAULT_BORDER_COLOR = "black"; //$NON-NLS-1$
+
+    private final List<IParametricSVGImageRegistry> parametricSVGImageServices;
+
+    public ImageNodeStyleProvider(List<IParametricSVGImageRegistry> parametricSVGImageServices) {
+        this.parametricSVGImageServices = Objects.requireNonNull(parametricSVGImageServices);
+    }
+
+    @Override
+    public Optional<String> getNodeType(NodeStyleDescription nodeStyle) {
+        Optional<String> nodeType = Optional.empty();
+        if (nodeStyle instanceof ImageNodeStyleDescription) {
+            String svgName = ((ImageNodeStyleDescription) nodeStyle).getShape();
+            if (svgName != null) {
+                // @formatter:off
+                boolean parametricImageFound = this.parametricSVGImageServices.stream()
+                        .flatMap(service -> service.getImages().stream())
+                        .map(ParametricSVGImage::getId)
+                        .filter(UUID.fromString(svgName)::equals)
+                        .findFirst()
+                        .isPresent();
+                // @formatter:on
+                if (parametricImageFound) {
+                    nodeType = Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE);
+                } else {
+                    nodeType = Optional.of(NodeType.NODE_IMAGE);
+                }
+            }
+        }
+        return nodeType;
+    }
+
+    @Override
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+        Optional<INodeStyle> iNodeStyle = Optional.empty();
+        Optional<String> nodeType = this.getNodeType(nodeStyle);
+        if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
+            // @formatter:off
+                iNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
+                                     .backgroundColor(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_BACKGROUND_COLOR))
+                                     .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_BORDER_COLOR))
+                                     .borderSize(nodeStyle.getBorderSize())
+                                     .borderRadius(nodeStyle.getBorderRadius())
+                                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                                     .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$
+                                     .build());
+            // @formatter:on
+        } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE))) {
+            if (optionalEditingContextId.isPresent()) {
+                // @formatter:off
+                iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
+                                   .scalingFactor(1)
+                                   .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$ //$NON-NLS-2$
+                                   .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                                   .borderSize(nodeStyle.getBorderSize())
+                                   .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                                   .borderRadius(nodeStyle.getBorderRadius())
+                                   .build());
+                // @formatter:on
+            }
+        }
+
+        return iNodeStyle;
+    }
+}

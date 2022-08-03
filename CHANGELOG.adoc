@@ -5,6 +5,8 @@
 === Architectural decision records
 
 - [ADR-069] Add support for children layout strategy
+- [ADR-070] How to contribute a new diagram node style
+- [ADR-071] - Add parametric SVG node style
 
 === Breaking changes
 
@@ -17,6 +19,9 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1339[#1339] [layout] Add concept of layout strategy. The purpose of layout strategy is to split the style of a node from the way a node lays out its children.
 
 === New Features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1316[#1316] [diagram] Support parametric svg node style
+
 
 == v2022.9.0
 

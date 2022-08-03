@@ -39,6 +39,7 @@ import {
   GQLLineStyle,
   GQLNode,
   GQLRectangularNodeStyle,
+  GQLParametricSVGNodeStyle,
 } from '../representation/DiagramRepresentation.types';
 import {
   ArrowStyle,
@@ -54,6 +55,7 @@ import {
   LineStyle,
   Node,
   RectangularNodeStyle,
+  ParametricSVGNodeStyle,
 } from './Diagram.types';
 import { resizeFeature } from './resize/model';
 
@@ -246,6 +248,8 @@ const convertLabel = (
 };
 
 const isImageNodeStyle = (style: GQLINodeStyle): style is GQLImageNodeStyle => style.__typename === 'ImageNodeStyle';
+const isParametricSVGNodeStyle = (style: GQLINodeStyle): style is GQLParametricSVGNodeStyle =>
+  style.__typename === 'ParametricSVGNodeStyle';
 const isRectangularNodeStyle = (style: GQLINodeStyle): style is GQLRectangularNodeStyle =>
   style.__typename === 'RectangularNodeStyle';
 const isIconLabelNodeStyle = (style: GQLINodeStyle): style is GQLIconLabelNodeStyle =>
@@ -265,6 +269,17 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
     imageNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
 
     convertedStyle = imageNodeStyle;
+  } else if (isParametricSVGNodeStyle(style)) {
+    const { svgURL, borderColor, borderSize, borderStyle, backgroundColor } = style;
+
+    const svgNodeStyle = new ParametricSVGNodeStyle();
+    svgNodeStyle.svgURL = httpOrigin + svgURL;
+    svgNodeStyle.borderColor = borderColor;
+    svgNodeStyle.borderSize = borderSize;
+    svgNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
+    svgNodeStyle.backgroundColor = backgroundColor;
+
+    convertedStyle = svgNodeStyle;
   } else if (isRectangularNodeStyle(style)) {
     const { color, borderColor, borderRadius, borderSize, borderStyle, withHeader } = style;
 

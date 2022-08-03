@@ -51,24 +51,30 @@ import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.ListDescription;
 import org.eclipse.sirius.components.view.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
@@ -205,15 +211,85 @@ public class ViewSwitch<T> extends Switch<T> {
                 result = this.defaultCase(theEObject);
             return result;
         }
-        case ViewPackage.NODE_STYLE: {
-            NodeStyle nodeStyle = (NodeStyle) theEObject;
-            T result = this.caseNodeStyle(nodeStyle);
+        case ViewPackage.NODE_STYLE_DESCRIPTION: {
+            NodeStyleDescription nodeStyleDescription = (NodeStyleDescription) theEObject;
+            T result = this.caseNodeStyleDescription(nodeStyleDescription);
             if (result == null)
-                result = this.caseStyle(nodeStyle);
+                result = this.caseStyle(nodeStyleDescription);
             if (result == null)
-                result = this.caseLabelStyle(nodeStyle);
+                result = this.caseLabelStyle(nodeStyleDescription);
             if (result == null)
-                result = this.caseBorderStyle(nodeStyle);
+                result = this.caseBorderStyle(nodeStyleDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION: {
+            RectangularNodeStyleDescription rectangularNodeStyleDescription = (RectangularNodeStyleDescription) theEObject;
+            T result = this.caseRectangularNodeStyleDescription(rectangularNodeStyleDescription);
+            if (result == null)
+                result = this.caseNodeStyleDescription(rectangularNodeStyleDescription);
+            if (result == null)
+                result = this.caseStyle(rectangularNodeStyleDescription);
+            if (result == null)
+                result = this.caseLabelStyle(rectangularNodeStyleDescription);
+            if (result == null)
+                result = this.caseBorderStyle(rectangularNodeStyleDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.IMAGE_NODE_STYLE_DESCRIPTION: {
+            ImageNodeStyleDescription imageNodeStyleDescription = (ImageNodeStyleDescription) theEObject;
+            T result = this.caseImageNodeStyleDescription(imageNodeStyleDescription);
+            if (result == null)
+                result = this.caseNodeStyleDescription(imageNodeStyleDescription);
+            if (result == null)
+                result = this.caseStyle(imageNodeStyleDescription);
+            if (result == null)
+                result = this.caseLabelStyle(imageNodeStyleDescription);
+            if (result == null)
+                result = this.caseBorderStyle(imageNodeStyleDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION: {
+            IconLabelNodeStyleDescription iconLabelNodeStyleDescription = (IconLabelNodeStyleDescription) theEObject;
+            T result = this.caseIconLabelNodeStyleDescription(iconLabelNodeStyleDescription);
+            if (result == null)
+                result = this.caseNodeStyleDescription(iconLabelNodeStyleDescription);
+            if (result == null)
+                result = this.caseStyle(iconLabelNodeStyleDescription);
+            if (result == null)
+                result = this.caseLabelStyle(iconLabelNodeStyleDescription);
+            if (result == null)
+                result = this.caseBorderStyle(iconLabelNodeStyleDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LAYOUT_STRATEGY_DESCRIPTION: {
+            LayoutStrategyDescription layoutStrategyDescription = (LayoutStrategyDescription) theEObject;
+            T result = this.caseLayoutStrategyDescription(layoutStrategyDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION: {
+            FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = (FreeFormLayoutStrategyDescription) theEObject;
+            T result = this.caseFreeFormLayoutStrategyDescription(freeFormLayoutStrategyDescription);
+            if (result == null)
+                result = this.caseLayoutStrategyDescription(freeFormLayoutStrategyDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION: {
+            ListLayoutStrategyDescription listLayoutStrategyDescription = (ListLayoutStrategyDescription) theEObject;
+            T result = this.caseListLayoutStrategyDescription(listLayoutStrategyDescription);
+            if (result == null)
+                result = this.caseLayoutStrategyDescription(listLayoutStrategyDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -363,14 +439,6 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseConditionalNodeStyle(conditionalNodeStyle);
             if (result == null)
                 result = this.caseConditional(conditionalNodeStyle);
-            if (result == null)
-                result = this.caseNodeStyle(conditionalNodeStyle);
-            if (result == null)
-                result = this.caseStyle(conditionalNodeStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalNodeStyle);
-            if (result == null)
-                result = this.caseBorderStyle(conditionalNodeStyle);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -975,16 +1043,107 @@ public class ViewSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Node Style</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Node Style Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Node Style</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Node Style Description</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseNodeStyle(NodeStyle object) {
+    public T caseNodeStyleDescription(NodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Rectangular Node Style Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Rectangular Node Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRectangularNodeStyleDescription(RectangularNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Image Node Style Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Image Node Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseImageNodeStyleDescription(ImageNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Icon Label Node Style Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Icon Label Node Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIconLabelNodeStyleDescription(IconLabelNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Layout Strategy Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Layout Strategy Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLayoutStrategyDescription(LayoutStrategyDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Free Form Layout Strategy Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Free Form Layout Strategy Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFreeFormLayoutStrategyDescription(FreeFormLayoutStrategyDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>List Layout Strategy Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>List Layout Strategy Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseListLayoutStrategyDescription(ListLayoutStrategyDescription object) {
         return null;
     }
 

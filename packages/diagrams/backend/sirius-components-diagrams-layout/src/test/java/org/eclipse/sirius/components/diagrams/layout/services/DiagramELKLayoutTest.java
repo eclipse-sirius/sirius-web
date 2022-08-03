@@ -64,10 +64,11 @@ public class DiagramELKLayoutTest {
         };
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider);
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
 
         LayoutService layoutService = new LayoutService(new ELKDiagramConverter(new TextBoundsService(), new ImageSizeProvider()), new IncrementalLayoutDiagramConverter(),
-                new LayoutConfiguratorRegistry(List.of()), new ELKLayoutedDiagramProvider(), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
+                new LayoutConfiguratorRegistry(List.of()), new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService,
+                incrementalLayoutEngine);
 
         return new TestDiagramCreationService(this.objectService, representationDescriptionSearchService, layoutService);
     }

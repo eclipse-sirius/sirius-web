@@ -1,0 +1,31 @@
+= ADR-071 - Add parametric SVG node style
+
+== Context
+
+Parametric SVG node style is a new node style that allows to display, as a node image, a svg that is dynamically computed.
+Refer to `ADR-070 - Contribute a diagram node style ` to see how to contribute a new node style.
+
+== Current state
+
+Currently there is an image node style that allows to display a node with an image as background.
+
+== Proposal
+The parametric SVG node style has the `node:parametric-svg` node type.
+
+=== On the back-end
+The svg template is contributed with `ParametricSVGImageRegistry` beans. This APi allows to get the id, label and the template svg image path.
+A bean implementing `ParametricSVGImageFactory` is contributed to build the svg from the provided template svg and various styling and geometric parameter.
+
+This parametric svg is available with the shape attribute in the `ImageNodeStyleDescription` in the `view` model.
+
+During the diagram render, a `ParametricSVGNodeStyle` is instanciated to hold the style attributes as any other node style.
+This node style holds a particular attribute : the `url.
+
+=== On the front
+A new `ParametricSVGImageView` will manage the `node:paramtric-svg` node type.
+It will call a service on the back-end with the `ParametricSVGNodeStyle.url` and with style and geometric caracteristics of the node as parameters.
+It will returns a svg built dynamically.
+
+== Status
+
+Work in progress

@@ -1,0 +1,10 @@
+extend union INodeStyle = ParametricSVGNodeStyle
+
+type ParametricSVGNodeStyle  {
+  svgURL: String!
+  backgroundColor: String!
+  borderColor: String!
+  borderRadius: Int!
+  borderSize: Int!
+  borderStyle: LineStyle!
+}

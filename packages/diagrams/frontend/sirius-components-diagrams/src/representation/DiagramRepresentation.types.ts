@@ -202,7 +202,14 @@ export interface GQLImageNodeStyle extends GQLINodeStyle {
   borderSize: number;
   borderStyle: GQLLineStyle;
 }
-
+export interface GQLParametricSVGNodeStyle extends GQLINodeStyle {
+  svgURL: string;
+  backgroundColor: string;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: GQLLineStyle;
+}
 export interface GQLIconLabelNodeStyle extends GQLINodeStyle {
   backgroundColor: string;
 }

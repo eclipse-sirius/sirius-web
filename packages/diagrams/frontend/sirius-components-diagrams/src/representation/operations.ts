@@ -129,6 +129,14 @@ export const diagramEventSubscription = gql`
         borderSize
         borderRadius
       }
+      ... on ParametricSVGNodeStyle {
+        svgURL
+        backgroundColor
+        borderColor
+        borderRadius
+        borderSize
+        borderStyle
+      }
       ... on IconLabelNodeStyle {
         backgroundColor
       }

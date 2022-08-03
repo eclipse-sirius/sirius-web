@@ -12,30 +12,46 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
-import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 
 /**
  * Factory to create the basic style descriptions used by {@link ViewConverter}.
  *
  * @author pcdavid
+ * @author lfasani
  */
 public final class StylesFactory {
 
     private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
 
-    public LabelStyleDescription createLabelStyleDescription(NodeStyle nodeStyle) {
+    private List<INodeStyleProvider> iNodeStyleProviders = new ArrayList<>();
+
+    private IObjectService objectService;
+
+    public StylesFactory(List<INodeStyleProvider> iNodeStyleProviders, IObjectService objectService) {
+        this.iNodeStyleProviders = Objects.requireNonNull(iNodeStyleProviders);
+        this.objectService = Objects.requireNonNull(objectService);
+    }
+
+    public LabelStyleDescription createLabelStyleDescription(NodeStyleDescription nodeStyle) {
         // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                                     .colorProvider(variableManager -> nodeStyle.getLabelColor())
@@ -44,7 +60,13 @@ public final class StylesFactory {
                                     .italicProvider(variableManager -> nodeStyle.isItalic())
                                     .underlineProvider(variableManager -> nodeStyle.isUnderline())
                                     .strikeThroughProvider(variableManager -> nodeStyle.isStrikeThrough())
-                                    .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                                    .iconURLProvider(variableManager -> {
+                                        String iconURL = ""; //$NON-NLS-1$
+                                        if (nodeStyle.isShowIcon()) {
+                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(""); //$NON-NLS-1$
+                                        }
+                                        return iconURL;
+                                    })
                                     .build();
         // @formatter:on
     }
@@ -58,7 +80,13 @@ public final class StylesFactory {
                                     .italicProvider(variableManager -> edgeStyle.isItalic())
                                     .underlineProvider(variableManager -> edgeStyle.isUnderline())
                                     .strikeThroughProvider(variableManager -> edgeStyle.isStrikeThrough())
-                                    .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                                    .iconURLProvider(variableManager -> {
+                                        String iconURL = ""; //$NON-NLS-1$
+                                        if (edgeStyle.isShowIcon()) {
+                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(""); //$NON-NLS-1$
+                                        }
+                                        return iconURL;
+                                    })
                                     .build();
         // @formatter:on
     }
@@ -75,20 +103,52 @@ public final class StylesFactory {
         // @formatter:on
     }
 
-    public String getNodeType(NodeStyle nodeStyle) {
-        String type = NodeType.NODE_RECTANGLE;
-        if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
-                && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
-            type = NodeType.NODE_ICON_LABEL;
-        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
-            type = NodeType.NODE_IMAGE;
+    public String getNodeType(NodeStyleDescription nodeStyleDescription) {
+        Optional<String> type = Optional.empty();
+        if (nodeStyleDescription instanceof RectangularNodeStyleDescription) {
+            type = Optional.of(NodeType.NODE_RECTANGLE);
+        } else if (nodeStyleDescription instanceof IconLabelNodeStyleDescription) {
+            type = Optional.of(NodeType.NODE_ICON_LABEL);
+        } else {
+            for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
+                Optional<String> nodeType = iNodeStyleProvider.getNodeType(nodeStyleDescription);
+                if (nodeType.isPresent()) {
+                    type = Optional.of(nodeType.get());
+                    break;
+                }
+            }
         }
-        return type;
+        return type.orElse(NodeType.NODE_RECTANGLE);
     }
 
-    public INodeStyle createNodeStyle(NodeStyle nodeStyle, Optional<String> optionalEditingContextId) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
         INodeStyle result = null;
-        if (nodeStyle.isListMode()) {
+        switch (this.getNodeType(nodeStyle)) {
+        case NodeType.NODE_ICON_LABEL:
+            result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
+            break;
+        case NodeType.NODE_RECTANGLE:
+            // @formatter:off
+            result = RectangularNodeStyle.newRectangularNodeStyle()
+                .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
+                .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                .borderSize(nodeStyle.getBorderSize())
+                .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                .borderRadius(nodeStyle.getBorderRadius())
+                .build();
+            break;
+            // @formatter:on
+        default:
+            for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
+                Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId);
+                if (nodeStyleOpt.isPresent()) {
+                    result = nodeStyleOpt.get();
+                    break;
+                }
+            }
+        }
+        if (result == null) {
             // @formatter:off
             result = RectangularNodeStyle.newRectangularNodeStyle()
                    .withHeader(true)
@@ -99,32 +159,8 @@ public final class StylesFactory {
                    .borderRadius(nodeStyle.getBorderRadius())
                    .build();
             // @formatter:on
-        } else if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
-                && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
-            result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
-        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
-            // @formatter:off
-            result = ImageNodeStyle.newImageNodeStyle()
-                    .scalingFactor(1)
-                    .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + nodeStyle.getShape()) //$NON-NLS-1$ //$NON-NLS-2$
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                    .borderSize(nodeStyle.getBorderSize())
-                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                    .borderRadius(nodeStyle.getBorderRadius())
-                    .build();
-            // @formatter:on
-        } else {
-         // @formatter:off
-            result = RectangularNodeStyle.newRectangularNodeStyle()
-                    .withHeader(false)
-                    .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                    .borderSize(nodeStyle.getBorderSize())
-                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                    .borderRadius(nodeStyle.getBorderRadius())
-                    .build();
-            // @formatter:on
         }
+
         return result;
     }
     // CHECKSTYLE:ON
