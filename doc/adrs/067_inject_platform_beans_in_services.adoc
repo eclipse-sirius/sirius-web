@@ -1,0 +1,121 @@
+= ADR-067 - Add support for injecting platform services/beans into Java service classes used by studios
+
+== Context
+
+Studio definitions are configured using the View DSL, which (by design) has a limited scope.
+For more complex operations it is possible (and recommanded) to drop down to Java using service classes/methods invoked from AQL expressions.
+These service classes are registered with an `IJavaServiceProvider`.
+
+The way these Java service classes are currently instantiated (a no-arg public constructor invoked by AQL) means they can not have access to the APIs the platform defines (e.g. `IObjectService`) and thus their power is very limited.
+In particular they can not navigate into the graphical model or make modifications to it (notably, add `ViewCreationRequest` or `ViewDeletionRequest`).
+
+== Decision
+
+We will change `AQLInterpreter` to accept _instances_ in addition to classes as sources for AQL `IServices`.
+AQL already supports this directly.
+
+A new constructor will be added to `AQLInterpreter` which accepts already built instances in addition to classes (that AQL will continue to instantiate as before):
+
+[source,java]
+----
+    public AQLInterpreter(List<Class<?>> classes, List<Object> instances, List<EPackage> ePackages) {
+        this.queryEnvironment = Query.newEnvironmentWithDefaultServices(new SimpleCrossReferenceProvider());
+        this.queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+        this.queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
+
+        for (Class<?> aClass : classes) {
+            Set<IService> services = ServiceUtils.getServices(this.queryEnvironment, aClass);
+            ServiceUtils.registerServices(this.queryEnvironment, services);
+        }
+        // <ADDED>
+        for (Object instance : instances) {
+            Set<IService> services = ServiceUtils.getServices(this.queryEnvironment, instance);
+            ServiceUtils.registerServices(this.queryEnvironment, services);
+        }
+        // </ADDED>
+
+        ePackages.stream().filter(this::isValidEPackage).forEach(this.queryEnvironment::registerEPackage);
+
+        this.initExpressionsCache();
+    }
+----
+
+The previous constructor with two arguments will be kept for compatibility, and simlpy delegate to the new, more capable one:
+
+[source,java]
+----
+    public AQLInterpreter(List<Class<?>> classes, List<EPackage> ePackages) {
+        this(classes, List.of(), ePackages);
+    }
+----
+
+Instead of passing directly the classes returned by `IJavaServiceProvider` to AQL, the AQL interpreter created for View-based modelers (in `ViewConverter`) will use Spring's `ApplicationContext` to instanciate beans from these classes, injecting any dependencies they declare in their construtor to the bean instances:
+
+[source,java]
+----
+    private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
+        AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
+        // @formatter:off
+        List<Object> serviceInstances = this.javaServiceProviders.stream()
+                                            .flatMap(provider -> provider.getServiceClasses(view).stream())
+                                            .map(serviceClass -> {
+                                                try {
+                                                    return beanFactory.createBean(serviceClass);
+                                                } catch (BeansException beansException) {
+                                                    LOGGER.error("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException); //$NON-NLS-1$
+                                                    return null;
+                                                }
+                                            })
+                                            .filter(Objects::nonNull)
+                                            .collect(Collectors.toList());
+        // @formatter:on
+        return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
+    }
+----
+
+Service classes that platform services for their implementation will need to ask for them in their constructor.
+For example:
+
+[source,java]
+----
+public class SampleDiagramServices {
+    private final IObjectService objectService;
+
+    public SampleDiagramServices(IObjectService objectService) {
+        this.objectService = Objects.requireNonNull(objectService);
+    }
+
+    public EObject onDrop(EObject self, IDiagramContext diagramContext) {
+        var id = this.objectService.getId(self);
+        var label = this.objectService.getLabel(self);
+        System.out.println(String.format("Drop tool called on { id: %s, label: %s }", id, label)); //$NON-NLS-1$
+        return self;
+    }
+}
+----
+
+The beans injected this way will be global `@Service` instances which provide APIs but are stateless.
+In particular they do not know about the current diagram/representation on which a tool is invoked.
+
+For this graphical state, we will continue to rely on variables exposed the the tools and expressions.
+In the example above, the `onDrop` method takes the `IDiagramContext` as argument, which is available in the existing `diagramContext` variable.
+The AQL expression used to invoke that service will need to pass it explicitly: `aql:self.onDrop(diagramContext)`.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+`ViewConverter` will now need a Spring `ApplicationContext` to be instanciated.
+This would prevent writing plain unit tests like `DynamicDiagramsTests` which currently do not need a Spring context.
+To keep these tests simple, `ViewConverter` will accept a `null` `ApplicationContext`, in which case it will fall back to the previous behavior and not attempt to instanciate the classes returned by the `IJavaServiceProviders`.
+
+The current platform services that can be injected like this (e.g. `IObjectService`, `IRepresentationDescriptionSearchService`, etc.) have been designed with the needs of the platform and applications in mind.
+They may be relatively difficult to discover/use for studio makers.
+We may choose to provider easier to use "façade" services later on when the concrete needs of studio makers are better known.
+
+Similarly, we may need to modify/augment the variables exposed to the evaluation contexts if the current ones are not enough to use the platform services.
+
+With this mechanism, *any* bean defined in the global application context can be injected into a service class.
+It is up to the studio maker to use them responsibly, and in particular to avoid making modifications outside of the current editing context.

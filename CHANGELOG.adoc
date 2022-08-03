@@ -2,6 +2,11 @@
 
 == v2022.9.0 (unreleased)
 
+=== Architectural decision records
+
+* [ADR-067] Add support for injecting platform services/beans into Java service classes used by studios
+
+
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1311[#1311] [releng] Allow reusing `sirius-components-emf` without dependencies to the domain or view DSL. As a result, two new projects `sirius-components-domain-emf` and `sirius-components-view-emf` have been introduced in order to connect the EMF compatibility layer with the domain and view DSL. Consumers of `sirius-components-emf` may have to update their import. The behavior of the code has not been modified
@@ -29,7 +34,6 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Organize backend projects into scope-specific packages
-
 
 == v2022.7.0
 
