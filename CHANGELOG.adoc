@@ -34,6 +34,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Organize backend projects into scope-specific packages
+- https://github.com/eclipse-sirius/sirius-components/issues/1318[#1318] [studio] Java service classes used by studios (via `IJavaServiceProvider`) can now ask to be injected with any Spring bean available in the application context (for example `IObjectService` or other Sirius Components services they need for their implementation).
 
 == v2022.7.0
 

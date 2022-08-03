@@ -891,7 +891,7 @@ public class DynamicFormsTests {
 
         };
         ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService);
-        var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter));
+        var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), null);
         List<IRepresentationDescription> conversionResult = viewConverter.convert(view, List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.forms.description.FormDescription.class);
