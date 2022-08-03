@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { DRAG_SOURCES_TYPE } from 'common/dataTransferTypes';
 import { httpOrigin } from 'common/URL';
 import { IconButton } from 'core/button/Button';
 import { Text } from 'core/text/Text';
 import { Textfield } from 'core/textfield/Textfield';
-import gql from 'graphql-tag';
 import { ArrowCollapsed, ArrowExpanded, More, NoIcon } from 'icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TreeItemProps } from 'tree/TreeItem.types';

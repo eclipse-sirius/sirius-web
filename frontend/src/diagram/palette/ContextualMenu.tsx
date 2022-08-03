@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { Tool } from 'diagram/palette/tool/Tool';
-import gql from 'graphql-tag';
 import React, { useCallback, useEffect } from 'react';
 import styles from './ContextualMenu.module.css';
 import { ContextualMenuProps, GQLGetConnectorToolsData, GQLGetConnectorToolsVariables } from './ContextualMenu.types';

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const formDescriptionEditorEventSubscription = gql`
   subscription formDescriptionEditorEvent($input: FormDescriptionEditorEventInput!) {
