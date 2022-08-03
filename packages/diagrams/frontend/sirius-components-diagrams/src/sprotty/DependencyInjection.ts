@@ -62,6 +62,7 @@ import { DiagramView } from './views/DiagramView';
 import { EdgeView } from './views/EdgeView';
 import { IconLabelView } from './views/IconLabelView';
 import { ImageView } from './views/ImageView';
+import { ParametricSVGImageView } from './views/ParametricSVGImageView';
 import { LabelView } from './views/LabelView';
 import { RectangleView } from './views/RectangleView';
 
@@ -90,6 +91,8 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureModelElement(context, 'node:rectangle', Node, RectangleView);
   // @ts-ignore
   configureModelElement(context, 'node:image', Node, ImageView);
+  // @ts-ignore
+  configureModelElement(context, 'node:parametric-svg', Node, ParametricSVGImageView);
   // @ts-ignore
   configureModelElement(context, 'node:icon-label', Node, IconLabelView);
   // @ts-ignore

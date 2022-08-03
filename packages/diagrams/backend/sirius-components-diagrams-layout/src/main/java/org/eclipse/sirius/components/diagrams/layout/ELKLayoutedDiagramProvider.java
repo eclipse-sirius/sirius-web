@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,12 +45,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class ELKLayoutedDiagramProvider {
 
-    public Diagram getLayoutedDiagram(Diagram diagram, ElkNode elkDiagram, Map<String, ElkGraphElement> id2ElkGraphElements) {
+    private final List<ICustomNodeLabelPositionProvider> customLabelPositionProviders;
+
+    public ELKLayoutedDiagramProvider(List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
+        this.customLabelPositionProviders = customLabelPositionProviders;
+    }
+
+    public Diagram getLayoutedDiagram(Diagram diagram, ElkNode elkDiagram, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
         Size size = Size.of(elkDiagram.getWidth(), elkDiagram.getHeight());
         Position position = Position.at(elkDiagram.getX(), elkDiagram.getY());
 
         // @formatter:off
-        List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), id2ElkGraphElements);
+        List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), id2ElkGraphElements, layoutConfigurator);
         List<Edge> edges = this.getLayoutedEdges(diagram.getEdges(), id2ElkGraphElements);
 
         return Diagram.newDiagram(diagram)
@@ -61,26 +68,26 @@ public class ELKLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ElkGraphElement> id2ElkGraphElements) {
+    private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
         // @formatter:off
         return nodes.stream().flatMap(node -> {
             return Optional.ofNullable(id2ElkGraphElements.get(node.getId().toString()))
                     .filter(ElkConnectableShape.class::isInstance)
                     .map(ElkConnectableShape.class::cast)
-                    .map(elkNode -> this.getLayoutedNode(node, elkNode, id2ElkGraphElements))
+                    .map(elkNode -> this.getLayoutedNode(node, elkNode, id2ElkGraphElements, layoutConfigurator))
                     .stream();
         }).collect(Collectors.toUnmodifiableList());
         // @formatter:on
     }
 
-    private Node getLayoutedNode(Node node, ElkConnectableShape elkConnectableShape, Map<String, ElkGraphElement> id2ElkGraphElements) {
+    private Node getLayoutedNode(Node node, ElkConnectableShape elkConnectableShape, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
         Size size = Size.of(elkConnectableShape.getWidth(), elkConnectableShape.getHeight());
         Position position = Position.at(elkConnectableShape.getX(), elkConnectableShape.getY());
 
-        Label label = this.getLayoutedLabel(node.getLabel(), id2ElkGraphElements, 0, 0);
+        Label label = this.getNodeLayoutedLabel(node, id2ElkGraphElements, 0, 0, layoutConfigurator);
 
-        List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2ElkGraphElements);
-        List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2ElkGraphElements);
+        List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2ElkGraphElements, layoutConfigurator);
+        List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2ElkGraphElements, layoutConfigurator);
         // @formatter:off
         return Node.newNode(node)
                 .label(label)
@@ -214,6 +221,47 @@ public class ELKLayoutedDiagramProvider {
                     .orElse(Position.UNDEFINED);
 
             layoutedLabel = Label.newLabel(label)
+                    .size(size)
+                    .position(position)
+                    .alignment(alignment)
+                    .build();
+            // @formatter:on
+        }
+        return layoutedLabel;
+    }
+
+    private Label getNodeLayoutedLabel(Node node, Map<String, ElkGraphElement> id2ElkGraphElements, double xOffset, double yOffset, ISiriusWebLayoutConfigurator layoutConfigurator) {
+        Label layoutedLabel = node.getLabel();
+        var optionalElkBeginLabel = Optional.of(id2ElkGraphElements.get(node.getLabel().getId().toString())).filter(ElkLabel.class::isInstance).map(ElkLabel.class::cast);
+        if (optionalElkBeginLabel.isPresent()) {
+            ElkLabel elkLabel = optionalElkBeginLabel.get();
+
+            Size size = Size.of(elkLabel.getWidth(), elkLabel.getHeight());
+
+            // @formatter:off
+            Position position = Optional.of(elkLabel.getParent())
+                    .filter(ElkNode.class::isInstance)
+                    .map(ElkNode.class::cast)
+                    .map(elkNode -> {
+                        return Size.of(elkNode.getWidth(), elkNode.getHeight());
+                    })
+                    .flatMap(nodeSize -> {
+                        return this.customLabelPositionProviders.stream()
+                                .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(layoutConfigurator, size, nodeSize, node.getType(), node.getStyle()))
+                                .flatMap(Optional::stream)
+                                .findFirst();
+                    })
+                    .orElseGet(()-> Position.at(xOffset + elkLabel.getX(), yOffset + elkLabel.getY()));
+
+
+            Position alignment = elkLabel.eAdapters().stream()
+                    .filter(AlignmentHolder.class::isInstance)
+                    .map(AlignmentHolder.class::cast)
+                    .map(AlignmentHolder::getAlignment)
+                    .findFirst()
+                    .orElse(Position.UNDEFINED);
+
+            layoutedLabel = Label.newLabel(node.getLabel())
                     .size(size)
                     .position(position)
                     .alignment(alignment)

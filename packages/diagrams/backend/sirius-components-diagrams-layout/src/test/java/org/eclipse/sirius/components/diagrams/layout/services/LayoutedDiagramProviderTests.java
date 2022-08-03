@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.layout.ELKConvertedDiagram;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
+import org.eclipse.sirius.components.diagrams.layout.SiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.tests.IdPolicy;
 import org.eclipse.sirius.components.diagrams.tests.LayoutPolicy;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
@@ -89,7 +90,8 @@ public class LayoutedDiagramProviderTests {
 
         ELKConvertedDiagram convertedDiagram = this.getConvertedDiagram(originalDiagram);
 
-        Diagram layoutedDiagram = new ELKLayoutedDiagramProvider().getLayoutedDiagram(originalDiagram, convertedDiagram.getElkDiagram(), convertedDiagram.getId2ElkGraphElements());
+        Diagram layoutedDiagram = new ELKLayoutedDiagramProvider(List.of()).getLayoutedDiagram(originalDiagram, convertedDiagram.getElkDiagram(), convertedDiagram.getId2ElkGraphElements(),
+                new SiriusWebLayoutConfigurator());
         assertThat(layoutedDiagram).hasBounds(0, 0, 0, 0);
         assertThat(layoutedDiagram.getNodes()).hasSizeGreaterThan(0);
         assertThat(layoutedDiagram.getNodes().get(0)).hasBounds(NODE_X, NODE_Y, NODE_WIDTH, NODE_HEIGHT);

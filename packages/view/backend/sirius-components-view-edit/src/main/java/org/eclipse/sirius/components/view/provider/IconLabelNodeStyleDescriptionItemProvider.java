@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,22 +21,22 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.NodeStyle} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.IconLabelNodeStyleDescription}
+ * object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class NodeStyleItemProvider extends StyleItemProvider {
+public class IconLabelNodeStyleDescriptionItemProvider extends StyleItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public NodeStyleItemProvider(AdapterFactory adapterFactory) {
+    public IconLabelNodeStyleDescriptionItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -59,10 +59,9 @@ public class NodeStyleItemProvider extends StyleItemProvider {
             this.addBorderRadiusPropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
             this.addBorderLineStylePropertyDescriptor(object);
-            this.addListModePropertyDescriptor(object);
-            this.addShapePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
             this.addSizeComputationExpressionPropertyDescriptor(object);
+            this.addShowIconPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -140,18 +139,6 @@ public class NodeStyleItemProvider extends StyleItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the List Mode feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addListModePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_listMode_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_listMode_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__LIST_MODE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
      * This adds a property descriptor for the Border Radius feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -161,18 +148,6 @@ public class NodeStyleItemProvider extends StyleItemProvider {
                 this.getString("_UI_BorderStyle_borderRadius_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Shape feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addShapePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_NodeStyle_shape_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_shape_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        ViewPackage.Literals.NODE_STYLE__SHAPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -206,9 +181,9 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     protected void addLabelColorPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_labelColor_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_labelColor_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__LABEL_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_NodeStyleDescription_labelColor_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelColor_feature", "_UI_NodeStyleDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -219,13 +194,25 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     protected void addSizeComputationExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyle_sizeComputationExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyle_sizeComputationExpression_feature", "_UI_NodeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_NodeStyleDescription_sizeComputationExpression_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_sizeComputationExpression_feature", "_UI_NodeStyleDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This returns NodeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Show Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addShowIconPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeStyleDescription_showIcon_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_showIcon_feature", "_UI_NodeStyleDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This returns IconLabelNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -251,9 +238,9 @@ public class NodeStyleItemProvider extends StyleItemProvider {
      */
     @Override
     public String getText(Object object) {
-        String label = ((NodeStyle) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_NodeStyle_type") : //$NON-NLS-1$
-                this.getString("_UI_NodeStyle_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        String label = ((IconLabelNodeStyleDescription) object).getColor();
+        return label == null || label.length() == 0 ? this.getString("_UI_IconLabelNodeStyleDescription_type") : //$NON-NLS-1$
+                this.getString("_UI_IconLabelNodeStyleDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -267,20 +254,19 @@ public class NodeStyleItemProvider extends StyleItemProvider {
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(NodeStyle.class)) {
-        case ViewPackage.NODE_STYLE__FONT_SIZE:
-        case ViewPackage.NODE_STYLE__ITALIC:
-        case ViewPackage.NODE_STYLE__BOLD:
-        case ViewPackage.NODE_STYLE__UNDERLINE:
-        case ViewPackage.NODE_STYLE__STRIKE_THROUGH:
-        case ViewPackage.NODE_STYLE__BORDER_COLOR:
-        case ViewPackage.NODE_STYLE__BORDER_RADIUS:
-        case ViewPackage.NODE_STYLE__BORDER_SIZE:
-        case ViewPackage.NODE_STYLE__BORDER_LINE_STYLE:
-        case ViewPackage.NODE_STYLE__LIST_MODE:
-        case ViewPackage.NODE_STYLE__SHAPE:
-        case ViewPackage.NODE_STYLE__LABEL_COLOR:
-        case ViewPackage.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+        switch (notification.getFeatureID(IconLabelNodeStyleDescription.class)) {
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__ITALIC:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BOLD:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__UNDERLINE:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }

@@ -78,7 +78,7 @@ export class LabelView extends SLabelView {
       }
     }
 
-    const iconVerticalOffset = -12;
+    const iconVerticalOffset = -14;
     const text = label.text;
 
     const vnode = (

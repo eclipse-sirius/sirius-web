@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -69,7 +69,7 @@ public class DynamicDiagramsTests {
     }
 
     private void setBasicNodeStyle(NodeDescription nodeDescription, String color) {
-        NodeStyle eClassNodeStyle = ViewFactory.eINSTANCE.createNodeStyle();
+        NodeStyleDescription eClassNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         eClassNodeStyle.setColor(color);
         nodeDescription.setStyle(eClassNodeStyle);
     }
@@ -130,7 +130,7 @@ public class DynamicDiagramsTests {
         View view = ViewFactory.eINSTANCE.createView();
         view.getDescriptions().add(diagramDescription);
 
-        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp());
+        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of());
         var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(view, List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);

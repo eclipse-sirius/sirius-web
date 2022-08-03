@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,10 +37,11 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -74,13 +75,17 @@ public class DiagramDescriptionValidator implements EValidator {
             DiagramElementDescription diagramElementDescription = (DiagramElementDescription) eObject;
             isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof NodeStyle) {
-            NodeStyle nodeStyle = (NodeStyle) eObject;
+        if (eObject instanceof NodeStyleDescription) {
+            NodeStyleDescription nodeStyle = (NodeStyleDescription) eObject;
             isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
         }
         if (eObject instanceof Conditional) {
             Conditional conditional = (Conditional) eObject;
             isValid = this.conditionIsPresent(conditional, diagnostics) && isValid;
+        }
+        if (eObject instanceof ConditionalNodeStyle) {
+            ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) eObject;
+            isValid = this.conditionalStyleIsPresent(conditionalNodeStyle, diagnostics) && isValid;
         }
         if (eObject instanceof CreateInstance) {
             CreateInstance createInstance = (CreateInstance) eObject;
@@ -115,7 +120,28 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperColor(NodeStyle nodeStyle, DiagnosticChain diagnostics) {
+    private boolean conditionalStyleIsPresent(ConditionalNodeStyle conditionalNodeStyle, DiagnosticChain diagnostics) {
+        boolean isValid = conditionalNodeStyle.getStyle() != null;
+
+        if (!isValid && diagnostics != null) {
+            // @formatter:off
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_COMPONENTS_EMF_PACKAGE,
+                    0,
+                    "The style should not be empty", //$NON-NLS-1$
+                    new Object [] {
+                            conditionalNodeStyle,
+                            ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                    });
+            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
         boolean isValid = !nodeStyle.getColor().isBlank();
 
         if (!isValid && diagnostics != null) {

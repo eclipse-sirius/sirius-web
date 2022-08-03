@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public interface NodeDescription extends DiagramElementDescription {
      * @model containment="true"
      * @generated
      */
-    NodeStyle getStyle();
+    NodeStyleDescription getStyle();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#getStyle <em>Style</em>}'
@@ -76,7 +76,7 @@ public interface NodeDescription extends DiagramElementDescription {
      * @see #getStyle()
      * @generated
      */
-    void setStyle(NodeStyle value);
+    void setStyle(NodeStyleDescription value);
 
     /**
      * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type
@@ -100,5 +100,28 @@ public interface NodeDescription extends DiagramElementDescription {
      * @generated
      */
     EList<ConditionalNodeStyle> getConditionalStyles();
+
+    /**
+     * Returns the value of the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Children Layout Strategy</em>' containment reference.
+     * @see #setChildrenLayoutStrategy(LayoutStrategyDescription)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_ChildrenLayoutStrategy()
+     * @model containment="true"
+     * @generated
+     */
+    LayoutStrategyDescription getChildrenLayoutStrategy();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#getChildrenLayoutStrategy
+     * <em>Children Layout Strategy</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Children Layout Strategy</em>' containment reference.
+     * @see #getChildrenLayoutStrategy()
+     * @generated
+     */
+    void setChildrenLayoutStrategy(LayoutStrategyDescription value);
 
 } // NodeDescription

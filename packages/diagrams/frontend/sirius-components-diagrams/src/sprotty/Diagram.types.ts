@@ -49,7 +49,14 @@ export class ImageNodeStyle implements INodeStyle {
   borderSize: number;
   borderStyle: LineStyle;
 }
-
+export class ParametricSVGNodeStyle implements INodeStyle {
+  svgURL: string;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: LineStyle;
+  backgroundColor: string;
+}
 export class RectangularNodeStyle implements INodeStyle {
   color: string;
   borderColor: string;

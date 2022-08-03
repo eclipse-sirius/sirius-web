@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
             this.addSourceArrowStylePropertyDescriptor(object);
             this.addTargetArrowStylePropertyDescriptor(object);
             this.addEdgeWidthPropertyDescriptor(object);
+            this.addShowIconPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -185,6 +186,18 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Show Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addShowIconPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeStyle_showIcon_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_showIcon_feature", "_UI_EdgeStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.EDGE_STYLE__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns ConditionalEdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -238,6 +251,7 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
         case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
         case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }

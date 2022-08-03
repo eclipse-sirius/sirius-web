@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getTargetArrowStyle <em>Target Arrow
  * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#getEdgeWidth <em>Edge Width</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalEdgeStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -247,6 +248,26 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected int edgeWidth = EDGE_WIDTH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SHOW_ICON_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -503,6 +524,29 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      */
     @Override
+    public boolean isShowIcon() {
+        return this.showIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowIcon(boolean newShowIcon) {
+        boolean oldShowIcon = this.showIcon;
+        this.showIcon = newShowIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
@@ -525,6 +569,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return this.getTargetArrowStyle();
         case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
             return this.getEdgeWidth();
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+            return this.isShowIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -566,6 +612,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
             this.setEdgeWidth((Integer) newValue);
+            return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+            this.setShowIcon((Boolean) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -609,6 +658,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
             this.setEdgeWidth(EDGE_WIDTH_EDEFAULT);
             return;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+            this.setShowIcon(SHOW_ICON_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -641,6 +693,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return this.targetArrowStyle != TARGET_ARROW_STYLE_EDEFAULT;
         case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
             return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
+        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+            return this.showIcon != SHOW_ICON_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -686,6 +740,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return ViewPackage.EDGE_STYLE__TARGET_ARROW_STYLE;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
                 return ViewPackage.EDGE_STYLE__EDGE_WIDTH;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+                return ViewPackage.EDGE_STYLE__SHOW_ICON;
             default:
                 return -1;
             }
@@ -734,6 +790,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE;
             case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
                 return ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH;
+            case ViewPackage.EDGE_STYLE__SHOW_ICON:
+                return ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON;
             default:
                 return -1;
             }
@@ -772,6 +830,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         result.append(this.targetArrowStyle);
         result.append(", edgeWidth: "); //$NON-NLS-1$
         result.append(this.edgeWidth);
+        result.append(", showIcon: "); //$NON-NLS-1$
+        result.append(this.showIcon);
         result.append(')');
         return result.toString();
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl#getTargetArrowStyle <em>Target Arrow
  * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl#getEdgeWidth <em>Edge Width</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -222,6 +223,26 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * @ordered
      */
     protected int edgeWidth = EDGE_WIDTH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SHOW_ICON_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -455,6 +476,29 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * @generated
      */
     @Override
+    public boolean isShowIcon() {
+        return this.showIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowIcon(boolean newShowIcon) {
+        boolean oldShowIcon = this.showIcon;
+        this.showIcon = newShowIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
         case ViewPackage.EDGE_STYLE__FONT_SIZE:
@@ -475,6 +519,8 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             return this.getTargetArrowStyle();
         case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
             return this.getEdgeWidth();
+        case ViewPackage.EDGE_STYLE__SHOW_ICON:
+            return this.isShowIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -513,6 +559,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             return;
         case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
             this.setEdgeWidth((Integer) newValue);
+            return;
+        case ViewPackage.EDGE_STYLE__SHOW_ICON:
+            this.setShowIcon((Boolean) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -553,6 +602,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
             this.setEdgeWidth(EDGE_WIDTH_EDEFAULT);
             return;
+        case ViewPackage.EDGE_STYLE__SHOW_ICON:
+            this.setShowIcon(SHOW_ICON_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -583,6 +635,8 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             return this.targetArrowStyle != TARGET_ARROW_STYLE_EDEFAULT;
         case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
             return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
+        case ViewPackage.EDGE_STYLE__SHOW_ICON:
+            return this.showIcon != SHOW_ICON_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -668,6 +722,8 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         result.append(this.targetArrowStyle);
         result.append(", edgeWidth: "); //$NON-NLS-1$
         result.append(this.edgeWidth);
+        result.append(", showIcon: "); //$NON-NLS-1$
+        result.append(this.showIcon);
         result.append(')');
         return result.toString();
     }

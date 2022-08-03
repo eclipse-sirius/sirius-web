@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,16 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -51,8 +57,22 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addChildrenLayoutStrategyPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Children Layout Strategy feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addChildrenLayoutStrategyPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_childrenLayoutStrategy_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_childrenLayoutStrategy_feature", "_UI_NodeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, true, false, true, null, null, null));
     }
 
     /**
@@ -154,44 +174,61 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeChild.setName("Sub-node"); //$NON-NLS-1$
-        nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
-
-        NodeDescription borderNodeChild = ViewFactory.eINSTANCE.createNodeDescription();
-        borderNodeChild.setName("Border node"); //$NON-NLS-1$
-        borderNodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
-
         NodeTool newNodeTool = ViewFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Create Node"); //$NON-NLS-1$
         newNodeTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, newNodeTool));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
+        NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
+        nodeChild.setName("Sub-node"); //$NON-NLS-1$
+        nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
+        nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
+
+        NodeDescription borderNodeChild = ViewFactory.eINSTANCE.createNodeDescription();
+        borderNodeChild.setName("Border node"); //$NON-NLS-1$
+        borderNodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
+        borderNodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createRectangularNodeStyleDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createImageNodeStyleDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription()));
+
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalNodeStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, ViewFactory.eINSTANCE.createListLayoutStrategyDescription()));
     }
 
     /**
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS
-                || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        String text = ""; //$NON-NLS-1$
+        if (feature == ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS) {
+            text = "Sub-node"; //$NON-NLS-1$
+        } else if (feature == ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS) {
+            text = "Border node"; //$NON-NLS-1$
+        } else if (child instanceof RectangularNodeStyleDescription) {
+            text = "Style Rectangular"; //$NON-NLS-1$
+        } else if (child instanceof ImageNodeStyleDescription) {
+            text = "Style Image"; //$NON-NLS-1$
+        } else if (child instanceof IconLabelNodeStyleDescription) {
+            text = "Style Icon-Label"; //$NON-NLS-1$
+        } else if (child instanceof FreeFormLayoutStrategyDescription) {
+            text = "Layout Free Form"; //$NON-NLS-1$
+        } else if (child instanceof ListLayoutStrategyDescription) {
+            text = "Layout List"; //$NON-NLS-1$
+        } else {
+            text = super.getCreateChildText(owner, feature, child, selection);
         }
-        return super.getCreateChildText(owner, feature, child, selection);
+
+        return text;
     }
 
 }

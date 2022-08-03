@@ -1,0 +1,91 @@
+= ADR-070 - Contribute a diagram node style 
+
+== Context
+
+Currently, the diagram styles are hardcoded and known by the sirius-component core in the backend and in the frontend.
+
+The aim of this ADR is to explain how to contribute a new diagram style from an additional project and what changes are needed in the sirius-component projects to support the contributed style.
+
+=== Current state
+On the backend, style are managed specifically for
+* the rendering in  `sirius-components-diagrams`
+* the layout in `sirius-components-diagrams-layout`
+** ELK layout
+** Incremental layout
+* the service called by the front end
+
+On the frontend, styles are managed with a dedicated sprotty inherited view.
+
+== Enhancement ==
+
+For the rest of this ADR, let's consider that the contributed style is a parametric SVG style node.
+See `ADR-071 - Add parametric SVG node style` to have more explanation on this style.
+
+=== Use cases
+
+*Specifier*
+
+When defining the diagram description with the web view modeler, the specifier should be able to select the contributed style as well as hardcoded existing style (such as node or image styles)
+
+*Developper*
+
+On the backend, the developper will provide spring bean to allow
+* defining the new nodestyle
+* adding the node style as part of the view modeler
+* the style rendering when rendering the diagram
+* Optional (customizing the layout)
+
+On the front end, the developper needs to provide a specific sprotty view to render the style on the frontend
+
+=== Code changes
+
+The code needs to evolve so that it is able to manage the contributed style without having any direct dependency of its definition.
+Everywhere, the specific node styles are used, the code should adapt to get bean contribution that implement the right API:
+
+* Diagram rendering: A new API `INodeStyleProvider` has been created to provide a node type and to instanciate the nodeStyle inheriting from `INodeStyle`
+* Incremental and ELK layout: A new API `ICustomNodeLabelPositionProvider` has been defined to customize the position of the node Label. This API is used for both ELK and incremental layout
+
+
+* Front end: the code must be able to render the new node style by adding a new sprotty view. In our example `node:parametric-svg` node type and `ParametricSVGView` have been added.
+Currently, delegating the creation of the sprotty pojo is not yet supported. So the digram convertion from the data returned by the server to data managed by sprotty is hardcoded.
+The link between the node type and the sprotty view capable of rendering the node is done `dependencyInjection`
+```  
+configureModelElement(context, 'node:parametric-svg', Node, ParametricSVGView);
+```
+
+== Developper guide
+
+=== backend
+
+* View model: contribute an extension of the `view.ecore` and add a subtype of `NodeStyleDescription`
+* Diagram rendering : Create a diagram node style
+** Add a new POJO class representing the node style. It must implements `INodeStyle`
+** Add a `INodeStyleProvider` to provide a node type and to instanciate the nodeStyle inheriting from `INodeStyle`
+
+* ELK layout: If the default configuration from `LayoutConfiguratorRegistry` is not sufficient, it is possible to provide a bean implementing `IDiagramLayoutConfiguratorProvider` to customize the ELK configuration.
+* Incremental and ELK layout: 
+** (Optional) Provide a bean implementing `ICustomNodeLabelPositionProvider` to customize the position of the node Label.
+
+* Service: Add a graphqls file that contains `extend union INodeStyle = `<new Node Style>`` and the declaration of the new node type itself For example:
+```
+extend union INodeStyle = SVGNodeStyle
+
+type SVGNodeStyle  {
+  svgURL: String!
+  backgroundColor: String!
+  borderColor: String!
+  borderRadius: Int!
+  borderSize: Int!
+  borderStyle: LineStyle!
+}
+```
+
+=== frontend
+* Add a new diagram node style type that implements `INodeStyle`
+* Add a new diagram node style type that extends `GQLINodeStyle`
+* update the diagramEventSubscription
+* Add a specific sprotty view that is able to render the style and configure the node style for sprotty
+
+== Status
+
+Work in progress

@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +98,13 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
+
+        configurator.configureByType(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE)
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS, SizeConstraint.NODE_LABELS))
+                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
+                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
+                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside())
+                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(5d, 5d, 5d, 5d));
 
         configurator.configureByType(NodeType.NODE_ICON_LABEL)
                 .setProperty(CoreOptions.NO_LAYOUT, true)

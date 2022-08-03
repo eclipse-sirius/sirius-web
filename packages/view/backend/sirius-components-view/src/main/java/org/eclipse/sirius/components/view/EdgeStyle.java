@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ package org.eclipse.sirius.components.view;
  * <li>{@link org.eclipse.sirius.components.view.EdgeStyle#getSourceArrowStyle <em>Source Arrow Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.EdgeStyle#getTargetArrowStyle <em>Target Arrow Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.EdgeStyle#getEdgeWidth <em>Edge Width</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.EdgeStyle#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeStyle()
@@ -130,5 +131,28 @@ public interface EdgeStyle extends Style, LabelStyle {
      * @generated
      */
     void setEdgeWidth(int value);
+
+    /**
+     * Returns the value of the '<em><b>Show Icon</b></em>' attribute. The default value is <code>"false"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Show Icon</em>' attribute.
+     * @see #setShowIcon(boolean)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeStyle_ShowIcon()
+     * @model default="false"
+     * @generated
+     */
+    boolean isShowIcon();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeStyle#isShowIcon <em>Show Icon</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Show Icon</em>' attribute.
+     * @see #isShowIcon()
+     * @generated
+     */
+    void setShowIcon(boolean value);
 
 } // EdgeStyle
