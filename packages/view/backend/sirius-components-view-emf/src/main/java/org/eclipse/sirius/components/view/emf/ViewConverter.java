@@ -22,6 +22,11 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,13 +37,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewConverter implements IViewConverter {
 
+    private final Logger logger = LoggerFactory.getLogger(ViewConverter.class);
+
     private final List<IJavaServiceProvider> javaServiceProviders;
 
     private final List<IRepresentationDescriptionConverter> representationDescriptionConverters;
 
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters) {
+    private final ApplicationContext applicationContext;
+
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext) {
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
+        this.applicationContext = Objects.requireNonNull(applicationContext);
     }
 
     /**
@@ -74,11 +84,21 @@ public class ViewConverter implements IViewConverter {
     }
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
+        AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
         // @formatter:off
-        List<Class<?>> serviceClasses = this.javaServiceProviders.stream()
-                                            .flatMap(provider -> provider.getServiceClasses(view).stream())
-                                            .collect(Collectors.toList());
+        List<Object> serviceInstances = this.javaServiceProviders.stream()
+                .flatMap(provider -> provider.getServiceClasses(view).stream())
+                .map(serviceClass -> {
+                    try {
+                        return beanFactory.createBean(serviceClass);
+                    } catch (BeansException beansException) {
+                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException); //$NON-NLS-1$
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         // @formatter:on
-        return new AQLInterpreter(serviceClasses, visibleEPackages);
+        return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 }
