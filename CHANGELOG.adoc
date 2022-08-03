@@ -16,6 +16,7 @@
 - [frontend] Update the version of `jest-transform-css` used in order to fix the long standing issues of its incompatibility with the version of `postcss`` that we use. We will thus use `postcss 8.4.14` and `jest-transform-css 4.0.1` now
 - [frontend] Remove our dependency to `ts-transform-graphql-tag` since it is not maintained and its dependencies are outdated and since it is used to lower the dependency with `graphql-tag` which we will stop using soon
 - [frontend] Remove the peer dependency to `graphql-tag`. It will not be required for projects consuming Sirius Components now
+- [frontend] Remove the peer dependency to `subscriptions-transport-ws`. It is not required by Sirius Components and consumers of Sirius Components will be free to switch to `graphql-ws` instead of even to not rely on web socket at all to communicate with the backend. Sirius Components itself does not need to specify how the communication with the backend will be done
 
 
 === Improvements
