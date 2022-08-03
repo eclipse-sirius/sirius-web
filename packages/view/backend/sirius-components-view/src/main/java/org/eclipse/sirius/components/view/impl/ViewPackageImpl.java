@@ -50,19 +50,27 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.LayoutDirection;
+import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.SVGNodeStyleDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
@@ -154,7 +162,56 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
-    private EClass nodeStyleEClass = null;
+    private EClass nodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass rectangularNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass imageNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass svgNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass iconLabelNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass layoutStrategyDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass freeFormLayoutStrategyDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass listLayoutStrategyDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -442,6 +499,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass conditionalButtonDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum layoutDirectionEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -826,6 +890,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EReference getNodeDescription_ChildrenLayoutStrategy() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getEdgeDescription() {
         return this.edgeDescriptionEClass;
     }
@@ -1066,8 +1140,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EClass getNodeStyle() {
-        return this.nodeStyleEClass;
+    public EClass getNodeStyleDescription() {
+        return this.nodeStyleDescriptionEClass;
     }
 
     /**
@@ -1076,8 +1150,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_ListMode() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(0);
+    public EAttribute getNodeStyleDescription_LabelColor() {
+        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1086,8 +1160,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_Shape() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(1);
+    public EAttribute getNodeStyleDescription_SizeComputationExpression() {
+        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1096,8 +1170,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_LabelColor() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(2);
+    public EClass getRectangularNodeStyleDescription() {
+        return this.rectangularNodeStyleDescriptionEClass;
     }
 
     /**
@@ -1106,8 +1180,98 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyle_SizeComputationExpression() {
-        return (EAttribute) this.nodeStyleEClass.getEStructuralFeatures().get(3);
+    public EAttribute getRectangularNodeStyleDescription_WithHeader() {
+        return (EAttribute) this.rectangularNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getImageNodeStyleDescription() {
+        return this.imageNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getImageNodeStyleDescription_Shape() {
+        return (EAttribute) this.imageNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getSVGNodeStyleDescription() {
+        return this.svgNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSVGNodeStyleDescription_Shape() {
+        return (EAttribute) this.svgNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getIconLabelNodeStyleDescription() {
+        return this.iconLabelNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getLayoutStrategyDescription() {
+        return this.layoutStrategyDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFreeFormLayoutStrategyDescription() {
+        return this.freeFormLayoutStrategyDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getListLayoutStrategyDescription() {
+        return this.listLayoutStrategyDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getListLayoutStrategyDescription_Direction() {
+        return (EAttribute) this.listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2186,6 +2350,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EEnum getLayoutDirection() {
+        return this.layoutDirectionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescription() {
         return this.barChartDescriptionEClass;
     }
@@ -2439,6 +2613,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__NODE_TOOLS);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
 
         this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
@@ -2468,11 +2643,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.styleEClass = this.createEClass(STYLE);
         this.createEAttribute(this.styleEClass, STYLE__COLOR);
 
-        this.nodeStyleEClass = this.createEClass(NODE_STYLE);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LIST_MODE);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SHAPE);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__LABEL_COLOR);
-        this.createEAttribute(this.nodeStyleEClass, NODE_STYLE__SIZE_COMPUTATION_EXPRESSION);
+        this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
+        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_COLOR);
+        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION);
+
+        this.rectangularNodeStyleDescriptionEClass = this.createEClass(RECTANGULAR_NODE_STYLE_DESCRIPTION);
+        this.createEAttribute(this.rectangularNodeStyleDescriptionEClass, RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER);
+
+        this.imageNodeStyleDescriptionEClass = this.createEClass(IMAGE_NODE_STYLE_DESCRIPTION);
+        this.createEAttribute(this.imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__SHAPE);
+
+        this.svgNodeStyleDescriptionEClass = this.createEClass(SVG_NODE_STYLE_DESCRIPTION);
+        this.createEAttribute(this.svgNodeStyleDescriptionEClass, SVG_NODE_STYLE_DESCRIPTION__SHAPE);
+
+        this.iconLabelNodeStyleDescriptionEClass = this.createEClass(ICON_LABEL_NODE_STYLE_DESCRIPTION);
+
+        this.layoutStrategyDescriptionEClass = this.createEClass(LAYOUT_STRATEGY_DESCRIPTION);
+
+        this.freeFormLayoutStrategyDescriptionEClass = this.createEClass(FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION);
+
+        this.listLayoutStrategyDescriptionEClass = this.createEClass(LIST_LAYOUT_STRATEGY_DESCRIPTION);
+        this.createEAttribute(this.listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__DIRECTION);
 
         this.edgeStyleEClass = this.createEClass(EDGE_STYLE);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LINE_STYLE);
@@ -2643,6 +2834,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.conditionalButtonDescriptionStyleEClass = this.createEClass(CONDITIONAL_BUTTON_DESCRIPTION_STYLE);
 
         // Create enums
+        this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
         this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
@@ -2680,9 +2872,15 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.diagramDescriptionEClass.getESuperTypes().add(this.getRepresentationDescription());
         this.nodeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
         this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
-        this.nodeStyleEClass.getESuperTypes().add(this.getStyle());
-        this.nodeStyleEClass.getESuperTypes().add(this.getLabelStyle());
-        this.nodeStyleEClass.getESuperTypes().add(this.getBorderStyle());
+        this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getStyle());
+        this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getLabelStyle());
+        this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
+        this.rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+        this.imageNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+        this.svgNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+        this.iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+        this.freeFormLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
+        this.listLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
         this.edgeStyleEClass.getESuperTypes().add(this.getStyle());
         this.edgeStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.labelEditToolEClass.getESuperTypes().add(this.getTool());
@@ -2698,7 +2896,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createViewEClass.getESuperTypes().add(this.getOperation());
         this.deleteViewEClass.getESuperTypes().add(this.getOperation());
         this.conditionalNodeStyleEClass.getESuperTypes().add(this.getConditional());
-        this.conditionalNodeStyleEClass.getESuperTypes().add(this.getNodeStyle());
+        this.conditionalNodeStyleEClass.getESuperTypes().add(this.getNodeStyleDescription());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getEdgeStyle());
         this.formDescriptionEClass.getESuperTypes().add(this.getRepresentationDescription());
@@ -2786,12 +2984,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_BorderNodesDescriptions(), this.getNodeDescription(), null, "borderNodesDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_Style(), this.getNodeStyle(), null, "style", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+        this.initEReference(this.getNodeDescription_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_ConditionalStyles(), this.getConditionalNodeStyle(), null, "conditionalStyles", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeDescription_ChildrenLayoutStrategy(), this.getLayoutStrategyDescription(), null, "childrenLayoutStrategy", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getEdgeDescription_BeginLabelExpression(), this.ecorePackage.getEString(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
@@ -2841,14 +3041,33 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEAttribute(this.getStyle_Color(), this.ecorePackage.getEString(), "color", "#E5F5F8", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, //$NON-NLS-1$ //$NON-NLS-2$
                 !IS_DERIVED, IS_ORDERED);
 
-        this.initEClass(this.nodeStyleEClass, NodeStyle.class, "NodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-        this.initEAttribute(this.getNodeStyle_ListMode(), this.ecorePackage.getEBoolean(), "listMode", null, 1, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, //$NON-NLS-1$
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_LabelColor(), this.ecorePackage.getEString(), "labelColor", "black", 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$ //$NON-NLS-2$
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyle_SizeComputationExpression(), this.ecorePackage.getEString(), "sizeComputationExpression", "1", 0, 1, NodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+        this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getNodeStyleDescription_LabelColor(), this.ecorePackage.getEString(), "labelColor", "black", 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeStyleDescription_SizeComputationExpression(), this.ecorePackage.getEString(), "sizeComputationExpression", "1", 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.rectangularNodeStyleDescriptionEClass, RectangularNodeStyleDescription.class, "RectangularNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getRectangularNodeStyleDescription_WithHeader(), this.ecorePackage.getEBoolean(), "withHeader", null, 0, 1, RectangularNodeStyleDescription.class, !IS_TRANSIENT, //$NON-NLS-1$
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.imageNodeStyleDescriptionEClass, ImageNodeStyleDescription.class, "ImageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getImageNodeStyleDescription_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, ImageNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.svgNodeStyleDescriptionEClass, SVGNodeStyleDescription.class, "SVGNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getSVGNodeStyleDescription_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, SVGNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.iconLabelNodeStyleDescriptionEClass, IconLabelNodeStyleDescription.class, "IconLabelNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+        this.initEClass(this.layoutStrategyDescriptionEClass, LayoutStrategyDescription.class, "LayoutStrategyDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+        this.initEClass(this.freeFormLayoutStrategyDescriptionEClass, FreeFormLayoutStrategyDescription.class, "FreeFormLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+                IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.listLayoutStrategyDescriptionEClass, ListLayoutStrategyDescription.class, "ListLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getListLayoutStrategyDescription_Direction(), this.getLayoutDirection(), "direction", "Column", 0, 1, ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$ //$NON-NLS-2$
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeStyleEClass, EdgeStyle.class, "EdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -3105,6 +3324,9 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals
+        this.initEEnum(this.layoutDirectionEEnum, LayoutDirection.class, "LayoutDirection"); //$NON-NLS-1$
+        this.addEEnumLiteral(this.layoutDirectionEEnum, LayoutDirection.COLUMN);
+
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle"); //$NON-NLS-1$
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.NONE);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.OUTPUT_ARROW);

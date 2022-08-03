@@ -170,26 +170,147 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodeStyle} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.RectangularNodeStyleDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
-    protected NodeStyleItemProvider nodeStyleItemProvider;
+    protected RectangularNodeStyleDescriptionItemProvider rectangularNodeStyleDescriptionItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.NodeStyle}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.RectangularNodeStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
-    public Adapter createNodeStyleAdapter() {
-        if (this.nodeStyleItemProvider == null) {
-            this.nodeStyleItemProvider = new NodeStyleItemProvider(this);
+    public Adapter createRectangularNodeStyleDescriptionAdapter() {
+        if (this.rectangularNodeStyleDescriptionItemProvider == null) {
+            this.rectangularNodeStyleDescriptionItemProvider = new RectangularNodeStyleDescriptionItemProvider(this);
         }
 
-        return this.nodeStyleItemProvider;
+        return this.rectangularNodeStyleDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ImageNodeStyleDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected ImageNodeStyleDescriptionItemProvider imageNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ImageNodeStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createImageNodeStyleDescriptionAdapter() {
+        if (this.imageNodeStyleDescriptionItemProvider == null) {
+            this.imageNodeStyleDescriptionItemProvider = new ImageNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.imageNodeStyleDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.SVGNodeStyleDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected SVGNodeStyleDescriptionItemProvider svgNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.SVGNodeStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSVGNodeStyleDescriptionAdapter() {
+        if (this.svgNodeStyleDescriptionItemProvider == null) {
+            this.svgNodeStyleDescriptionItemProvider = new SVGNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.svgNodeStyleDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.IconLabelNodeStyleDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected IconLabelNodeStyleDescriptionItemProvider iconLabelNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.IconLabelNodeStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createIconLabelNodeStyleDescriptionAdapter() {
+        if (this.iconLabelNodeStyleDescriptionItemProvider == null) {
+            this.iconLabelNodeStyleDescriptionItemProvider = new IconLabelNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.iconLabelNodeStyleDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FreeFormLayoutStrategyDescriptionItemProvider freeFormLayoutStrategyDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFreeFormLayoutStrategyDescriptionAdapter() {
+        if (this.freeFormLayoutStrategyDescriptionItemProvider == null) {
+            this.freeFormLayoutStrategyDescriptionItemProvider = new FreeFormLayoutStrategyDescriptionItemProvider(this);
+        }
+
+        return this.freeFormLayoutStrategyDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.ListLayoutStrategyDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected ListLayoutStrategyDescriptionItemProvider listLayoutStrategyDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ListLayoutStrategyDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createListLayoutStrategyDescriptionAdapter() {
+        if (this.listLayoutStrategyDescriptionItemProvider == null) {
+            this.listLayoutStrategyDescriptionItemProvider = new ListLayoutStrategyDescriptionItemProvider(this);
+        }
+
+        return this.listLayoutStrategyDescriptionItemProvider;
     }
 
     /**
@@ -1235,8 +1356,18 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodeDescriptionItemProvider.dispose();
         if (this.edgeDescriptionItemProvider != null)
             this.edgeDescriptionItemProvider.dispose();
-        if (this.nodeStyleItemProvider != null)
-            this.nodeStyleItemProvider.dispose();
+        if (this.rectangularNodeStyleDescriptionItemProvider != null)
+            this.rectangularNodeStyleDescriptionItemProvider.dispose();
+        if (this.imageNodeStyleDescriptionItemProvider != null)
+            this.imageNodeStyleDescriptionItemProvider.dispose();
+        if (this.svgNodeStyleDescriptionItemProvider != null)
+            this.svgNodeStyleDescriptionItemProvider.dispose();
+        if (this.iconLabelNodeStyleDescriptionItemProvider != null)
+            this.iconLabelNodeStyleDescriptionItemProvider.dispose();
+        if (this.freeFormLayoutStrategyDescriptionItemProvider != null)
+            this.freeFormLayoutStrategyDescriptionItemProvider.dispose();
+        if (this.listLayoutStrategyDescriptionItemProvider != null)
+            this.listLayoutStrategyDescriptionItemProvider.dispose();
         if (this.edgeStyleItemProvider != null)
             this.edgeStyleItemProvider.dispose();
         if (this.labelEditToolItemProvider != null)

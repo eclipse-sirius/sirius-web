@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.emf.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.view.emf.validation.DiagnosticAssertions.assertThat;
 
 import java.util.Map;
 import java.util.Optional;
@@ -32,7 +31,7 @@ import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator;
@@ -54,7 +53,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDefaultValuesAreValid() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeStyle nodeStyle = ViewFactory.eINSTANCE.createNodeStyle();
+        NodeStyleDescription nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(nodeStyle.eClass(), nodeStyle, diagnosticChain, defaultContext);
@@ -66,7 +65,7 @@ public class ViewValidatorTests {
     @Test
     public void testConditionalNodeStyleDefaultValuesAreValid() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        NodeStyleDescription conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);

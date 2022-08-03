@@ -45,9 +45,11 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.CustomImage;
 import org.eclipse.sirius.components.view.emf.ICustomImageSearchService;
@@ -88,50 +90,51 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
                 this.createTextField("conditionalnodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getSizeComputationExpression(),
-                        (style, newSizeExpression) -> ((NodeStyle) style).setSizeComputationExpression(newSizeExpression),
-                        ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION),
+                        style -> ((NodeStyleDescription) style).getSizeComputationExpression(),
+                        (style, newSizeExpression) -> ((NodeStyleDescription) style).setSizeComputationExpression(newSizeExpression),
+                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION),
                 this.createTextField("conditionalnodestyle.condition", "Condition", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((ConditionalNodeStyle) style).getCondition(),
                         (style, newCondition) -> ((ConditionalNodeStyle) style).setCondition(newCondition),
                         ViewPackage.Literals.CONDITIONAL__CONDITION),
                 this.createTextField("conditionalnodestyle.labelColor", "Label Color", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getLabelColor(),
-                        (style, newLabelColor) -> ((NodeStyle) style).setLabelColor(newLabelColor),
-                        ViewPackage.Literals.NODE_STYLE__LABEL_COLOR),
+                        style -> ((NodeStyleDescription) style).getLabelColor(),
+                        (style, newLabelColor) -> ((NodeStyleDescription) style).setLabelColor(newLabelColor),
+                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
                 this.createTextField("conditionalnodestyle.color", "Color", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getColor(),
-                        (style, newColor) -> ((NodeStyle) style).setColor(newColor),
+                        style -> ((NodeStyleDescription) style).getColor(),
+                        (style, newColor) -> ((NodeStyleDescription) style).setColor(newColor),
                         ViewPackage.Literals.STYLE__COLOR),
                 this.createTextField("conditionalnodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getBorderColor(),
-                        (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor),
+                        style -> ((NodeStyleDescription) style).getBorderColor(),
+                        (style, newColor) -> ((NodeStyleDescription) style).setBorderColor(newColor),
                         ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
                 this.createTextField("conditionalnodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> String.valueOf(((NodeStyle) style).getBorderRadius()),
+                        style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
                         (style, newBorderRadius) -> {
                             try {
-                                ((NodeStyle) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                                ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
                             } catch (NumberFormatException nfe) {
                                 // Ignore.
                             }
                         },
                         ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("conditionalnodestyle.borderSize", "Border Size", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> String.valueOf(((NodeStyle) style).getBorderSize()),
+                        style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
                         (style, newBorderSize) -> {
                             try {
-                                ((NodeStyle) style).setBorderSize(Integer.parseInt(newBorderSize));
+                                ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
                             } catch (NumberFormatException nfe) {
                                 // Ignore.
                             }
                         },
                         ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
                 this.createBorderLineStyleSelectionField("conditionalnodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE), //$NON-NLS-1$
-                this.createCheckbox("conditionalnodestyle.listMode", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isListMode(),
-                        (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode),
-                        ViewPackage.Literals.NODE_STYLE__LIST_MODE),
+                // TODO
+                this.createCheckbox("conditionalnodestyle.listMode", "With Header", //$NON-NLS-1$ //$NON-NLS-2$
+                        style -> style instanceof RectangularNodeStyleDescription && ((RectangularNodeStyleDescription) style).isWithHeader(),
+                        (style, newWithHeaderMode) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderMode),
+                        ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER),
                 this.createTextField("conditionalnodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((LabelStyle) style).getFontSize()),
                         (style, newColor) -> {
@@ -157,8 +160,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this.createCheckbox("conditionalnodestyle.strikeThrough", "Strike Through", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((LabelStyle) style).isStrikeThrough(),
                         (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
-                        ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH),
-                this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE));
+                        ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH)
+                // TODO this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE)
+                );
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
@@ -187,46 +191,42 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
                 this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getSizeComputationExpression(),
-                        (style, newSizeExpression) -> ((NodeStyle) style).setSizeComputationExpression(newSizeExpression),
-                        ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION),
+                        style -> ((NodeStyleDescription) style).getSizeComputationExpression(),
+                        (style, newSizeExpression) -> ((NodeStyleDescription) style).setSizeComputationExpression(newSizeExpression),
+                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION),
                 this.createTextField("nodestyle.labelColor", "Label Color", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getLabelColor(),
-                        (style, newLabelColor) -> ((NodeStyle) style).setLabelColor(newLabelColor),
-                        ViewPackage.Literals.NODE_STYLE__LABEL_COLOR),
+                        style -> ((NodeStyleDescription) style).getLabelColor(),
+                        (style, newLabelColor) -> ((NodeStyleDescription) style).setLabelColor(newLabelColor),
+                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
                 this.createTextField("nodestyle.color", "Color", //$NON-NLS-1$ //$NON-NLS-2$
-                                     style -> ((NodeStyle) style).getColor(),
-                                     (style, newColor) -> ((NodeStyle) style).setColor(newColor),
+                                     style -> ((NodeStyleDescription) style).getColor(),
+                                     (style, newColor) -> ((NodeStyleDescription) style).setColor(newColor),
                                      ViewPackage.Literals.STYLE__COLOR),
                 this.createTextField("nodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).getBorderColor(),
-                        (style, newColor) -> ((NodeStyle) style).setBorderColor(newColor),
+                        style -> ((NodeStyleDescription) style).getBorderColor(),
+                        (style, newColor) -> ((NodeStyleDescription) style).setBorderColor(newColor),
                         ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
                 this.createTextField("nodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> String.valueOf(((NodeStyle) style).getBorderRadius()),
+                        style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
                         (style, newBorderRadius) -> {
                             try {
-                                ((NodeStyle) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                                ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
                             } catch (NumberFormatException nfe) {
                                 // Ignore.
                             }
                         },
                         ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("nodestyle.borderSize", "Border Size", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> String.valueOf(((NodeStyle) style).getBorderSize()),
+                        style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
                         (style, newBorderSize) -> {
                             try {
-                                ((NodeStyle) style).setBorderSize(Integer.parseInt(newBorderSize));
+                                ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
                             } catch (NumberFormatException nfe) {
                                 // Ignore.
                             }
                         },
                         ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
                 this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE), //$NON-NLS-1$
-                this.createCheckbox("nodestyle.listMode", "List Mode", //$NON-NLS-1$ //$NON-NLS-2$
-                        style -> ((NodeStyle) style).isListMode(),
-                        (style, newListMode) -> ((NodeStyle) style).setListMode(newListMode),
-                        ViewPackage.Literals.NODE_STYLE__LIST_MODE),
                 this.createTextField("nodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> String.valueOf(((LabelStyle) style).getFontSize()),
                         (style, newColor) -> {
@@ -253,7 +253,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         style -> ((LabelStyle) style).isStrikeThrough(),
                         (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
                         ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH),
-                this.createShapeSelectionField(ViewPackage.Literals.NODE_STYLE__SHAPE));
+                this.createShapeSelectionField(ViewPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
@@ -261,12 +261,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                     .filter(self -> self instanceof List<?>)
                     .map(self -> (List<?>) self)
                     .flatMap(self -> self.stream().findFirst())
-                    .filter(self -> self instanceof NodeStyle && !(self instanceof ConditionalNodeStyle))
+                    .filter(self -> self instanceof ImageNodeStyleDescription && !(self instanceof ConditionalNodeStyle))
                     .isPresent();
 
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("Node Style") //$NON-NLS-1$
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(NodeStyle::getColor).orElse(UNNAMED))
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getColor).orElse(UNNAMED))
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(this.getTargetObjectIdProvider())
@@ -394,7 +394,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector") //$NON-NLS-1$
                 .idProvider(variableManager -> "nodestyle.shapeSelector") //$NON-NLS-1$
                 .labelProvider(variableManager -> "Shape") //$NON-NLS-1$
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyle.class).map(NodeStyle::getShape).orElse(EMPTY))
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(EMPTY))
                 .optionsProvider(variableManager -> {
                     Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
                     if (optionalEditingContext.isPresent()) {
@@ -422,7 +422,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getNewShapeValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyle.class);
+            var optionalNodeStyle = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class);
             if (optionalNodeStyle.isPresent()) {
                 String newShape = newValue;
                 if (newValue != null && newValue.isBlank()) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,13 @@
 package org.eclipse.sirius.components.view;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Conditional Node Style</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Icon Label Node Style Description</b></em>'.
+ * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.sirius.components.view.ViewPackage#getConditionalNodeStyle()
+ * @see org.eclipse.sirius.components.view.ViewPackage#getIconLabelNodeStyleDescription()
  * @model
  * @generated
  */
-public interface ConditionalNodeStyle extends Conditional, NodeStyleDescription {
-} // ConditionalNodeStyle
+public interface IconLabelNodeStyleDescription extends NodeStyleDescription {
+} // IconLabelNodeStyleDescription

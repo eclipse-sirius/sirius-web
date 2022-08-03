@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -74,8 +74,8 @@ public class DiagramDescriptionValidator implements EValidator {
             DiagramElementDescription diagramElementDescription = (DiagramElementDescription) eObject;
             isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof NodeStyle) {
-            NodeStyle nodeStyle = (NodeStyle) eObject;
+        if (eObject instanceof NodeStyleDescription) {
+            NodeStyleDescription nodeStyle = (NodeStyleDescription) eObject;
             isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
         }
         if (eObject instanceof Conditional) {
@@ -115,7 +115,7 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperColor(NodeStyle nodeStyle, DiagnosticChain diagnostics) {
+    private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
         boolean isValid = !nodeStyle.getColor().isBlank();
 
         if (!isValid && diagnostics != null) {

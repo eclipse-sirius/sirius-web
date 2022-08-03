@@ -13,6 +13,9 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="View" basePackage="org.eclipse.sirius.components" disposableProviderFactory="true"
       ecorePackage="view.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//LayoutDirection">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//LayoutDirection/Column"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//ArrowStyle">
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/None"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/OutputArrow"/>
@@ -72,6 +75,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/nodeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/conditionalStyles"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenLayoutStrategy"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/beginLabelExpression"/>
@@ -101,11 +105,24 @@
     <genClasses ecoreClass="view.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
     </genClasses>
-    <genClasses ecoreClass="view.ecore#//NodeStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/listMode"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/shape"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/labelColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyle/sizeComputationExpression"/>
+    <genClasses image="false" ecoreClass="view.ecore#//NodeStyleDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyleDescription/labelColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyleDescription/sizeComputationExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//RectangularNodeStyleDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RectangularNodeStyleDescription/withHeader"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ImageNodeStyleDescription" labelFeature="#//view/ImageNodeStyleDescription/shape">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ImageNodeStyleDescription/shape"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//SVGNodeStyleDescription" labelFeature="#//view/SVGNodeStyleDescription/shape">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SVGNodeStyleDescription/shape"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//IconLabelNodeStyleDescription"/>
+    <genClasses image="false" ecoreClass="view.ecore#//LayoutStrategyDescription"/>
+    <genClasses ecoreClass="view.ecore#//FreeFormLayoutStrategyDescription"/>
+    <genClasses ecoreClass="view.ecore#//ListLayoutStrategyDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListLayoutStrategyDescription/direction"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeStyle/lineStyle"/>

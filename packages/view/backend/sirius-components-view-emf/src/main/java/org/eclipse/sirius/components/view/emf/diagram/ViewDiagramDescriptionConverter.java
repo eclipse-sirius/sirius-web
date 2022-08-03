@@ -61,7 +61,7 @@ import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -202,7 +202,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // @formatter:off
             var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(NodeStyle.class::cast)
+                    .map(NodeStyleDescription.class::cast)
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
             // @formatter:on
@@ -213,7 +213,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // @formatter:off
             var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(NodeStyle.class::cast)
+                    .map(NodeStyleDescription.class::cast)
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
             Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
@@ -226,12 +226,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // @formatter:off
             var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(NodeStyle.class::cast)
+                    .map(NodeStyleDescription.class::cast)
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
             // @formatter:on
             Size size = Size.UNDEFINED;
-            if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE__SIZE_COMPUTATION_EXPRESSION) && !effectiveStyle.getSizeComputationExpression().isBlank()) {
+            if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION) && !effectiveStyle.getSizeComputationExpression().isBlank()) {
                 Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getSizeComputationExpression());
                 if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
                     int computedSize = result.asInt().getAsInt();
@@ -358,7 +358,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // @formatter:off
             var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(NodeStyle.class::cast)
+                    .map(NodeStyleDescription.class::cast)
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
             // @formatter:on

@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -51,8 +52,22 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addChildrenLayoutStrategyPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Children Layout Strategy feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addChildrenLayoutStrategyPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_childrenLayoutStrategy_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_childrenLayoutStrategy_feature", "_UI_NodeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, true, false, true, null, null, null));
     }
 
     /**
@@ -156,12 +171,14 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Sub-node"); //$NON-NLS-1$
-        nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
+        nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
+        nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
         NodeDescription borderNodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         borderNodeChild.setName("Border node"); //$NON-NLS-1$
-        borderNodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
+        borderNodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
+        borderNodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
 
         NodeTool newNodeTool = ViewFactory.eINSTANCE.createNodeTool();
@@ -169,7 +186,14 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newNodeTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, newNodeTool));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createNodeStyle()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, ViewFactory.eINSTANCE.createListLayoutStrategyDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createRectangularNodeStyleDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createImageNodeStyleDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createSVGNodeStyleDescription()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription()));
+
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalNodeStyle()));
     }
 

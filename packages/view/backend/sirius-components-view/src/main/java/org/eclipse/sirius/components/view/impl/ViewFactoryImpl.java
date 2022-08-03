@@ -47,16 +47,22 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
+import org.eclipse.sirius.components.view.LayoutDirection;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.SVGNodeStyleDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
@@ -118,8 +124,18 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createNodeDescription();
         case ViewPackage.EDGE_DESCRIPTION:
             return this.createEdgeDescription();
-        case ViewPackage.NODE_STYLE:
-            return this.createNodeStyle();
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION:
+            return this.createRectangularNodeStyleDescription();
+        case ViewPackage.IMAGE_NODE_STYLE_DESCRIPTION:
+            return this.createImageNodeStyleDescription();
+        case ViewPackage.SVG_NODE_STYLE_DESCRIPTION:
+            return this.createSVGNodeStyleDescription();
+        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION:
+            return this.createIconLabelNodeStyleDescription();
+        case ViewPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION:
+            return this.createFreeFormLayoutStrategyDescription();
+        case ViewPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION:
+            return this.createListLayoutStrategyDescription();
         case ViewPackage.EDGE_STYLE:
             return this.createEdgeStyle();
         case ViewPackage.LABEL_EDIT_TOOL:
@@ -213,6 +229,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
+        case ViewPackage.LAYOUT_DIRECTION:
+            return this.createLayoutDirectionFromString(eDataType, initialValue);
         case ViewPackage.ARROW_STYLE:
             return this.createArrowStyleFromString(eDataType, initialValue);
         case ViewPackage.LINE_STYLE:
@@ -234,6 +252,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
+        case ViewPackage.LAYOUT_DIRECTION:
+            return this.convertLayoutDirectionToString(eDataType, instanceValue);
         case ViewPackage.ARROW_STYLE:
             return this.convertArrowStyleToString(eDataType, instanceValue);
         case ViewPackage.LINE_STYLE:
@@ -297,9 +317,64 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
-    public NodeStyle createNodeStyle() {
-        NodeStyleImpl nodeStyle = new NodeStyleImpl();
-        return nodeStyle;
+    public RectangularNodeStyleDescription createRectangularNodeStyleDescription() {
+        RectangularNodeStyleDescriptionImpl rectangularNodeStyleDescription = new RectangularNodeStyleDescriptionImpl();
+        return rectangularNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ImageNodeStyleDescription createImageNodeStyleDescription() {
+        ImageNodeStyleDescriptionImpl imageNodeStyleDescription = new ImageNodeStyleDescriptionImpl();
+        return imageNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SVGNodeStyleDescription createSVGNodeStyleDescription() {
+        SVGNodeStyleDescriptionImpl svgNodeStyleDescription = new SVGNodeStyleDescriptionImpl();
+        return svgNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public IconLabelNodeStyleDescription createIconLabelNodeStyleDescription() {
+        IconLabelNodeStyleDescriptionImpl iconLabelNodeStyleDescription = new IconLabelNodeStyleDescriptionImpl();
+        return iconLabelNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FreeFormLayoutStrategyDescription createFreeFormLayoutStrategyDescription() {
+        FreeFormLayoutStrategyDescriptionImpl freeFormLayoutStrategyDescription = new FreeFormLayoutStrategyDescriptionImpl();
+        return freeFormLayoutStrategyDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ListLayoutStrategyDescription createListLayoutStrategyDescription() {
+        ListLayoutStrategyDescriptionImpl listLayoutStrategyDescription = new ListLayoutStrategyDescriptionImpl();
+        return listLayoutStrategyDescription;
     }
 
     /**
@@ -696,6 +771,27 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalButtonDescriptionStyle createConditionalButtonDescriptionStyle() {
         ConditionalButtonDescriptionStyleImpl conditionalButtonDescriptionStyle = new ConditionalButtonDescriptionStyleImpl();
         return conditionalButtonDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public LayoutDirection createLayoutDirectionFromString(EDataType eDataType, String initialValue) {
+        LayoutDirection result = LayoutDirection.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertLayoutDirectionToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
     }
 
     /**

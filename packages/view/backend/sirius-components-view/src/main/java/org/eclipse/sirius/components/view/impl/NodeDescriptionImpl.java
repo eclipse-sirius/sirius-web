@@ -23,8 +23,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -70,7 +71,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected NodeStyle style;
+    protected NodeStyleDescription style;
 
     /**
      * The cached value of the '{@link #getNodeTools() <em>Node Tools</em>}' containment reference list. <!--
@@ -91,6 +92,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EList<ConditionalNodeStyle> conditionalStyles;
+
+    /**
+     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getChildrenLayoutStrategy()
+     * @generated
+     * @ordered
+     */
+    protected LayoutStrategyDescription childrenLayoutStrategy;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -143,7 +154,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public NodeStyle getStyle() {
+    public NodeStyleDescription getStyle() {
         return this.style;
     }
 
@@ -152,8 +163,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(NodeStyle newStyle, NotificationChain msgs) {
-        NodeStyle oldStyle = this.style;
+    public NotificationChain basicSetStyle(NodeStyleDescription newStyle, NotificationChain msgs) {
+        NodeStyleDescription oldStyle = this.style;
         this.style = newStyle;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__STYLE, oldStyle, newStyle);
@@ -171,7 +182,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public void setStyle(NodeStyle newStyle) {
+    public void setStyle(NodeStyleDescription newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
             if (this.style != null)
@@ -217,6 +228,55 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public LayoutStrategyDescription getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy, NotificationChain msgs) {
+        LayoutStrategyDescription oldChildrenLayoutStrategy = this.childrenLayoutStrategy;
+        this.childrenLayoutStrategy = newChildrenLayoutStrategy;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, oldChildrenLayoutStrategy,
+                    newChildrenLayoutStrategy);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy) {
+        if (newChildrenLayoutStrategy != this.childrenLayoutStrategy) {
+            NotificationChain msgs = null;
+            if (this.childrenLayoutStrategy != null)
+                msgs = ((InternalEObject) this.childrenLayoutStrategy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
+            if (newChildrenLayoutStrategy != null)
+                msgs = ((InternalEObject) newChildrenLayoutStrategy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
+            msgs = this.basicSetChildrenLayoutStrategy(newChildrenLayoutStrategy, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, newChildrenLayoutStrategy, newChildrenLayoutStrategy));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
         case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
@@ -229,6 +289,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
         case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+            return this.basicSetChildrenLayoutStrategy(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -251,6 +313,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getNodeTools();
         case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             return this.getConditionalStyles();
+        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+            return this.getChildrenLayoutStrategy();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -273,7 +337,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.getBorderNodesDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
             return;
         case ViewPackage.NODE_DESCRIPTION__STYLE:
-            this.setStyle((NodeStyle) newValue);
+            this.setStyle((NodeStyleDescription) newValue);
             return;
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
             this.getNodeTools().clear();
@@ -282,6 +346,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
             this.getConditionalStyles().addAll((Collection<? extends ConditionalNodeStyle>) newValue);
+            return;
+        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+            this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -302,13 +369,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.getBorderNodesDescriptions().clear();
             return;
         case ViewPackage.NODE_DESCRIPTION__STYLE:
-            this.setStyle((NodeStyle) null);
+            this.setStyle((NodeStyleDescription) null);
             return;
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
             this.getNodeTools().clear();
             return;
         case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
+            return;
+        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+            this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
             return;
         }
         super.eUnset(featureID);
@@ -332,6 +402,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.nodeTools != null && !this.nodeTools.isEmpty();
         case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+            return this.childrenLayoutStrategy != null;
         }
         return super.eIsSet(featureID);
     }

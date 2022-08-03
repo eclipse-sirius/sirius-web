@@ -45,12 +45,14 @@
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="borderNodesDescriptions"
         upperBound="-1" eType="#//NodeDescription" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyle"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalNodeStyle" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenLayoutStrategy"
+        eType="#//LayoutStrategyDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -98,14 +100,32 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="#E5F5F8"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeStyle" eSuperTypes="#//Style #//LabelStyle #//BorderStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="listMode" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
+      interface="true" eSuperTypes="#//Style #//LabelStyle #//BorderStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="black"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sizeComputationExpression"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RectangularNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="withHeader" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ImageNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SVGNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IconLabelNodeStyleDescription" eSuperTypes="#//NodeStyleDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LayoutStrategyDescription" abstract="true"
+      interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FreeFormLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//LayoutDirection"
+        defaultValueLiteral="Column"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LayoutDirection">
+    <eLiterals name="Column" literal="Column"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
@@ -193,7 +213,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="#//Conditional #//NodeStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="#//Conditional #//NodeStyleDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="#//Conditional #//EdgeStyle"/>
   <eClassifiers xsi:type="ecore:EEnum" name="SynchronizationPolicy">
     <eLiterals name="SYNCHRONIZED"/>

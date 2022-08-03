@@ -184,7 +184,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node"); //$NON-NLS-1$
-        nodeChild.setStyle(ViewFactory.eINSTANCE.createNodeStyle());
+        nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
+        nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,10 @@ import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
-import org.eclipse.sirius.components.view.NodeStyle;
+import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 
 /**
@@ -36,7 +39,7 @@ public final class StylesFactory {
 
     private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
 
-    public LabelStyleDescription createLabelStyleDescription(NodeStyle nodeStyle) {
+    public LabelStyleDescription createLabelStyleDescription(NodeStyleDescription nodeStyle) {
         // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                                     .colorProvider(variableManager -> nodeStyle.getLabelColor())
@@ -76,20 +79,21 @@ public final class StylesFactory {
         // @formatter:on
     }
 
-    public String getNodeType(NodeStyle nodeStyle) {
+    public String getNodeType(NodeStyleDescription nodeStyle) {
         String type = NodeType.NODE_RECTANGLE;
-        if (nodeStyle.isListMode()) {
-            type = NodeType.NODE_LIST;
-        } else if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
-                && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
+        if (nodeStyle instanceof RectangularNodeStyleDescription) {
+            if (((RectangularNodeStyleDescription) nodeStyle).isWithHeader()) {
+                type = NodeType.NODE_LIST;
+            }
+        } else if (nodeStyle instanceof IconLabelNodeStyleDescription) {
             type = NodeType.NODE_LIST_ITEM;
-        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
+        } else if (nodeStyle instanceof ImageNodeStyleDescription) {
             type = NodeType.NODE_IMAGE;
         }
         return type;
     }
 
-    public INodeStyle createNodeStyle(NodeStyle nodeStyle, Optional<String> optionalEditingContextId) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
         case NodeType.NODE_IMAGE:
@@ -97,7 +101,7 @@ public final class StylesFactory {
                 // @formatter:off
                 result = ImageNodeStyle.newImageNodeStyle()
                                        .scalingFactor(1)
-                                       .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + nodeStyle.getShape()) //$NON-NLS-1$ //$NON-NLS-2$
+                                       .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$ //$NON-NLS-2$
                                        .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
                                        .borderSize(nodeStyle.getBorderSize())
                                        .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))

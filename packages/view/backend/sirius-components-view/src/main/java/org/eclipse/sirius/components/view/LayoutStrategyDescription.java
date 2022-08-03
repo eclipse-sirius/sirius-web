@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,16 @@
  */
 package org.eclipse.sirius.components.view;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Conditional Node Style</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Layout Strategy Description</b></em>'. <!--
  * end-user-doc -->
  *
  *
- * @see org.eclipse.sirius.components.view.ViewPackage#getConditionalNodeStyle()
- * @model
+ * @see org.eclipse.sirius.components.view.ViewPackage#getLayoutStrategyDescription()
+ * @model interface="true" abstract="true"
  * @generated
  */
-public interface ConditionalNodeStyle extends Conditional, NodeStyleDescription {
-} // ConditionalNodeStyle
+public interface LayoutStrategyDescription extends EObject {
+} // LayoutStrategyDescription

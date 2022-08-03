@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,62 +16,45 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.BorderStyle;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Conditional Node Style</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Rectangular Node Style Description</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getColor <em>Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getFontSize <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#isBold <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#isUnderline <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#isStrikeThrough <em>Strike
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getFontSize <em>Font
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#isItalic <em>Italic</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#isBold <em>Bold</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#isUnderline
+ * <em>Underline</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#isStrikeThrough <em>Strike
  * Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getBorderColor <em>Border
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getBorderColor <em>Border
  * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getBorderRadius <em>Border
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getBorderRadius <em>Border
  * Radius</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getBorderSize <em>Border Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getBorderLineStyle <em>Border Line
- * Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getLabelColor <em>Label Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalNodeStyleImpl#getSizeComputationExpression <em>Size
- * Computation Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getBorderSize <em>Border
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getBorderLineStyle <em>Border
+ * Line Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getLabelColor <em>Label
+ * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#getSizeComputationExpression
+ * <em>Size Computation Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl#isWithHeader <em>With
+ * Header</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ConditionalNodeStyleImpl extends ConditionalImpl implements ConditionalNodeStyle {
-    /**
-     * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
-
-    /**
-     * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected String color = COLOR_EDEFAULT;
-
+public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements RectangularNodeStyleDescription {
     /**
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -293,11 +276,31 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     protected String sizeComputationExpression = SIZE_COMPUTATION_EXPRESSION_EDEFAULT;
 
     /**
+     * The default value of the '{@link #isWithHeader() <em>With Header</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isWithHeader()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean WITH_HEADER_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isWithHeader() <em>With Header</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isWithHeader()
+     * @generated
+     * @ordered
+     */
+    protected boolean withHeader = WITH_HEADER_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected ConditionalNodeStyleImpl() {
+    protected RectangularNodeStyleDescriptionImpl() {
         super();
     }
 
@@ -308,53 +311,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.CONDITIONAL_NODE_STYLE;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getColor() {
-        return this.color;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setColor(String newColor) {
-        String oldColor = this.color;
-        this.color = newColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__COLOR, oldColor, this.color));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getBorderColor() {
-        return this.borderColor;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBorderColor(String newBorderColor) {
-        String oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+        return ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION;
     }
 
     /**
@@ -377,99 +334,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         int oldFontSize = this.fontSize;
         this.fontSize = newFontSize;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE, oldFontSize, this.fontSize));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public int getBorderRadius() {
-        return this.borderRadius;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBorderRadius(int newBorderRadius) {
-        int oldBorderRadius = this.borderRadius;
-        this.borderRadius = newBorderRadius;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public int getBorderSize() {
-        return this.borderSize;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBorderSize(int newBorderSize) {
-        int oldBorderSize = this.borderSize;
-        this.borderSize = newBorderSize;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE, oldBorderSize, this.borderSize));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public LineStyle getBorderLineStyle() {
-        return this.borderLineStyle;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setBorderLineStyle(LineStyle newBorderLineStyle) {
-        LineStyle oldBorderLineStyle = this.borderLineStyle;
-        this.borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getLabelColor() {
-        return this.labelColor;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setLabelColor(String newLabelColor) {
-        String oldLabelColor = this.labelColor;
-        this.labelColor = newLabelColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR, oldLabelColor, this.labelColor));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE, oldFontSize, this.fontSize));
     }
 
     /**
@@ -492,7 +357,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         boolean oldItalic = this.italic;
         this.italic = newItalic;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC, oldItalic, this.italic));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC, oldItalic, this.italic));
     }
 
     /**
@@ -515,7 +380,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         boolean oldBold = this.bold;
         this.bold = newBold;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__BOLD, oldBold, this.bold));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD, oldBold, this.bold));
     }
 
     /**
@@ -538,7 +403,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         boolean oldUnderline = this.underline;
         this.underline = newUnderline;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE, oldUnderline, this.underline));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE, oldUnderline, this.underline));
     }
 
     /**
@@ -561,7 +426,122 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         boolean oldStrikeThrough = this.strikeThrough;
         this.strikeThrough = newStrikeThrough;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getBorderColor() {
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderColor(String newBorderColor) {
+        String oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR, oldBorderColor, this.borderColor));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getBorderRadius() {
+        return this.borderRadius;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderRadius(int newBorderRadius) {
+        int oldBorderRadius = this.borderRadius;
+        this.borderRadius = newBorderRadius;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getBorderSize() {
+        return this.borderSize;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderSize(int newBorderSize) {
+        int oldBorderSize = this.borderSize;
+        this.borderSize = newBorderSize;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE, oldBorderSize, this.borderSize));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LineStyle getBorderLineStyle() {
+        return this.borderLineStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBorderLineStyle(LineStyle newBorderLineStyle) {
+        LineStyle oldBorderLineStyle = this.borderLineStyle;
+        this.borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getLabelColor() {
+        return this.labelColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelColor(String newLabelColor) {
+        String oldLabelColor = this.labelColor;
+        this.labelColor = newLabelColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR, oldLabelColor, this.labelColor));
     }
 
     /**
@@ -584,7 +564,31 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         String oldSizeComputationExpression = this.sizeComputationExpression;
         this.sizeComputationExpression = newSizeComputationExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION, oldSizeComputationExpression, this.sizeComputationExpression));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION, oldSizeComputationExpression,
+                    this.sizeComputationExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isWithHeader() {
+        return this.withHeader;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setWithHeader(boolean newWithHeader) {
+        boolean oldWithHeader = this.withHeader;
+        this.withHeader = newWithHeader;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER, oldWithHeader, this.withHeader));
     }
 
     /**
@@ -595,30 +599,30 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
-            return this.getColor();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
             return this.getFontSize();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
             return this.isItalic();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
             return this.isBold();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
             return this.isUnderline();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
             return this.isStrikeThrough();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
             return this.getBorderColor();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             return this.getBorderRadius();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             return this.getBorderSize();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
             return this.getBorderLineStyle();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
             return this.getLabelColor();
-        case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
             return this.getSizeComputationExpression();
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
+            return this.isWithHeader();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -631,41 +635,41 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
-            this.setColor((String) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
             this.setFontSize((Integer) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
             this.setItalic((Boolean) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
             this.setBold((Boolean) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
             this.setUnderline((Boolean) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
             this.setStrikeThrough((Boolean) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
             this.setBorderColor((String) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             this.setBorderRadius((Integer) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             this.setBorderSize((Integer) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
             this.setBorderLineStyle((LineStyle) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
             this.setLabelColor((String) newValue);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
             this.setSizeComputationExpression((String) newValue);
+            return;
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
+            this.setWithHeader((Boolean) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -679,41 +683,41 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
-            this.setColor(COLOR_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
             this.setFontSize(FONT_SIZE_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
             this.setItalic(ITALIC_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
             this.setBold(BOLD_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
             this.setUnderline(UNDERLINE_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
             this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
             this.setBorderColor(BORDER_COLOR_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             this.setBorderSize(BORDER_SIZE_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
             this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
             this.setLabelColor(LABEL_COLOR_EDEFAULT);
             return;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
             this.setSizeComputationExpression(SIZE_COMPUTATION_EXPRESSION_EDEFAULT);
+            return;
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
+            this.setWithHeader(WITH_HEADER_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -727,30 +731,30 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
-            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
-        case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
             return this.fontSize != FONT_SIZE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
             return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
             return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
             return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
             return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
             return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             return this.borderRadius != BORDER_RADIUS_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             return this.borderSize != BORDER_SIZE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
             return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
             return LABEL_COLOR_EDEFAULT == null ? this.labelColor != null : !LABEL_COLOR_EDEFAULT.equals(this.labelColor);
-        case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
             return SIZE_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.sizeComputationExpression != null : !SIZE_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.sizeComputationExpression);
+        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
+            return this.withHeader != WITH_HEADER_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -762,25 +766,17 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == Style.class) {
-            switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_NODE_STYLE__COLOR:
-                return ViewPackage.STYLE__COLOR;
-            default:
-                return -1;
-            }
-        }
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
                 return ViewPackage.LABEL_STYLE__FONT_SIZE;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
                 return ViewPackage.LABEL_STYLE__ITALIC;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__BOLD:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
                 return ViewPackage.LABEL_STYLE__BOLD;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
                 return ViewPackage.LABEL_STYLE__UNDERLINE;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
             default:
                 return -1;
@@ -788,24 +784,14 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         }
         if (baseClass == BorderStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
                 return ViewPackage.BORDER_STYLE__BORDER_COLOR;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 return ViewPackage.BORDER_STYLE__BORDER_RADIUS;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
                 return ViewPackage.BORDER_STYLE__BORDER_SIZE;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return ViewPackage.BORDER_STYLE__BORDER_LINE_STYLE;
-            default:
-                return -1;
-            }
-        }
-        if (baseClass == NodeStyleDescription.class) {
-            switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR:
-                return ViewPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-            case ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION:
-                return ViewPackage.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
             default:
                 return -1;
             }
@@ -820,26 +806,18 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == Style.class) {
-            switch (baseFeatureID) {
-            case ViewPackage.STYLE__COLOR:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__COLOR;
-            default:
-                return -1;
-            }
-        }
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
             case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__FONT_SIZE;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE;
             case ViewPackage.LABEL_STYLE__ITALIC:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__ITALIC;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC;
             case ViewPackage.LABEL_STYLE__BOLD:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__BOLD;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD;
             case ViewPackage.LABEL_STYLE__UNDERLINE:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__UNDERLINE;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE;
             case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__STRIKE_THROUGH;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
             default:
                 return -1;
             }
@@ -847,23 +825,13 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         if (baseClass == BorderStyle.class) {
             switch (baseFeatureID) {
             case ViewPackage.BORDER_STYLE__BORDER_COLOR:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_COLOR;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR;
             case ViewPackage.BORDER_STYLE__BORDER_RADIUS:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_RADIUS;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
             case ViewPackage.BORDER_STYLE__BORDER_SIZE:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_SIZE;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE;
             case ViewPackage.BORDER_STYLE__BORDER_LINE_STYLE:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE;
-            default:
-                return -1;
-            }
-        }
-        if (baseClass == NodeStyleDescription.class) {
-            switch (baseFeatureID) {
-            case ViewPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__LABEL_COLOR;
-            case ViewPackage.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
-                return ViewPackage.CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION;
+                return ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
             default:
                 return -1;
             }
@@ -882,9 +850,7 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: "); //$NON-NLS-1$
-        result.append(this.color);
-        result.append(", fontSize: "); //$NON-NLS-1$
+        result.append(" (fontSize: "); //$NON-NLS-1$
         result.append(this.fontSize);
         result.append(", italic: "); //$NON-NLS-1$
         result.append(this.italic);
@@ -906,8 +872,10 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
         result.append(this.labelColor);
         result.append(", sizeComputationExpression: "); //$NON-NLS-1$
         result.append(this.sizeComputationExpression);
+        result.append(", withHeader: "); //$NON-NLS-1$
+        result.append(this.withHeader);
         result.append(')');
         return result.toString();
     }
 
-} // ConditionalNodeStyleImpl
+} // RectangularNodeStyleDescriptionImpl

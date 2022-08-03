@@ -462,13 +462,22 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -818,14 +827,14 @@ public interface ViewPackage extends EPackage {
     int STYLE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.NodeStyleImpl <em>Node Style</em>}'
-     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.NodeStyleDescription <em>Node Style
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.view.impl.NodeStyleImpl
-     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyle()
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyleDescription()
      * @generated
      */
-    int NODE_STYLE = 9;
+    int NODE_STYLE_DESCRIPTION = 9;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -833,7 +842,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__COLOR = STYLE__COLOR;
+    int NODE_STYLE_DESCRIPTION__COLOR = STYLE__COLOR;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -841,7 +850,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
+    int NODE_STYLE_DESCRIPTION__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -849,7 +858,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__ITALIC = STYLE_FEATURE_COUNT + 1;
+    int NODE_STYLE_DESCRIPTION__ITALIC = STYLE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -857,7 +866,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BOLD = STYLE_FEATURE_COUNT + 2;
+    int NODE_STYLE_DESCRIPTION__BOLD = STYLE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -865,7 +874,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+    int NODE_STYLE_DESCRIPTION__UNDERLINE = STYLE_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -873,7 +882,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
+    int NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -881,7 +890,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
+    int NODE_STYLE_DESCRIPTION__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -889,7 +898,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
+    int NODE_STYLE_DESCRIPTION__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -897,7 +906,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
+    int NODE_STYLE_DESCRIPTION__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -906,23 +915,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__LIST_MODE = STYLE_FEATURE_COUNT + 9;
-
-    /**
-     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE__SHAPE = STYLE_FEATURE_COUNT + 10;
+    int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -930,7 +923,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__LABEL_COLOR = STYLE_FEATURE_COUNT + 11;
+    int NODE_STYLE_DESCRIPTION__LABEL_COLOR = STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -939,24 +932,645 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 12;
+    int NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
 
     /**
-     * The number of structural features of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 11;
+
+    /**
+     * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl
+     * <em>Rectangular Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRectangularNodeStyleDescription()
+     * @generated
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION = 10;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE = NODE_STYLE_DESCRIPTION__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC = NODE_STYLE_DESCRIPTION__ITALIC;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD = NODE_STYLE_DESCRIPTION__BOLD;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE = NODE_STYLE_DESCRIPTION__UNDERLINE;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR = NODE_STYLE_DESCRIPTION__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE = NODE_STYLE_DESCRIPTION__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 13;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
-     * The number of operations of the '<em>Node Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ImageNodeStyleDescriptionImpl
+     * <em>Image Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ImageNodeStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getImageNodeStyleDescription()
+     * @generated
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION = 11;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE = NODE_STYLE_DESCRIPTION__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__ITALIC = NODE_STYLE_DESCRIPTION__ITALIC;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__BOLD = NODE_STYLE_DESCRIPTION__BOLD;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE = NODE_STYLE_DESCRIPTION__UNDERLINE;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR = NODE_STYLE_DESCRIPTION__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__BORDER_SIZE = NODE_STYLE_DESCRIPTION__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__SHAPE = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Image Node Style Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Image Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SVGNodeStyleDescriptionImpl <em>SVG
+     * Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.SVGNodeStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSVGNodeStyleDescription()
+     * @generated
+     */
+    int SVG_NODE_STYLE_DESCRIPTION = 12;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__FONT_SIZE = NODE_STYLE_DESCRIPTION__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__ITALIC = NODE_STYLE_DESCRIPTION__ITALIC;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__BOLD = NODE_STYLE_DESCRIPTION__BOLD;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__UNDERLINE = NODE_STYLE_DESCRIPTION__UNDERLINE;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__BORDER_COLOR = NODE_STYLE_DESCRIPTION__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__BORDER_SIZE = NODE_STYLE_DESCRIPTION__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION__SHAPE = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>SVG Node Style Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>SVG Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SVG_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.IconLabelNodeStyleDescriptionImpl
+     * <em>Icon Label Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.IconLabelNodeStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIconLabelNodeStyleDescription()
+     * @generated
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION = 13;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__FONT_SIZE = NODE_STYLE_DESCRIPTION__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__ITALIC = NODE_STYLE_DESCRIPTION__ITALIC;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BOLD = NODE_STYLE_DESCRIPTION__BOLD;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__UNDERLINE = NODE_STYLE_DESCRIPTION__UNDERLINE;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR = NODE_STYLE_DESCRIPTION__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE = NODE_STYLE_DESCRIPTION__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+
+    /**
+     * The number of structural features of the '<em>Icon Label Node Style Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Icon Label Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.LayoutStrategyDescription <em>Layout
+     * Strategy Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.LayoutStrategyDescription
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutStrategyDescription()
+     * @generated
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION = 14;
+
+    /**
+     * The number of structural features of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = 0;
+
+    /**
+     * The number of operations of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.FreeFormLayoutStrategyDescriptionImpl
+     * <em>Free Form Layout Strategy Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.FreeFormLayoutStrategyDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFreeFormLayoutStrategyDescription()
+     * @generated
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = 15;
+
+    /**
+     * The number of structural features of the '<em>Free Form Layout Strategy Description</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Free Form Layout Strategy Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT = LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ListLayoutStrategyDescriptionImpl
+     * <em>List Layout Strategy Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ListLayoutStrategyDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListLayoutStrategyDescription()
+     * @generated
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION = 16;
+
+    /**
+     * The feature id for the '<em><b>Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__DIRECTION = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT = LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl <em>Edge Style</em>}'
@@ -966,7 +1580,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeStyle()
      * @generated
      */
-    int EDGE_STYLE = 10;
+    int EDGE_STYLE = 17;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1075,7 +1689,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTool()
      * @generated
      */
-    int TOOL = 11;
+    int TOOL = 18;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1118,7 +1732,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelEditTool()
      * @generated
      */
-    int LABEL_EDIT_TOOL = 12;
+    int LABEL_EDIT_TOOL = 19;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1177,7 +1791,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteTool()
      * @generated
      */
-    int DELETE_TOOL = 13;
+    int DELETE_TOOL = 20;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1221,7 +1835,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeTool()
      * @generated
      */
-    int NODE_TOOL = 14;
+    int NODE_TOOL = 21;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1265,7 +1879,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeTool()
      * @generated
      */
-    int EDGE_TOOL = 15;
+    int EDGE_TOOL = 22;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1309,7 +1923,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDropTool()
      * @generated
      */
-    int DROP_TOOL = 16;
+    int DROP_TOOL = 23;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1353,7 +1967,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 17;
+    int OPERATION = 24;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1389,7 +2003,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getChangeContext()
      * @generated
      */
-    int CHANGE_CONTEXT = 18;
+    int CHANGE_CONTEXT = 25;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1433,7 +2047,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateInstance()
      * @generated
      */
-    int CREATE_INSTANCE = 19;
+    int CREATE_INSTANCE = 26;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1493,7 +2107,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSetValue()
      * @generated
      */
-    int SET_VALUE = 20;
+    int SET_VALUE = 27;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1546,7 +2160,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getUnsetValue()
      * @generated
      */
-    int UNSET_VALUE = 21;
+    int UNSET_VALUE = 28;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1599,7 +2213,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteElement()
      * @generated
      */
-    int DELETE_ELEMENT = 22;
+    int DELETE_ELEMENT = 29;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1635,7 +2249,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateView()
      * @generated
      */
-    int CREATE_VIEW = 23;
+    int CREATE_VIEW = 30;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1706,7 +2320,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteView()
      * @generated
      */
-    int DELETE_VIEW = 24;
+    int DELETE_VIEW = 31;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1750,7 +2364,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditional()
      * @generated
      */
-    int CONDITIONAL = 25;
+    int CONDITIONAL = 32;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1785,7 +2399,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalNodeStyle()
      * @generated
      */
-    int CONDITIONAL_NODE_STYLE = 26;
+    int CONDITIONAL_NODE_STYLE = 33;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1877,28 +2491,12 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_NODE_STYLE__BORDER_LINE_STYLE = CONDITIONAL_FEATURE_COUNT + 9;
 
     /**
-     * The feature id for the '<em><b>List Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_NODE_STYLE__LIST_MODE = CONDITIONAL_FEATURE_COUNT + 10;
-
-    /**
-     * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_NODE_STYLE__SHAPE = CONDITIONAL_FEATURE_COUNT + 11;
-
-    /**
      * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__LABEL_COLOR = CONDITIONAL_FEATURE_COUNT + 12;
+    int CONDITIONAL_NODE_STYLE__LABEL_COLOR = CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1907,7 +2505,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = CONDITIONAL_FEATURE_COUNT + 13;
+    int CONDITIONAL_NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1916,7 +2514,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 14;
+    int CONDITIONAL_NODE_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Conditional Node Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1935,7 +2533,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
      * @generated
      */
-    int CONDITIONAL_EDGE_STYLE = 27;
+    int CONDITIONAL_EDGE_STYLE = 34;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2053,7 +2651,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFormDescription()
      * @generated
      */
-    int FORM_DESCRIPTION = 28;
+    int FORM_DESCRIPTION = 35;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2123,7 +2721,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescription()
      * @generated
      */
-    int WIDGET_DESCRIPTION = 29;
+    int WIDGET_DESCRIPTION = 36;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2168,7 +2766,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescription()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION = 30;
+    int TEXTFIELD_DESCRIPTION = 37;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2249,7 +2847,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescription()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION = 31;
+    int CHECKBOX_DESCRIPTION = 38;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2330,7 +2928,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescription()
      * @generated
      */
-    int SELECT_DESCRIPTION = 32;
+    int SELECT_DESCRIPTION = 39;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2429,7 +3027,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescription()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION = 33;
+    int MULTI_SELECT_DESCRIPTION = 40;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2528,7 +3126,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextAreaDescription()
      * @generated
      */
-    int TEXT_AREA_DESCRIPTION = 34;
+    int TEXT_AREA_DESCRIPTION = 41;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2609,7 +3207,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescription()
      * @generated
      */
-    int RADIO_DESCRIPTION = 35;
+    int RADIO_DESCRIPTION = 42;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2707,7 +3305,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescriptionStyle()
      * @generated
      */
-    int WIDGET_DESCRIPTION_STYLE = 40;
+    int WIDGET_DESCRIPTION_STYLE = 47;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
@@ -2717,7 +3315,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 41;
+    int TEXTFIELD_DESCRIPTION_STYLE = 48;
 
     /**
      * The meta object id for the
@@ -2728,7 +3326,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 42;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 49;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
@@ -2738,7 +3336,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 43;
+    int CHECKBOX_DESCRIPTION_STYLE = 50;
 
     /**
      * The meta object id for the
@@ -2749,7 +3347,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 44;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
@@ -2759,7 +3357,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 45;
+    int SELECT_DESCRIPTION_STYLE = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
@@ -2769,7 +3367,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 46;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 53;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
@@ -2779,7 +3377,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 47;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 54;
 
     /**
      * The meta object id for the
@@ -2790,7 +3388,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 48;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
@@ -2800,7 +3398,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 49;
+    int TEXTAREA_DESCRIPTION_STYLE = 56;
 
     /**
      * The meta object id for the
@@ -2811,7 +3409,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 50;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
@@ -2821,7 +3419,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 51;
+    int RADIO_DESCRIPTION_STYLE = 58;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
@@ -2831,7 +3429,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 52;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 59;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl <em>Bar Chart
@@ -2841,7 +3439,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION = 36;
+    int BAR_CHART_DESCRIPTION = 43;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2912,7 +3510,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescription()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION = 37;
+    int PIE_CHART_DESCRIPTION = 44;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2974,7 +3572,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexboxContainerDescription()
      * @generated
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION = 38;
+    int FLEXBOX_CONTAINER_DESCRIPTION = 45;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3036,7 +3634,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
      * @generated
      */
-    int BUTTON_DESCRIPTION = 39;
+    int BUTTON_DESCRIPTION = 46;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3984,7 +4582,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 53;
+    int BUTTON_DESCRIPTION_STYLE = 60;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4070,7 +4668,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 54;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 61;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4157,6 +4755,16 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_BUTTON_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout Direction</em>}'
+     * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.LayoutDirection
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
+     * @generated
+     */
+    int LAYOUT_DIRECTION = 62;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4164,7 +4772,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 55;
+    int ARROW_STYLE = 63;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -4174,7 +4782,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 56;
+    int LINE_STYLE = 64;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -4184,7 +4792,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 57;
+    int SYNCHRONIZATION_POLICY = 65;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -4194,7 +4802,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 58;
+    int FLEX_DIRECTION = 66;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -4487,6 +5095,18 @@ public interface ViewPackage extends EPackage {
     EReference getNodeDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#getChildrenLayoutStrategy <em>Children Layout
+     * Strategy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Children Layout Strategy</em>'.
+     * @see org.eclipse.sirius.components.view.NodeDescription#getChildrenLayoutStrategy()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EReference getNodeDescription_ChildrenLayoutStrategy();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeDescription <em>Edge
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4758,59 +5378,156 @@ public interface ViewPackage extends EPackage {
     EAttribute getStyle_Color();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodeStyle <em>Node Style</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodeStyleDescription <em>Node Style
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for class '<em>Node Style</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle
+     * @return the meta object for class '<em>Node Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription
      * @generated
      */
-    EClass getNodeStyle();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#isListMode
-     * <em>List Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>List Mode</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle#isListMode()
-     * @see #getNodeStyle()
-     * @generated
-     */
-    EAttribute getNodeStyle_ListMode();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getShape
-     * <em>Shape</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Shape</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle#getShape()
-     * @see #getNodeStyle()
-     * @generated
-     */
-    EAttribute getNodeStyle_Shape();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.NodeStyle#getLabelColor
-     * <em>Label Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Label Color</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle#getLabelColor()
-     * @see #getNodeStyle()
-     * @generated
-     */
-    EAttribute getNodeStyle_LabelColor();
+    EClass getNodeStyleDescription();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.NodeStyle#getSizeComputationExpression <em>Size Computation
+     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getLabelColor <em>Label Color</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Color</em>'.
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription#getLabelColor()
+     * @see #getNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getNodeStyleDescription_LabelColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getSizeComputationExpression <em>Size Computation
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Size Computation Expression</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyle#getSizeComputationExpression()
-     * @see #getNodeStyle()
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription#getSizeComputationExpression()
+     * @see #getNodeStyleDescription()
      * @generated
      */
-    EAttribute getNodeStyle_SizeComputationExpression();
+    EAttribute getNodeStyleDescription_SizeComputationExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.RectangularNodeStyleDescription
+     * <em>Rectangular Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Rectangular Node Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.RectangularNodeStyleDescription
+     * @generated
+     */
+    EClass getRectangularNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.RectangularNodeStyleDescription#isWithHeader <em>With Header</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>With Header</em>'.
+     * @see org.eclipse.sirius.components.view.RectangularNodeStyleDescription#isWithHeader()
+     * @see #getRectangularNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getRectangularNodeStyleDescription_WithHeader();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ImageNodeStyleDescription <em>Image
+     * Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Image Node Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.ImageNodeStyleDescription
+     * @generated
+     */
+    EClass getImageNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ImageNodeStyleDescription#getShape <em>Shape</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Shape</em>'.
+     * @see org.eclipse.sirius.components.view.ImageNodeStyleDescription#getShape()
+     * @see #getImageNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getImageNodeStyleDescription_Shape();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.SVGNodeStyleDescription <em>SVG Node
+     * Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>SVG Node Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.SVGNodeStyleDescription
+     * @generated
+     */
+    EClass getSVGNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.SVGNodeStyleDescription#getShape <em>Shape</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Shape</em>'.
+     * @see org.eclipse.sirius.components.view.SVGNodeStyleDescription#getShape()
+     * @see #getSVGNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getSVGNodeStyleDescription_Shape();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.IconLabelNodeStyleDescription
+     * <em>Icon Label Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Icon Label Node Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.IconLabelNodeStyleDescription
+     * @generated
+     */
+    EClass getIconLabelNodeStyleDescription();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LayoutStrategyDescription <em>Layout
+     * Strategy Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Layout Strategy Description</em>'.
+     * @see org.eclipse.sirius.components.view.LayoutStrategyDescription
+     * @generated
+     */
+    EClass getLayoutStrategyDescription();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription
+     * <em>Free Form Layout Strategy Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Free Form Layout Strategy Description</em>'.
+     * @see org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription
+     * @generated
+     */
+    EClass getFreeFormLayoutStrategyDescription();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ListLayoutStrategyDescription
+     * <em>List Layout Strategy Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>List Layout Strategy Description</em>'.
+     * @see org.eclipse.sirius.components.view.ListLayoutStrategyDescription
+     * @generated
+     */
+    EClass getListLayoutStrategyDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.ListLayoutStrategyDescription#getDirection <em>Direction</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Direction</em>'.
+     * @see org.eclipse.sirius.components.view.ListLayoutStrategyDescription#getDirection()
+     * @see #getListLayoutStrategyDescription()
+     * @generated
+     */
+    EAttribute getListLayoutStrategyDescription_Direction();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeStyle <em>Edge Style</em>}'.
@@ -6004,6 +6721,16 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalButtonDescriptionStyle();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout
+     * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Layout Direction</em>'.
+     * @see org.eclipse.sirius.components.view.LayoutDirection
+     * @generated
+     */
+    EEnum getLayoutDirection();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.BarChartDescription <em>Bar Chart
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6468,6 +7195,14 @@ public interface ViewPackage extends EPackage {
         EReference NODE_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getNodeDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Children Layout Strategy</b></em>' containment reference feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = eINSTANCE.getNodeDescription_ChildrenLayoutStrategy();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeDescriptionImpl <em>Edge
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -6668,30 +7403,14 @@ public interface ViewPackage extends EPackage {
         EAttribute STYLE__COLOR = eINSTANCE.getStyle_Color();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodeStyleImpl <em>Node
-         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.NodeStyleDescription <em>Node
+         * Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @see org.eclipse.sirius.components.view.impl.NodeStyleImpl
-         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyle()
+         * @see org.eclipse.sirius.components.view.NodeStyleDescription
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyleDescription()
          * @generated
          */
-        EClass NODE_STYLE = eINSTANCE.getNodeStyle();
-
-        /**
-         * The meta object literal for the '<em><b>List Mode</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute NODE_STYLE__LIST_MODE = eINSTANCE.getNodeStyle_ListMode();
-
-        /**
-         * The meta object literal for the '<em><b>Shape</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute NODE_STYLE__SHAPE = eINSTANCE.getNodeStyle_Shape();
+        EClass NODE_STYLE_DESCRIPTION = eINSTANCE.getNodeStyleDescription();
 
         /**
          * The meta object literal for the '<em><b>Label Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -6699,7 +7418,7 @@ public interface ViewPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute NODE_STYLE__LABEL_COLOR = eINSTANCE.getNodeStyle_LabelColor();
+        EAttribute NODE_STYLE_DESCRIPTION__LABEL_COLOR = eINSTANCE.getNodeStyleDescription_LabelColor();
 
         /**
          * The meta object literal for the '<em><b>Size Computation Expression</b></em>' attribute feature. <!--
@@ -6707,7 +7426,113 @@ public interface ViewPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute NODE_STYLE__SIZE_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyle_SizeComputationExpression();
+        EAttribute NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyleDescription_SizeComputationExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl <em>Rectangular Node
+         * Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.RectangularNodeStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRectangularNodeStyleDescription()
+         * @generated
+         */
+        EClass RECTANGULAR_NODE_STYLE_DESCRIPTION = eINSTANCE.getRectangularNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>With Header</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER = eINSTANCE.getRectangularNodeStyleDescription_WithHeader();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ImageNodeStyleDescriptionImpl
+         * <em>Image Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ImageNodeStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getImageNodeStyleDescription()
+         * @generated
+         */
+        EClass IMAGE_NODE_STYLE_DESCRIPTION = eINSTANCE.getImageNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Shape</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute IMAGE_NODE_STYLE_DESCRIPTION__SHAPE = eINSTANCE.getImageNodeStyleDescription_Shape();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.SVGNodeStyleDescriptionImpl
+         * <em>SVG Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.SVGNodeStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSVGNodeStyleDescription()
+         * @generated
+         */
+        EClass SVG_NODE_STYLE_DESCRIPTION = eINSTANCE.getSVGNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Shape</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SVG_NODE_STYLE_DESCRIPTION__SHAPE = eINSTANCE.getSVGNodeStyleDescription_Shape();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.IconLabelNodeStyleDescriptionImpl <em>Icon Label Node Style
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.IconLabelNodeStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIconLabelNodeStyleDescription()
+         * @generated
+         */
+        EClass ICON_LABEL_NODE_STYLE_DESCRIPTION = eINSTANCE.getIconLabelNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.LayoutStrategyDescription
+         * <em>Layout Strategy Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.LayoutStrategyDescription
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutStrategyDescription()
+         * @generated
+         */
+        EClass LAYOUT_STRATEGY_DESCRIPTION = eINSTANCE.getLayoutStrategyDescription();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.FreeFormLayoutStrategyDescriptionImpl <em>Free Form Layout
+         * Strategy Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.FreeFormLayoutStrategyDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFreeFormLayoutStrategyDescription()
+         * @generated
+         */
+        EClass FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = eINSTANCE.getFreeFormLayoutStrategyDescription();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.ListLayoutStrategyDescriptionImpl <em>List Layout Strategy
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ListLayoutStrategyDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListLayoutStrategyDescription()
+         * @generated
+         */
+        EClass LIST_LAYOUT_STRATEGY_DESCRIPTION = eINSTANCE.getListLayoutStrategyDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Direction</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LIST_LAYOUT_STRATEGY_DESCRIPTION__DIRECTION = eINSTANCE.getListLayoutStrategyDescription_Direction();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeStyleImpl <em>Edge
@@ -7654,6 +8479,16 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass CONDITIONAL_BUTTON_DESCRIPTION_STYLE = eINSTANCE.getConditionalButtonDescriptionStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout
+         * Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.LayoutDirection
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
+         * @generated
+         */
+        EEnum LAYOUT_DIRECTION = eINSTANCE.getLayoutDirection();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl
