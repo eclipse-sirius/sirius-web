@@ -123,9 +123,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();
-                if (node.isPresent()) {
-                    variableManager.put(Node.SELECTED_NODE, node.get());
-                }
+                variableManager.put(Node.SELECTED_NODE, node.orElse(null));
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
