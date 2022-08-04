@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,30 +11,31 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+  IconButton,
+  Snackbar,
+  Typography,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Close as CloseIcon, ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
-import { WorkbenchViewComponentProps } from 'workbench/Workbench.types';
-import { GQLValidationEventSubscription } from './ValidationWebSocketContainer.types';
+import { GQLValidationEventSubscription } from './ValidationView.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
-  ValidationWebSocketContainerContext,
-  ValidationWebSocketContainerEvent,
-  validationWebSocketContainerMachine,
-} from './ValidationWebSocketContainerMachine';
+  ValidationViewContext,
+  ValidationViewEvent,
+  validationViewMachine,
+} from './ValidationViewMachine';
 
 const validationEventSubscription = gql`
   subscription validationEvent($input: ValidationEventInput!) {
@@ -55,7 +56,7 @@ const validationEventSubscription = gql`
   }
 `;
 
-const useValidationWebSocketContainerStyle = makeStyles((theme) => ({
+const useValidationViewStyle = makeStyles((theme) => ({
   root: {
     padding: '8px',
   },
@@ -77,13 +78,10 @@ const useValidationWebSocketContainerStyle = makeStyles((theme) => ({
   },
 }));
 
-export const ValidationWebSocketContainer = ({ editingContextId }: WorkbenchViewComponentProps) => {
-  const classes = useValidationWebSocketContainerStyle();
-  const [{ value, context }, dispatch] = useMachine<
-    ValidationWebSocketContainerContext,
-    ValidationWebSocketContainerEvent
-  >(validationWebSocketContainerMachine);
-  const { toast, validationWebSocketContainer } = value as SchemaValue;
+export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps) => {
+  const classes = useValidationViewStyle();
+  const [{ value, context }, dispatch] = useMachine<ValidationViewContext, ValidationViewEvent>(validationViewMachine);
+  const { toast, validationView } = value as SchemaValue;
   const { id, validation, message } = context;
 
   const { error } = useSubscription<GQLValidationEventSubscription>(validationEventSubscription, {
@@ -117,7 +115,7 @@ export const ValidationWebSocketContainer = ({ editingContextId }: WorkbenchView
 
   let content = null;
 
-  if (validationWebSocketContainer === 'ready') {
+  if (validationView === 'ready') {
     const accordions = validation.categories.map((category) => {
       const details = category.diagnostics
         .map<React.ReactNode>((diagnostic) => {

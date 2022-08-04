@@ -3,11 +3,11 @@ name: Continuous integration
 on:
   push:
     paths-ignore:
-      - 'doc/**'
+      - "doc/**"
     branches:
-      - '**'
+      - "**"
     tags:
-      - '*'
+      - "*"
   pull_request:
   workflow_dispatch:
 
@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: 16.15.0
           registry-url: https://npm.pkg.github.com/
-          
+
       - name: Cache Node.js modules
         uses: actions/cache@v2
         with:
@@ -34,9 +34,6 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
-      
-      - name: Install Yalc globally
-        run: npm i yalc -g
 
       - name: Setup Java SDK
         uses: actions/setup-java@v1.4.3
@@ -49,15 +46,19 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      
+
       - name: Build the frontend
         run: |
           npm ci
           npm run test
           npm run-script format-lint
           npm run build
-          yalc publish
         working-directory: frontend
+
+      - name: Build the frontend packages
+        run: |
+          npm ci
+          npx turbo run build
 
       - name: Build the backend
         env:
@@ -87,5 +88,12 @@ jobs:
         run: |
           npm publish
         working-directory: frontend
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Publish the frontend packages
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

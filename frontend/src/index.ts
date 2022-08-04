@@ -47,8 +47,6 @@ export * from './tree/TreeItem.types';
 export * from './tree/TreeItemContextMenu';
 export * from './tree/TreeItemContextMenuContribution';
 export * from './tree/TreeItemContextMenuContribution.types';
-export * from './validation/ValidationWebSocketContainer';
-export * from './validation/ValidationWebSocketContainer.types';
 export * from './views/FormContainer';
 export * from './workbench/RepresentationContext';
 export * from './workbench/RepresentationNavigation';
