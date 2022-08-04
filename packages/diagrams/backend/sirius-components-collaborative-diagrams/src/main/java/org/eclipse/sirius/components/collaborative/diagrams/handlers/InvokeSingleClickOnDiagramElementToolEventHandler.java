@@ -153,7 +153,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(VariableManager.SELF, self.get());
-            node.ifPresent(selectedNode -> variableManager.put(Node.SELECTED_NODE, selectedNode));
+            variableManager.put(Node.SELECTED_NODE, node.orElse(null));
 
             String selectionDescriptionId = tool.getSelectionDescriptionId();
             if (selectionDescriptionId != null && selectedObjectId != null) {
