@@ -1,0 +1,42 @@
+{
+  "name": "@eclipse-sirius/sirius-components-core",
+  "version": "2022.7.4",
+  "author": "Eclipse Sirius",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-components"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-components-core.umd.js",
+  "module": "./dist/sirius-components-core.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-components-core.umd.js",
+      "import": "./dist/sirius-components-core.es.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "react": "17.0.2"
+  },
+  "devDependencies": {
+    "@eclipse-sirius/sirius-components-tsconfig": "2022.7.4",
+    "@types/react": "17.0.37",
+    "@vitejs/plugin-react": "2.0.0",
+    "react": "17.0.2",
+    "typescript": "4.7.4",
+    "vite": "3.0.4"
+  }
+}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { SubscriptionResult } from '@apollo/client';
 import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
@@ -20,9 +19,9 @@ import {
   GQLValidationEventSubscription,
   GQLValidationRefreshedEventPayload,
   Validation,
-} from './ValidationWebSocketContainer.types';
+} from './ValidationView.types';
 
-export interface ValidationWebSocketContainerStateSchema {
+export interface ValidationViewStateSchema {
   states: {
     toast: {
       states: {
@@ -30,7 +29,7 @@ export interface ValidationWebSocketContainerStateSchema {
         hidden: {};
       };
     };
-    validationWebSocketContainer: {
+    validationView: {
       states: {
         idle: {};
         ready: {};
@@ -42,10 +41,10 @@ export interface ValidationWebSocketContainerStateSchema {
 
 export type SchemaValue = {
   toast: 'visible' | 'hidden';
-  validationWebSocketContainer: 'idle' | 'ready' | 'complete';
+  validationView: 'idle' | 'ready' | 'complete';
 };
 
-export interface ValidationWebSocketContainerContext {
+export interface ValidationViewContext {
   id: string;
   validation: Validation | null;
   message: string | null;
@@ -58,21 +57,13 @@ export type HandleSubscriptionResultEvent = {
   result: SubscriptionResult<GQLValidationEventSubscription>;
 };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-export type ValidationWebSocketContainerEvent =
-  | HandleSubscriptionResultEvent
-  | HandleCompleteEvent
-  | ShowToastEvent
-  | HideToastEvent;
+export type ValidationViewEvent = HandleSubscriptionResultEvent | HandleCompleteEvent | ShowToastEvent | HideToastEvent;
 
 const isValidationRefreshedEventPayload = (
   payload: GQLValidationEventPayload
 ): payload is GQLValidationRefreshedEventPayload => payload.__typename === 'ValidationRefreshedEventPayload';
 
-export const validationWebSocketContainerMachine = Machine<
-  ValidationWebSocketContainerContext,
-  ValidationWebSocketContainerStateSchema,
-  ValidationWebSocketContainerEvent
->(
+export const validationViewMachine = Machine<ValidationViewContext, ValidationViewStateSchema, ValidationViewEvent>(
   {
     type: 'parallel',
     context: {
@@ -102,7 +93,7 @@ export const validationWebSocketContainerMachine = Machine<
           },
         },
       },
-      validationWebSocketContainer: {
+      validationView: {
         initial: 'idle',
         states: {
           idle: {
