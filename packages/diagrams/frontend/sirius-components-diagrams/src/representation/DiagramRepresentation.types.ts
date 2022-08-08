@@ -203,15 +203,7 @@ export interface GQLImageNodeStyle extends GQLINodeStyle {
   borderStyle: GQLLineStyle;
 }
 
-export interface GQLListNodeStyle extends GQLINodeStyle {
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: GQLLineStyle;
-  color: string;
-}
-
-export interface GQLListItemNodeStyle extends GQLINodeStyle {
+export interface GQLIconLabelNodeStyle extends GQLINodeStyle {
   backgroundColor: string;
 }
 
@@ -221,6 +213,7 @@ export interface GQLRectangularNodeStyle extends GQLINodeStyle {
   borderSize: number;
   borderStyle: GQLLineStyle;
   color: string;
+  withHeader: boolean;
 }
 
 export enum GQLLineStyle {

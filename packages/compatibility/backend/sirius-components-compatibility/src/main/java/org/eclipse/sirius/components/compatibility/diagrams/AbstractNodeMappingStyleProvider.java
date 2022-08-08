@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -114,7 +113,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
 
     private INodeStyle createListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
         // @formatter:off
-        return ListItemNodeStyle.newListItemNodeStyle()
+        return IconLabelNodeStyle.newIconLabelNodeStyle()
                 .backgroundColor("transparent") //$NON-NLS-1$
                 .build();
         // @formatter:on
@@ -134,12 +133,13 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         int borderSize = result.asInt().getAsInt();
 
         // @formatter:off
-        return ListNodeStyle.newListNodeStyle()
+        return RectangularNodeStyle.newRectangularNodeStyle()
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
+                .withHeader(true)
                 .build();
         // @formatter:on
     }
@@ -174,6 +174,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderStyle(borderStyle)
+                .withHeader(false)
                 .build();
         // @formatter:on
     }
@@ -197,6 +198,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
+                .withHeader(false)
                 .build();
         // @formatter:on
     }
@@ -220,6 +222,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
+                .withHeader(false)
                 .build();
         // @formatter:on
     }

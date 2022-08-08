@@ -12,7 +12,8 @@
  *******************************************************************************/
 /** @jsx svg */
 /** @jsxRuntime classic */
-import { RectangularNodeView, svg } from 'sprotty';
+import { RectangularNodeView, RenderingContext, SLabel, svg } from 'sprotty';
+import { Node, RectangularNodeStyle } from '../Diagram.types';
 import { createResizeHandles } from './ViewUtils';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
@@ -28,8 +29,8 @@ export class RectangleView extends RectangularNodeView {
    * @param context The context
    */
   // @ts-ignore
-  render(node, context) {
-    const nodeStyle = node.style;
+  render(node: Readonly<Node>, context: RenderingContext) {
+    const nodeStyle: RectangularNodeStyle = node.style as RectangularNodeStyle;
     const styleObject = {
       fill: nodeStyle.color,
       stroke: nodeStyle.borderColor,
@@ -66,9 +67,18 @@ export class RectangleView extends RectangularNodeView {
 
     const selectedHandles = createResizeHandles(node);
 
+    let children = [...node.children];
+
+    const nodeLabel: SLabel = children.shift() as SLabel;
+    const renderedNodeLabel = context.renderElement(nodeLabel);
+
+    const headerSeparator = createHeaderSeparator(node, nodeStyle, nodeLabel);
+
+    const renderedChildren = children.map((item) => context.renderElement(item));
+
     return (
       <g
-        attrs-data-testid={`Rectangle - ${node.children[0]?.text}`}
+        attrs-data-testid={`Rectangle - ${nodeLabel.text}`}
         attrs-data-testselected={`${node.selected}`}
         attrs-data-nodeid={node.id}
         attrs-data-descriptionid={node.descriptionId}>
@@ -83,8 +93,34 @@ export class RectangleView extends RectangularNodeView {
           style={styleObject}
         />
         {selectedHandles}
+        {renderedNodeLabel}
+        {headerSeparator}
+        {renderedChildren}
         {context.renderChildren(node)}
       </g>
     );
   }
 }
+
+const createHeaderSeparator = (node: Node, nodeStyle: RectangularNodeStyle, nodeLabel: SLabel) => {
+  if (nodeStyle.withHeader) {
+    const headerSeparatorStyle = {
+      stroke: nodeStyle.borderColor,
+      'stroke-width': nodeStyle.borderSize,
+    };
+
+    // The label y position indicates the padding top, we suppose the same padding is applied to the bottom.
+    const headerLabelPadding = nodeLabel?.bounds?.y;
+
+    return (
+      <line
+        x1={0}
+        y1={nodeLabel.bounds.height + 2 * headerLabelPadding}
+        x2={node.bounds.width}
+        y2={nodeLabel.bounds.height + 2 * headerLabelPadding}
+        style={headerSeparatorStyle}
+      />
+    );
+  }
+  return null;
+};

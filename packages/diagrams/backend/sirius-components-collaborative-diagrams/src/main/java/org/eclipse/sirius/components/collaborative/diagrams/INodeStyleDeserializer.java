@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,9 +23,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -65,11 +64,8 @@ public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> {
                 case NodeType.NODE_IMAGE:
                     nodeStyle = mapper.readValue(root.toString(), ImageNodeStyle.class);
                     break;
-                case NodeType.NODE_LIST:
-                    nodeStyle = mapper.readValue(root.toString(), ListNodeStyle.class);
-                    break;
-                case NodeType.NODE_LIST_ITEM:
-                    nodeStyle = mapper.readValue(root.toString(), ListItemNodeStyle.class);
+                case NodeType.NODE_ICON_LABEL:
+                    nodeStyle = mapper.readValue(root.toString(), IconLabelNodeStyle.class);
                     break;
                 default:
                     nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);

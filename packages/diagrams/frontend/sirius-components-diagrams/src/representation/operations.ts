@@ -120,13 +120,7 @@ export const diagramEventSubscription = gql`
         borderStyle
         borderSize
         borderRadius
-      }
-      ... on ListNodeStyle {
-        color
-        borderColor
-        borderStyle
-        borderSize
-        borderRadius
+        withHeader
       }
       ... on ImageNodeStyle {
         imageURL
@@ -135,7 +129,7 @@ export const diagramEventSubscription = gql`
         borderSize
         borderRadius
       }
-      ... on ListItemNodeStyle {
+      ... on IconLabelNodeStyle {
         backgroundColor
       }
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -51,6 +52,8 @@ public final class NodeElementProps implements IProps {
     private boolean borderNode;
 
     private INodeStyle style;
+
+    private ILayoutStrategy childrenLayoutStrategy;
 
     private Position position;
 
@@ -94,6 +97,10 @@ public final class NodeElementProps implements IProps {
 
     public INodeStyle getStyle() {
         return this.style;
+    }
+
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
     }
 
     public Position getPosition() {
@@ -146,6 +153,8 @@ public final class NodeElementProps implements IProps {
 
         private INodeStyle style;
 
+        private ILayoutStrategy childrenLayoutStrategy;
+
         private Position position;
 
         private Size size;
@@ -193,6 +202,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public Builder position(Position position) {
             this.position = Objects.requireNonNull(position);
             return this;
@@ -223,6 +237,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             nodeElementProps.borderNode = this.borderNode;
             nodeElementProps.style = Objects.requireNonNull(this.style);
+            nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.position = Objects.requireNonNull(this.position);
             nodeElementProps.size = Objects.requireNonNull(this.size);
             nodeElementProps.children = Objects.requireNonNull(this.children);

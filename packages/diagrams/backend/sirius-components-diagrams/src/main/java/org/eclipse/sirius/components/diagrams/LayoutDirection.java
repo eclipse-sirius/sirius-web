@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,18 +13,10 @@
 package org.eclipse.sirius.components.diagrams;
 
 /**
- * The various node types.
+ * The layout direction used by the {@link ListLayoutStrategy} to position the children of a node.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public final class NodeType {
-    public static final String NODE_RECTANGLE = "node:rectangle"; //$NON-NLS-1$
-
-    public static final String NODE_IMAGE = "node:image"; //$NON-NLS-1$
-
-    public static final String NODE_ICON_LABEL = "node:icon-label"; //$NON-NLS-1$
-
-    private NodeType() {
-        // Prevent instantiation
-    }
+public enum LayoutDirection {
+    COLUMN
 }

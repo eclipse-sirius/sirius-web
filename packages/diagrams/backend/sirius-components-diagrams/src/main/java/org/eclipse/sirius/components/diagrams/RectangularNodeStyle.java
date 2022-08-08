@@ -34,6 +34,8 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
+    private boolean withHeader;
+
     private RectangularNodeStyle() {
         // Prevent instantiation
     }
@@ -56,6 +58,10 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     public LineStyle getBorderStyle() {
         return this.borderStyle;
+    }
+
+    public boolean isWithHeader() {
+        return this.withHeader;
     }
 
     public static Builder newRectangularNodeStyle() {
@@ -84,6 +90,8 @@ public final class RectangularNodeStyle implements INodeStyle {
         private int borderRadius;
 
         private LineStyle borderStyle;
+
+        private boolean withHeader;
 
         private Builder() {
             // Prevent instantiation
@@ -114,6 +122,11 @@ public final class RectangularNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder withHeader(boolean withHeader) {
+            this.withHeader = Objects.requireNonNull(withHeader);
+            return this;
+        }
+
         public RectangularNodeStyle build() {
             RectangularNodeStyle nodeStyleDescription = new RectangularNodeStyle();
             nodeStyleDescription.color = Objects.requireNonNull(this.color);
@@ -121,6 +134,7 @@ public final class RectangularNodeStyle implements INodeStyle {
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderRadius = this.borderRadius;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
+            nodeStyleDescription.withHeader = Objects.requireNonNull(this.withHeader);
             return nodeStyleDescription;
         }
     }

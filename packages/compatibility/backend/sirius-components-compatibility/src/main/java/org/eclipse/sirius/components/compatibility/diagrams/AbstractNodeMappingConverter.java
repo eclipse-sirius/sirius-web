@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,13 @@ import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProvid
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
+import org.eclipse.sirius.components.diagrams.LayoutDirection;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -38,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
@@ -73,7 +77,6 @@ public class AbstractNodeMappingConverter {
 
     public NodeDescription convert(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
         LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, this.objectService);
-
         Function<VariableManager, org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription> abstractNodeMappingDescriptionProvider = new LabelStyleDescriptionProvider(interpreter,
                 abstractNodeMapping);
 
@@ -100,16 +103,27 @@ public class AbstractNodeMappingConverter {
         };
 
         Function<VariableManager, INodeStyle> styleProvider = new AbstractNodeMappingStyleProvider(interpreter, abstractNodeMapping);
+        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
+            ILayoutStrategy childrenLayoutStrategy = null;
+            if (abstractNodeMapping instanceof ContainerMapping) {
+                ContainerMapping containerMapping = (ContainerMapping) abstractNodeMapping;
+                ContainerMappingQuery containerMappingQuery = new ContainerMappingQuery(containerMapping);
+                if (containerMappingQuery.isListContainer() || containerMappingQuery.isVerticalStackContainer()) {
+                    childrenLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().direction(LayoutDirection.COLUMN).build();
+                } else if (containerMappingQuery.isFreeFormContainer()) {
+                    childrenLayoutStrategy = new FreeFormLayoutStrategy();
+                }
+            }
+            return childrenLayoutStrategy;
+        };
 
         Function<VariableManager, String> typeProvider = variableManager -> {
             var result = NodeType.NODE_RECTANGLE;
             INodeStyle style = styleProvider.apply(variableManager);
             if (style instanceof ImageNodeStyle) {
                 result = NodeType.NODE_IMAGE;
-            } else if (style instanceof ListItemNodeStyle) {
-                result = NodeType.NODE_LIST_ITEM;
-            } else if (style instanceof ListNodeStyle) {
-                result = NodeType.NODE_LIST;
+            } else if (style instanceof IconLabelNodeStyle) {
+                result = NodeType.NODE_ICON_LABEL;
             }
             return result;
         };
@@ -148,6 +162,7 @@ public class AbstractNodeMappingConverter {
                 .synchronizationPolicy(synchronizationPolicy)
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .childNodeDescriptions(childNodeDescriptions)

@@ -52,14 +52,8 @@ public final class NodesBuilder<T> {
         return imageNodeBuilder;
     }
 
-    public ListNodeBuilder<T> listNode(String nodeLabel) {
-        ListNodeBuilder<T> listNodeBuilder = new ListNodeBuilder<>(this, nodeLabel, this.isBorderNode);
-        this.nodeBuilders.add(listNodeBuilder);
-        return listNodeBuilder;
-    }
-
-    public ListItemNodeBuilder<T> listItemNode(String nodeLabel) {
-        ListItemNodeBuilder<T> listItemNodeBuilder = new ListItemNodeBuilder<>(this, nodeLabel, this.isBorderNode);
+    public IconlabelNodeBuilder<T> iconLabelNode(String nodeLabel) {
+        IconlabelNodeBuilder<T> listItemNodeBuilder = new IconlabelNodeBuilder<>(this, nodeLabel, this.isBorderNode);
         this.nodeBuilders.add(listItemNodeBuilder);
         return listItemNodeBuilder;
     }

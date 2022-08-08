@@ -54,7 +54,7 @@ public class NodePositionProvider {
      */
     public Position getPosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Position position = node.getPosition();
-        if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+        if (NodeType.NODE_ICON_LABEL.equals(node.getNodeType())) {
             int nodeListItemIndex = node.getParent().getChildrenNodes().indexOf(node);
             Optional<Position> nodeListItemPosition = this.getNodeListItemPosition(node, nodeListItemIndex);
             if (nodeListItemPosition.isPresent()) {

@@ -21,8 +21,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -40,7 +40,7 @@ import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
  * @author sbegaudeau
  */
 @SuppressWarnings("checkstyle:HiddenField")
-public class ListItemNodeBuilder<T> implements NodeBuilder<T> {
+public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
 
     private NodesBuilder<T> nodesBuilder;
 
@@ -52,39 +52,39 @@ public class ListItemNodeBuilder<T> implements NodeBuilder<T> {
 
     private Size size;
 
-    private NodesBuilder<ListItemNodeBuilder<T>> borderNodesBuilder;
+    private NodesBuilder<IconlabelNodeBuilder<T>> borderNodesBuilder;
 
-    private NodesBuilder<ListItemNodeBuilder<T>> childNodesBuilder;
+    private NodesBuilder<IconlabelNodeBuilder<T>> childNodesBuilder;
 
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
-    public ListItemNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
+    public IconlabelNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
         this.label = new LabelBuilder().basicLabel(nodeLabel, LabelType.INSIDE_CENTER);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
 
-    public ListItemNodeBuilder<T> at(double x, double y) {
+    public IconlabelNodeBuilder<T> at(double x, double y) {
         this.position = Position.at(x, y);
         return this;
     }
 
-    public ListItemNodeBuilder<T> of(double width, double height) {
+    public IconlabelNodeBuilder<T> of(double width, double height) {
         this.size = Size.of(width, height);
         return this;
     }
 
-    public NodesBuilder<ListItemNodeBuilder<T>> borderNodes() {
+    public NodesBuilder<IconlabelNodeBuilder<T>> borderNodes() {
         this.borderNodesBuilder = new NodesBuilder<>(this, true);
         return this.borderNodesBuilder;
     }
 
-    public NodesBuilder<ListItemNodeBuilder<T>> childNodes() {
+    public NodesBuilder<IconlabelNodeBuilder<T>> childNodes() {
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
     }
 
-    public ListItemNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
+    public IconlabelNodeBuilder<T> customizedProperties(Set<CustomizableProperties> customizedProperties) {
         this.customizedProperties = Objects.requireNonNull(customizedProperties);
         return this;
     }
@@ -99,7 +99,7 @@ public class ListItemNodeBuilder<T> implements NodeBuilder<T> {
         List<Node> childNodes = Optional.ofNullable(this.childNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
 
         // @formatter:off
-        INodeStyle style = ListItemNodeStyle.newListItemNodeStyle()
+        INodeStyle style = IconLabelNodeStyle.newIconLabelNodeStyle()
                 .backgroundColor("white") //$NON-NLS-1$
                 .build();
         // @formatter:on
@@ -115,7 +115,7 @@ public class ListItemNodeBuilder<T> implements NodeBuilder<T> {
 
        // @formatter:off
         return Node.newNode(nodeId)
-               .type(NodeType.NODE_LIST_ITEM)
+               .type(NodeType.NODE_ICON_LABEL)
                .label(this.label)
                .position(Objects.requireNonNull(this.position))
                .size(Objects.requireNonNull(this.size))

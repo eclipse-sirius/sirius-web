@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,6 +96,9 @@ public class NodeSizeProvider {
         double width = DEFAULT_WIDTH;
         double height = DEFAULT_HEIGHT;
         KVector nodeSizeMinimum = layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+        if (nodeSizeMinimum.equals(new KVector()) && node.getChildrenLayoutStrategy() != null) {
+            nodeSizeMinimum = layoutConfigurator.configureByChildrenLayoutStrategy(node.getChildrenLayoutStrategy().getClass()).getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+        }
         if (nodeSizeMinimum != null) {
             width = nodeSizeMinimum.x;
             height = nodeSizeMinimum.y;
@@ -109,7 +112,7 @@ public class NodeSizeProvider {
                 width += ELK_SIZE_DIFF;
                 height += ELK_SIZE_DIFF;
             }
-        } else if (NodeType.NODE_LIST_ITEM.equals(node.getNodeType())) {
+        } else if (NodeType.NODE_ICON_LABEL.equals(node.getNodeType())) {
             Size nodeItemLabelSize = node.getLabel().getTextBounds().getSize();
             width = nodeItemLabelSize.getWidth() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT;
             height = nodeItemLabelSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;

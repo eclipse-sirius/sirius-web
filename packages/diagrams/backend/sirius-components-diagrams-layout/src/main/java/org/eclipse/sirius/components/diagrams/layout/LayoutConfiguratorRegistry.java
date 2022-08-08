@@ -31,6 +31,8 @@ import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
@@ -92,32 +94,33 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(LayeredOptions.SPACING_EDGE_NODE_BETWEEN_LAYERS, SPACING_NODE_EDGE);
 
         configurator.configureByType(NodeType.NODE_RECTANGLE)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
-                .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(LayoutOptionValues.MIN_WIDTH_CONSTRAINT, LayoutOptionValues.MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
-        configurator.configureByType(NodeType.NODE_LIST)
-                .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
-                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
-                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true)
-                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET);
-
-        configurator.configureByType(NodeType.NODE_LIST_ITEM)
+        configurator.configureByType(NodeType.NODE_ICON_LABEL)
                 .setProperty(CoreOptions.NO_LAYOUT, true)
                 .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(0d, 12d, 0d, 6d));
 
         configurator.configureByType(NodeType.NODE_IMAGE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter())
-                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET);
+                .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
+                .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
+                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
         configurator.configureByType(ELKDiagramConverter.DEFAULT_IMAGE_TYPE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
+
+        configurator.configureByChildrenLayoutStrategy(ListLayoutStrategy.class)
+                .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
+                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true);
+
+        configurator.configureByChildrenLayoutStrategy(FreeFormLayoutStrategy.class)
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
+                .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT));
 
         configurator.configure(ElkEdge.class).setProperty(CoreOptions.SPACING_EDGE_LABEL, 3d);
         // @formatter:on

@@ -27,11 +27,14 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.LayoutDirection;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -54,6 +57,14 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author gcoutable
  */
 public class DefaultTestDiagramDescriptionProvider {
+
+    private static final String NODE_LIST_ITEM_PREFIX = "listitem"; //$NON-NLS-1$
+
+    private static final String NODE_LIST_PREFIX = "list"; //$NON-NLS-1$
+
+    private static final String NODE_IMG_PREFIX = "img"; //$NON-NLS-1$
+
+    private static final String NODE_RECT_PREFIX = "rect"; //$NON-NLS-1$
 
     private static final String NODE_NAME_SEPARATOR = ":"; //$NON-NLS-1$
 
@@ -79,9 +90,10 @@ public class DefaultTestDiagramDescriptionProvider {
 
         INodeStyle nodeStyle = null;
         switch (prefix) {
-        case "rect": //$NON-NLS-1$
+        case NODE_RECT_PREFIX:
             // @formatter:off
             nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                    .withHeader(false)
                     .borderSize(1)
                     .borderRadius(3)
                     .borderStyle(LineStyle.Solid)
@@ -90,7 +102,7 @@ public class DefaultTestDiagramDescriptionProvider {
                     .build();
             // @formatter:on
             break;
-        case "img": //$NON-NLS-1$
+        case NODE_IMG_PREFIX:
             // @formatter:off
             nodeStyle = ImageNodeStyle.newImageNodeStyle()
                     .imageURL("") //$NON-NLS-1$
@@ -98,9 +110,10 @@ public class DefaultTestDiagramDescriptionProvider {
                     .build();
             // @formatter:on
             break;
-        case "list": //$NON-NLS-1$
+        case NODE_LIST_PREFIX:
             // @formatter:off
-            nodeStyle = ListNodeStyle.newListNodeStyle()
+            nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                    .withHeader(true)
                     .borderColor("black") //$NON-NLS-1$
                     .borderRadius(0)
                     .borderSize(1)
@@ -109,9 +122,9 @@ public class DefaultTestDiagramDescriptionProvider {
                     .build();
             // @formatter:on
             break;
-        case "listitem": //$NON-NLS-1$
+        case NODE_LIST_ITEM_PREFIX:
             // @formatter:off
-            nodeStyle = ListItemNodeStyle.newListItemNodeStyle()
+            nodeStyle = IconLabelNodeStyle.newIconLabelNodeStyle()
                     .backgroundColor("white") //$NON-NLS-1$
                     .build();
             // @formatter:on
@@ -133,17 +146,17 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(prefix -> {
                     String type = ""; //$NON-NLS-1$
                     switch (prefix) {
-                    case "rect": //$NON-NLS-1$
+                    case NODE_RECT_PREFIX:
                         type = NodeType.NODE_RECTANGLE;
                         break;
-                    case "img": //$NON-NLS-1$
+                    case NODE_IMG_PREFIX:
                         type = NodeType.NODE_IMAGE;
                         break;
-                    case "list": //$NON-NLS-1$
-                        type = NodeType.NODE_LIST;
+                    case NODE_LIST_PREFIX:
+                        type = NodeType.NODE_RECTANGLE;
                         break;
-                    case "listitem": //$NON-NLS-1$
-                        type = NodeType.NODE_LIST_ITEM;
+                    case NODE_LIST_ITEM_PREFIX:
+                        type = NodeType.NODE_ICON_LABEL;
                         break;
                     default:
                         type = ""; //$NON-NLS-1$
@@ -152,6 +165,35 @@ public class DefaultTestDiagramDescriptionProvider {
                     return type;
                 })
                 .orElse(""); //$NON-NLS-1$
+        // @formatter:on
+    };
+
+    private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
+     // @formatter:off
+        return variableManager.get(VariableManager.SELF, Element.class)
+                .map(Element::getName)
+                .map(name -> name.split(NODE_NAME_SEPARATOR))
+                .filter(composedName -> composedName.length >= 2)
+                .map(composedName -> composedName[0])
+                .map(prefix -> {
+                    ILayoutStrategy childrenLayoutStrategy = null;
+                    switch (prefix) {
+                    case NODE_RECT_PREFIX:
+                        childrenLayoutStrategy = new FreeFormLayoutStrategy();
+                        break;
+                    case NODE_IMG_PREFIX:
+                        break;
+                    case NODE_LIST_PREFIX:
+                        childrenLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().direction(LayoutDirection.COLUMN).build();
+                        break;
+                    case NODE_LIST_ITEM_PREFIX:
+                        break;
+                    default:
+                        break;
+                    }
+                    return childrenLayoutStrategy;
+                })
+                .orElse(null);
         // @formatter:on
     };
 
@@ -338,6 +380,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .semanticElementsProvider(this.nodeSemanticElementProvider)
                 .labelDescription(labelDescription)
                 .styleProvider(this.nodeStyleProvider)
+                .childrenLayoutStrategyProvider(this.childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of(childDescription))
@@ -357,6 +400,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .semanticElementsProvider(this.nodeSemanticElementProvider)
                 .labelDescription(labelDescription)
                 .styleProvider(this.nodeStyleProvider)
+                .childrenLayoutStrategyProvider(this.childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of()).childNodeDescriptions(List.of())
                 .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$

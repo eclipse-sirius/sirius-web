@@ -23,6 +23,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -80,7 +81,7 @@ public class DiagramELKLayoutTest {
         Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
             .nodes()
                 .rectangleNode(nodeLabelWithMultiple).at(10, 10).of(10, 10)
-                    .childNodes()
+                    .childNodes(new FreeFormLayoutStrategy())
                         .rectangleNode(firstChildTargetObjectId).at(10, 10).of(50, 50).and()
                     .and()
                 .and()
@@ -98,8 +99,8 @@ public class DiagramELKLayoutTest {
         Node firstParent = layoutedDiagram.getNodes().get(0);
 
         // Check that the parent node and the label have the right size
-        assertThat(firstParent.getSize()).isEqualTo(Size.of(195.8818359375, 131.197265625));
         assertThat(firstParent.getLabel().getSize()).isEqualTo(Size.of(161.8818359375, 32.197265625));
+        assertThat(firstParent.getSize()).isEqualTo(Size.of(171.8818359375, 82.2958984375));
 
         // Check that the inner node is under the multi line label area
         assertThat(firstParent.getChildNodes().get(0).getPosition()).isEqualTo(Position.at(12, 49.197265625));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -86,6 +87,7 @@ public class NodeSizeProviderTests {
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(NodeType.NODE_RECTANGLE);
         nodeLayoutData.setStyle(testDiagramBuilder.getRectangularNodeStyle());
+        nodeLayoutData.setChildrenLayoutStrategy(new FreeFormLayoutStrategy());
         return nodeLayoutData;
     }
 

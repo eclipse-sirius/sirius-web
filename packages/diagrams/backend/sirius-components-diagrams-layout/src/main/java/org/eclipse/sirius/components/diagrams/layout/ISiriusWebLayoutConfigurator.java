@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 
 /**
  * Interface that can configure layout options based on the {@code id} and {@code type} attributes of diagram elements.
@@ -32,6 +33,8 @@ public interface ISiriusWebLayoutConfigurator extends IGraphElementVisitor {
     IPropertyHolder configureByType(String type);
 
     IPropertyHolder configureByElementClass(Class<? extends ElkGraphElement> elementClass);
+
+    IPropertyHolder configureByChildrenLayoutStrategy(Class<? extends ILayoutStrategy> layoutStrategyClass);
 
     default ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram) {
         return elkDiagram;

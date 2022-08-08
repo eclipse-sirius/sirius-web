@@ -26,6 +26,9 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.LayoutDirection;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
@@ -173,7 +176,7 @@ public class DiagramLayoutTests {
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
                 .rectangleNode(firstParentTargetObjectId).at(10, 10).of(200, 300)
-                    .childNodes()
+                    .childNodes(new FreeFormLayoutStrategy())
                         .rectangleNode(firstChildTargetObjectId).at(10, 10).of(50, 50).and()
                         .rectangleNode(secondChildTargetObjectId).at(70, 70).of(50, 50).and()
                         .and()
@@ -239,16 +242,20 @@ public class DiagramLayoutTests {
 
     @Test
     public void testCreateEdgeDoesNotAffectOtherEdges() {
+        ListLayoutStrategy columnListLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().direction(LayoutDirection.COLUMN).build();
+
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
-                .listNode(FIRST_TARGET_OBJECT_ID).at(10, 10).of(-1, -1)
-                    .childNodes()
-                        .listItemNode("Child").at(-1, -1).of(-1, -1).and() //$NON-NLS-1$
+                .rectangleNode(FIRST_TARGET_OBJECT_ID).at(10, 10).of(-1, -1)
+                    .childNodes(columnListLayoutStrategy)
+                        .iconLabelNode("Child").at(-1, -1).of(-1, -1).and() //$NON-NLS-1$
                         .and()
                     .and()
-                .listNode(SECOND_TARGET_OBJECT_ID).at(100, 100).of(-1, -1).and()
+                .rectangleNode(SECOND_TARGET_OBJECT_ID).at(100, 100).of(-1, -1)
+                    .childNodes(columnListLayoutStrategy).and()
                     .and()
+            .and()
             .edge(SECOND_TARGET_OBJECT_ID)
                 .from(FIRST_TARGET_OBJECT_ID).at(0.75, 0.25)
                 .to(SECOND_TARGET_OBJECT_ID).at(0.25, 0.25)

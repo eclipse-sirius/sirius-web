@@ -21,6 +21,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -50,6 +51,8 @@ public final class NodeDescription {
     private LabelDescription labelDescription;
 
     private Function<VariableManager, INodeStyle> styleProvider;
+
+    private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
 
     private Function<VariableManager, Size> sizeProvider;
 
@@ -99,6 +102,10 @@ public final class NodeDescription {
 
     public Function<VariableManager, INodeStyle> getStyleProvider() {
         return this.styleProvider;
+    }
+
+    public Function<VariableManager, ILayoutStrategy> getChildrenLayoutStrategyProvider() {
+        return this.childrenLayoutStrategyProvider;
     }
 
     public Function<VariableManager, Size> getSizeProvider() {
@@ -156,6 +163,8 @@ public final class NodeDescription {
 
         private Function<VariableManager, INodeStyle> styleProvider;
 
+        private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
+
         private Function<VariableManager, Size> sizeProvider;
 
         private List<NodeDescription> borderNodeDescriptions;
@@ -210,6 +219,11 @@ public final class NodeDescription {
             return this;
         }
 
+        public Builder childrenLayoutStrategyProvider(Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider) {
+            this.childrenLayoutStrategyProvider = Objects.requireNonNull(childrenLayoutStrategyProvider);
+            return this;
+        }
+
         public Builder sizeProvider(Function<VariableManager, Size> sizeProvider) {
             this.sizeProvider = Objects.requireNonNull(sizeProvider);
             return this;
@@ -247,6 +261,7 @@ public final class NodeDescription {
             nodeDescription.labelDescription = Objects.requireNonNull(this.labelDescription);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
+            nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
             nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);

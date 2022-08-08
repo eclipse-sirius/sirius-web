@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
+import org.eclipse.sirius.components.diagrams.LayoutDirection;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -61,7 +65,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
@@ -73,7 +77,7 @@ public class NodePositionProviderTests {
         nodeLayoutData.setPinned(true);
         assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
-        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodes.add(nodeLayoutData2);
         nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData2);
         assertThat(nextPosition).isEqualTo(Position.at(Double.valueOf(0), Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30)));
@@ -85,7 +89,7 @@ public class NodePositionProviderTests {
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
 
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
@@ -99,7 +103,7 @@ public class NodePositionProviderTests {
         // Test creation of a new node at a given position within parent (creation tool)
         Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
         nodePositionProvider = new NodePositionProvider();
-        NodeLayoutData childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         childNodes.add(childLayoutData);
 
         Optional<IDiagramEvent> optionalEventInside = Optional.of(new SinglePositionEvent(startingPosition));
@@ -109,7 +113,7 @@ public class NodePositionProviderTests {
         // Test creation of a new node at a given position outside parent (creation tool)
         Position startingPositionOutside = Position.at(START_X_OUTSIDE_PARENT, START_Y_OUTSIDE_PARENT);
         nodePositionProvider = new NodePositionProvider();
-        childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE);
+        childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         childNodes.add(nodeLayoutData);
 
         Optional<IDiagramEvent> optionalEventOutside = Optional.of(new SinglePositionEvent(startingPositionOutside));
@@ -121,14 +125,14 @@ public class NodePositionProviderTests {
     public void testNodeSeveralNewNodesAtOnce() {
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData parentNodeLayoutData = this.createNodeLayoutData(ZERO_POSITION, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData parentNodeLayoutData = this.createNodeLayoutData(ZERO_POSITION, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(List.of(parentNodeLayoutData));
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
         Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
 
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodes.add(nodeLayoutData);
         Position nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
@@ -137,7 +141,7 @@ public class NodePositionProviderTests {
         nodeLayoutData.setPinned(true);
         assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
-        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodes.add(nodeLayoutData);
         nextPosition = nodePositionProvider.getPosition(optionalEvent, nodeLayoutData);
         assertThat(nextPosition).isEqualTo(Position.at(0, Double.valueOf(DEFAULT_NODE_SIZE.getHeight() + 30)));
@@ -147,20 +151,20 @@ public class NodePositionProviderTests {
     public void testNodeNewNodesOneByOne() {
         NodePositionProvider nodePositionProvider = new NodePositionProvider();
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData parentNodeLayoutData = this.createNodeLayoutData(ZERO_POSITION, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData parentNodeLayoutData = this.createNodeLayoutData(ZERO_POSITION, DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(List.of(parentNodeLayoutData));
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
         Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
 
-        NodeLayoutData firstChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData firstChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodes.add(firstChild);
         Position nextPosition = nodePositionProvider.getPosition(optionalEvent, firstChild);
         firstChild.setPosition(nextPosition);
         assertThat(nextPosition).isEqualTo(ZERO_POSITION);
 
-        NodeLayoutData secondChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData secondChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodes.add(secondChild);
         nextPosition = nodePositionProvider.getPosition(optionalEvent, secondChild);
         secondChild.setPosition(nextPosition);
@@ -168,7 +172,7 @@ public class NodePositionProviderTests {
 
         // Test creation of a new node at a given position within parent (creation tool)
         nodePositionProvider = new NodePositionProvider();
-        NodeLayoutData thirdChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData thirdChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
         nodes.add(thirdChild);
 
@@ -176,7 +180,7 @@ public class NodePositionProviderTests {
         assertThat(nextPosition).isEqualTo(Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT));
 
         // Test creation of a new node at a given position outside parent (creation tool)
-        NodeLayoutData fourthChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData fourthChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         Position startingPositionOutside = Position.at(START_X_OUTSIDE_PARENT, START_Y_OUTSIDE_PARENT);
         nodes.add(fourthChild);
 
@@ -191,8 +195,8 @@ public class NodePositionProviderTests {
         Position nodePosition2 = Position.at(200, 300);
         List<NodeLayoutData> nodes = new ArrayList<>();
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(nodePosition1, Size.of(200, 100), diagramLayoutData, NodeType.NODE_RECTANGLE);
-        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(nodePosition2, Size.of(200, 100), diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(nodePosition1, Size.of(200, 100), diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
+        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(nodePosition2, Size.of(200, 100), diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
         nodes.add(nodeLayoutData2);
@@ -217,14 +221,14 @@ public class NodePositionProviderTests {
 
         // Create diagram with two children
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(nodePosition1, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE);
-        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(nodePosition2, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(nodePosition1, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
+        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(nodePosition2, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
         nodes.add(nodeLayoutData2);
 
         // Add one child within the node 2
-        NodeLayoutData nodeLayoutData21 = this.createNodeLayoutData(nodePosition21, nodeSize21, nodeLayoutData2, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData21 = this.createNodeLayoutData(nodePosition21, nodeSize21, nodeLayoutData2, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodeLayoutData2.setChildrenNodes(List.of(nodeLayoutData21));
 
         // a positive position delta means the node has been resized from NW to the outside.
@@ -255,14 +259,14 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         // Create diagram with two children
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(nodePosition1, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE);
-        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(nodePosition2, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData = this.createNodeLayoutData(nodePosition1, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
+        NodeLayoutData nodeLayoutData2 = this.createNodeLayoutData(nodePosition2, nodeSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
         nodes.add(nodeLayoutData2);
 
         // Add one child within the node 2
-        NodeLayoutData nodeLayoutData21 = this.createNodeLayoutData(nodePosition21, nodeSize21, nodeLayoutData2, NodeType.NODE_RECTANGLE);
+        NodeLayoutData nodeLayoutData21 = this.createNodeLayoutData(nodePosition21, nodeSize21, nodeLayoutData2, NodeType.NODE_RECTANGLE, new FreeFormLayoutStrategy());
         nodeLayoutData2.setChildrenNodes(List.of(nodeLayoutData21));
 
         Size newNode2Size = Size.of(190, 80);
@@ -288,8 +292,9 @@ public class NodePositionProviderTests {
         Size nodeListItemSize = Size.of(100, 20);
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_LIST);
-        NodeLayoutData nodeListItemLayoutData = this.createNodeLayoutData(nodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE,
+                ListLayoutStrategy.newListLayoutStrategy().direction(LayoutDirection.COLUMN).build());
+        NodeLayoutData nodeListItemLayoutData = this.createNodeLayoutData(nodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         nodeListLayoutData.setChildrenNodes(List.of(nodeListItemLayoutData));
         nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
         diagramLayoutData.setChildrenNodes(List.of(nodeListLayoutData));
@@ -309,9 +314,10 @@ public class NodePositionProviderTests {
         Position secondNodeListItemPosition = Position.at(0, firstNodeListItemPosition.getY() + nodeListItemSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP);
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_LIST);
-        NodeLayoutData firstNodeListItemLayoutData = this.createNodeLayoutData(firstNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
-        NodeLayoutData secondNodeListItemLayoutData = this.createNodeLayoutData(secondNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE,
+                ListLayoutStrategy.newListLayoutStrategy().direction(LayoutDirection.COLUMN).build());
+        NodeLayoutData firstNodeListItemLayoutData = this.createNodeLayoutData(firstNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
+        NodeLayoutData secondNodeListItemLayoutData = this.createNodeLayoutData(secondNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         nodeListLayoutData.setChildrenNodes(List.of(firstNodeListItemLayoutData, secondNodeListItemLayoutData));
         nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
         diagramLayoutData.setChildrenNodes(List.of(nodeListLayoutData));
@@ -344,13 +350,14 @@ public class NodePositionProviderTests {
         return diagramLayoutData;
     }
 
-    private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
+    private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType, ILayoutStrategy childrenLayoutStrategy) {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
         nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(position);
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(nodeType);
+        nodeLayoutData.setChildrenLayoutStrategy(childrenLayoutStrategy);
         return nodeLayoutData;
     }
 }

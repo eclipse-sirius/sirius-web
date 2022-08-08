@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental.updater;
 
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -68,17 +69,14 @@ public class ContainmentUpdater {
         if (this.shouldUpdate(container)) {
             if (container instanceof NodeLayoutData) {
                 NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-                switch (nodeLayoutData.getNodeType()) {
-                case NodeType.NODE_LIST:
+                if (nodeLayoutData.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
                     // No need to change the position of a Node List as contained list items are fixed.
                     this.updateNodeListContentSize(nodeLayoutData);
                     this.updateBottomRight(nodeLayoutData);
-                    break;
-                default:
+                } else {
                     // We do not change the position of diagrams as it disturbs the feedback
                     this.updateTopLeft(nodeLayoutData);
                     this.updateBottomRight(nodeLayoutData);
-                    break;
                 }
             } else {
                 this.updateBottomRight(container);
@@ -201,7 +199,7 @@ public class ContainmentUpdater {
 
         // For "normal" containers, we only resize if they are too small to hold their contents.
         // Lists however are always resized to match exactly their content, even it is means making them smaller.
-        boolean isNodeListContainer = container instanceof NodeLayoutData && NodeType.NODE_LIST.equals(((NodeLayoutData) container).getNodeType());
+        boolean isNodeListContainer = container instanceof NodeLayoutData && ((NodeLayoutData) container).getChildrenLayoutStrategy() instanceof ListLayoutStrategy;
         boolean isTooSmallForContent = container.getSize().getWidth() < contentSize.getWidth() || container.getSize().getHeight() < contentSize.getHeight();
         boolean shouldResize = isTooSmallForContent || (isNodeListContainer && !container.getSize().equals(contentSize));
         if (shouldResize) {
@@ -244,10 +242,9 @@ public class ContainmentUpdater {
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
             switch (nodeLayoutData.getNodeType()) {
-            case NodeType.NODE_LIST_ITEM:
+            case NodeType.NODE_ICON_LABEL:
                 nodeLabelPaddingWidth = NODE_LIST_NODE_LABELS_PADDING_WIDTH;
                 break;
-            case NodeType.NODE_LIST:
             case NodeType.NODE_RECTANGLE:
             default:
                 nodeLabelPaddingWidth = DEFAULT_NODE_LABELS_PADDING;
@@ -261,9 +258,9 @@ public class ContainmentUpdater {
         double nodeLabelPaddingHeight = LayoutOptionValues.DEFAULT_ELK_PADDING;
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            if (NodeType.NODE_LIST.equals(nodeLayoutData.getNodeType())) {
+            if (nodeLayoutData.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
                 nodeLabelPaddingHeight = LayoutOptionValues.DEFAULT_ELK_PADDING;
-            } else if (NodeType.NODE_LIST_ITEM.equals(nodeLayoutData.getNodeType())) {
+            } else if (NodeType.NODE_ICON_LABEL.equals(nodeLayoutData.getNodeType())) {
                 nodeLabelPaddingHeight = NODE_LIST_NODE_LABELS_PADDING_HEIGHT;
             }
         }
@@ -273,7 +270,7 @@ public class ContainmentUpdater {
     private double getPaddingWidth(IContainerLayoutData container) {
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            if (NodeType.NODE_LIST.equals(nodeLayoutData.getNodeType())) {
+            if (nodeLayoutData.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
                 return NODE_LIST_PADDING_WIDTH;
             }
         }
