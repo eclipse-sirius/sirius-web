@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,6 +75,7 @@ public class IncrementalLayoutDiagramConverter {
         layoutData.setParent(parent);
         layoutData.setNodeType(node.getType());
         layoutData.setStyle(node.getStyle());
+        layoutData.setChildrenLayoutStrategy(node.getChildrenLayoutStrategy());
 
         layoutData.setPosition(node.getPosition());
         layoutData.setSize(node.getSize());

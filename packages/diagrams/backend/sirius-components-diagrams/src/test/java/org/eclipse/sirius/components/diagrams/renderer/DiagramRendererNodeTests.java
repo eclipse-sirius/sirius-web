@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -261,6 +262,7 @@ public class DiagramRendererNodeTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())

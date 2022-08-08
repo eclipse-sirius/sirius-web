@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -134,6 +135,7 @@ public class TestDiagramDescriptionBuilder {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(nodeStyleProvider)
+                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())

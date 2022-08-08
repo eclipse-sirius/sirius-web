@@ -32,12 +32,11 @@ import {
   GQLArrowStyle,
   GQLDiagram,
   GQLEdge,
+  GQLIconLabelNodeStyle,
   GQLImageNodeStyle,
   GQLINodeStyle,
   GQLLabel,
   GQLLineStyle,
-  GQLListItemNodeStyle,
-  GQLListNodeStyle,
   GQLNode,
   GQLRectangularNodeStyle,
 } from '../representation/DiagramRepresentation.types';
@@ -47,13 +46,12 @@ import {
   Diagram,
   Edge,
   EdgeStyle,
+  IconLabelNodeStyle,
   ImageNodeStyle,
   INodeStyle,
   Label,
   LabelStyle,
   LineStyle,
-  ListItemNodeStyle,
-  ListNodeStyle,
   Node,
   RectangularNodeStyle,
 } from './Diagram.types';
@@ -184,9 +182,9 @@ const handleNodeFeatures = (gqlNode: GQLNode, readOnly: boolean, autoLayout: boo
     withEditLabelFeature,
   ]);
 
-  if (gqlNode.type === 'node:list') {
+  if (isRectangularNodeStyle(gqlNode.style) && gqlNode.style.withHeader) {
     features.delete(resizeFeature);
-  } else if (gqlNode.type === 'node:list:item') {
+  } else if (gqlNode.type === 'node:icon-label') {
     features.delete(resizeFeature);
     features.delete(connectableFeature);
     features.delete(moveFeature);
@@ -250,9 +248,8 @@ const convertLabel = (
 const isImageNodeStyle = (style: GQLINodeStyle): style is GQLImageNodeStyle => style.__typename === 'ImageNodeStyle';
 const isRectangularNodeStyle = (style: GQLINodeStyle): style is GQLRectangularNodeStyle =>
   style.__typename === 'RectangularNodeStyle';
-const isListNodeStyle = (style: GQLINodeStyle): style is GQLListNodeStyle => style.__typename === 'ListNodeStyle';
-const isListItemNodeStyle = (style: GQLINodeStyle): style is GQLListItemNodeStyle =>
-  style.__typename === 'ListItemNodeStyle';
+const isIconLabelNodeStyle = (style: GQLINodeStyle): style is GQLIconLabelNodeStyle =>
+  style.__typename === 'IconLabelNodeStyle';
 
 const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle | null => {
   let convertedStyle: INodeStyle | null = null;
@@ -269,7 +266,7 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
 
     convertedStyle = imageNodeStyle;
   } else if (isRectangularNodeStyle(style)) {
-    const { color, borderColor, borderRadius, borderSize, borderStyle } = style;
+    const { color, borderColor, borderRadius, borderSize, borderStyle, withHeader } = style;
 
     const rectangularNodeStyle = new RectangularNodeStyle();
     rectangularNodeStyle.color = color;
@@ -277,23 +274,13 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
     rectangularNodeStyle.borderRadius = borderRadius;
     rectangularNodeStyle.borderSize = borderSize;
     rectangularNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
+    rectangularNodeStyle.withHeader = withHeader;
 
     convertedStyle = rectangularNodeStyle;
-  } else if (isListNodeStyle(style)) {
-    const { color, borderColor, borderRadius, borderSize, borderStyle } = style;
-
-    const listNodeStyle = new ListNodeStyle();
-    listNodeStyle.color = color;
-    listNodeStyle.borderColor = borderColor;
-    listNodeStyle.borderRadius = borderRadius;
-    listNodeStyle.borderSize = borderSize;
-    listNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
-
-    convertedStyle = listNodeStyle;
-  } else if (isListItemNodeStyle(style)) {
+  } else if (isIconLabelNodeStyle(style)) {
     const { backgroundColor } = style;
 
-    const listItemNodeStyle = new ListItemNodeStyle();
+    const listItemNodeStyle = new IconLabelNodeStyle();
     listItemNodeStyle.backgroundColor = backgroundColor;
 
     convertedStyle = listItemNodeStyle;

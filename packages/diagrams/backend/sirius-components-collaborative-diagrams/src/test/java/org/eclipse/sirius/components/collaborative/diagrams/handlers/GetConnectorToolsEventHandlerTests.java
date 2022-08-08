@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -113,6 +114,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .descriptionId(NODE_DESCRIPTION_ID)
                 .label(label)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .borderNodes(List.of())

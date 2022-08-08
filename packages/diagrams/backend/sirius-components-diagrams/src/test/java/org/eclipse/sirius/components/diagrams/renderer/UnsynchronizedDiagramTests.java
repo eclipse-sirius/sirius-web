@@ -21,6 +21,8 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -289,6 +291,10 @@ public class UnsynchronizedDiagramTests {
                     .build();
         };
 
+        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
+            return new FreeFormLayoutStrategy();
+        };
+
         NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes())) //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
@@ -298,6 +304,7 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
@@ -313,6 +320,7 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
@@ -329,6 +337,7 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())

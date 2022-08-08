@@ -14,6 +14,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1339[#1339] [layout] Add concept of layout strategy. The purpose of layout strategy is to split the style of a node from the way a node lays out its children.
+
 === New Features
 
 == v2022.9.0

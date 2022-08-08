@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -220,7 +221,7 @@ public class ContainmentUpdaterTests {
         listItemLayoutData.setParent(parent);
         listItemLayoutData.setSize(listItemSize);
         listItemLayoutData.setLabel(nodeListItemLabel);
-        listItemLayoutData.setNodeType(NodeType.NODE_LIST_ITEM);
+        listItemLayoutData.setNodeType(NodeType.NODE_ICON_LABEL);
         listItemLayoutData.setPosition(listItemPosition);
         return listItemLayoutData;
     }
@@ -253,7 +254,8 @@ public class ContainmentUpdaterTests {
         nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(Position.at(10, 10));
-        nodeLayoutData.setNodeType(NodeType.NODE_LIST);
+        nodeLayoutData.setNodeType(NodeType.NODE_RECTANGLE);
+        nodeLayoutData.setChildrenLayoutStrategy(new ListLayoutStrategy());
 
         LabelLayoutData nodeListLabel = this.createLabelLayoutData(Size.of(labelWidth, LABEL_HEIGHT), Position.at(5, 5));
         nodeLayoutData.setLabel(nodeListLabel);

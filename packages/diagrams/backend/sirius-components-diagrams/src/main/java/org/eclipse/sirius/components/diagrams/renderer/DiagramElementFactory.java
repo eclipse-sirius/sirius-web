@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Node.Builder;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
@@ -101,7 +102,7 @@ public class DiagramElementFactory implements IElementFactory {
         });
 
         // @formatter:off
-        return Node.newNode(props.getId())
+        Builder nodeBuilder = Node.newNode(props.getId())
                 .type(props.getType())
                 .targetObjectId(props.getTargetObjectId())
                 .targetObjectKind(props.getTargetObjectKind())
@@ -114,8 +115,13 @@ public class DiagramElementFactory implements IElementFactory {
                 .size(props.getSize())
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
-                .customizedProperties(props.getCustomizableProperties())
-                .build();
+                .customizedProperties(props.getCustomizableProperties());
+
+        if (props.getChildrenLayoutStrategy() != null) {
+            nodeBuilder.childrenLayoutStrategy(props.getChildrenLayoutStrategy());
+        }
+
+        return nodeBuilder.build();
         // @formatter:on
     }
 

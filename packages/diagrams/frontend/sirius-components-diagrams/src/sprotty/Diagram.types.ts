@@ -56,6 +56,7 @@ export class RectangularNodeStyle implements INodeStyle {
   borderRadius: number;
   borderSize: number;
   borderStyle: LineStyle;
+  withHeader: boolean;
 }
 
 export enum LineStyle {
@@ -65,15 +66,7 @@ export enum LineStyle {
   Solid = 'Solid',
 }
 
-export class ListNodeStyle implements INodeStyle {
-  color: string;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: LineStyle;
-}
-
-export class ListItemNodeStyle implements INodeStyle {
+export class IconLabelNodeStyle implements INodeStyle {
   backgroundColor: string;
 }
 

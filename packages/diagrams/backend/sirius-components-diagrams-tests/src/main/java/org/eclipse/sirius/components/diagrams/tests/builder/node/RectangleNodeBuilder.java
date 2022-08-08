@@ -20,10 +20,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Node.Builder;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -46,11 +48,15 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private boolean isBorderNode;
 
+    private boolean withHeader;
+
     private Label label;
 
     private Position position;
 
     private Size size;
+
+    private ILayoutStrategy childrenLayoutStrategy;
 
     private NodesBuilder<RectangleNodeBuilder<T>> borderNodesBuilder;
 
@@ -74,12 +80,18 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         return this;
     }
 
+    public RectangleNodeBuilder<T> withHeader(boolean withHeader) {
+        this.withHeader = withHeader;
+        return this;
+    }
+
     public NodesBuilder<RectangleNodeBuilder<T>> borderNodes() {
         this.borderNodesBuilder = new NodesBuilder<>(this, true);
         return this.borderNodesBuilder;
     }
 
-    public NodesBuilder<RectangleNodeBuilder<T>> childNodes() {
+    public NodesBuilder<RectangleNodeBuilder<T>> childNodes(ILayoutStrategy layoutStrategy) {
+        this.childrenLayoutStrategy = Objects.requireNonNull(layoutStrategy);
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
     }
@@ -105,6 +117,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .borderSize(1)
                 .borderRadius(3)
                 .borderStyle(LineStyle.Solid)
+                .withHeader(this.withHeader)
                 .build();
         // @formatter:on
 
@@ -118,7 +131,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         }
 
         // @formatter:off
-        return Node.newNode(nodeId)
+        Builder nodeBuilder = Node.newNode(nodeId)
                .type(NodeType.NODE_RECTANGLE)
                .label(this.label)
                .position(Objects.requireNonNull(this.position))
@@ -131,8 +144,13 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .targetObjectId(labeltext)
                .targetObjectKind("") //$NON-NLS-1$
                .targetObjectLabel(this.label.getText())
-               .style(Objects.requireNonNull(style))
-               .build();
+               .style(Objects.requireNonNull(style));
+
+        if (this.childrenLayoutStrategy != null) {
+            nodeBuilder.childrenLayoutStrategy(this.childrenLayoutStrategy);
+        }
+
+        return nodeBuilder.build();
         // @formatter:on
     }
 

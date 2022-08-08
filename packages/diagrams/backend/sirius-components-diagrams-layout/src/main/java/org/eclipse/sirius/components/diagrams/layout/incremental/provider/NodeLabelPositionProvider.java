@@ -46,8 +46,8 @@ public class NodeLabelPositionProvider {
         double y = 0d;
 
         switch (node.getNodeType()) {
-        case NodeType.NODE_LIST_ITEM:
-            ElkPadding nodeLabelsPadding = this.layoutConfigurator.configureByType(NodeType.NODE_LIST_ITEM).getProperty(CoreOptions.NODE_LABELS_PADDING);
+        case NodeType.NODE_ICON_LABEL:
+            ElkPadding nodeLabelsPadding = this.layoutConfigurator.configureByType(NodeType.NODE_ICON_LABEL).getProperty(CoreOptions.NODE_LABELS_PADDING);
             if (nodeLabelsPadding != null) {
                 x = nodeLabelsPadding.getLeft();
             }

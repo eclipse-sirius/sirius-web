@@ -48,6 +48,8 @@ public final class Node {
 
     private INodeStyle style;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private Position position;
 
     private Size size;
@@ -96,6 +98,10 @@ public final class Node {
 
     public INodeStyle getStyle() {
         return this.style;
+    }
+
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
     }
 
     public Position getPosition() {
@@ -158,6 +164,8 @@ public final class Node {
 
         private INodeStyle style;
 
+        private ILayoutStrategy childrenLayoutStrategy;
+
         private Position position;
 
         private Size size;
@@ -182,6 +190,7 @@ public final class Node {
             this.borderNode = node.isBorderNode();
             this.label = node.getLabel();
             this.style = node.getStyle();
+            this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.position = node.getPosition();
             this.size = node.getSize();
             this.borderNodes = node.getBorderNodes();
@@ -229,6 +238,11 @@ public final class Node {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public Builder position(Position position) {
             this.position = Objects.requireNonNull(position);
             return this;
@@ -265,6 +279,7 @@ public final class Node {
             node.borderNode = this.borderNode;
             node.label = Objects.requireNonNull(this.label);
             node.style = Objects.requireNonNull(this.style);
+            node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);
             node.size = Objects.requireNonNull(this.size);
             node.borderNodes = Objects.requireNonNull(this.borderNodes);

@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.compatibility.emf.modeloperations.ModelOper
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
@@ -115,6 +116,7 @@ public class EdgeMappingConverterTests {
                 .semanticElementsProvider(variableManager -> List.of())
                 .labelDescription(labelDescription)
                 .styleProvider(variableManager -> null)
+                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())

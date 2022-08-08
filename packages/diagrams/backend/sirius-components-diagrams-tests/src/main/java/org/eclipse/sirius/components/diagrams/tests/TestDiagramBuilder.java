@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
@@ -103,6 +104,7 @@ public class TestDiagramBuilder {
                 .descriptionId(UUID.randomUUID())
                 .label(label)
                 .style(this.getRectangularNodeStyle())
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .borderNodes(List.of())

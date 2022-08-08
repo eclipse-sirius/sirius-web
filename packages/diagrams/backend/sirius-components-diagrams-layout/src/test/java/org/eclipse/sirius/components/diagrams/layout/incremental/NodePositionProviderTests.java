@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -288,8 +291,8 @@ public class NodePositionProviderTests {
         Size nodeListItemSize = Size.of(100, 20);
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_LIST);
-        NodeLayoutData nodeListItemLayoutData = this.createNodeLayoutData(nodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new ListLayoutStrategy());
+        NodeLayoutData nodeListItemLayoutData = this.createNodeLayoutData(nodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         nodeListLayoutData.setChildrenNodes(List.of(nodeListItemLayoutData));
         nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
         diagramLayoutData.setChildrenNodes(List.of(nodeListLayoutData));
@@ -309,9 +312,9 @@ public class NodePositionProviderTests {
         Position secondNodeListItemPosition = Position.at(0, firstNodeListItemPosition.getY() + nodeListItemSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP);
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_LIST);
-        NodeLayoutData firstNodeListItemLayoutData = this.createNodeLayoutData(firstNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
-        NodeLayoutData secondNodeListItemLayoutData = this.createNodeLayoutData(secondNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_LIST_ITEM);
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new ListLayoutStrategy());
+        NodeLayoutData firstNodeListItemLayoutData = this.createNodeLayoutData(firstNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
+        NodeLayoutData secondNodeListItemLayoutData = this.createNodeLayoutData(secondNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         nodeListLayoutData.setChildrenNodes(List.of(firstNodeListItemLayoutData, secondNodeListItemLayoutData));
         nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
         diagramLayoutData.setChildrenNodes(List.of(nodeListLayoutData));
@@ -345,12 +348,17 @@ public class NodePositionProviderTests {
     }
 
     private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
+        return this.createNodeLayoutData(position, size, parent, nodeType, new FreeFormLayoutStrategy());
+    }
+
+    private NodeLayoutData createNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType, ILayoutStrategy childrenLayoutStrategy) {
         NodeLayoutData nodeLayoutData = new NodeLayoutData();
         nodeLayoutData.setId(UUID.randomUUID().toString());
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(position);
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(nodeType);
+        nodeLayoutData.setChildrenLayoutStrategy(childrenLayoutStrategy);
         return nodeLayoutData;
     }
 }

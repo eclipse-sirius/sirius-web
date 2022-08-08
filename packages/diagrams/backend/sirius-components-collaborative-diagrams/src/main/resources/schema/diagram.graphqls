@@ -61,7 +61,7 @@ type LabelStyle {
   underline: Boolean!
 }
 
-union INodeStyle = ImageNodeStyle | ListItemNodeStyle | ListNodeStyle | RectangularNodeStyle
+union INodeStyle = ImageNodeStyle | IconLabelNodeStyle | RectangularNodeStyle
 
 type ImageNodeStyle {
   imageURL: String!
@@ -71,15 +71,7 @@ type ImageNodeStyle {
   borderStyle: LineStyle!
 }
 
-type ListNodeStyle {
-  borderColor: String!
-  borderRadius: Int!
-  borderSize: Int!
-  borderStyle: LineStyle!
-  color: String!
-}
-
-type ListItemNodeStyle {
+type IconLabelNodeStyle {
   backgroundColor: String!
 }
 
@@ -89,6 +81,7 @@ type RectangularNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   color: String!
+  withHeader: Boolean!
 }
 
 enum LineStyle {

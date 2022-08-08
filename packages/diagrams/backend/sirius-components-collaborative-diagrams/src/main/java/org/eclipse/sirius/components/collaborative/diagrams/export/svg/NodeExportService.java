@@ -18,10 +18,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -48,10 +47,8 @@ public class NodeExportService {
 
         if (style instanceof ImageNodeStyle) {
             nodeExport.append(this.exportImage(node, (ImageNodeStyle) style, id2NodeHierarchy));
-        } else if (style instanceof ListNodeStyle) {
-            nodeExport.append(this.exportList(node, (ListNodeStyle) style, id2NodeHierarchy));
-        } else if (style instanceof ListItemNodeStyle) {
-            nodeExport.append(this.exportListItem(node, (ListItemNodeStyle) style, id2NodeHierarchy));
+        } else if (style instanceof IconLabelNodeStyle) {
+            nodeExport.append(this.exportIconLabel(node, (IconLabelNodeStyle) style, id2NodeHierarchy));
         } else if (style instanceof RectangularNodeStyle) {
             nodeExport.append(this.exportRectangle(node, (RectangularNodeStyle) style, id2NodeHierarchy));
         }
@@ -91,20 +88,7 @@ public class NodeExportService {
         return imageExport.append("</g>"); //$NON-NLS-1$
     }
 
-    private StringBuilder exportList(Node node, ListNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
-        StringBuilder listExport = new StringBuilder();
-
-        listExport.append(this.elementExport.exportGNodeElement(node));
-        listExport.append(this.elementExport.exportRectangleElement(node.getSize(), Optional.of(style.getBorderRadius()), Optional.of(style.getColor()), Optional.of(style.getBorderColor()),
-                Optional.of(style.getBorderSize()), Optional.of(style.getBorderStyle())));
-        listExport.append(this.elementExport.exportLabel(node.getLabel()));
-        listExport.append(this.exportHeaderSeparator(node, node.getLabel(), style));
-        listExport.append(this.exportChildren(node, id2NodeHierarchy));
-
-        return listExport.append("</g>"); //$NON-NLS-1$
-    }
-
-    private StringBuilder exportHeaderSeparator(Node node, Label label, ListNodeStyle nodeStyle) {
+    private StringBuilder exportHeaderSeparator(Node node, Label label, RectangularNodeStyle nodeStyle) {
         StringBuilder headerExport = new StringBuilder();
         // The label y position indicates the padding top, we suppose the same padding is applied to the bottom.
         double headerLabelPadding = label.getPosition().getY();
@@ -123,7 +107,7 @@ public class NodeExportService {
         return headerExport.append("/>"); //$NON-NLS-1$
     }
 
-    private StringBuilder exportListItem(Node node, ListItemNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
+    private StringBuilder exportIconLabel(Node node, IconLabelNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder rectangleExport = new StringBuilder();
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
@@ -142,6 +126,9 @@ public class NodeExportService {
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Optional.of(style.getBorderRadius()), Optional.of(style.getColor()), Optional.of(style.getBorderColor()),
                 Optional.of(style.getBorderSize()), Optional.of(style.getBorderStyle())));
         rectangleExport.append(this.elementExport.exportLabel(node.getLabel()));
+        if (style.isWithHeader()) {
+            rectangleExport.append(this.exportHeaderSeparator(node, node.getLabel(), style));
+        }
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return rectangleExport.append("</g>"); //$NON-NLS-1$
