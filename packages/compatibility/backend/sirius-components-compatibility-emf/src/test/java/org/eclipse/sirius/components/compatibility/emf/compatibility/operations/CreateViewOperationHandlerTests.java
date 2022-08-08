@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildMode
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.CreateViewOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -227,6 +228,7 @@ public class CreateViewOperationHandlerTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(nodeStyleProvider)
+                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())

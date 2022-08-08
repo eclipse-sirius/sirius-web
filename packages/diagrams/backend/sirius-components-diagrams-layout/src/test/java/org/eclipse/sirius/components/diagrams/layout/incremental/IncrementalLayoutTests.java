@@ -28,11 +28,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.collaborative.diagrams.ILayoutStrategyDeserializer;
 import org.eclipse.sirius.components.collaborative.diagrams.INodeStyleDeserializer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
 import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
@@ -64,26 +67,28 @@ public class IncrementalLayoutTests {
     @Test
     @Disabled
     public void testClassDiagramIncrementalLayout() {
+        ListLayoutStrategy columnListLayoutStrategy = new ListLayoutStrategy();
+
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram("Class") //$NON-NLS-1$
             .nodes()
-                .listNode("Engine").at(100, 100).of(200, 300) //$NON-NLS-1$
-                    .childNodes()
-                        .listItemNode("rpm: Integer").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .listItemNode("start(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .listItemNode("accelerate(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .listItemNode("deccelerate(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                .rectangleNode("Engine").at(100, 100).of(200, 300) //$NON-NLS-1$
+                    .childNodes(columnListLayoutStrategy)
+                        .iconLabelNode("rpm: Integer").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("start(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("accelerate(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("deccelerate(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
                     .and()
                 .and()
-                .listNode("Display").at(500, 500).of(200, 300) //$NON-NLS-1$
-                    .childNodes()
-                        .listItemNode("show(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .listItemNode("update(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                .rectangleNode("Display").at(500, 500).of(200, 300) //$NON-NLS-1$
+                    .childNodes(columnListLayoutStrategy)
+                        .iconLabelNode("show(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("update(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
                     .and()
                 .and()
-                .listNode("Temperature Sensor").at(500, 500).of(400, 300) //$NON-NLS-1$
-                    .childNodes()
-                        .listItemNode("read(): Integer").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                .rectangleNode("Temperature Sensor").at(500, 500).of(400, 300) //$NON-NLS-1$
+                    .childNodes(columnListLayoutStrategy)
+                        .iconLabelNode("read(): Integer").at(0, 0).of(0, 0).and() //$NON-NLS-1$
                     .and()
                 .and()
             .and()
@@ -174,6 +179,7 @@ public class IncrementalLayoutTests {
         SimpleDeserializers simpleDeserializers = new SimpleDeserializers();
         Map<Class<?>, JsonDeserializer<?>> deserializers = new HashMap<>();
         deserializers.put(INodeStyle.class, new INodeStyleDeserializer());
+        deserializers.put(ILayoutStrategy.class, new ILayoutStrategyDeserializer());
         simpleDeserializers.addDeserializers(deserializers);
         SimpleModule module = new SimpleModule();
         module.setDeserializers(simpleDeserializers);

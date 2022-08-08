@@ -60,10 +60,9 @@ import { siriusRoutingModule } from './routing/siriusRoutingModule';
 import siriusDragAndDropModule from './siriusDragAndDropModule';
 import { DiagramView } from './views/DiagramView';
 import { EdgeView } from './views/EdgeView';
+import { IconLabelView } from './views/IconLabelView';
 import { ImageView } from './views/ImageView';
 import { LabelView } from './views/LabelView';
-import { ListItemView } from './views/ListItemView';
-import { ListView } from './views/ListView';
 import { RectangleView } from './views/RectangleView';
 
 const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
@@ -92,9 +91,7 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   // @ts-ignore
   configureModelElement(context, 'node:image', Node, ImageView);
   // @ts-ignore
-  configureModelElement(context, 'node:list', Node, ListView);
-  // @ts-ignore
-  configureModelElement(context, 'node:list:item', Node, ListItemView);
+  configureModelElement(context, 'node:icon-label', Node, IconLabelView);
   // @ts-ignore
   configureModelElement(context, 'port:rectangle', BorderNode, RectangleView);
   // @ts-ignore

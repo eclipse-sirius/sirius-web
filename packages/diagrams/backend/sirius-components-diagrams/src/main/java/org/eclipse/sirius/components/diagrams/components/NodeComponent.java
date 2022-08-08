@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -148,6 +150,8 @@ public class NodeComponent implements IComponent {
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
+        ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
+
         var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId);
         var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId);
 
@@ -176,7 +180,7 @@ public class NodeComponent implements IComponent {
         Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
         Set<CustomizableProperties> customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
 
-        NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(nodeId)
+        Builder nodeElementPropsBuilder = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
@@ -187,10 +191,14 @@ public class NodeComponent implements IComponent {
                 .position(position)
                 .size(size)
                 .children(nodeChildren)
-                .customizableProperties(customizableProperties)
-                .build();
+                .customizableProperties(customizableProperties);
+
+        if (layoutStrategy != null) {
+            nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
+        }
+
         // @formatter:on
-        return new Element(NodeElementProps.TYPE, nodeElementProps);
+        return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
     }
 
     /**

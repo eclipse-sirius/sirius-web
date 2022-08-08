@@ -23,11 +23,11 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author gcoutable
  */
 @Immutable
-public final class ListItemNodeStyle implements INodeStyle {
+public final class IconLabelNodeStyle implements INodeStyle {
 
     private String backgroundColor;
 
-    private ListItemNodeStyle() {
+    private IconLabelNodeStyle() {
         // Prevent instantiation
     }
 
@@ -35,7 +35,7 @@ public final class ListItemNodeStyle implements INodeStyle {
         return this.backgroundColor;
     }
 
-    public static Builder newListItemNodeStyle() {
+    public static Builder newIconLabelNodeStyle() {
         return new Builder();
     }
 
@@ -64,8 +64,8 @@ public final class ListItemNodeStyle implements INodeStyle {
             return this;
         }
 
-        public ListItemNodeStyle build() {
-            ListItemNodeStyle nodeStyleDescription = new ListItemNodeStyle();
+        public IconLabelNodeStyle build() {
+            IconLabelNodeStyle nodeStyleDescription = new IconLabelNodeStyle();
             nodeStyleDescription.backgroundColor = Objects.requireNonNull(this.backgroundColor);
             return nodeStyleDescription;
         }

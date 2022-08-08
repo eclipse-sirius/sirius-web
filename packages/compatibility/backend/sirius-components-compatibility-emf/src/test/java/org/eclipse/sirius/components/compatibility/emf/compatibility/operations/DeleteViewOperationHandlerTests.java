@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildMode
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.DeleteViewOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -194,6 +195,7 @@ public class DeleteViewOperationHandlerTests {
                 .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
                 .labelDescription(labelDescription)
                 .styleProvider(nodeStyleProvider)
+                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())

@@ -127,8 +127,8 @@ public class IncrementalLayoutEngine {
         Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
         // first layout child nodes
         for (NodeLayoutData childNode : node.getChildrenNodes()) {
-            if (NodeType.NODE_LIST_ITEM.equals(childNode.getNodeType())) {
-                this.layoutNodeListItem(optionalDiagramElementEvent, childNode, layoutConfigurator);
+            if (NodeType.NODE_ICON_LABEL.equals(childNode.getNodeType())) {
+                this.layoutIconLabelNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
             } else {
                 this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
             }
@@ -164,7 +164,7 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutNodeListItem(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private void layoutIconLabelNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
         Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
 
         Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);

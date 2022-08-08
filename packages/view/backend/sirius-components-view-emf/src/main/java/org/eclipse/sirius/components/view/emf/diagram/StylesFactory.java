@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,9 @@ import java.util.Optional;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -78,11 +77,9 @@ public final class StylesFactory {
 
     public String getNodeType(NodeStyle nodeStyle) {
         String type = NodeType.NODE_RECTANGLE;
-        if (nodeStyle.isListMode()) {
-            type = NodeType.NODE_LIST;
-        } else if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
+        if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
                 && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
-            type = NodeType.NODE_LIST_ITEM;
+            type = NodeType.NODE_ICON_LABEL;
         } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
             type = NodeType.NODE_IMAGE;
         }
@@ -91,57 +88,42 @@ public final class StylesFactory {
 
     public INodeStyle createNodeStyle(NodeStyle nodeStyle, Optional<String> optionalEditingContextId) {
         INodeStyle result = null;
-        switch (this.getNodeType(nodeStyle)) {
-        case NodeType.NODE_IMAGE:
-            if (optionalEditingContextId.isPresent()) {
-                // @formatter:off
-                result = ImageNodeStyle.newImageNodeStyle()
-                                       .scalingFactor(1)
-                                       .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + nodeStyle.getShape()) //$NON-NLS-1$ //$NON-NLS-2$
-                                       .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                                       .borderSize(nodeStyle.getBorderSize())
-                                       .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                                       .borderRadius(nodeStyle.getBorderRadius())
-                                       .build();
-                // @formatter:on
-            } else {
-                // @formatter:off
-                result = RectangularNodeStyle.newRectangularNodeStyle()
-                                             .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
-                                             .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                                             .borderSize(nodeStyle.getBorderSize())
-                                             .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                                             .borderRadius(nodeStyle.getBorderRadius())
-                                             .build();
-                // @formatter:on
-            }
-            break;
-        case NodeType.NODE_LIST:
-            // @formatter:off
-            result = ListNodeStyle.newListNodeStyle()
-                                  .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
-                                  .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                                  .borderSize(nodeStyle.getBorderSize())
-                                  .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                                  .borderRadius(nodeStyle.getBorderRadius())
-                                  .build();
-            // @formatter:on
-            break;
-        case NodeType.NODE_LIST_ITEM:
-            result = ListItemNodeStyle.newListItemNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
-            break;
-        case NodeType.NODE_RECTANGLE:
-        default:
+        if (nodeStyle.isListMode()) {
             // @formatter:off
             result = RectangularNodeStyle.newRectangularNodeStyle()
-                                         .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
-                                         .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                                         .borderSize(nodeStyle.getBorderSize())
-                                         .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                                         .borderRadius(nodeStyle.getBorderRadius())
-                                         .build();
+                   .withHeader(true)
+                   .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                   .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                   .borderSize(nodeStyle.getBorderSize())
+                   .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                   .borderRadius(nodeStyle.getBorderRadius())
+                   .build();
             // @formatter:on
-            break;
+        } else if (nodeStyle.eContainer().eContainer() instanceof org.eclipse.sirius.components.view.NodeDescription
+                && ((org.eclipse.sirius.components.view.NodeDescription) nodeStyle.eContainer().eContainer()).getStyle().isListMode()) {
+            result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
+        } else if (nodeStyle.getShape() != null && !nodeStyle.getShape().isBlank()) {
+            // @formatter:off
+            result = ImageNodeStyle.newImageNodeStyle()
+                    .scalingFactor(1)
+                    .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + nodeStyle.getShape()) //$NON-NLS-1$ //$NON-NLS-2$
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .borderRadius(nodeStyle.getBorderRadius())
+                    .build();
+            // @formatter:on
+        } else {
+         // @formatter:off
+            result = RectangularNodeStyle.newRectangularNodeStyle()
+                    .withHeader(false)
+                    .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .borderRadius(nodeStyle.getBorderRadius())
+                    .build();
+            // @formatter:on
         }
         return result;
     }

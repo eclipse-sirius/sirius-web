@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 
 /**
  * Specialized {@link LayoutConfigurator} that can configure layout options based on the {@code id} and {@code type}
@@ -32,9 +33,16 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
 
     private final Map<String, MapPropertyHolder> typeIndex = new HashMap<>();
 
+    private final Map<Class<? extends ILayoutStrategy>, MapPropertyHolder> childrenLayoutPropertyIndex = new HashMap<>();
+
     @Override
     public IPropertyHolder configureByType(String type) {
         return this.typeIndex.computeIfAbsent(type, key -> new MapPropertyHolder());
+    }
+
+    @Override
+    public IPropertyHolder configureByChildrenLayoutStrategy(Class<? extends ILayoutStrategy> layoutStrategyClass) {
+        return this.childrenLayoutPropertyIndex.computeIfAbsent(layoutStrategyClass, key -> new MapPropertyHolder());
     }
 
     @Override
@@ -48,6 +56,9 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
 
         IPropertyHolder typeProperties = this.getPropertiesByType(element.getProperty(ELKDiagramConverter.PROPERTY_TYPE));
         this.applyProperties(element, typeProperties);
+
+        IPropertyHolder childrenLayoutStrategyProperties = this.getPropertiesByLayoutStrategy(element.getProperty(ELKDiagramConverter.PROPERTY_CHILDREN_LAYOUT_STRATEGY));
+        this.applyProperties(element, childrenLayoutStrategyProperties);
 
         IPropertyHolder idProperties = this.getPropertiesById(element.getIdentifier());
         this.applyProperties(element, idProperties);
@@ -70,6 +81,10 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
         return this.typeIndex.get(type);
     }
 
+    private IPropertyHolder getPropertiesByLayoutStrategy(Class<? extends ILayoutStrategy> layoutStrategyClass) {
+        return this.childrenLayoutPropertyIndex.get(layoutStrategyClass);
+    }
+
     private SiriusWebLayoutConfigurator overrideWith(SiriusWebLayoutConfigurator layoutConfigurator) {
         super.overrideWith(layoutConfigurator);
 
@@ -86,6 +101,14 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
             if (thisHolder == null) {
                 thisHolder = new MapPropertyHolder();
                 this.typeIndex.put(entry.getKey(), thisHolder);
+            }
+            thisHolder.copyProperties(entry.getValue());
+        }
+        for (Map.Entry<Class<? extends ILayoutStrategy>, MapPropertyHolder> entry : layoutConfigurator.childrenLayoutPropertyIndex.entrySet()) {
+            MapPropertyHolder thisHolder = this.childrenLayoutPropertyIndex.get(entry.getKey());
+            if (thisHolder == null) {
+                thisHolder = new MapPropertyHolder();
+                this.childrenLayoutPropertyIndex.put(entry.getKey(), thisHolder);
             }
             thisHolder.copyProperties(entry.getValue());
         }

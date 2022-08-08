@@ -12,23 +12,24 @@
  *******************************************************************************/
 /** @jsx svg */
 /** @jsxRuntime classic */
-import { SLabelView, svg } from 'sprotty';
+import { RenderingContext, SLabel, SLabelView, svg } from 'sprotty';
+import { IconLabelNodeStyle, Node } from '../Diagram.types';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 /**
- * The view used to display nodes with a list item style.
+ * The view used to display a node label with an icon.
  *
  * @gcoutable
  */
-export class ListItemView extends SLabelView {
+export class IconLabelView extends SLabelView {
   /**
    * Renders the given node in the context.
    * @param node The node
    * @param context The context
    */
   // @ts-ignore
-  render(node, context) {
-    const nodeStyle = node.style;
+  render(node: Readonly<Node>, context: RenderingContext) {
+    const nodeStyle: IconLabelNodeStyle = node.style as IconLabelNodeStyle;
     const styleObject = {
       fill: nodeStyle.backgroundColor,
     };
@@ -41,11 +42,11 @@ export class ListItemView extends SLabelView {
       styleObject['outline'] = 'var(--blue-lagoon) solid 2px';
     }
 
-    const nodeLabel = node.children[0];
+    const nodeLabel: SLabel = node.children[0] as SLabel;
 
     return (
       <g
-        attrs-data-testid={`Item - ${nodeLabel?.text}`}
+        attrs-data-testid={`Item - ${nodeLabel.text}`}
         attrs-data-testselected={`${node.selected}`}
         attrs-data-nodeid={node.id}
         attrs-data-descriptionid={node.descriptionId}>

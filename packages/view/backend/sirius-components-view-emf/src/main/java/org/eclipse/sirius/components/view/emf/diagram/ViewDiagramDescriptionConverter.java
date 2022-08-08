@@ -32,7 +32,10 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -223,6 +226,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return this.stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);
         };
 
+        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
+            ILayoutStrategy childrenLayoutStrategy = null;
+
+            // @formatter:off
+            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(NodeStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewNodeDescription::getStyle);
+            // @formatter:on
+
+            if (effectiveStyle.isListMode()) {
+                childrenLayoutStrategy = new ListLayoutStrategy();
+            } else if (viewNodeDescription.getChildrenDescriptions().size() > 0) {
+                childrenLayoutStrategy = new FreeFormLayoutStrategy();
+            }
+
+            return childrenLayoutStrategy;
+        };
+
         Function<VariableManager, Size> sizeProvider = variableManager -> {
             // @formatter:off
             var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
@@ -252,6 +275,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .typeProvider(typeProvider)
                 .labelDescription(this.getLabelDescription(viewNodeDescription, interpreter))
                 .styleProvider(styleProvider)
+                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .sizeProvider(sizeProvider)

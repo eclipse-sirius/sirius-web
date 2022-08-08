@@ -19,15 +19,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.diagrams.ListItemNodeStyle;
-import org.eclipse.sirius.components.diagrams.ListNodeStyle;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -181,14 +182,18 @@ public class MappingConverterTests {
         VariableManager variableManager = new VariableManager();
 
         variableManager.put(VariableManager.SELF, EcorePackage.Literals.ECLASS);
-        assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_LIST);
-        assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(ListNodeStyle.class);
+        assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_RECTANGLE);
+        assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(RectangularNodeStyle.class);
+        assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class))
+                .matches(RectangularNodeStyle::isWithHeader);
+
+        // TODO: add here something about child layout strategy.
 
         assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
         NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
         variableManager.put(VariableManager.SELF, EcorePackage.Literals.ECLASS__ABSTRACT);
-        assertThat(subNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_LIST_ITEM);
-        assertThat(subNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(ListItemNodeStyle.class);
+        assertThat(subNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_ICON_LABEL);
+        assertThat(subNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(IconLabelNodeStyle.class);
     }
 
     @Test

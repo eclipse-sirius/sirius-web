@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.layout.incremental.data;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -42,6 +43,8 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
     private String nodeType;
 
     private INodeStyle style;
+
+    private ILayoutStrategy childrenLayoutStrategy;
 
     private boolean borderNode;
 
@@ -122,6 +125,14 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
         this.style = style;
     }
 
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    public void setChildrenLayoutStrategy(ILayoutStrategy layoutStrategy) {
+        this.childrenLayoutStrategy = layoutStrategy;
+    }
+
     public String getNodeType() {
         return this.nodeType;
     }
@@ -131,7 +142,7 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
     }
 
     public boolean isBorderNode() {
-        return borderNode;
+        return this.borderNode;
     }
 
     public void setBorderNode(boolean borderNode) {
