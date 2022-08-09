@@ -10,29 +10,29 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-const childProcess = require('child_process');
-const path = require('path');
+const childProcess = require("child_process");
+const path = require("path");
 
 const version = process.argv[2];
 if (!version) {
-  console.log('Use this script like this:');
-  console.log('node scripts/prepare-release.js 2022.3.0');
+  console.log("Use this script like this:");
+  console.log("node scripts/prepare-release.js 2022.3.0");
   process.exit(1);
 }
 
 const workspace = process.cwd();
 
-console.log(`Updating Sirius Components to ${version}`)
+console.log(`Updating Sirius Components to ${version}`);
 
-const scriptPath = path.join(workspace, 'scripts', 'bump-version')
+const scriptPath = path.join(workspace, "scripts", "bump-version");
 const bumpVersionCommand = `sh ${scriptPath} ${version}`;
 console.log(bumpVersionCommand);
-childProcess.execSync(bumpVersionCommand, { stdio: 'inherit' });
+childProcess.execSync(bumpVersionCommand, { stdio: "inherit" });
 
-const gitAddCommand = `git add packages frontend`;
+const gitAddCommand = `git add .`;
 console.log(gitAddCommand);
-childProcess.execSync(gitAddCommand, { stdio: 'inherit' });
+childProcess.execSync(gitAddCommand, { stdio: "inherit" });
 
 const gitCommitCommand = `git commit -s -m "[releng] Bump version to ${version}"`;
 console.log(gitCommitCommand);
-childProcess.execSync(gitCommitCommand, { stdio: 'inherit' });
+childProcess.execSync(gitCommitCommand, { stdio: "inherit" });
