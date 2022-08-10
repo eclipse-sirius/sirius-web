@@ -24,8 +24,6 @@
   },
   "scripts": {
     "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
     "publish:local": "yalc push"
   },
   "peerDependencies": {
@@ -35,6 +33,7 @@
     "@eclipse-sirius/sirius-components-tsconfig": "~2022.7.0",
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "2.0.0",
+    "rollup-plugin-peer-deps-external": "2.2.4",
     "react": "17.0.2",
     "typescript": "4.7.4",
     "vite": "3.0.4"

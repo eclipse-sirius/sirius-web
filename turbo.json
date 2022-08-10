@@ -5,6 +5,12 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "test": {
+      "dependsOn": ["build"]
+    },
+    "coverage": {
+      "dependsOn": ["build"]
+    },
     "publish:local": {
       "dependsOn": ["build"]
     }

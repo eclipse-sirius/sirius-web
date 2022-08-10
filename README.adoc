@@ -3,10 +3,7 @@
 https://www.eclipse.org/sirius/sirius-web.html[Eclipse Sirius Web] is a framework to easily create and deploy studios to the web.
 We keep the principles which made the success of https://www.eclipse.org/sirius[Eclipse Sirius Desktop] and make them available on a modern cloud-based stack.
 
-This repository, `sirius-components`, contains the building blocks from which Sirius Web applications are built:
-
-* `frontend` contains reusable React components used to build the application's UI;
-* `backend` contains the Spring Boot projects from which the corresponding backend is built.
+This repository, `sirius-components`, contains the building blocks from which Sirius Web applications are built. The folder `packages` contains both the Spring Boot projects from which the corresponding backend is built and the reusable React components used to build the application's UI.
 
 To actually build and run a complete example application, see https://github.com/eclipse-sirius/sirius-web[the `sirius-web` repository] which contains a complete example of a Sirius Web modeler built using these components.
 
@@ -71,6 +68,7 @@ IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson
 ----
 git clone https://github.com/eclipse-sirius/sirius-components.git
 ----
+
 2. Build the frontend components.
 From the `frontend` directory:
 +
@@ -81,6 +79,7 @@ npm run build
 +
 NOTE: You may see some warnings when building the frontend (skipped optional dependencies during `npm ci`, circular dependencies detected on an indirect dependency during the build).
 You can ignore them, they do not cause any actual issue at runtime.
+
 3. Publish the built version of the frontend components locally.
 Still from inside `sirius-components/frontend`: 
 +
@@ -90,8 +89,19 @@ yalc publish
 ----
 +
 NOTE: This step is not strictly needed but will allow you to consume your locally built version of the frontend components if you want to build a complete Sirius Web studio using them without publishing them to an external NPM registry.
-4. Build the backend components.
-From the `sirius-components/backend` directory:
+
+4. Build the frontend packages
++
+----
+npm ci
+npx turbo run build
+----
++
+
+NOTE: In order to run tests, use `npx turbo run coverage` and if you want to publish the packages on yalc use `npx run turbo publish:local`
+
+5. Build the backend components.
+From the `sirius-components/packages` directory:
 +
 [source,sh]
 ----

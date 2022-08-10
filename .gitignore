@@ -77,6 +77,8 @@ node_modules/
 
 # Turborepo
 .turbo
+dist/
+coverage/
 
 # IntelliJ IDEA
 .idea
