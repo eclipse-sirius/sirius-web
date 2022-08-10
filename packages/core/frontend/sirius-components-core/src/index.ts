@@ -10,4 +10,5 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export * from './contexts/ServerContext';
 export * from './Core.types';
