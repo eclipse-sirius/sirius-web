@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { getTreeEventSubscription } from '../operations';
+import { expect, test } from 'vitest';
+import { getTreeEventSubscription } from '../getTreeEventSubscription';
 
 const getDocumentSubscription = gql`
   subscription treeEvent($input: TreeEventInput!) {
@@ -47,13 +48,11 @@ const getDocumentSubscription = gql`
   }
 `.loc.source.body.trim();
 
-describe('TreeEvent - subscription', () => {
-  it('looks like the graphql subscription loaded from graphql test subscription file', () => {
-    // apply getTreeEventSubscription with depth 2
-    const getBuiltSubscription = getTreeEventSubscription(2);
-    // compare results
-    const received = getBuiltSubscription.trim().replace(/\s+/g, ' ');
-    const expected = getDocumentSubscription.replace(/\s+/g, ' ');
-    expect(received).toBe(expected);
-  });
+test('looks like the graphql subscription loaded from graphql test subscription file', () => {
+  // apply getTreeEventSubscription with depth 2
+  const getBuiltSubscription = getTreeEventSubscription(2);
+  // compare results
+  const received = getBuiltSubscription.trim().replace(/\s+/g, ' ');
+  const expected = getDocumentSubscription.replace(/\s+/g, ' ');
+  expect(received).toBe(expected);
 });

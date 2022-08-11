@@ -10,6 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+export interface GQLValidationEventVariables {
+  input: GQLValidationEventInput;
+}
+
+export interface GQLValidationEventInput {
+  id: string;
+  editingContextId: string;
+}
 export interface GQLValidationEventSubscription {
   validationEvent: GQLValidationEventPayload;
 }

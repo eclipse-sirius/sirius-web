@@ -25,7 +25,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Close as CloseIcon, ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
-import { GQLValidationEventSubscription } from './ValidationView.types';
+import { GQLValidationEventSubscription, GQLValidationEventVariables } from './ValidationView.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
@@ -84,26 +84,29 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
   const { toast, validationView } = value as SchemaValue;
   const { id, validation, message } = context;
 
-  const { error } = useSubscription<GQLValidationEventSubscription>(validationEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
+  const { error } = useSubscription<GQLValidationEventSubscription, GQLValidationEventVariables>(
+    validationEventSubscription,
+    {
+      variables: {
+        input: {
+          id,
+          editingContextId,
+        },
       },
-    },
-    fetchPolicy: 'no-cache',
-    onSubscriptionData: ({ subscriptionData }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
-      };
-      dispatch(handleDataEvent);
-    },
-    onSubscriptionComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+      fetchPolicy: 'no-cache',
+      onSubscriptionData: ({ subscriptionData }) => {
+        const handleDataEvent: HandleSubscriptionResultEvent = {
+          type: 'HANDLE_SUBSCRIPTION_RESULT',
+          result: subscriptionData,
+        };
+        dispatch(handleDataEvent);
+      },
+      onSubscriptionComplete: () => {
+        const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+        dispatch(completeEvent);
+      },
+    }
+  );
 
   useEffect(() => {
     if (error) {

@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
-    "test": "vitest --config vite.config.js",
+    "test": "vitest --run --config vite.config.js",
     "coverage": "vitest run --config vite.config.js --coverage",
     "publish:local": "yalc push"
   },

@@ -11,10 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { v4 } from 'uuid';
-import { expect, test, vi } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { GQLCheckbox } from '../../form/FormEventFragments.types';
 import { CheckboxPropertySection, editCheckboxMutation, updateWidgetFocusMutation } from '../CheckboxPropertySection';
 import {
@@ -27,8 +26,9 @@ import {
   GQLUpdateWidgetFocusSuccessPayload,
 } from '../CheckboxPropertySection.types';
 
-const mock = vi.fn().mockImplementation(v4);
-mock.mockImplementation(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
+vi.mock('uuid', () => ({ v4: () => '48be95fc-3422-45d3-b1f9-d590e847e9e1' }));
+
+afterEach(() => cleanup());
 
 const defaultCheckbox: GQLCheckbox = {
   __typename: 'Checkbox',

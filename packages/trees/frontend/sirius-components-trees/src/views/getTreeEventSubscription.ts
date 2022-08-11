@@ -10,23 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-import { gql } from '@apollo/client';
-
-export const getTreePathQuery = gql`
-  query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
-    viewer {
-      editingContext(editingContextId: $editingContextId) {
-        treePath(treeId: $treeId, selectionEntryIds: $selectionEntryIds) {
-          treeItemIdsToExpand
-          maxDepth
-        }
-      }
-    }
-  }
-`;
-
-export const getTreeEventSubscription = (depth) => {
+export const getTreeEventSubscription = (depth: number): string => {
   const treeChildren = recursiveGetChildren(depth);
   const subscription = `
 subscription treeEvent($input: TreeEventInput!) {
@@ -60,7 +44,7 @@ fragment treeItemFields on TreeItem {
 }
 `;
 
-const recursiveGetChildren = (depth) => {
+const recursiveGetChildren = (depth: number): string => {
   let children = '';
   if (depth > 0) {
     children = `

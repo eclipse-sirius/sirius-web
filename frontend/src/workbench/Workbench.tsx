@@ -19,10 +19,6 @@ import { useMachine } from '@xstate/react';
 import { Panels } from 'core/panels/Panels';
 import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
-import { DiagramTreeItemContextMenuContribution } from 'tree/DiagramTreeItemContextMenuContribution';
-import { TreeItemType } from 'tree/TreeItem.types';
-import { TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
-import { TreeItemContextMenuContribution } from 'tree/TreeItemContextMenuContribution';
 import { RepresentationContext } from 'workbench/RepresentationContext';
 import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
 import {
@@ -149,13 +145,10 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
-  const treeItemContextMenuContributions = [];
   const workbenchViewLeftSideContributions = [];
   const workbenchViewRightSideContributions = [];
   React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === TreeItemContextMenuContribution) {
-      treeItemContextMenuContributions.push(child);
-    } else if (React.isValidElement(child) && child.type === WorkbenchViewContribution) {
+    if (React.isValidElement(child) && child.type === WorkbenchViewContribution) {
       if (child.props.side === 'left') {
         workbenchViewLeftSideContributions.push(child);
       } else if (child.props.side === 'right') {
@@ -163,13 +156,6 @@ export const Workbench = ({
       }
     }
   });
-
-  treeItemContextMenuContributions.push(
-    <TreeItemContextMenuContribution
-      canHandle={(item: TreeItemType) => item.kind === 'siriusComponents://representation?type=Diagram'}
-      component={DiagramTreeItemContextMenuContribution}
-    />
-  );
 
   const MainComponent = mainAreaComponent || OnboardArea;
   let main = (
@@ -205,20 +191,17 @@ export const Workbench = ({
 
   return (
     <>
-      <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-        <Panels
-          editingContextId={editingContextId}
-          selection={selection}
-          setSelection={setSelection}
-          readOnly={readOnly}
-          leftContributions={workbenchViewLeftSideContributions}
-          leftPanelInitialSize={300}
-          rightContributions={workbenchViewRightSideContributions}
-          rightPanelInitialSize={300}
-          mainArea={main}
-        />
-      </TreeItemContextMenuContext.Provider>
-
+      <Panels
+        editingContextId={editingContextId}
+        selection={selection}
+        setSelection={setSelection}
+        readOnly={readOnly}
+        leftContributions={workbenchViewLeftSideContributions}
+        leftPanelInitialSize={300}
+        rightContributions={workbenchViewRightSideContributions}
+        rightPanelInitialSize={300}
+        mainArea={main}
+      />
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

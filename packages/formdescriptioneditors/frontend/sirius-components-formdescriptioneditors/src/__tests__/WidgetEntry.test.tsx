@@ -12,9 +12,8 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { v4 } from 'uuid';
-import { expect, test, vi } from 'vitest';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetMutationData,
@@ -32,8 +31,9 @@ import {
 import { WidgetEntry } from '../WidgetEntry';
 import { DataTransfer } from './DataTransfer';
 
-const mock = vi.fn().mockImplementation(v4);
-mock.mockImplementation(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
+vi.mock('uuid', () => ({ v4: () => '48be95fc-3422-45d3-b1f9-d590e847e9e1' }));
+
+afterEach(() => cleanup());
 
 const emptySelection: Selection = {
   entries: [],

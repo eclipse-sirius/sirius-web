@@ -11,6 +11,46 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export interface GQLExplorerEventVariables {
+  input: GQLExplorerEventInput;
+}
+
+export interface GQLExplorerEventInput {
+  id: string;
+  editingContextId: string;
+  expanded: string[];
+}
+
+export interface GQLExplorerEventData {
+  treeEvent: GQLTreeEventPayload;
+}
+
+export interface GQLTreeEventPayload {
+  __typename: string;
+}
+
+export interface GQLTreeRefreshedEventPayload extends GQLTreeEventPayload {
+  id: string;
+  tree: GQLTree;
+}
+
+export interface GQLTree {
+  id: string;
+  children: GQLTreeItem[];
+}
+
+export interface GQLTreeItem {
+  id: string;
+  label: string;
+  kind: string;
+  imageURL: string;
+  hasChildren: boolean;
+  children: GQLTreeItem[];
+  expanded: boolean;
+  editable: boolean;
+  deletable: boolean;
+}
+
 export interface GQLGetTreePathVariables {
   editingContextId: string;
   treeId: string;

@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
+import { DRAG_SOURCES_TYPE, Selection, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { DRAG_SOURCES_TYPE } from 'common/dataTransferTypes';
-import { httpOrigin } from 'common/URL';
-import { IconButton } from 'core/button/Button';
-import { Text } from 'core/text/Text';
-import { Textfield } from 'core/textfield/Textfield';
-import { ArrowCollapsed, ArrowExpanded, More, NoIcon } from 'icons';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import CropDinIcon from '@material-ui/icons/CropDin';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { TreeItemProps } from 'tree/TreeItem.types';
-import { TreeItemContextMenu, TreeItemContextMenuContext } from 'tree/TreeItemContextMenu';
 import { v4 as uuid } from 'uuid';
-import { Selection } from 'workbench/Workbench.types';
+import { TreeItemProps } from './TreeItem.types';
+import { TreeItemArrow } from './TreeItemArrow';
+import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 
 const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
@@ -37,9 +37,10 @@ const renameTreeItemMutation = gql`
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
-    display: 'grid',
-    gridTemplateRows: '20px',
-    gridTemplateColumns: '24px min-content',
+    display: 'flex',
+    flexDirection: 'row',
+    height: '24px',
+    gap: theme.spacing(0.5),
     alignItems: 'center',
     userSelect: 'none',
     fill: '#66808a',
@@ -50,7 +51,6 @@ const useTreeItemStyle = makeStyles((theme) => ({
     },
   },
   selected: {
-    fontWeight: 'bold',
     stroke: '#66808a',
     fill: '#66808a',
     backgroundColor: 'var(--blue-lagoon-lighten-90)',
@@ -85,57 +85,24 @@ const useTreeItemStyle = makeStyles((theme) => ({
     gridColumnEnd: '3',
   },
   imageAndLabel: {
-    display: 'grid',
-    gridTemplateRows: '1fr',
-    gridTemplateColumns: 'min-content 1fr',
-    columnGap: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '4px',
     alignItems: 'center',
     cursor: 'pointer',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-  label: {
-    color: 'var(--daintree)',
-    fontSize: 'var(--font-size-5)',
+  selectedLabel: {
+    fontWeight: 'bold',
   },
   ul: {
-    marginLeft: '20px',
+    marginLeft: theme.spacing(3),
   },
 }));
 
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
-
-const ItemCollapseToggle = ({ item, depth, onExpand, dataTestid }) => {
-  const classes = useTreeItemStyle();
-  if (item.hasChildren) {
-    const onClick = () => onExpand(item.id, depth);
-    if (item.expanded) {
-      return (
-        <ArrowExpanded
-          title="Collapse"
-          className={classes.arrow}
-          width="20"
-          height="20"
-          onClick={onClick}
-          data-testid={dataTestid}
-        />
-      );
-    } else {
-      return (
-        <ArrowCollapsed
-          title="Expand"
-          className={classes.arrow}
-          width="20"
-          height="20"
-          onClick={onClick}
-          data-testid={dataTestid}
-        />
-      );
-    }
-  }
-  return <div></div>;
-};
 
 export const TreeItem = ({
   editingContextId,
@@ -148,6 +115,7 @@ export const TreeItem = ({
   readOnly,
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
+  const { httpOrigin } = useContext(ServerContext);
 
   const treeItemMenuContributionComponents = useContext(TreeItemContextMenuContext)
     .filter((contribution) => contribution.props.canHandle(item))
@@ -298,7 +266,7 @@ export const TreeItem = ({
     }
   }, [selected]);
 
-  let image = <NoIcon title={item.kind} />;
+  let image = <CropDinIcon />;
   if (item.imageURL) {
     image = <img height="16" width="16" alt={item.kind} src={httpOrigin + item.imageURL}></img>;
   }
@@ -338,13 +306,11 @@ export const TreeItem = ({
     const onFocusIn = (event) => {
       event.target.select();
     };
-    const onFocusOut = (event: FocusEvent) => {
-      doRename();
-    };
+    const onFocusOut = () => doRename();
     text = (
-      <Textfield
-        kind={'small'}
+      <TextField
         name="name"
+        size="small"
         placeholder={'Enter the new name'}
         value={label}
         onChange={handleChange}
@@ -356,7 +322,11 @@ export const TreeItem = ({
       />
     );
   } else {
-    text = <Text className={classes.label}>{item.label}</Text>;
+    text = (
+      <Typography variant="body2" className={selected ? classes.selectedLabel : ''}>
+        {item.label}
+      </Typography>
+    );
   }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
@@ -431,7 +401,7 @@ export const TreeItem = ({
   return (
     <>
       <div className={className}>
-        <ItemCollapseToggle item={item} depth={depth} onExpand={onExpand} dataTestid={`${item.label}-toggle`} />
+        <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
         <div
           ref={refDom}
           tabIndex={0}
@@ -457,8 +427,13 @@ export const TreeItem = ({
               {text}
             </div>
             {shouldDisplayMoreButton ? (
-              <IconButton className={classes.more} onClick={openContextMenu} data-testid={`${item.label}-more`}>
-                <More title="More" />
+              <IconButton
+                className={classes.more}
+                size="small"
+                onClick={openContextMenu}
+                data-testid={`${item.label}-more`}
+              >
+                <MoreHorizIcon style={{ fontSize: 12 }} />
               </IconButton>
             ) : null}
           </div>

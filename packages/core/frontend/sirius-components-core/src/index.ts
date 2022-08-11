@@ -12,3 +12,4 @@
  *******************************************************************************/
 export * from './contexts/ServerContext';
 export * from './Core.types';
+export * from './dataTransferTypes';

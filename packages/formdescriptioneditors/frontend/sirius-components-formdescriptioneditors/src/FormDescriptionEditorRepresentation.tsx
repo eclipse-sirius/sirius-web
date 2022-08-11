@@ -97,6 +97,7 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   preview: {
     width: '100%',
     padding: '4px 8px 4px 8px',
+    overflowX: 'auto',
   },
   body: {
     display: 'flex',
