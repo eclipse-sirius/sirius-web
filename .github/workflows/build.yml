@@ -21,9 +21,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node SDK
-        uses: actions/setup-node@v1.4.4
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.15.0
+          node-version: 18.7
           registry-url: https://npm.pkg.github.com/
 
       - name: Cache Node.js modules
@@ -58,7 +58,7 @@ jobs:
       - name: Build the frontend packages
         run: |
           npm ci
-          npx turbo run build
+          npx turbo run coverage
 
       - name: Build the backend
         env:
@@ -72,6 +72,30 @@ jobs:
         with:
           name: jacoco
           path: packages/releng/backend/sirius-components-test-coverage/target/site/jacoco-aggregate
+          retention-days: 5
+
+      - name: Store FormDescriptionEditors frontend code coverage results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: formdescriptioneditors
+          path: packages/formdescriptioneditors/frontend/sirius-components-formdescriptioneditors/coverage
+          retention-days: 5
+
+      - name: Store Forms frontend code coverage results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: forms
+          path: packages/forms/frontend/sirius-components-forms/coverage
+          retention-days: 5
+
+      - name: Store Trees frontend code coverage results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: trees
+          path: packages/trees/frontend/sirius-components-trees/coverage
           retention-days: 5
 
       - name: Check the global code coverage

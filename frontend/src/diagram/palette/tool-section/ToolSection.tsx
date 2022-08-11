@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ToolSectionProps } from 'diagram/palette/tool-section/ToolSection.types';
 import { Tool } from 'diagram/palette/tool/Tool';
-import { ArrowExpanded } from 'icons/ArrowExpanded';
 import React, { useCallback, useState } from 'react';
 import styles from './ToolSection.module.css';
 
@@ -50,13 +50,11 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
   let caretContent;
   if (tools.length > 1) {
     caretContent = (
-      <ArrowExpanded
+      <ExpandMoreIcon
         className={styles.arrow}
-        width="20"
-        height="20"
+        style={{ fontSize: 20 }}
         onClick={() => onExpand()}
         data-testid="expand"
-        title={toolSection.label}
       />
     );
   }

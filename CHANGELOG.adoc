@@ -12,6 +12,8 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [forms] The components related to forms have been extracted to `@eclipse-sirius/sirius-components-forms`. The views and representations have adopted the suffix `View` and `Representation` respectively. As an example, the component `FormWebSocketContainer` is now named `FormRepresentation`
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [formdescriptioneditors] The components related to formdescriptioneditors have been extracted to `@eclipse-sirius/sirius-components-formdescriptioneditors`. The representation has been renamed `FormDescriptionEditorRepresentation`.
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [core] Since the core parts of Sirius Components cannot possibily known the components of the representations installed in a project, the context `RepresentationContext` will not provide a default value anymore. In a similar fashion, the `ServerContext` from `@eclipse-sirius/sirius-components-core` will now be required in order to let Sirius Components retrieve the URL of the backend.
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [trees] The trees related components and the explorer have been extracted to `@eclipse-sirius/sirius-components-trees`. The `ExplorerWebSocketContainer` has also been renamed `ExplorerView` to match the naming convention of the other views. The components migrated have also been fully converted to XState and MaterialUI
+https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbench] The workbench was depending on some tree components in order to compute the list of `TreeItemContextMenuContribution` to use in the explorer. This dependency has been removed and as a result, users of the workbench component will have to rely on the `TreeItemContextMenuContext` to provide the contributions
 
 
 === Dependency update
@@ -29,7 +31,9 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Organize backend projects into scope-specific packages
-
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Switch to node 18.7 for the continuous integration
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Store code coverage results for the frontend packages just like backend packages
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [releng] Fix every unit tests provided in the various frontend packages
 
 == v2022.7.0
 

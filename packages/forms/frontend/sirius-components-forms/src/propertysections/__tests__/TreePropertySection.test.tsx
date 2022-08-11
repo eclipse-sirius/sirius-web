@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
-import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { Selection, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { expect, test } from 'vitest';
+import { afterEach, expect, test } from 'vitest';
 import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
 import { TreePropertySection } from '../TreePropertySection';
+
+afterEach(() => cleanup());
 
 // Helper to make fixtures more readable
 function createNode(id: string, parentId: string, selectable: boolean = false): GQLTreeNode {
@@ -36,7 +38,9 @@ test('should render the tree', () => {
 
   const { container } = render(
     <MockedProvider>
-      <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      </ServerContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -68,7 +72,9 @@ test('should render a multi-level tree correctly', () => {
   };
   const { container } = render(
     <MockedProvider>
-      <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      </ServerContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -116,7 +122,9 @@ test('should correctly interpret the order of nodes with the same parent in the 
   };
   const { container } = render(
     <MockedProvider>
-      <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      </ServerContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -161,7 +169,9 @@ test('should only expand the specified nodes on initial render', () => {
   };
   const { container } = render(
     <MockedProvider>
-      <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+      </ServerContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -193,13 +203,15 @@ test('should change the selection when a selectable node is clicked', () => {
   let selection: SelectionEntry = undefined;
   const { container } = render(
     <MockedProvider>
-      <TreePropertySection
-        widget={treeWidget}
-        subscribers={[]}
-        setSelection={(newSelection: Selection) => {
-          selection = newSelection.entries[0];
-        }}
-      />
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={(newSelection: Selection) => {
+            selection = newSelection.entries[0];
+          }}
+        />
+      </ServerContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -234,13 +246,15 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   let selection: SelectionEntry = undefined;
   const { container } = render(
     <MockedProvider>
-      <TreePropertySection
-        widget={treeWidget}
-        subscribers={[]}
-        setSelection={(newSelection: Selection) => {
-          selection = newSelection.entries[0];
-        }}
-      />
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={(newSelection: Selection) => {
+            selection = newSelection.entries[0];
+          }}
+        />
+      </ServerContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();

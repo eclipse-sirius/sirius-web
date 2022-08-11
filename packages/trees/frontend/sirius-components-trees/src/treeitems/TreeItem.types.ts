@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeItemType } from 'tree/TreeItem.types';
-import { Selection } from 'workbench/Workbench.types';
+import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLTreeItem } from '../views/ExplorerView.types';
 
-export interface TreeProps {
+export interface TreeItemProps {
   editingContextId: string;
-  tree: TreeType;
+  treeId: string;
+  item: GQLTreeItem;
+  depth: number;
   onExpand: (id: string, depth: number) => void;
   selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
-}
-
-export interface TreeType {
-  id: string;
-  children: TreeItemType[];
 }

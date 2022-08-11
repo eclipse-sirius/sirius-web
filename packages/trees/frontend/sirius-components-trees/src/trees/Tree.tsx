@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useEffect, useRef } from 'react';
-import { TreeProps } from 'tree/Tree.types';
-import { TreeItem } from 'tree/TreeItem';
-import { TreeItemType } from 'tree/TreeItem.types';
+import { useEffect, useRef } from 'react';
+import { TreeItem } from '../treeitems/TreeItem';
+import { TreeProps } from './Tree.types';
 
 export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection, readOnly }: TreeProps) => {
   const treeElement = useRef(null);
@@ -73,12 +72,13 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
         element.removeEventListener('keydown', downHandler);
       };
     }
+    return null;
   }, [treeElement, onExpand]);
 
   return (
     <div ref={treeElement}>
       <ul>
-        {tree.children.map((item: TreeItemType) => (
+        {tree.children.map((item) => (
           <li key={item.id}>
             <TreeItem
               editingContextId={editingContextId}

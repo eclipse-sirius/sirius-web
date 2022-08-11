@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.error {
-  font-size: var(--font-size-4);
-  color: var(--daintree);
-}
+export * from './treeitems/TreeItemContextMenu';
+export * from './treeitems/TreeItemContextMenu.types';
+export * from './treeitems/TreeItemContextMenuContribution';
+export * from './treeitems/TreeItemContextMenuContribution.types';
+export * from './views/ExplorerView';
+export * from './views/ExplorerView.types';
