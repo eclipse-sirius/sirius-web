@@ -76,6 +76,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ViewDiagramDescriptionConverter implements IRepresentationDescriptionConverter {
+
+    private static final String CONVERTED_NODES_VARIABLE = "convertedNodes"; //$NON-NLS-1$
+
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
 
     private static final String NODE_CREATION_TOOL_SECTION = "Node Creation"; //$NON-NLS-1$
@@ -149,7 +152,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return variableManager -> {
             if (viewDiagramDescription.getOnDrop() != null) {
                 var augmentedVariableManager = variableManager.createChild();
-                augmentedVariableManager.put("convertedNodes", capturedNodeDescriptions); //$NON-NLS-1$
+                augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, capturedNodeDescriptions);
                 return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
                         .executeTool(viewDiagramDescription.getOnDrop(), augmentedVariableManager);
             } else {
@@ -277,7 +280,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_tool" + i++) //$NON-NLS-1$
                         .label(nodeTool.getName())
                         .imageURL(NODE_CREATION_TOOL_ICON)
-                        .handler(variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(nodeTool, variableManager))
+                        .handler(variableManager -> {
+                            VariableManager child = variableManager.createChild();
+                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(child), capturedConvertedNodes).executeTool(nodeTool, child);
+                        })
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
@@ -290,7 +297,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 SingleClickOnDiagramElementTool tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_creationTool") //$NON-NLS-1$
                         .label("New " + this.getSimpleTypeName(nodeDescription.getDomainType())) //$NON-NLS-1$
                         .imageURL(NODE_CREATION_TOOL_ICON)
-                        .handler(variableManager -> this.canonicalBehaviors.createNewNode(nodeDescription, variableManager))
+                        .handler(variableManager ->  {
+                            VariableManager child = variableManager.createChild();
+                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                            return this.canonicalBehaviors.createNewNode(nodeDescription, variableManager);
+                        })
                         .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
@@ -312,7 +323,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .build()))
-                        .handler(variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, variableManager))
+                        .handler(variableManager -> {
+                            VariableManager child = variableManager.createChild();
+                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, child);
+                        })
                         .build();
                 // @formatter:on
                 edgeCreationTools.add(customTool);
@@ -327,7 +342,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .build()))
-                        .handler(variableManager -> this.canonicalBehaviors.createNewEdge(variableManager, edgeDescription))
+                        .handler(variableManager -> {
+                            VariableManager child = variableManager.createChild();
+                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                            return this.canonicalBehaviors.createNewEdge(child, edgeDescription);
+                        })
                         .build();
                 // @formatter:on
                 edgeCreationTools.add(tool);
@@ -548,8 +567,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         DeleteTool tool = diagramElementDescription.getDeleteTool();
         if (tool != null) {
-            return variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                    capturedConvertedNodes).executeTool(tool, variableManager);
+            return variableManager -> {
+                VariableManager child = variableManager.createChild();
+                child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                        .executeTool(tool, child);
+            };
         } else {
             return this.canonicalBehaviors::deleteElement;
         }
@@ -562,6 +585,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return (variableManager, newLabel) -> {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put("arg0", newLabel); //$NON-NLS-1$
+                childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
                 return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                         .executeTool(tool, childVariableManager);
             };

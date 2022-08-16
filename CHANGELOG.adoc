@@ -55,6 +55,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1288[#1288] [core] Improve support for precondition expression from representation description
 - https://github.com/eclipse-sirius/sirius-components/issues/1269[#1269] [diagram] Prevent dropping elements in a read only diagram
 - https://github.com/eclipse-sirius/sirius-components/issues/1284[#1284] [form] Remove tab when Form representation contains only one page
+- https://github.com/eclipse-sirius/sirius-components/issues/1329[#1329] [studio] The `convertedNodes` variable which was exposed to node create tools for View-based diagrams is now available for all tools of these diagrams
 
 === New features
 
