@@ -24,18 +24,37 @@
   },
   "scripts": {
     "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
+    "test": "vitest --run --config vite.config.js",
+    "coverage": "vitest run --config vite.config.js --coverage",
     "publish:local": "yalc push"
   },
   "peerDependencies": {
-    "react": "17.0.2"
+    "@apollo/client": "3.6.9",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@xstate/react": "1.6.3",
+    "graphql": "16.5.0",
+    "react": "17.0.2",
+    "uuid": "8.3.2",
+    "xstate": "4.32.1"
   },
   "devDependencies": {
+    "@apollo/client": "3.6.9",
     "@eclipse-sirius/sirius-components-tsconfig": "~2022.7.0",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "2.0.0",
-    "rollup-plugin-peer-deps-external": "2.2.4",
+    "@xstate/react": "1.6.3",
+    "c8": "7.12.0",
+    "jsdom": "16.7.0",
+    "graphql": "16.5.0",
     "react": "17.0.2",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "xstate": "4.32.1",
     "typescript": "4.7.4",
-    "vite": "3.0.4"
+    "uuid": "8.3.2",
+    "vite": "3.0.4",
+    "vitest": "0.21.1"
   }
 }

@@ -10,17 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { RepresentationComponentRegistry } from 'workbench/RepresentationContext.types';
-import { RepresentationComponentProps } from './Workbench.types';
+import { Representation } from './Workbench.types';
 
-const registry: RepresentationComponentRegistry = {
-  getComponent: (representation) => {
-    return (props: RepresentationComponentProps) => null;
-  },
+export type RepresentationNavigationProps = {
+  representations: Representation[];
+  displayedRepresentation: Representation;
+  onRepresentationClick: (representation: Representation) => void;
+  onClose: (representation: Representation) => void;
 };
-
-const value = {
-  registry,
-};
-export const RepresentationContext = React.createContext(value);

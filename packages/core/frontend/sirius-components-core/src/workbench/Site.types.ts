@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
-import { Selection, WorkbenchViewSide } from 'workbench/Workbench.types';
+import { Selection, WorkbenchViewSide } from './Workbench.types';
 
 export interface SiteProps {
   editingContextId: string;

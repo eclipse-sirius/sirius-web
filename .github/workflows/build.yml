@@ -74,6 +74,14 @@ jobs:
           path: packages/releng/backend/sirius-components-test-coverage/target/site/jacoco-aggregate
           retention-days: 5
 
+      - name: Store Core frontend code coverage results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: core
+          path: packages/core/frontend/sirius-components-core/coverage
+          retention-days: 5
+
       - name: Store FormDescriptionEditors frontend code coverage results
         uses: actions/upload-artifact@v2
         if: always()

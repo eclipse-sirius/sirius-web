@@ -11,5 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export * from './contexts/ServerContext';
-export * from './Core.types';
 export * from './dataTransferTypes';
+export * from './materialui';
+export * from './theme';
+export * from './workbench/Panels';
+export * from './workbench/RepresentationContext';
+export * from './workbench/Workbench';
+export * from './workbench/Workbench.types';
+export * from './workbench/WorkbenchViewContribution';

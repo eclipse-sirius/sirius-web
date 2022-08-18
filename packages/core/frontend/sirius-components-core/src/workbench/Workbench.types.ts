@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 export interface Selection {
   entries: SelectionEntry[];
@@ -21,6 +21,20 @@ export interface SelectionEntry {
   label: string;
   kind: string;
 }
+
+export interface GQLEditingContextEventPayload {
+  __typename: string;
+}
+
+export interface GQLRepresentationRenamedEventPayload extends GQLEditingContextEventPayload {
+  id: string;
+  representationId: string;
+  newLabel: string;
+}
+
+export type GQLEditingContextEventSubscription = {
+  editingContextEvent: GQLEditingContextEventPayload;
+};
 
 export type Representation = {
   id: string;
@@ -34,7 +48,7 @@ export interface WorkbenchViewContributionProps {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element;
+  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
 }
 
 export interface WorkbenchViewComponentProps {
@@ -51,11 +65,11 @@ export interface MainAreaComponentProps {
   readOnly: boolean;
 }
 
-export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element;
+export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element | null;
 
 export type WorkbenchProps = {
   editingContextId: string;
-  initialRepresentationSelected: Representation;
+  initialRepresentationSelected: Representation | null;
   onRepresentationSelected: (representation: Representation) => void;
   readOnly: boolean;
   mainAreaComponent: MainAreaComponent;
@@ -70,4 +84,4 @@ export type RepresentationComponentProps = {
   setSelection: (selection: Selection) => void;
 };
 
-export type RepresentationComponent = (props: RepresentationComponentProps) => JSX.Element;
+export type RepresentationComponent = (props: RepresentationComponentProps) => JSX.Element | null;
