@@ -1,8 +1,14 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
+    "format": {
+      "outputs": []
+    },
+    "format-lint": {
+      "outputs": []
+    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["format-lint", "^build"],
       "outputs": ["dist/**"]
     },
     "test": {

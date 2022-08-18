@@ -24,6 +24,8 @@
   },
   "scripts": {
     "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
     "publish:local": "yalc push"
   },
   "peerDependencies": {
@@ -47,6 +49,7 @@
     "@vitejs/plugin-react": "2.0.0",
     "@xstate/react": "1.6.3",
     "graphql": "16.5.0",
+    "prettier": "2.7.1",
     "react": "17.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
