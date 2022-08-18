@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef, useState } from 'react';
-import { Site } from 'workbench/Site';
 import { PanelsProps } from './Panels.types';
+import { Site } from './Site';
 
 const MIN_PANEL_WIDTH: number = 42;
 const MAIN_AREA_MIN_WIDTH: number = 100;

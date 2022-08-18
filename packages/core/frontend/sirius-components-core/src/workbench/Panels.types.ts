@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Representation, RepresentationComponent } from 'workbench/Workbench.types';
 
-export type RepresentationComponentRegistry = {
-  getComponent: (representation: Representation) => RepresentationComponent | null;
-};
+import { Selection } from './Workbench.types';
+
+export interface PanelsProps {
+  editingContextId: string;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
+  leftContributions: Array<React.ReactElement>;
+  rightContributions: Array<React.ReactElement>;
+  mainArea: JSX.Element;
+  leftPanelInitialSize: number;
+  rightPanelInitialSize: number;
+}

@@ -13,4 +13,10 @@ export default defineConfig({
       fileName: (format) => `sirius-components-core.${format}.js`,
     },
   },
+  test: {
+    environment: 'jsdom',
+    coverage: {
+      reporter: ['text', 'html'],
+    },
+  },
 });

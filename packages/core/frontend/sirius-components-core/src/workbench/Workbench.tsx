@@ -16,18 +16,17 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { Panels } from 'core/panels/Panels';
-import { OnboardArea } from 'onboarding/OnboardArea';
 import React, { useContext, useEffect } from 'react';
-import { RepresentationContext } from 'workbench/RepresentationContext';
-import { RepresentationNavigation } from 'workbench/RepresentationNavigation';
+import { Panels } from './Panels';
+import { RepresentationContext } from './RepresentationContext';
+import { RepresentationNavigation } from './RepresentationNavigation';
 import {
   GQLEditingContextEventSubscription,
   Representation,
   RepresentationComponentProps,
   Selection,
   WorkbenchProps,
-} from 'workbench/Workbench.types';
+} from './Workbench.types';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
@@ -39,7 +38,7 @@ import {
   WorkbenchContext,
   WorkbenchEvent,
   workbenchMachine,
-} from 'workbench/WorkbenchMachine';
+} from './WorkbenchMachine';
 import { WorkbenchViewContribution } from './WorkbenchViewContribution';
 
 const editingContextEventSubscription = gql`
@@ -54,7 +53,7 @@ const editingContextEventSubscription = gql`
   }
 `;
 
-const useWorkbenchStyles = makeStyles((theme) => ({
+const useWorkbenchStyles = makeStyles(() => ({
   main: {
     display: 'grid',
     gridTemplateRows: 'minmax(0, 1fr)',
@@ -157,7 +156,7 @@ export const Workbench = ({
     }
   });
 
-  const MainComponent = mainAreaComponent || OnboardArea;
+  const MainComponent = mainAreaComponent;
   let main = (
     <MainComponent
       editingContextId={editingContextId}

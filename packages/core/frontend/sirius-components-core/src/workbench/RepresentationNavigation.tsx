@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import CloseIcon from '@material-ui/icons/Close';
-import React from 'react';
-import { RepresentationNavigationProps } from 'workbench/RepresentationNavigation.types';
-import { Representation } from 'workbench/Workbench.types';
+import { RepresentationNavigationProps } from './RepresentationNavigation.types';
+import { Representation } from './Workbench.types';
 
 const useRepresentationNavigationStyles = makeStyles((theme) => ({
   tabsRoot: {

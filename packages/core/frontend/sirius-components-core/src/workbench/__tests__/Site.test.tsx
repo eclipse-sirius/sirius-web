@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ThemeProvider } from '@material-ui/core/styles';
-import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
-import { theme } from 'theme';
-import { Site } from 'workbench/Site';
-import { WorkbenchViewContribution } from 'workbench/WorkbenchViewContribution';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, expect, test } from 'vitest';
+import { theme } from '../../theme';
+import { Site } from '../Site';
+import { WorkbenchViewContribution } from '../WorkbenchViewContribution';
+
+afterEach(() => cleanup());
 
 const MockView1 = () => {
   return <div id="mock-view-1"></div>;

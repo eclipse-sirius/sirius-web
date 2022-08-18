@@ -12,14 +12,14 @@
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
 import { v4 as uuid } from 'uuid';
+import { assign, Machine } from 'xstate';
 import {
   GQLEditingContextEventPayload,
   GQLEditingContextEventSubscription,
   GQLRepresentationRenamedEventPayload,
   Representation,
   Selection,
-} from 'workbench/Workbench.types';
-import { assign, Machine } from 'xstate';
+} from './Workbench.types';
 
 export interface WorkbenchStateSchema {
   states: {

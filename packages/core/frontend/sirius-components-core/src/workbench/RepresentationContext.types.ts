@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Representation, RepresentationComponent } from './Workbench.types';
 
-import { WorkbenchViewContributionProps } from './Workbench.types';
-
-export const WorkbenchViewContribution = ({ side, title, icon, component }: WorkbenchViewContributionProps) => {
-  return null;
+export type RepresentationComponentRegistry = {
+  getComponent: (representation: Representation) => RepresentationComponent | null;
 };

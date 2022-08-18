@@ -48,7 +48,7 @@ export interface WorkbenchViewContributionProps {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element;
+  component: (props: WorkbenchViewComponentProps) => React.ReactElement | null;
 }
 
 export interface WorkbenchViewComponentProps {
@@ -65,7 +65,7 @@ export interface MainAreaComponentProps {
   readOnly: boolean;
 }
 
-export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element;
+export type MainAreaComponent = (props: MainAreaComponentProps) => React.ReactElement | null;
 
 export type WorkbenchProps = {
   editingContextId: string;
@@ -84,4 +84,4 @@ export type RepresentationComponentProps = {
   setSelection: (selection: Selection) => void;
 };
 
-export type RepresentationComponent = (props: RepresentationComponentProps) => JSX.Element;
+export type RepresentationComponent = (props: RepresentationComponentProps) => React.ReactElement | null;
