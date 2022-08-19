@@ -17,7 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import CropDinIcon from '@material-ui/icons/CropDin';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { TreeItemProps } from './TreeItem.types';
@@ -433,7 +433,7 @@ export const TreeItem = ({
                 onClick={openContextMenu}
                 data-testid={`${item.label}-more`}
               >
-                <MoreHorizIcon style={{ fontSize: 12 }} />
+                <MoreVertIcon style={{ fontSize: 12 }} />
               </IconButton>
             ) : null}
           </div>
