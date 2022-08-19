@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 export interface Selection {
   entries: SelectionEntry[];
@@ -48,7 +48,7 @@ export interface WorkbenchViewContributionProps {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => React.ReactElement | null;
+  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
 }
 
 export interface WorkbenchViewComponentProps {
@@ -65,11 +65,11 @@ export interface MainAreaComponentProps {
   readOnly: boolean;
 }
 
-export type MainAreaComponent = (props: MainAreaComponentProps) => React.ReactElement | null;
+export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element | null;
 
 export type WorkbenchProps = {
   editingContextId: string;
-  initialRepresentationSelected: Representation;
+  initialRepresentationSelected: Representation | null;
   onRepresentationSelected: (representation: Representation) => void;
   readOnly: boolean;
   mainAreaComponent: MainAreaComponent;
@@ -84,4 +84,4 @@ export type RepresentationComponentProps = {
   setSelection: (selection: Selection) => void;
 };
 
-export type RepresentationComponent = (props: RepresentationComponentProps) => React.ReactElement | null;
+export type RepresentationComponent = (props: RepresentationComponentProps) => JSX.Element | null;
