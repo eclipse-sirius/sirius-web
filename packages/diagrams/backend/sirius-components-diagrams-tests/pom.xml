@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-diagrams-tests</artifactId>
-	<version>2022.7.8</version>
+	<version>2022.7.9</version>
 	<name>sirius-components-diagrams-tests</name>
 	<description>Sirius Components Diagrams Tests</description>
 
@@ -47,12 +47,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams</artifactId>
-			<version>2022.7.8</version>
+			<version>2022.7.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2022.7.8</version>
+			<version>2022.7.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
