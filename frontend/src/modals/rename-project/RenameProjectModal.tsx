@@ -141,8 +141,7 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onRename, on
             disabled={renameProjectModal !== 'valid'}
             onClick={onRenameProject}
             color="primary"
-            data-testid="rename-project"
-          >
+            data-testid="rename-project">
             Rename
           </Button>
         </DialogActions>
@@ -161,8 +160,7 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onRename, on
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

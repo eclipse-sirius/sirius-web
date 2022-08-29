@@ -117,8 +117,7 @@ export const TreeItemContextMenu = ({
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
-        }}
-      >
+        }}>
         {treeItemMenuContributionComponents.map((component, index) => {
           const props: TreeItemContextMenuComponentProps = {
             editingContextId,
@@ -141,8 +140,7 @@ export const TreeItemContextMenu = ({
             onClick={enterEditingMode}
             data-testid="rename-tree-item"
             disabled={readOnly}
-            aria-disabled
-          >
+            aria-disabled>
             <ListItemIcon>
               <EditIcon fontSize="small" />
             </ListItemIcon>

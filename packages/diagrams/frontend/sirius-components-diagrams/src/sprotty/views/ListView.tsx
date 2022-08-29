@@ -89,8 +89,7 @@ export class ListView extends RectangularNodeView {
         attrs-data-testid={`List - ${nodeLabel?.text}`}
         attrs-data-testselected={`${node.selected}`}
         attrs-data-nodeid={node.id}
-        attrs-data-descriptionid={node.descriptionId}
-      >
+        attrs-data-descriptionid={node.descriptionId}>
         <rect
           class-selected={node.selected}
           class-mouseover={node.hoverFeedback}

@@ -119,8 +119,7 @@ export const DeleteProjectModal = ({ projectId, onDelete, onClose }: DeleteProje
             disabled={deleteProjectModal !== 'idle'}
             onClick={onDeleteProject}
             color="primary"
-            data-testid="delete-project"
-          >
+            data-testid="delete-project">
             Delete
           </Button>
         </DialogActions>
@@ -139,8 +138,7 @@ export const DeleteProjectModal = ({ projectId, onDelete, onClose }: DeleteProje
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

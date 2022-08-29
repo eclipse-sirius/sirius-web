@@ -188,8 +188,7 @@ export const SelectPropertySection = ({
                 className: classes.style,
               }
             : {}
-        }
-      >
+        }>
         <MenuItem
           value=""
           classes={
@@ -198,8 +197,7 @@ export const SelectPropertySection = ({
                   root: classes.style,
                 }
               : {}
-          }
-        >
+          }>
           <em>None</em>
         </MenuItem>
         {widget.options.map((option) => (
@@ -212,8 +210,7 @@ export const SelectPropertySection = ({
                     root: classes.style,
                   }
                 : {}
-            }
-          >
+            }>
             {option.label}
           </MenuItem>
         ))}

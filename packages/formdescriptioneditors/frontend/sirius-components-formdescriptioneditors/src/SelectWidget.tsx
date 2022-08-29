@@ -51,8 +51,7 @@ export const SelectWidget = ({ widget, selection }: WidgetProps) => {
         value="value1"
         inputRef={ref}
         onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-      >
+        onBlur={() => setSelected(false)}>
         <MenuItem value="">
           <em>None</em>
         </MenuItem>

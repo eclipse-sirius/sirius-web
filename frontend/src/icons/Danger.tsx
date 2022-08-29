@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Remix Design Studio, Obeo and others
+ * Copyright (c) 2020, 2022 Remix Design Studio, Obeo and others
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ export const Danger = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}
-    >
+      {...props}>
       <title>{title}</title>
       <path d="M12 24C5.3724 24 0 18.6276 0 12C0 5.3724 5.3724 0 12 0C18.6276 0 24 5.3724 24 12C24 18.6276 18.6276 24 12 24ZM10.8 15.6V18H13.2V15.6H10.8ZM10.8 6V13.2H13.2V6H10.8Z"></path>
     </svg>

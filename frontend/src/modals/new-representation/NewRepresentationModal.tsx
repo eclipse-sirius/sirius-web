@@ -257,14 +257,12 @@ export const NewRepresentationModal = ({
               labelId="newDocumentModalStereotypeDescriptionLabel"
               inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
-              data-testid="representationDescription"
-            >
+              data-testid="representationDescription">
               {representationDescriptions.map((representationDescription) => (
                 <MenuItem
                   value={representationDescription.id}
                   key={representationDescription.id}
-                  data-testid={representationDescription.label}
-                >
+                  data-testid={representationDescription.label}>
                   {representationDescription.label}
                 </MenuItem>
               ))}
@@ -277,8 +275,7 @@ export const NewRepresentationModal = ({
             disabled={newRepresentationModal !== 'valid'}
             data-testid="create-representation"
             color="primary"
-            onClick={onCreateRepresentation}
-          >
+            onClick={onCreateRepresentation}>
             Create
           </Button>
         </DialogActions>
@@ -297,8 +294,7 @@ export const NewRepresentationModal = ({
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

@@ -80,8 +80,7 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
         variant="scrollable"
         scrollButtons="on"
         textColor="primary"
-        indicatorColor="primary"
-      >
+        indicatorColor="primary">
         {state.pages.map((page) => {
           return (
             <Tab

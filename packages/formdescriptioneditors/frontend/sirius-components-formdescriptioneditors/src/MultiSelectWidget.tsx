@@ -55,8 +55,7 @@ export const MultiSelectWidget = ({ widget, selection }: WidgetProps) => {
         renderValue={() => 'Value 1, Value 3'}
         inputRef={ref}
         onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-      >
+        onBlur={() => setSelected(false)}>
         <MenuItem key={'value1'} value={'value1'}>
           <Checkbox checked={true} />
           <ListItemText primary={'Value 1'} />

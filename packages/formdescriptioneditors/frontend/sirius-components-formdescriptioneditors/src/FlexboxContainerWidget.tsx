@@ -219,8 +219,7 @@ export const FlexboxContainerWidget = ({
           setState((prevState) => {
             return { ...prevState, selected: false };
           })
-        }
-      >
+        }>
         {widget.label}
       </Typography>
       <div className={classes.container}>{children}</div>
@@ -254,8 +253,7 @@ export const FlexboxContainerWidget = ({
               setState((prevState) => {
                 return { ...prevState, message: null };
               })
-            }
-          >
+            }>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

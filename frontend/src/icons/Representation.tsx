@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Remix Design Studio, Obeo and others
+ * Copyright (c) 2020, 2022 Remix Design Studio, Obeo and others
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ export const Representation = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}
-    >
+      {...props}>
       <title>{title}</title>
       <path d="M16 0C16.736 0 17.3333 0.597333 17.3333 1.33333V6.66667C17.3333 7.40267 16.736 8 16 8H13.3333V10.6667H18.6667C19.4027 10.6667 20 11.264 20 12V16H22.6667C23.4027 16 24 16.5973 24 17.3333V22.6667C24 23.4027 23.4027 24 22.6667 24H14.6667C13.9307 24 13.3333 23.4027 13.3333 22.6667V17.3333C13.3333 16.5973 13.9307 16 14.6667 16H17.3333V13.3333H6.66667V16H9.33333C10.0693 16 10.6667 16.5973 10.6667 17.3333V22.6667C10.6667 23.4027 10.0693 24 9.33333 24H1.33333C0.597333 24 0 23.4027 0 22.6667V17.3333C0 16.5973 0.597333 16 1.33333 16H4V12C4 11.264 4.59733 10.6667 5.33333 10.6667H10.6667V8H8C7.264 8 6.66667 7.40267 6.66667 6.66667V1.33333C6.66667 0.597333 7.264 0 8 0H16Z"></path>
     </svg>

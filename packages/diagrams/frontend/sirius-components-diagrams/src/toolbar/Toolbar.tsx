@@ -98,8 +98,7 @@ export const Toolbar = ({
             variant="standard"
             disableUnderline
             title="Zoom level"
-            data-testid="zoom-level"
-          >
+            data-testid="zoom-level">
             <MenuItem value={'4'}>400%</MenuItem>
             <MenuItem value={'2'}>200%</MenuItem>
             <MenuItem value={'1.75'}>175%</MenuItem>
@@ -119,8 +118,7 @@ export const Toolbar = ({
           aria-label="zoom in"
           title="Zoom in"
           onClick={onZoomIn}
-          data-testid="zoom-in"
-        >
+          data-testid="zoom-in">
           <ZoomInIcon fontSize="small" />
         </IconButton>
         <IconButton
@@ -129,8 +127,7 @@ export const Toolbar = ({
           aria-label="zoom out"
           title="Zoom out"
           onClick={onZoomOut}
-          data-testid="zoom-out"
-        >
+          data-testid="zoom-out">
           <ZoomOutIcon fontSize="small" />
         </IconButton>
         <IconButton
@@ -139,8 +136,7 @@ export const Toolbar = ({
           aria-label="fit to screen"
           title="Fit to screen"
           onClick={onFitToScreen}
-          data-testid="fit-to-screen"
-        >
+          data-testid="fit-to-screen">
           <AspectRatioIcon fontSize="small" />
         </IconButton>
         <IconButton
@@ -150,8 +146,7 @@ export const Toolbar = ({
           title="Arrange all"
           disabled={autoLayout}
           onClick={onArrangeAll}
-          data-testid="arrange-all"
-        >
+          data-testid="arrange-all">
           <AccountTreeIcon fontSize="small" />
         </IconButton>
         <IconButton size="small" color="inherit" aria-label="share" title="Share" onClick={onShare} data-testid="share">

@@ -172,8 +172,7 @@ export const DropArea = ({
       className={classes.dropArea}
       onDrop={(event) => handleDrop(event)}
       onDragOver={(event) => handleDragOver(event)}
-      onDragLeave={(event) => handleDragLeave(event)}
-    >
+      onDragLeave={(event) => handleDragLeave(event)}>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -188,8 +187,7 @@ export const DropArea = ({
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

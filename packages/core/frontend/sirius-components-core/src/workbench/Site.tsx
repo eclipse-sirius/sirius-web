@@ -134,8 +134,7 @@ export const Site = ({
                     toggleExpansion();
                   }
                 }
-              }}
-            >
+              }}>
               {icon}
             </IconButton>
           </Tooltip>
