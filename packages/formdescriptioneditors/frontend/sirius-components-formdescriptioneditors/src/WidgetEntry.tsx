@@ -353,8 +353,7 @@ export const WidgetEntry = ({
       onClick={handleClick}
       onKeyDown={handleDelete}
       draggable="true"
-      onDragStart={handleDragStart}
-    >
+      onDragStart={handleDragStart}>
       <div
         data-testid="WidgetEntry-DropArea"
         className={classes.placeholder}

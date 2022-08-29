@@ -414,15 +414,13 @@ export const TreeItem = ({
           data-haschildren={item.hasChildren.toString()}
           data-depth={depth}
           data-expanded={item.expanded.toString()}
-          data-testid={dataTestid}
-        >
+          data-testid={dataTestid}>
           <div className={classes.content}>
             <div
               className={classes.imageAndLabel}
               onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
               title={tooltipText}
-              data-testid={item.label}
-            >
+              data-testid={item.label}>
               {image}
               {text}
             </div>
@@ -431,8 +429,7 @@ export const TreeItem = ({
                 className={classes.more}
                 size="small"
                 onClick={openContextMenu}
-                data-testid={`${item.label}-more`}
-              >
+                data-testid={`${item.label}-more`}>
                 <MoreVertIcon style={{ fontSize: 12 }} />
               </IconButton>
             ) : null}

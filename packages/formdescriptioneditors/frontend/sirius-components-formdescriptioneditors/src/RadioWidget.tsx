@@ -52,8 +52,7 @@ export const RadioWidget = ({ widget, selection }: WidgetProps) => {
         defaultValue={'value2'}
         row
         onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-      >
+        onBlur={() => setSelected(false)}>
         <FormControlLabel
           value={'value1'}
           control={<Radio color="primary" data-testid={'value1'} />}

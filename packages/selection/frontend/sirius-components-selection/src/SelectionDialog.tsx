@@ -141,8 +141,7 @@ export const SelectionDialog = ({
         aria-labelledby="dialog-title"
         maxWidth="xs"
         fullWidth
-        data-testid="selection-dialog"
-      >
+        data-testid="selection-dialog">
         <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
         <DialogContent>
           <DialogContentText data-testid="selection-dialog-message">{selection?.message}</DialogContentText>
@@ -153,8 +152,7 @@ export const SelectionDialog = ({
                 key={`item-${selectionObject.id}`}
                 selected={selectedObjectId === selectionObject.id}
                 onClick={() => handleListItemClick(selectionObject.id)}
-                data-testid={selectionObject.label}
-              >
+                data-testid={selectionObject.label}>
                 <ListItemIcon>
                   {selectionObject.iconURL ? (
                     <img
@@ -180,8 +178,7 @@ export const SelectionDialog = ({
             color="primary"
             onClick={() => {
               onFinish(selectedObjectId);
-            }}
-          >
+            }}>
             Finish
           </Button>
         </DialogActions>
@@ -200,8 +197,7 @@ export const SelectionDialog = ({
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

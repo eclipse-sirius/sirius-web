@@ -49,8 +49,7 @@ export const ButtonWidget = ({ widget, selection }: WidgetProps) => {
         color="primary"
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
-        ref={ref}
-      >
+        ref={ref}>
         Lorem
       </Button>
     </div>

@@ -133,8 +133,7 @@ export const ListPropertySection = ({
         className={classes.canBeSelectedItem}
         onClick={() => onRowClick(item)}
         color="textPrimary"
-        data-testid={`representation-${item.id}`}
-      >
+        data-testid={`representation-${item.id}`}>
         {item.imageURL ? (
           <img className={classes.icon} width="16" height="16" alt={item.label} src={httpOrigin + item.imageURL} />
         ) : null}
@@ -156,8 +155,7 @@ export const ListPropertySection = ({
                   aria-label="deleteListItem"
                   onClick={(event) => onDelete(event, item)}
                   disabled={readOnly || !item.deletable}
-                  data-testid={`delete-representation-${item.id}`}
-                >
+                  data-testid={`delete-representation-${item.id}`}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

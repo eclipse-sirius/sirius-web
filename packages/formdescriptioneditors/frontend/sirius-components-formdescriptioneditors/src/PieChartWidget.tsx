@@ -65,8 +65,7 @@ export const PieChartWidget = ({ widget, selection }: WidgetProps) => {
       onFocus={() => setSelected(true)}
       onBlur={() => setSelected(false)}
       ref={ref}
-      tabIndex={0}
-    >
+      tabIndex={0}>
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>

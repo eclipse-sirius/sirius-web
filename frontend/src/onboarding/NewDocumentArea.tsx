@@ -136,8 +136,7 @@ export const NewDocumentArea = ({
               data-testid={stereotypeDescription.id}
               onClick={() => {
                 onCreateDocument(stereotypeDescription.id);
-              }}
-            >
+              }}>
               <NewDocument title="" className={styles.icon} />
             </LinkButton>
           );
@@ -155,8 +154,7 @@ export const NewDocumentArea = ({
               data-testid={editingContextAction.id}
               onClick={() => {
                 onInvokeEditingContextAction(editingContextAction.id);
-              }}
-            >
+              }}>
               <NewDocument title="" className={styles.icon} />
             </LinkButton>
           );

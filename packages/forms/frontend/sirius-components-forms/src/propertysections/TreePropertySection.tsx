@@ -88,8 +88,7 @@ export const TreePropertySection = ({ widget, setSelection, subscribers }: TreeP
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpanded={expandedNodesIds}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
+        defaultExpandIcon={<ChevronRightIcon />}>
         {rootNodes.map((rootNode) => (
           <TreeItem node={rootNode} nodes={nodes} setSelection={setSelection} key={rootNode.id} />
         ))}

@@ -41,8 +41,7 @@ export class DiagramView extends SGraphView<{}> {
         style={styleObject}
         attrs-data-testid={`Diagram`}
         attrs-data-diagramid={model.id}
-        attrs-data-descriptionid={model['descriptionId']}
-      >
+        attrs-data-descriptionid={model['descriptionId']}>
         <g transform={transform}>{context.renderChildren(model)}</g>
         <line id="edge-creation-feedback" x1="0" y1="0" x2="0" y2="0" visibility="hidden" />
       </svg>

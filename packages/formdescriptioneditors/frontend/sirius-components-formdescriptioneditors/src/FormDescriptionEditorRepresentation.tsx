@@ -302,8 +302,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Textfield"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textfield
@@ -314,8 +313,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-TextArea"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textarea
@@ -326,8 +324,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Checkbox"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <CheckBoxIcon />
             <Typography variant="caption" gutterBottom>
               Checkbox
@@ -338,8 +335,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Radio"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <RadioButtonCheckedIcon />
             <Typography variant="caption" gutterBottom>
               Radio
@@ -350,8 +346,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Select"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               Select
@@ -362,8 +357,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-MultiSelect"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               MultiSelect
@@ -374,8 +368,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Button"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <Button width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
               Button
@@ -386,8 +379,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-BarChart"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <BarChartIcon />
             <Typography variant="caption" gutterBottom>
               BarChart
@@ -398,8 +390,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-PieChart"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <PieChartIcon />
             <Typography variant="caption" gutterBottom>
               PieChart
@@ -410,8 +401,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-FlexboxContainer"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}
-          >
+            onDragStart={handleDragStart}>
             <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom align="center">
               Flexbox Container
@@ -486,8 +476,7 @@ export const FormDescriptionEditorRepresentation = ({
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

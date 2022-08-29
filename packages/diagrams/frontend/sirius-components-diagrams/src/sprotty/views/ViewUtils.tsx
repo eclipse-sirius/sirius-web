@@ -72,8 +72,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'n-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={north.x}
-            y={north.y}
-          ></rect>
+            y={north.y}></rect>
           <rect
             id="selectorGrip_resize_s"
             width={selectorSize}
@@ -81,8 +80,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 's-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={south.x}
-            y={south.y}
-          ></rect>
+            y={south.y}></rect>
           <rect
             id="selectorGrip_resize_w"
             width={selectorSize}
@@ -90,8 +88,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'w-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={west.x}
-            y={west.y}
-          ></rect>
+            y={west.y}></rect>
           <rect
             id="selectorGrip_resize_e"
             width={selectorSize}
@@ -99,8 +96,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'e-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={east.x}
-            y={east.y}
-          ></rect>
+            y={east.y}></rect>
           <rect
             id="selectorGrip_resize_nw"
             width={selectorSize}
@@ -108,8 +104,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'nw-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={nw.x}
-            y={nw.y}
-          ></rect>
+            y={nw.y}></rect>
           <rect
             id="selectorGrip_resize_ne"
             width={selectorSize}
@@ -117,8 +112,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'ne-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={ne.x}
-            y={ne.y}
-          ></rect>
+            y={ne.y}></rect>
           <rect
             id="selectorGrip_resize_sw"
             width={selectorSize}
@@ -126,8 +120,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'sw-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={sw.x}
-            y={sw.y}
-          ></rect>
+            y={sw.y}></rect>
           <rect
             id="selectorGrip_resize_se"
             width={selectorSize}
@@ -135,8 +128,7 @@ export const createResizeHandles = (node) => {
             style={{ cursor: 'se-resize', fill: 'var(--blue-lagoon) ' }}
             pointer-events="all"
             x={se.x}
-            y={se.y}
-          ></rect>
+            y={se.y}></rect>
         </g>
       );
     }

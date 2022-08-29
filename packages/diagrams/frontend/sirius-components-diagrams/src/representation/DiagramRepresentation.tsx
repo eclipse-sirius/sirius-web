@@ -1044,8 +1044,7 @@ export const DiagramRepresentation = ({
           sourceDiagramElement={sourceElement}
           targetDiagramElement={targetElement}
           invokeTool={invokeToolFromContextualMenu}
-          invokeClose={resetTools}
-        ></ContextualMenu>
+          invokeClose={resetTools}></ContextualMenu>
       </div>
     );
   }
@@ -1056,8 +1055,7 @@ export const DiagramRepresentation = ({
         editingContextId={editingContextId}
         representationId={representationId}
         invokeHover={invokeHover}
-        convertInSprottyCoordinate={convertInSprottyCoordinate}
-      >
+        convertInSprottyCoordinate={convertInSprottyCoordinate}>
         <div id="diagram-wrapper" className={classes.diagramWrapper}>
           <div ref={diagramDomElement} id="diagram" className={classes.diagram} />
           {contextualPaletteContent}
@@ -1124,8 +1122,7 @@ export const DiagramRepresentation = ({
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-          >
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
             <CloseIcon fontSize="small" />
           </IconButton>
         }

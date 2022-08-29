@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Remix Design Studio, Obeo and others
+ * Copyright (c) 2020, 2022 Remix Design Studio, Obeo and others
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ export const Exit = ({ title, ...props }) => {
       aria-labelledby="title"
       aria-describedby="desc"
       role="img"
-      {...props}
-    >
+      {...props}>
       <title>{title}</title>
       <path d="M12 9.33375L21.3338 0L24 2.66625L14.6662 12L24 21.3338L21.3338 24L12 14.6662L2.66625 24L0 21.3338L9.33375 12L0 2.66625L2.66625 0L12 9.33375Z"></path>
     </svg>
