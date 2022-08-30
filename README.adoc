@@ -98,7 +98,7 @@ npx turbo run build
 ----
 +
 
-NOTE: In order to run tests, use `npx turbo run coverage` and if you want to publish the packages on yalc use `npx run turbo publish:local`
+NOTE: In order to run tests, use `npx turbo run coverage` and if you want to publish the packages on yalc use `npx turbo run publish:local`
 
 5. Build the backend components.
 From the `sirius-components/packages` directory:
