@@ -23,14 +23,14 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author pcdavid
  */
-public final class EditingContextRepresentationDescriptionsInput implements IInput {
+public final class EditingContextRepresentationCreationDescriptionsInput implements IInput {
     private final UUID id;
 
     private final String editingContextId;
 
     private final String objectId;
 
-    public EditingContextRepresentationDescriptionsInput(UUID id, String editingContextId, String objectId) {
+    public EditingContextRepresentationCreationDescriptionsInput(UUID id, String editingContextId, String objectId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.objectId = Objects.requireNonNull(objectId);

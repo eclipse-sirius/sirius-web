@@ -28,6 +28,7 @@ This allows representation precondition expressions to be more precise as they k
 The GraphQL API has also been changed with two additional fields on the type `Link`: `display` and `style` (optional). The front-end use the `display` value instead of the `label` value to display the hyperlink text.
 The `label` value is displayed before the widget to be consistent with other properties sections.
 - https://github.com/eclipse-sirius/sirius-components/issues/1320[#1320] [diagram] The `selectedNode` variable is now always _defined_ in the context of drop hanlders and single-click tools. Previously, if the target of the drop or single-click tool was the diagram itself (instead of a node), the variable was not defined at all. Now it is defined but `null` in these cases.
+- https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] The `representationCreationDescriptions` GraphQL query now returns a new attribute named `defaultName` in addition to the `label` and `id`. For view-based representations and , the `defaultName` is computed from the `RepresentationDescription`'s `titleExpression`.
 
 === Dependency update
 
@@ -56,6 +57,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1269[#1269] [diagram] Prevent dropping elements in a read only diagram
 - https://github.com/eclipse-sirius/sirius-components/issues/1284[#1284] [form] Remove tab when Form representation contains only one page
 - https://github.com/eclipse-sirius/sirius-components/issues/1329[#1329] [studio] The `convertedNodes` variable which was exposed to node create tools for View-based diagrams is now available for all tools of these diagrams
+- https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] Improve support for title expression from representation description.
 
 === New features
 

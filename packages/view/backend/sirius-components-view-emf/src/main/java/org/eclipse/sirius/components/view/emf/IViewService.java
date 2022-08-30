@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from 'workbench/Workbench.types';
+package org.eclipse.sirius.components.view.emf;
 
-export interface RepresentationCreationDescription {
-  id: string;
-  label: string;
-  defaultName: string;
-}
+import java.util.Optional;
 
-export interface NewRepresentationAreaProps {
-  editingContextId: string;
-  representationCreationDescriptions: RepresentationCreationDescription[];
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
-  readOnly: boolean;
+import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.View;
+
+/**
+ * Get a {@link View} from its representation description Id.
+ *
+ * @author arichard
+ */
+public interface IViewService {
+
+    Optional<RepresentationDescription> getRepresentationDescription(String representationDescriptionId);
 }

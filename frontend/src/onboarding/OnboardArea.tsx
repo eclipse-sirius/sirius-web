@@ -36,6 +36,7 @@ const getOnboardDataQuery = gql`
             node {
               id
               label
+              defaultName
             }
           }
         }
@@ -64,13 +65,13 @@ const getOnboardDataQuery = gql`
 const INITIAL_STATE = {
   stereotypeDescriptions: [],
   editingContextActions: [],
-  representationDescriptions: [],
+  representationCreationDescriptions: [],
   representations: [],
 };
 
 export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
   const [state, setState] = useState(INITIAL_STATE);
-  const { stereotypeDescriptions, editingContextActions, representationDescriptions, representations } = state;
+  const { stereotypeDescriptions, editingContextActions, representationCreationDescriptions, representations } = state;
 
   const objectId = selection.entries.length > 0 ? selection.entries[0].id : '';
 
@@ -84,7 +85,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
       const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
       const stereotypeDescriptions = viewer.editingContext.stereotypeDescriptions.edges.map((edge) => edge.node);
       const editingContextActions = viewer.editingContext.actions.edges.map((edge) => edge.node);
-      const representationDescriptions = viewer.editingContext.representationCreationDescriptions.edges.map(
+      const representationCreationDescriptions = viewer.editingContext.representationCreationDescriptions.edges.map(
         (edge) => edge.node
       );
 
@@ -92,7 +93,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         representations,
         stereotypeDescriptions,
         editingContextActions,
-        representationDescriptions,
+        representationCreationDescriptions,
       });
     }
   }, [editingContextId, objectId, loading, data, error]);
@@ -109,7 +110,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         />
         <NewRepresentationArea
           editingContextId={editingContextId}
-          representationDescriptions={representationDescriptions}
+          representationCreationDescriptions={representationCreationDescriptions}
           selection={selection}
           setSelection={setSelection}
           readOnly={readOnly}

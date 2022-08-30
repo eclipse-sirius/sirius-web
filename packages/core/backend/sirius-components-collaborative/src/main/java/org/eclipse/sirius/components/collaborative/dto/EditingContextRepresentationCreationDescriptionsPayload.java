@@ -16,22 +16,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.RepresentationCreationDescription;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
  * The payload object for this query.
  *
  * @author pcdavid
  */
-public final class EditingContextRepresentationDescriptionsPayload implements IPayload {
+public final class EditingContextRepresentationCreationDescriptionsPayload implements IPayload {
     private final UUID id;
 
-    private final List<IRepresentationDescription> representationDescriptions;
+    private final List<RepresentationCreationDescription> representationCreationDescriptions;
 
-    public EditingContextRepresentationDescriptionsPayload(UUID id, List<IRepresentationDescription> representationDescriptions) {
+    public EditingContextRepresentationCreationDescriptionsPayload(UUID id, List<RepresentationCreationDescription> representationCreationDescriptions) {
         this.id = Objects.requireNonNull(id);
-        this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
+        this.representationCreationDescriptions = Objects.requireNonNull(representationCreationDescriptions);
     }
 
     @Override
@@ -39,8 +39,8 @@ public final class EditingContextRepresentationDescriptionsPayload implements IP
         return this.id;
     }
 
-    public List<IRepresentationDescription> getRepresentationDescriptions() {
-        return this.representationDescriptions;
+    public List<RepresentationCreationDescription> getRepresentationCreationDescriptions() {
+        return this.representationCreationDescriptions;
     }
 
 }

@@ -32,15 +32,15 @@ import {
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
   GQLErrorPayload,
-  GQLGetRepresentationDescriptionsQueryData,
-  GQLGetRepresentationDescriptionsQueryVariables,
+  GQLGetRepresentationCreationDescriptionsQueryData,
+  GQLGetRepresentationCreationDescriptionsQueryVariables,
   NewRepresentationModalProps,
 } from './NewRepresentationModal.types';
 import {
   ChangeNameEvent,
-  ChangeRepresentationDescriptionEvent,
+  ChangeRepresentationCreationDescriptionEvent,
   CreateRepresentationEvent,
-  FetchedRepresentationDescriptionsEvent,
+  FetchedRepresentationCreationDescriptionsEvent,
   HandleResponseEvent,
   HideToastEvent,
   NewRepresentationModalContext,
@@ -69,8 +69,8 @@ const createRepresentationMutation = gql`
   }
 `;
 
-const getRepresentationDescriptionsQuery = gql`
-  query getRepresentationDescriptions($editingContextId: ID!, $objectId: ID!) {
+const getRepresentationCreationDescriptionsQuery = gql`
+  query getRepresentationCreationDescriptions($editingContextId: ID!, $objectId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representationCreationDescriptions(objectId: $objectId) {
@@ -78,6 +78,7 @@ const getRepresentationDescriptionsQuery = gql`
             node {
               id
               label
+              defaultName
             }
           }
           pageInfo {
@@ -121,7 +122,7 @@ export const NewRepresentationModal = ({
     nameMessage,
     nameIsInvalid,
     selectedRepresentationDescriptionId,
-    representationDescriptions,
+    representationCreationDescriptions,
     createdRepresentationId,
     createdRepresentationLabel,
     createdRepresentationKind,
@@ -129,32 +130,37 @@ export const NewRepresentationModal = ({
   } = context;
 
   const {
-    loading: representationDescriptionsLoading,
-    data: representationDescriptionsData,
-    error: representationDescriptionsError,
-  } = useQuery<GQLGetRepresentationDescriptionsQueryData, GQLGetRepresentationDescriptionsQueryVariables>(
-    getRepresentationDescriptionsQuery,
-    { variables: { editingContextId, objectId: item.id } }
-  );
+    loading: representationCreationDescriptionsLoading,
+    data: representationCreationDescriptionsData,
+    error: representationCreationDescriptionsError,
+  } = useQuery<
+    GQLGetRepresentationCreationDescriptionsQueryData,
+    GQLGetRepresentationCreationDescriptionsQueryVariables
+  >(getRepresentationCreationDescriptionsQuery, { variables: { editingContextId, objectId: item.id } });
 
   useEffect(() => {
-    if (!representationDescriptionsLoading) {
-      if (representationDescriptionsError) {
+    if (!representationCreationDescriptionsLoading) {
+      if (representationCreationDescriptionsError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
           message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
       }
-      if (representationDescriptionsData) {
-        const fetchRepresentationDescriptionsEvent: FetchedRepresentationDescriptionsEvent = {
-          type: 'HANDLE_FETCHED_REPRESENTATION_DESCRIPTIONS',
-          data: representationDescriptionsData,
+      if (representationCreationDescriptionsData) {
+        const fetchRepresentationCreationDescriptionsEvent: FetchedRepresentationCreationDescriptionsEvent = {
+          type: 'HANDLE_FETCHED_REPRESENTATION_CREATION_DESCRIPTIONS',
+          data: representationCreationDescriptionsData,
         };
-        dispatch(fetchRepresentationDescriptionsEvent);
+        dispatch(fetchRepresentationCreationDescriptionsEvent);
       }
     }
-  }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError, dispatch]);
+  }, [
+    representationCreationDescriptionsLoading,
+    representationCreationDescriptionsData,
+    representationCreationDescriptionsError,
+    dispatch,
+  ]);
 
   const onNameChange = (event) => {
     const value = event.target.value;
@@ -164,11 +170,11 @@ export const NewRepresentationModal = ({
 
   const onRepresentationDescriptionChange = (event) => {
     const value = event.target.value;
-    const changeRepresentationDescriptionEvent: ChangeRepresentationDescriptionEvent = {
-      type: 'CHANGE_REPRESENTATION_DESCRIPTION',
-      representationDescriptionId: value,
+    const changeRepresentationCreationDescriptionEvent: ChangeRepresentationCreationDescriptionEvent = {
+      type: 'CHANGE_REPRESENTATION_CREATION_DESCRIPTION',
+      representationCreationDescriptionId: value,
     };
-    dispatch(changeRepresentationDescriptionEvent);
+    dispatch(changeRepresentationCreationDescriptionEvent);
   };
 
   const [
@@ -255,15 +261,15 @@ export const NewRepresentationModal = ({
               onChange={onRepresentationDescriptionChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
               labelId="newDocumentModalStereotypeDescriptionLabel"
-              inputProps={{ 'data-testid': 'representationDescription-input' }}
+              inputProps={{ 'data-testid': 'representationCreationDescription-input' }}
               fullWidth
-              data-testid="representationDescription">
-              {representationDescriptions.map((representationDescription) => (
+              data-testid="representationCreationDescription">
+              {representationCreationDescriptions.map((representationCreationDescription) => (
                 <MenuItem
-                  value={representationDescription.id}
-                  key={representationDescription.id}
-                  data-testid={representationDescription.label}>
-                  {representationDescription.label}
+                  value={representationCreationDescription.id}
+                  key={representationCreationDescription.id}
+                  data-testid={representationCreationDescription.label}>
+                  {representationCreationDescription.label}
                 </MenuItem>
               ))}
             </Select>
