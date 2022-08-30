@@ -13,8 +13,8 @@
 import {
   GQLCreateRepesentationSuccessPayload,
   GQLCreateRepresentationMutationData,
-  GQLGetRepresentationDescriptionsQueryData,
-  GQLRepresentationDescriptionNode,
+  GQLGetRepresentationCreationDescriptionsQueryData,
+  GQLRepresentationCreationDescriptionNode,
 } from 'modals/new-representation/NewRepresentationModal.types';
 import { assign, Machine } from 'xstate';
 
@@ -49,7 +49,7 @@ export interface NewRepresentationModalContext {
   nameIsInvalid: boolean;
   nameHasBeenModified: boolean;
   selectedRepresentationDescriptionId: string;
-  representationDescriptions: GQLRepresentationDescriptionNode[];
+  representationCreationDescriptions: GQLRepresentationCreationDescriptionNode[];
   message: string | null;
   createdRepresentationId: string | null;
   createdRepresentationLabel: string | null;
@@ -58,22 +58,22 @@ export interface NewRepresentationModalContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type FetchedRepresentationDescriptionsEvent = {
-  type: 'HANDLE_FETCHED_REPRESENTATION_DESCRIPTIONS';
-  data: GQLGetRepresentationDescriptionsQueryData;
+export type FetchedRepresentationCreationDescriptionsEvent = {
+  type: 'HANDLE_FETCHED_REPRESENTATION_CREATION_DESCRIPTIONS';
+  data: GQLGetRepresentationCreationDescriptionsQueryData;
 };
 export type ChangeNameEvent = { type: 'CHANGE_NAME'; name: string };
-export type ChangeRepresentationDescriptionEvent = {
-  type: 'CHANGE_REPRESENTATION_DESCRIPTION';
-  representationDescriptionId: string;
+export type ChangeRepresentationCreationDescriptionEvent = {
+  type: 'CHANGE_REPRESENTATION_CREATION_DESCRIPTION';
+  representationCreationDescriptionId: string;
 };
 
 export type CreateRepresentationEvent = { type: 'CREATE_REPRESENTATION' };
 export type HandleResponseEvent = { type: 'HANDLE_RESPONSE'; data: GQLCreateRepresentationMutationData };
 export type NewRepresentationModalEvent =
-  | FetchedRepresentationDescriptionsEvent
+  | FetchedRepresentationCreationDescriptionsEvent
   | ChangeNameEvent
-  | ChangeRepresentationDescriptionEvent
+  | ChangeRepresentationCreationDescriptionEvent
   | CreateRepresentationEvent
   | HandleResponseEvent
   | ShowToastEvent
@@ -93,7 +93,7 @@ export const newRepresentationModalMachine = Machine<
       nameIsInvalid: false,
       nameHasBeenModified: false,
       selectedRepresentationDescriptionId: '',
-      representationDescriptions: [],
+      representationCreationDescriptions: [],
       message: null,
       createdRepresentationId: null,
       createdRepresentationLabel: null,
@@ -126,10 +126,10 @@ export const newRepresentationModalMachine = Machine<
         states: {
           loading: {
             on: {
-              HANDLE_FETCHED_REPRESENTATION_DESCRIPTIONS: [
+              HANDLE_FETCHED_REPRESENTATION_CREATION_DESCRIPTIONS: [
                 {
                   target: 'valid',
-                  actions: 'updateRepresentationDescriptions',
+                  actions: 'updateRepresentationCreationDescriptions',
                 },
               ],
             },
@@ -147,9 +147,9 @@ export const newRepresentationModalMachine = Machine<
                   actions: 'updateName',
                 },
               ],
-              CHANGE_REPRESENTATION_DESCRIPTION: [
+              CHANGE_REPRESENTATION_CREATION_DESCRIPTION: [
                 {
-                  actions: 'updateRepresentationDescription',
+                  actions: 'updateRepresentationCreationDescription',
                 },
               ],
             },
@@ -167,9 +167,9 @@ export const newRepresentationModalMachine = Machine<
                   actions: 'updateName',
                 },
               ],
-              CHANGE_REPRESENTATION_DESCRIPTION: [
+              CHANGE_REPRESENTATION_CREATION_DESCRIPTION: [
                 {
-                  actions: 'updateRepresentationDescription',
+                  actions: 'updateRepresentationCreationDescription',
                 },
               ],
               CREATE_REPRESENTATION: [
@@ -212,17 +212,18 @@ export const newRepresentationModalMachine = Machine<
       },
     },
     actions: {
-      updateRepresentationDescriptions: assign((_, event) => {
-        const { data } = event as FetchedRepresentationDescriptionsEvent;
-        const representationDescriptions = new Array<GQLRepresentationDescriptionNode>();
+      updateRepresentationCreationDescriptions: assign((_, event) => {
+        const { data } = event as FetchedRepresentationCreationDescriptionsEvent;
+        const representationCreationDescriptions = new Array<GQLRepresentationCreationDescriptionNode>();
         data.viewer.editingContext.representationCreationDescriptions.edges.forEach((edge) =>
-          representationDescriptions.push(edge.node)
+          representationCreationDescriptions.push(edge.node)
         );
         const selectedRepresentationDescriptionId =
-          representationDescriptions.length > 0 ? representationDescriptions[0].id : '';
-        const name = representationDescriptions.length > 0 ? representationDescriptions[0].label : '';
+          representationCreationDescriptions.length > 0 ? representationCreationDescriptions[0].id : '';
+        const name =
+          representationCreationDescriptions.length > 0 ? representationCreationDescriptions[0].defaultName : '';
         return {
-          representationDescriptions,
+          representationCreationDescriptions,
           selectedRepresentationDescriptionId,
           name,
           nameIsInvalid: name.trim().length === 0,
@@ -232,16 +233,16 @@ export const newRepresentationModalMachine = Machine<
         const { name } = event as ChangeNameEvent;
         return { name, nameIsInvalid: name.trim().length === 0, nameHasBeenModified: true };
       }),
-      updateRepresentationDescription: assign((context, event) => {
-        const { representationDescriptionId } = event as ChangeRepresentationDescriptionEvent;
+      updateRepresentationCreationDescription: assign((context, event) => {
+        const { representationCreationDescriptionId } = event as ChangeRepresentationCreationDescriptionEvent;
         if (!context.nameHasBeenModified) {
-          const name = context.representationDescriptions.filter(
-            (representationDescription) => representationDescription.id === representationDescriptionId
-          )[0].label;
+          const name = context.representationCreationDescriptions.filter(
+            (representationDescription) => representationDescription.id === representationCreationDescriptionId
+          )[0].defaultName;
 
-          return { selectedRepresentationDescriptionId: representationDescriptionId, name };
+          return { selectedRepresentationDescriptionId: representationCreationDescriptionId, name };
         }
-        return { selectedRepresentationDescriptionId: representationDescriptionId };
+        return { selectedRepresentationDescriptionId: representationCreationDescriptionId };
       }),
       updateCreatedRepresentation: assign((_, event) => {
         const { data } = event as HandleResponseEvent;

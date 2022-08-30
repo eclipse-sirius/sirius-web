@@ -41,7 +41,7 @@ const createRepresentationMutation = gql`
 
 export const NewRepresentationArea = ({
   editingContextId,
-  representationDescriptions,
+  representationCreationDescriptions,
   selection,
   setSelection,
   readOnly,
@@ -71,31 +71,33 @@ export const NewRepresentationArea = ({
     }
   }, [loading, data, error, setSelection]);
   const onCreateRepresentation = (representationDescriptionId) => {
-    const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
+    const selected = representationCreationDescriptions.find(
+      (candidate) => candidate.id === representationDescriptionId
+    );
     const objectId = selectedItem.id;
     const input = {
       id: uuid(),
       editingContextId,
       objectId,
       representationDescriptionId,
-      representationName: selected.label,
+      representationName: selected.defaultName,
     };
     createRepresentation({ variables: { input } });
   };
 
   // Representation Descriptions list
   let newRepresentationButtons =
-    representationDescriptions.length > 0
-      ? representationDescriptions.slice(0, 5).map((representationDescription) => {
+    representationCreationDescriptions.length > 0
+      ? representationCreationDescriptions.slice(0, 5).map((representationDescription) => {
           return (
             <LinkButton
               key={representationDescription.id}
-              label={representationDescription.label}
+              label={representationDescription.defaultName}
               data-testid={representationDescription.id}
               onClick={() => {
                 onCreateRepresentation(representationDescription.id);
               }}>
-              <NewRepresentation title={representationDescription.label} className={styles.icon} />
+              <NewRepresentation title={representationDescription.defaultName} className={styles.icon} />
             </LinkButton>
           );
         })
@@ -105,13 +107,13 @@ export const NewRepresentationArea = ({
   const moreName = 'moreRepresentationDescriptions';
   const moreLabel = 'More representations types...';
   let moreSelect =
-    representationDescriptions.length > 5 ? (
+    representationCreationDescriptions.length > 5 ? (
       <Select
         onChange={(event) => {
           onCreateRepresentation(event.target.value);
         }}
         name={moreName}
-        options={[{ id: moreLabel, label: moreLabel }, representationDescriptions.slice(5)].flat()}
+        options={[{ id: moreLabel, label: moreLabel }, representationCreationDescriptions.slice(5)].flat()}
         data-testid={moreName}
       />
     ) : null;
@@ -121,7 +123,7 @@ export const NewRepresentationArea = ({
     return <AreaContainer title={title} subtitle="You need edit access to create representations" />;
   } else {
     let subtitle =
-      selectedItem && representationDescriptions.length > 0
+      selectedItem && representationCreationDescriptions.length > 0
         ? 'Select the representation to create on ' + selectedItem.label
         : 'There are no representations available for the current selection';
     return (

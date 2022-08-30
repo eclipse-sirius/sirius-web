@@ -23,9 +23,11 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationCreationDescriptionsProvider;
+import org.eclipse.sirius.components.collaborative.api.RepresentationCreationDescription;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
-import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
-import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationCreationDescriptionsInput;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationCreationDescriptionsPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -59,30 +61,33 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
 
     private final IObjectService objectService;
 
+    private final List<IRepresentationCreationDescriptionsProvider> representationCreationDescriptionsProviders;
+
     public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IEMFKindService emfKindService,
-            IEMFMessageService emfMessageService, IObjectService objectService) {
+            IEMFMessageService emfMessageService, IObjectService objectService, List<IRepresentationCreationDescriptionsProvider> representationCreationDescriptionsProviders) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.representationCreationDescriptionsProviders = Objects.requireNonNull(representationCreationDescriptionsProviders);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, IInput input) {
-        return input instanceof EditingContextRepresentationDescriptionsInput;
+        return input instanceof EditingContextRepresentationCreationDescriptionsInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         var optionalObject = Optional.empty();
-        if (input instanceof EditingContextRepresentationDescriptionsInput) {
-            EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput = (EditingContextRepresentationDescriptionsInput) input;
+        if (input instanceof EditingContextRepresentationCreationDescriptionsInput) {
+            EditingContextRepresentationCreationDescriptionsInput editingContextRepresentationDescriptionsInput = (EditingContextRepresentationCreationDescriptionsInput) input;
             String objectId = editingContextRepresentationDescriptionsInput.getObjectId();
             optionalObject = this.objectService.getObject(editingContext, objectId);
         }
         if (optionalObject.isPresent()) {
-            var result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
-            payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.getId(), result));
+            List<RepresentationCreationDescription> result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
+            payloadSink.tryEmitValue(new EditingContextRepresentationCreationDescriptionsPayload(input.getId(), result));
         } else {
             String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
             payloadSink.tryEmitValue(new ErrorPayload(input.getId(), message));
@@ -90,22 +95,28 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input));
     }
 
-    private List<IRepresentationDescription> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, Object object) {
-        List<IRepresentationDescription> result = new ArrayList<>();
+    private List<RepresentationCreationDescription> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, Object object) {
+        List<RepresentationCreationDescription> result = new ArrayList<>();
         var kind = this.objectService.getKind(object);
+        var clazz = this.resolveKind(editingContext, kind);
 
-        Optional<Object> optionalClazz = this.resolveKind(editingContext, kind);
-        if (optionalClazz.isPresent()) {
+        if (clazz.isPresent()) {
             var allRepresentationDescriptions = this.representationDescriptionSearchService.findAll(editingContext);
 
             for (IRepresentationDescription description : allRepresentationDescriptions.values()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, object);
-                variableManager.put(IRepresentationDescription.CLASS, optionalClazz.get());
+                variableManager.put(IRepresentationDescription.CLASS, clazz.get());
                 Predicate<VariableManager> canCreatePredicate = description.getCanCreatePredicate();
                 boolean canCreate = canCreatePredicate.test(variableManager);
                 if (canCreate) {
-                    result.add(description);
+                    Object targetObject = object;
+                    this.representationCreationDescriptionsProviders.forEach(provider -> {
+                        if (provider.canHandle(description)) {
+                            var descriptions = provider.handle(editingContext, targetObject, description);
+                            result.addAll(descriptions);
+                        }
+                    });
                 }
             }
         }
