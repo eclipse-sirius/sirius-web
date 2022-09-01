@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-domain-parent</artifactId>
-	<version>2022.7.9</version>
+	<version>2022.7.10</version>
 
 	<name>sirius-components-domain-parent</name>
 	<description>Sirius Components Domain Parent</description>
