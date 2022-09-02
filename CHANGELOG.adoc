@@ -1,5 +1,21 @@
 = Changelog
 
+== v2022.11.0 (unreleased)
+
+=== Architectural decision records
+
+- [ADR-069] Add support for children layout strategy
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+=== New Features
+
 == v2022.9.0
 
 === Architectural decision records
