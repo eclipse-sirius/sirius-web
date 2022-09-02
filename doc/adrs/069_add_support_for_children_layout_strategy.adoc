@@ -1,0 +1,194 @@
+= ADR-069 - Add support for children layout strategy
+
+== Context
+
+We want to improve layout engines (ELK and Incremental) to make them more powerful. We need them to be more powerful to support existing node types and two new types of node, compartment and svg image.
+
+== Decision
+
+We have chosen to separate the behavior that does the layout of a node from the behavior that does the layout of the node children.
+
+The existing node style which is used to handle list node, list item node, rectangular node and image node will be split into three types of nodes:
+- rectangular node style (has an option to consider the label is inside a header),
+- image node style (has an attribute to define the image),
+- icon label node style.
+Each node style will be used to describe how the node is represented in the diagram.
+
+We will introduce the children layout strategy to describe how the layout of node children is done.
+At first, we will support two kind of children layout strategy:
+- free form layout strategy
+- list layout strategy
+
+NOTE: The children layout strategy is optional.
+
+For the _list layout strategy_, it will be possible to describe the direction, 'column' or 'row' (only column will be supported in the first version).
+
+=== Behavior
+
+With now two aspects to describe the layout of a node and its children open the possibility for a lot of combinations let's describe them:
+[cols="3*.^, .^2"]
+[frame=ends, grid=rows]
+|===
+| Parent Style | Parent Layout Strategy | Child Style | Result
+
+.9+| Rectangle
+.3+| Free Form
+| Rectangle
+.2+| The basic behavior we already support: rectangles or images inside plain containers
+
+| Image
+
+| Icon Label
+| Floating icon and label like any image or rectangle node
+
+.3+| List
+| Rectangle
+| Children will be rendered as compartment
+
+| Image
+| Children will be rendered as compartment with the image in the background
+
+| Icon Label
+| Identical to the current behavior of a list with item
+
+.3+| None
+| Rectangle
+.3+| Children (and border nodes ignored)
+
+| Image
+
+| Icon Label
+
+.9+| Image
+.3+| Free Form
+| Rectangle
+| Rectangle inside image (supported if the image is a SVG)
+
+| Image
+| Images inside image (supported if the parent image is a SVG)
+
+| Icon Label
+| Floating icon and label inside image (supported if the image is a SVG)
+
+.3+| List
+| Rectangle
+| Children will be rendrer as compartment, the style could override the background image (supported if the image is a SVG)
+
+| Image
+| Children will be rendrer as compartment with the image as background, obscuring the parent background image (supported if the parent image is a SVG)
+
+| Icon Label
+| Identical to the current behavior of a list with item but with an image as background (supported if the image is a SVG)
+
+.3+| None
+| Rectangle
+.3+| Children (and border nodes ignored)
+
+| Image
+
+| Icon Label
+
+.9+| Icon Label
+.3+| Free Form
+| Rectangle
+.9+| Layout Strategy, Children and Borderd nodes ignored
+
+| Image
+
+| Icon Label
+
+.3+| List
+| Rectangle
+
+|Image
+
+| Icon Label
+
+.3+| None
+| Rectangle
+
+|Image
+
+| Icon Label
+|===
+
+Since the API to describe a children layout strategy is available on Node, it could be possible to define a children layout strategy for border node, but it will not be supported yet.
+
+
+
+
+=== Backend
+
+The constant `NODE_LIST` will be removed and the constant `NODE_LIST_ITEM` will be replaced by `NODE_ICON_LABEL` (_node:icon-label_).
+`ListNodeStyle` will be removed and `ListItemNodeStyle` replaced by `IconLabelNodeStyle`.
+
+Add `childrenLayoutStrategy` to `o.e.s.c.d.Node`.
+
+Update NodeDescription whit a children layout strategy provider. The provider will be defined in `ViewDiagramDescriptionprovider` and in `AbstractNodeMappingConverter`.
+
+=== Frontend
+
+`ListView` and `ListItemView` will be removed.
+
+`ListNodeStyle`, `ListItemNodeStyle` and the graphql types will be removed.
+
+The `RectangularNodeStyle` will support the option: `withHeader`.
+
+`IconLabelNodeStyle` and its graphql type will be created.
+
+=== Layout
+
+==== Incremental layout
+
+The children layout strategy should be given to the `NodeLayoutData`.
+
+We will introduce `ILayoutStrategyEngine` that will be used by the incremental layout engine to know how to layout the children of each node layout data. `ILayoutStrategyEngine`s are spring services that will be contributed to a `LayoutStrategyEngineRegistry`.
+
+```java
+public interface ILayoutStrategyEngine {
+  boolean canLayout(ILayoutStrategy layoutStrategy);
+
+  NodeLayoutData layout(Optional<IDiagramevent> optionalDiagramEvent, NodeLayoutData node);
+}
+```
+
+Example with the `ListLayoutStrategyEngine`:
+
+```java
+public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
+  private final ISiriusWebLayoutConfigurator layoutConfigurator;
+
+  public ListLayoutStrategyEngine(ISiriusWebLayoutConfigurator layoutConfigurator) {
+    this.layoutConfigurator = Objects.requireNonNull(layoutConfigurator);
+  }
+
+  @Override
+  public boolean canLayout(ILayoutStrategy layoutStrategy) {
+    return layoutStrategy instanceof ListLayoutStrategy;
+  }
+
+  NodeLayoutData layout(Optional<IDiagramevent> optionalDiagramEvent, NodeLayoutData node) {
+    ...
+  }
+}
+```
+
+The algorithm to do the layout of the list layout strategy will be something like:
+- Ask the size of its children (the width for a column direction, the height for a row direction)
+- Take the max value a give it to its children
+
+The algorithm to do the layout of the free form strategy will be something like:
+- The node asks its children to do their layout
+- The node layout himself
+In fact the free form layout is quite the same behavior as now.
+
+==== ELK Layout
+
+This part will be detailed later.
+
+== Status
+
+WIP
+
+== Consequences
+
