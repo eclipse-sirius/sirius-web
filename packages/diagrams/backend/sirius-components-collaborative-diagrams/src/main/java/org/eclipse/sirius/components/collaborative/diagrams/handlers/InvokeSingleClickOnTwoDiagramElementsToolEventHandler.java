@@ -148,7 +148,11 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         Optional<Node> targetNode = this.diagramQueryService.findNodeById(diagram, targetNodeId);
         Optional<Object> source = Optional.empty();
         Optional<Object> target = Optional.empty();
+        Node sourceView = null;
+        Node targetView = null;
         if (sourceNode.isPresent() && targetNode.isPresent()) {
+            sourceView = sourceNode.get();
+            targetView = targetNode.get();
             source = this.objectService.getObject(editingContext, sourceNode.get().getTargetObjectId());
             target = this.objectService.getObject(editingContext, targetNode.get().getTargetObjectId());
         }
@@ -160,6 +164,8 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
             variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, source.get());
             variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
+            variableManager.put(EdgeDescription.EDGE_SOURCE, sourceView);
+            variableManager.put(EdgeDescription.EDGE_TARGET, targetView);
 
             result = tool.getHandler().apply(variableManager);
 

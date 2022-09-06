@@ -58,6 +58,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1284[#1284] [form] Remove tab when Form representation contains only one page
 - https://github.com/eclipse-sirius/sirius-components/issues/1329[#1329] [studio] The `convertedNodes` variable which was exposed to node create tools for View-based diagrams is now available for all tools of these diagrams
 - https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] Improve support for title expression from representation description.
+- https://github.com/eclipse-sirius/sirius-components/issues/1341[#1341] [diagram] Expose source and target node variables during EdgeTool execution
 
 === New features
 
