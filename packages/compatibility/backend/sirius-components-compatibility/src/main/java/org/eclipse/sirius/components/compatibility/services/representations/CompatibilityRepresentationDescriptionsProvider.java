@@ -19,8 +19,8 @@ import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationCreationDescriptionsProvider;
-import org.eclipse.sirius.components.collaborative.api.RepresentationCreationDescription;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
+import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.services.api.IODesignRegistry;
@@ -32,12 +32,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide the {@link RepresentationCreationDescription}s of a given object for the compatibility layer.
+ * Used to provide the {@link RepresentationDescriptionMetadata}s of a given object for the compatibility layer.
  *
  * @author arichard
  */
 @Service
-public class CompatibilityRepresentationCreationDescriptionsProvider implements IRepresentationCreationDescriptionsProvider {
+public class CompatibilityRepresentationDescriptionsProvider implements IRepresentationDescriptionsProvider {
 
     private final IIdentifierProvider identifierProvider;
 
@@ -45,7 +45,7 @@ public class CompatibilityRepresentationCreationDescriptionsProvider implements 
 
     private final IAQLInterpreterFactory interpreterFactory;
 
-    public CompatibilityRepresentationCreationDescriptionsProvider(IIdentifierProvider identifierProvider, IODesignRegistry odesignRegistry, IAQLInterpreterFactory interpreterFactory) {
+    public CompatibilityRepresentationDescriptionsProvider(IIdentifierProvider identifierProvider, IODesignRegistry odesignRegistry, IAQLInterpreterFactory interpreterFactory) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.odesignRegistry = Objects.requireNonNull(odesignRegistry);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
@@ -57,8 +57,8 @@ public class CompatibilityRepresentationCreationDescriptionsProvider implements 
     }
 
     @Override
-    public List<RepresentationCreationDescription> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
-        List<RepresentationCreationDescription> result = new ArrayList<>();
+    public List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
+        List<RepresentationDescriptionMetadata> result = new ArrayList<>();
         var optionalVsmElementId = this.identifierProvider.findVsmElementId(representationDescription.getId());
 
         // @formatter:off
@@ -74,7 +74,7 @@ public class CompatibilityRepresentationCreationDescriptionsProvider implements 
         if (optionalSiriusDiagramDescription.isPresent()) {
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription = optionalSiriusDiagramDescription.get();
             String defaultName = this.getDefaultName(siriusDiagramDescription, editingContext, siriusDiagramDescription).orElse(representationDescription.getLabel());
-            result.add(new RepresentationCreationDescription(representationDescription.getId(), representationDescription.getLabel(), defaultName));
+            result.add(new RepresentationDescriptionMetadata(representationDescription.getId(), representationDescription.getLabel(), defaultName));
 
         }
         return result;

@@ -31,7 +31,7 @@ const getOnboardDataQuery = gql`
             }
           }
         }
-        representationCreationDescriptions(objectId: $objectId) {
+        representationDescriptions(objectId: $objectId) {
           edges {
             node {
               id
@@ -65,13 +65,13 @@ const getOnboardDataQuery = gql`
 const INITIAL_STATE = {
   stereotypeDescriptions: [],
   editingContextActions: [],
-  representationCreationDescriptions: [],
+  representationDescriptions: [],
   representations: [],
 };
 
 export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
   const [state, setState] = useState(INITIAL_STATE);
-  const { stereotypeDescriptions, editingContextActions, representationCreationDescriptions, representations } = state;
+  const { stereotypeDescriptions, editingContextActions, representationDescriptions, representations } = state;
 
   const objectId = selection.entries.length > 0 ? selection.entries[0].id : '';
 
@@ -85,7 +85,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
       const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
       const stereotypeDescriptions = viewer.editingContext.stereotypeDescriptions.edges.map((edge) => edge.node);
       const editingContextActions = viewer.editingContext.actions.edges.map((edge) => edge.node);
-      const representationCreationDescriptions = viewer.editingContext.representationCreationDescriptions.edges.map(
+      const representationDescriptions = viewer.editingContext.representationDescriptions.edges.map(
         (edge) => edge.node
       );
 
@@ -93,7 +93,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         representations,
         stereotypeDescriptions,
         editingContextActions,
-        representationCreationDescriptions,
+        representationDescriptions,
       });
     }
   }, [editingContextId, objectId, loading, data, error]);
@@ -110,7 +110,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
         />
         <NewRepresentationArea
           editingContextId={editingContextId}
-          representationCreationDescriptions={representationCreationDescriptions}
+          representationDescriptions={representationDescriptions}
           selection={selection}
           setSelection={setSelection}
           readOnly={readOnly}

@@ -18,14 +18,14 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
- * Provide the {@link RepresentationCreationDescription}s for a given object.
+ * Provide the RepresentationDescriptions for a given object.
  *
  * @author arichard
  */
-public interface IRepresentationCreationDescriptionsProvider {
+public interface IRepresentationDescriptionsProvider {
 
     boolean canHandle(IRepresentationDescription representationDescription);
 
-    List<RepresentationCreationDescription> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription);
+    List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription);
 
 }

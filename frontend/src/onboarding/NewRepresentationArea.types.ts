@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Selection } from 'workbench/Workbench.types';
 
-export interface RepresentationCreationDescription {
+export interface RepresentationDescriptionMetadata {
   id: string;
   label: string;
   defaultName: string;
@@ -20,7 +20,7 @@ export interface RepresentationCreationDescription {
 
 export interface NewRepresentationAreaProps {
   editingContextId: string;
-  representationCreationDescriptions: RepresentationCreationDescription[];
+  representationDescriptions: RepresentationDescriptionMetadata[];
   selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;

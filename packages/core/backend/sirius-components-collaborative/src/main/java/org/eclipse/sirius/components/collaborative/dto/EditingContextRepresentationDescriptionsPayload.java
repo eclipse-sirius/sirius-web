@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.RepresentationCreationDescription;
+import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
@@ -24,14 +24,14 @@ import org.eclipse.sirius.components.core.api.IPayload;
  *
  * @author pcdavid
  */
-public final class EditingContextRepresentationCreationDescriptionsPayload implements IPayload {
+public final class EditingContextRepresentationDescriptionsPayload implements IPayload {
     private final UUID id;
 
-    private final List<RepresentationCreationDescription> representationCreationDescriptions;
+    private final List<RepresentationDescriptionMetadata> representationDescriptions;
 
-    public EditingContextRepresentationCreationDescriptionsPayload(UUID id, List<RepresentationCreationDescription> representationCreationDescriptions) {
+    public EditingContextRepresentationDescriptionsPayload(UUID id, List<RepresentationDescriptionMetadata> representationDescriptions) {
         this.id = Objects.requireNonNull(id);
-        this.representationCreationDescriptions = Objects.requireNonNull(representationCreationDescriptions);
+        this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
     }
 
     @Override
@@ -39,8 +39,8 @@ public final class EditingContextRepresentationCreationDescriptionsPayload imple
         return this.id;
     }
 
-    public List<RepresentationCreationDescription> getRepresentationCreationDescriptions() {
-        return this.representationCreationDescriptions;
+    public List<RepresentationDescriptionMetadata> getRepresentationDescriptions() {
+        return this.representationDescriptions;
     }
 
 }

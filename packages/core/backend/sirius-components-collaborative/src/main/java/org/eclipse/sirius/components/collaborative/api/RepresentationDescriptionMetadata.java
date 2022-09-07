@@ -15,11 +15,11 @@ package org.eclipse.sirius.components.collaborative.api;
 import java.util.Objects;
 
 /**
- * An object containing representation creation description data.
+ * An object containing representation description data.
  *
  * @author arichard
  */
-public class RepresentationCreationDescription {
+public class RepresentationDescriptionMetadata {
 
     private final String id;
 
@@ -27,7 +27,7 @@ public class RepresentationCreationDescription {
 
     private final String defaultName;
 
-    public RepresentationCreationDescription(String id, String label, String defaultName) {
+    public RepresentationDescriptionMetadata(String id, String label, String defaultName) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
         this.defaultName = Objects.requireNonNull(defaultName);
