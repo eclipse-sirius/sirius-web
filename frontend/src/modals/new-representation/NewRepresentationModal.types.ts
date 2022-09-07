@@ -18,12 +18,12 @@ export interface NewRepresentationModalProps {
   onClose: () => void;
 }
 
-export interface GQLGetRepresentationCreationDescriptionsQueryVariables {
+export interface GQLGetRepresentationDescriptionsQueryVariables {
   editingContextId: string;
   objectId: string;
 }
 
-export interface GQLGetRepresentationCreationDescriptionsQueryData {
+export interface GQLGetRepresentationDescriptionsQueryData {
   viewer: GQLViewer;
 }
 
@@ -32,19 +32,19 @@ export interface GQLViewer {
 }
 
 export interface GQLEditingContext {
-  representationCreationDescriptions: GQLRepresentationCreationDescriptionConnection;
+  representationDescriptions: GQLRepresentationDescriptionConnection;
 }
 
-export interface GQLRepresentationCreationDescriptionConnection {
-  edges: GQLRepresentationCreationDescriptionEdge[];
+export interface GQLRepresentationDescriptionConnection {
+  edges: GQLRepresentationDescriptionEdge[];
   pageInfo: GQLPageInfo;
 }
 
-export interface GQLRepresentationCreationDescriptionEdge {
-  node: GQLRepresentationCreationDescriptionNode;
+export interface GQLRepresentationDescriptionEdge {
+  node: GQLRepresentationDescriptionMetadata;
 }
 
-export interface GQLRepresentationCreationDescriptionNode {
+export interface GQLRepresentationDescriptionMetadata {
   id: string;
   label: string;
   defaultName: string;

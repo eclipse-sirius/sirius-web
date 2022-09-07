@@ -32,15 +32,15 @@ import {
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
   GQLErrorPayload,
-  GQLGetRepresentationCreationDescriptionsQueryData,
-  GQLGetRepresentationCreationDescriptionsQueryVariables,
+  GQLGetRepresentationDescriptionsQueryData,
+  GQLGetRepresentationDescriptionsQueryVariables,
   NewRepresentationModalProps,
 } from './NewRepresentationModal.types';
 import {
   ChangeNameEvent,
-  ChangeRepresentationCreationDescriptionEvent,
+  ChangeRepresentationDescriptionEvent,
   CreateRepresentationEvent,
-  FetchedRepresentationCreationDescriptionsEvent,
+  FetchedRepresentationDescriptionsEvent,
   HandleResponseEvent,
   HideToastEvent,
   NewRepresentationModalContext,
@@ -69,11 +69,11 @@ const createRepresentationMutation = gql`
   }
 `;
 
-const getRepresentationCreationDescriptionsQuery = gql`
-  query getRepresentationCreationDescriptions($editingContextId: ID!, $objectId: ID!) {
+const getRepresentationDescriptionsQuery = gql`
+  query getRepresentationDescriptions($editingContextId: ID!, $objectId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        representationCreationDescriptions(objectId: $objectId) {
+        representationDescriptions(objectId: $objectId) {
           edges {
             node {
               id
@@ -122,7 +122,7 @@ export const NewRepresentationModal = ({
     nameMessage,
     nameIsInvalid,
     selectedRepresentationDescriptionId,
-    representationCreationDescriptions,
+    representationDescriptions,
     createdRepresentationId,
     createdRepresentationLabel,
     createdRepresentationKind,
@@ -130,37 +130,32 @@ export const NewRepresentationModal = ({
   } = context;
 
   const {
-    loading: representationCreationDescriptionsLoading,
-    data: representationCreationDescriptionsData,
-    error: representationCreationDescriptionsError,
-  } = useQuery<
-    GQLGetRepresentationCreationDescriptionsQueryData,
-    GQLGetRepresentationCreationDescriptionsQueryVariables
-  >(getRepresentationCreationDescriptionsQuery, { variables: { editingContextId, objectId: item.id } });
+    loading: representationDescriptionsLoading,
+    data: representationDescriptionsData,
+    error: representationDescriptionsError,
+  } = useQuery<GQLGetRepresentationDescriptionsQueryData, GQLGetRepresentationDescriptionsQueryVariables>(
+    getRepresentationDescriptionsQuery,
+    { variables: { editingContextId, objectId: item.id } }
+  );
 
   useEffect(() => {
-    if (!representationCreationDescriptionsLoading) {
-      if (representationCreationDescriptionsError) {
+    if (!representationDescriptionsLoading) {
+      if (representationDescriptionsError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
           message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
       }
-      if (representationCreationDescriptionsData) {
-        const fetchRepresentationCreationDescriptionsEvent: FetchedRepresentationCreationDescriptionsEvent = {
+      if (representationDescriptionsData) {
+        const fetchRepresentationDescriptionsEvent: FetchedRepresentationDescriptionsEvent = {
           type: 'HANDLE_FETCHED_REPRESENTATION_CREATION_DESCRIPTIONS',
-          data: representationCreationDescriptionsData,
+          data: representationDescriptionsData,
         };
-        dispatch(fetchRepresentationCreationDescriptionsEvent);
+        dispatch(fetchRepresentationDescriptionsEvent);
       }
     }
-  }, [
-    representationCreationDescriptionsLoading,
-    representationCreationDescriptionsData,
-    representationCreationDescriptionsError,
-    dispatch,
-  ]);
+  }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError, dispatch]);
 
   const onNameChange = (event) => {
     const value = event.target.value;
@@ -170,11 +165,11 @@ export const NewRepresentationModal = ({
 
   const onRepresentationDescriptionChange = (event) => {
     const value = event.target.value;
-    const changeRepresentationCreationDescriptionEvent: ChangeRepresentationCreationDescriptionEvent = {
+    const changeRepresentationDescriptionEvent: ChangeRepresentationDescriptionEvent = {
       type: 'CHANGE_REPRESENTATION_CREATION_DESCRIPTION',
-      representationCreationDescriptionId: value,
+      representationDescriptionId: value,
     };
-    dispatch(changeRepresentationCreationDescriptionEvent);
+    dispatch(changeRepresentationDescriptionEvent);
   };
 
   const [
@@ -261,15 +256,15 @@ export const NewRepresentationModal = ({
               onChange={onRepresentationDescriptionChange}
               disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
               labelId="newDocumentModalStereotypeDescriptionLabel"
-              inputProps={{ 'data-testid': 'representationCreationDescription-input' }}
+              inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
-              data-testid="representationCreationDescription">
-              {representationCreationDescriptions.map((representationCreationDescription) => (
+              data-testid="representationDescription">
+              {representationDescriptions.map((representationDescription) => (
                 <MenuItem
-                  value={representationCreationDescription.id}
-                  key={representationCreationDescription.id}
-                  data-testid={representationCreationDescription.label}>
-                  {representationCreationDescription.label}
+                  value={representationDescription.id}
+                  key={representationDescription.id}
+                  data-testid={representationDescription.label}>
+                  {representationDescription.label}
                 </MenuItem>
               ))}
             </Select>

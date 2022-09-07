@@ -22,13 +22,13 @@ https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbenc
 https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [workbench] Move the workbench related code to `@eclipse-sirius/sirius-components-core`. This move includes components such as `Workbench`, `RepresentationContext`, `WorkbenchViewContribution` for example
 https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [diagram] Move the code of the diagram and the selection wizard in the packages `@eclipse-sirius/sirius-components-diagrams` and `@eclipse-sirius/sirius-components-selection`
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [core] Some code remain in the soon to be deprecated Sirius Component package `@eclipse-sirius/sirius-components`. Most of this code will either be moved to Sirius Web or be removed entirely (such as the old non MaterialUI widgets)
-- https://github.com/eclipse-sirius/sirius-components/issues/1288[#1288] [core] The `representationDescriptions` GraphQL has been renamed into `representationCreationDescriptions` and now takes an `objectId: ID` as argument instead of just the object's `kind: ID`.
+- https://github.com/eclipse-sirius/sirius-components/issues/1288[#1288] [core] The `EditingContext#representationDescriptions` field now takes an `objectId: ID` as argument instead of just the object's `kind: ID`.
 This allows representation precondition expressions to be more precise as they know the actual candidate instance, not just its type.
 - https://github.com/eclipse-sirius/sirius-components/issues/1281[#1281] [form] The `LinkDescription` now requires a `displayProvider` and a `styleProvider`. The `displayProvider` is used to display the text of the hyperLink.
 The GraphQL API has also been changed with two additional fields on the type `Link`: `display` and `style` (optional). The front-end use the `display` value instead of the `label` value to display the hyperlink text.
 The `label` value is displayed before the widget to be consistent with other properties sections.
 - https://github.com/eclipse-sirius/sirius-components/issues/1320[#1320] [diagram] The `selectedNode` variable is now always _defined_ in the context of drop hanlders and single-click tools. Previously, if the target of the drop or single-click tool was the diagram itself (instead of a node), the variable was not defined at all. Now it is defined but `null` in these cases.
-- https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] The `representationCreationDescriptions` GraphQL query now returns a new attribute named `defaultName` in addition to the `label` and `id`. For view-based representations and , the `defaultName` is computed from the `RepresentationDescription`'s `titleExpression`.
+- https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] The `representationDescriptions` GraphQL query now returns a new attribute named `defaultName` in addition to the `label` and `id`. For view-based representations and , the `defaultName` is computed from the `RepresentationDescription`'s `titleExpression`.
 
 === Dependency update
 

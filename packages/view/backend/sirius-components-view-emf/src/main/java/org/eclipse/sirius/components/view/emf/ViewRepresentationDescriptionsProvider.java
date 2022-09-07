@@ -19,25 +19,24 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationCreationDescriptionsProvider;
-import org.eclipse.sirius.components.collaborative.api.RepresentationCreationDescription;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
+import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide the {@link RepresentationCreationDescription}s of a given object from for all views.
+ * Used to provide the {@link RepresentationDescriptionMetadata}s of a given object from for all views.
  *
  * @author arichard
  */
 @Service
-public class ViewRepresentationCreationDescriptionsProvider implements IRepresentationCreationDescriptionsProvider {
+public class ViewRepresentationDescriptionsProvider implements IRepresentationDescriptionsProvider {
 
     private final IIdentifierProvider identifierProvider;
 
@@ -45,7 +44,7 @@ public class ViewRepresentationCreationDescriptionsProvider implements IRepresen
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    public ViewRepresentationCreationDescriptionsProvider(IIdentifierProvider identifierProvider, IViewService viewService, List<IJavaServiceProvider> javaServiceProviders) {
+    public ViewRepresentationDescriptionsProvider(IIdentifierProvider identifierProvider, IViewService viewService, List<IJavaServiceProvider> javaServiceProviders) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.viewService = Objects.requireNonNull(viewService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
@@ -57,12 +56,12 @@ public class ViewRepresentationCreationDescriptionsProvider implements IRepresen
     }
 
     @Override
-    public List<RepresentationCreationDescription> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
-        List<RepresentationCreationDescription> result = new ArrayList<>();
+    public List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
+        List<RepresentationDescriptionMetadata> result = new ArrayList<>();
         var viewRepresentationDescription = this.viewService.getRepresentationDescription(representationDescription.getId());
         if (viewRepresentationDescription.isPresent()) {
             String defaultName = viewRepresentationDescription.map(view -> this.getDefaultName(view, editingContext, object)).orElse(representationDescription.getLabel());
-            result.add(new RepresentationCreationDescription(representationDescription.getId(), representationDescription.getLabel(), defaultName));
+            result.add(new RepresentationDescriptionMetadata(representationDescription.getId(), representationDescription.getLabel(), defaultName));
         }
         return result;
     }
@@ -81,7 +80,7 @@ public class ViewRepresentationCreationDescriptionsProvider implements IRepresen
         }
     }
 
-    private String getDefaultName(RepresentationDescription viewRepresentationDescription, IEditingContext editingContext, Object self) {
+    private String getDefaultName(org.eclipse.sirius.components.view.RepresentationDescription viewRepresentationDescription, IEditingContext editingContext, Object self) {
         String titleExpression = viewRepresentationDescription.getTitleExpression();
         if (titleExpression != null && !titleExpression.isBlank()) {
             List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);

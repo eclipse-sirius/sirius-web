@@ -41,7 +41,7 @@ const createRepresentationMutation = gql`
 
 export const NewRepresentationArea = ({
   editingContextId,
-  representationCreationDescriptions,
+  representationDescriptions,
   selection,
   setSelection,
   readOnly,
@@ -71,9 +71,7 @@ export const NewRepresentationArea = ({
     }
   }, [loading, data, error, setSelection]);
   const onCreateRepresentation = (representationDescriptionId) => {
-    const selected = representationCreationDescriptions.find(
-      (candidate) => candidate.id === representationDescriptionId
-    );
+    const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
     const objectId = selectedItem.id;
     const input = {
       id: uuid(),
@@ -87,8 +85,8 @@ export const NewRepresentationArea = ({
 
   // Representation Descriptions list
   let newRepresentationButtons =
-    representationCreationDescriptions.length > 0
-      ? representationCreationDescriptions.slice(0, 5).map((representationDescription) => {
+    representationDescriptions.length > 0
+      ? representationDescriptions.slice(0, 5).map((representationDescription) => {
           return (
             <LinkButton
               key={representationDescription.id}
@@ -107,13 +105,13 @@ export const NewRepresentationArea = ({
   const moreName = 'moreRepresentationDescriptions';
   const moreLabel = 'More representations types...';
   let moreSelect =
-    representationCreationDescriptions.length > 5 ? (
+    representationDescriptions.length > 5 ? (
       <Select
         onChange={(event) => {
           onCreateRepresentation(event.target.value);
         }}
         name={moreName}
-        options={[{ id: moreLabel, label: moreLabel }, representationCreationDescriptions.slice(5)].flat()}
+        options={[{ id: moreLabel, label: moreLabel }, representationDescriptions.slice(5)].flat()}
         data-testid={moreName}
       />
     ) : null;
@@ -123,7 +121,7 @@ export const NewRepresentationArea = ({
     return <AreaContainer title={title} subtitle="You need edit access to create representations" />;
   } else {
     let subtitle =
-      selectedItem && representationCreationDescriptions.length > 0
+      selectedItem && representationDescriptions.length > 0
         ? 'Select the representation to create on ' + selectedItem.label
         : 'There are no representations available for the current selection';
     return (
