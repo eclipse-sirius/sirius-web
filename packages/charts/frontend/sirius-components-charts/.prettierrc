@@ -18,5 +18,6 @@
         "parser": "css"
       }
     }
-  ]
+  ],
+  "endOfLine": "auto"
 }
