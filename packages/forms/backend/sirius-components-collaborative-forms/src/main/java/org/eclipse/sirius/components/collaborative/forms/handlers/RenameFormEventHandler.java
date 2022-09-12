@@ -12,26 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms.handlers;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemSuccessPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.RenameFormInput;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.forms.List;
-import org.eclipse.sirius.components.forms.ListItem;
-import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.Success;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -40,21 +36,21 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * The handler of the click list item event.
+ * Handler used to rename a form.
  *
- * @author fbarbin
+ * @author arichard
  */
 @Service
-public class ClickListItemEventHandler implements IFormEventHandler {
+public class RenameFormEventHandler implements IFormEventHandler {
+
+    private final IRepresentationPersistenceService representationPersistenceService;
 
     private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
-    private final IFormQueryService formQueryService;
-
-    public ClickListItemEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
-        this.formQueryService = Objects.requireNonNull(formQueryService);
+    public RenameFormEventHandler(IRepresentationPersistenceService representationPersistenceService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -66,46 +62,34 @@ public class ClickListItemEventHandler implements IFormEventHandler {
 
     @Override
     public boolean canHandle(IFormInput formInput) {
-        return formInput instanceof ClickListItemInput;
+        return formInput instanceof RenameFormInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), ClickListItemInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), RenameFormInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formInput.getId(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
 
-        if (formInput instanceof ClickListItemInput) {
-            ClickListItemInput input = (ClickListItemInput) formInput;
+        if (formInput instanceof RenameFormInput) {
+            RenameFormInput renameRepresentationInput = (RenameFormInput) formInput;
+            String newLabel = renameRepresentationInput.getNewLabel();
 
             // @formatter:off
-            var optionalListItem = this.formQueryService.findWidget(form, input.getListId())
-                    .filter(List.class::isInstance)
-                    .map(List.class::cast)
-                    .stream()
-                    .map(List::getItems)
-                    .flatMap(Collection::stream)
-                    .filter(item -> item.getId().toString().equals(input.getListItemId()))
-                    .findFirst();
-
-            var status = optionalListItem.map(ListItem::getClickHandler)
-                    .map(handler -> handler.apply(input.getClickEventKind()))
-                    .orElse(new Failure("")); //$NON-NLS-1$
+            Form renamedForm = Form.newForm(form)
+                    .label(newLabel)
+                    .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
+                    .build();
             // @formatter:on
+            this.representationPersistenceService.save(editingContext, renamedForm);
 
-            if (status instanceof Success) {
-                Success success = (Success) status;
-                changeDescription = new ChangeDescription(success.getChangeKind(), formInput.getRepresentationId(), formInput, success.getParameters());
-                payload = new ClickListItemSuccessPayload(formInput.getId());
-            } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
-            }
+            payload = new RenameRepresentationSuccessPayload(formInput.getId(), renamedForm);
+            changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId(), formInput);
         }
 
-        changeDescriptionSink.tryEmitNext(changeDescription);
         payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
-
 }

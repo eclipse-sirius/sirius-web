@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -80,6 +81,10 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
         return new Builder(id);
     }
 
+    public static Builder newForm(Form form) {
+        return new Builder(form);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4} pageCount: {5}'}'"; //$NON-NLS-1$
@@ -107,6 +112,14 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(Form form) {
+            this.id = form.getId();
+            this.targetObjectId = form.getTargetObjectId();
+            this.descriptionId = form.getDescriptionId();
+            this.label = form.getLabel();
+            this.pages = new ArrayList<>(form.getPages());
         }
 
         public Builder label(String label) {

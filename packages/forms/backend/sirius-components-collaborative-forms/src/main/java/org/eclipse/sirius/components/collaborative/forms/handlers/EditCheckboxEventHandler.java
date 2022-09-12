@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.Form;
@@ -68,7 +69,7 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditCheckboxInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formInput.getId(), message);

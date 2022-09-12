@@ -86,7 +86,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                         .build();
                 // @formatter:on
 
-                FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
                         this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                 // @formatter:off

@@ -22,12 +22,14 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
+import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManager;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.RenameFormInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -62,6 +64,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(FormEventProcessor.class);
 
+    private final IEditingContext editingContext;
+
     private final FormCreationParameters formCreationParameters;
 
     private final List<IFormEventHandler> formEventHandlers;
@@ -76,10 +80,11 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
-    public FormEventProcessor(FormCreationParameters formCreationParameters, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
+    public FormEventProcessor(IEditingContext editingContext, FormCreationParameters formCreationParameters, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
             IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the form event processor {}", formCreationParameters.getId()); //$NON-NLS-1$
 
+        this.editingContext = Objects.requireNonNull(editingContext);
         this.formCreationParameters = Objects.requireNonNull(formCreationParameters);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
@@ -103,21 +108,27 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        if (representationInput instanceof IFormInput) {
-            IFormInput formInput = (IFormInput) representationInput;
+        IRepresentationInput effectiveInput = representationInput;
+        if (representationInput instanceof RenameRepresentationInput) {
+            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
+            effectiveInput = new RenameFormInput(renameRepresentationInput.getId(), renameRepresentationInput.getEditingContextId(), renameRepresentationInput.getRepresentationId(),
+                    renameRepresentationInput.getNewLabel());
+        }
+        if (effectiveInput instanceof IFormInput) {
+            IFormInput formInput = (IFormInput) effectiveInput;
 
             if (formInput instanceof UpdateWidgetFocusInput) {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input);
 
-                payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(representationInput.getId(), input.getWidgetId()));
-                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.FOCUS_CHANGE, representationInput.getRepresentationId(), input));
+                payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(input.getId(), input.getWidgetId()));
+                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.FOCUS_CHANGE, input.getRepresentationId(), input));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
                 if (optionalFormEventHandler.isPresent()) {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                    formEventHandler.handle(payloadSink, changeDescriptionSink, this.currentForm.get(), formInput);
+                    formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentForm.get(), formInput);
                 } else {
                     this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
                 }

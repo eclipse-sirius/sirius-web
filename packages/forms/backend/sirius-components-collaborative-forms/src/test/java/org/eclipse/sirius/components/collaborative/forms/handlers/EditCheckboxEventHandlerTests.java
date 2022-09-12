@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Checkbox;
@@ -98,7 +99,7 @@ public class EditCheckboxEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        handler.handle(payloadSink, changeDescriptionSink, form, input);
+        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), form, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);

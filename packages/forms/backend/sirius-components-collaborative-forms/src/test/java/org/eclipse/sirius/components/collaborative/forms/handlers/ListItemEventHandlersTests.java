@@ -26,11 +26,12 @@ import java.util.function.Supplier;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemSuccessPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.ClickEventKind;
@@ -120,7 +121,7 @@ public class ListItemEventHandlersTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        handler.handle(payloadSink, changeDescriptionSink, form, input);
+        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), form, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(changeKind);
@@ -197,7 +198,7 @@ public class ListItemEventHandlersTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        handler.handle(payloadSink, changeDescriptionSink, form, input);
+        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), form, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(changeKind);

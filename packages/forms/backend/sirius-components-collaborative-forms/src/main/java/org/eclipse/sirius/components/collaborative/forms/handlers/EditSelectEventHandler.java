@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.EditSelectInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditSelectSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Select;
@@ -69,7 +70,7 @@ public class EditSelectEventHandler implements IFormEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditSelectInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formInput.getId(), message);
