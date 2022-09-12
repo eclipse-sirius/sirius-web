@@ -63,6 +63,7 @@ const useFormRepresentationStyles = makeStyles((theme) => ({
   page: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    overflowY: 'scroll',
   },
   complete: {
     display: 'flex',
