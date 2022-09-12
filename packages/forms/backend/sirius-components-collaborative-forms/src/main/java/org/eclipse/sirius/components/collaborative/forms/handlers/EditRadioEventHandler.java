@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Radio;
@@ -68,7 +69,7 @@ public class EditRadioEventHandler implements IFormEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRadioInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formInput.getId(), message);

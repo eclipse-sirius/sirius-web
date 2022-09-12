@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.forms.api;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
 
@@ -27,5 +28,5 @@ import reactor.core.publisher.Sinks.One;
 public interface IFormEventHandler {
     boolean canHandle(IFormInput formInput);
 
-    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput);
 }

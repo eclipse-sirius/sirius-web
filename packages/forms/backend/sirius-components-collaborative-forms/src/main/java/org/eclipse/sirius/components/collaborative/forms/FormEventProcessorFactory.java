@@ -101,7 +101,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             .build();
                     // @formatter:on
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
                             this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                     // @formatter:off

@@ -67,16 +67,17 @@ public class FormEventProcessorTests {
     @Test
     public void testEmitFormOnSubscription() {
         IInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        IEditingContext.NoOp editingContext = new IEditingContext.NoOp();
 
         // @formatter:off
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
-                .editingContext(new IEditingContext.NoOp())
+                .editingContext(editingContext)
                 .objects(List.of(new Object()))
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
         // @formatter:off
@@ -90,16 +91,17 @@ public class FormEventProcessorTests {
     @Test
     public void testEmitFormOnRefresh() {
         FormEventInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        IEditingContext.NoOp editingContext = new IEditingContext.NoOp();
 
         // @formatter:off
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
-                .editingContext(new IEditingContext.NoOp())
+                .editingContext(editingContext)
                 .objects(List.of(new Object()))
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
         Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.getFormId(), input));
@@ -117,16 +119,17 @@ public class FormEventProcessorTests {
     @Test
     public void testCompleteOnDispose() {
         FormEventInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        IEditingContext.NoOp editingContext = new IEditingContext.NoOp();
 
         // @formatter:off
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
-                .editingContext(new IEditingContext.NoOp())
+                .editingContext(editingContext)
                 .objects(List.of(new Object()))
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
         Runnable disposeFormEventProcessor = () -> formEventProcessor.dispose();

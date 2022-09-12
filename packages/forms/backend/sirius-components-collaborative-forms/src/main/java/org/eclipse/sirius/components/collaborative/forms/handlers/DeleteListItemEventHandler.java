@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput
 import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.List;
@@ -69,7 +70,7 @@ public class DeleteListItemEventHandler implements IFormEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, Form form, IFormInput formInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), DeleteListItemInput.class.getSimpleName());
