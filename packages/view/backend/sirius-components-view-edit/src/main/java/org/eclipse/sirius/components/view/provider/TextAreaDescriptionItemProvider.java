@@ -161,7 +161,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -182,8 +182,6 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createTextareaDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle()));
     }

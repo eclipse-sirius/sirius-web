@@ -191,7 +191,7 @@ public class SelectDescriptionItemProvider extends WidgetDescriptionItemProvider
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -212,8 +212,6 @@ public class SelectDescriptionItemProvider extends WidgetDescriptionItemProvider
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.SELECT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.SELECT_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createSelectDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.SELECT_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalSelectDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.SELECT_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalSelectDescriptionStyle()));
     }

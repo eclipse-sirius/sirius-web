@@ -159,15 +159,13 @@ public class LinkDescriptionItemProvider extends WidgetDescriptionItemProvider {
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LINK_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createLinkDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LINK_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalLinkDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LINK_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalLinkDescriptionStyle()));
     }
