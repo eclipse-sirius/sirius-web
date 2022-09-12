@@ -70,11 +70,13 @@ export const BarChartWidget = ({ widget, selection }: WidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
+    <div>
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>
-      <BarChart width={500} height={250} chart={chart} />
+      <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
+        <BarChart width={500} height={250} chart={chart} />
+      </div>
     </div>
   );
 };

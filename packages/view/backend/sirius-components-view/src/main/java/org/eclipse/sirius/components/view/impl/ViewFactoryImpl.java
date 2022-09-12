@@ -76,6 +76,7 @@ import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
@@ -195,6 +196,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createMultiSelectDescription();
         case ViewPackage.TEXT_AREA_DESCRIPTION:
             return this.createTextAreaDescription();
+        case ViewPackage.RICH_TEXT_DESCRIPTION:
+            return this.createRichTextDescription();
         case ViewPackage.RADIO_DESCRIPTION:
             return this.createRadioDescription();
         case ViewPackage.BAR_CHART_DESCRIPTION:
@@ -662,6 +665,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public TextAreaDescription createTextAreaDescription() {
         TextAreaDescriptionImpl textAreaDescription = new TextAreaDescriptionImpl();
         return textAreaDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public RichTextDescription createRichTextDescription() {
+        RichTextDescriptionImpl richTextDescription = new RichTextDescriptionImpl();
+        return richTextDescription;
     }
 
     /**

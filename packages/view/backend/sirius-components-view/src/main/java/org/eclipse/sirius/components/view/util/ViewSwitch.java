@@ -78,6 +78,7 @@ import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
@@ -550,6 +551,15 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseTextAreaDescription(textAreaDescription);
             if (result == null)
                 result = this.caseWidgetDescription(textAreaDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.RICH_TEXT_DESCRIPTION: {
+            RichTextDescription richTextDescription = (RichTextDescription) theEObject;
+            T result = this.caseRichTextDescription(richTextDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(richTextDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1596,6 +1606,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTextAreaDescription(TextAreaDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Rich Text Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Rich Text Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRichTextDescription(RichTextDescription object) {
         return null;
     }
 

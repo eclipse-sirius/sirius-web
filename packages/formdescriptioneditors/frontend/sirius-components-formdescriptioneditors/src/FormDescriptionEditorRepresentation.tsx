@@ -29,6 +29,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
+import TextFormatIcon from '@material-ui/icons/TextFormat';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
@@ -333,6 +334,17 @@ export const FormDescriptionEditorRepresentation = ({
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textarea
+            </Typography>
+          </div>
+          <div
+            id="RichText"
+            data-testid="FormDescriptionEditor-RichText"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <TextFormatIcon />
+            <Typography variant="caption" gutterBottom>
+              Rich Text
             </Typography>
           </div>
           <div

@@ -10,18 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type Kind =
-  | 'Textfield'
-  | 'TextArea'
-  | 'Checkbox'
-  | 'Radio'
-  | 'Select'
-  | 'MultiSelect'
-  | 'Button'
-  | 'Label'
-  | 'Link'
-  | 'List'
-  | 'BarChart'
-  | 'PieChart'
-  | 'FlexboxContainer'
-  | 'RichText';
+
+export interface RichTextEditorProps {
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
+  onFocus: () => void;
+  onSave: (newValue) => void;
+  readOnly: boolean;
+}

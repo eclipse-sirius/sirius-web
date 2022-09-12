@@ -41,7 +41,9 @@ export const ImageWidget = ({ widget, selection }: WidgetProps) => {
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>
-      <ImageIcon style={{ fontSize: 72 }} color={'secondary'} />
+      <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
+        <ImageIcon style={{ fontSize: 72 }} color={'secondary'} />
+      </div>
     </div>
   );
 };

@@ -79,6 +79,7 @@ import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
@@ -365,6 +366,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTextAreaDescription(TextAreaDescription object) {
             return ViewAdapterFactory.this.createTextAreaDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseRichTextDescription(RichTextDescription object) {
+            return ViewAdapterFactory.this.createRichTextDescriptionAdapter();
         }
 
         @Override
@@ -1148,6 +1154,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTextAreaDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RichTextDescription
+     * <em>Rich Text Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.RichTextDescription
+     * @generated
+     */
+    public Adapter createRichTextDescriptionAdapter() {
         return null;
     }
 

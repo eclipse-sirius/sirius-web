@@ -27,6 +27,7 @@ export const isKind = (value: string): value is Kind => {
     value === 'BarChart' ||
     value === 'PieChart' ||
     value === 'FlexboxContainer' ||
-    value === 'Image'
+    value === 'Image' ||
+    value === 'RichText'
   );
 };

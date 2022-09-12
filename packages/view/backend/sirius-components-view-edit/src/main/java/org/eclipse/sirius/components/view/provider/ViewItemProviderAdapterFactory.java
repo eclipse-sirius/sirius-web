@@ -822,6 +822,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.RichTextDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected RichTextDescriptionItemProvider richTextDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.RichTextDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createRichTextDescriptionAdapter() {
+        if (this.richTextDescriptionItemProvider == null) {
+            this.richTextDescriptionItemProvider = new RichTextDescriptionItemProvider(this);
+        }
+
+        return this.richTextDescriptionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.RadioDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1765,6 +1788,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.multiSelectDescriptionItemProvider.dispose();
         if (this.textAreaDescriptionItemProvider != null)
             this.textAreaDescriptionItemProvider.dispose();
+        if (this.richTextDescriptionItemProvider != null)
+            this.richTextDescriptionItemProvider.dispose();
         if (this.radioDescriptionItemProvider != null)
             this.radioDescriptionItemProvider.dispose();
         if (this.barChartDescriptionItemProvider != null)

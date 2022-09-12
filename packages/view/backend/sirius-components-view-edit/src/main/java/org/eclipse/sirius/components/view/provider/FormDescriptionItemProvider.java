@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.ListDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
@@ -161,41 +162,23 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        ButtonDescription toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
-        toolbarActionDescription.setName("ToolbarAction"); //$NON-NLS-1$
-        toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__TOOLBAR_ACTIONS, toolbarActionDescription));
+        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, barChartDescription));
 
-        TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
-        textfieldDescription.setStyle(ViewFactory.eINSTANCE.createTextfieldDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, textfieldDescription));
+        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        buttonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, buttonDescription));
 
         CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setStyle(ViewFactory.eINSTANCE.createCheckboxDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, checkboxDescription));
 
-        SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
-        selectDescription.setStyle(ViewFactory.eINSTANCE.createSelectDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, selectDescription));
-
-        MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
-        multiSelectDescription.setStyle(ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, multiSelectDescription));
+        FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, flexboxContainerDescription));
 
         ImageDescription imageDescription = ViewFactory.eINSTANCE.createImageDescription();
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, imageDescription));
-
-        TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
-        textareaDescription.setStyle(ViewFactory.eINSTANCE.createTextareaDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, textareaDescription));
-
-        RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
-        radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, radioDescription));
-
-        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
-        buttonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, buttonDescription));
 
         LabelDescription labelDescription = ViewFactory.eINSTANCE.createLabelDescription();
         labelDescription.setStyle(ViewFactory.eINSTANCE.createLabelDescriptionStyle());
@@ -209,16 +192,38 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         listDescription.setStyle(ViewFactory.eINSTANCE.createListDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, listDescription));
 
-        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
-        barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, barChartDescription));
-
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
         pieChartDescription.setStyle(ViewFactory.eINSTANCE.createPieChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, pieChartDescription));
 
-        FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, flexboxContainerDescription));
+        RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
+        radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, radioDescription));
+
+        RichTextDescription richTextDescription = ViewFactory.eINSTANCE.createRichTextDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, richTextDescription));
+
+        SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
+        selectDescription.setStyle(ViewFactory.eINSTANCE.createSelectDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, selectDescription));
+
+        MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
+        multiSelectDescription.setStyle(ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, multiSelectDescription));
+
+        TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
+        textareaDescription.setStyle(ViewFactory.eINSTANCE.createTextareaDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, textareaDescription));
+
+        TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
+        textfieldDescription.setStyle(ViewFactory.eINSTANCE.createTextfieldDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, textfieldDescription));
+
+        ButtonDescription toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        toolbarActionDescription.setName("ToolbarAction"); //$NON-NLS-1$
+        toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__TOOLBAR_ACTIONS, toolbarActionDescription));
     }
 
     /**
@@ -240,5 +245,4 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }
-
 }

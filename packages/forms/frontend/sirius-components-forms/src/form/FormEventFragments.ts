@@ -102,6 +102,9 @@ export const formRefreshedEventPayloadFragment = `
     ... on Image {
       ...imageFields
     }
+    ... on RichText {
+      ...richTextFields
+    }
   }
 
   fragment commonFields on Widget {
@@ -368,4 +371,9 @@ export const formRefreshedEventPayloadFragment = `
     maxWidth
   }
 
-`;
+  fragment richTextFields on RichText {
+    label
+    iconURL
+    stringValue: value
+  }
+  `;

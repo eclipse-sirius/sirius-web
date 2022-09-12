@@ -78,6 +78,7 @@ import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
@@ -248,6 +249,27 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .kindProvider(diagnostic -> "") //$NON-NLS-1$
                 .messageProvider(diagnostic -> "") //$NON-NLS-1$
                 .styleProvider(styleProvider)
+                .build();
+        // @formatter:on
+    }
+
+    @Override
+    public AbstractWidgetDescription caseRichTextDescription(RichTextDescription richTextDescription) {
+        String descriptionId = this.getDescriptionId(richTextDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(richTextDescription.getLabelExpression());
+        StringValueProvider valueProvider = this.getStringValueProvider(richTextDescription.getValueExpression());
+        BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(richTextDescription.getBody());
+
+        // @formatter:off
+        return org.eclipse.sirius.components.forms.description.RichTextDescription.newRichTextDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .valueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "") //$NON-NLS-1$
+                .messageProvider(diagnostic -> "") //$NON-NLS-1$
                 .build();
         // @formatter:on
     }
