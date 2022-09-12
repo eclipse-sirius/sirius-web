@@ -213,6 +213,14 @@ export const formRefreshedEventPayloadFragment = `
       imageURL
       deletable
     }
+    style {
+      color
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
   }
 
   fragment linkFields on Link {

@@ -47,6 +47,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1250[#1250] [diagram] Fix invoke tool effect hooks dependencies (to avoid evaluating the same tool result multiple times)
 - https://github.com/eclipse-sirius/sirius-components/issues/1347[#1347] [form] Fix Conditional Style menu items (two menu items available instead of one)
 - https://github.com/eclipse-sirius/sirius-components/issues/1349[#1349] [form] Fix Form Representation scrolling on Y axis
+- https://github.com/eclipse-sirius/sirius-components/issues/1351[#1351] [form] Fix Style/ConditionalStyle not applied to List Widget
 
 === Improvements
 
