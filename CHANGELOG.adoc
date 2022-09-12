@@ -45,6 +45,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1287[#1287] [form] Fix wrong VariableManager scope usage in ViewFormDescriptionConverterSwitch.
 - https://github.com/eclipse-sirius/sirius-components/issues/1250[#1250] [diagram] Fix invoke tool effect hooks dependencies (to avoid evaluating the same tool result multiple times)
+- https://github.com/eclipse-sirius/sirius-components/issues/1347[#1347] [form] Fix Conditional Style menu items (two menu items available instead of one)
 
 === Improvements
 

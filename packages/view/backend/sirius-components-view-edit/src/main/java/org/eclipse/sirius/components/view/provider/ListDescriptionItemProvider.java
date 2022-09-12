@@ -190,7 +190,7 @@ public class ListDescriptionItemProvider extends WidgetDescriptionItemProvider {
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -211,8 +211,6 @@ public class ListDescriptionItemProvider extends WidgetDescriptionItemProvider {
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LIST_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LIST_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createListDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LIST_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalListDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.LIST_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalListDescriptionStyle()));
     }

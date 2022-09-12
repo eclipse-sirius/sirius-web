@@ -176,7 +176,7 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -197,8 +197,6 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.BUTTON_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.BUTTON_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createButtonDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.BUTTON_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalButtonDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.BUTTON_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalButtonDescriptionStyle()));
     }

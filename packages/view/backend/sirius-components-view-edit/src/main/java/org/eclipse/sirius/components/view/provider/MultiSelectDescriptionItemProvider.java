@@ -191,7 +191,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -212,8 +212,6 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createConditionalMultiSelectDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalMultiSelectDescriptionStyle()));
     }

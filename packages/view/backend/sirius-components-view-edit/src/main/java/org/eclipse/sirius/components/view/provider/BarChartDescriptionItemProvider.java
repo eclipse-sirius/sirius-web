@@ -193,7 +193,9 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.BAR_CHART_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createBarChartDescriptionStyle()));
+
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES, ViewFactory.eINSTANCE.createConditionalBarChartDescriptionStyle()));
     }
 
