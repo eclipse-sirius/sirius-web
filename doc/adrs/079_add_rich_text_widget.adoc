@@ -1,0 +1,41 @@
+ADR-079 - Add support for a rich text edition widget
+
+== Context
+
+Users often want to associate richly formatted documentation to model elements.
+In forms, we provide a raw `Textarea` widget to display and edit multi-line text.
+While it can be used to write text using a markup language like Markdown or AsciiDoc, it does not provide any help for that: no preview, syntax coloring or UI to apply styling (user must be familiar with the markup syntax).
+
+== Decision
+
+We will provide a new "Rich Text" widget in forms.
+It will be used to display and edit text using the Markdown syntax.
+
+On the backend, the new widget will behave exactly like the Textfield or Textarea widget.
+It will only handle plain text.
+Only the frontend will interpret this text as Markdown, and send new values for the text as Markdown.
+
+=== Frontend Component
+
+On the frontend, the UI component used for these new widget will provide advanced features to preview and edit Markdown texts.
+
+We will use Facebook's https://github.com/facebook/lexical[lexical] framework for the frontend component, and in particular it's https://github.com/facebook/lexical/tree/main/packages/lexical-react[React integration].
+Despite still being in development and being rather low-level (which requires custom code to build a concrete component), lexical seems the best option among the others tested:
+
+- https://github.com/RIP21/react-simplemde-editor: does not integrate well with MUI/our CSS; limited in scope (a good thing for now, but may limit our options down the road).
+- https://github.com/tinymce/tinymce-react: requires an API key, seems at least partially tied to a cloud-based service.
+- https://github.com/niuware/mui-rte: the active branch requires MUI v5. The 1.x unmaintained branch, which is compatible with MUI v4 seems incompatible with our build tools. Uses Facebook's https://github.com/facebook/draft-js[draft-js], which is deprecated ("On 31st December 2022 the repo will be fully archived.") and replaced by lexical.
+- https://github.com/sstur/react-rte: also based on draft-js.
+- https://github.com/summernote/react-summernote: based on bootstrap and jQuery, would be difficult to integrate with our stack.
+- https://ckeditor.com: v5 is GPLv2, v4 is either GPLv2, LGPLv2 or MPL 1.1 (which would be OK), but it's not clear how much v4 is maintained.
+- https://tiptap.dev: like lexical, requires non-trivial amount of custom code to integrate (CSS, toolbar, etc.) and seems less powerful than lexical
+
+Lexical is very powerful, but requires custom code (notably for the UI).
+For the first iteration on this component, we will provide a basic toolbar with support for the following styles:
+
+- Block styles: paragraph, title (H1), ordered lists, unordered lists
+- Text styles: plain, bold, italic, code/pre, underline (and maybe strikethrough)
+
+== Status
+
+Accepted

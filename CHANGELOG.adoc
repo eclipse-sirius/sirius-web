@@ -8,6 +8,7 @@
 - [ADR-076] Allow users to upload their own custom images
 - [ADR-077] Improve support for direct edit in diagram
 - [ADR-078] Add support for toolbar actions in Form/FormDescriptionEditor
+- [ADR-079] Add support for a rich text edition widget
 
 === Dependency update
 
