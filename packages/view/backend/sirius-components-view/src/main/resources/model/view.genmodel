@@ -225,6 +225,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextAreaDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//TextAreaDescription/conditionalStyles"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//RichTextDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RichTextDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//RichTextDescription/body"/>
+    </genClasses>
     <genClasses ecoreClass="view.ecore#//RadioDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/valueExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescription/candidatesExpression"/>

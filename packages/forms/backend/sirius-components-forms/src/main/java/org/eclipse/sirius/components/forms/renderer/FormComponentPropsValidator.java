@@ -48,6 +48,8 @@ import org.eclipse.sirius.components.forms.components.PageComponent;
 import org.eclipse.sirius.components.forms.components.PageComponentProps;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.RadioComponentProps;
+import org.eclipse.sirius.components.forms.components.RichTextComponentProps;
+import org.eclipse.sirius.components.forms.components.RichTextComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponentProps;
 import org.eclipse.sirius.components.forms.components.TextareaComponent;
@@ -121,6 +123,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof TreeComponentProps;
         } else if (ImageComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ImageComponentProps;
+        } else if (RichTextComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof RichTextComponentProps;
         } else if (GroupToolbarComponent.class.equals(componentType)) {
             checkValidProps = props instanceof FragmentProps;
         } else if (GroupContentsComponent.class.equals(componentType)) {

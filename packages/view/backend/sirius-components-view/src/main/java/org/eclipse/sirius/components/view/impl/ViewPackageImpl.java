@@ -85,6 +85,7 @@ import org.eclipse.sirius.components.view.RadioDescription;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
@@ -417,6 +418,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass textAreaDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass richTextDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2218,6 +2226,36 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getRichTextDescription() {
+        return this.richTextDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRichTextDescription_ValueExpression() {
+        return (EAttribute) this.richTextDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getRichTextDescription_Body() {
+        return (EReference) this.richTextDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getRadioDescription() {
         return this.radioDescriptionEClass;
     }
@@ -3371,6 +3409,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__STYLE);
         this.createEReference(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES);
 
+        this.richTextDescriptionEClass = this.createEClass(RICH_TEXT_DESCRIPTION);
+        this.createEAttribute(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION);
+        this.createEReference(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__BODY);
+
         this.radioDescriptionEClass = this.createEClass(RADIO_DESCRIPTION);
         this.createEAttribute(this.radioDescriptionEClass, RADIO_DESCRIPTION__VALUE_EXPRESSION);
         this.createEAttribute(this.radioDescriptionEClass, RADIO_DESCRIPTION__CANDIDATES_EXPRESSION);
@@ -3567,6 +3609,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.selectDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.multiSelectDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.textAreaDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
+        this.richTextDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.radioDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.barChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.pieChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
@@ -3917,6 +3960,12 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTextAreaDescription_ConditionalStyles(), this.getConditionalTextareaDescriptionStyle(), null, "conditionalStyles", null, 0, -1, TextAreaDescription.class, //$NON-NLS-1$
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.richTextDescriptionEClass, RichTextDescription.class, "RichTextDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getRichTextDescription_ValueExpression(), this.ecorePackage.getEString(), "valueExpression", null, 0, 1, RichTextDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getRichTextDescription_Body(), this.getOperation(), null, "body", null, 0, -1, RichTextDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.radioDescriptionEClass, RadioDescription.class, "RadioDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getRadioDescription_ValueExpression(), this.ecorePackage.getEString(), "valueExpression", null, 0, 1, RadioDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$

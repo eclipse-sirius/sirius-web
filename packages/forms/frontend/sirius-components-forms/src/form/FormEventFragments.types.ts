@@ -372,3 +372,8 @@ export interface GQLImage extends GQLWidget {
   url: string;
   maxWidth: string;
 }
+
+export interface GQLRichText extends GQLWidget {
+  label: string;
+  stringValue: string;
+}

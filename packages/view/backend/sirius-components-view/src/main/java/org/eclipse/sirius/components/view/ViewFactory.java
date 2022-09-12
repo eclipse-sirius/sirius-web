@@ -293,6 +293,14 @@ public interface ViewFactory extends EFactory {
     TextAreaDescription createTextAreaDescription();
 
     /**
+     * Returns a new object of class '<em>Rich Text Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Rich Text Description</em>'.
+     * @generated
+     */
+    RichTextDescription createRichTextDescription();
+
+    /**
      * Returns a new object of class '<em>Radio Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Radio Description</em>'.

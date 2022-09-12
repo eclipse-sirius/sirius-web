@@ -61,16 +61,18 @@ export const PieChartWidget = ({ widget, selection }: WidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div
-      data-testid={widget.label}
-      onFocus={() => setSelected(true)}
-      onBlur={() => setSelected(false)}
-      ref={ref}
-      tabIndex={0}>
+    <div>
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>
-      <PieChart width={300} height={300} chart={chart} />
+      <div
+        data-testid={widget.label}
+        onFocus={() => setSelected(true)}
+        onBlur={() => setSelected(false)}
+        ref={ref}
+        tabIndex={0}>
+        <PieChart width={300} height={300} chart={chart} />
+      </div>
     </div>
   );
 };

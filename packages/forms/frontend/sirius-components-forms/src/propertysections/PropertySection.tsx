@@ -21,6 +21,7 @@ import {
   GQLList,
   GQLMultiSelect,
   GQLRadio,
+  GQLRichText,
   GQLSelect,
   GQLTextarea,
   GQLTextfield,
@@ -38,6 +39,7 @@ import { ListPropertySection } from './ListPropertySection';
 import { MultiSelectPropertySection } from './MultiSelectPropertySection';
 import { PropertySectionProps } from './PropertySection.types';
 import { RadioPropertySection } from './RadioPropertySection';
+import { RichTextPropertySection } from './RichTextPropertySection';
 import { SelectPropertySection } from './SelectPropertySection';
 import { TextfieldPropertySection } from './TextfieldPropertySection';
 import { TreePropertySection } from './TreePropertySection';
@@ -57,6 +59,7 @@ const isFlexboxContainer = (widget: GQLWidget): widget is GQLFlexboxContainer =>
   widget.__typename === 'FlexboxContainer';
 const isTree = (widget: GQLWidget): widget is GQLTree => widget.__typename === 'TreeWidget';
 const isImage = (widget: GQLWidget): widget is GQLImage => widget.__typename === 'Image';
+const isRichText = (widget: GQLWidget): widget is GQLRichText => widget.__typename === 'RichText';
 
 export const PropertySection = ({
   editingContextId,
@@ -175,6 +178,17 @@ export const PropertySection = ({
     );
   } else if (isImage(widget)) {
     propertySection = <ImagePropertySection widget={widget} key={widget.id} />;
+  } else if (isRichText(widget)) {
+    propertySection = (
+      <RichTextPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);
   }
