@@ -969,7 +969,7 @@ public class DynamicFormsTests {
         changeContext.setExpression("aql:candidate"); //$NON-NLS-1$
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
         setValue.setFeatureName("name"); //$NON-NLS-1$
-        setValue.setValueExpression("aql:self.name + ' click event kind: ' + clickEventKind"); //$NON-NLS-1$
+        setValue.setValueExpression("aql:self.name + ' click event kind: ' + onClickEventKind"); //$NON-NLS-1$
         changeContext.getChildren().add(setValue);
         listDescription.getBody().add(changeContext);
 
