@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +34,6 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.components.NodeComponent;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
@@ -428,9 +426,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
-            if (this.isUnsynchronizedNodeDescription(elementDescription) && variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).isPresent()) {
-                return this.getUnsynchronizedSemanticElements(variableManager, (org.eclipse.sirius.components.view.NodeDescription) elementDescription);
-            }
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
             // @formatter:off
@@ -441,33 +436,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     .collect(Collectors.toList());
             // @formatter:on
         };
-    }
-
-    private boolean isUnsynchronizedNodeDescription(org.eclipse.sirius.components.view.DiagramElementDescription elementDescription) {
-        return elementDescription instanceof org.eclipse.sirius.components.view.NodeDescription
-                && elementDescription.getSynchronizationPolicy().getName().equals(SynchronizationPolicy.UNSYNCHRONIZED.toString());
-    }
-
-    private List<Object> getUnsynchronizedSemanticElements(VariableManager variableManager, org.eclipse.sirius.components.view.NodeDescription nodeDescription) {
-        Object semanticElementIdsVariableContent = variableManager.getVariables().get(NodeComponent.SEMANTIC_ELEMENT_IDS);
-        if (semanticElementIdsVariableContent instanceof List<?>) {
-            List<?> semanticElementIds = (List<?>) semanticElementIdsVariableContent;
-
-            var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-            if (optionalEditingContext.isPresent()) {
-                IEditingContext editingContext = optionalEditingContext.get();
-                //@formatter:off
-                return semanticElementIds.stream()
-                        .filter(String.class::isInstance)
-                        .map(String.class::cast)
-                        .flatMap(id -> this.objectService.getObject(editingContext, id).stream())
-                        .collect(Collectors.toList());
-                //@formatter:on
-            }
-
-        }
-
-        return Collections.emptyList();
     }
 
     private EdgeDescription convert(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
