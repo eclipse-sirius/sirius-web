@@ -39,7 +39,7 @@ public class ListComponent implements IComponent {
 
     public static final String CANDIDATE_VARIABLE = "candidate"; //$NON-NLS-1$
 
-    public static final String CLICK_EVENT_KIND_VARIABLE = "clickEventKind"; //$NON-NLS-1$
+    public static final String CLICK_EVENT_KIND_VARIABLE = "onClickEventKind"; //$NON-NLS-1$
 
     private ListComponentProps props;
 
