@@ -65,6 +65,8 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1329[#1329] [studio] The `convertedNodes` variable which was exposed to node create tools for View-based diagrams is now available for all tools of these diagrams
 - https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] Improve support for title expression from representation description.
 - https://github.com/eclipse-sirius/sirius-components/issues/1341[#1341] [diagram] Expose source and target node variables during EdgeTool execution
+- [core] The input and payloads manipulated by the `EditingContextEventProcessor` can now be logged using `
+logging.level.org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor=trace`
 
 === New features
 
