@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -54,6 +55,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
@@ -206,6 +208,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             return Mono.empty();
         }
 
+        this.logger.trace(input.toString());
+
         One<IPayload> payloadSink = Sinks.one();
         Future<?> future = this.executorService.submit(() -> this.doHandle(payloadSink, input));
         try {
@@ -219,6 +223,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         var timeoutFallback = Mono.just(new ErrorPayload(input.getId(), this.messageService.timeout()))
                 .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input)); //$NON-NLS-1$
         return payloadSink.asMono()
+                .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
                 .timeout(Duration.ofSeconds(5), timeoutFallback)
                 .doOnError(throwable -> this.logger.warn(throwable.getMessage(), throwable));
         // @formatter:on
