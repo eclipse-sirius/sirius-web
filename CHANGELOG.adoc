@@ -1,6 +1,6 @@
 = Changelog
 
-== v2022.9.0 (unreleased)
+== v2022.9.0
 
 === Architectural decision records
 
