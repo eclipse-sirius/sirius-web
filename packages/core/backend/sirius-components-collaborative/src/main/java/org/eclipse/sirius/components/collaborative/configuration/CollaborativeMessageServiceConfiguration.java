@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class CollaborativeMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-web-spring-collaborative"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-components-collaborative"; //$NON-NLS-1$
 
     @Bean
     public MessageSourceAccessor collaborativeMessageSourceAccessor() {
