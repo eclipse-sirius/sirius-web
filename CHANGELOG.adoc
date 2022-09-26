@@ -9,6 +9,8 @@
 - [ADR-071] - Add parametric SVG node style
 - [ADR-072] Add support for the edition of routing points
 
+ - https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1339[#1339] [layout] Add concept of layout strategy. The purpose of layout strategy is to split the style of a node from the way a node lays out its children.
