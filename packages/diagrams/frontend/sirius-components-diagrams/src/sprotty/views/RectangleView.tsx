@@ -12,6 +12,7 @@
  *******************************************************************************/
 /** @jsx svg */
 /** @jsxRuntime classic */
+import { VNode } from 'snabbdom';
 import { RectangularNodeView, RenderingContext, SLabel, svg } from 'sprotty';
 import { Node, RectangularNodeStyle } from '../Diagram.types';
 import { createResizeHandles } from './ViewUtils';
@@ -29,7 +30,7 @@ export class RectangleView extends RectangularNodeView {
    * @param context The context
    */
   // @ts-ignore
-  render(node: Readonly<Node>, context: RenderingContext) {
+  override render(node: Readonly<Node>, context: RenderingContext) {
     const nodeStyle: RectangularNodeStyle = node.style as RectangularNodeStyle;
     const styleObject = {
       fill: nodeStyle.color,
@@ -67,18 +68,23 @@ export class RectangleView extends RectangularNodeView {
 
     const selectedHandles = createResizeHandles(node);
 
+    let nodeLabel: SLabel | undefined = undefined;
+    let renderedNodeLabel: VNode | undefined = undefined;
     let children = [...node.children];
-
-    const nodeLabel: SLabel = children.shift() as SLabel;
-    const renderedNodeLabel = context.renderElement(nodeLabel);
+    const labelIndex = node.children.findIndex((child) => child instanceof SLabel);
+    if (labelIndex > -1) {
+      nodeLabel = node.children.at(labelIndex) as SLabel;
+      children = node.children.filter((_, i) => i !== labelIndex);
+      renderedNodeLabel = context.renderElement(nodeLabel);
+    }
 
     const headerSeparator = createHeaderSeparator(node, nodeStyle, nodeLabel);
 
-    const renderedChildren = children.map((item) => context.renderElement(item));
+    const renderedChildren = children.map((item) => context.renderElement(item)).filter((vnode) => vnode !== undefined);
 
     return (
       <g
-        attrs-data-testid={`Rectangle - ${nodeLabel.text}`}
+        attrs-data-testid={`Rectangle - ${nodeLabel?.text}`}
         attrs-data-testselected={`${node.selected}`}
         attrs-data-nodeid={node.id}
         attrs-data-descriptionid={node.descriptionId}>
@@ -96,7 +102,6 @@ export class RectangleView extends RectangularNodeView {
         {renderedNodeLabel}
         {headerSeparator}
         {renderedChildren}
-        {context.renderChildren(node)}
       </g>
     );
   }
