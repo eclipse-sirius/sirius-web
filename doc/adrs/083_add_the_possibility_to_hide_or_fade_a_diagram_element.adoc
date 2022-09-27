@@ -1,0 +1,58 @@
+= ADR-083 - Add the possibility to hide or fade a diagram element
+
+== Context 
+
+Sirius Web displays all elements of a diagram but in large diagram, the user may want to focus only on certain elements that are more relevant to its use.
+
+== Decision
+
+We will add to diagram elements a new property `state: ViewModifier`.
+The state can either be `Normal`, `Faded` or `Hidden`.
+The value `Faded` is used to keep the element visible but more attenuated (transparency or shades of gray). 
+The value `Hidden` is used to totally hide the diagram element and make the layout algorithm ignore it. 
+
+For the propagation of the visibility state, if a diagram element is hidden, all contained nodes and connected edges have to be hidden too.
+If a diagram element is faded, we will not implement the propagation of this property to contained or connected diagram elements.
+This may come in a future iteration.
+
+From the user's point of view, they can hide or fade a diagram element through the UI. 
+If they want to reveal this element, the user has to reveal all hidden/faded elements.
+
+=== Backend
+
+==== Auto-layout
+
+In Sirius Web, the auto-layout is managed by ELK. 
+Sirius gives to ELK the graph and get from ELK a layouted graph. 
+This is this layouted graph that is saved in database. 
+When an element is hidden, we need to keep it in memory to allow the user to display it again. 
+
+For that, we need to make these hidden elements persist after the auto-layout was applied. 
+We can use the https://www.eclipse.org/elk/reference/options/org-eclipse-elk-noLayout.html[`noLayout`] on graphical elements (node, border nodes, edges) to tell ELK to ignore these elements when calculating the layout but to keep them in the diagram.
+
+Concerning faded graphic elements, they are still visible (from the user point of view) so the auto-layout will be applied.
+
+==== Data Structure
+
+The diagram data structure needs to be evolved to represent these two new states. 
+
+The reason a node should not be displayed may be that the user has chosen to hide or fade it, or it may be caused by the state propagation of neighboring nodes.
+We need for the frontend to know which modifier(s) the user applied to the node but we also need the state of the node according to the user modifiers as well as the propagation.
+
+Diagram elements, `Node` and `Edge` will have two new attributes.
+The first one, `Set<ViewModifier> modifiers`, will store all modifiers applied by the user.
+The second one, `ViewModifier state`, will store the computed state of the element according to user modifiers and state propagation.
+
+
+=== Frontend
+
+The palette will show a drop-down button allowing to hide or to fade the selected element.
+The toolbar will propose two buttons: one to reveal all hidden elements and the other to reveal all faded elements.
+The code of the palette and of the toolbar must be modified to add these new buttons.
+
+If an element has for state `Hidden` then it is not sent to Sprotty.
+This means that it will not appear in the diagram displayed to the user.
+
+== Status
+
+Accepted

@@ -12,6 +12,7 @@
 - [ADR-080] Add support for styles preview in FormDescriptionEditor
 - [ADR-081] Add support for multi-groups in Form/FormDescriptionEditor
 - [ADR-082]Add support for optional text completion on textfield widgets
+- [ADR-083] Add the possibility to hide or fade a diagram element
 
 === Breaking changes
 
