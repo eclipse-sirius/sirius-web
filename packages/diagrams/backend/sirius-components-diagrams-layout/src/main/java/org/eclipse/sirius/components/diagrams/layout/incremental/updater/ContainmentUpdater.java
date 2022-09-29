@@ -86,15 +86,27 @@ public class ContainmentUpdater {
 
     private boolean shouldUpdate(IContainerLayoutData container) {
         boolean shouldUpdate = true;
+        boolean isLabelContained = this.isLabelContained(container);
+        if (!(isLabelContained && this.isLabelLargerThanNode(container))) {
+            if (container instanceof NodeLayoutData) {
+                NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
+                shouldUpdate = !(nodeLayoutData.isResizedByUser() && this.hasEveryChildWithinItsBounds(nodeLayoutData));
+            }
 
-        if (container instanceof NodeLayoutData) {
-            NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            shouldUpdate = !(nodeLayoutData.isResizedByUser() && this.hasEveryChildWithinItsBounds(nodeLayoutData));
+            shouldUpdate = shouldUpdate && (!container.getChildrenNodes().isEmpty() || isLabelContained);
         }
 
-        shouldUpdate = shouldUpdate && (!container.getChildrenNodes().isEmpty() || this.isLabelContained(container));
-
         return shouldUpdate;
+    }
+
+    private boolean isLabelLargerThanNode(IContainerLayoutData container) {
+        if (container instanceof NodeLayoutData) {
+            NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
+            double labelWidth = nodeLayoutData.getLabel().getTextBounds().getSize().getWidth() + DEFAULT_NODE_LABELS_PADDING;
+            double nodeWidth = nodeLayoutData.getSize().getWidth();
+            return labelWidth > nodeWidth;
+        }
+        return false;
     }
 
     private boolean hasEveryChildWithinItsBounds(NodeLayoutData nodeLayoutData) {
