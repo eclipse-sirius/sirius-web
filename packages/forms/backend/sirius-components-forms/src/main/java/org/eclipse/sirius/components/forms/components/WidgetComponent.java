@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.ListDescription;
@@ -94,6 +95,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof TreeDescription) {
             TreeComponentProps treeComponentProps = new TreeComponentProps(variableManager, (TreeDescription) widgetDescription);
             element = new Element(TreeComponent.class, treeComponentProps);
+        } else if (widgetDescription instanceof ImageDescription) {
+            ImageComponentProps imageComponentProps = new ImageComponentProps(variableManager, (ImageDescription) widgetDescription);
+            element = new Element(ImageComponent.class, imageComponentProps);
         } else {
             String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
             this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());

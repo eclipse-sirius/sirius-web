@@ -23,6 +23,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CloseIcon from '@material-ui/icons/Close';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import ImageIcon from '@material-ui/icons/Image';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
 import LinkIcon from '@material-ui/icons/Link';
 import PieChartIcon from '@material-ui/icons/PieChart';
@@ -386,6 +387,17 @@ export const FormDescriptionEditorRepresentation = ({
             <Button width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
               Button
+            </Typography>
+          </div>
+          <div
+            id="Image"
+            data-testid="FormDescriptionEditor-Image"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
+            <Typography variant="caption" gutterBottom>
+              Image
             </Typography>
           </div>
           <div

@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Image;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.Link;
@@ -87,6 +88,7 @@ import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
@@ -137,7 +139,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(13);
+        assertThat(group.getWidgets()).hasSize(14);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -336,7 +338,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(13);
+        assertThat(group.getWidgets()).hasSize(14);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -350,6 +352,7 @@ public class DynamicFormsTests {
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
         org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
+        Image image = (Image) group.getWidgets().get(13);
 
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
@@ -404,6 +407,10 @@ public class DynamicFormsTests {
         this.checkBarChart(chartWidgetWithBarChart, true, false);
 
         this.checkPieChart(chartWidgetWithPieChart, true, false);
+
+        assertThat(image.getLabel()).isEqualTo("Icon for EClass Class1"); //$NON-NLS-1$
+        assertThat(image.getUrl()).isEqualTo("icons/Class1.svg"); //$NON-NLS-1$
+        assertThat(image.getMaxWidth()).isEqualTo("30%"); //$NON-NLS-1$
     }
 
     private void renderEcoreFormWithStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
@@ -436,7 +443,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(13);
+        assertThat(group.getWidgets()).hasSize(14);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -529,7 +536,7 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClasses[0]);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(13);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(14);
 
         this.checkValuesEditing(this.eClasses[0], form);
     }
@@ -549,7 +556,7 @@ public class DynamicFormsTests {
 
     private void checkValuesEditing(EClass eClass, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(13);
+        assertThat(group.getWidgets()).hasSize(14);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
@@ -647,6 +654,8 @@ public class DynamicFormsTests {
         formDescription.getWidgets().add(linkDescription);
         ListDescription listDescription = this.createList(withStyle, withConditionalStyle);
         formDescription.getWidgets().add(listDescription);
+        ImageDescription imageDescription = this.createImage();
+        formDescription.getWidgets().add(imageDescription);
         return formDescription;
     }
 
@@ -988,6 +997,15 @@ public class DynamicFormsTests {
         }
 
         return listDescription;
+    }
+
+    private ImageDescription createImage() {
+        ImageDescription imageDescription = ViewFactory.eINSTANCE.createImageDescription();
+        imageDescription.setName("EClass Icon"); //$NON-NLS-1$
+        imageDescription.setLabelExpression("aql:'Icon for EClass ' + self.name"); //$NON-NLS-1$
+        imageDescription.setUrlExpression("aql:'icons/' + self.name + '.svg'"); //$NON-NLS-1$
+        imageDescription.setMaxWidthExpression("30%"); //$NON-NLS-1$
+        return imageDescription;
     }
 
     private void setFontStyle(LabelStyle labelStyle) {

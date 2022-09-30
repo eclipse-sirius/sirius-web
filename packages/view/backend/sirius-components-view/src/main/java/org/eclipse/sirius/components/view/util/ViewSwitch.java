@@ -54,6 +54,7 @@ import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
@@ -594,6 +595,15 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseButtonDescription(buttonDescription);
             if (result == null)
                 result = this.caseWidgetDescription(buttonDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.IMAGE_DESCRIPTION: {
+            ImageDescription imageDescription = (ImageDescription) theEObject;
+            T result = this.caseImageDescription(imageDescription);
+            if (result == null)
+                result = this.caseWidgetDescription(imageDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -2087,6 +2097,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseButtonDescription(ButtonDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Image Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Image Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseImageDescription(ImageDescription object) {
         return null;
     }
 

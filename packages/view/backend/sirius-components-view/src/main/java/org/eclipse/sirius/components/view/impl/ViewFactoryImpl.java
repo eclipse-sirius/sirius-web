@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
@@ -204,6 +205,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createFlexboxContainerDescription();
         case ViewPackage.BUTTON_DESCRIPTION:
             return this.createButtonDescription();
+        case ViewPackage.IMAGE_DESCRIPTION:
+            return this.createImageDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
             return this.createTextfieldDescriptionStyle();
         case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
@@ -1032,6 +1035,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ButtonDescription createButtonDescription() {
         ButtonDescriptionImpl buttonDescription = new ButtonDescriptionImpl();
         return buttonDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ImageDescription createImageDescription() {
+        ImageDescriptionImpl imageDescription = new ImageDescriptionImpl();
+        return imageDescription;
     }
 
     /**

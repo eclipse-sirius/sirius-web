@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.ListDescription;
@@ -553,6 +554,26 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         // @formatter:on
 
         return builder.build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseImageDescription(org.eclipse.sirius.components.view.ImageDescription imageDecription) {
+        String descriptionId = this.getDescriptionId(imageDecription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(imageDecription.getLabelExpression());
+        StringValueProvider urlProvider = this.getStringValueProvider(imageDecription.getUrlExpression());
+        StringValueProvider maxWidthProvider = this.getStringValueProvider(imageDecription.getMaxWidthExpression());
+        // @formatter:off
+        return ImageDescription.newImageDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .urlProvider(urlProvider)
+                .maxWidthProvider(maxWidthProvider)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "") //$NON-NLS-1$
+                .messageProvider(object -> "") //$NON-NLS-1$
+                .build();
+        // @formatter:on
     }
 
     private IStatus handleItemDeletion(VariableManager variableManager) {

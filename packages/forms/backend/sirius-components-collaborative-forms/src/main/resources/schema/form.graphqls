@@ -316,6 +316,15 @@ type TreeNode {
   selectable: Boolean!
 }
 
+type Image implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  url: String!
+  maxWidth: String
+}
+
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!

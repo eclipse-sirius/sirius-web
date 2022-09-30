@@ -18,6 +18,7 @@
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1453[#1453] [diagram] Add new arrow styles Circle, FillCircle and CrossedCircle
+- https://github.com/eclipse-sirius/sirius-components/issues/1364[#1364] [forms] Add support for a basic image widget
 
 == v2022.11.0
 

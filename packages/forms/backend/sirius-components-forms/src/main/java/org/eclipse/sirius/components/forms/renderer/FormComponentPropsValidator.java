@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.forms.components.GroupComponent;
 import org.eclipse.sirius.components.forms.components.GroupComponentProps;
 import org.eclipse.sirius.components.forms.components.IfComponent;
 import org.eclipse.sirius.components.forms.components.IfComponentProps;
+import org.eclipse.sirius.components.forms.components.ImageComponent;
+import org.eclipse.sirius.components.forms.components.ImageComponentProps;
 import org.eclipse.sirius.components.forms.components.LabelWidgetComponent;
 import org.eclipse.sirius.components.forms.components.LabelWidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.LinkComponent;
@@ -114,6 +116,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof FlexboxContainerComponentProps;
         } else if (TreeComponent.class.equals(componentType)) {
             checkValidProps = props instanceof TreeComponentProps;
+        } else if (ImageComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof ImageComponentProps;
         }
 
         return checkValidProps;

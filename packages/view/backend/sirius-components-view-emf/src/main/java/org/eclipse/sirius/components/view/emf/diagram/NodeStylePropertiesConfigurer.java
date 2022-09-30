@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.forms.description.AbstractControlDescriptio
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
+import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
@@ -94,19 +95,19 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private FormDescription getImageNodeStyleProperties() {
         String formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString(); //$NON-NLS-1$
 
-        // @formatter:off
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.createShapeSelectionField(ViewPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
+        controls.add(this.createShapePreviewField());
         controls.addAll(this.getGeneralControlDescription());
-
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
+        // @formatter:off
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
                     .filter(self -> self instanceof List<?>)
                     .map(self -> (List<?>) self)
                     .flatMap(self -> self.stream().findFirst())
-                    .filter(self -> self instanceof ImageNodeStyleDescription)
+                    .filter(ImageNodeStyleDescription.class::isInstance)
                     .isPresent();
 
         return FormDescription.newFormDescription(formDescriptionId)
@@ -398,6 +399,29 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .orElse(EMPTY))
                 .newValueHandler(this.getNewShapeValueHandler())
                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .build();
+        // @formatter:on
+    }
+
+    private ImageDescription createShapePreviewField() {
+        // @formatter:off
+        return ImageDescription.newImageDescription("nodestyle.shapePreview") //$NON-NLS-1$
+                .idProvider(variableManager -> "nodestyle.shapePreview") //$NON-NLS-1$
+                .labelProvider(variableManager -> "Shape Preview") //$NON-NLS-1$
+                .urlProvider(variableManager -> {
+                    Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+                    if (optionalEditingContext.isPresent()) {
+                        var optionalShape = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape);
+                        if (optionalShape.isPresent()) {
+                            return String.format("/custom/%s/%s", optionalEditingContext.get().getId(), optionalShape.get()); //$NON-NLS-1$
+                        }
+                    }
+                    return "";   //$NON-NLS-1$
+                })
+                .maxWidthProvider(variableManager -> "300px") //$NON-NLS-1$
+                .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();

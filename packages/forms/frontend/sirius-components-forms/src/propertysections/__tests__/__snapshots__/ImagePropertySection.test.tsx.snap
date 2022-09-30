@@ -1,0 +1,85 @@
+// Vitest Snapshot v1
+
+exports[`render image widget 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-3"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myImage
+      </h6>
+      <div
+        class="makeStyles-subscribers-4"
+      />
+    </div>
+    <div
+      class="makeStyles-container-1 makeStyles-container-2"
+    >
+      <img
+        id="imageId"
+        src="https://www.eclipse.org/sirius/common_assets/images/logos/logo_sirius.png"
+        width="100%"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`render image widget with maxWidth 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-3"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myImage
+      </h6>
+      <div
+        class="makeStyles-subscribers-4"
+      />
+    </div>
+    <div
+      class="makeStyles-container-1 makeStyles-container-2"
+    >
+      <img
+        id="imageId"
+        src="https://www.eclipse.org/sirius/common_assets/images/logos/logo_sirius.png"
+        width="100%"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`render image widget without maxWidth 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-8"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myImage
+      </h6>
+      <div
+        class="makeStyles-subscribers-9"
+      />
+    </div>
+    <div
+      class="makeStyles-container-6 makeStyles-container-7"
+    >
+      <img
+        id="imageId"
+        src="https://www.eclipse.org/sirius/common_assets/images/logos/logo_sirius.png"
+        width="100%"
+      />
+    </div>
+  </div>
+</div>
+`;

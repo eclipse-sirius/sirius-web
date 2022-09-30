@@ -40,6 +40,7 @@ import {
   GQLMoveWidgetMutationVariables,
   GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
+import { ImageWidget } from './ImageWidget';
 import { LabelWidget } from './LabelWidget';
 import { LinkWidget } from './LinkWidget';
 import { ListWidget } from './ListWidget';
@@ -377,6 +378,16 @@ export const WidgetEntry = ({
         widget={widget as GQLFormDescriptionEditorFlexboxContainer}
         selection={selection}
         setSelection={setSelection}
+      />
+    );
+  } else if (widget.kind === 'Image') {
+    widgetElement = (
+      <ImageWidget
+        data-testid={widget.id}
+        widget={widget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
       />
     );
   }
