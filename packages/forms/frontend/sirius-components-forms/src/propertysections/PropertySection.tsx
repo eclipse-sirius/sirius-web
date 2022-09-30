@@ -15,6 +15,7 @@ import {
   GQLChartWidget,
   GQLCheckbox,
   GQLFlexboxContainer,
+  GQLImage,
   GQLLabelWidget,
   GQLLink,
   GQLList,
@@ -30,6 +31,7 @@ import { ButtonPropertySection } from './ButtonPropertySection';
 import { ChartWidgetPropertySection } from './ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './CheckboxPropertySection';
 import { FlexboxContainerPropertySection } from './FlexboxContainerPropertySection';
+import { ImagePropertySection } from './ImagePropertySection';
 import { LabelWidgetPropertySection } from './LabelWidgetPropertySection';
 import { LinkPropertySection } from './LinkPropertySection';
 import { ListPropertySection } from './ListPropertySection';
@@ -54,6 +56,7 @@ const isChartWidget = (widget: GQLWidget): widget is GQLChartWidget => widget.__
 const isFlexboxContainer = (widget: GQLWidget): widget is GQLFlexboxContainer =>
   widget.__typename === 'FlexboxContainer';
 const isTree = (widget: GQLWidget): widget is GQLTree => widget.__typename === 'TreeWidget';
+const isImage = (widget: GQLWidget): widget is GQLImage => widget.__typename === 'Image';
 
 export const PropertySection = ({
   editingContextId,
@@ -170,6 +173,8 @@ export const PropertySection = ({
     propertySection = (
       <TreePropertySection widget={widget} key={widget.id} subscribers={subscribers} setSelection={setSelection} />
     );
+  } else if (isImage(widget)) {
+    propertySection = <ImagePropertySection widget={widget} key={widget.id} />;
   } else {
     console.error(`Unsupported widget type ${widget.__typename}`);
   }

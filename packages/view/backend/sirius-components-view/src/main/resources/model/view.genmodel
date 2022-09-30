@@ -254,6 +254,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ButtonDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ButtonDescription/conditionalStyles"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//ImageDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ImageDescription/urlExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ImageDescription/maxWidthExpression"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextfieldDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/backgroundColor"/>

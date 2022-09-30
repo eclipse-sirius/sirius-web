@@ -96,6 +96,9 @@ export const formRefreshedEventPayloadFragment = `
     ... on TreeWidget {
       ...treeWidgetFields
     }
+    ... on Image {
+      ...imageFields
+    }
   }
 
   fragment commonFields on Widget {
@@ -354,4 +357,12 @@ export const formRefreshedEventPayloadFragment = `
       selectable
     }
   }
+
+  fragment imageFields on Image {
+    label
+    iconURL
+    url
+    maxWidth
+  }
+
 `;

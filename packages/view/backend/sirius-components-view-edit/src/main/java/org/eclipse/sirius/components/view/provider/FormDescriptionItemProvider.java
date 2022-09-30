@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.ListDescription;
@@ -173,6 +174,9 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
         multiSelectDescription.setStyle(ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, multiSelectDescription));
+
+        ImageDescription imageDescription = ViewFactory.eINSTANCE.createImageDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, imageDescription));
 
         TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
         textareaDescription.setStyle(ViewFactory.eINSTANCE.createTextareaDescriptionStyle());

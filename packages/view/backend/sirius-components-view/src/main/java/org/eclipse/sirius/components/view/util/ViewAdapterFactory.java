@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
@@ -389,6 +390,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseButtonDescription(ButtonDescription object) {
             return ViewAdapterFactory.this.createButtonDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseImageDescription(ImageDescription object) {
+            return ViewAdapterFactory.this.createImageDescriptionAdapter();
         }
 
         @Override
@@ -1608,6 +1614,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createButtonDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ImageDescription
+     * <em>Image Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ImageDescription
+     * @generated
+     */
+    public Adapter createImageDescriptionAdapter() {
         return null;
     }
 

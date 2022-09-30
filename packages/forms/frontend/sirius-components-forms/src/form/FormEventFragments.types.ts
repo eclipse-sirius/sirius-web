@@ -366,3 +366,8 @@ export interface GQLTreeNode {
   imageURL: string;
   selectable: Boolean;
 }
+
+export interface GQLImage extends GQLWidget {
+  url: string;
+  maxWidth: string;
+}

@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Image;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.MultiSelect;
@@ -46,6 +47,7 @@ import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.elements.FormElementProps;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
+import org.eclipse.sirius.components.forms.elements.ImageElementProps;
 import org.eclipse.sirius.components.forms.elements.LabelWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.LinkElementProps;
 import org.eclipse.sirius.components.forms.elements.ListElementProps;
@@ -109,6 +111,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateFlexboxContainer((FlexboxContainerElementProps) props, children);
         } else if (TreeElementProps.TYPE.equals(type) && props instanceof TreeElementProps) {
             object = this.instantiateTree((TreeElementProps) props, children);
+        } else if (ImageElementProps.TYPE.equals(type) && props instanceof ImageElementProps) {
+            object = this.instantiateImage((ImageElementProps) props, children);
         }
 
         return object;
@@ -485,6 +489,25 @@ public class FormElementFactory implements IElementFactory {
                 .diagnostics(diagnostics)
                 .build();
        // @formatter:on
+    }
+
+    private Image instantiateImage(ImageElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        Image.Builder imagebuilder = Image.newImage(props.getId())
+                 .label(props.getLabel())
+                 .url(props.getUrl())
+                 .diagnostics(diagnostics);
+       // @formatter:on
+
+        if (props.getIconURL() != null) {
+            imagebuilder.iconURL(props.getIconURL());
+        }
+        if (props.getMaxWidth() != null) {
+            imagebuilder.maxWidth(props.getMaxWidth());
+        }
+        return imagebuilder.build();
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {

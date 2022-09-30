@@ -1579,6 +1579,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ImageDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ImageDescriptionItemProvider imageDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ImageDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createImageDescriptionAdapter() {
+        if (this.imageDescriptionItemProvider == null) {
+            this.imageDescriptionItemProvider = new ImageDescriptionItemProvider(this);
+        }
+
+        return this.imageDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1752,6 +1775,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.flexboxContainerDescriptionItemProvider.dispose();
         if (this.buttonDescriptionItemProvider != null)
             this.buttonDescriptionItemProvider.dispose();
+        if (this.imageDescriptionItemProvider != null)
+            this.imageDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionStyleItemProvider != null)
             this.textfieldDescriptionStyleItemProvider.dispose();
         if (this.conditionalTextfieldDescriptionStyleItemProvider != null)

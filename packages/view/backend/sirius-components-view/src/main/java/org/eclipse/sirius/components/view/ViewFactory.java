@@ -568,6 +568,14 @@ public interface ViewFactory extends EFactory {
     ButtonDescription createButtonDescription();
 
     /**
+     * Returns a new object of class '<em>Image Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Image Description</em>'.
+     * @generated
+     */
+    ImageDescription createImageDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
