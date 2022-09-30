@@ -17,6 +17,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1339[#1339] [layout] Add concept of layout strategy. The purpose of layout strategy is to split the style of a node from the way a node lays out its children.
+- https://github.com/eclipse-sirius/sirius-components/issues/1385[#1385] [releng] Migrate Sirius Web to Sirius Component. The purpose of this migration is to facilate the maintenance of these two projects (one pull request instead of two different).
 
 === New Features
 

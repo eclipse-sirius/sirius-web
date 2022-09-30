@@ -1,0 +1,8 @@
+= sirius-web-spring
+
+== Goal
+
+This project provides some core Spring components for a Sirius Web server.
+
+== Dependencies
+

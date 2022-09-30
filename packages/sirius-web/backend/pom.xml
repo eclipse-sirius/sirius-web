@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2022 Obeo.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Obeo - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.eclipse.sirius</groupId>
+	<artifactId>sirius-web-parent</artifactId>
+	<version>2022.9.1</version>
+
+	<name>sirius-web-parent</name>
+	<description>Sirius Web Parent</description>
+	<packaging>pom</packaging>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
+		</repository>
+	</distributionManagement>
+
+	<modules>
+		<module>sirius-web-frontend</module>
+		<module>sirius-web-persistence</module>
+		<module>sirius-web-services-api</module>
+		<module>sirius-web-services</module>
+		<module>sirius-web-graphql-schema</module>
+		<module>sirius-web-graphql</module>
+		<module>sirius-web-spring</module>
+		<module>sirius-web-sample-application</module>
+	</modules>
+</project>

@@ -235,6 +235,41 @@
 			<artifactId>sirius-components-view-edit</artifactId>
 			<version>2022.9.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-persistence</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-graphql-schema</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-graphql</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-services-api</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-services</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-spring</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-sample-application</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

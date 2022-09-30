@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019, 2022 Obeo.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Obeo - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.2</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>org.eclipse.sirius</groupId>
+	<artifactId>sirius-web-sample-application</artifactId>
+	<version>2022.9.1</version>
+	<name>sirius-web-sample-application</name>
+	<description>Sirius Web Sample Application</description>
+
+	<properties>
+		<java.version>11</java.version>
+		<flow.version>1.0.10-SNAPSHOT</flow.version>
+		<bpmn.version>4.0.3-SNAPSHOT</bpmn.version>
+		<eef.version>2.1.5-SNAPSHOT</eef.version>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
+		</repository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>Central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>github-flow</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
+		</repository>
+		<repository>
+			<id>github-bpmn</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/BPMN-Designer</url>
+		</repository>
+ 		<repository>
+ 			<id>Eclipse EEF</id>
+ 			<name>EEF Repository - Snapshots</name>
+ 			<url>https://repo.eclipse.org/content/repositories/eef-snapshots/</url>
+ 			<snapshots>
+ 				<enabled>true</enabled>
+ 			</snapshots>
+ 		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-starter</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-graphql</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-services</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-spring</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-frontend</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-graphiql</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-graphql-voyager</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-domain-edit</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-domain-design</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-edit</artifactId>
+			<version>2022.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
+			<artifactId>fr.obeo.dsl.designer.sample.flow</artifactId>
+			<version>${flow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
+			<artifactId>fr.obeo.dsl.designer.sample.flow.edit</artifactId>
+			<version>${flow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
+			<artifactId>fr.obeo.dsl.designer.sample.flow.design</artifactId>
+			<version>${flow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>BPMN2</groupId>
+			<artifactId>org.obeonetwork.dsl.bpmn2</artifactId>
+			<version>${bpmn.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>BPMN2</groupId>
+			<artifactId>org.obeonetwork.dsl.bpmn2.edit</artifactId>
+			<version>${bpmn.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>BPMN2</groupId>
+			<artifactId>org.obeonetwork.dsl.bpmn2.design</artifactId>
+			<version>${bpmn.version}</version>
+		</dependency>
+ 		<dependency>
+ 			 <groupId>org.eclipse.eef</groupId>
+ 			<artifactId>org.eclipse.eef.core</artifactId>
+ 			<version>${eef.version}</version>
+ 		</dependency>
+ 		<dependency>
+ 			 <groupId>org.eclipse.eef</groupId>
+ 			<artifactId>org.eclipse.eef.common</artifactId>
+ 			<version>${eef.version}</version>
+ 		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
