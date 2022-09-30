@@ -1,0 +1,7 @@
+= sirius-web-graphql-schema
+
+== Goal
+
+This project is responsible for the creation of our GraphQL schema
+
+== Dependencies

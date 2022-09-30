@@ -1,0 +1,10 @@
+= sirius-web-graphql
+
+== Goal
+
+This project provides support for processing GraphQL requests.
+It contains the GraphQL configuration and the various data fetchers.
+
+== Dependencies
+
+- Sirius Web GraphQL Utils

@@ -1,0 +1,149 @@
+extend interface Viewer {
+  project(projectId: ID!): Project
+  projects(page: Int): ViewerProjectConnection!
+}
+
+type ViewerProjectConnection {
+  edges: [ViewerProjectEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ViewerProjectEdge {
+  node: Project!
+}
+
+type Project {
+  id: ID!
+  name: String!
+  currentEditingContext: EditingContext!
+  owner: Profile!
+  visibility: Visibility!
+}
+
+type Profile {
+  id: ID!
+  username: String!
+}
+
+enum Visibility {
+  PRIVATE
+  PUBLIC
+}
+
+type User implements Viewer {
+  id: ID!
+  username: String!
+  editingContext(editingContextId: ID!): EditingContext
+  project(projectId: ID!): Project
+  projects(page: Int): ViewerProjectConnection!
+}
+
+extend type Mutation {
+  createProject(input: CreateProjectInput!): CreateProjectPayload!
+  deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
+  renameProject(input: RenameProjectInput!): RenameProjectPayload!
+  uploadProject(input: UploadProjectInput!): UploadProjectPayload!
+  deleteDocument(input: DeleteDocumentInput!): DeleteDocumentPayload!
+  deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
+  renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
+  renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
+}
+
+input CreateProjectInput {
+  id: ID!
+  name: String!
+  visibility: Visibility!
+}
+
+union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload
+
+type CreateProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
+
+input DeleteProjectInput {
+  id: ID!
+  projectId: ID!
+}
+
+union DeleteProjectPayload = ErrorPayload|DeleteProjectSuccessPayload
+
+type DeleteProjectSuccessPayload {
+  id: ID!
+  viewer: Viewer!
+}
+
+input RenameProjectInput {
+  id: ID!
+  projectId: ID!
+  newName: String!
+}
+
+union RenameProjectPayload = ErrorPayload | RenameProjectSuccessPayload
+
+type RenameProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
+
+input UploadProjectInput {
+  id: ID!
+  file: Upload!
+}
+
+union UploadProjectPayload = ErrorPayload | UploadProjectSuccessPayload
+
+type UploadProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
+
+input DeleteDocumentInput {
+  id: ID!
+  documentId: ID!
+}
+
+union DeleteDocumentPayload = ErrorPayload | DeleteDocumentSuccessPayload
+
+type DeleteDocumentSuccessPayload {
+  id: ID!
+}
+
+input DeleteRepresentationInput {
+  id: ID!
+  representationId: ID!
+}
+
+union DeleteRepresentationPayload = ErrorPayload | DeleteRepresentationSuccessPayload
+
+type DeleteRepresentationSuccessPayload {
+  id: ID!
+  representationId: ID!
+}
+
+input RenameDocumentInput {
+  id: ID!
+  documentId: ID!
+  newName: String!
+}
+
+union RenameDocumentPayload = ErrorPayload | RenameDocumentSuccessPayload
+
+type RenameDocumentSuccessPayload {
+  id: ID!
+}
+
+input RenameRepresentationInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  newLabel: String!
+}
+
+union RenameRepresentationPayload = ErrorPayload | RenameRepresentationSuccessPayload
+
+type RenameRepresentationSuccessPayload {
+  id: ID!
+  representation: Representation!
+}
