@@ -1,0 +1,41 @@
+= ADR-075 - Add support for a basic image widget
+
+== Context
+
+The forms DSL currently supports a variety of widgets, but none which can display images.
+
+=== Decision
+
+A basic `Image` widget will be added.
+It will simply display an image from an arbitrary URL (computed by the backend).
+
+The displayed image will not support any user interaction, it will just display an HTML `img` element pointing to the specified image URL.
+
+It will be possible to use it to display any image: ones hosted by the backend itself (i.e. `/api/images/*`), or anywhere else on the web.
+
+The image widget will support an optional `maxWidth` attribute (a string representing https://developer.mozilla.org/en-US/docs/Web/CSS/length[a CSS length]).
+If defined, it will be used to limit the size taken by the image image (through it's width only).
+
+The resulting GraphQL type for the image widget will be:
+
+```
+type Image implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  url: String!
+  maxWidth: String
+}
+```
+
+The widget will be available:
+* in the core forms APIs;
+* in the View DSL for specifying forms (represented by the https://fonts.google.com/icons?selected=Material%20Icons%3Aimage%3A["image" Material Icon]);
+* in the visual form editor  (represented by the https://fonts.google.com/icons?selected=Material%20Icons%3Aimage%3A["image" Material Icon]).
+
+The widget will be used in the properties view for the `ImageNodeStyleDescription` element to preview the selected shape/image for a node.
+
+== Status
+
+Accepted
