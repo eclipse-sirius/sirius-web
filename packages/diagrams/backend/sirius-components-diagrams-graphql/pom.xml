@@ -74,12 +74,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.9.1</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
