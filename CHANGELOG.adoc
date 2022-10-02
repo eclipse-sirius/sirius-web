@@ -2,6 +2,10 @@
 
 == v2023.1.0 (unreleased)
 
+=== Architectural decision records
+
+- [ADR-075] Add support for a basic image widget
+
 === Dependency update
 
 - [backenđ] Upgrade to Apache Batik 1.16.0 (from 1.14.0)
@@ -26,7 +30,7 @@
 - [ADR-072] Add support for the edition of routing points
 - [ADR-073] Add support for intermodel references (inside the same project)
 - [ADR-074] Add support for edge reconnection
- 
+
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
@@ -59,7 +63,6 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Add support for edition of routing points in diagrams
 - https://github.com/eclipse-sirius/sirius-components/issues/1397[1397] [diagram] Add support for reused node descriptions
 - https://github.com/eclipse-sirius/sirius-components/issues/780[#780] [diagram] Add support for edge reconnection. Edge reconnection descriptions can be defined either inside a classical Sirius desktop VSM or, using the View DSL. While using the Sirius desktop VSM you can define a tool to do both target and source reconnection, you will need to define a tool to reconnect the source and another one to reconnect the target using the View DSL
-
 
 == v2022.9.0
 
