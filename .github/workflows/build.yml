@@ -49,8 +49,10 @@ jobs:
 
       - name: Build the frontend packages
         run: |
+          npm install -g yalc
           npm ci
           npx turbo run coverage
+          npx turbo run publish:local
 
       - name: Copy frontend artifacts
         run: |
@@ -62,6 +64,17 @@ jobs:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
         run: mvn -U -B -e clean verify -f packages/pom.xml --settings settings.xml
+
+      - name: Build the vscode extension
+        run: |
+          npx yalc add @eclipse-sirius/sirius-components-core
+          npx yalc add @eclipse-sirius/sirius-components-diagrams
+          npx yalc add @eclipse-sirius/sirius-components-forms
+          npx yalc add @eclipse-sirius/sirius-components-selection
+          npx yalc add @eclipse-sirius/sirius-components-charts
+          npm i
+          npm run compile
+        working-directory: vscode-extension
 
       - name: Store code coverage results
         uses: actions/upload-artifact@v2

@@ -30,6 +30,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1339[#1339] [layout] Add concept of layout strategy. The purpose of layout strategy is to split the style of a node from the way a node lays out its children.
 - https://github.com/eclipse-sirius/sirius-components/issues/1385[#1385] [releng] Migrate the backend and frontend code of Sirius Web to Sirius Component. The purpose of this migration is to facilitate the maintenance of these two projects (one pull request instead of two different).
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Edge routing points are not reset when one of the edge end is moving
+- https://github.com/eclipse-sirius/sirius-components/issues/1387[#1387] [releng] Migrate VSCode Extension to Sirius Components.
 
 
 === New Features
