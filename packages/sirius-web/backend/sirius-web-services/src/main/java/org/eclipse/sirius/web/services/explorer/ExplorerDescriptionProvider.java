@@ -113,7 +113,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
             id = ((RepresentationMetadata) self).getId();
         } else if (self instanceof Resource) {
             Resource resource = (Resource) self;
-            id = resource.getURI().toString();
+            id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
             id = this.objectService.getId(self);
         }
@@ -201,7 +201,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         return Optional.ofNullable(imageURL).orElse(ImageConstants.DEFAULT_SVG);
     }
 
-    private List<Object> getElements(VariableManager variableManager) {
+    private List<Resource> getElements(VariableManager variableManager) {
         var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
         // @formatter:off
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
@@ -209,11 +209,19 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
-        // @formatter:on
 
         if (optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
-            return new ArrayList<>(resourceSet.getResources());
+            List<Resource> resources = resourceSet.getResources().stream()
+                    .filter(res -> {
+                        if (res.getURI() != null) {
+                            return EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme());
+                        }
+                        return false;
+                    })
+                    .collect(Collectors.toList());
+                // @formatter:on
+            return resources;
         }
         return new ArrayList<>();
     }

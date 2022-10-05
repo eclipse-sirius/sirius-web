@@ -19,20 +19,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
-import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
@@ -62,21 +56,15 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final IDocumentRepository documentRepository;
 
-    private final IEditingContextEPackageService editingContextEPackageService;
-
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    private final EPackage.Registry globalEPackageRegistry;
+    private final EditingDomainFactoryService editingDomainFactoryService;
 
     private final Timer timer;
 
-    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingContextEPackageService editingContextEPackageService,
-            ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry, MeterRegistry meterRegistry) {
+    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, EditingDomainFactoryService editingDomainFactoryService,
+            MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
-        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
+        this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
@@ -93,20 +81,13 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         this.logger.debug("Loading the editing context {}", editingContextId); //$NON-NLS-1$
 
-        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
+        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactoryService.createEditingDomain(editingContextId);
         ResourceSet resourceSet = editingDomain.getResourceSet();
-        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
-
-        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
-        this.globalEPackageRegistry.forEach(ePackageRegistry::put);
-        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
-        additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
-        resourceSet.setPackageRegistry(ePackageRegistry);
 
         List<DocumentEntity> documentEntities = new IDParser().parse(editingContextId).map(this.documentRepository::findAllByProjectId).orElseGet(List::of);
         for (DocumentEntity documentEntity : documentEntities) {
-            URI uri = URI.createURI(documentEntity.getId().toString());
-            JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+            Resource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
+
             try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
                 resourceSet.getResources().add(resource);
                 resource.load(inputStream, null);
@@ -117,6 +98,10 @@ public class EditingContextSearchService implements IEditingContextSearchService
                 resourceSet.getResources().remove(resource);
             }
         }
+
+        // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
+        // of inter-resources references
+        resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId); //$NON-NLS-1$
 

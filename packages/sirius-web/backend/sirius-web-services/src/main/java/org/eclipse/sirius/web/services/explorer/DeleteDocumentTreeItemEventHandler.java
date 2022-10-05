@@ -25,6 +25,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -69,7 +70,7 @@ public class DeleteDocumentTreeItemEventHandler implements IDeleteTreeItemHandle
             DocumentEntity documentEntity = optionalDocumentEntity.get();
 
             ResourceSet resourceSet = editingDomain.getResourceSet();
-            URI uri = URI.createURI(documentEntity.getId().toString());
+            URI uri = new JSONResourceFactory().createResourceURI(documentEntity.getId().toString());
 
             // @formatter:off
                 List<Resource> resourcesToDelete = resourceSet.getResources().stream()

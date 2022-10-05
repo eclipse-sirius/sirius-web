@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.sirius.web.services.explorer;
 
 import java.util.ArrayList;
@@ -109,7 +108,7 @@ public class ExplorerTreePathProvider implements ITreePathProvider {
         String result = null;
         if (object instanceof Resource) {
             Resource resource = (Resource) object;
-            result = resource.getURI().toString();
+            result = resource.getURI().path().substring(1);
         } else if (object instanceof EObject) {
             result = this.objectService.getId(object);
         }

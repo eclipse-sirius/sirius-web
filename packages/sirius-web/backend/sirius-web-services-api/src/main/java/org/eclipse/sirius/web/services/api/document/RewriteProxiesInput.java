@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,32 +13,28 @@
 package org.eclipse.sirius.web.services.api.document;
 
 import java.text.MessageFormat;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.graphql.api.UploadFile;
 
 /**
- * The input object for the upload document mutation.
+ * The input object for the operation to rewrite broken proxy URIs in documents.
  *
- * @author hmarchadour
+ * @author pcdavid
  */
-public final class UploadDocumentInput implements IInput {
-
+public final class RewriteProxiesInput implements IInput {
     private final UUID id;
 
     private final String editingContextId;
 
-    private final UploadFile file;
+    private final Map<String, String> oldDocumentIdToNewDocumentId;
 
-    private final boolean checkProxies;
-
-    public UploadDocumentInput(UUID id, String editingContextId, UploadFile file, boolean checkProxies) {
+    public RewriteProxiesInput(UUID id, String editingContextId, Map<String, String> oldDocumentIdToNewDocumentId) {
         this.id = Objects.requireNonNull(id);
         this.editingContextId = Objects.requireNonNull(editingContextId);
-        this.file = Objects.requireNonNull(file);
-        this.checkProxies = checkProxies;
+        this.oldDocumentIdToNewDocumentId = Objects.requireNonNull(oldDocumentIdToNewDocumentId);
     }
 
     @Override
@@ -46,22 +42,17 @@ public final class UploadDocumentInput implements IInput {
         return this.id;
     }
 
-    public boolean isCheckProxies() {
-        return this.checkProxies;
-    }
-
     public String getEditingContextId() {
         return this.editingContextId;
     }
 
-    public UploadFile getFile() {
-        return this.file;
+    public Map<String, String> getOldDocumentIdToNewDocumentId() {
+        return this.oldDocumentIdToNewDocumentId;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, file: '{'name: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.file.getName());
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, oldDocumentIdToNewDocumentId: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.oldDocumentIdToNewDocumentId);
     }
-
 }

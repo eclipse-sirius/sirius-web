@@ -89,7 +89,18 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private List<DocumentEntity> persist(EditingDomain editingDomain) {
         List<DocumentEntity> result = new ArrayList<>();
-        List<Resource> resources = editingDomain.getResourceSet().getResources();
+
+        // @formatter:off
+        List<Resource> resources = editingDomain.getResourceSet().getResources().stream()
+            .filter(res -> {
+                if (res.getURI() != null) {
+                    return EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme());
+                }
+                return false;
+            })
+            .collect(Collectors.toList());
+        // @formatter:on
+
         for (Resource resource : resources) {
             this.save(resource).ifPresent(result::add);
         }
@@ -115,7 +126,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
             String content = new String(bytes);
 
             // @formatter:off
-            result = new IDParser().parse(resource.getURI().toString())
+            result = new IDParser().parse(resource.getURI().path().substring(1))
                     .flatMap(this.documentRepository::findById)
                     .map(entity -> {
                         entity.setContent(content);

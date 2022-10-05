@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -26,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.dto.DeleteDocumentInput;
 import org.eclipse.sirius.components.collaborative.dto.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
@@ -63,7 +62,7 @@ public class DeleteDocumentEventHandlerTests {
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
-        Resource resource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(document.getId().toString()));
+        Resource resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
         editingDomain.getResourceSet().getResources().add(resource);
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 

@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -33,7 +32,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
@@ -136,9 +135,8 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
             var optionalDocument = this.documentService.createDocument(editingContextId, name, stereotypeDescription.getContent());
             if (optionalDocument.isPresent()) {
                 Document document = optionalDocument.get();
-                URI uri = URI.createURI(document.getId().toString());
 
-                JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+                JsonResource resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
                 try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
                     resource.load(inputStream, null);
                 } catch (IOException exception) {

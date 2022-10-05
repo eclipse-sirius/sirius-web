@@ -19,14 +19,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
@@ -50,7 +49,7 @@ public class EditingContextPersistenceServiceTests {
 
         String name = "New Document"; //$NON-NLS-1$
         UUID id = UUID.randomUUID();
-        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(id.toString()));
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(id.toString());
         resource.eAdapters().add(new DocumentMetadataAdapter(name));
 
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();

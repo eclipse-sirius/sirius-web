@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
@@ -96,7 +97,7 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
                 Document document = optionalDocument.get();
 
                 ResourceSet resourceSet = editingDomain.getResourceSet();
-                URI uri = URI.createURI(document.getId().toString());
+                URI uri = new JSONResourceFactory().createResourceURI(document.getId().toString());
 
                 // @formatter:off
                 List<Resource> resourcesToDelete = resourceSet.getResources().stream()
