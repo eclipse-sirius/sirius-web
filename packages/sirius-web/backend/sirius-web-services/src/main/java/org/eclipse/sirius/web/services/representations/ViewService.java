@@ -19,14 +19,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -80,9 +79,10 @@ public class ViewService implements IViewService {
     private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(this.ePackageRegistry);
-        URI uri = URI.createURI(documentEntity.getId().toString());
-        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
         resourceSet.getResources().add(resource);
+
         try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
             resource.load(inputStream, null);
         } catch (IOException | IllegalArgumentException exception) {

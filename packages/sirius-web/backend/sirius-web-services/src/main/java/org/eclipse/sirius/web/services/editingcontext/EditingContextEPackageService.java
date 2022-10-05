@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -31,7 +30,7 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.emf.DomainConverter;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -111,8 +110,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
     }
 
     private void loadDomainDefinitions(ResourceSet resourceSet, DocumentEntity domainDocument) {
-        URI uri = URI.createURI(domainDocument.getId().toString());
-        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(domainDocument.getId().toString());
         try (var inputStream = new ByteArrayInputStream(domainDocument.getContent().getBytes())) {
             resourceSet.getResources().add(resource);
             resource.load(inputStream, null);

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
 import org.eclipse.sirius.web.services.api.document.Document;
+import org.eclipse.sirius.web.services.api.document.RewriteProxiesInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.ProjectManifest;
@@ -96,7 +97,7 @@ public class ProjectImporter {
             RepresentationManifest representationManifest = this.projectManifest.getRepresentations().get(representationDescriptor.getId().toString());
 
             String targetObjectURI = representationManifest.getTargetObjectURI();
-            String oldDocumentId = URI.create(targetObjectURI).getPath();
+            String oldDocumentId = URI.create(targetObjectURI).getPath().substring(1);
             Document newDocument = this.oldDocumentIdToNewDocument.get(oldDocumentId);
             final String objectId;
             if (newDocument != null) {
@@ -149,7 +150,7 @@ public class ProjectImporter {
         for (Entry<String, UploadFile> entry : this.documents.entrySet()) {
             String oldDocumentId = entry.getKey();
             UploadFile uploadFile = entry.getValue();
-            UploadDocumentInput input = new UploadDocumentInput(inputId, this.projectId, uploadFile);
+            UploadDocumentInput input = new UploadDocumentInput(inputId, this.projectId, uploadFile, false);
 
             // @formatter:off
             Document document = this.editingContextEventProcessor.handle(input)
@@ -164,6 +165,13 @@ public class ProjectImporter {
             }
             this.oldDocumentIdToNewDocument.put(oldDocumentId, document);
         }
+
+        Map<String, String> documentIds = new HashMap<>();
+        for (Map.Entry<String, Document> entry : this.oldDocumentIdToNewDocument.entrySet()) {
+            documentIds.put(entry.getKey(), entry.getValue().getId().toString());
+        }
+        RewriteProxiesInput rewriteInput = new RewriteProxiesInput(UUID.randomUUID(), this.editingContextEventProcessor.getEditingContextId(), documentIds);
+        this.editingContextEventProcessor.handle(rewriteInput).blockOptional();
 
         return this.oldDocumentIdToNewDocument.values().stream().allMatch(Objects::nonNull);
     }

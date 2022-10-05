@@ -21,15 +21,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -41,7 +45,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -116,20 +120,20 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             if (optionalEditingDomain.isPresent()) {
                 AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
 
-                String content = this.getContent(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file);
-                var optionalDocument = this.documentService.createDocument(projectId, name, content);
+                Optional<String> contentOpt = this.getContent(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file, uploadDocumentInput.isCheckProxies());
+                var optionalDocument = contentOpt.flatMap(content -> this.documentService.createDocument(projectId, name, content));
 
                 if (optionalDocument.isPresent()) {
                     Document document = optionalDocument.get();
                     ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
-                    URI uri = URI.createURI(document.getId().toString());
+                    URI uri = new JSONResourceFactory().createResourceURI(document.getId().toString());
 
                     if (resourceSet.getResource(uri, false) == null) {
 
                         ResourceSet loadingResourceSet = new ResourceSetImpl();
                         loadingResourceSet.setPackageRegistry(resourceSet.getPackageRegistry());
 
-                        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+                        JsonResource resource = new JSONResourceFactory().createResource(uri);
                         loadingResourceSet.getResources().add(resource);
                         try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
                             resource.load(inputStream, null);
@@ -151,35 +155,75 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private String getContent(EPackage.Registry registry, UploadFile file) {
-        String uri = file.getName();
-        String content = ""; //$NON-NLS-1$
+    private Optional<String> getContent(EPackage.Registry registry, UploadFile file, boolean checkProxies) {
+        String fileName = file.getName();
+        Optional<String> content = Optional.empty();
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(registry);
         try (var inputStream = file.getInputStream()) {
-            URI resourceURI = URI.createURI(uri);
+            URI resourceURI = new JSONResourceFactory().createResourceURI(fileName);
             Optional<Resource> optionalInputResource = this.getResource(inputStream, resourceURI, resourceSet);
             if (optionalInputResource.isPresent()) {
                 Resource inputResource = optionalInputResource.get();
-                JsonResource ouputResource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(uri));
-                resourceSet.getResources().add(ouputResource);
-                ouputResource.getContents().addAll(inputResource.getContents());
 
-                try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                    Map<String, Object> saveOptions = new HashMap<>();
-                    saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
-                    saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
-                    saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
+                if (checkProxies && this.containsProxies(inputResource)) {
+                    this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", fileName); //$NON-NLS-1$
+                } else {
+                    JsonResource ouputResource = new JSONResourceFactory().createResourceFromPath(fileName);
+                    resourceSet.getResources().add(ouputResource);
+                    ouputResource.getContents().addAll(inputResource.getContents());
 
-                    ouputResource.save(outputStream, saveOptions);
+                    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                        Map<String, Object> saveOptions = new HashMap<>();
+                        saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
+                        saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+                        saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
 
-                    content = outputStream.toString();
+                        ouputResource.save(outputStream, saveOptions);
+
+                        content = Optional.of(outputStream.toString());
+                    }
                 }
             }
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
         return content;
+    }
+
+    private boolean containsProxies(Resource resource) {
+
+        Iterable<EObject> iterable = () -> EcoreUtil.getAllProperContents(resource, false);
+        // @formatter:off
+        boolean resourceContainsAProxy = StreamSupport.stream(iterable.spliterator(), false)
+            .filter(eObject -> {
+                boolean eObjectcontainsAProxy = eObject.eClass().getEAllReferences().stream()
+                        .filter(ref -> !ref.isContainment() && eObject.eIsSet(ref))
+                        .filter(ref -> {
+                            boolean containsAProxy = false;
+                            Object value = eObject.eGet(ref);
+                            if (ref.isMany()) {
+                                List<?> list = (List<?>) value;
+                                containsAProxy = list.stream()
+                                        .filter(EObject.class::isInstance)
+                                        .map(EObject.class::cast)
+                                        .filter(EObject::eIsProxy)
+                                        .findFirst()
+                                        .isPresent();
+                            } else {
+                                containsAProxy = ((EObject) value).eIsProxy();
+                            }
+                            return containsAProxy;
+                        })
+                        .findFirst()
+                        .isPresent();
+
+                return eObjectcontainsAProxy;
+            })
+            .findFirst()
+            .isPresent();
+        // @formatter:on
+        return resourceContainsAProxy;
     }
 
     /**
@@ -208,7 +252,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             Map<String, Object> options = new HashMap<>();
             if (line != null) {
                 if (line.contains("{")) { //$NON-NLS-1$
-                    resource = new SiriusWebJSONResourceFactoryImpl().createResource(resourceURI);
+                    resource = new JSONResourceFactory().createResource(resourceURI);
                 } else if (line.contains("<")) { //$NON-NLS-1$
                     resource = new XMIResourceImpl(resourceURI);
                     options = new EMFResourceUtils().getXMILoadOptions();

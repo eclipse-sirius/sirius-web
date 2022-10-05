@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -28,7 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
@@ -68,7 +67,7 @@ public class RenameDocumentEventHandlerTests {
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
         DocumentMetadataAdapter adapter = new DocumentMetadataAdapter(OLD_NAME);
-        Resource resource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI(documentId.toString()));
+        Resource resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
         resource.eAdapters().add(adapter);
         editingDomain.getResourceSet().getResources().add(resource);
 

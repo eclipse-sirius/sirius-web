@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
@@ -36,7 +35,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
@@ -282,8 +281,7 @@ public class ProjectExportService implements IProjectExportService {
         for (Document document : documents) {
             ResourceSet loadingResourceSet = new ResourceSetImpl();
             loadingResourceSet.setPackageRegistry(ePackageRegistry);
-            URI uri = URI.createURI(document.getId().toString());
-            JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+            JsonResource resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
             loadingResourceSet.getResources().add(resource);
             Optional<byte[]> optionalBytes = this.documentService.getBytes(document, IDocumentService.RESOURCE_KIND_JSON);
             if (optionalBytes.isPresent()) {

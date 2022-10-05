@@ -89,7 +89,7 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
                 .orElse(null);
         // @formatter:on
 
-        UploadDocumentInput input = new UploadDocumentInput(id, editingContextId, file);
+        UploadDocumentInput input = new UploadDocumentInput(id, editingContextId, file, true);
 
         // @formatter:off
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)

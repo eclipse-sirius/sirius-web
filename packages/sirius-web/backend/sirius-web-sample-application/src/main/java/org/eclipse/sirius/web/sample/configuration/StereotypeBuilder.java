@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLParserPool;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public class StereotypeBuilder {
     }
 
     public String getStereotypeBody(EObject rootEObject) {
-        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI("inmemory")); //$NON-NLS-1$
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory"); //$NON-NLS-1$
         if (rootEObject != null) {
             resource.getContents().add(rootEObject);
         }
@@ -78,7 +78,7 @@ public class StereotypeBuilder {
 
         String content = ""; //$NON-NLS-1$
         try (var inputStream = classPathResource.getInputStream()) {
-            URI uri = URI.createURI(classPathResource.getFilename());
+            URI uri = new JSONResourceFactory().createResourceURI(classPathResource.getFilename());
             Resource inputResource = this.loadFromXMI(uri, inputStream);
             content = this.saveAsJSON(uri, inputResource);
         } catch (IOException exception) {
@@ -100,7 +100,7 @@ public class StereotypeBuilder {
 
     private String saveAsJSON(URI uri, Resource inputResource) throws IOException {
         String content;
-        JsonResource ouputResource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+        JsonResource ouputResource = new JSONResourceFactory().createResource(uri);
         ouputResource.getContents().addAll(inputResource.getContents());
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             Map<String, Object> jsonSaveOptions = new EMFResourceUtils().getFastJSONSaveOptions();

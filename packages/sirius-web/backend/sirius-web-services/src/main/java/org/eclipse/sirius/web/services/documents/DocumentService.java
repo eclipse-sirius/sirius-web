@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -152,8 +152,7 @@ public class DocumentService implements IDocumentService {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(ePackageRegistryImpl);
 
-        URI uri = URI.createURI(document.getName());
-        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(document.getName());
         resourceSet.getResources().add(resource);
         resourceSet.getResources().add(outputResource);
 

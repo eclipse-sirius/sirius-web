@@ -71,7 +71,7 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
 
             // @formatter:off
             resourceSet.getResources().stream()
-                    .filter(resource -> documentEntity.getId().toString().equals(resource.getURI().toString()))
+                    .filter(resource -> documentEntity.getId().toString().equals(resource.getURI().path().substring(1)))
                     .findFirst()
                     .ifPresent(resource -> {
                         resource.eAdapters().stream()

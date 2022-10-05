@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -39,11 +38,12 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
@@ -116,7 +116,7 @@ public class UploadDocumentEventHandlerTests {
 
     @Test
     public void testUploadXMIDocument() {
-        EditingDomain editingDomain = this.uploadDocument(XMI_CONTENT.getBytes());
+        EditingDomain editingDomain = this.uploadDocument(new ByteArrayInputStream(XMI_CONTENT.getBytes()), ChangeKind.SEMANTIC_CHANGE, UploadDocumentSuccessPayload.class);
         this.testUploadXMIDocument(editingDomain);
     }
 
@@ -141,27 +141,21 @@ public class UploadDocumentEventHandlerTests {
 
     @Test
     public void testUploadEmptyDocument() {
-        EditingDomain editingDomain = this.uploadDocument(new byte[0]);
-        assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
-        Resource res = editingDomain.getResourceSet().getResources().get(0);
-        assertThat(res).isInstanceOf(JsonResourceImpl.class);
-        assertThat(res.getContents()).hasSize(0);
-    }
+        EditingDomain editingDomain = this.uploadDocument(new ByteArrayInputStream(new byte[0]), ChangeKind.NOTHING, ErrorPayload.class);
 
-    private EditingDomain uploadDocument(byte[] contents) {
-        return this.uploadDocument(new ByteArrayInputStream(contents));
+        assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(0);
     }
 
     private EditingDomain uploadDocument(File file) {
         try {
-            return this.uploadDocument(new FileInputStream(file));
+            return this.uploadDocument(new FileInputStream(file), ChangeKind.SEMANTIC_CHANGE, UploadDocumentSuccessPayload.class);
         } catch (FileNotFoundException exception) {
             fail(exception.getMessage());
         }
         return null;
     }
 
-    private EditingDomain uploadDocument(InputStream inputstream) {
+    private EditingDomain uploadDocument(InputStream inputstream, String expectedChangeKind, Class<?> expectedPayload) {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
@@ -173,7 +167,7 @@ public class UploadDocumentEventHandlerTests {
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
-        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
@@ -186,10 +180,10 @@ public class UploadDocumentEventHandlerTests {
         handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
-        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+        assertThat(changeDescription.getKind()).isEqualTo(expectedChangeKind);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(UploadDocumentSuccessPayload.class);
+        assertThat(payload).isInstanceOf(expectedPayload);
 
         return editingDomain;
     }
@@ -208,7 +202,7 @@ public class UploadDocumentEventHandlerTests {
         final UUID documentId = UUID.randomUUID();
         this.simulatesDocumentUpload(editingDomain, documentId, resourceBytes);
 
-        Resource resource = editingDomain.getResourceSet().getResource(URI.createURI(documentId.toString()), false);
+        Resource resource = editingDomain.getResourceSet().getResource(new JSONResourceFactory().createResourceURI(documentId.toString()), false);
         // Use an output stream to prevent the resource to be written on file system.
         try (var outputStream = new ByteArrayOutputStream()) {
             resource.save(outputStream, Collections.singletonMap(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager() {
@@ -252,7 +246,7 @@ public class UploadDocumentEventHandlerTests {
         UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
-        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
 
         IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 
@@ -275,7 +269,7 @@ public class UploadDocumentEventHandlerTests {
      */
     private Map<String, String> getEObjectUriToId(EditingDomain editingDomain, byte[] resourceBytes) {
         Map<String, String> eObjectUriToId = new HashMap<>();
-        JsonResource jsonResource = new SiriusWebJSONResourceFactoryImpl().createResource(URI.createURI("json.flow")); //$NON-NLS-1$
+        JsonResource jsonResource = new JSONResourceFactory().createResourceFromPath("json.flow"); //$NON-NLS-1$
         editingDomain.getResourceSet().getResources().add(jsonResource);
 
         Map<String, Object> options = new HashMap<>();

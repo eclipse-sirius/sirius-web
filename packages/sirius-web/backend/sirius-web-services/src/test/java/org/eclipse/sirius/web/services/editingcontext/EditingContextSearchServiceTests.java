@@ -15,9 +15,9 @@ package org.eclipse.sirius.web.services.editingcontext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -85,8 +86,9 @@ public class EditingContextSearchServiceTests {
         String projectId = UUID.randomUUID().toString();
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
-        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingContextEPackageService, composedAdapterFactory,
-                ePackageRegistry, new SimpleMeterRegistry());
+
+        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty());
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -127,18 +129,18 @@ public class EditingContextSearchServiceTests {
         ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
-        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingContextEPackageService, composedAdapterFactory,
-                ePackageRegistry, new SimpleMeterRegistry());
+        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty());
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
         EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
 
         assertThat(editingDomain.getResourceSet().getResources()).hasSize(2);
-        Resource firstResource = editingDomain.getResourceSet().getResource(URI.createURI(firstDocumentEntity.getId().toString()), true);
+        Resource firstResource = editingDomain.getResourceSet().getResource(new JSONResourceFactory().createResourceURI(firstDocumentEntity.getId().toString()), true);
         this.assertProperResourceLoading(firstResource, firstDocumentEntity);
 
-        Resource secondResource = editingDomain.getResourceSet().getResource(URI.createURI(secondDocumentEntity.getId().toString()), true);
+        Resource secondResource = editingDomain.getResourceSet().getResource(new JSONResourceFactory().createResourceURI(secondDocumentEntity.getId().toString()), true);
         this.assertProperResourceLoading(secondResource, secondDocumentEntity);
     }
 

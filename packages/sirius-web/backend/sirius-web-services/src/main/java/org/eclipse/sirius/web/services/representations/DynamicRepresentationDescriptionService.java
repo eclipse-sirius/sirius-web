@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -28,7 +27,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContext;
-import org.eclipse.sirius.components.emf.services.SiriusWebJSONResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -105,8 +104,8 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(this.ePackageRegistry);
-        URI uri = URI.createURI(documentEntity.getId().toString());
-        JsonResource resource = new SiriusWebJSONResourceFactoryImpl().createResource(uri);
+
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
         resourceSet.getResources().add(resource);
         try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
             resource.load(inputStream, null);
