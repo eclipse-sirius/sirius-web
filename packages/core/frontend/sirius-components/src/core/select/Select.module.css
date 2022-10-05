@@ -1,0 +1,65 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2022 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+.select {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  background-image: var(--select-background-image);
+  background-color: transparent;
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+  cursor: pointer;
+  padding: 8px 32px 8px 8px;
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-4);
+  line-height: var(--line-height-default);
+  color: var(--daintree-lighten-30);
+
+  border-radius: 5px;
+  border: 1px solid transparent;
+  border-bottom: 1px solid var(--daintree);
+}
+.select::-ms-expand {
+  display: none;
+}
+
+.select:hover {
+  border: 1px solid var(--daintree);
+}
+
+.select:focus,
+.select:active {
+  border: 1px solid var(--bondi-blue);
+}
+
+.small {
+  background-position: right 0.3em top 60%, 0 0;
+  padding: 4px 4px 4px 4px;
+}
+
+.small:hover {
+  border: 1px solid var(--daintree);
+  background-color: var(--blue-lagoon-lighten-90);
+}
+
+.small:focus,
+.small:active {
+  background-color: var(--blue-lagoon-lighten-90);
+}
+
+.disabled {
+  color: var(--daintree-lighten-70);
+}

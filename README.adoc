@@ -69,28 +69,7 @@ IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson
 git clone https://github.com/eclipse-sirius/sirius-components.git
 ----
 
-2. Build the frontend components.
-From the `frontend` directory:
-+
-----
-npm ci
-npm run build
-----
-+
-NOTE: You may see some warnings when building the frontend (skipped optional dependencies during `npm ci`, circular dependencies detected on an indirect dependency during the build).
-You can ignore them, they do not cause any actual issue at runtime.
-
-3. Publish the built version of the frontend components locally.
-Still from inside `sirius-components/frontend`: 
-+
-[source,sh]
-----
-yalc publish
-----
-+
-NOTE: This step is not strictly needed but will allow you to consume your locally built version of the frontend components if you want to build a complete Sirius Web studio using them without publishing them to an external NPM registry.
-
-4. Build the frontend packages
+2. Build the frontend packages
 +
 ----
 npm ci
@@ -98,9 +77,9 @@ npx turbo run build
 ----
 +
 
-NOTE: In order to run tests, use `npx turbo run coverage` and if you want to publish the packages on yalc use `npx turbo run publish:local`
+NOTE: In order to run tests, use `npx turbo run coverage` and if you want to publish the packages on yalc use `npx turbo run publish:local`. If you want to run the whole Sirius Web frontend, use `npm start`.
 
-5. Build the backend components.
+3. Build the backend components.
 From the `sirius-components/packages` directory:
 +
 [source,sh]

@@ -1,0 +1,78 @@
+{
+  "name": "@eclipse-sirius/sirius-web",
+  "author": "Eclipse Sirius",
+  "version": "2022.9.3",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-components"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "private": true,
+  "dependencies": {
+    "@apollo/client": "3.6.9",
+    "@eclipse-sirius/sirius-components": "2022.9.3",
+    "@eclipse-sirius/sirius-components-charts": "2022.9.3",
+    "@eclipse-sirius/sirius-components-core": "2022.9.3",
+    "@eclipse-sirius/sirius-components-diagrams": "2022.9.3",
+    "@eclipse-sirius/sirius-components-formdescriptioneditors": "2022.9.3",
+    "@eclipse-sirius/sirius-components-forms": "2022.9.3",
+    "@eclipse-sirius/sirius-components-selection": "2022.9.3",
+    "@eclipse-sirius/sirius-components-trees": "2022.9.3",
+    "@eclipse-sirius/sirius-components-validation": "2022.9.3",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@material-ui/lab": "4.0.0-alpha.61",
+    "@types/react": "^17.0.37",
+    "@types/react-router-dom": "^5.3.3",
+    "@xstate/react": "1.6.3",
+    "d3": "7.0.0",
+    "fontsource-roboto": "4.0.0",
+    "graphql": "16.5.0",
+    "npm": "^8.15.0",
+    "prop-types": "15.8.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router-dom": "5.2.0",
+    "reflect-metadata": "0.1.13",
+    "sprotty": "0.12.0",
+    "subscriptions-transport-ws": "0.9.19",
+    "uuid": "8.3.2",
+    "vite": "^3.1.4",
+    "vitest": "^0.23.4",
+    "xstate": "4.32.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/react": "12.0.0",
+    "@testing-library/user-event": "13.2.1",
+    "@types/d3": "7.0.0",
+    "@types/jest": "27.0.0",
+    "@types/node": "16.6.0",
+    "@types/react-dom": "17.0.9",
+    "@types/uuid": "8.3.2",
+    "jest-junit-reporter": "1.1.0",
+    "prettier": "2.7.1",
+    "typescript": "4.7.4"
+  },
+  "overrides": {
+    "@types/react-router-dom": {
+      "@types/history": "4.7.11"
+    }
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "test": "vitest --run --config vite.config.js",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
