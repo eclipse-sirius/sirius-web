@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ public class GeneralPurposeTests {
 
     private static final String BACKEND_FOLDER_PATH = "packages"; //$NON-NLS-1$
 
-    private static final String FRONTEND_SRC_FOLDER_PATH = "frontend/src"; //$NON-NLS-1$
+    private static final String FRONTEND_SRC_FOLDER_PATH = "packages"; //$NON-NLS-1$
 
     private static final String TYPESCRIPT_FILE_EXTENSION = "ts"; //$NON-NLS-1$
 
@@ -134,6 +134,17 @@ public class GeneralPurposeTests {
             // @formatter:off
             List<Path> filePaths = paths.filter(Files::isRegularFile)
                     .filter(filePath -> filePath.toFile().getName().endsWith(extension))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/node_modules/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/coverage/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/dist/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.turbo/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/bin/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/__mocks__/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/static/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphiql")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphql-voyager")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.vscode/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(".d.ts")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.mvn/wrapper/")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view")) //$NON-NLS-1$
@@ -173,16 +184,17 @@ public class GeneralPurposeTests {
 
     private void testCopyrightHeader(Path filePath, List<String> lines) {
         if (!this.isWhiteListed(filePath)) {
-            assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
             for (int i = 0; i < COPYRIGHT_HEADER.size(); i++) {
                 assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i))); //$NON-NLS-1$
             }
+            assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
         }
     }
 
     private boolean isWhiteListed(Path filePath) {
         // @formatter:off
-        return filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("src/icons"); //$NON-NLS-1$
+        return filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("src/icons") //$NON-NLS-1$
+                || filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("GenericTool.tsx"); //$NON-NLS-1$
         // @formatter:on
     }
 
@@ -332,9 +344,9 @@ public class GeneralPurposeTests {
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
         var whitelist = Stream.of(
-                Path.of("frontend/src/diagram/Sprotty.css"), //$NON-NLS-1$
-                Path.of("frontend/src/modals/Modal.module.css"), //$NON-NLS-1$
-                Path.of("frontend/src/diagram/palette/tool-section/ToolSection.module.css") //$NON-NLS-1$
+                Path.of("Sprotty.css"), //$NON-NLS-1$
+                Path.of("Modal.module.css"), //$NON-NLS-1$
+                Path.of("ToolSection.module.css") //$NON-NLS-1$
         );
         // @formatter:on
         if (whitelist.filter(cssFilePath::endsWith).findFirst().isEmpty()) {
@@ -366,9 +378,9 @@ public class GeneralPurposeTests {
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
         var whitelist = Stream.of(
-                Path.of("frontend/src/diagram/Sprotty.css"), //$NON-NLS-1$
-                Path.of("frontend/src/modals/Modal.module.css"), //$NON-NLS-1$
-                Path.of("frontend/src/diagram/palette/tool-section/ToolSection.module.css") //$NON-NLS-1$
+                Path.of("Sprotty.css"), //$NON-NLS-1$
+                Path.of("Modal.module.css"), //$NON-NLS-1$
+                Path.of("ToolSection.module.css") //$NON-NLS-1$
         );
         // @formatter:on
         if (whitelist.filter(cssFilePath::endsWith).findFirst().isEmpty()) {

@@ -10,8 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { Selection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 
 export interface FormBasedViewProps extends WorkbenchViewComponentProps {
+  editingContextId: string;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
+  readOnly: boolean;
   subscriptionName: string;
 }

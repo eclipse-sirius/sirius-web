@@ -12,16 +12,14 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Divider,
-  IconButton,
-  Snackbar,
-  Typography,
-} from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { Close as CloseIcon, ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';

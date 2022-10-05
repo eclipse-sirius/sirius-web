@@ -18,7 +18,8 @@
     "./packages/*/frontend/*"
   ],
   "scripts": {
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "start": "turbo run start"
   },
   "devDependencies": {
     "turbo": "1.4.2"

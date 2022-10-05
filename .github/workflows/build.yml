@@ -47,18 +47,15 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build the frontend
-        run: |
-          npm ci
-          npm run test
-          npm run-script format-lint
-          npm run build
-        working-directory: frontend
-
       - name: Build the frontend packages
         run: |
           npm ci
           npx turbo run coverage
+
+      - name: Copy frontend artifacts
+        run: |
+          mkdir -p packages/sirius-web/backend/sirius-web-frontend/src/main/resources/static
+          cp -R packages/sirius-web/frontend/sirius-web/dist/* packages/sirius-web/backend/sirius-web-frontend/src/main/resources/static
 
       - name: Build the backend
         env:

@@ -19,6 +19,9 @@
     },
     "publish:local": {
       "dependsOn": ["build"]
+    },
+    "start": {
+      "dependsOn": ["build"]
     }
   }
 }

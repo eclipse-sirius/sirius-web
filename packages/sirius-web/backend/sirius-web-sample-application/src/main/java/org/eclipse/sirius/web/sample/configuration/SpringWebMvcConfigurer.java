@@ -31,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class SpringWebMvcConfigurer implements WebMvcConfigurer {
-    private static final String[] ALLOWED_ORIGIN_PATTERNS = { "http://localhost:3000" }; //$NON-NLS-1$
+    private static final String[] ALLOWED_ORIGIN_PATTERNS = { "http://localhost:[*]" }; //$NON-NLS-1$
 
     /**
      * The Spring environment.
