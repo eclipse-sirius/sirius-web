@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-web</artifactId>
-	<version>2022.9.2</version>
+	<version>2022.9.3</version>
 	<name>sirius-components-web</name>
 	<description>Sirius Components Web</description>
 
@@ -47,18 +47,18 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2022.9.2</version>
+			<version>2022.9.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.9.2</version>
+			<version>2022.9.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2022.9.2</version>
+			<version>2022.9.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
