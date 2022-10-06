@@ -58,7 +58,11 @@ public final class NodeDescription {
 
     private List<NodeDescription> borderNodeDescriptions;
 
-    private List<NodeDescription> childNodeDescriptions = new ArrayList<>();
+    private List<NodeDescription> childNodeDescriptions;
+
+    private List<UUID> reusedBorderNodeDescriptionIds;
+
+    private List<UUID> reusedChildNodeDescriptionIds;
 
     private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
@@ -120,6 +124,14 @@ public final class NodeDescription {
         return this.childNodeDescriptions;
     }
 
+    public List<UUID> getReusedBorderNodeDescriptionIds() {
+        return this.reusedBorderNodeDescriptionIds;
+    }
+
+    public List<UUID> getReusedChildNodeDescriptionIds() {
+        return this.reusedChildNodeDescriptionIds;
+    }
+
     public Function<VariableManager, IStatus> getDeleteHandler() {
         return this.deleteHandler;
     }
@@ -167,9 +179,13 @@ public final class NodeDescription {
 
         private Function<VariableManager, Size> sizeProvider;
 
-        private List<NodeDescription> borderNodeDescriptions;
+        private List<NodeDescription> borderNodeDescriptions = new ArrayList<>();
 
-        private List<NodeDescription> childNodeDescriptions;
+        private List<NodeDescription> childNodeDescriptions = new ArrayList<>();
+
+        private List<UUID> reusedBorderNodeDescriptionIds = new ArrayList<>();
+
+        private List<UUID> reusedChildNodeDescriptionIds = new ArrayList<>();
 
         private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
@@ -239,6 +255,16 @@ public final class NodeDescription {
             return this;
         }
 
+        public Builder reusedBorderNodeDescriptionIds(List<UUID> reusedBorderNodeDescriptionIds) {
+            this.reusedBorderNodeDescriptionIds = Objects.requireNonNull(reusedBorderNodeDescriptionIds);
+            return this;
+        }
+
+        public Builder reusedChildNodeDescriptionIds(List<UUID> reusedChildNodeDescriptionIds) {
+            this.reusedChildNodeDescriptionIds = Objects.requireNonNull(reusedChildNodeDescriptionIds);
+            return this;
+        }
+
         public Builder deleteHandler(Function<VariableManager, IStatus> deleteHandler) {
             this.deleteHandler = Objects.requireNonNull(deleteHandler);
             return this;
@@ -264,6 +290,8 @@ public final class NodeDescription {
             nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
+            nodeDescription.reusedBorderNodeDescriptionIds = Objects.requireNonNull(this.reusedBorderNodeDescriptionIds);
+            nodeDescription.reusedChildNodeDescriptionIds = Objects.requireNonNull(this.reusedChildNodeDescriptionIds);
             nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
             nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             return nodeDescription;

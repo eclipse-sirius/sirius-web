@@ -45,6 +45,10 @@
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="borderNodesDescriptions"
         upperBound="-1" eType="#//NodeDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reusedChildNodeDescriptions"
+        upperBound="-1" eType="#//NodeDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reusedBorderNodeDescriptions"
+        upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"

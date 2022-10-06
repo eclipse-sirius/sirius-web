@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.LayoutStrategyDescription;
@@ -62,6 +63,26 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EList<NodeDescription> borderNodesDescriptions;
+
+    /**
+     * The cached value of the '{@link #getReusedChildNodeDescriptions() <em>Reused Child Node Descriptions</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReusedChildNodeDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> reusedChildNodeDescriptions;
+
+    /**
+     * The cached value of the '{@link #getReusedBorderNodeDescriptions() <em>Reused Border Node Descriptions</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReusedBorderNodeDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> reusedBorderNodeDescriptions;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -146,6 +167,32 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             this.borderNodesDescriptions = new EObjectContainmentEList<>(NodeDescription.class, this, ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
         }
         return this.borderNodesDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<NodeDescription> getReusedChildNodeDescriptions() {
+        if (this.reusedChildNodeDescriptions == null) {
+            this.reusedChildNodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS);
+        }
+        return this.reusedChildNodeDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<NodeDescription> getReusedBorderNodeDescriptions() {
+        if (this.reusedBorderNodeDescriptions == null) {
+            this.reusedBorderNodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS);
+        }
+        return this.reusedBorderNodeDescriptions;
     }
 
     /**
@@ -307,6 +354,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.getChildrenDescriptions();
         case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
             return this.getBorderNodesDescriptions();
+        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+            return this.getReusedChildNodeDescriptions();
+        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+            return this.getReusedBorderNodeDescriptions();
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.getStyle();
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
@@ -335,6 +386,14 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
             this.getBorderNodesDescriptions().clear();
             this.getBorderNodesDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+            return;
+        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+            this.getReusedChildNodeDescriptions().clear();
+            this.getReusedChildNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+            return;
+        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+            this.getReusedBorderNodeDescriptions().clear();
+            this.getReusedBorderNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
             return;
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.setStyle((NodeStyleDescription) newValue);
@@ -368,6 +427,12 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
             this.getBorderNodesDescriptions().clear();
             return;
+        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+            this.getReusedChildNodeDescriptions().clear();
+            return;
+        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+            this.getReusedBorderNodeDescriptions().clear();
+            return;
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             this.setStyle((NodeStyleDescription) null);
             return;
@@ -396,6 +461,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return this.childrenDescriptions != null && !this.childrenDescriptions.isEmpty();
         case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
             return this.borderNodesDescriptions != null && !this.borderNodesDescriptions.isEmpty();
+        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+            return this.reusedChildNodeDescriptions != null && !this.reusedChildNodeDescriptions.isEmpty();
+        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+            return this.reusedBorderNodeDescriptions != null && !this.reusedBorderNodeDescriptions.isEmpty();
         case ViewPackage.NODE_DESCRIPTION__STYLE:
             return this.style != null;
         case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:

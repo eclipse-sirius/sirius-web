@@ -141,6 +141,7 @@ public class NodeComponent implements IComponent {
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
+        INodeDescriptionRequestor nodeDescriptionRequestor = this.props.getNodeDescriptionRequestor();
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
         Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
@@ -152,8 +153,8 @@ public class NodeComponent implements IComponent {
 
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
 
-        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId);
-        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId);
+        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, nodeDescriptionRequestor);
+        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, nodeDescriptionRequestor);
 
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
@@ -242,19 +243,26 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId) {
+    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, INodeDescriptionRequestor nodeDescriptionRequestor) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         DiagramRenderingCache cache = this.props.getCache();
 
-        return nodeDescription.getBorderNodeDescriptions().stream().map(borderNodeDescription -> {
+        //@formatter:off
+        var borderNodeDescriptions = new ArrayList<>(nodeDescription.getBorderNodeDescriptions());
+        nodeDescription.getReusedBorderNodeDescriptionIds().stream()
+            .map(nodeDescriptionRequestor::findById)
+            .flatMap(Optional::stream)
+            .forEach(borderNodeDescriptions::add);
+
+        return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
             List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
-            //@formatter:off
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(nodeVariableManager)
                     .nodeDescription(borderNodeDescription)
                     .nodesRequestor(borderNodesRequestor)
+                    .nodeDescriptionRequestor(nodeDescriptionRequestor)
                     .containmentKind(NodeContainmentKind.BORDER_NODE)
                     .cache(cache)
                     .viewCreationRequests(this.props.getViewCreationRequests())
@@ -262,17 +270,23 @@ public class NodeComponent implements IComponent {
                     .parentElementId(nodeId)
                     .previousTargetObjectIds(previousBorderNodesTargetObjectIds)
                     .build();
-            //@formatter:on
             return new Element(NodeComponent.class, nodeComponentProps);
         }).collect(Collectors.toList());
+        //@formatter:on
     }
 
-    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId) {
+    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, INodeDescriptionRequestor nodeDescriptionRequestor) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         DiagramRenderingCache cache = this.props.getCache();
 
         //@formatter:off
-        return nodeDescription.getChildNodeDescriptions().stream().map(childNodeDescription -> {
+        var childNodeDescriptions = new ArrayList<>(nodeDescription.getChildNodeDescriptions());
+        nodeDescription.getReusedChildNodeDescriptionIds().stream()
+            .map(nodeDescriptionRequestor::findById)
+            .flatMap(Optional::stream)
+            .forEach(childNodeDescriptions::add);
+
+        return childNodeDescriptions.stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());
             List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
@@ -280,6 +294,7 @@ public class NodeComponent implements IComponent {
                     .variableManager(nodeVariableManager)
                     .nodeDescription(childNodeDescription)
                     .nodesRequestor(childNodesRequestor)
+                    .nodeDescriptionRequestor(nodeDescriptionRequestor)
                     .containmentKind(NodeContainmentKind.CHILD_NODE)
                     .cache(cache)
                     .viewCreationRequests(this.props.getViewCreationRequests())
@@ -288,9 +303,9 @@ public class NodeComponent implements IComponent {
                     .previousTargetObjectIds(previousChildNodesTargetObjectIds)
                     .build();
 
-            // @formatter:on
             return new Element(NodeComponent.class, nodeComponentProps);
         }).collect(Collectors.toList());
+        // @formatter:on
     }
 
     private String computeNodeId(String targetObjectId) {

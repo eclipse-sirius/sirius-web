@@ -4,4 +4,3 @@ VERSION="$1"
 mvn versions:set -DnewVersion="$VERSION" -DprocessAllModules -f packages/pom.xml
 npm version "$VERSION"  --commit-hooks=false --git-tag-version=false --workspaces=true --include-workspace-root=true --workspaces-update=false
 npm i
-cd frontend && npm version "$VERSION" --commit-hooks=false --git-tag-version=false

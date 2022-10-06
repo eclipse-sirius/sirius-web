@@ -37,6 +37,8 @@ public final class NodeComponentProps implements IProps {
 
     private INodesRequestor nodesRequestor;
 
+    private INodeDescriptionRequestor nodeDescriptionRequestor;
+
     private NodeContainmentKind containmentKind;
 
     private DiagramRenderingCache cache;
@@ -63,6 +65,10 @@ public final class NodeComponentProps implements IProps {
 
     public INodesRequestor getNodesRequestor() {
         return this.nodesRequestor;
+    }
+
+    public INodeDescriptionRequestor getNodeDescriptionRequestor() {
+        return this.nodeDescriptionRequestor;
     }
 
     public NodeContainmentKind getContainmentKind() {
@@ -106,6 +112,8 @@ public final class NodeComponentProps implements IProps {
 
         private INodesRequestor nodesRequestor;
 
+        private INodeDescriptionRequestor nodeDescriptionRequestor;
+
         private NodeContainmentKind containmentKind;
 
         private DiagramRenderingCache cache;
@@ -130,6 +138,11 @@ public final class NodeComponentProps implements IProps {
 
         public Builder nodesRequestor(INodesRequestor nodesRequestor) {
             this.nodesRequestor = Objects.requireNonNull(nodesRequestor);
+            return this;
+        }
+
+        public Builder nodeDescriptionRequestor(INodeDescriptionRequestor nodeDescriptionRequestor) {
+            this.nodeDescriptionRequestor = Objects.requireNonNull(nodeDescriptionRequestor);
             return this;
         }
 
@@ -168,6 +181,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
             nodeComponentProps.nodeDescription = Objects.requireNonNull(this.nodeDescription);
             nodeComponentProps.nodesRequestor = Objects.requireNonNull(this.nodesRequestor);
+            nodeComponentProps.nodeDescriptionRequestor = Objects.requireNonNull(this.nodeDescriptionRequestor);
             nodeComponentProps.containmentKind = Objects.requireNonNull(this.containmentKind);
             nodeComponentProps.cache = Objects.requireNonNull(this.cache);
             nodeComponentProps.viewCreationRequests = Objects.requireNonNull(this.viewCreationRequests);

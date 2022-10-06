@@ -239,7 +239,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }
-
             return childrenLayoutStrategy;
         };
 
@@ -263,6 +262,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
 
         // @formatter:off
+        List<UUID> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
+                .map(this.idProvider::apply)
+                .collect(Collectors.toList());
+        List<UUID> reusedBorderNodeDescriptionIds = viewNodeDescription.getReusedBorderNodeDescriptions().stream()
+                .map(this.idProvider::apply)
+                .collect(Collectors.toList());
+
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
@@ -275,6 +281,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
+                .reusedChildNodeDescriptionIds(reusedChildNodeDescriptionIds)
+                .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .sizeProvider(sizeProvider)
                 .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, converterContext))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
