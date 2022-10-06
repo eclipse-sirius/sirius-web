@@ -54,6 +54,7 @@ public class DiagramComponent implements IComponent {
         DiagramRenderingCache cache = new DiagramRenderingCache();
 
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
+        INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(diagramDescription);
         // @formatter:off
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
@@ -65,6 +66,7 @@ public class DiagramComponent implements IComponent {
                             .variableManager(variableManager)
                             .nodeDescription(nodeDescription)
                             .nodesRequestor(nodesRequestor)
+                            .nodeDescriptionRequestor(nodeDescriptionRequestor)
                             .containmentKind(NodeContainmentKind.CHILD_NODE)
                             .cache(cache)
                             .viewCreationRequests(this.props.getViewCreationRequests())

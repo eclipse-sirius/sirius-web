@@ -56,6 +56,28 @@ public interface NodeDescription extends DiagramElementDescription {
     EList<NodeDescription> getBorderNodesDescriptions();
 
     /**
+     * Returns the value of the '<em><b>Reused Child Node Descriptions</b></em>' reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Reused Child Node Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_ReusedChildNodeDescriptions()
+     * @model
+     * @generated
+     */
+    EList<NodeDescription> getReusedChildNodeDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Reused Border Node Descriptions</b></em>' reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Reused Border Node Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_ReusedBorderNodeDescriptions()
+     * @model
+     * @generated
+     */
+    EList<NodeDescription> getReusedBorderNodeDescriptions();
+
+    /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
