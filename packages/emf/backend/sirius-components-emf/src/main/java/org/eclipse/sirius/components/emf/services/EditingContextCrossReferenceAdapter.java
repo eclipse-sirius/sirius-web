@@ -103,16 +103,16 @@ public class EditingContextCrossReferenceAdapter extends ECrossReferenceAdapter 
     }
 
     private Collection<Setting> getNonContainmentReferences(Collection<Setting> inverseReferences) {
-        Collection<Setting> containmentReferences = new ArrayList<>();
+        Collection<Setting> nonContainmentReferences = new ArrayList<>();
         for (EStructuralFeature.Setting setting : inverseReferences) {
             EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
             if (eStructuralFeature instanceof EReference) {
                 EReference eReference = (EReference) eStructuralFeature;
-                if (!eReference.isContainment()) {
-                    containmentReferences.add(setting);
+                if (!eReference.isContainment() && !eReference.isDerived()) {
+                    nonContainmentReferences.add(setting);
                 }
             }
         }
-        return containmentReferences;
+        return nonContainmentReferences;
     }
 }

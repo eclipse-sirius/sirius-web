@@ -1,4 +1,4 @@
-= ADR-072 - Add support for intermodel references (inside a same project)
+= ADR-073 - Add support for intermodel references (inside a same project)
 
 == Context
 

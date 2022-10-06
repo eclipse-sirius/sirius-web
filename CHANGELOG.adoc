@@ -8,19 +8,22 @@
 - [ADR-070] How to contribute a new diagram node style
 - [ADR-071] Add parametric SVG node style
 - [ADR-072] Add support for the edition of routing points
-- [ADR-072] Add support for intermodel references (inside the same project)
+- [ADR-073] Add support for intermodel references (inside the same project)
  
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
+- https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having intermodel references. Now, the URI of resources added in a ResourceSet must have a `scheme`. Otherwise, you will  encounter exceptions.
 
+=== Dependency update
+
+- [backend] Switch to EMFJson 2.3.2-SNAPSHOT. It contains better management of proxy resolution in case of intermodel references.
 
 === Bug fixes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having intermodel references
 - https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
 - https://github.com/eclipse-sirius/sirius-components/issues/931[#931] [layout] When the delete tool of an edge is used, the position of other edges are not affected.
-
+- https://github.com/eclipse-sirius/sirius-components/issues/1392[#1392] [core] Fix EditingContextCrossReferenceAdapter for derived references
 
 === Improvements
 
@@ -75,7 +78,6 @@ The `label` value is displayed before the widget to be consistent with other pro
 - [frontend] Switch to `@apollo/client 3.6.9`, `@material-ui/core 4.12.4`, `@material-ui/icons 4.11.3`, `graphql 16.5.0`, `prop-types 15.8.1`, `sprotty 0.12.2` and `xstate 4.32.1`. Various development dependencies have also been updated such as typescript, rollup, prettier etc
 - [backend] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v2.7.2[Spring Boot 2.7.2]
 - [backend] Switch to the managed version of GraphQL Java, as of Spring Boot 2.7.2, we will thus use GraphQL Java 18.2
-- [backend] Switch to EMFJson 2.3.2-SNAPSHOT
 
 === Bug fixes
 
