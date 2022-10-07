@@ -1,0 +1,181 @@
+ ADR-076 - Allow users to upload their own custom images
+
+== Context
+
+Currently the only way to add custom images to the backend so that they can be used is via APIs (see `org.eclipse.sirius.web.sample.configuration.CustomImagesLoader` for example).
+
+It should be possible for end-users to upload their own custom images via the web interface. The resulting images should then automatically be usable:
+
+- in diagrams as the image for an `ImageNodeStyle`;
+- in forms via the `Image` widget (see https://github.com/eclipse-sirius/sirius-components/pull/1381[#1381]).
+
+== Decision
+
+=== Data Model
+
+Custom images will be optionally associated to a project to ease their management by users: each project get a new UI to enable CRUD operation on "its" custom images.
+In Sirius Web itself there is no permission mechanism so all project and all their images will be visible to anyone.
+Other applications based on Sirius Component may use this information about which project "owns" an image to restrict access to images, but that is out of scope of this specific task.
+
+The database schema will be modified to reflect this:
+
+[source]
+----
+CREATE TABLE CustomImage (
+	id UUID NOT NULL,
+  project_id uuid, -- ADDED
+	label TEXT NOT NULL,
+	content_type TEXT NOT NULL,
+	content BYTEA NOT NULL,
+	CONSTRAINT pk_customimage_id PRIMARY KEY (id),
+  CONSTRAINT fk_customimage_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE -- ADDED
+);
+----
+
+It will still be possible to have custom images which are not associated to any project.
+This allows for globally accessible images to be uploaded programatically or added manually into the database
+
+Currently, the `id` of a custom image is computed from the image's contents using `UUID.nameUUIDFromBytes(customImageEntity.getContent())` in `CustomImagesLoader`.
+This will need to change to a random UUID allow multiple projects to upload the same image file without conflicts and to avoid the risk of a project _A_ removing an image it "owns" to impact another project _B_ which has uploaded the same image file.
+
+In addition to `CustomImageEntity`, `CustomImage` (which only holds the metadata but not the contents) will get a direct optional reference to the corresponding project:
+
+[source]
+----
+public class CustomImage {
+    private UUID id;
+    private Project project; // ADDED
+    private String label;
+    private String contentType;
+
+    // ...
+}
+----
+
+`org.eclipse.sirius.components.view.emf.CustomImage` and `org.eclipse.sirius.components.view.emf.ICustomImageSearchService` will be moved to `sirius-web-services-api` (in the existing `org.eclipse.sirius.web.services.api.images` package) so that they are generally available to all projects: they will be needed for the project-level UI (and thus GraphQL operations) to upload and manage images.
+
+`org.eclipse.sirius.web.services.images.CustomImageSearchService.getAvailableImages(String editingContextId)` will be modified to take an `Optional<String> editingContextId` as argument, and actually use the `editingContextId`/`projectId`, if supplied, to only return the images owned by the specified project.
+
+TODO: `ICustomImageContentService` probably also needs to be updated. Unrelated, but the fact that we have two separate methods to get the content and content-type, which are both used together in `ImagesController`, may be a performance issue (if we load the image twice from the DB and there is no caching involved).
+
+=== GraphQL Changes
+
+New mutations will be added to:
+* upload a custom image;
+* rename (change the label) an existing custom image;
+* delete a custom image from the server.
+
+Note that because images are neither part of documents nor representations, adding/removing/updating them does not autmatically trigger a refresh of existing representations.
+Then handlers for these mutations will need to return a `ChangeKind.SEMANTIC_CHANGE` to force a refresh of representations which may depend on images.
+In particular, forms which list existing images for studio makers to choose (e.g. in the diagram view configuration) will not be refreshed, and not display new images, unless the mutation returns `ChangeKind.SEMANTIC_CHANGE`.
+
+The mutations to upload/rename/delete custom images are similar to the corresponding mutations for documents:
+
+[source]
+----
+
+# Image uploading
+extend type Mutation {
+  uploadImage(input: UploadImageInput!): UploadImagePayload!
+}
+
+input UploadImageInput {
+  id: ID!
+  label: String
+  file: Upload!
+}
+
+union UploadImagePayload = ErrorPayload | UploadImageSuccessPayload
+
+type UploadImageSuccessPayload {
+  id: ID!
+  imageId: ID!
+}
+
+# Image renaming
+extend type Mutation {
+  renameImage(input: RenameImageInput!): RenameImagePayload!
+}
+
+input RenameImageInput {
+  id: ID!
+  imageId: ID!
+  newLabel: String!
+}
+
+union RenameImagePayload = ErrorPayload | RenameImageSuccessPayload
+
+type RenameImageSuccessPayload {
+  id: ID!
+}
+
+# Image deletion
+extend type Mutation {
+  deleteImage(input: DeleteImageInput!): DeleteImagePayload!
+}
+
+input DeleteImageInput {
+  id: ID!
+  imageId: ID!
+}
+
+type DeleteImageSuccessPayload {
+  id: ID!
+}
+
+union DeleteImagePayload = ErrorPayload | DeleteImageSuccessPayload
+----
+
+We will also need a new query to display all the images associated to a project in a nicely formatted table (see below):
+
+[source]
+----
+extend type Project {
+  customImages: [CustomImage!]!
+}
+
+type CustomImage {
+  id: ID!
+  projectId: ID
+  label: String!
+  url: String!
+}
+----
+
+=== Frontend / UI
+
+A new entry will be added to the project's `EditProjectNavbarContextMenu`, named "Settings".
+It will redirect to a new view at `/projects/:projectId/settings`.
+
+Later on, this view may display more information and get organized in tabs, but for the moment to keep things simple it will only display the custom images associated with the project.
+
+The new view will show:
+
+* A title "Project Images";
+* A "New" or "Upload" button, which opens a modal to i) enter a label and ii) select a (local) image file to upload.
+When the user validates the modal, it will invoke the `uploadImage` mutation to add the new image into the database.
+* A table with one line per image owned by the current project and the following columns:
+  * "Label": the label of the image, with a "pen" icon visible on hover that opens a modal to change the label (`renameImage` mutation)
+  * "URL": the (relative) URL through which the image in question can be used e.g. in the `Image` widget.
+  The URL is an hyper-link which opens the actual image in a new tab (`target="_blank"`) for preview. A "copy" icon is available on the right of the label to copy the (relative) URL into the system clipboard.
+  * "Delete": a "delete" icon which opens a modal to ask for confirmation and deletes the image.
+
+=== Cutting back
+
+With the UI described above, configuring an "Image" widget in a form representation to display a particular custom image requires multiple steps:
+
+- creating the widget;
+- opening the "Settings" view of the project *which provides the image* (which may not be the project where then widget is defined);
+- choosing the actual image and copying its URL;
+- going back to the widget's configuration to enter the URL in the "URL Expression" field.
+
+This is doable, but cumbersome.
+
+If time permits we will provide a customized details view for the "Image" widget so that the user can select among the available images from a select/combo or (ideally) a dialog (with preview of the images and pagination).
+Selecting a custom image from this UI would automatically setup the "URL Expression" to the URL of the selected image.
+
+== Status
+
+Draft.
+
+== Consequences
