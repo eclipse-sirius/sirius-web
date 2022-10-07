@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-075] Add support for a basic image widget
+- [ADR-076] Allow users to upload their own custom images
 
 === Dependency update
 
