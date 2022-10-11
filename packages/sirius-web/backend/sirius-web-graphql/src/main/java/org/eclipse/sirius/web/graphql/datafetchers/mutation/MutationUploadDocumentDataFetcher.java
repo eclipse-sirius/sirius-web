@@ -72,30 +72,34 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
         // We cannot use directly UploadDocumentInput, the objectMapper cannot handle the file stream.
 
         // @formatter:off
-        UUID id = Optional.of(inputArgument.get(ID))
+        UUID id = Optional.ofNullable(inputArgument.get(ID))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .flatMap(new IDParser()::parse)
                 .orElse(null);
 
-        String editingContextId = Optional.of(inputArgument.get(EDITING_CONTEXT_ID))
+        String editingContextId = Optional.ofNullable(inputArgument.get(EDITING_CONTEXT_ID))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .orElse(null);
 
-        UploadFile file = Optional.of(inputArgument.get(FILE))
+        UploadFile file = Optional.ofNullable(inputArgument.get(FILE))
                 .filter(UploadFile.class::isInstance)
                 .map(UploadFile.class::cast)
                 .orElse(null);
         // @formatter:on
 
-        UploadDocumentInput input = new UploadDocumentInput(id, editingContextId, file, true);
+        if (id != null && editingContextId != null && file != null) {
+            UploadDocumentInput input = new UploadDocumentInput(id, editingContextId, file, true);
 
-        // @formatter:off
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError()))
-                .toFuture();
-        // @formatter:on
+            // @formatter:off
+            return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+                    .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError()))
+                    .toFuture();
+            // @formatter:on
+        } else {
+            return CompletableFuture.completedFuture(new ErrorPayload(UUID.randomUUID(), this.messageService.unexpectedError()));
+        }
     }
 
 }
