@@ -67,17 +67,21 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Map<Object, Object> input = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
         // @formatter:off
-        UUID id = Optional.of(input.get(ID))
+        UUID id = Optional.ofNullable(input.get(ID))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .flatMap(new IDParser()::parse)
                 .orElse(null);
 
-        return Optional.of(input.get(FILE))
-                .filter(UploadFile.class::isInstance)
-                .map(UploadFile.class::cast)
-                .map(uploadFile -> this.projectImportService.importProject(id, uploadFile))
-                .orElse(new ErrorPayload(id, this.messageService.unexpectedError()));
+        if (id != null) {
+            return Optional.ofNullable(input.get(FILE))
+                    .filter(UploadFile.class::isInstance)
+                    .map(UploadFile.class::cast)
+                    .map(uploadFile -> this.projectImportService.importProject(id, uploadFile))
+                    .orElse(new ErrorPayload(id, this.messageService.unexpectedError()));
+        } else {
+            return new ErrorPayload(UUID.randomUUID(), this.messageService.unexpectedError());
+        }
         // @formatter:on
     }
 
