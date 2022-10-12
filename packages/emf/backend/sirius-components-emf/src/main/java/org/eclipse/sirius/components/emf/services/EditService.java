@@ -287,7 +287,7 @@ public class EditService implements IEditService {
 
             // @formatter:off
             var optionalResource = editingDomain.getResourceSet().getResources().stream()
-                    .filter(resource -> documentId.toString().equals(resource.getURI().toString()))
+                    .filter(resource -> documentId.toString().equals(resource.getURI().path().substring(1)))
                     .findFirst();
             // @formatter:on
 
