@@ -128,6 +128,7 @@ export const TreeItem = ({
     label: item.label,
     prevSelectionId: null,
   };
+
   const [state, setState] = useState(initialState);
   const { showContextMenu, menuAnchor, editingMode, label } = state;
 
@@ -346,7 +347,13 @@ export const TreeItem = ({
       }
     } else {
       const { id, label, kind } = item;
-      setSelection({ entries: [{ id, label, kind }] });
+      if (selection.entries.length === 1) {
+        if (selection.entries[0].id !== item.id) {
+          setSelection({ entries: [{ id, label, kind }] });
+        }
+      } else {
+        setSelection({ entries: [{ id, label, kind }] });
+      }
     }
   };
 

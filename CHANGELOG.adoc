@@ -24,6 +24,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1368[#1368] [diagram] Do not render rectangle view children twice
 - https://github.com/eclipse-sirius/sirius-components/issues/931[#931] [layout] When the delete tool of an edge is used, the position of other edges are not affected.
 - https://github.com/eclipse-sirius/sirius-components/issues/1392[#1392] [core] Fix EditingContextCrossReferenceAdapter for derived references
+- https://github.com/eclipse-sirius/sirius-components/issues/1401[#1401] [explorer] Do not call setSelection if the selection does not change
 
 === Improvements
 
