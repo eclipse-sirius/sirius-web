@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-formdescriptioneditors</artifactId>
-	<version>2022.9.5</version>
+	<version>2022.9.6</version>
 	<name>sirius-components-formdescriptioneditors</name>
 	<description>Sirius Components FormDescriptionEditors</description>
 
@@ -47,22 +47,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2022.9.5</version>
+			<version>2022.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations</artifactId>
-			<version>2022.9.5</version>
+			<version>2022.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2022.9.5</version>
+			<version>2022.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2022.9.5</version>
+			<version>2022.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.9.5</version>
+			<version>2022.9.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
