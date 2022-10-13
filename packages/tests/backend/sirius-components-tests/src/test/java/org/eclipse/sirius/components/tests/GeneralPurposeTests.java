@@ -141,6 +141,7 @@ public class GeneralPurposeTests {
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/bin/")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/__mocks__/")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/static/")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/target/")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphiql")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphql-voyager")) //$NON-NLS-1$
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.vscode/")) //$NON-NLS-1$
