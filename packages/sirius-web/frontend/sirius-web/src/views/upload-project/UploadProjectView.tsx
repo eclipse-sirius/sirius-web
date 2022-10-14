@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { FileUpload, Form, FormContainer, sendFile } from '@eclipse-sirius/sirius-components';
+import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,9 +20,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
+import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,
   UploadProjectEvent,
@@ -69,6 +71,8 @@ export const UploadProjectView = () => {
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
 
+  const { httpOrigin } = useContext(ServerContext);
+
   const onUploadProject = async (event) => {
     event.preventDefault();
     const variables = {
@@ -80,7 +84,7 @@ export const UploadProjectView = () => {
 
     try {
       dispatch({ type: 'HANDLE_UPLOAD' });
-      const response = await sendFile(uploadProjectMutation, variables, file);
+      const response = await sendFile(httpOrigin, uploadProjectMutation, variables, file);
       const { data, error } = response as any;
       if (error) {
         dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, please refresh the page' });
