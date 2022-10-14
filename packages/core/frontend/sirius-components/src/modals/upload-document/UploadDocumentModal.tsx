@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
+import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,7 +25,7 @@ import { useMachine } from '@xstate/react';
 import { sendFile } from 'common/sendFile';
 import { FileUpload } from 'core/file-upload/FileUpload';
 import { Form } from 'core/form/Form';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { GQLErrorPayload, GQLUploadDocumentPayload, UploadDocumentModalProps } from './UploadDocumentModal.types';
 import {
@@ -60,6 +61,8 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
   const { toast, uploadDocumentModal } = value as SchemaValue;
   const { file, message } = context;
 
+  const { httpOrigin } = useContext(ServerContext);
+
   // Execute the upload of a document and redirect to the newly created document
   const uploadDocument = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const requestDocumentUploadingEvent: RequestDocumentUploadingEvent = { type: 'REQUEST_DOCUMENT_UPLOADING' };
@@ -74,7 +77,7 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
       },
     };
     try {
-      const { data, error } = await sendFile(uploadDocumentMutationFile, variables, file);
+      const { data, error } = await sendFile(httpOrigin, uploadDocumentMutationFile, variables, file);
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',

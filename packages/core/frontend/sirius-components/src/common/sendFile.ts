@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { httpOrigin } from './URL';
 
-export const sendFile = async (query: string, variables: any, file: File) => {
+export const sendFile = async (httpOrigin: string, query: string, variables: any, file: File) => {
   const operations = {
     query,
     variables,

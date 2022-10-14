@@ -14,6 +14,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1300[#1300] [core] Rename SiriusWebJSONResourceFactoryImpl to JSONResourceFactoryImpl
 - https://github.com/eclipse-sirius/sirius-components/issues/1301[#1301] [core] Add support for having intermodel references. Now, the URI of resources added in a ResourceSet must have a `scheme`. Otherwise, you will  encounter exceptions.
+- https://github.com/eclipse-sirius/sirius-components/issues/1064[#1064] [core] Remove the URL utility file and ask for the `httpOrigin` instead. Consumers of Sirius Components which rely on the behavior of the URL utility file should instead maintain their own utility file since it is dependent on our build technology and development process.
 
 === Dependency update
 
