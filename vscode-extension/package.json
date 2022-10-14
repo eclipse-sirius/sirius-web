@@ -8,7 +8,8 @@
   "homepage": "https://www.eclipse.org/sirius/sirius-web.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eclipse-sirius/sirius-components.git"
+    "url": "https://github.com/eclipse-sirius/sirius-components.git",
+    "directory": "vscode-extension"
   },
   "bugs": {
     "url": "https://github.com/eclipse-sirius/sirius-components/issues"
