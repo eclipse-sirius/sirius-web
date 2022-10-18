@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
+import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -73,7 +74,10 @@ public class BorderNodePositionTests {
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         incrementalLayoutEngine.layout(Optional.empty(), incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
@@ -98,7 +102,9 @@ public class BorderNodePositionTests {
         borderNodes.add(this.createBorderNodeLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, DEFAULT_BORDER_NODE_SIZE, initializeDiagram, NodeType.NODE_RECTANGLE, labelLayoutData));
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         Optional<IDiagramEvent> creationEvent = Optional.of(new SinglePositionEvent(Position.at(10, 10)));
         incrementalLayoutEngine.layout(creationEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
@@ -114,7 +120,9 @@ public class BorderNodePositionTests {
         String nodeId = initializeDiagram.getChildrenNodes().get(0).getId();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         Optional<IDiagramEvent> resizeEvent = Optional.of(new MoveEvent(nodeId, Position.at(50, -100)));
         incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
@@ -132,7 +140,9 @@ public class BorderNodePositionTests {
         NodeLayoutData eastBorderNode = initializeDiagram.getChildrenNodes().get(0).getBorderNodes().get(3);
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         // move slightly the north border node so that the incremental layout updates the label position
         Optional<IDiagramEvent> resizeEvent = Optional.of(new MoveEvent(northBorderNode.getId(), Position.at(northBorderNode.getPosition().getX() + 1, northBorderNode.getPosition().getY())));
@@ -165,7 +175,9 @@ public class BorderNodePositionTests {
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         // Decrease the parent node size
         Optional<IDiagramEvent> resizeEvent = Optional.of(new ResizeEvent(nodeId, ZERO_POSITION, Size.of(100, 50)));
@@ -189,7 +201,9 @@ public class BorderNodePositionTests {
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         // decrease the height of the west border node
         NodeLayoutData westBorderNode = borderNodes.get(6);
@@ -215,7 +229,9 @@ public class BorderNodePositionTests {
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         // Decrease the parent node size
         Optional<IDiagramEvent> resizeEvent = Optional.of(new ResizeEvent(nodeId, Position.at(100, 50), Size.of(100, 50)));

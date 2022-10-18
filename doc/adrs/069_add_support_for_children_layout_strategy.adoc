@@ -148,7 +148,7 @@ We will introduce `ILayoutStrategyEngine` that will be used by the incremental l
 public interface ILayoutStrategyEngine {
   boolean canLayout(ILayoutStrategy layoutStrategy);
 
-  NodeLayoutData layout(Optional<IDiagramevent> optionalDiagramEvent, NodeLayoutData node);
+  NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node);
 }
 ```
 
@@ -181,6 +181,12 @@ The algorithm to do the layout of the free form strategy will be something like:
 - The node asks its children to do their layout
 - The node layout himself
 In fact the free form layout is quite the same behavior as now.
+
+[WARNING]
+=====
+We will not support Free from compartment yet.
+Since we rely on the ELK fixed layout to lay out the list layout strategy and a Free compartment needs to perform its layout do know its size, ELK will not be able to position its compartment correctly.
+=====
 
 ==== ELK Layout
 

@@ -30,12 +30,15 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layout.ELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
+import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
 import org.eclipse.sirius.components.diagrams.layout.TextBoundsService;
+import org.eclipse.sirius.components.diagrams.layout.incremental.BorderNodeLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.incremental.IncrementalLayoutedDiagramProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.LayoutEngineHandlerSwitch;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.tests.builder.JsonBasedEditingContext;
@@ -64,7 +67,10 @@ public class DiagramELKLayoutTest {
         };
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         LayoutService layoutService = new LayoutService(new ELKDiagramConverter(new TextBoundsService(), new ImageSizeProvider()), new IncrementalLayoutDiagramConverter(),
                 new LayoutConfiguratorRegistry(List.of()), new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService,
