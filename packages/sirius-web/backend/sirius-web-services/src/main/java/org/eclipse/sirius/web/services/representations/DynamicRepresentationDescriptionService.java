@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -103,6 +104,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
 
     private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
         ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
         resourceSet.setPackageRegistry(this.ePackageRegistry);
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
