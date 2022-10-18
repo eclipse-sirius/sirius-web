@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
@@ -308,6 +310,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // Add custom tools
             int i = 0;
             for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
+                List<NodeDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
+
                 // @formatter:off
                 SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.getToolId(nodeDescription, i++))
                         .label(nodeTool.getName())
@@ -317,7 +321,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
                             return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(child), capturedConvertedNodes).executeTool(nodeTool, child);
                         })
-                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
+                        .targetDescriptions(allTargetDescriptions)
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
                 // @formatter:on
@@ -389,6 +393,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return List.of(ToolSection.newToolSection(UUID.randomUUID().toString()).label(NODE_CREATION_TOOL_SECTION).tools(nodeCreationTools).imageURL("").build(), //$NON-NLS-1$
                        ToolSection.newToolSection(UUID.randomUUID().toString()).label(EDGE_CREATION_TOOL_SECTION).tools(edgeTools).imageURL("").build()); //$NON-NLS-1$
         // @formatter:on
+    }
+
+    private List<NodeDescription> getAllTargetDescriptions(org.eclipse.sirius.components.view.NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        List<NodeDescription> allTargetDescriptions = new ArrayList<>();
+        var targetDescriptions = Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList());
+        allTargetDescriptions.addAll(targetDescriptions);
+
+        var crossReferencesAdapter = nodeDescription.eResource().getResourceSet().eAdapters().stream().filter(ECrossReferenceAdapter.class::isInstance).map(ECrossReferenceAdapter.class::cast)
+                .findFirst().orElse(new ECrossReferenceAdapter());
+        var crossReferences = crossReferencesAdapter.getInverseReferences(nodeDescription);
+        for (Setting setting : crossReferences) {
+            if (setting.getEObject() instanceof org.eclipse.sirius.components.view.NodeDescription) {
+                var nodeDescriptionCrossReference = (org.eclipse.sirius.components.view.NodeDescription) setting.getEObject();
+                if (nodeDescriptionCrossReference.getReusedChildNodeDescriptions().contains(nodeDescription)
+                        || nodeDescriptionCrossReference.getReusedBorderNodeDescriptions().contains(nodeDescription)) {
+                    allTargetDescriptions.add(converterContext.getConvertedNodes().get(nodeDescriptionCrossReference));
+                }
+            }
+        }
+        return allTargetDescriptions;
     }
 
     private List<ITool> createTools(ViewDiagramDescriptionConverterContext converterContext) {
