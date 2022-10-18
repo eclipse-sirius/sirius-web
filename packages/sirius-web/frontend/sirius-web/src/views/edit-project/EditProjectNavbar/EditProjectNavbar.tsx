@@ -30,8 +30,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PublishIcon from '@material-ui/icons/Publish';
+import SettingsIcon from '@material-ui/icons/Settings';
 import React, { useContext, useReducer } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps } from './EditProjectNavbar.types';
 import {
@@ -165,7 +166,6 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
           <ListItemText primary="Rename" />
         </MenuItem>
         <MenuItem
-          divider
           component="a"
           href={`${httpOrigin}/api/projects/${project?.id}`}
           type="application/octet-stream"
@@ -175,6 +175,17 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
             <GetAppIcon />
           </ListItemIcon>
           <ListItemText primary="Download" />
+        </MenuItem>
+        <MenuItem
+          divider
+          component={RouterLink}
+          to={`/projects/${project?.id}/settings`}
+          onClick={() => dispatch({ type: HANDLE_CLOSE_CONTEXT_MENU__ACTION })}
+          data-testid="project-settings-link">
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Settings" />
         </MenuItem>
         <MenuItem
           onClick={() => dispatch({ modalDisplayed: 'DeleteProject', type: HANDLE_SHOW_MODAL__ACTION })}

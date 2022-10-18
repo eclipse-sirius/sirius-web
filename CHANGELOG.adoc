@@ -21,6 +21,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1453[#1453] [diagram] Add new arrow styles Circle, FillCircle and CrossedCircle
 - https://github.com/eclipse-sirius/sirius-components/issues/1364[#1364] [forms] Add support for a basic image widget
+- https://github.com/eclipse-sirius/sirius-components/issues/1386[#1386] [project] Users can now upload their own images from a project's new settings page (available in the project menu). These images can be displayed in forms using the new image widget, or in View-based diagrams using and ImageNodeStyleDescription and selecting the image in the list of available shapes.
 
 == v2022.11.0
 

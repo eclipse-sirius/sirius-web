@@ -81,13 +81,14 @@ ALTER TABLE ONLY project
 ALTER TABLE ONLY representation
     ADD CONSTRAINT fk_representation_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE;
 
-
 CREATE TABLE CustomImage (
 	id UUID NOT NULL,
+    project_id uuid,
 	label TEXT NOT NULL,
 	content_type TEXT NOT NULL,
 	content BYTEA NOT NULL,
-	CONSTRAINT pk_customimage_id PRIMARY KEY (id)
+	CONSTRAINT pk_customimage_id PRIMARY KEY (id),
+    CONSTRAINT fk_customimage_project_id_id FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
 );
  
 -- password is "012345678910" encrypted using Spring's BCryptPasswordEncoder

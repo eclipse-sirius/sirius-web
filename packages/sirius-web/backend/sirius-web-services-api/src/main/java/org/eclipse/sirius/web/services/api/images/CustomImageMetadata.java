@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,32 +10,39 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf;
+package org.eclipse.sirius.web.services.api.images;
 
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Lightweight DTO representing a custom image (without the content).
+ * Lightweight DTO representing a custom image metadata.
  *
  * @author pcdavid
  */
-public class CustomImage {
+public class CustomImageMetadata {
     private UUID id;
 
     private String label;
 
+    private String url;
+
     private String contentType;
 
-    public CustomImage(UUID id, String label, String contentType) {
+    public CustomImageMetadata(UUID id, String label, String url, String contentType) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
+        this.url = Objects.requireNonNull(url);
         this.contentType = Objects.requireNonNull(contentType);
     }
 
     public UUID getId() {
         return this.id;
+    }
+
+    public String getURL() {
+        return this.url;
     }
 
     public String getLabel() {
@@ -48,7 +55,7 @@ public class CustomImage {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{' id: {1}, label: {2}, contentType: {3} '}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.contentType);
+        String pattern = "{0} '{' id: {1}, url: {2}, label: {3}, contentType: {4} '}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.url, this.label, this.contentType);
     }
 }

@@ -18,6 +18,13 @@ type Project {
   currentEditingContext: EditingContext!
   owner: Profile!
   visibility: Visibility!
+  customImages: [CustomImage!]!
+}
+
+type CustomImage {
+  id: ID!
+  label: String!
+  url: String!
 }
 
 type Profile {
@@ -47,6 +54,9 @@ extend type Mutation {
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
   renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
+  uploadImage(input: UploadImageInput!): UploadImagePayload!
+  renameImage(input: RenameImageInput!): RenameImagePayload!
+  deleteImage(input: DeleteImageInput!): DeleteImagePayload!
 }
 
 input CreateProjectInput {
@@ -67,7 +77,7 @@ input DeleteProjectInput {
   projectId: ID!
 }
 
-union DeleteProjectPayload = ErrorPayload|DeleteProjectSuccessPayload
+union DeleteProjectPayload = ErrorPayload | DeleteProjectSuccessPayload
 
 type DeleteProjectSuccessPayload {
   id: ID!
@@ -147,3 +157,40 @@ type RenameRepresentationSuccessPayload {
   id: ID!
   representation: Representation!
 }
+
+input UploadImageInput {
+  id: ID!
+  editingContextId: ID
+  label: String
+  file: Upload!
+}
+
+union UploadImagePayload = ErrorPayload | UploadImageSuccessPayload
+
+type UploadImageSuccessPayload {
+  id: ID!
+  imageId: ID!
+}
+
+input RenameImageInput {
+  id: ID!
+  imageId: ID!
+  newLabel: String!
+}
+
+union RenameImagePayload = ErrorPayload | RenameImageSuccessPayload
+
+type RenameImageSuccessPayload {
+  id: ID!
+}
+
+input DeleteImageInput {
+  id: ID!
+  imageId: ID!
+}
+
+type DeleteImageSuccessPayload {
+  id: ID!
+}
+
+union DeleteImagePayload = ErrorPayload | DeleteImageSuccessPayload

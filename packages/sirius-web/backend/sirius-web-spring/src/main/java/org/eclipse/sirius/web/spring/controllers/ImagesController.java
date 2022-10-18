@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -96,7 +97,6 @@ public class ImagesController {
     public ImagesController(List<IImagePathService> pathResourcesServices, ICustomImageContentService customImageContentService, MeterRegistry meterRegistry) {
         this.pathResourcesServices = Objects.requireNonNull(pathResourcesServices);
         this.customImageContentService = Objects.requireNonNull(customImageContentService);
-
         this.timer = Timer.builder(TIMER).register(meterRegistry);
     }
 
@@ -121,24 +121,30 @@ public class ImagesController {
                 }
             }
         } else if (imagePath.startsWith(CUSTOM_IMAGE_PREFIX)) {
-            String[] imageDescriptor = imagePath.substring(CUSTOM_IMAGE_PREFIX.length()).split("/"); //$NON-NLS-1$
-            if (imageDescriptor.length == 2) {
-                String editingContextId = imageDescriptor[0];
-                var optionalImageId = new IDParser().parse(imageDescriptor[1]);
-                Optional<String> mediaType = optionalImageId.flatMap(imageId -> this.customImageContentService.getImageContentTypeById(editingContextId, imageId));
-                Optional<byte[]> contents = optionalImageId.flatMap(imageId -> this.customImageContentService.getImageContentById(editingContextId, imageId));
-                if (mediaType.isPresent() && contents.isPresent()) {
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.valueOf(mediaType.get()));
-                    Resource resource = new ByteArrayResource(contents.get());
-                    response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
-                }
-            }
+            response = this.getCustomImage(imagePath);
         }
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
+        return response;
+    }
+
+    private ResponseEntity<Resource> getCustomImage(String imagePath) {
+        ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        String[] imageDescriptor = imagePath.substring(CUSTOM_IMAGE_PREFIX.length()).split("/"); //$NON-NLS-1$
+        Optional<UUID> optionalImageId = Optional.empty();
+        if (imageDescriptor.length == 1) {
+            optionalImageId = new IDParser().parse(imageDescriptor[0]);
+        }
+        Optional<String> mediaType = optionalImageId.flatMap(this.customImageContentService::getImageContentTypeById);
+        Optional<byte[]> contents = optionalImageId.flatMap(this.customImageContentService::getImageContentById);
+        if (mediaType.isPresent() && contents.isPresent()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf(mediaType.get()));
+            Resource resource = new ByteArrayResource(contents.get());
+            response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        }
         return response;
     }
 

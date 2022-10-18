@@ -77,6 +77,7 @@ public class CustomImagesLoader implements CommandLineRunner {
 
     private CustomImageEntity loadImageFile(Path imgPath) throws IOException {
         CustomImageEntity customImageEntity = new CustomImageEntity();
+        // No project set: these are global images
         customImageEntity.setLabel(this.trimFileExtension(imgPath.getFileName().toString()));
         customImageEntity.setContentType(Files.probeContentType(imgPath));
         customImageEntity.setContent(Files.readAllBytes(imgPath));
