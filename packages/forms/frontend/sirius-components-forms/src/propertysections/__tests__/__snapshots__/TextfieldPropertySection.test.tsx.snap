@@ -18,6 +18,7 @@ exports[`should display the edited value 1`] = `
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
+      spellcheck="false"
     >
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -54,6 +55,7 @@ exports[`should display the edited value 2`] = `
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
+      spellcheck="false"
     >
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -90,6 +92,7 @@ exports[`should display the edited value 3`] = `
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
+      spellcheck="false"
     >
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -127,6 +130,7 @@ exports[`should display the error received 1`] = `
       <div
         class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
+        spellcheck="false"
       >
         <div
           class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -165,6 +169,7 @@ exports[`should display the error received 2`] = `
       <div
         class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
+        spellcheck="false"
       >
         <div
           class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -247,6 +252,7 @@ exports[`should render a readOnly textfield 1`] = `
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
+      spellcheck="false"
     >
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -284,6 +290,7 @@ exports[`should render the textfield 1`] = `
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
       data-testid="Name:"
+      spellcheck="false"
     >
       <div
         class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -321,6 +328,7 @@ exports[`should render the textfield with empty style 1`] = `
       <div
         class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
+        spellcheck="false"
       >
         <div
           class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-31 makeStyles-style-32 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -359,6 +367,7 @@ exports[`should render the textfield with style 1`] = `
       <div
         class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
+        spellcheck="false"
       >
         <div
           class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-26 makeStyles-style-27 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
@@ -397,6 +406,7 @@ exports[`should render the textfield without style 1`] = `
       <div
         class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
         data-testid="Name:"
+        spellcheck="false"
       >
         <div
           class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
