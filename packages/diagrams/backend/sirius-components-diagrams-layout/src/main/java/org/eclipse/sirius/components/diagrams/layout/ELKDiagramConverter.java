@@ -21,8 +21,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
+import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.graph.ElkConnectableShape;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
@@ -36,12 +38,14 @@ import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
+import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
@@ -153,9 +157,9 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         // @formatter:on
     }
 
-    private double getLargestIconLabelNodeWidth(List<Node> iconLabelNodes) {
+    private double getLargestChildWidth(List<Node> children) {
         // @formatter:off
-        return iconLabelNodes.stream()
+        double largestChildWidth = children.stream()
                 .map(Node::getLabel)
                 .map(this.textBoundsService::getBounds)
                 .map(TextBounds::getSize)
@@ -165,6 +169,14 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
                 .orElse(-1);
         // @formatter:on
 
+        for (Node child : children) {
+            double childLargestChildWidth = this.getLargestChildWidth(child.getChildNodes());
+            if (childLargestChildWidth > largestChildWidth) {
+                largestChildWidth = childLargestChildWidth;
+            }
+        }
+
+        return largestChildWidth;
     }
 
     /**
@@ -177,11 +189,11 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
      */
     private double getNodeListWidth(Node nodeList) {
         TextBounds nodeListLabelTextBounds = this.textBoundsService.getBounds(nodeList.getLabel());
-        double largestNodeListItemWidth = this.getLargestIconLabelNodeWidth(nodeList.getChildNodes());
+        double largestchildWidth = this.getLargestChildWidth(nodeList.getChildNodes());
 
         // @formatter:off
          return Arrays.asList(
-                largestNodeListItemWidth,
+                largestchildWidth,
                 nodeListLabelTextBounds.getSize().getWidth() + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING * 2,
                 LayoutOptionValues.MIN_WIDTH_CONSTRAINT)
               .stream()
@@ -207,17 +219,61 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
      */
     private Node initializeNodeList(Node nodeList) {
         List<Node> childNodes = nodeList.getChildNodes();
-
         double nodeListWidth = this.getNodeListWidth(nodeList);
-        List<Node> nodeListItems = this.initializeIconLabelNodes(childNodes, nodeListWidth, nodeList.getLabel().getSize().getHeight());
-        double nodeListHeight = this.getNodeListHeight(nodeListItems);
+        double nodeLabelHeight = nodeList.getLabel().getSize().getHeight();
 
+        List<Node> initializedChildren = new ArrayList<>();
+        for (Node child : childNodes) {
+            if (child.getStyle() instanceof IconLabelNodeStyle) {
+                Node initializeIconLabelNode = this.initializeIconLabelNode(child, initializedChildren, nodeListWidth, nodeLabelHeight);
+                initializedChildren.add(initializeIconLabelNode);
+            } else if (child.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                Node initializeListCompartment = this.initializeListCompartment(child, initializedChildren, nodeListWidth, nodeLabelHeight);
+                initializedChildren.add(initializeListCompartment);
+            }
+        }
+
+        double nodeListHeight = this.getNodeListHeight(initializedChildren, nodeLabelHeight);
         Size nodelistSize = Size.of(nodeListWidth, nodeListHeight);
 
         // @formatter:off
         return Node.newNode(nodeList)
                 .size(nodelistSize)
-                .childNodes(nodeListItems)
+                .childNodes(initializedChildren)
+                .build();
+        // @formatter:on
+    }
+
+    private Node initializeListCompartment(Node compartment, List<Node> initializedSiblings, double nodeListWidth, double nodeListLabelHeight) {
+        List<Node> childNodes = compartment.getChildNodes();
+
+        double compartmentLabelHeight = 0;
+        if (!compartment.getLabel().getText().isEmpty()) {
+            compartmentLabelHeight = compartment.getLabel().getSize().getHeight();
+        }
+
+        List<Node> initializedChildren = new ArrayList<>();
+        for (Node child : childNodes) {
+            if (child.getStyle() instanceof IconLabelNodeStyle) {
+                Node initializeIconLabelNode = this.initializeIconLabelNode(child, initializedChildren, nodeListWidth, compartmentLabelHeight);
+                initializedChildren.add(initializeIconLabelNode);
+            } else if (child.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                Node initializeListCompartment = this.initializeListCompartment(child, initializedChildren, nodeListWidth, compartmentLabelHeight);
+                initializedChildren.add(initializeListCompartment);
+            }
+        }
+
+        double nodeListHeight = this.getNodeListHeight(initializedChildren, compartmentLabelHeight);
+        Size nodelistSize = Size.of(nodeListWidth, nodeListHeight);
+
+        double compartmentNodePosY = this.getCurrentCompartmentYPosition(initializedSiblings, nodeListLabelHeight);
+        Position compartmentNodePosition = Position.at(0, compartmentNodePosY);
+
+        // @formatter:off
+        return Node.newNode(compartment)
+                .size(nodelistSize)
+                .position(compartmentNodePosition)
+                .childNodes(initializedChildren)
                 .build();
         // @formatter:on
     }
@@ -233,13 +289,14 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
      *
      * @param nodeListChildren
      *            The list of {@link Node} with {@link ListLayoutStrategy} children
+     * @param nodeLabelHeight
      * @return the node {@link Node} with {@link ListLayoutStrategy} height
      */
-    private double getNodeListHeight(List<Node> nodeListChildren) {
-        double nodeListHeight = 0;
+    private double getNodeListHeight(List<Node> nodeListChildren, double nodeLabelHeight) {
+        double nodeListHeight = nodeLabelHeight + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP;
         if (!nodeListChildren.isEmpty()) {
             Node lastNodeListItem = nodeListChildren.get(nodeListChildren.size() - 1);
-            nodeListHeight = lastNodeListItem.getPosition().getY() + lastNodeListItem.getSize().getHeight() + LayoutOptionValues.DEFAULT_ELK_PADDING;
+            nodeListHeight = lastNodeListItem.getPosition().getY() + lastNodeListItem.getSize().getHeight();
         }
 
         if (nodeListHeight < LayoutOptionValues.MIN_HEIGHT_CONSTRAINT) {
@@ -248,26 +305,24 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         return nodeListHeight;
     }
 
-    private List<Node> initializeIconLabelNodes(List<Node> childNodes, double nodeListWidth, double nodeListLabelHeight) {
-        List<Node> iconLabelNodes = new ArrayList<>();
-        for (int i = 0; i < childNodes.size(); ++i) {
-            Node iconLabelNode = childNodes.get(i);
+    private Node initializeIconLabelNode(Node iconLabelNode, List<Node> previousSiblings, double nodeListWidth, double nodeListLabelHeight) {
+        double iconLabelNodeHeight = this.getIconLabelNodeHeight(iconLabelNode);
+        Size iconLabelNodeSize = Size.of(nodeListWidth, iconLabelNodeHeight);
 
-            double iconLabelNodeHeight = this.getIconLabelNodeHeight(iconLabelNode);
-            Size iconLabelNodeSize = Size.of(nodeListWidth - LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT, iconLabelNodeHeight);
+        double iconLabelNodePosY = this.getCurrentListItemYPosition(previousSiblings, nodeListLabelHeight);
+        Position iconLabelNodePosition = Position.at(0, iconLabelNodePosY);
 
-            double iconLabelNodePosY = this.getCurrentListItemYPosition(iconLabelNodes, nodeListLabelHeight);
-            Position iconLabelNodePosition = Position.at(LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT, iconLabelNodePosY);
+        // @formatter:off
+        Label updatedLabel = Label.newLabel(iconLabelNode.getLabel())
+                .position(Position.at(6, 3))
+                .build();
 
-            // @formatter:off
-            Node newIconLabelNode = Node.newNode(iconLabelNode)
-                    .size(iconLabelNodeSize)
-                    .position(iconLabelNodePosition)
-                    .build();
-            // @formatter:on
-            iconLabelNodes.add(newIconLabelNode);
-        }
-        return iconLabelNodes;
+        return Node.newNode(iconLabelNode)
+                .label(updatedLabel)
+                .size(iconLabelNodeSize)
+                .position(iconLabelNodePosition)
+                .build();
+        // @formatter:on
     }
 
     /**
@@ -290,18 +345,34 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
     private double getCurrentListItemYPosition(List<Node> handledIconLabelNodes, double nodeListLabelHeight) {
         double iconLabelNodeYPosition = 0;
         if (handledIconLabelNodes.isEmpty()) {
-            iconLabelNodeYPosition = nodeListLabelHeight + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+            if (nodeListLabelHeight != 0) {
+                iconLabelNodeYPosition = nodeListLabelHeight + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+            }
         } else {
             Node previousIconLabelNodeSibling = handledIconLabelNodes.get(handledIconLabelNodes.size() - 1);
-            iconLabelNodeYPosition = previousIconLabelNodeSibling.getPosition().getY() + previousIconLabelNodeSibling.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
+            iconLabelNodeYPosition = previousIconLabelNodeSibling.getPosition().getY() + previousIconLabelNodeSibling.getSize().getHeight();
+        }
+        return iconLabelNodeYPosition;
+    }
+
+    private double getCurrentCompartmentYPosition(List<Node> handledIconLabelNodes, double parentNodeLabelHeight) {
+        double iconLabelNodeYPosition = 0;
+        if (handledIconLabelNodes.isEmpty()) {
+            iconLabelNodeYPosition = parentNodeLabelHeight + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+        } else {
+            Node previousIconLabelNodeSibling = handledIconLabelNodes.get(handledIconLabelNodes.size() - 1);
+            iconLabelNodeYPosition = previousIconLabelNodeSibling.getPosition().getY() + previousIconLabelNodeSibling.getSize().getHeight();
         }
         return iconLabelNodeYPosition;
     }
 
     private double getIconLabelNodeHeight(Node nodeListItem) {
-        TextBounds iconLabelNodeTextBounds = this.textBoundsService.getBounds(nodeListItem.getLabel());
-        double iconLabelNodeHeight = iconLabelNodeTextBounds.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP
-                + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
+        double iconLabelNodeHeight = 0;
+        if (!nodeListItem.getLabel().getText().isEmpty()) {
+            TextBounds iconLabelNodeTextBounds = this.textBoundsService.getBounds(nodeListItem.getLabel());
+            iconLabelNodeHeight = iconLabelNodeTextBounds.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP
+                    + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
+        }
         return iconLabelNodeHeight;
     }
 
@@ -322,11 +393,12 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
 
-        if (node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
-        } else if (NodeType.NODE_ICON_LABEL.equals(node.getType())) {
-            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
+        if (ListLayoutStrategy.class.equals(parent.getProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY))) {
             elkNode.setLocation(node.getPosition().getX(), node.getPosition().getY());
+        }
+
+        if (node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy || NodeType.NODE_ICON_LABEL.equals(node.getType())) {
+            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
         } else {
             double width = textBounds.getSize().getWidth();
             double height = textBounds.getSize().getHeight();
@@ -349,10 +421,16 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkImage.setParent(elkNode);
         }
 
+        boolean hasHeader = false;
+        if (node.getStyle() instanceof RectangularNodeStyle) {
+            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) node.getStyle();
+            hasHeader = rectangularNodeStyle.isWithHeader();
+        }
+
         node.getBorderNodes().stream().forEach(borderNode -> this.convertBorderNode(borderNode, elkNode, connectableShapeIndex, id2ElkGraphElements));
         node.getChildNodes().stream().forEach(childNode -> this.convertNode(childNode, elkNode, connectableShapeIndex, id2ElkGraphElements));
 
-        this.convertLabel(node.getLabel(), textBounds, elkNode, id2ElkGraphElements, null);
+        this.convertLabel(node.getLabel(), textBounds, elkNode, id2ElkGraphElements, hasHeader, null);
 
         id2ElkGraphElements.put(node.getId(), elkNode);
     }
@@ -379,18 +457,30 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
         }
 
-        this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, null);
+        boolean hasHeader = false;
+        if (borderNode.getStyle() instanceof RectangularNodeStyle) {
+            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) borderNode.getStyle();
+            hasHeader = rectangularNodeStyle.isWithHeader();
+        }
+
+        this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, hasHeader, null);
 
         id2ElkGraphElements.put(borderNode.getId(), elkPort);
     }
 
-    private void convertLabel(Label label, TextBounds textBounds, ElkGraphElement elkGraphElement, Map<String, ElkGraphElement> id2ElkGraphElements, EdgeLabelPlacement placement) {
+    private void convertLabel(Label label, TextBounds textBounds, ElkGraphElement elkGraphElement, Map<String, ElkGraphElement> id2ElkGraphElements, boolean isInsideHeader,
+            EdgeLabelPlacement placement) {
         ElkLabel elkLabel = ElkGraphFactory.eINSTANCE.createElkLabel();
         elkLabel.setIdentifier(label.getId());
         elkLabel.setProperty(PROPERTY_TYPE, label.getType());
         elkLabel.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
 
-        if (label.getText().isEmpty() && !label.getStyle().getIconURL().isEmpty()) {
+        if (NodeType.NODE_ICON_LABEL.equals(elkGraphElement.getProperty(PROPERTY_TYPE))) {
+            // should be removed once we will be able to define the list layout with ELK without using the fixed layout.
+            elkLabel.setProperty(FixedLayouterOptions.POSITION, new KVector(LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT, 3));
+        }
+
+        if (label.getText().isEmpty() && !label.getStyle().getIconURL().isEmpty() || isInsideHeader) {
             elkLabel.setText(" "); //$NON-NLS-1$
         } else {
             elkLabel.setText(label.getText());
@@ -437,9 +527,10 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             }
         }
 
-        Optional.ofNullable(edge.getBeginLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, EdgeLabelPlacement.TAIL));
-        Optional.ofNullable(edge.getCenterLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, EdgeLabelPlacement.CENTER));
-        Optional.ofNullable(edge.getEndLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, EdgeLabelPlacement.HEAD));
+        Optional.ofNullable(edge.getBeginLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, false, EdgeLabelPlacement.TAIL));
+        Optional.ofNullable(edge.getCenterLabel())
+                .ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, false, EdgeLabelPlacement.CENTER));
+        Optional.ofNullable(edge.getEndLabel()).ifPresent(label -> this.convertLabel(label, this.textBoundsService.getBounds(label), elkEdge, id2ElkGraphElements, false, EdgeLabelPlacement.HEAD));
 
         id2ElkGraphElements.put(edge.getId(), elkEdge);
     }

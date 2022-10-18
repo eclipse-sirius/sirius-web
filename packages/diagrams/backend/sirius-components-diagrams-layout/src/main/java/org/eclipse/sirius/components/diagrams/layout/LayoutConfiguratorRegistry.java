@@ -85,6 +85,7 @@ public class LayoutConfiguratorRegistry {
     public ISiriusWebLayoutConfigurator getDefaultLayoutConfigurator() {
         // @formatter:off
         SiriusWebLayoutConfigurator configurator = new SiriusWebLayoutConfigurator();
+
         configurator.configureByType(ELKDiagramConverter.DEFAULT_DIAGRAM_TYPE)
                 .setProperty(CoreOptions.ALGORITHM, LayeredOptions.ALGORITHM_ID)
                 .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
@@ -100,15 +101,13 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         configurator.configureByType(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS, SizeConstraint.NODE_LABELS))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
-                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside())
-                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(5d, 5d, 5d, 5d));
+                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         configurator.configureByType(NodeType.NODE_ICON_LABEL)
-                .setProperty(CoreOptions.NO_LAYOUT, true)
-                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(0d, 12d, 0d, 6d));
+                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(3d, 12d, 3d, 6d))
+                .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, EnumSet.of(NodeLabelPlacement.INSIDE, NodeLabelPlacement.V_CENTER, NodeLabelPlacement.H_LEFT));
 
         configurator.configureByType(NodeType.NODE_IMAGE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS))
@@ -123,12 +122,15 @@ public class LayoutConfiguratorRegistry {
 
         configurator.configureByChildrenLayoutStrategy(ListLayoutStrategy.class)
                 .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
-                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true);
+                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true)
+                .setProperty(CoreOptions.PADDING, new ElkPadding(0, 0, 0, 0))
+                .setProperty(CoreOptions.SPACING_NODE_NODE, 0d);
 
         configurator.configureByChildrenLayoutStrategy(FreeFormLayoutStrategy.class)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
-                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT));
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
+                .setProperty(CoreOptions.PADDING, new ElkPadding(12, 12, 12, 12));
 
         configurator.configure(ElkEdge.class).setProperty(CoreOptions.SPACING_EDGE_LABEL, 3d);
         // @formatter:on

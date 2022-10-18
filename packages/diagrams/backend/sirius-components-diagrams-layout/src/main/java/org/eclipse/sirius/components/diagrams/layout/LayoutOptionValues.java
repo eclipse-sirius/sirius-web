@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,12 +80,12 @@ public final class LayoutOptionValues {
      * The value defined for NodeList in the elk configuration to set the padding top between a NodeListItem to its
      * label.
      */
-    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_TOP = 0d;
+    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_TOP = 3d;
 
     /**
      * The value defined for NodeList in the elk configuration to set the padding bottom between a NodeListItem to its
      * label.
      */
-    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM = 0d;
+    public static final double NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM = 3d;
 
 }
