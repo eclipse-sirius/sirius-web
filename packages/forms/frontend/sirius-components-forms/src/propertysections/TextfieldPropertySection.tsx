@@ -235,6 +235,7 @@ export const TextfieldPropertySection = ({
         name={widget.label}
         placeholder={widget.label}
         value={value}
+        spellCheck={false}
         margin="dense"
         multiline={isTextarea(widget)}
         maxRows={isTextarea(widget) ? 4 : 1}
