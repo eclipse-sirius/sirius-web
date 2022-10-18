@@ -12,22 +12,39 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.persistence.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Audited;
-import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
+import org.eclipse.sirius.web.persistence.entities.CustomImageMetadataEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Persistence layer for custom images (full version with contents).
+ * Persistence layer for custom images.
  *
  * @author pcdavid
  */
 @Repository
-public interface ICustomImageRepository extends PagingAndSortingRepository<CustomImageEntity, UUID> {
+public interface ICustomImageMetadataRepository extends PagingAndSortingRepository<CustomImageMetadataEntity, UUID> {
     @Audited
     @Override
-    Optional<CustomImageEntity> findById(UUID id);
+    Optional<CustomImageMetadataEntity> findById(UUID id);
+
+    @Audited
+    @Override
+    void deleteById(UUID id);
+
+    @Audited
+    @Override
+    <S extends CustomImageMetadataEntity> S save(S entity);
+
+    @Audited
+    @Override
+    List<CustomImageMetadataEntity> findAll();
+
+    @Audited
+    List<CustomImageMetadataEntity> findAllByProjectId(UUID projectId);
+
 }

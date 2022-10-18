@@ -55,8 +55,8 @@ import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.emf.CustomImage;
-import org.eclipse.sirius.components.view.emf.ICustomImageSearchService;
+import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
+import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -75,11 +75,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private final List<IParametricSVGImageRegistry> parametricSVGImageRegistries;
 
-    private final ICustomImageSearchService customImageSearchService;
+    private final ICustomImageMetadataSearchService customImageSearchService;
 
     private final IValidationService validationService;
 
-    public NodeStylePropertiesConfigurer(ICustomImageSearchService customImageSearchService, IValidationService validationService, List<IParametricSVGImageRegistry> parametricSVGImageRegistries) {
+    public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, IValidationService validationService,
+            List<IParametricSVGImageRegistry> parametricSVGImageRegistries) {
         this.validationService = Objects.requireNonNull(validationService);
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
@@ -375,27 +376,24 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .labelProvider(variableManager -> "Shape") //$NON-NLS-1$
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(EMPTY))
                 .optionsProvider(variableManager -> {
-                    List<CustomImage> parametricSVGs = this.parametricSVGImageRegistries.stream()
-                        .flatMap(service-> service.getImages().stream())
-                        .map(image -> new CustomImage(image.getId(), image.getLabel(), "image/svg+xml")) //$NON-NLS-1$
-                        .collect(Collectors.toList());
+                    Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
 
-                    List<CustomImage> customImages = List.of();
-                    Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-                    if (optionalEditingContext.isPresent()) {
-                        customImages =  this.customImageSearchService.getAvailableImages(optionalEditingContext.get().getId()).stream()
-                                .sorted(Comparator.comparing(CustomImage::getLabel))
-                                .collect(Collectors.toList());
-                    }
-                    return Stream.concat(parametricSVGs.stream(), customImages.stream())
+                    Stream<CustomImageMetadata> parametricSVGs = this.parametricSVGImageRegistries.stream()
+                        .flatMap(service-> service.getImages().stream())
+                        .map(image -> new CustomImageMetadata(image.getId(), optionalEditingContextId, image.getLabel(), "image/svg+xml")); //$NON-NLS-1$
+
+                    List<CustomImageMetadata> customImages = optionalEditingContextId.map(this.customImageSearchService::getAvailableImages).orElse(List.of());
+
+                    return Stream.concat(parametricSVGs, customImages.stream())
+                            .sorted(Comparator.comparing(CustomImageMetadata::getLabel))
                             .collect(Collectors.toList());
                 })
-                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class)
-                        .map(CustomImage::getId)
+                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
+                        .map(CustomImageMetadata::getId)
                         .map(UUID::toString)
                         .orElse(EMPTY))
-                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImage.class)
-                        .map(CustomImage::getLabel)
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
+                        .map(CustomImageMetadata::getLabel)
                         .orElse(EMPTY))
                 .newValueHandler(this.getNewShapeValueHandler())
                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
@@ -411,12 +409,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(variableManager -> "nodestyle.shapePreview") //$NON-NLS-1$
                 .labelProvider(variableManager -> "Shape Preview") //$NON-NLS-1$
                 .urlProvider(variableManager -> {
-                    Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-                    if (optionalEditingContext.isPresent()) {
-                        var optionalShape = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape);
-                        if (optionalShape.isPresent()) {
-                            return String.format("/custom/%s/%s", optionalEditingContext.get().getId(), optionalShape.get()); //$NON-NLS-1$
-                        }
+                    var optionalShape = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape);
+                    if (optionalShape.isPresent()) {
+                        return String.format("/custom/%s", optionalShape.get()); //$NON-NLS-1$
                     }
                     return "";   //$NON-NLS-1$
                 })

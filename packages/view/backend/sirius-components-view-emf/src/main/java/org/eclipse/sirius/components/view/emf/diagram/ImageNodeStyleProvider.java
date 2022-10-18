@@ -59,9 +59,7 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                 boolean parametricImageFound = this.parametricSVGImageServices.stream()
                         .flatMap(service -> service.getImages().stream())
                         .map(ParametricSVGImage::getId)
-                        .filter(UUID.fromString(svgName)::equals)
-                        .findFirst()
-                        .isPresent();
+                        .anyMatch(UUID.fromString(svgName)::equals);
                 // @formatter:on
                 if (parametricImageFound) {
                     nodeType = Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE);
@@ -89,18 +87,16 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                                      .build());
             // @formatter:on
         } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE))) {
-            if (optionalEditingContextId.isPresent()) {
-                // @formatter:off
-                iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
-                                   .scalingFactor(1)
-                                   .imageURL("/custom/" + optionalEditingContextId.get().toString() + "/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$ //$NON-NLS-2$
-                                   .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                                   .borderSize(nodeStyle.getBorderSize())
-                                   .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                                   .borderRadius(nodeStyle.getBorderRadius())
-                                   .build());
-                // @formatter:on
-            }
+            // @formatter:off
+            iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
+                               .scalingFactor(1)
+                               .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$
+                               .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                               .borderSize(nodeStyle.getBorderSize())
+                               .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                               .borderRadius(nodeStyle.getBorderRadius())
+                               .build());
+            // @formatter:on
         }
 
         return iNodeStyle;

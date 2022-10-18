@@ -12,37 +12,25 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.api.images;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.List;
 
 /**
- * Service to retrieve the actual content of a custom image.
+ * Service used to find existing custom images.
  *
  * @author pcdavid
  */
-public interface ICustomImageContentService {
-
-    Optional<byte[]> getImageContentById(UUID imageId);
-
-    Optional<String> getImageContentTypeById(UUID imageId);
+public interface IProjectCustomImageMetadataSearchService {
+    List<CustomImageMetadata> getProjectImages(String editingContextId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
-     * @author sbegaudeau
+     * @author pcdavid
      */
-    class NoOp implements ICustomImageContentService {
-
+    class NoOp implements IProjectCustomImageMetadataSearchService {
         @Override
-        public Optional<byte[]> getImageContentById(UUID imageId) {
-            return Optional.empty();
+        public List<CustomImageMetadata> getProjectImages(String editingContextId) {
+            return List.of();
         }
-
-        @Override
-        public Optional<String> getImageContentTypeById(UUID imageId) {
-            return Optional.empty();
-        }
-
     }
-
 }

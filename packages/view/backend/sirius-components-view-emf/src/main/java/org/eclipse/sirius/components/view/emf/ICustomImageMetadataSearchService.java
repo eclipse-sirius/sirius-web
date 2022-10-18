@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,20 +19,18 @@ import java.util.List;
  *
  * @author pcdavid
  */
-public interface ICustomImageSearchService {
-    List<CustomImage> getAvailableImages(String editingContextId);
+public interface ICustomImageMetadataSearchService {
+    List<CustomImageMetadata> getAvailableImages(String editingContextId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
      * @author pcdavid
      */
-    class NoOp implements ICustomImageSearchService {
-
+    class NoOp implements ICustomImageMetadataSearchService {
         @Override
-        public List<CustomImage> getAvailableImages(String editingContextId) {
+        public List<CustomImageMetadata> getAvailableImages(String editingContextId) {
             return List.of();
         }
-
     }
 }

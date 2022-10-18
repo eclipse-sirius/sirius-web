@@ -39,10 +39,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useMachine } from '@xstate/react';
-import { Footer } from '../../footer/Footer';
-import { NavigationBar } from '../../navigationBar/NavigationBar';
 import React, { useContext, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { Footer } from '../../footer/Footer';
+import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   GQLGetProjectsQueryData,
   GQLGetProjectsQueryVariables,

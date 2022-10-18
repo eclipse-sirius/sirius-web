@@ -18,6 +18,7 @@ import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectsView } from '../views/projects/ProjectsView';
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 
+import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
 /**
  * Defines the content of the main part of the user interface.
  *
@@ -30,6 +31,7 @@ export const Main = () => {
       <Route exact path="/upload/project" component={withErrorBoundary(UploadProjectView)} />
       <Route exact path="/projects" component={withErrorBoundary(ProjectsView)} />
       <Route exact path="/projects/:projectId/edit/:representationId?" component={withErrorBoundary(EditProjectView)} />
+      <Route exact path="/projects/:projectId/settings" component={withErrorBoundary(ProjectSettingsView)} />
       <Redirect to="/projects" />
     </Switch>
   );

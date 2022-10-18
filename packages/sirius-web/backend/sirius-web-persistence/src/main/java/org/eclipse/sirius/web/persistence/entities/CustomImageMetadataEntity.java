@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,15 +24,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Represents a custom (user-supplied) image that can be used on representations. This includes the actual image
- * contents and should only be used when this (possible very large) contents is needed: on initial upload or for serving
- * the image to the client. See {@link CustomImageMetadataEntity} when only the images metadata are needed.
+ * Lightweight entity which avoids loading the actual contents when not needed.
  *
  * @author pcdavid
  */
 @Entity
 @Table(name = "CustomImage")
-public class CustomImageEntity {
+public class CustomImageMetadataEntity {
     @Id
     private UUID id;
 
@@ -44,8 +42,6 @@ public class CustomImageEntity {
 
     @Column(name = "content_type")
     private String contentType;
-
-    private byte[] content;
 
     public UUID getId() {
         return this.id;
@@ -77,14 +73,6 @@ public class CustomImageEntity {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
-    }
-
-    public byte[] getContent() {
-        return this.content;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
     }
 
     @Override
