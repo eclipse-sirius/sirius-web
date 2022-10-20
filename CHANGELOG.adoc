@@ -7,6 +7,9 @@
 - [backenđ] Upgrade to Apache Batik 1.16.0 (from 1.14.0)
 - [backend] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v2.7.5[Spring Boot 2.7.5]
 
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1431[#1431] The default implementation of the Property View should not try to handle a multi valuated EStructuralFeature of type String
 
 == v2022.11.0
 

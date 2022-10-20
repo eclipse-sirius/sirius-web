@@ -64,7 +64,7 @@ public class EStringIfDescriptionProvider {
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             return optionalEAttribute.filter(eAttribute -> {
                 EClassifier eType = eAttribute.getEType();
-                return eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName());
+                return !eAttribute.isMany() && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName()));
             }).isPresent();
         };
     }
