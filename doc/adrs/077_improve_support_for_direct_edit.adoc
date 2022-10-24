@@ -1,0 +1,68 @@
+= ADR-077 - Improve support for direct edit in diagram
+
+== Context
+
+The current direct edit behavior may make the user sends data that is not meant to be sent to the backend, like the feature multiplicity in the Domain diagram. 
+We want to be able to define an initial value that will be displayed when the direct edit is triggered.
+
+== Decision
+
+A request using the graphql api will be made to ask the backend the value to put in the direct edit text field.
+This request will be made only if the user hit 'F2' or clicked on the direct edit tool from the palette.
+If the user start to type, the direct edit text field will be initialized with what the user has typed.
+
+=== Backend
+
+In the graphql schema, add `initialDirectEditElementLabel(labelId: ID!): String!` field on `DiagramDescription` type.
+This field will be resolved thanks to the `DiagramDescriptionInitialDirectEditElementLabelDatafetcher` which will leverage the `InitialDirectEditElementLabelEventHandler` to call either the compatibility layer or the View DSL to calculate the value to put in the direct edit text field thanks to `IInitialDirectEditElementLabelProvider`.
+
+```java
+public interface IInitialDirectEditElementLabelProvider {
+
+    boolean canHandle(DiagramDescription diagramDescription);
+
+    String getInitialDirectEditElementLabel(Object graphicalElement, Diagram diagram, IEditingContext editingContext);
+}
+```
+
+==== View
+
+Add the string attribute single valued `initialEditLabelExpression` to the `LabelEditTool`.
+Contribute a `IInitialDirectEditElementLabelProvider` to interprete the expression on the fly.
+
+==== Odesign compatibility
+
+The current implementation of `IInitialDirectEditElementLabelProvider` for the compatibility layer will return the actual label value.
+We will improve this provider later to leverage on the `Input Label Expression` from a direct edit label tool of an Odesign.
+
+=== Frontend
+
+Use the following query to ask the backend the value to put in the direct edit text field from `EditLabelUIWithInitialContent`
+
+```graphql
+query initialDirectEditElementLabel($editingContextId: ID!, $diagramId: ID!, $labelId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $diagramId) {
+          description {
+            ... on DiagramDescription {
+              initialDirectEditElementLabel(labelId: $labelId)
+            }
+          }
+        }
+      }
+    }
+  }
+```
+
+Make sure to wait the request to be finished to display the direct edit label text field.
+
+NOTE: The query will not be made if the user has started to type instead of hitting 'F2' or calling the edit label tool from the palette.
+
+== Status
+
+Accepted
+
+== Consequence
+
+This implementation may lead to unexpected behavior on network that have some latency. if the user hit 'F2' then start to type, the direct edit label text field value may be unexpected.
