@@ -6,6 +6,7 @@
 
 - [ADR-075] Add support for a basic image widget
 - [ADR-076] Allow users to upload their own custom images
+- [ADR-077] Improve support for direct edit in diagram
 
 === Dependency update
 
