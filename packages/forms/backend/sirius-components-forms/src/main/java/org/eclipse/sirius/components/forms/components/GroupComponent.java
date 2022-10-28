@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
@@ -54,6 +55,7 @@ public class GroupComponent implements IComponent {
         WidgetIdCounter widgetIdCounter = new WidgetIdCounter();
 
         List<?> semanticElements = groupDescription.getSemanticElementsProvider().apply(variableManager);
+
         List<Element> children = new ArrayList<>(semanticElements.size());
 
         for (Object semanticElement : semanticElements) {
@@ -65,21 +67,30 @@ public class GroupComponent implements IComponent {
             String label = groupDescription.getLabelProvider().apply(groupVariableManager);
             GroupDisplayMode displayMode = groupDescription.getDisplayModeProvider().apply(groupVariableManager);
 
+            List<Element> toolbarActions = new ArrayList<>();
+            for (ButtonDescription toolbarActionDescription : groupDescription.getToolbarActionDescriptions()) {
+                toolbarActions.add(new Element(ButtonComponent.class, new ButtonComponentProps(groupVariableManager, toolbarActionDescription)));
+            }
+
             // @formatter:off
-            List<Element> groupChildren = new ArrayList<>();
+            List<Element> groupContents = new ArrayList<>();
             List<AbstractControlDescription> controlDescriptions = groupDescription.getControlDescriptions();
             for (AbstractControlDescription controlDescription : controlDescriptions) {
                 if (controlDescription instanceof AbstractWidgetDescription) {
                     AbstractWidgetDescription widgetDescription = (AbstractWidgetDescription) controlDescription;
                     WidgetComponentProps widgetComponentProps = new WidgetComponentProps(groupVariableManager, widgetDescription);
-                    groupChildren.add(new Element(WidgetComponent.class, widgetComponentProps));
+                    groupContents.add(new Element(WidgetComponent.class, widgetComponentProps));
                 } else if (controlDescription instanceof ForDescription) {
                     ForDescription forDescription = (ForDescription) controlDescription;
                     ForComponentProps forComponentProps = new ForComponentProps(groupVariableManager, forDescription);
-                    groupChildren.add(new Element(ForComponent.class, forComponentProps));
+                    groupContents.add(new Element(ForComponent.class, forComponentProps));
                 }
             }
 
+            List<Element> groupChildren = List.of(
+                    new Element(GroupToolbarComponent.class, new FragmentProps(toolbarActions)),
+                    new Element(GroupContentsComponent.class, new FragmentProps(groupContents))
+            );
             GroupElementProps groupElementProps = GroupElementProps.newGroupElementProps(id)
                     .label(label)
                     .displayMode(displayMode)

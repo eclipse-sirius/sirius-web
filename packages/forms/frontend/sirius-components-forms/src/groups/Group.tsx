@@ -17,6 +17,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { useContext, useEffect, useState } from 'react';
 import { PropertySection } from '../propertysections/PropertySection';
+import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { GroupProps } from './Group.types';
 
 const useGroupStyles = makeStyles((theme) => ({
@@ -24,6 +25,20 @@ const useGroupStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: theme.spacing(1),
+  },
+  groupLabelAndToolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  toolbarAction: {
+    paddingRight: theme.spacing(1),
+    whiteSpace: 'nowrap',
   },
   title: {
     whiteSpace: 'nowrap',
@@ -87,15 +102,36 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
     );
   }
 
+  let toolbar = null;
+  if (group.toolbarActions?.length > 0) {
+    toolbar = (
+      <div className={classes.toolbar}>
+        {group.toolbarActions.map((toolbarAction) => (
+          <div className={classes.toolbarAction} key={toolbarAction.id}>
+            <ToolbarAction
+              editingContextId={editingContextId}
+              formId={formId}
+              readOnly={readOnly}
+              widget={toolbarAction}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className={classes.group}>
-      {group.displayMode === 'TOGGLEABLE_AREAS' ? (
-        widgetSelector
-      ) : (
-        <Typography variant="subtitle1" className={classes.title} gutterBottom>
-          {group.label}
-        </Typography>
-      )}
+      <div className={classes.groupLabelAndToolbar}>
+        {group.displayMode === 'TOGGLEABLE_AREAS' ? (
+          widgetSelector
+        ) : (
+          <Typography variant="subtitle1" className={classes.title} gutterBottom>
+            {group.label}
+          </Typography>
+        )}
+        {toolbar}
+      </div>
       <div className={group.displayMode === 'LIST' ? classes.verticalSections : classes.adaptableSections}>
         {group.widgets
           .filter((widget) => visibleWidgetIds.includes(widget.id))

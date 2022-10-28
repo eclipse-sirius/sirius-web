@@ -42,6 +42,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     private String descriptionId;
 
+    private List<FormDescriptionEditorToolbarAction> toolbarActions;
+
     private List<AbstractFormDescriptionEditorWidget> widgets;
 
     private FormDescriptionEditor() {
@@ -71,6 +73,10 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
     @Override
     public String getDescriptionId() {
         return this.descriptionId;
+    }
+
+    public List<FormDescriptionEditorToolbarAction> getToolbarActions() {
+        return this.toolbarActions;
     }
 
     public List<AbstractFormDescriptionEditorWidget> getWidgets() {
@@ -108,6 +114,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
         private String descriptionId;
 
+        private List<FormDescriptionEditorToolbarAction> toolbarActions;
+
         private List<AbstractFormDescriptionEditorWidget> widgets;
 
         private Builder(String id) {
@@ -119,6 +127,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             this.label = formDescriptionEditor.label;
             this.targetObjectId = formDescriptionEditor.targetObjectId;
             this.descriptionId = formDescriptionEditor.descriptionId;
+            this.toolbarActions = formDescriptionEditor.toolbarActions;
             this.widgets = formDescriptionEditor.widgets;
         }
 
@@ -137,6 +146,11 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             return this;
         }
 
+        public Builder toolbarActions(List<FormDescriptionEditorToolbarAction> toolbarActions) {
+            this.toolbarActions = Objects.requireNonNull(toolbarActions);
+            return this;
+        }
+
         public Builder widgets(List<AbstractFormDescriptionEditorWidget> widgets) {
             this.widgets = Objects.requireNonNull(widgets);
             return this;
@@ -149,6 +163,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             formDescriptionEditor.label = Objects.requireNonNull(this.label);
             formDescriptionEditor.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             formDescriptionEditor.descriptionId = Objects.requireNonNull(this.descriptionId);
+            formDescriptionEditor.toolbarActions = Objects.requireNonNull(this.toolbarActions);
             formDescriptionEditor.widgets = Objects.requireNonNull(this.widgets);
             return formDescriptionEditor;
         }

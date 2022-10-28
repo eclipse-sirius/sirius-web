@@ -38,6 +38,8 @@ public final class GroupDescription {
 
     private Function<VariableManager, List<?>> semanticElementsProvider;
 
+    private List<ButtonDescription> toolbarActionDescriptions;
+
     private List<AbstractControlDescription> controlDescriptions;
 
     private GroupDescription() {
@@ -62,6 +64,10 @@ public final class GroupDescription {
 
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
+    }
+
+    public List<ButtonDescription> getToolbarActionDescriptions() {
+        return this.toolbarActionDescriptions;
     }
 
     public List<AbstractControlDescription> getControlDescriptions() {
@@ -95,6 +101,8 @@ public final class GroupDescription {
 
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
+        private List<ButtonDescription> toolbarActionDescriptions = List.of();
+
         private List<AbstractControlDescription> controlDescriptions;
 
         private Builder(String id) {
@@ -121,6 +129,11 @@ public final class GroupDescription {
             return this;
         }
 
+        public Builder toolbarActionDescriptions(List<ButtonDescription> toolbarActionDescriptions) {
+            this.toolbarActionDescriptions = Objects.requireNonNull(toolbarActionDescriptions);
+            return this;
+        }
+
         public Builder controlDescriptions(List<AbstractControlDescription> controlDescriptions) {
             this.controlDescriptions = Objects.requireNonNull(controlDescriptions);
             return this;
@@ -134,6 +147,7 @@ public final class GroupDescription {
             groupDescription.displayModeProvider = Objects.requireNonNull(this.displayModeProvider);
             groupDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             groupDescription.controlDescriptions = Objects.requireNonNull(this.controlDescriptions);
+            groupDescription.toolbarActionDescriptions = Objects.requireNonNull(this.toolbarActionDescriptions);
             return groupDescription;
         }
     }

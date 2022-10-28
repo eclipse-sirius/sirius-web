@@ -36,6 +36,7 @@ public class TestFormDescriptionEditorBuilder {
                 .label("formDescriptionEditorLabel") //$NON-NLS-1$
                 .descriptionId(UUID.randomUUID().toString())
                 .targetObjectId("formDescriptionEditorTargetObjectId") //$NON-NLS-1$
+                .toolbarActions(List.of())
                 .widgets(List.of())
                 .build();
         // @formatter:on

@@ -63,6 +63,7 @@ import {
   ShowToastEvent,
 } from './FormDescriptionEditorRepresentationMachine';
 import { Button } from './icons/Button';
+import { ToolbarActions } from './ToolbarActions';
 import { WidgetEntry } from './WidgetEntry';
 import { isKind } from './WidgetOperations';
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
@@ -73,6 +74,7 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    overflowX: 'auto',
   },
   header: {
     padding: '4px 8px 4px 8px',
@@ -90,6 +92,7 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     borderRight: '1px solid grey',
     padding: '4px 8px 4px 8px',
+    overflowY: 'auto',
   },
   widgetKind: {
     display: 'flex',
@@ -102,13 +105,19 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   preview: {
     width: '100%',
     padding: '4px 8px 4px 8px',
+    overflowY: 'auto',
+  },
+  labelAndToolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     overflowX: 'auto',
-    overflowY: 'scroll',
   },
   body: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
+    overflowX: 'auto',
   },
   bottomDropArea: {
     height: '100px',
@@ -278,7 +287,10 @@ export const FormDescriptionEditorRepresentation = ({
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
     } else {
-      if (formDescriptionEditor.widgets.find((w) => w.id === id)) {
+      if (formDescriptionEditor.toolbarActions.find((w) => w.id === id)) {
+        // forbid to drag and drop toolbarAction into widgets area
+        return;
+      } else if (formDescriptionEditor.widgets.find((w) => w.id === id)) {
         index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
@@ -457,7 +469,17 @@ export const FormDescriptionEditorRepresentation = ({
           </div>
         </div>
         <div className={classes.preview}>
-          <Typography>Preview</Typography>
+          <div className={classes.labelAndToolbar}>
+            <Typography>Preview</Typography>
+            <ToolbarActions
+              data-testid={'FormDescriptionEditor-ToolbarActions'}
+              editingContextId={editingContextId}
+              representationId={representationId}
+              formDescriptionEditor={formDescriptionEditor}
+              selection={selection}
+              setSelection={setSelection}
+            />
+          </div>
           <div className={classes.body}>
             {formDescriptionEditor.widgets.map((widget) => (
               <WidgetEntry
@@ -465,6 +487,7 @@ export const FormDescriptionEditorRepresentation = ({
                 editingContextId={editingContextId}
                 representationId={representationId}
                 containerId={null}
+                toolbarActions={formDescriptionEditor.toolbarActions}
                 siblings={formDescriptionEditor.widgets}
                 widget={widget}
                 selection={selection}

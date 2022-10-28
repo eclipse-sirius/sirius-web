@@ -49,6 +49,7 @@ public class FormDescriptionEditorEventProcessorTests {
             .descriptionId(FORMDESCRIPTIONEDITOR_DESCRIPTION_ID)
             .label(String.valueOf(0))
             .targetObjectId("targetObjectId") //$NON-NLS-1$
+            .toolbarActions(List.of())
             .widgets(List.of())
             .build();
     // @formatter:on
