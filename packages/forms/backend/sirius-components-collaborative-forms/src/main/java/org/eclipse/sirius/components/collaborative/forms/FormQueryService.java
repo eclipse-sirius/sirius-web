@@ -19,9 +19,9 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
-import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -56,6 +56,7 @@ public class FormQueryService implements IFormQueryService {
 
     private List<AbstractWidget> getAllWidgets(Group group) {
         List<AbstractWidget> widgets = new ArrayList<>();
+        group.getButtons().forEach(widgets::add);
         group.getWidgets().forEach(widget -> {
             if (widget instanceof FlexboxContainer) {
                 widgets.addAll(this.getAllWidgets((FlexboxContainer) widget));
