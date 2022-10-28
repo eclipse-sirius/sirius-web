@@ -10,12 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useMutation } from '@apollo/client';
 import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import gql from 'graphql-tag';
 import { useContext, useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import { GQLWidget } from '../form/FormEventFragments.types';
+import {
+  GQLPushButtonInput,
+  GQLPushButtonMutationData,
+  GQLPushButtonMutationVariables,
+} from '../propertysections/ButtonPropertySection.types';
 import { PropertySection } from '../propertysections/PropertySection';
 import { GroupProps } from './Group.types';
 
@@ -54,6 +65,17 @@ const useGroupStyles = makeStyles((theme) => ({
   },
 }));
 
+export const pushButtonMutation = gql`
+  mutation pushButton($input: PushButtonInput!) {
+    pushButton(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const Group = ({ editingContextId, formId, group, widgetSubscriptions, setSelection, readOnly }: GroupProps) => {
   const classes = useGroupStyles();
   const [visibleWidgetIds, setVisibleWidgetIds] = useState<string[]>([]);
@@ -87,6 +109,32 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
     );
   }
 
+  const [pushButton] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(pushButtonMutation);
+
+  const onClick = (button: GQLWidget) => {
+    const input: GQLPushButtonInput = {
+      id: uuid(),
+      editingContextId,
+      representationId: formId,
+      buttonId: button.id,
+    };
+    const variables: GQLPushButtonMutationVariables = { input };
+    pushButton({ variables });
+  };
+
+  let toolbar = null;
+  if (group.buttons?.length > 0) {
+    toolbar = (
+      <ButtonGroup size="small" variant="contained">
+        {group.buttons.map((button) => (
+          <Button key={button.id} disabled={readOnly} onClick={() => onClick(button)}>
+            {button.label}
+          </Button>
+        ))}
+      </ButtonGroup>
+    );
+  }
+
   return (
     <div className={classes.group}>
       {group.displayMode === 'TOGGLEABLE_AREAS' ? (
@@ -96,6 +144,7 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
           {group.label}
         </Typography>
       )}
+      {toolbar}
       <div className={group.displayMode === 'LIST' ? classes.verticalSections : classes.adaptableSections}>
         {group.widgets
           .filter((widget) => visibleWidgetIds.includes(widget.id))
