@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
+import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -72,6 +73,12 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .map(dispatcher::doSwitch)
                 .collect(Collectors.toList());
 
+        List<ButtonDescription> toolbarButtonsDescription = viewFormDescription.getToolbarButtons().stream()
+                .map(dispatcher::doSwitch)
+                .filter(ButtonDescription.class::isInstance)
+                .map(ButtonDescription.class::cast)
+                .collect(Collectors.toList());
+
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
 
         String descriptionId = this.getDescriptionId(viewFormDescription);
@@ -80,6 +87,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
                 .semanticElementsProvider(semanticElementsProvider)
                 .controlDescriptions(controlDescriptions)
+                .buttonDescriptions(toolbarButtonsDescription)
                 .build();
         PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())

@@ -1860,8 +1860,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EReference getFormDescription_Widgets() {
+    public EReference getFormDescription_ToolbarButtons() {
         return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFormDescription_Widgets() {
+        return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -3271,6 +3281,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
         this.formDescriptionEClass = this.createEClass(FORM_DESCRIPTION);
+        this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__TOOLBAR_BUTTONS);
         this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__WIDGETS);
 
         this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
@@ -3782,6 +3793,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
         this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEReference(this.getFormDescription_ToolbarButtons(), this.getButtonDescription(), null, "toolbarButtons", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getFormDescription_Widgets(), this.getWidgetDescription(), null, "widgets", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

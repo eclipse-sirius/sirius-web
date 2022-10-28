@@ -79,6 +79,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
+            this.childrenFeatures.add(ViewPackage.Literals.FORM_DESCRIPTION__TOOLBAR_BUTTONS);
             this.childrenFeatures.add(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS);
         }
         return this.childrenFeatures;
@@ -141,6 +142,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(FormDescription.class)) {
+        case ViewPackage.FORM_DESCRIPTION__TOOLBAR_BUTTONS:
         case ViewPackage.FORM_DESCRIPTION__WIDGETS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
@@ -157,6 +159,10 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+
+        ButtonDescription toolbarButtonDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        toolbarButtonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__TOOLBAR_BUTTONS, toolbarButtonDescription));
 
         TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setStyle(ViewFactory.eINSTANCE.createTextfieldDescriptionStyle());
@@ -208,6 +214,26 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
 
         FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS, flexboxContainerDescription));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.FORM_DESCRIPTION__TOOLBAR_BUTTONS || childFeature == ViewPackage.Literals.FORM_DESCRIPTION__WIDGETS;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }

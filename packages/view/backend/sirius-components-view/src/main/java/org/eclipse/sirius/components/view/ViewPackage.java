@@ -2652,13 +2652,22 @@ public interface ViewPackage extends EPackage {
     int FORM_DESCRIPTION__TITLE_EXPRESSION = REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Toolbar Buttons</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__TOOLBAR_BUTTONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Widgets</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FORM_DESCRIPTION__WIDGETS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
+    int FORM_DESCRIPTION__WIDGETS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Form Description</em>' class. <!-- begin-user-doc --> <!--
@@ -2667,7 +2676,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FORM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
+    int FORM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Form Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7115,6 +7124,18 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.FormDescription#getToolbarButtons <em>Toolbar Buttons</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Toolbar Buttons</em>'.
+     * @see org.eclipse.sirius.components.view.FormDescription#getToolbarButtons()
+     * @see #getFormDescription()
+     * @generated
+     */
+    EReference getFormDescription_ToolbarButtons();
+
+    /**
+     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.FormDescription#getWidgets <em>Widgets</em>}'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -9504,6 +9525,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass FORM_DESCRIPTION = eINSTANCE.getFormDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Toolbar Buttons</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FORM_DESCRIPTION__TOOLBAR_BUTTONS = eINSTANCE.getFormDescription_ToolbarButtons();
 
         /**
          * The meta object literal for the '<em><b>Widgets</b></em>' containment reference list feature. <!--

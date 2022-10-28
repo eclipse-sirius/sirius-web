@@ -179,6 +179,7 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalEdgeStyle"/>
     <genClasses ecoreClass="view.ecore#//FormDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/toolbarButtons"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/widgets"/>
     </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescription">

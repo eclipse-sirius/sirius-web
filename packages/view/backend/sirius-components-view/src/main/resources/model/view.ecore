@@ -230,6 +230,8 @@
     <eLiterals name="UNSYNCHRONIZED" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="#//RepresentationDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolbarButtons" upperBound="-1"
+        eType="#//ButtonDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="widgets" upperBound="-1"
         eType="#//WidgetDescription" containment="true"/>
   </eClassifiers>
