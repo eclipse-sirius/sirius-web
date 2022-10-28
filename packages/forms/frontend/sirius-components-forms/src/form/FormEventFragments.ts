@@ -47,6 +47,9 @@ export const formRefreshedEventPayloadFragment = `
           id
           label
           displayMode
+          buttons {
+            ...widgetFields
+          }
           widgets {
             ...widgetFields
             ... on FlexboxContainer {
