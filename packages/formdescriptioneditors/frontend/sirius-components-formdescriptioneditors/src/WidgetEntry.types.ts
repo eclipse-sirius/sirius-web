@@ -16,6 +16,7 @@ import React from 'react';
 import {
   GQLAbstractFormDescriptionEditorWidget,
   GQLFormDescriptionEditorFlexboxContainer,
+  GQLFormDescriptionEditorToolbarAction,
   GQLFormDescriptionEditorWidget,
 } from './FormDescriptionEditorEventFragment.types';
 
@@ -23,6 +24,7 @@ export interface WidgetEntryProps {
   editingContextId: string;
   representationId: string;
   containerId: string | null;
+  toolbarActions: GQLFormDescriptionEditorToolbarAction[];
   siblings: GQLAbstractFormDescriptionEditorWidget[];
   widget: GQLAbstractFormDescriptionEditorWidget;
   selection: Selection;
@@ -41,6 +43,7 @@ export interface WidgetProps {
 export interface FlexboxContainerWidgetProps {
   editingContextId: string;
   representationId: string;
+  toolbarActions: GQLFormDescriptionEditorToolbarAction[];
   widget: GQLFormDescriptionEditorFlexboxContainer;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;

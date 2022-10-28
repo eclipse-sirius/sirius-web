@@ -37,6 +37,11 @@ export const formDescriptionEditorEventSubscription = gql`
               id
             }
           }
+          toolbarActions {
+            id
+            label
+            kind
+          }
           widgets {
             id
             label
@@ -111,6 +116,48 @@ export const moveWidgetMutation = gql`
     moveWidget(input: $input) {
       __typename
       ... on MoveWidgetSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const addToolbarActionMutation = gql`
+  mutation addToolbarAction($input: AddToolbarActionInput!) {
+    addToolbarAction(input: $input) {
+      __typename
+      ... on AddToolbarActionSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const deleteToolbarActionMutation = gql`
+  mutation deleteToolbarAction($input: DeleteToolbarActionInput!) {
+    deleteToolbarAction(input: $input) {
+      __typename
+      ... on DeleteToolbarActionSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const moveToolbarActionMutation = gql`
+  mutation moveToolbarAction($input: MoveToolbarActionInput!) {
+    moveToolbarAction(input: $input) {
+      __typename
+      ... on MoveToolbarActionSuccessPayload {
         id
       }
       ... on ErrorPayload {

@@ -13,8 +13,8 @@
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { WidgetProps } from './WidgetEntry.types';
 import { useEffect, useRef, useState } from 'react';
+import { WidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles((theme) => ({
   selected: {

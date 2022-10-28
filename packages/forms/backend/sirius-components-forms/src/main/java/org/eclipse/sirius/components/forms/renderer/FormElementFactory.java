@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.GroupContents;
+import org.eclipse.sirius.components.forms.GroupToolbar;
 import org.eclipse.sirius.components.forms.Image;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Link;
@@ -60,6 +62,7 @@ import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
+import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -113,9 +116,39 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateTree((TreeElementProps) props, children);
         } else if (ImageElementProps.TYPE.equals(type) && props instanceof ImageElementProps) {
             object = this.instantiateImage((ImageElementProps) props, children);
+        } else if (GroupToolbar.TYPE.equals(type) && props instanceof FragmentProps) {
+            object = this.instanciateGroupToolbar((FragmentProps) props, children);
+        } else if (GroupContents.TYPE.equals(type) && props instanceof FragmentProps) {
+            object = this.instanciateGroupContents((FragmentProps) props, children);
         }
 
         return object;
+    }
+
+    private Object instanciateGroupToolbar(FragmentProps props, List<Object> children) {
+        // @formatter:off
+        List<Button> toolbarActions = children.stream()
+                .filter(Button.class::isInstance)
+                .map(Button.class::cast)
+                .collect(Collectors.toList());
+
+        return GroupToolbar.newGroupToolbar()
+                .toolbarActions(toolbarActions)
+                .build();
+        // @formatter:on
+    }
+
+    private Object instanciateGroupContents(FragmentProps props, List<Object> children) {
+        // @formatter:off
+        List<AbstractWidget> widgets = children.stream()
+                .filter(AbstractWidget.class::isInstance)
+                .map(AbstractWidget.class::cast)
+                .collect(Collectors.toList());
+
+        return GroupContents.newGroupContents()
+                .widgets(widgets)
+                .build();
+        // @formatter:on
     }
 
     private Object instantiateBarChart(BarChartElementProps props) {
@@ -208,14 +241,24 @@ public class FormElementFactory implements IElementFactory {
 
     private Group instantiateGroup(GroupElementProps props, List<Object> children) {
         // @formatter:off
+        List<Button> toolbarActions = children.stream()
+                .filter(GroupToolbar.class::isInstance)
+                .map(GroupToolbar.class::cast)
+                .findFirst()
+                .map(GroupToolbar::getToolbarActions)
+                .orElse(List.of());
+
         List<AbstractWidget> widgets = children.stream()
-                .filter(AbstractWidget.class::isInstance)
-                .map(AbstractWidget.class::cast)
-                .collect(Collectors.toList());
+                .filter(GroupContents.class::isInstance)
+                .map(GroupContents.class::cast)
+                .findFirst()
+                .map(GroupContents::getWidgets)
+                .orElse(List.of());
 
         return Group.newGroup(props.getId())
                 .label(props.getLabel())
                 .displayMode(props.getDisplayMode())
+                .toolbarActions(toolbarActions)
                 .widgets(widgets)
                 .build();
         // @formatter:on

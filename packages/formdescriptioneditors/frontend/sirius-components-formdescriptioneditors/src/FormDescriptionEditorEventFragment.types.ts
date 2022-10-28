@@ -71,6 +71,7 @@ export interface GQLRepresentationDescription {
 export interface GQLFormDescriptionEditor extends GQLRepresentation {
   id: string;
   metadata: GQLRepresentationMetadata;
+  toolbarActions: GQLFormDescriptionEditorToolbarAction[];
   widgets: GQLAbstractFormDescriptionEditorWidget[];
 }
 
@@ -88,6 +89,8 @@ export interface GQLFormDescriptionEditorFlexboxContainer extends GQLAbstractFor
   flexGrow: number;
   children: GQLAbstractFormDescriptionEditorWidget[];
 }
+
+export interface GQLFormDescriptionEditorToolbarAction extends GQLAbstractFormDescriptionEditorWidget {}
 
 export interface GQLAddWidgetInput {
   id: string;
@@ -162,6 +165,83 @@ export interface GQLMoveWidgetSuccessPayload extends GQLMoveWidgetPayload {
   id: string;
 }
 
-export interface GQLErrorPayload extends GQLAddWidgetPayload, GQLDeleteWidgetPayload, GQLMoveWidgetPayload {
+export interface GQLAddToolbarActionInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  containerId: string | null;
+}
+
+export interface GQLAddToolbarActionMutationVariables {
+  input: GQLAddToolbarActionInput;
+}
+
+export interface GQLAddToolbarActionMutationData {
+  addToolbarAction: GQLAddToolbarActionPayload;
+}
+
+export interface GQLAddToolbarActionPayload {
+  __typename: string;
+}
+
+export interface GQLAddToolbarActionSuccessPayload extends GQLAddToolbarActionPayload {
+  id: string;
+}
+
+export interface GQLDeleteToolbarActionInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  toolbarActionId: string;
+}
+
+export interface GQLDeleteToolbarActionMutationVariables {
+  input: GQLDeleteToolbarActionInput;
+}
+
+export interface GQLDeleteToolbarActionMutationData {
+  deleteToolbarAction: GQLDeleteToolbarActionPayload;
+}
+
+export interface GQLDeleteToolbarActionPayload {
+  __typename: string;
+}
+
+export interface GQLDeleteToolbarActionSuccessPayload extends GQLDeleteToolbarActionPayload {
+  id: string;
+}
+
+export interface GQLMoveToolbarActionInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  containerId: string | null;
+  toolbarActionId: string;
+  index: number;
+}
+
+export interface GQLMoveToolbarActionMutationVariables {
+  input: GQLMoveToolbarActionInput;
+}
+
+export interface GQLMoveToolbarActionMutationData {
+  moveToolbarAction: GQLMoveToolbarActionPayload;
+}
+
+export interface GQLMoveToolbarActionPayload {
+  __typename: string;
+}
+
+export interface GQLMoveToolbarActionSuccessPayload extends GQLMoveToolbarActionPayload {
+  id: string;
+}
+
+export interface GQLErrorPayload
+  extends GQLAddWidgetPayload,
+    GQLDeleteWidgetPayload,
+    GQLMoveWidgetPayload,
+    GQLAddToolbarActionPayload,
+    GQLDeleteToolbarActionPayload,
+    GQLMoveToolbarActionPayload {
   message: string;
 }

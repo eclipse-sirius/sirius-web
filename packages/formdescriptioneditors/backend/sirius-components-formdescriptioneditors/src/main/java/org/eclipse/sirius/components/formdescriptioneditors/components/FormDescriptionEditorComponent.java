@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEdito
 import org.eclipse.sirius.components.formdescriptioneditors.description.AbstractFormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorFlexboxContainerDescription;
+import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorToolbarActionDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -61,6 +62,25 @@ public class FormDescriptionEditorComponent implements IComponent {
         String targetObjectId = targetObjectIdProvider.apply(variableManager);
 
         List<Element> childrenWidgets = new ArrayList<>();
+
+        formDescription.getToolbarActions().forEach(toolbarActionDescription -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VariableManager.SELF, toolbarActionDescription);
+            String toolbarActionId = targetObjectIdProvider.apply(childVariableManager);
+            String toolbarActionKind = this.getKind(toolbarActionDescription);
+            String toolbarActionLabel = toolbarActionDescription.getName();
+            if (toolbarActionLabel == null) {
+                toolbarActionLabel = toolbarActionKind;
+            }
+            // @formatter:off
+            FormDescriptionEditorToolbarActionDescription fdeToolbarActionDescription = FormDescriptionEditorToolbarActionDescription.newFormDescriptionEditorToolbarActionDescription(toolbarActionId)
+                    .label(toolbarActionLabel)
+                    .kind(toolbarActionKind)
+                    .build();
+            // @formatter:on
+            FormDescriptionEditorToolbarActionComponentProps fdeToolbarActionComponentProps = new FormDescriptionEditorToolbarActionComponentProps(fdeToolbarActionDescription);
+            childrenWidgets.add(new Element(FormDescriptionEditorToolbarActionComponent.class, fdeToolbarActionComponentProps));
+        });
 
         formDescription.getWidgets().forEach(widgetDescription -> {
 

@@ -67,6 +67,7 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
 export const FlexboxContainerWidget = ({
   editingContextId,
   representationId,
+  toolbarActions,
   widget,
   selection,
   setSelection,
@@ -195,6 +196,7 @@ export const FlexboxContainerWidget = ({
         editingContextId={editingContextId}
         representationId={representationId}
         containerId={widget.id}
+        toolbarActions={toolbarActions}
         siblings={widget.children}
         widget={childWidget}
         selection={selection}

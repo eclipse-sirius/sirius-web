@@ -80,6 +80,7 @@ export const WidgetEntry = ({
   editingContextId,
   representationId,
   containerId,
+  toolbarActions,
   siblings,
   widget,
   selection,
@@ -230,7 +231,8 @@ export const WidgetEntry = ({
       };
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
-    } else {
+    } else if (toolbarActions.find((w) => w.id === id) === undefined) {
+      // We only accept drop of Widgets, no ToolbarAction allowed
       const movedWidgetIndex = siblings.findIndex((w) => w.id === id);
       if (movedWidgetIndex > -1 && movedWidgetIndex < index) {
         index--;
@@ -375,6 +377,7 @@ export const WidgetEntry = ({
         data-testid={widget.id}
         editingContextId={editingContextId}
         representationId={representationId}
+        toolbarActions={toolbarActions}
         widget={widget as GQLFormDescriptionEditorFlexboxContainer}
         selection={selection}
         setSelection={setSelection}

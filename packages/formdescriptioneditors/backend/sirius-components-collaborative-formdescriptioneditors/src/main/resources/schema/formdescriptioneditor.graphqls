@@ -18,6 +18,7 @@ type FormDescriptionEditorRefreshedEventPayload {
 type FormDescriptionEditor implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
+  toolbarActions: [FormDescriptionEditorToolbarAction!]!
   widgets: [AbstractFormDescriptionEditorWidget!]!
 }
 
@@ -48,10 +49,19 @@ type FormDescriptionEditorFlexboxContainer implements AbstractFormDescriptionEdi
 	children: [AbstractFormDescriptionEditorWidget!]!
 }
 
+type FormDescriptionEditorToolbarAction implements AbstractFormDescriptionEditorWidget {
+	id: ID!
+	kind: String!
+	label: String!
+}
+
 extend type Mutation {
   addWidget(input: AddWidgetInput!): AddWidgetPayload!
   deleteWidget(input: DeleteWidgetInput!): DeleteWidgetPayload!
   moveWidget(input: MoveWidgetInput!): MoveWidgetPayload!
+  addToolbarAction(input: AddToolbarActionInput!): AddToolbarActionPayload!
+  deleteToolbarAction(input: DeleteToolbarActionInput!): DeleteToolbarActionPayload!
+  moveToolbarAction(input: MoveToolbarActionInput!): MoveToolbarActionPayload!
 }
 
 input AddWidgetInput {
@@ -94,5 +104,46 @@ input MoveWidgetInput {
 union MoveWidgetPayload = MoveWidgetSuccessPayload | ErrorPayload
 
 type MoveWidgetSuccessPayload {
+  id: ID!
+}
+
+input AddToolbarActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  containerId: ID
+}
+
+union AddToolbarActionPayload = AddToolbarActionSuccessPayload | ErrorPayload
+
+type AddToolbarActionSuccessPayload {
+  id: ID!
+}
+
+input DeleteToolbarActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  toolbarActionId: String!
+}
+
+union DeleteToolbarActionPayload = DeleteToolbarActionSuccessPayload | ErrorPayload
+
+type DeleteToolbarActionSuccessPayload {
+  id: ID!
+}
+
+input MoveToolbarActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  containerId: ID
+  toolbarActionId: String!
+  index: Int!
+}
+
+union MoveToolbarActionPayload = MoveToolbarActionSuccessPayload | ErrorPayload
+
+type MoveToolbarActionSuccessPayload {
   id: ID!
 }

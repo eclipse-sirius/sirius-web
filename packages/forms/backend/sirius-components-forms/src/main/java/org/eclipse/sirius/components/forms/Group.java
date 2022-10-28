@@ -31,6 +31,8 @@ public final class Group {
 
     private GroupDisplayMode displayMode;
 
+    private List<Button> toolbarActions;
+
     private List<AbstractWidget> widgets;
 
     private Group() {
@@ -43,6 +45,10 @@ public final class Group {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public List<Button> getToolbarActions() {
+        return this.toolbarActions;
     }
 
     public List<AbstractWidget> getWidgets() {
@@ -59,8 +65,8 @@ public final class Group {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, displayMode: {3}, widgetCount: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.displayMode, this.widgets.size());
+        String pattern = "{0} '{'id: {1}, label: {2}, displayMode: {3}, toolbarActionsCount: {4}, widgetCount: {5}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.displayMode, this.toolbarActions.size(), this.widgets.size());
     }
 
     /**
@@ -75,6 +81,8 @@ public final class Group {
         private String label;
 
         private GroupDisplayMode displayMode = GroupDisplayMode.LIST;
+
+        private List<Button> toolbarActions = List.of();
 
         private List<AbstractWidget> widgets;
 
@@ -92,6 +100,11 @@ public final class Group {
             return this;
         }
 
+        public Builder toolbarActions(List<Button> toolbarActions) {
+            this.toolbarActions = Objects.requireNonNull(toolbarActions);
+            return this;
+        }
+
         public Builder widgets(List<AbstractWidget> widgets) {
             this.widgets = Objects.requireNonNull(widgets);
             return this;
@@ -103,6 +116,7 @@ public final class Group {
             group.label = Objects.requireNonNull(this.label);
             group.displayMode = Objects.requireNonNull(this.displayMode);
             group.widgets = Objects.requireNonNull(this.widgets);
+            group.toolbarActions = Objects.requireNonNull(this.toolbarActions);
             return group;
         }
     }

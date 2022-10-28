@@ -108,6 +108,7 @@ export interface GQLGroup {
   id: string;
   label: string;
   displayMode: GQLGroupDisplayMode;
+  toolbarActions: GQLButton[];
   widgets: GQLWidget[];
 }
 
