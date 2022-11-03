@@ -141,6 +141,7 @@ export type InitializeRepresentationEvent = {
   setContextualMenu: (contextualMenu: Menu | null) => void;
   updateRoutingPointsListener: (routingPoints: Point[], edgeId: string) => void;
   httpOrigin: string;
+  editingContextId: string;
 };
 
 export type DiagramRepresentationEvent =
@@ -396,9 +397,14 @@ export const diagramRepresentationMachine = Machine<
           setContextualMenu,
           updateRoutingPointsListener,
           httpOrigin,
+          editingContextId,
         } = event as InitializeRepresentationEvent;
 
-        const container = createDependencyInjectionContainer(diagramDomElement.current.id);
+        const container = createDependencyInjectionContainer(
+          diagramDomElement.current.id,
+          httpOrigin,
+          editingContextId
+        );
         const diagramServer = <DiagramServer>container.get(TYPES.ModelSource);
 
         /**

@@ -39,8 +39,8 @@ import {
   GQLLabel,
   GQLLineStyle,
   GQLNode,
-  GQLRectangularNodeStyle,
   GQLParametricSVGNodeStyle,
+  GQLRectangularNodeStyle,
 } from '../representation/DiagramRepresentation.types';
 import {
   ArrowStyle,
@@ -55,8 +55,8 @@ import {
   LabelStyle,
   LineStyle,
   Node,
-  RectangularNodeStyle,
   ParametricSVGNodeStyle,
+  RectangularNodeStyle,
 } from './Diagram.types';
 import { resizeFeature } from './dragAndDrop/model';
 
@@ -366,5 +366,12 @@ const handleEdgeFeatures = (edge: Edge, readOnly: boolean): FeatureSet => {
     return createFeatureSet([selectFeature, fadeFeature, hoverFeedbackFeature]);
   }
 
-  return createFeatureSet([deletableFeature, selectFeature, fadeFeature, hoverFeedbackFeature, editFeature]);
+  return createFeatureSet([
+    deletableFeature,
+    selectFeature,
+    fadeFeature,
+    hoverFeedbackFeature,
+    editFeature,
+    withEditLabelFeature,
+  ]);
 };

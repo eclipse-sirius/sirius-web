@@ -111,13 +111,11 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 var edge = this.diagramQueryService.findEdgeByLabelId(diagram, input.getLabelId());
                 if (edge.isPresent()) {
                     payload = new EditLabelSuccessPayload(diagramInput.getId(), diagram);
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                     try {
                         this.invokeDirectEditTool(edge.get(), editingContext, diagram, input.getNewText());
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
                     } catch (IllegalArgumentException e) {
                         payload = new ErrorPayload(diagramInput.getId(), this.messageService.invalidNewValue(input.getNewText()));
-                        // We keep the semantic change description to for the diagram to refresh to return to a correct
-                        // state.
                     }
 
                 }

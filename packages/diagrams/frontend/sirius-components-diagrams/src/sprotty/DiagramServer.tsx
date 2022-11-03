@@ -56,7 +56,7 @@ import {
 } from '../representation/DiagramRepresentation.types';
 import { IsSiriusModelElementAction, IsSiriusModelElementResult } from './common/isSiriusModelElementRequest';
 import { convertDiagram } from './convertDiagram';
-import { BorderNode, Diagram, Edge, Label, Node } from './Diagram.types';
+import { BorderNode, Diagram, Edge, Node } from './Diagram.types';
 import {
   SetActiveConnectorToolsAction,
   ShowContextualMenuAction,
@@ -278,27 +278,8 @@ export class DiagramServer extends ModelSource {
     this.editLabel(labelId, text);
   }
 
-  handleEditLabelAction(action) {
-    const { element } = action;
-    if (element) {
-      const selectedItems = element.index.all().filter((e) => e.selected);
-      selectedItems.forEach((item) => {
-        const label = item.editableLabel;
-        if (label) {
-          const editableLabel = item.children.find((c) => c instanceof Label);
-          if (editableLabel && action.initialText) {
-            editableLabel.initialText = action.initialText;
-          }
-          if (editableLabel && action.preSelect !== undefined) {
-            editableLabel.preSelect = action.preSelect;
-          }
-          this.actionDispatcher.dispatchAll([
-            { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-            EditLabelAction.create(label.id),
-          ]);
-        }
-      });
-    }
+  handleEditLabelAction(_action: EditLabelAction) {
+    this.actionDispatcher.dispatch({ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION });
   }
 
   handleMoveAction(action: MoveAction) {

@@ -13,15 +13,12 @@
 import { Container, ContainerModule, decorate, inject } from 'inversify';
 import {
   boundsModule,
-  configureActionHandler,
   configureModelElement,
   configureView,
   configureViewerOptions,
   ConsoleLogger,
   defaultModule,
   edgeLayoutModule,
-  EditLabelAction,
-  EditLabelActionHandler,
   exportModule,
   fadeModule,
   graphModule,
@@ -51,28 +48,21 @@ import { siriusCommonModule } from './common/siriusCommonModule';
 import { BorderNode, Diagram, Edge, Label, Node } from './Diagram.types';
 import { DiagramServer, HIDE_CONTEXTUAL_TOOLBAR_ACTION, SPROTTY_DELETE_ACTION } from './DiagramServer';
 import { SetActiveConnectorToolsAction, SetActiveToolAction } from './DiagramServer.types';
+import { siriusLabelEditUiModule } from './directEdit/siriusDirectEditModule';
 import { siriusDragAndDropModule } from './dragAndDrop/siriusDragAndDropModule';
 import { edgeCreationFeedback } from './edgeCreationFeedback';
 import { siriusEdgeEditModule } from './edgeEdition/siriusEdgeEditModule';
-import { EditLabelUIWithInitialContent } from './EditLabelUIWithInitialContent';
 import { GraphFactory } from './GraphFactory';
 import { siriusRoutingModule } from './routing/siriusRoutingModule';
 import { DiagramView } from './views/DiagramView';
 import { EdgeView } from './views/EdgeView';
 import { IconLabelView } from './views/IconLabelView';
 import { ImageView } from './views/ImageView';
-import { ParametricSVGImageView } from './views/ParametricSVGImageView';
 import { LabelView } from './views/LabelView';
+import { ParametricSVGImageView } from './views/ParametricSVGImageView';
 import { RectangleView } from './views/RectangleView';
 import { RoutingHandleView } from './views/RoutingHandleView';
 import { VolatileRoutingHandleView } from './views/VolatileRoutingHandleView';
-
-const labelEditUiModule = new ContainerModule((bind, _unbind, isBound) => {
-  const context = { bind, isBound };
-  configureActionHandler(context, EditLabelAction.KIND, EditLabelActionHandler);
-  bind(EditLabelUIWithInitialContent).toSelf().inSingletonScope();
-  bind(TYPES.IUIExtension).toService(EditLabelUIWithInitialContent);
-});
 
 const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, rebind) => {
   rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -128,8 +118,14 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
  * @param containerId The identifier of the container
  * @param onSelectElement The selection call back
  */
-export const createDependencyInjectionContainer = (containerId: string) => {
+export const createDependencyInjectionContainer = (
+  containerId: string,
+  httpOrigin: string,
+  editingContextId: string
+) => {
   const container = new Container();
+  container.bind('editingContextId').toConstantValue(editingContextId);
+  container.bind('httpOrigin').toConstantValue(httpOrigin);
   container.load(
     defaultModule,
     siriusCommonModule,
@@ -149,7 +145,7 @@ export const createDependencyInjectionContainer = (containerId: string) => {
     zorderModule,
     siriusWebContainerModule,
     labelEditModule,
-    labelEditUiModule
+    siriusLabelEditUiModule
   );
 
   class DiagramMouseListener extends MouseListener {
@@ -240,30 +236,12 @@ export const createDependencyInjectionContainer = (containerId: string) => {
   }
   container.bind(TYPES.MouseListener).to(DiagramZoomMouseListener).inSingletonScope();
 
-  // The list of characters that will enable the direct edit mechanism.
-  const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
-
   const keyListener = new KeyListener();
   keyListener.keyDown = (element, event) => {
     if (event.code === 'Delete') {
       return [{ kind: SPROTTY_DELETE_ACTION, element }];
-    } else if (event.code === 'F2') {
-      return [{ kind: EditLabelAction.KIND, element }];
     } else if (event.code === 'Escape') {
       return [{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }];
-    } else {
-      /*If a modifier key is hit alone, do nothing*/
-      if ((event.altKey || event.shiftKey) && event.getModifierState(event.key)) {
-        return [];
-      }
-      const validFirstInputChar =
-        !event.metaKey &&
-        !event.ctrlKey &&
-        event.key.length === 1 &&
-        directEditActivationValidCharacters.test(event.key);
-      if (validFirstInputChar) {
-        return [{ kind: EditLabelAction.KIND, element, initialText: event.key, preSelect: false }];
-      }
     }
     return [];
   };

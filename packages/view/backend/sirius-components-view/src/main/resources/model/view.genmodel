@@ -137,7 +137,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Tool/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//Tool/body"/>
     </genClasses>
-    <genClasses ecoreClass="view.ecore#//LabelEditTool"/>
+    <genClasses ecoreClass="view.ecore#//LabelEditTool">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelEditTool/initialDirectEditLabelExpression"/>
+    </genClasses>
     <genClasses ecoreClass="view.ecore#//DeleteTool"/>
     <genClasses ecoreClass="view.ecore#//NodeTool"/>
     <genClasses ecoreClass="view.ecore#//EdgeTool"/>

@@ -759,6 +759,7 @@ export const DiagramRepresentation = ({
         setContextualMenu,
         updateRoutingPointsListener,
         httpOrigin,
+        editingContextId,
       };
       dispatch(initializeRepresentationEvent);
     }

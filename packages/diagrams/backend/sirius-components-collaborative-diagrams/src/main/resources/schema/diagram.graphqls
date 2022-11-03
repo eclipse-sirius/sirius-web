@@ -191,6 +191,7 @@ type DiagramDescription implements RepresentationDescription {
   edgeDescriptions: [EdgeDescription!]!
   toolSections(diagramElementId: ID!): [ToolSection!]
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
+  initialDirectEditElementLabel(labelId: ID!): String!
 }
 
 type NodeDescription {
