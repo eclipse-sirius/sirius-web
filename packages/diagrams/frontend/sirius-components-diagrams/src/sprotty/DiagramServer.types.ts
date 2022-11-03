@@ -69,7 +69,7 @@ export interface ShowContextualMenuAction extends Action {
   endPosition: Position | null;
 }
 
-export interface ShowContextualToolbarAction {
+export interface ShowContextualToolbarAction extends Action {
   kind: 'showContextualToolbar';
   element: SModelElement;
   position: Point;

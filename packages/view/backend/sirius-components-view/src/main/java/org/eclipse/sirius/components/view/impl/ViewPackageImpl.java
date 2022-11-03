@@ -1518,6 +1518,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getLabelEditTool_InitialDirectEditLabelExpression() {
+        return (EAttribute) this.labelEditToolEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getDeleteTool() {
         return this.deleteToolEClass;
     }
@@ -3255,6 +3265,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.toolEClass, TOOL__BODY);
 
         this.labelEditToolEClass = this.createEClass(LABEL_EDIT_TOOL);
+        this.createEAttribute(this.labelEditToolEClass, LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION);
 
         this.deleteToolEClass = this.createEClass(DELETE_TOOL);
 
@@ -3755,6 +3766,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.labelEditToolEClass, LabelEditTool.class, "LabelEditTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getLabelEditTool_InitialDirectEditLabelExpression(), this.ecorePackage.getEString(), "initialDirectEditLabelExpression", null, 0, 1, LabelEditTool.class, //$NON-NLS-1$
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.deleteToolEClass, DeleteTool.class, "DeleteTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 

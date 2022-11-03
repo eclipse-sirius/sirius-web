@@ -23,6 +23,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1453[#1453] [diagram] Add new arrow styles Circle, FillCircle and CrossedCircle
 - https://github.com/eclipse-sirius/sirius-components/issues/1364[#1364] [forms] Add support for a basic image widget
 - https://github.com/eclipse-sirius/sirius-components/issues/1386[#1386] [project] Users can now upload their own images from a project's new settings page (available in the project menu). These images can be displayed in forms using the new image widget, or in View-based diagrams using and ImageNodeStyleDescription and selecting the image in the list of available shapes.
+- https://github.com/eclipse-sirius/sirius-components/issues/1457[#1457] [diagram] Make possible to provide an expression on the label edit tool in View DSL to initialize the direct edit label text field. We kept the current behavior for the compatibility layer but, _in fine_ it will be possible to leverage the direct edit tool _Input Label Expression_ to initialize the direct edit label text field.
 
 == v2022.11.0
 

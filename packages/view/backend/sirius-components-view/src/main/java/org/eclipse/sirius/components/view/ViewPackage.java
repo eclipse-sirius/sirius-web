@@ -1677,13 +1677,22 @@ public interface ViewPackage extends EPackage {
     int LABEL_EDIT_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Initial Direct Edit Label Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION = TOOL_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Label Edit Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LABEL_EDIT_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+    int LABEL_EDIT_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 1;
 
     /**
      * Returns the meta object for the attribute
@@ -6804,6 +6813,18 @@ public interface ViewPackage extends EPackage {
     EClass getLabelEditTool();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.LabelEditTool#getInitialDirectEditLabelExpression <em>Initial Direct
+     * Edit Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Initial Direct Edit Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.LabelEditTool#getInitialDirectEditLabelExpression()
+     * @see #getLabelEditTool()
+     * @generated
+     */
+    EAttribute getLabelEditTool_InitialDirectEditLabelExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteTool <em>Delete Tool</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9282,6 +9303,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass LABEL_EDIT_TOOL = eINSTANCE.getLabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>Initial Direct Edit Label Expression</b></em>' attribute feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION = eINSTANCE.getLabelEditTool_InitialDirectEditLabelExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DeleteToolImpl <em>Delete
