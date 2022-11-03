@@ -1,5 +1,12 @@
 = Changelog
 
+== v2023.1.0 (unreleased)
+
+=== Dependency update
+
+- [backenđ] Upgrade to Apache Batik 1.16.0 (from 1.14.0)
+
+
 == v2022.11.0
 
 === Architectural decision records
@@ -19,7 +26,7 @@
 
 === Dependency update
 
-- [backend] Switch to EMFJson 2.3.2-SNAPSHOT. It contains better management of proxy resolution in case of intermodel references.
+- [backend] Switch to EMFJson 2.3.2-SNAPSHOT. It contains better management of proxy resolution in case of intermodel references
 
 === Bug fixes
 
