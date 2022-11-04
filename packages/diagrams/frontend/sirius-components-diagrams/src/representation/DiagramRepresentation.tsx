@@ -36,7 +36,7 @@ import {
   GQLSingleClickOnTwoDiagramElementsTool,
   GQLToolSection,
 } from '../palette/ContextualPalette.types';
-import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
+import { BorderNode, Diagram, Edge, Node, ViewModifier } from '../sprotty/Diagram.types';
 import {
   DiagramServer,
   HIDE_CONTEXTUAL_TOOLBAR_ACTION,
@@ -64,6 +64,7 @@ import {
   GQLDeleteFromDiagramInput,
   GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
+  GQLDiagram,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
@@ -71,6 +72,12 @@ import {
   GQLEditLabelInput,
   GQLEditLabelVariables,
   GQLErrorPayload,
+  GQLFadeDiagramElementData,
+  GQLFadeDiagramElementInput,
+  GQLFadeDiagramElementVariables,
+  GQLHideDiagramElementData,
+  GQLHideDiagramElementInput,
+  GQLHideDiagramElementVariables,
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
   GQLInvokeSingleClickOnDiagramElementToolPayload,
@@ -81,6 +88,7 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
+  GQLNode,
   GQLReconnectEdgeData,
   GQLReconnectEdgeInput,
   GQLReconnectEdgeVariables,
@@ -129,6 +137,8 @@ import {
   deleteFromDiagramMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
+  fadeDiagramElementMutation,
+  hideDiagramElementMutation,
   invokeSingleClickOnDiagramElementToolMutation,
   invokeSingleClickOnTwoDiagramElementsToolMutation,
   reconnectEdgeMutation,
@@ -372,6 +382,14 @@ export const DiagramRepresentation = ({
     deleteElementsMutation,
     { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
   ] = useMutation<GQLDeleteFromDiagramData, GQLDeleteFromDiagramVariables>(deleteFromDiagramMutation);
+  const [
+    hideElementMutation,
+    { loading: hideDiagramElementLoading, data: hideDiagramElementData, error: hideDiagramElementError },
+  ] = useMutation<GQLHideDiagramElementData, GQLHideDiagramElementVariables>(hideDiagramElementMutation);
+  const [
+    fadeElementMutation,
+    { loading: fadeDiagramElementLoading, data: fadeDiagramElementData, error: fadeDiagramElementError },
+  ] = useMutation<GQLFadeDiagramElementData, GQLFadeDiagramElementVariables>(fadeDiagramElementMutation);
   const [updateEdgeEnd, { loading: reconnectEdgeLoading, data: reconnectEdgeData, error: reconnectEdgeError }] =
     useMutation<GQLReconnectEdgeData, GQLReconnectEdgeVariables>(reconnectEdgeMutation);
   const [
@@ -503,6 +521,50 @@ export const DiagramRepresentation = ({
       resetTools();
     },
     [editingContextId, representationId, deleteElementsMutation, resetTools]
+  );
+
+  const hideElements = useCallback(
+    (diagramElements: SModelElement[]): void => {
+      const elements: Array<Edge | Node | BorderNode> = diagramElements
+        .filter((elem) => elem instanceof Edge || elem instanceof Node || elem instanceof BorderNode)
+        .map((elem) => elem as Edge | Node | BorderNode);
+      const elementIds = elements.map((elt) => elt.id);
+      // If at least one selected element is not hidden, we hide all selected elements
+      const hide = elements.some((elem) => elem.state !== ViewModifier.Hidden);
+
+      const input: GQLHideDiagramElementInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        elementIds,
+        hide,
+      };
+      hideElementMutation({ variables: { input } });
+      resetTools();
+    },
+    [editingContextId, representationId, hideElementMutation, resetTools]
+  );
+
+  const fadeElements = useCallback(
+    (diagramElements: SModelElement[]): void => {
+      const elements: Array<Edge | Node | BorderNode> = diagramElements
+        .filter((elem) => elem instanceof Edge || elem instanceof Node || elem instanceof BorderNode)
+        .map((elem) => elem as Edge | Node | BorderNode);
+      const elementIds = elements.map((elt) => elt.id);
+      // If at least one selected element is not hidden, we fade all selected elements
+      const fade = elements.some((elem) => elem.state !== ViewModifier.Hidden);
+
+      const input: GQLFadeDiagramElementInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        elementIds,
+        fade,
+      };
+      fadeElementMutation({ variables: { input } });
+      resetTools();
+    },
+    [editingContextId, representationId, fadeElementMutation, resetTools]
   );
 
   const reconnectEdge = useCallback(
@@ -868,6 +930,36 @@ export const DiagramRepresentation = ({
     arrangeAllMutation({ variables: { input } });
   };
 
+  const getAllNodes = (diagram: GQLDiagram): GQLNode[] => {
+    const getAllNodesRec = (node: GQLNode) => [
+      node,
+      ...[...node.borderNodes, ...node.childNodes].flatMap(getAllNodesRec),
+    ];
+    return diagram.nodes.flatMap(getAllNodesRec);
+  };
+
+  const onUnhideAll = () => {
+    const input: GQLHideDiagramElementInput = {
+      id: uuid(),
+      editingContextId,
+      representationId,
+      elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
+      hide: false,
+    };
+    hideElementMutation({ variables: { input } });
+  };
+
+  const onUnfadeAll = () => {
+    const input: GQLFadeDiagramElementInput = {
+      id: uuid(),
+      editingContextId,
+      representationId,
+      elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
+      fade: false,
+    };
+    fadeElementMutation({ variables: { input } });
+  };
+
   const setZoomLevel = (level) => {
     if (diagramServer) {
       const action: ZoomToAction = { kind: 'zoomTo', level };
@@ -930,6 +1022,12 @@ export const DiagramRepresentation = ({
   useEffect(() => {
     handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
   }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
+  useEffect(() => {
+    handleError(hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError);
+  }, [hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError, handleError]);
+  useEffect(() => {
+    handleError(fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError);
+  }, [fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError, handleError]);
   useEffect(() => {
     handleError(reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError);
   }, [reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError, handleError]);
@@ -1093,6 +1191,8 @@ export const DiagramRepresentation = ({
       };
       diagramServer.actionDispatcher.dispatch(action);
     };
+    const invokeHideDiagramElement = () => hideElements([element]);
+    const invokeFadeDiagramElement = () => fadeElements([element]);
     contextualPaletteContent = (
       <div className={classes.contextualPalette} style={style}>
         <ContextualPalette
@@ -1104,6 +1204,8 @@ export const DiagramRepresentation = ({
           invokeLabelEdit={invokeLabelEditFromContextualPalette}
           invokeDelete={invokeDeleteFromContextualPalette}
           invokeClose={resetTools}
+          invokeHide={invokeHideDiagramElement}
+          invokeFade={invokeFadeDiagramElement}
         />
       </div>
     );
@@ -1184,6 +1286,8 @@ export const DiagramRepresentation = ({
         onZoomOut={onZoomOut}
         onFitToScreen={onFitToScreen}
         onArrangeAll={onArrangeAll}
+        onUnhideAll={onUnhideAll}
+        onUnfadeAll={onUnfadeAll}
         setZoomLevel={setZoomLevel}
         autoLayout={diagram?.autoLayout}
         zoomLevel={zoomLevel}

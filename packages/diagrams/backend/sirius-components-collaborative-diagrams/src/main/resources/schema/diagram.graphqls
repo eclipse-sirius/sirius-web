@@ -26,6 +26,12 @@ type Diagram implements Representation {
   edges: [Edge!]!
 }
 
+enum ViewModifier {
+  Normal
+  Faded
+  Hidden
+}
+
 type Node {
   id: ID!
   label: Label!
@@ -36,6 +42,7 @@ type Node {
   targetObjectLabel: String!
   size: Size!
   position: Position!
+  state: ViewModifier!
   style: INodeStyle!
   borderNodes: [Node!]!
   childNodes: [Node!]!
@@ -103,6 +110,7 @@ type Edge {
   targetObjectId: String!
   targetObjectKind: String!
   targetObjectLabel: String!
+  state: ViewModifier!
   style: EdgeStyle!
   routingPoints: [Position]!
   sourceAnchorRelativePosition: Ratio!
@@ -224,6 +232,8 @@ extend type Mutation {
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
   updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
   reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
+  hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
+  fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
 }
 
 input ArrangeAllInput {
@@ -400,5 +410,34 @@ input ReconnectEdgeInput {
 union ReconnectEdgePayload = ErrorPayload | ReconnectEdgeSuccessPayload
 
 type ReconnectEdgeSuccessPayload {
+  id: ID!
+}
+
+input HideDiagramElementInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  elementIds: [ID!]!
+  hide: Boolean!
+}
+
+union HideDiagramElementPayload = ErrorPayload | HideDiagramElementSuccessPayload
+
+type HideDiagramElementSuccessPayload {
+  id: ID!
+}
+
+input FadeDiagramElementInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  elementIds: [ID!]!
+  fade: Boolean!
+}
+
+
+union FadeDiagramElementPayload = ErrorPayload | FadeDiagramElementSuccessPayload
+
+type FadeDiagramElementSuccessPayload {
   id: ID!
 }

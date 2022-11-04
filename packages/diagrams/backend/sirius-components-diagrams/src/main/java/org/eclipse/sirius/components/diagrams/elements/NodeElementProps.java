@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -50,6 +51,10 @@ public final class NodeElementProps implements IProps {
     private UUID descriptionId;
 
     private boolean borderNode;
+
+    private Set<ViewModifier> modifiers;
+
+    private ViewModifier state;
 
     private INodeStyle style;
 
@@ -93,6 +98,14 @@ public final class NodeElementProps implements IProps {
 
     public boolean isBorderNode() {
         return this.borderNode;
+    }
+
+    public Set<ViewModifier> getModifiers() {
+        return this.modifiers;
+    }
+
+    public ViewModifier getState() {
+        return this.state;
     }
 
     public INodeStyle getStyle() {
@@ -151,6 +164,10 @@ public final class NodeElementProps implements IProps {
 
         private boolean borderNode;
 
+        private Set<ViewModifier> modifiers;
+
+        private ViewModifier state;
+
         private INodeStyle style;
 
         private ILayoutStrategy childrenLayoutStrategy;
@@ -197,6 +214,16 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder modifiers(Set<ViewModifier> modifiers) {
+            this.modifiers = Objects.requireNonNull(modifiers);
+            return this;
+        }
+
+        public Builder state(ViewModifier state) {
+            this.state = Objects.requireNonNull(state);
+            return this;
+        }
+
         public Builder style(INodeStyle style) {
             this.style = Objects.requireNonNull(style);
             return this;
@@ -236,6 +263,8 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             nodeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             nodeElementProps.borderNode = this.borderNode;
+            nodeElementProps.modifiers = Objects.requireNonNull(this.modifiers);
+            nodeElementProps.state = Objects.requireNonNull(this.state);
             nodeElementProps.style = Objects.requireNonNull(this.style);
             nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.position = Objects.requireNonNull(this.position);

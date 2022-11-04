@@ -17,6 +17,8 @@ export interface ToolbarProps {
   onZoomOut: () => void;
   onFitToScreen: () => void;
   onArrangeAll: () => void;
+  onUnhideAll: () => void;
+  onUnfadeAll: () => void;
   setZoomLevel: (zoomLevel: string) => void;
   autoLayout: boolean;
   zoomLevel: string;

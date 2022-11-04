@@ -38,6 +38,7 @@ export class EdgeView extends PolylineEdgeView {
       'stroke-width': style.size,
       'pointer-events': 'stroke',
       fill: 'none',
+      opacity: style.opacity,
     };
 
     if (style.lineStyle === 'Dash') {
@@ -90,10 +91,12 @@ export class EdgeView extends PolylineEdgeView {
   applyFeedback(edge: Edge, styleObject) {
     if (edge.selected) {
       styleObject['stroke'] = 'var(--blue-lagoon)';
+      styleObject['opacity'] = 1;
     }
     if (edge.hoverFeedback) {
       styleObject['stroke'] = 'var(--blue-lagoon)';
       styleObject['stroke-width'] = 2;
+      styleObject['opacity'] = 1;
     }
   }
 
@@ -112,6 +115,7 @@ export class EdgeView extends PolylineEdgeView {
       fill: style.color,
       sourceArrowStyle: style.sourceArrow,
       targetArrowStyle: style.targetArrow,
+      opacity: style.opacity,
     };
 
     this.applyFeedback(edge, styleObject);

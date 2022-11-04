@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.compatibility.diagrams;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EcorePackage;
@@ -23,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -89,6 +91,8 @@ public class DomainBasedSourceNodesProviderTests {
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .children(List.of())
+                .state(ViewModifier.Normal)
+                .modifiers(Set.of())
                 .build();
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementProps);

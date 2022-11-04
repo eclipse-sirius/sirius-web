@@ -56,7 +56,7 @@ public class RichTextComponent implements IComponent {
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(richTextDescription, variableManager)));
 
         // @formatter:off
-         Builder richTextElementPropsBuilder = RichTextElementProps.newRichTextElementProps(id)
+        Builder richTextElementPropsBuilder = RichTextElementProps.newRichTextElementProps(id)
                 .label(label)
                 .value(value)
                 .newValueHandler(specializedHandler)

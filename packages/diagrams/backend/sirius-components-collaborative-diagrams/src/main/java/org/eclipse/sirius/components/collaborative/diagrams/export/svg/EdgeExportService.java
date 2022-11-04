@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.springframework.stereotype.Service;
@@ -43,16 +44,24 @@ public class EdgeExportService {
 
     public StringBuilder export(Edge edge, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         StringBuilder edgeExport = new StringBuilder();
-        EdgeStyle style = edge.getStyle();
-        List<Position> lineRoutingPoints = this.addEdgeEndPositions(edge, id2NodeHierarchy);
-        // Should add source and target intersection in routingPoints.
 
-        if (lineRoutingPoints.size() > 1) {
-            edgeExport.append("<g>"); //$NON-NLS-1$
-            edgeExport.append(this.exportLine(style, lineRoutingPoints));
-            edgeExport.append(this.exportAdditionals(style, lineRoutingPoints));
-            edgeExport.append(this.exportEdgeLabels(edge));
-            edgeExport.append("</g>"); //$NON-NLS-1$
+        if (edge.getState() != ViewModifier.Hidden) {
+            float opacity = 1;
+            if (edge.getState() == ViewModifier.Faded) {
+                opacity = 0.25f;
+            }
+
+            EdgeStyle style = edge.getStyle();
+            List<Position> lineRoutingPoints = this.addEdgeEndPositions(edge, id2NodeHierarchy);
+
+            // Should add source and target intersection in routingPoints.
+            if (lineRoutingPoints.size() > 1) {
+                edgeExport.append("<g style=\"opacity:" + opacity + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
+                edgeExport.append(this.exportLine(style, lineRoutingPoints));
+                edgeExport.append(this.exportAdditionals(style, lineRoutingPoints));
+                edgeExport.append(this.exportEdgeLabels(edge));
+                edgeExport.append("</g>"); //$NON-NLS-1$
+            }
         }
 
         return edgeExport;
@@ -124,13 +133,13 @@ public class EdgeExportService {
     private StringBuilder exportEdgeLabels(Edge edge) {
         StringBuilder labelsExport = new StringBuilder();
         if (edge.getBeginLabel() != null) {
-            labelsExport.append(this.elementExport.exportLabel(edge.getBeginLabel()));
+            labelsExport.append(this.elementExport.exportLabel(edge.getBeginLabel(), 1));
         }
         if (edge.getCenterLabel() != null) {
-            labelsExport.append(this.elementExport.exportLabel(edge.getCenterLabel()));
+            labelsExport.append(this.elementExport.exportLabel(edge.getCenterLabel(), 1));
         }
         if (edge.getEndLabel() != null) {
-            labelsExport.append(this.elementExport.exportLabel(edge.getEndLabel()));
+            labelsExport.append(this.elementExport.exportLabel(edge.getEndLabel(), 1));
         }
         return labelsExport;
     }

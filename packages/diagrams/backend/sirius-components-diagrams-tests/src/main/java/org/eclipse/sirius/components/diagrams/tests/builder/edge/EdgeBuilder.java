@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
@@ -24,6 +25,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.builder.edge.EdgeEnd.EdgeEndBuilder;
@@ -119,6 +121,8 @@ public final class EdgeBuilder {
                 .targetObjectId(sourceEdgeEnd.getEndId())
                 .targetObjectKind("") //$NON-NLS-1$
                 .targetObjectLabel(this.centerLabel.getText())
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
                 .build();
         // @formatter:on
     }

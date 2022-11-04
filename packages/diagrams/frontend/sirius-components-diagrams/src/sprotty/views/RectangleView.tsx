@@ -36,6 +36,7 @@ export class RectangleView extends RectangularNodeView {
       fill: nodeStyle.color,
       stroke: nodeStyle.borderColor,
       'stroke-width': nodeStyle.borderSize,
+      opacity: nodeStyle.opacity,
     };
 
     if (node.selected) {
@@ -112,6 +113,7 @@ const createHeaderSeparator = (node: Node, nodeStyle: RectangularNodeStyle, node
     const headerSeparatorStyle = {
       stroke: nodeStyle.borderColor,
       'stroke-width': nodeStyle.borderSize,
+      opacity: nodeStyle.opacity,
     };
 
     // The label y position indicates the padding top, we suppose the same padding is applied to the bottom.

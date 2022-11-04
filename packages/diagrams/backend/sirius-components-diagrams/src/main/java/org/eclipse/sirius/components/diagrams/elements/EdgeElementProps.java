@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,12 +16,14 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -50,6 +52,10 @@ public final class EdgeElementProps implements IProps {
     private String sourceId;
 
     private String targetId;
+
+    private Set<ViewModifier> modifiers;
+
+    private ViewModifier state;
 
     private EdgeStyle style;
 
@@ -95,6 +101,14 @@ public final class EdgeElementProps implements IProps {
 
     public String getTargetId() {
         return this.targetId;
+    }
+
+    public Set<ViewModifier> getModifiers() {
+        return this.modifiers;
+    }
+
+    public ViewModifier getState() {
+        return this.state;
     }
 
     public EdgeStyle getStyle() {
@@ -151,6 +165,10 @@ public final class EdgeElementProps implements IProps {
 
         private String targetId;
 
+        private Set<ViewModifier> modifiers;
+
+        private ViewModifier state;
+
         private EdgeStyle style;
 
         private List<Position> routingPoints;
@@ -200,6 +218,16 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
+        public Builder modifiers(Set<ViewModifier> modifiers) {
+            this.modifiers = Objects.requireNonNull(modifiers);
+            return this;
+        }
+
+        public Builder state(ViewModifier state) {
+            this.state = Objects.requireNonNull(state);
+            return this;
+        }
+
         public Builder style(EdgeStyle style) {
             this.style = Objects.requireNonNull(style);
             return this;
@@ -235,6 +263,8 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             edgeElementProps.sourceId = Objects.requireNonNull(this.sourceId);
             edgeElementProps.targetId = Objects.requireNonNull(this.targetId);
+            edgeElementProps.modifiers = Objects.requireNonNull(this.modifiers);
+            edgeElementProps.state = Objects.requireNonNull(this.state);
             edgeElementProps.style = Objects.requireNonNull(this.style);
             edgeElementProps.routingPoints = Objects.requireNonNull(this.routingPoints);
             edgeElementProps.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);

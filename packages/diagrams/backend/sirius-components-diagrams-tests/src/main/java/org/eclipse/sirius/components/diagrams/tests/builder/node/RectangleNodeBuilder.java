@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
@@ -144,7 +145,9 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .targetObjectId(labeltext)
                .targetObjectKind("") //$NON-NLS-1$
                .targetObjectLabel(this.label.getText())
-               .style(Objects.requireNonNull(style));
+               .style(Objects.requireNonNull(style))
+               .modifiers(Set.of())
+               .state(ViewModifier.Normal);
 
         if (this.childrenLayoutStrategy != null) {
             nodeBuilder.childrenLayoutStrategy(this.childrenLayoutStrategy);

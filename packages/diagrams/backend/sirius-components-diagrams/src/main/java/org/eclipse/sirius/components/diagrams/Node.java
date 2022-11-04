@@ -44,6 +44,10 @@ public final class Node {
 
     private boolean borderNode;
 
+    private Set<ViewModifier> modifiers;
+
+    private ViewModifier state;
+
     private Label label;
 
     private INodeStyle style;
@@ -92,6 +96,14 @@ public final class Node {
         return this.borderNode;
     }
 
+    public Set<ViewModifier> getModifiers() {
+        return this.modifiers;
+    }
+
+    public ViewModifier getState() {
+        return this.state;
+    }
+
     public Label getLabel() {
         return this.label;
     }
@@ -134,9 +146,9 @@ public final class Node {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, label: {6}, styleType: {7}, borderNodeCount: {8}, childNodeCount: {9}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.label.getText(),
-                this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
+                this.label.getText(), this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
     }
 
     /**
@@ -159,6 +171,10 @@ public final class Node {
         private UUID descriptionId;
 
         private boolean borderNode;
+
+        private Set<ViewModifier> modifiers;
+
+        private ViewModifier state;
 
         private Label label;
 
@@ -188,6 +204,8 @@ public final class Node {
             this.targetObjectLabel = node.getTargetObjectLabel();
             this.descriptionId = node.getDescriptionId();
             this.borderNode = node.isBorderNode();
+            this.modifiers = node.getModifiers();
+            this.state = node.getState();
             this.label = node.getLabel();
             this.style = node.getStyle();
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
@@ -225,6 +243,16 @@ public final class Node {
 
         public Builder borderNode(boolean borderNode) {
             this.borderNode = borderNode;
+            return this;
+        }
+
+        public Builder modifiers(Set<ViewModifier> modifiers) {
+            this.modifiers = Objects.requireNonNull(modifiers);
+            return this;
+        }
+
+        public Builder state(ViewModifier state) {
+            this.state = Objects.requireNonNull(state);
             return this;
         }
 
@@ -277,6 +305,8 @@ public final class Node {
             node.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             node.descriptionId = Objects.requireNonNull(this.descriptionId);
             node.borderNode = this.borderNode;
+            node.modifiers = Objects.requireNonNull(this.modifiers);
+            node.state = Objects.requireNonNull(this.state);
             node.label = Objects.requireNonNull(this.label);
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;

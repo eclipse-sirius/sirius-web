@@ -50,7 +50,7 @@ const Text = (props) => {
 export class LabelView extends SLabelView {
   // @ts-ignore
   render(label) {
-    const { color, bold, underline, strikeThrough, italic, fontSize, iconURL } = label.style;
+    const { color, bold, underline, strikeThrough, italic, fontSize, iconURL, opacity } = label.style;
     // The font-family is hardcoded to match with the backend compute bounds algo.
     const styleObject = {
       fill: color,
@@ -60,6 +60,7 @@ export class LabelView extends SLabelView {
       'font-style': 'normal',
       'text-decoration': 'none',
       'text-anchor': 'start',
+      opacity: opacity,
     };
     if (bold) {
       styleObject['font-weight'] = 'bold';
@@ -78,12 +79,16 @@ export class LabelView extends SLabelView {
       }
     }
 
+    const styleIcon = {
+      opacity: styleObject.opacity,
+    };
+
     const iconVerticalOffset = -14;
     const text = label.text;
 
     const vnode = (
       <g attrs-data-testid={`Label - ${label.text}`}>
-        {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" /> : ''}
+        {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" style={styleIcon} /> : ''}
         <text class-sprotty-label={true} style={styleObject}>
           <Text text={text} fontSize={fontSize} />
         </text>

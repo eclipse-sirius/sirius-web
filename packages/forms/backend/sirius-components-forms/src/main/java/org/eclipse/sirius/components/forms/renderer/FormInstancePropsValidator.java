@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.representations.IProps;
 public class FormInstancePropsValidator implements IInstancePropsValidator {
 
     @Override
+    @SuppressWarnings("checkstyle:JavaNCSS")
     public boolean validateInstanceProps(String type, IProps props) {
         boolean checkValidProps = false;
 

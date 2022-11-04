@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.TextBoundsProvider;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -97,6 +98,11 @@ public class IncrementalLayoutDiagramConverter {
 
         layoutData.setResizedByUser(node.getCustomizedProperties().contains(CustomizableProperties.Size));
         layoutData.setBorderNode(node.isBorderNode());
+
+        if (node.getState() == ViewModifier.Hidden) {
+            layoutData.setPinned(true);
+            layoutData.setExcludedFromLayoutComputation(true);
+        }
 
         return layoutData;
     }

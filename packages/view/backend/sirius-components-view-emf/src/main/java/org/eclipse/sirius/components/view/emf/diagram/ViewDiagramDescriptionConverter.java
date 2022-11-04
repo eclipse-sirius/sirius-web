@@ -311,7 +311,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
             List<NodeDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
-
             // Add custom tools
             int i = 0;
             for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
@@ -394,8 +393,17 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
 
         // @formatter:off
-        return List.of(ToolSection.newToolSection(UUID.randomUUID().toString()).label(NODE_CREATION_TOOL_SECTION).tools(nodeCreationTools).imageURL("").build(), //$NON-NLS-1$
-                       ToolSection.newToolSection(UUID.randomUUID().toString()).label(EDGE_CREATION_TOOL_SECTION).tools(edgeTools).imageURL("").build()); //$NON-NLS-1$
+        var nodeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
+                .label(NODE_CREATION_TOOL_SECTION)
+                .tools(nodeCreationTools)
+                .imageURL("") //$NON-NLS-1$
+                .build();
+        var edgeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
+                .label(EDGE_CREATION_TOOL_SECTION)
+                .tools(edgeTools)
+                .imageURL("") //$NON-NLS-1$
+                .build();
+        return List.of(nodeCreationToolSection, edgeCreationToolSection);
         // @formatter:on
     }
 
@@ -578,7 +586,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 DiagramRenderingCache cache = optionalCache.get();
                 Object object = optionalObject.get();
 
-             // @formatter:off
+                // @formatter:off
                 return cache.getElementsRepresenting(object).stream()
                         .filter(this.isFromCompatibleSourceMapping(viewEdgeDescription))
                         .filter(Objects::nonNull)

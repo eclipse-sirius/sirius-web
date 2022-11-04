@@ -41,6 +41,7 @@ import {
   GQLNode,
   GQLParametricSVGNodeStyle,
   GQLRectangularNodeStyle,
+  GQLViewModifier,
 } from '../representation/DiagramRepresentation.types';
 import {
   ArrowStyle,
@@ -57,6 +58,7 @@ import {
   Node,
   ParametricSVGNodeStyle,
   RectangularNodeStyle,
+  ViewModifier,
 } from './Diagram.types';
 import { resizeFeature } from './dragAndDrop/model';
 
@@ -90,8 +92,12 @@ export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readO
   diagram.targetObjectId = targetObjectId;
   diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
 
-  nodes.map((node) => convertNode(diagram, node, httpOrigin, readOnly, autoLayout));
-  edges.map((edge) => convertEdge(diagram, edge, httpOrigin, readOnly));
+  nodes
+    .filter((node) => node.state !== GQLViewModifier.Hidden)
+    .map((node) => convertNode(diagram, node, httpOrigin, readOnly, autoLayout));
+  edges
+    .filter((edge) => edge.state !== GQLViewModifier.Hidden)
+    .map((edge) => convertEdge(diagram, edge, httpOrigin, readOnly));
 
   return diagram;
 };
@@ -116,14 +122,21 @@ const convertNode = (
     style,
     borderNodes,
     childNodes,
+    state,
   } = gqlNode;
 
   const node: Node = new Node();
   parentElement.add(node);
 
+  node.state = ViewModifier[GQLViewModifier[state]];
+
   const convertedLabel = convertLabel(node, label, httpOrigin, readOnly);
-  (borderNodes ?? []).map((borderNode) => convertBorderNode(node, borderNode, httpOrigin, readOnly, autoLayout));
-  (childNodes ?? []).map((childNode) => convertNode(node, childNode, httpOrigin, readOnly, autoLayout));
+  (borderNodes ?? [])
+    .filter((borderNode) => borderNode.state !== GQLViewModifier.Hidden)
+    .map((borderNode) => convertBorderNode(node, borderNode, httpOrigin, readOnly, autoLayout));
+  (childNodes ?? [])
+    .filter((childNode) => childNode.state !== GQLViewModifier.Hidden)
+    .map((childNode) => convertNode(node, childNode, httpOrigin, readOnly, autoLayout));
 
   node.id = id;
   node.type = type;
@@ -137,6 +150,7 @@ const convertNode = (
   node.position = position;
   node.size = size;
   node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
+  node.style.opacity = node.state === ViewModifier.Faded ? 0.25 : 1;
 
   return node;
 };
@@ -147,8 +161,19 @@ const convertBorderNode = (
   readOnly: boolean,
   autoLayout: boolean
 ): BorderNode => {
-  const { id, label, descriptionId, type, targetObjectId, targetObjectKind, targetObjectLabel, size, position, style } =
-    gqlNode;
+  const {
+    id,
+    label,
+    descriptionId,
+    type,
+    targetObjectId,
+    targetObjectKind,
+    targetObjectLabel,
+    size,
+    position,
+    style,
+    state,
+  } = gqlNode;
 
   const node: BorderNode = new BorderNode();
   parentElement.add(node);
@@ -167,6 +192,7 @@ const convertBorderNode = (
   node.position = position;
   node.size = size;
   node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
+  node.state = ViewModifier[GQLViewModifier[state]];
   return node;
 };
 
@@ -238,6 +264,7 @@ const convertLabel = (
   labelStyle.italic = italic;
   labelStyle.strikeThrough = strikeThrough;
   labelStyle.underline = underline;
+  labelStyle.opacity = parentElement['state'] === ViewModifier.Faded ? 0.25 : 1;
 
   if (labelStyle.iconURL?.length ?? 0 > 0) {
     labelStyle.iconURL = httpOrigin + labelStyle.iconURL;
@@ -321,6 +348,7 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
     style,
     sourceAnchorRelativePosition,
     targetAnchorRelativePosition,
+    state,
   } = gqlEdge;
 
   const edgeStyle = new EdgeStyle();
@@ -329,9 +357,12 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   edgeStyle.lineStyle = LineStyle[GQLLineStyle[style.lineStyle]];
   edgeStyle.sourceArrow = ArrowStyle[GQLArrowStyle[style.sourceArrow]];
   edgeStyle.targetArrow = ArrowStyle[GQLArrowStyle[style.targetArrow]];
+  edgeStyle.opacity = gqlEdge.state === GQLViewModifier.Faded ? 0.25 : 1;
 
   const edge = new Edge();
   diagram.add(edge);
+
+  edge.state = ViewModifier[GQLViewModifier[state]];
 
   if (beginLabel) {
     convertLabel(edge, beginLabel, httpOrigin, readOnly);

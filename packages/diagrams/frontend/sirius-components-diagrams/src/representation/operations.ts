@@ -110,6 +110,7 @@ export const diagramEventSubscription = gql`
     targetObjectKind
     targetObjectLabel
     descriptionId
+    state
     label {
       ...labelFields
     }
@@ -160,6 +161,7 @@ export const diagramEventSubscription = gql`
     descriptionId
     sourceId
     targetId
+    state
     beginLabel {
       ...labelFields
     }
@@ -226,6 +228,34 @@ export const deleteFromDiagramMutation = gql`
         diagram {
           id
         }
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const hideDiagramElementMutation = gql`
+  mutation hideDiagramElement($input: HideDiagramElementInput!) {
+    hideDiagramElement(input: $input) {
+      __typename
+      ... on HideDiagramElementSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const fadeDiagramElementMutation = gql`
+  mutation fadeDiagramElement($input: FadeDiagramElementInput!) {
+    fadeDiagramElement(input: $input) {
+      __typename
+      ... on FadeDiagramElementSuccessPayload {
+        id
       }
       ... on ErrorPayload {
         message

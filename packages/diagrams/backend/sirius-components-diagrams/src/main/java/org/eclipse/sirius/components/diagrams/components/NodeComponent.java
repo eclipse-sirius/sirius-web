@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,11 +30,15 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
+import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -62,6 +67,7 @@ public class NodeComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         INodesRequestor nodesRequestor = this.props.getNodesRequestor();
         DiagramRenderingCache cache = this.props.getCache();
+        Optional<IDiagramEvent> optionalDiagramEvent = this.props.getDiagramEvent();
 
         VariableManager nodeComponentVariableManager = variableManager.createChild();
 
@@ -90,7 +96,7 @@ public class NodeComponent implements IComponent {
             var optionalPreviousNode = nodesRequestor.getByTargetObjectId(targetObjectId);
 
             if (this.shouldRender(targetObjectId, optionalPreviousNode)) {
-                Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode);
+                Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode, optionalDiagramEvent);
                 children.add(nodeElement);
 
                 cache.put(nodeDescription.getId(), nodeElement);
@@ -138,7 +144,7 @@ public class NodeComponent implements IComponent {
         // @formatter:on
     }
 
-    private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode) {
+    private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
         INodeDescriptionRequestor nodeDescriptionRequestor = this.props.getNodeDescriptionRequestor();
@@ -148,13 +154,15 @@ public class NodeComponent implements IComponent {
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
+        Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
+        ViewModifier state = this.computeState(modifiers);
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
 
-        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, nodeDescriptionRequestor);
-        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, nodeDescriptionRequestor);
+        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
+        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
 
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
@@ -192,7 +200,9 @@ public class NodeComponent implements IComponent {
                 .position(position)
                 .size(size)
                 .children(nodeChildren)
-                .customizableProperties(customizableProperties);
+                .customizableProperties(customizableProperties)
+                .modifiers(modifiers)
+                .state(state);
 
         if (layoutStrategy != null) {
             nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
@@ -200,6 +210,54 @@ public class NodeComponent implements IComponent {
 
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
+    }
+
+    /**
+     * Compute the modifiers set applied on the new node. The set is by default the set of the previous node or is empty
+     * if it does not exist.
+     *
+     * If a diagram event is specified and this one requests a modification of the modifier set, applied the event on
+     * the default set.
+     *
+     * @param optionalDiagramEvent
+     *            The optional diagram event modifying the default modifier set of the node
+     * @param optionalPreviousNode
+     *            The previous node from which get the old modifier set. If empty, the old modifier set is set to an
+     *            empty Set
+     * @param id
+     *            The ID of the current node
+     */
+    private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Node> optionalPreviousNode, String id) {
+        Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent) {
+            HideDiagramElementEvent hideDiagramElementEvent = (HideDiagramElementEvent) optionalDiagramEvent.get();
+            if (hideDiagramElementEvent.getElementIds().contains(id)) {
+                if (hideDiagramElementEvent.hideElement()) {
+                    modifiers.add(ViewModifier.Hidden);
+                } else {
+                    modifiers.remove(ViewModifier.Hidden);
+                }
+            }
+        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent) {
+            FadeDiagramElementEvent fadeDiagramElementEvent = (FadeDiagramElementEvent) optionalDiagramEvent.get();
+            if (fadeDiagramElementEvent.getElementIds().contains(id)) {
+                if (fadeDiagramElementEvent.fadeElement()) {
+                    modifiers.add(ViewModifier.Faded);
+                } else {
+                    modifiers.remove(ViewModifier.Faded);
+                }
+            }
+        }
+        return modifiers;
+    }
+
+    private ViewModifier computeState(Set<ViewModifier> modifiers) {
+        ViewModifier parentState = this.props.getParentElementState();
+        ViewModifier state = new ViewStateProvider().getState(modifiers);
+        if (parentState == ViewModifier.Hidden) {
+            state = ViewModifier.Hidden;
+        }
+        return state;
     }
 
     /**
@@ -243,7 +301,8 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, INodeDescriptionRequestor nodeDescriptionRequestor) {
+    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,
+            INodeDescriptionRequestor nodeDescriptionRequestor) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         DiagramRenderingCache cache = this.props.getCache();
 
@@ -269,13 +328,16 @@ public class NodeComponent implements IComponent {
                     .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
                     .previousTargetObjectIds(previousBorderNodesTargetObjectIds)
+                    .diagramEvent(this.props.getDiagramEvent().orElse(null))
+                    .parentElementState(state)
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).collect(Collectors.toList());
         //@formatter:on
     }
 
-    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, INodeDescriptionRequestor nodeDescriptionRequestor) {
+    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,
+            INodeDescriptionRequestor nodeDescriptionRequestor) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         DiagramRenderingCache cache = this.props.getCache();
 
@@ -301,6 +363,8 @@ public class NodeComponent implements IComponent {
                     .viewDeletionRequests(this.props.getViewDeletionRequests())
                     .parentElementId(nodeId)
                     .previousTargetObjectIds(previousChildNodesTargetObjectIds)
+                    .diagramEvent(this.props.getDiagramEvent().orElse(null))
+                    .parentElementState(state)
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);
@@ -312,7 +376,7 @@ public class NodeComponent implements IComponent {
         String parentElementId = this.props.getParentElementId();
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-        String rawIdentifier = parentElementId.toString() + containmentKind.toString() + nodeDescription.getId().toString() + targetObjectId;
+        String rawIdentifier = parentElementId + containmentKind.toString() + nodeDescription.getId().toString() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 

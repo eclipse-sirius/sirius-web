@@ -137,6 +137,9 @@
       <property name="severity" value="error"/>
       <property name="option" value="text"/>
     </module>
+    <module name="NeedBraces">
+      <property name="severity" value="error"/>
+    </module>
     <module name="LeftCurly">
       <property name="severity" value="error"/>
     </module>
@@ -305,6 +308,9 @@
       <property name="severity" value="error"/>
     </module>
     <module name="SuppressWarnings"/>
+  </module>
+  <module name="FileTabCharacter">
+    <property name="severity" value="error"/>
   </module>
   <module name="FileLength">
     <property name="severity" value="error"/>

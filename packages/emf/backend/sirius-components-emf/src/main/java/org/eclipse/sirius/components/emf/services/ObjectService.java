@@ -259,7 +259,7 @@ public class ObjectService implements IObjectService {
 
     @Override
     public Optional<String> getLabelField(Object object) {
-     // @formatter:off
+        // @formatter:off
         return Optional.of(object)
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)

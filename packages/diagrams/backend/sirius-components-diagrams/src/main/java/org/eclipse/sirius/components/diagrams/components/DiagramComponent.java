@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -73,6 +74,8 @@ public class DiagramComponent implements IComponent {
                             .viewDeletionRequests(this.props.getViewDeletionRequests())
                             .parentElementId(diagramId)
                             .previousTargetObjectIds(previousNodesTargetIds)
+                            .diagramEvent(this.props.getDiagramEvent().orElse(null))
+                            .parentElementState(ViewModifier.Normal)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).collect(Collectors.toList());

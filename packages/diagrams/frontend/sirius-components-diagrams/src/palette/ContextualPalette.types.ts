@@ -22,6 +22,8 @@ export interface ContextualPaletteProps {
   invokeLabelEdit: () => void | null;
   invokeDelete: (deletionPolicy: GQLDeletionPolicy) => void | null;
   invokeClose: () => void;
+  invokeHide: () => void;
+  invokeFade: () => void;
 }
 
 export interface ContextualPaletteStyleProps {

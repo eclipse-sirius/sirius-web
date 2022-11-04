@@ -54,6 +54,8 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
 
     private boolean resizedByUser;
 
+    private boolean excludedFromLayoutComputation;
+
     @Override
     public String getId() {
         return this.id;
@@ -173,6 +175,14 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
 
     public boolean isResizedByUser() {
         return this.resizedByUser;
+    }
+
+    public boolean isExcludedFromLayoutComputation() {
+        return this.excludedFromLayoutComputation;
+    }
+
+    public void setExcludedFromLayoutComputation(boolean excludedFromLayoutComputation) {
+        this.excludedFromLayoutComputation = excludedFromLayoutComputation;
     }
 
     @Override

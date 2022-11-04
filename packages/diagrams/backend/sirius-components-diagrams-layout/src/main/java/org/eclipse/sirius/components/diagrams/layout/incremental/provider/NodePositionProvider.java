@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -55,8 +58,13 @@ public class NodePositionProvider {
     public Position getPosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node) {
         Position position = node.getPosition();
         if (NodeType.NODE_ICON_LABEL.equals(node.getNodeType())) {
-            int nodeListItemIndex = node.getParent().getChildrenNodes().indexOf(node);
-            Optional<Position> nodeListItemPosition = this.getNodeListItemPosition(node, nodeListItemIndex);
+            List<NodeLayoutData> nodesInLayout = node.getParent().getChildrenNodes().stream().filter(Predicate.not(NodeLayoutData::isExcludedFromLayoutComputation))
+                    .collect(Collectors.toUnmodifiableList());
+            int nodeListItemIndex = nodesInLayout.indexOf(node);
+            Optional<Position> nodeListItemPosition = Optional.of(Position.UNDEFINED);
+            if (nodeListItemIndex != -1) {
+                nodeListItemPosition = this.getNodeListItemPosition(node.getParent(), nodesInLayout, nodeListItemIndex);
+            }
             if (nodeListItemPosition.isPresent()) {
                 position = nodeListItemPosition.get();
             }
@@ -70,18 +78,18 @@ public class NodePositionProvider {
         return position;
     }
 
-    private Optional<Position> getNodeListItemPosition(NodeLayoutData node, int nodeListItemIndex) {
+    private Optional<Position> getNodeListItemPosition(IContainerLayoutData parent, List<NodeLayoutData> nodesInLayout, int nodeListItemIndex) {
         Optional<Position> nodeListItemPosition = Optional.empty();
         if (nodeListItemIndex > 0) {
-            NodeLayoutData previousNodeListItem = node.getParent().getChildrenNodes().get(nodeListItemIndex - 1);
+            NodeLayoutData previousNodeListItem = nodesInLayout.get(nodeListItemIndex - 1);
             Position lastPosition = previousNodeListItem.getPosition();
             Size lastSize = previousNodeListItem.getSize();
             double y = lastPosition.getY() + lastSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP;
             nodeListItemPosition = Optional.of(Position.at(0, y));
         } else if (nodeListItemIndex == 0) {
             // We are positioning the first element during this layout
-            if (node.getParent() instanceof NodeLayoutData) {
-                NodeLayoutData parentLayoutData = (NodeLayoutData) node.getParent();
+            if (parent instanceof NodeLayoutData) {
+                NodeLayoutData parentLayoutData = (NodeLayoutData) parent;
                 LabelLayoutData parentLabelLayoutData = parentLayoutData.getLabel();
                 // @formatter:off
                 double posY = parentLabelLayoutData.getTextBounds().getSize().getHeight()
@@ -110,9 +118,9 @@ public class NodePositionProvider {
         Optional<Position> optionalPosition = Optional.empty();
         if (Position.UNDEFINED.equals(node.getPosition())) {
             // @formatter:off
-             Position nodePosition = this.getPositionRelativeToSibling(node)
+            Position nodePosition = this.getPositionRelativeToSibling(node)
                     .orElse(this.getPositionRelativeToParent(node, diagramElementEvent));
-             optionalPosition = Optional.of(nodePosition);
+            optionalPosition = Optional.of(nodePosition);
             // @formatter:on
         }
         return optionalPosition;
