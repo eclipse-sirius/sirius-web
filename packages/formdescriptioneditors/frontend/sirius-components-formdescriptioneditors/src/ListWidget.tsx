@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -21,9 +21,41 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { useEffect, useRef, useState } from 'react';
+import {
+  getTextDecorationLineValue,
+  readBooleanStyleProperty,
+  readNumericStyleProperty,
+  readStyleProperty,
+} from './styleProperties';
 import { WidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+interface StyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+const useListPropertySectionStyles = makeStyles<Theme, StyleProps>((theme) => ({
+  cell: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  canBeSelectedItem: {
+    '&:hover': {
+      textDecoration: 'underline',
+      cursor: 'pointer',
+    },
+  },
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   icon: {
     width: '16px',
     height: '16px',
@@ -35,9 +67,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ListWidget = ({ widget, selection }: WidgetProps) => {
+  const props: StyleProps = {
+    color: readStyleProperty(widget, 'color'),
+    fontSize: readNumericStyleProperty(widget, 'fontSize'),
+    italic: readBooleanStyleProperty(widget, 'italic'),
+    bold: readBooleanStyleProperty(widget, 'bold'),
+    underline: readBooleanStyleProperty(widget, 'underline'),
+    strikeThrough: readBooleanStyleProperty(widget, 'strikeThrough'),
+  };
+  const classes = useListPropertySectionStyles(props);
+
   const [selected, setSelected] = useState<Boolean>(false);
 
-  const classes = useStyles();
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -59,7 +100,7 @@ export const ListWidget = ({ widget, selection }: WidgetProps) => {
           <TableRow>
             <TableCell>
               {' '}
-              <Typography color="textPrimary">
+              <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
                 Value 1
               </Typography>
@@ -73,7 +114,7 @@ export const ListWidget = ({ widget, selection }: WidgetProps) => {
           <TableRow>
             <TableCell>
               {' '}
-              <Typography color="textPrimary">
+              <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
                 Value 2
               </Typography>
@@ -87,7 +128,7 @@ export const ListWidget = ({ widget, selection }: WidgetProps) => {
           <TableRow>
             <TableCell>
               {' '}
-              <Typography color="textPrimary">
+              <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
                 Value 3
               </Typography>

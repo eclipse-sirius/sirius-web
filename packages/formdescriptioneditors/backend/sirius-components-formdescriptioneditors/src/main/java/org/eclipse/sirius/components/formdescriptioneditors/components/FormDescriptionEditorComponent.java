@@ -17,11 +17,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.description.AbstractFormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorFlexboxContainerDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorWidgetDescription;
+import org.eclipse.sirius.components.formdescriptioneditors.description.StyleProperty;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
@@ -29,6 +32,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
 /**
  * The component used to render the form description editor.
@@ -91,6 +95,7 @@ public class FormDescriptionEditorComponent implements IComponent {
                 FormDescriptionEditorWidgetDescription fdeWidgetDescription = FormDescriptionEditorWidgetDescription.newFormDescriptionEditorWidgetDescription(widgetId)
                         .label(widgetLabel)
                         .kind(widgetKind)
+                        .styleProperties(this.readStyleProperties(widgetDescription))
                         .build();
                 // @formatter:on
                 FormDescriptionEditorWidgetComponentProps fdeWidgetComponentProps = new FormDescriptionEditorWidgetComponentProps(fdeWidgetDescription);
@@ -108,6 +113,27 @@ public class FormDescriptionEditorComponent implements IComponent {
         // @formatter:on
 
         return new Element(FormDescriptionEditorElementProps.TYPE, formDescriptionEditorElementProps);
+    }
+
+    private List<StyleProperty> readStyleProperties(WidgetDescription widgetDescription) {
+        List<StyleProperty> styleProperties = new ArrayList<>();
+        Object styleValue = widgetDescription.eGet(widgetDescription.eClass().getEStructuralFeature("style")); //$NON-NLS-1$
+        if (styleValue instanceof WidgetDescriptionStyle) {
+            WidgetDescriptionStyle styleDescription = (WidgetDescriptionStyle) styleValue;
+            for (EAttribute attr : styleDescription.eClass().getEAllAttributes()) {
+                String name = attr.getName();
+                Object value = styleDescription.eGet(attr);
+                if (value != null) {
+                // @formatter:off
+                styleProperties.add(StyleProperty.newStyleProperty()
+                        .name(name)
+                        .value(EcoreUtil.convertToString(attr.getEAttributeType(), value))
+                        .build());
+                // @formatter:on
+                }
+            }
+        }
+        return styleProperties;
     }
 
     private String getKind(WidgetDescription widget) {

@@ -10,19 +10,49 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { WidgetProps } from './WidgetEntry.types';
 import { useEffect, useRef, useState } from 'react';
+import {
+  getTextDecorationLineValue,
+  readBooleanStyleProperty,
+  readNumericStyleProperty,
+  readStyleProperty,
+} from './styleProperties';
+import { WidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+export interface StyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
+const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
 export const LabelWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+  const props: StyleProps = {
+    color: readStyleProperty(widget, 'color'),
+    fontSize: readNumericStyleProperty(widget, 'fontSize'),
+    italic: readBooleanStyleProperty(widget, 'italic'),
+    bold: readBooleanStyleProperty(widget, 'bold'),
+    underline: readBooleanStyleProperty(widget, 'underline'),
+    strikeThrough: readBooleanStyleProperty(widget, 'strikeThrough'),
+  };
+  const classes = useStyle(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -42,7 +72,12 @@ export const LabelWidget = ({ widget, selection }: WidgetProps) => {
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {widget.label}
       </Typography>
-      <Typography ref={ref} onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} tabIndex={0}>
+      <Typography
+        className={classes.style}
+        ref={ref}
+        onFocus={() => setSelected(true)}
+        onBlur={() => setSelected(false)}
+        tabIndex={0}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit
       </Typography>
     </div>

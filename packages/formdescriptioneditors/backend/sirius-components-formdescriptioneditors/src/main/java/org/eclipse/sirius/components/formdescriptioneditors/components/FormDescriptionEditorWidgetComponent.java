@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorWidgetDescription;
+import org.eclipse.sirius.components.formdescriptioneditors.description.StyleProperty;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorWidgetElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
@@ -39,11 +41,13 @@ public class FormDescriptionEditorWidgetComponent implements IComponent {
         String id = formDescriptionEditorWidgetDescription.getId();
         String label = formDescriptionEditorWidgetDescription.getLabel();
         String kind = formDescriptionEditorWidgetDescription.getKind();
+        List<StyleProperty> styleProperties = formDescriptionEditorWidgetDescription.getStyleProperties();
 
         // @formatter:off
         FormDescriptionEditorWidgetElementProps widgetPropsBuilder = FormDescriptionEditorWidgetElementProps.newFormDescriptionEditorWidgetElementProps(id)
                 .label(label)
                 .kind(kind)
+                .styleProperties(styleProperties)
                 .build();
         // @formatter:on
 

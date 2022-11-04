@@ -41,6 +41,10 @@ export const formDescriptionEditorEventSubscription = gql`
             id
             label
             kind
+            styleProperties {
+              name
+              value
+            }
             ... on FormDescriptionEditorFlexboxContainer {
               flexDirection
               flexWrap

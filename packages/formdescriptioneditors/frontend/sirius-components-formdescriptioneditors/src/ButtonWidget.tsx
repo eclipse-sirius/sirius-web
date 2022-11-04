@@ -11,19 +11,66 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { WidgetProps } from './WidgetEntry.types';
 import { useEffect, useRef, useState } from 'react';
+import {
+  getTextDecorationLineValue,
+  readBooleanStyleProperty,
+  readNumericStyleProperty,
+  readStyleProperty,
+} from './styleProperties';
+import { WidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+interface ButtonPropertySectionStyleProps {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+  iconOnly: boolean;
+}
+
+const useStyle = makeStyles<Theme, ButtonPropertySectionStyleProps>((theme) => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.light),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    '&:hover': {
+      backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.main),
+      color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    },
+  },
+  icon: {
+    marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
 export const ButtonWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+  const props: ButtonPropertySectionStyleProps = {
+    backgroundColor: readStyleProperty(widget, 'backgroundColor'),
+    foregroundColor: readStyleProperty(widget, 'foregroundColor'),
+    fontSize: readNumericStyleProperty(widget, 'fontSize'),
+    italic: readBooleanStyleProperty(widget, 'italic'),
+    bold: readBooleanStyleProperty(widget, 'bold'),
+    underline: readBooleanStyleProperty(widget, 'underline'),
+    strikeThrough: readBooleanStyleProperty(widget, 'strikeThrough'),
+    iconOnly: false, // Can not be determined precisely here
+  };
+
+  const classes = useStyle(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -47,6 +94,7 @@ export const ButtonWidget = ({ widget, selection }: WidgetProps) => {
         data-testid={widget.label}
         variant="contained"
         color="primary"
+        classes={{ root: classes.style }}
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
         ref={ref}>

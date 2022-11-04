@@ -35,6 +35,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Edge routing points are not reset when one of the edge end is moving
 - https://github.com/eclipse-sirius/sirius-components/issues/1387[#1387] [releng] Migrate VSCode Extension to Sirius Components.
 - https://github.com/eclipse-sirius/sirius-components/issues/1423[#1423] [forms] In-browser spell-checking is now disabled on textfields.
+- https://github.com/eclipse-sirius/sirius-components/issues/1437[#1437] [formdescriptioneditors] The default widget styles are now applied in the visual editor.
 
 === New Features
 

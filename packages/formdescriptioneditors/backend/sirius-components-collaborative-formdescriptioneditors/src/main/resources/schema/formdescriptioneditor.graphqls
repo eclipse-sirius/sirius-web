@@ -30,12 +30,19 @@ interface AbstractFormDescriptionEditorWidget {
   id: ID!
   kind: String!
   label: String!
+  styleProperties: [StyleProperty!]!
 }
 
 type FormDescriptionEditorWidget implements AbstractFormDescriptionEditorWidget {
-	id: ID!
-	kind: String!
-	label: String!
+  id: ID!
+  kind: String!
+  label: String!
+  styleProperties: [StyleProperty!]!
+}
+
+type StyleProperty {
+  name: String!
+  value: String!
 }
 
 type FormDescriptionEditorFlexboxContainer implements AbstractFormDescriptionEditorWidget {
@@ -45,6 +52,7 @@ type FormDescriptionEditorFlexboxContainer implements AbstractFormDescriptionEdi
 	flexDirection: String!
 	flexWrap: String!
 	flexGrow: Int!
+	styleProperties: [StyleProperty!]!
 	children: [AbstractFormDescriptionEditorWidget!]!
 }
 

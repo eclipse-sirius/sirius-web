@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors;
 
+import java.util.List;
+
+import org.eclipse.sirius.components.formdescriptioneditors.description.StyleProperty;
+
 /**
  * Abstract class to be extended by all the widgets of the form-description-editor representation.
  *
@@ -24,6 +28,8 @@ public class AbstractFormDescriptionEditorWidget implements IFormDescriptionEdit
     protected String kind;
 
     protected String label;
+
+    protected List<StyleProperty> styleProperties;
 
     @Override
     public String getId() {
@@ -38,6 +44,11 @@ public class AbstractFormDescriptionEditorWidget implements IFormDescriptionEdit
     @Override
     public String getLabel() {
         return this.label;
+    }
+
+    @Override
+    public List<StyleProperty> getStyleProperties() {
+        return this.styleProperties;
     }
 
 }

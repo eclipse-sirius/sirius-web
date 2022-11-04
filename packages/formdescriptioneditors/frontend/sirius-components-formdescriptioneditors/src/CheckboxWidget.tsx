@@ -11,20 +11,32 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Checkbox from '@material-ui/core/Checkbox';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { readStyleProperty } from './styleProperties';
 import { WidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+export interface StyleProps {
+  color: string | null;
+}
+const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : theme.palette.primary.light),
+    '&.Mui-checked': {
+      color: ({ color }) => (color ? color : theme.palette.primary.light),
+    },
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
 export const CheckboxWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
-
+  const props: StyleProps = {
+    color: readStyleProperty(widget, 'color'),
+  };
+  const classes = useStyle(props);
   const [selected, setSelected] = useState<boolean>(false);
 
   const ref = useRef<HTMLInputElement | null>(null);
@@ -49,6 +61,7 @@ export const CheckboxWidget = ({ widget, selection }: WidgetProps) => {
         inputRef={ref}
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
+        classes={{ root: classes.style }}
       />
     </div>
   );

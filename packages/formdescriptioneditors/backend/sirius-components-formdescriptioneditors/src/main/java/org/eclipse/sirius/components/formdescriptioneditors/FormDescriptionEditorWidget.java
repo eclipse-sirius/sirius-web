@@ -13,9 +13,11 @@
 package org.eclipse.sirius.components.formdescriptioneditors;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.formdescriptioneditors.description.StyleProperty;
 
 /**
  * Any widget contained in the form description editor widget.
@@ -52,6 +54,8 @@ public final class FormDescriptionEditorWidget extends AbstractFormDescriptionEd
 
         private String label;
 
+        private List<StyleProperty> styleProperties = List.of();
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -66,11 +70,17 @@ public final class FormDescriptionEditorWidget extends AbstractFormDescriptionEd
             return this;
         }
 
+        public Builder styleProperties(List<StyleProperty> styleProperties) {
+            this.styleProperties = Objects.requireNonNull(styleProperties);
+            return this;
+        }
+
         public FormDescriptionEditorWidget build() {
             FormDescriptionEditorWidget formDescriptionEditorWidget = new FormDescriptionEditorWidget();
             formDescriptionEditorWidget.id = Objects.requireNonNull(this.id);
             formDescriptionEditorWidget.kind = Objects.requireNonNull(this.kind);
             formDescriptionEditorWidget.label = Objects.requireNonNull(this.label);
+            formDescriptionEditorWidget.styleProperties = Objects.requireNonNull(this.styleProperties);
             return formDescriptionEditorWidget;
         }
     }

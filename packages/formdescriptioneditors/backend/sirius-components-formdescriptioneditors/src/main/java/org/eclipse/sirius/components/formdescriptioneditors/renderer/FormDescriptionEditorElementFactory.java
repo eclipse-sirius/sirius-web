@@ -66,6 +66,7 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
         return FormDescriptionEditorWidget.newFormDescriptionEditorWidget(props.getId())
                 .label(props.getLabel())
                 .kind(props.getKind())
+                .styleProperties(props.getStyleProperties())
                 .build();
         // @formatter:on
     }

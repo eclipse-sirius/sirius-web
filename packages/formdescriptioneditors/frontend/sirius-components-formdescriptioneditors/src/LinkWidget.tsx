@@ -11,18 +11,53 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useEffect, useRef, useState } from 'react';
+import {
+  getTextDecorationLineValue,
+  readBooleanStyleProperty,
+  readNumericStyleProperty,
+  readStyleProperty,
+} from './styleProperties';
 import { WidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+interface StyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
+  style: ({ color }) => {
+    const style = {
+      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    };
+    if (color) {
+      style['color'] = color;
+    }
+    return style;
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
 export const LinkWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+  const props: StyleProps = {
+    color: readStyleProperty(widget, 'color'),
+    fontSize: readNumericStyleProperty(widget, 'fontSize'),
+    italic: readBooleanStyleProperty(widget, 'italic'),
+    bold: readBooleanStyleProperty(widget, 'bold'),
+    underline: readBooleanStyleProperty(widget, 'underline'),
+    strikeThrough: readBooleanStyleProperty(widget, 'strikeThrough'),
+  };
+
+  const classes = useStyle(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -37,11 +72,15 @@ export const LinkWidget = ({ widget, selection }: WidgetProps) => {
     }
   }, [selection, widget]);
 
+  let className = classes.style;
+  if (selected) {
+    className = `${className} ${classes.selected}`;
+  }
   return (
     <div>
       <Link
         ref={ref}
-        className={selected ? classes.selected : ''}
+        className={className}
         onClick={(event) => {
           event.preventDefault();
           setSelected(true);

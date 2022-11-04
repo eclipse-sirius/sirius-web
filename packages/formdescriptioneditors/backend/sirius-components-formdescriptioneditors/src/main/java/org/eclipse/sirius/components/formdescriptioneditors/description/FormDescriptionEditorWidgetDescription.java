@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.formdescriptioneditors.description;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -24,6 +25,8 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class FormDescriptionEditorWidgetDescription extends AbstractFormDescriptionEditorWidgetDescription {
+
+    private List<StyleProperty> styleProperties;
 
     private FormDescriptionEditorWidgetDescription() {
         // Prevent instantiation
@@ -42,6 +45,10 @@ public final class FormDescriptionEditorWidgetDescription extends AbstractFormDe
     @Override
     public String getKind() {
         return this.kind;
+    }
+
+    public List<StyleProperty> getStyleProperties() {
+        return this.styleProperties;
     }
 
     public static Builder newFormDescriptionEditorWidgetDescription(String id) {
@@ -67,6 +74,8 @@ public final class FormDescriptionEditorWidgetDescription extends AbstractFormDe
 
         private String kind;
 
+        private List<StyleProperty> styleProperties = List.of();
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -81,11 +90,17 @@ public final class FormDescriptionEditorWidgetDescription extends AbstractFormDe
             return this;
         }
 
+        public Builder styleProperties(List<StyleProperty> styleProperties) {
+            this.styleProperties = List.copyOf(styleProperties);
+            return this;
+        }
+
         public FormDescriptionEditorWidgetDescription build() {
             FormDescriptionEditorWidgetDescription formDescriptionEditorDescription = new FormDescriptionEditorWidgetDescription();
             formDescriptionEditorDescription.id = Objects.requireNonNull(this.id);
             formDescriptionEditorDescription.label = Objects.requireNonNull(this.label);
             formDescriptionEditorDescription.kind = Objects.requireNonNull(this.kind);
+            formDescriptionEditorDescription.styleProperties = this.styleProperties;
             return formDescriptionEditorDescription;
         }
     }

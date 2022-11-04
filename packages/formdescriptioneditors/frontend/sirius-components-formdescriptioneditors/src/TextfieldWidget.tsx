@@ -10,20 +10,53 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
+import {
+  getTextDecorationLineValue,
+  readBooleanStyleProperty,
+  readNumericStyleProperty,
+  readStyleProperty,
+} from './styleProperties';
 import { WidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+export interface StyleProps {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
+const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
 export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+  const props: StyleProps = {
+    backgroundColor: readStyleProperty(widget, 'backgroundColor'),
+    foregroundColor: readStyleProperty(widget, 'foregroundColor'),
+    fontSize: readNumericStyleProperty(widget, 'fontSize'),
+    italic: readBooleanStyleProperty(widget, 'italic'),
+    bold: readBooleanStyleProperty(widget, 'bold'),
+    underline: readBooleanStyleProperty(widget, 'underline'),
+    strikeThrough: readBooleanStyleProperty(widget, 'strikeThrough'),
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -51,6 +84,7 @@ export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
         onBlur={() => setSelected(false)}
         InputProps={{
           readOnly: true,
+          className: classes.style,
         }}
         value="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       />

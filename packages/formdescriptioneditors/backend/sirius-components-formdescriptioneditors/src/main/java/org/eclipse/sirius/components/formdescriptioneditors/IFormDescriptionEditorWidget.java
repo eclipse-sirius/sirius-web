@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors;
 
+import java.util.List;
+
+import org.eclipse.sirius.components.formdescriptioneditors.description.StyleProperty;
+
 /**
  * Any widget contained in the form description editor representation.
  *
@@ -24,4 +28,6 @@ public interface IFormDescriptionEditorWidget {
     String getKind();
 
     String getLabel();
+
+    List<StyleProperty> getStyleProperties();
 }

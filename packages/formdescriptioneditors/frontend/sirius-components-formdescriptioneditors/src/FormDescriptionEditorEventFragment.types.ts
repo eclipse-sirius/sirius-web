@@ -78,9 +78,15 @@ export interface GQLAbstractFormDescriptionEditorWidget {
   id: string;
   label: string;
   kind: string;
+  styleProperties: GQLStyleProperty[];
 }
 
 export interface GQLFormDescriptionEditorWidget extends GQLAbstractFormDescriptionEditorWidget {}
+
+export interface GQLStyleProperty {
+  name: string;
+  value: string;
+}
 
 export interface GQLFormDescriptionEditorFlexboxContainer extends GQLAbstractFormDescriptionEditorWidget {
   flexDirection: GQLFlexDirection;

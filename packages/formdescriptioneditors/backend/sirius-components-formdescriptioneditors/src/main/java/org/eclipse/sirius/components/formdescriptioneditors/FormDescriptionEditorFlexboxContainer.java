@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.formdescriptioneditors.description.StyleProperty;
 
 /**
  * Any widget contained in the form description editor flexbox container.
@@ -48,6 +49,11 @@ public final class FormDescriptionEditorFlexboxContainer extends AbstractFormDes
 
     public int getFlexGrow() {
         return this.flexGrow;
+    }
+
+    @Override
+    public List<StyleProperty> getStyleProperties() {
+        return List.of();
     }
 
     public List<AbstractFormDescriptionEditorWidget> getChildren() {
