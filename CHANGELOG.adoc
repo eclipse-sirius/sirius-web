@@ -10,6 +10,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1431[#1431] [form] The default implementation of the Property View should not try to handle a multi valuated EStructuralFeature of type String
+- https://github.com/eclipse-sirius/sirius-components/issues/1448[#1448] [formdescriptioneditors] Create a default style for new TextArea widgets like for the others
 
 === New Features
 
