@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -37,7 +38,6 @@ import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
-import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -131,12 +131,14 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
     }
 
     private void createStyle(WidgetDescription widgetDescription) {
-        EClassifier eClassifier = ViewFactory.eINSTANCE.getEPackage().getEClassifier(widgetDescription.eClass().getName() + "Style"); //$NON-NLS-1$
-        if (eClassifier instanceof EClass) {
-            var widgetDescriptionStyle = ViewFactory.eINSTANCE.create((EClass) eClassifier);
-            if (widgetDescriptionStyle instanceof WidgetDescriptionStyle) {
-                EStructuralFeature styleFeature = widgetDescription.eClass().getEStructuralFeature("style"); //$NON-NLS-1$
-                widgetDescription.eSet(styleFeature, widgetDescriptionStyle);
+        EStructuralFeature styleFeature = widgetDescription.eClass().getEStructuralFeature("style"); //$NON-NLS-1$
+        if (styleFeature instanceof EReference) {
+            EClassifier eClassifier = styleFeature.getEType();
+            if (eClassifier instanceof EClass) {
+                var widgetDescriptionStyle = ViewFactory.eINSTANCE.create((EClass) eClassifier);
+                if (eClassifier.isInstance(widgetDescriptionStyle)) {
+                    widgetDescription.eSet(styleFeature, widgetDescriptionStyle);
+                }
             }
         }
     }
