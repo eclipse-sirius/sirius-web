@@ -20,6 +20,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import ShareIcon from '@material-ui/icons/Share';
+import TonalityIcon from '@material-ui/icons/Tonality';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import React, { useEffect, useState } from 'react';
@@ -62,6 +64,8 @@ export const Toolbar = ({
   onZoomOut,
   onFitToScreen,
   onArrangeAll,
+  onUnhideAll,
+  onUnfadeAll,
   setZoomLevel,
   autoLayout,
   zoomLevel,
@@ -151,6 +155,24 @@ export const Toolbar = ({
         </IconButton>
         <IconButton size="small" color="inherit" aria-label="share" title="Share" onClick={onShare} data-testid="share">
           <ShareIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
+          color="inherit"
+          aria-label="reveal hidden elements"
+          title="Reveal hidden elements"
+          onClick={onUnhideAll}
+          data-testid="reveal-hidden-elements">
+          <VisibilityOffIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
+          color="inherit"
+          aria-label="reveal faded elements"
+          title="Reveal faded elements"
+          onClick={onUnfadeAll}
+          data-testid="reveal-faded-elements">
+          <TonalityIcon fontSize="small" />
         </IconButton>
 
         <div className={classes.subscribers}>

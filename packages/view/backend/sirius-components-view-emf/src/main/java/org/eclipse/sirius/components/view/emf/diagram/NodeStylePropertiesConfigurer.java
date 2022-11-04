@@ -183,7 +183,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private List<AbstractControlDescription> getGeneralControlDescription() {
-     // @formatter:off
+        // @formatter:off
         List<AbstractControlDescription> controls = List.of(
                 this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyleDescription) style).getSizeComputationExpression(),

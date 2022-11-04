@@ -152,9 +152,10 @@ public class ImageRegistry implements IImageRegistry {
     private Optional<String> getImageType(URI imageURI) {
         String imagePath = imageURI.getPath();
         String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1); //$NON-NLS-1$
+
         // @formatter:off
         return Optional.ofNullable(fileName)
-                .filter(name -> name.contains("."))  //$NON-NLS-1$
+                .filter(name -> name.contains(".")) //$NON-NLS-1$
                 .map(name -> name.substring(fileName.lastIndexOf(".") + 1)); //$NON-NLS-1$
         // @formatter:on
     }
@@ -170,14 +171,13 @@ public class ImageRegistry implements IImageRegistry {
         CookieStore store = ((CookieManager) CookieHandler.getDefault()).getCookieStore();
         if (cookies != null) {
             // @formatter:off
-             Arrays.stream(cookies)
-                 .forEach(cookie -> {
-                     HttpCookie newCookie = new HttpCookie(cookie.getName(), cookie.getValue());
-                     newCookie.setPath("/"); //$NON-NLS-1$
-                     newCookie.setVersion(0);
-                     store.add(this.imageBasePath, newCookie);
-                 });
-             // @formatter:on
+            Arrays.stream(cookies).forEach(cookie -> {
+                HttpCookie newCookie = new HttpCookie(cookie.getName(), cookie.getValue());
+                newCookie.setPath("/"); //$NON-NLS-1$
+                newCookie.setVersion(0);
+                store.add(this.imageBasePath, newCookie);
+            });
+            // @formatter:on
         }
     }
 }

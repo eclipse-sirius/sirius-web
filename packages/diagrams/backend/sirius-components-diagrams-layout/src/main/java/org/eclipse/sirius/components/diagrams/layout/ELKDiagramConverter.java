@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.slf4j.Logger;
@@ -192,15 +193,12 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         double largestchildWidth = this.getLargestChildWidth(nodeList.getChildNodes());
 
         // @formatter:off
-         return Arrays.asList(
-                largestchildWidth,
-                nodeListLabelTextBounds.getSize().getWidth() + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING * 2,
-                LayoutOptionValues.MIN_WIDTH_CONSTRAINT)
-              .stream()
-              .mapToDouble(Number::doubleValue)
-              .max()
-              .orElse(LayoutOptionValues.MIN_WIDTH_CONSTRAINT);
-         // @formatter:on
+        return Arrays.asList(largestchildWidth, nodeListLabelTextBounds.getSize().getWidth() + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING * 2, LayoutOptionValues.MIN_WIDTH_CONSTRAINT)
+                .stream()
+                .mapToDouble(Number::doubleValue)
+                .max()
+                .orElse(LayoutOptionValues.MIN_WIDTH_CONSTRAINT);
+        // @formatter:on
     }
 
     /**
@@ -407,6 +405,9 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         elkNode.setParent(parent);
         connectableShapeIndex.put(elkNode.getIdentifier(), elkNode);
+        if (node.getState() == ViewModifier.Hidden) {
+            elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
+        }
 
         if (node.getStyle() instanceof ImageNodeStyle) {
             ImageNodeStyle imageNodeStyle = (ImageNodeStyle) node.getStyle();
@@ -449,6 +450,9 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         elkPort.setDimensions(width, height);
         elkPort.setParent(elkNode);
+        if (borderNode.getState() == ViewModifier.Hidden) {
+            elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
+        }
 
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
 
@@ -503,6 +507,10 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         ElkConnectableShape source = connectableShapeIndex.get(edge.getSourceId());
         ElkConnectableShape target = connectableShapeIndex.get(edge.getTargetId());
+
+        if (edge.getState() == ViewModifier.Hidden) {
+            elkEdge.setProperty(CoreOptions.NO_LAYOUT, true);
+        }
 
         if (source != null) {
             elkEdge.getSources().add(source);

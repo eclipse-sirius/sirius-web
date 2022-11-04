@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -107,6 +109,8 @@ public class DeleteViewOperationHandlerTests {
                 .size(Size.of(10, 10))
                 .borderNodes(List.of())
                 .childNodes(List.of())
+                .state(ViewModifier.Normal)
+                .modifiers(Set.of())
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())

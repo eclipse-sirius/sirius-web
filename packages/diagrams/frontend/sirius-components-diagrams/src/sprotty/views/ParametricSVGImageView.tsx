@@ -107,6 +107,7 @@ export class ParametricSVGImageView extends RectangularNodeView {
           height={rectangleSize.height}
           style={styleObject}
           href={svgUrl}
+          opacity={style.opacity}
         />
         {selectedHandles}
         {context.renderChildren(node)}

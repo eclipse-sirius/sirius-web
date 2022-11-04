@@ -14,11 +14,14 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -49,7 +52,11 @@ public final class NodeComponentProps implements IProps {
 
     private String parentElementId;
 
+    private ViewModifier parentElementState;
+
     private List<String> previousTargetObjectIds;
+
+    private Optional<IDiagramEvent> diagramEvent;
 
     private NodeComponentProps() {
         // Prevent instantiation
@@ -91,12 +98,20 @@ public final class NodeComponentProps implements IProps {
         return this.parentElementId;
     }
 
+    public ViewModifier getParentElementState() {
+        return this.parentElementState;
+    }
+
     public List<String> getPreviousTargetObjectIds() {
         return this.previousTargetObjectIds;
     }
 
     public static Builder newNodeComponentProps() {
         return new Builder();
+    }
+
+    public Optional<IDiagramEvent> getDiagramEvent() {
+        return this.diagramEvent;
     }
 
     /**
@@ -124,7 +139,11 @@ public final class NodeComponentProps implements IProps {
 
         private String parentElementId;
 
+        private ViewModifier parentElementState;
+
         private List<String> previousTargetObjectIds;
+
+        private Optional<IDiagramEvent> diagramEvent = Optional.empty();
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -171,8 +190,18 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
+        public Builder parentElementState(ViewModifier parentElementState) {
+            this.parentElementState = Objects.requireNonNull(parentElementState);
+            return this;
+        }
+
         public Builder previousTargetObjectIds(List<String> previousTargetObjectIds) {
             this.previousTargetObjectIds = Objects.requireNonNull(previousTargetObjectIds);
+            return this;
+        }
+
+        public Builder diagramEvent(IDiagramEvent diagramEvent) {
+            this.diagramEvent = Optional.ofNullable(diagramEvent);
             return this;
         }
 
@@ -188,6 +217,8 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.viewDeletionRequests = Objects.requireNonNull(this.viewDeletionRequests);
             nodeComponentProps.parentElementId = Objects.requireNonNull(this.parentElementId);
             nodeComponentProps.previousTargetObjectIds = Objects.requireNonNull(this.previousTargetObjectIds);
+            nodeComponentProps.diagramEvent = Objects.requireNonNull(this.diagramEvent);
+            nodeComponentProps.parentElementState = Objects.requireNonNull(this.parentElementState);
             return nodeComponentProps;
         }
     }

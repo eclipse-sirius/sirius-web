@@ -24,6 +24,7 @@ import {
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
   GQLTool,
+  GQLToolSection,
 } from './ContextualPalette.types';
 import {
   ContextualPaletteContext,
@@ -36,6 +37,8 @@ import {
 } from './ContextualPaletteMachine';
 import closeImagePath from './icons/close.svg';
 import connectorImagePath from './icons/connector.svg';
+import hideImagePath from './icons/hide.svg';
+import fadeImagePath from './icons/tonality.svg';
 import { ToolSection } from './tool-section/ToolSection';
 import { Tool } from './tool/Tool';
 
@@ -97,6 +100,26 @@ const closeTool = {
   __typename: 'Close',
 };
 
+const visibilitySection: GQLToolSection = {
+  id: 'visibility_section',
+  label: 'Visibility Section',
+  imageURL: hideImagePath,
+  tools: [
+    {
+      id: 'hide',
+      imageURL: hideImagePath,
+      label: 'Hide',
+      __typename: 'Hide',
+    },
+    {
+      id: 'fade',
+      imageURL: fadeImagePath,
+      label: 'Fade',
+      __typename: 'Fade',
+    },
+  ],
+};
+
 const useContextualPaletteStyle = makeStyles((theme) => ({
   toolbar: {
     background: theme.palette.background.paper,
@@ -119,6 +142,7 @@ const useContextualPaletteStyle = makeStyles((theme) => ({
   },
   connectorTool: {},
   toolSection: {},
+  visibilitySection: {},
   close: {
     gridRowStart: '1',
     gridRowEnd: '2',
@@ -141,6 +165,8 @@ export const ContextualPalette = ({
   invokeLabelEdit,
   invokeDelete,
   invokeClose,
+  invokeHide,
+  invokeFade,
 }: ContextualPaletteProps) => {
   const [{ value, context }, dispatch] = useMachine<ContextualPaletteContext, ContextualPaletteEvent>(
     contextualPaletteMachine
@@ -180,7 +206,7 @@ export const ContextualPalette = ({
     toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
   );
 
-  let toolSectionsCount = toolSections.length + 1;
+  let toolSectionsCount = toolSections.length + 2;
   if (atLeastOneSingleClickOnTwoDiagramElementsTool) {
     toolSectionsCount = toolSectionsCount + 1;
   }
@@ -200,12 +226,21 @@ export const ContextualPalette = ({
         invokeTool(tool);
       }
     };
+
     return (
       <div className={classes.toolSection} key={diagramElementId + toolSection.id}>
         <ToolSection toolSection={toolSection} onToolClick={handleToolClick} />
       </div>
     );
   });
+
+  const invokeVisibilityTool = (tool: GQLTool) => {
+    if (tool.id === 'fade') {
+      invokeFade();
+    } else {
+      invokeHide();
+    }
+  };
 
   const paletteContent =
     contextualPalette === 'loaded' && !toolSectionsLoading && toolSectionsData ? (
@@ -217,6 +252,9 @@ export const ContextualPalette = ({
             </div>
           ) : null}
           {toolSectionElements}
+          <div className={classes.visibilitySection}>
+            <ToolSection toolSection={visibilitySection} onToolClick={invokeVisibilityTool} />
+          </div>
           <div className={classes.close}>
             <Tool tool={closeTool} thumbnail onClick={() => invokeClose()} />
           </div>

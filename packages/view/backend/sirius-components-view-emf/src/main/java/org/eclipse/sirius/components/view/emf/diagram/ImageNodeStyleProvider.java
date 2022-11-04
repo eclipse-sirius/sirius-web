@@ -77,14 +77,14 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
             // @formatter:off
-                iNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
-                                     .backgroundColor(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_BACKGROUND_COLOR))
-                                     .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_BORDER_COLOR))
-                                     .borderSize(nodeStyle.getBorderSize())
-                                     .borderRadius(nodeStyle.getBorderRadius())
-                                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                                     .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$
-                                     .build());
+            iNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
+                    .backgroundColor(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_BACKGROUND_COLOR))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_BORDER_COLOR))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderRadius(nodeStyle.getBorderRadius())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$
+                    .build());
             // @formatter:on
         } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE))) {
             // @formatter:off

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.tests;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Success;
 
@@ -109,6 +111,8 @@ public class TestDiagramBuilder {
                 .size(Size.UNDEFINED)
                 .borderNodes(List.of())
                 .childNodes(List.of())
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
                 .build();
         // @formatter:on
     }
@@ -133,6 +137,8 @@ public class TestDiagramBuilder {
                 .targetId(targetId)
                 .style(style)
                 .routingPoints(List.of())
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
                 .sourceAnchorRelativePosition(Ratio.UNDEFINED)
                 .targetAnchorRelativePosition(Ratio.UNDEFINED)
                 .build();

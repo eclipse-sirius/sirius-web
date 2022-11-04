@@ -76,7 +76,7 @@ public class TestDiagramCreationService {
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-      //@formatter:off
+        //@formatter:off
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)

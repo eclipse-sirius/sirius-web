@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
@@ -119,6 +121,8 @@ public class GetConnectorToolsEventHandlerTests {
                 .size(Size.UNDEFINED)
                 .borderNodes(List.of())
                 .childNodes(List.of())
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
                 .build();
         // @formatter:on
     }

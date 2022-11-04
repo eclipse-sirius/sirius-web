@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
@@ -113,7 +114,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
             descriptionId = TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID;
         }
 
-       // @formatter:off
+        // @formatter:off
         return Node.newNode(nodeId)
                .type(NodeType.NODE_IMAGE)
                .label(this.label)
@@ -128,7 +129,9 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
                .targetObjectKind("") //$NON-NLS-1$
                .targetObjectLabel(labelText)
                .style(Objects.requireNonNull(style))
+               .modifiers(Set.of())
+               .state(ViewModifier.Normal)
                .build();
-       // @formatter:on
+        // @formatter:on
     }
 }

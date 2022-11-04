@@ -187,8 +187,6 @@ public class MappingConverterTests {
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class))
                 .matches(RectangularNodeStyle::isWithHeader);
 
-        // TODO: add here something about child layout strategy.
-
         assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
         NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
         variableManager.put(VariableManager.SELF, EcorePackage.Literals.ECLASS__ABSTRACT);

@@ -80,6 +80,8 @@ public abstract class AbstractCodingRulesTests {
 
     private static final String APACHE_COMMONS = "org.apache.commons.."; //$NON-NLS-1$
 
+    private static final String JACKSON_ANNOTATION = "com.fasterxml.jackson.annotation.."; //$NON-NLS-1$
+
     private static final String IS = "is"; //$NON-NLS-1$
 
     private static final String GET = "get"; //$NON-NLS-1$
@@ -113,6 +115,20 @@ public abstract class AbstractCodingRulesTests {
                         GUAVA_XML,
                         GUAVA_THIRDPARTY
                 );
+        // @formatter:on
+
+        rule.check(this.getClasses());
+    }
+
+    @Test
+    public void noClassesShouldUseJacksonAnnotations() {
+        // @formatter:off
+        var rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .dependOnClassesThat()
+                .resideInAPackage(JACKSON_ANNOTATION);
         // @formatter:on
 
         rule.check(this.getClasses());

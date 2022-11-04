@@ -159,6 +159,12 @@ export interface GQLPosition {
   y: number;
 }
 
+export enum GQLViewModifier {
+  Normal = 'Normal',
+  Faded = 'Faded',
+  Hidden = 'Hidden',
+}
+
 export interface GQLNode {
   id: string;
   label: GQLLabel;
@@ -169,6 +175,7 @@ export interface GQLNode {
   targetObjectLabel: string;
   size: GQLSize;
   position: GQLPosition;
+  state: GQLViewModifier;
   style: GQLINodeStyle;
   borderNodes: GQLNode[] | undefined;
   childNodes: GQLNode[] | undefined;
@@ -245,6 +252,7 @@ export interface GQLEdge {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
+  state: GQLViewModifier;
   style: GQLEdgeStyle;
   routingPoints: GQLPosition[];
   sourceAnchorRelativePosition: GQLRatio;
@@ -509,4 +517,42 @@ export interface GQLArrangeAllData {
 
 export interface GQLArrangeAllPayload {
   __typename: string;
+}
+
+export interface GQLHideDiagramElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  elementIds: string[];
+  hide: boolean;
+}
+
+export interface GQLHideDiagramElementVariables {
+  input: GQLHideDiagramElementInput;
+}
+
+export interface GQLHideDiagramElementPayload {
+  __typename: string;
+}
+export interface GQLHideDiagramElementData {
+  hideDiagramElement: GQLHideDiagramElementPayload;
+}
+
+export interface GQLFadeDiagramElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  elementIds: string[];
+  fade: boolean;
+}
+
+export interface GQLFadeDiagramElementVariables {
+  input: GQLFadeDiagramElementInput;
+}
+
+export interface GQLFadeDiagramElementPayload {
+  __typename: string;
+}
+export interface GQLFadeDiagramElementData {
+  fadeDiagramElement: GQLFadeDiagramElementPayload;
 }

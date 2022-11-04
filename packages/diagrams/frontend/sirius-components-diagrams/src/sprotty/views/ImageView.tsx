@@ -88,7 +88,14 @@ export class ImageView extends RectangularNodeView {
           height={rectangleSize.height}
           style={styleObject}
         />
-        <image x={0} y={0} width={imageSize.width} height={imageSize.height} href={style.imageURL} />
+        <image
+          x={0}
+          y={0}
+          width={imageSize.width}
+          height={imageSize.height}
+          href={style.imageURL}
+          opacity={style.opacity}
+        />
         {selectedHandles}
         {context.renderChildren(node)}
       </g>

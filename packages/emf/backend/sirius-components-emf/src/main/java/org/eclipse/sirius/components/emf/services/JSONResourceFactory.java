@@ -39,7 +39,7 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
             .filter(Objects::nonNull)
             .filter(Predicate.not(String::isEmpty))
             .orElseThrow(() -> new IllegalArgumentException(String.format("Missing scheme for URI %s", uri))); //$NON-NLS-1$
-         // @formatter:on
+        // @formatter:on
 
         Map<String, Object> options = new HashMap<>();
 

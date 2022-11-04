@@ -97,7 +97,7 @@ public class InitialDirectEditElementLabelEventHandler implements IDiagramEventH
 
             if (diagramDescription.isPresent()) {
                 // @formatter:off
-               var optionalInitialDirectEditLabelProviderLabel = this.initialDirectEditElementLabelProviders.stream()
+                var optionalInitialDirectEditLabelProviderLabel = this.initialDirectEditElementLabelProviders.stream()
                         .filter(provider -> provider.canHandle(diagramDescription.get()))
                         .findFirst();
                 // @formatter:on

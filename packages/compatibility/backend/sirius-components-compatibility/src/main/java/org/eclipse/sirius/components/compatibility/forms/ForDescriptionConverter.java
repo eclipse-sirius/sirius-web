@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,12 +61,11 @@ public class ForDescriptionConverter {
                 .flatMap(ifDescription -> converter.convert(ifDescription).stream())
                 .collect(Collectors.toUnmodifiableList());
 
-       return ForDescription.newForDescription(this.identifierProvider.getIdentifier(siriusForDescription))
+        return ForDescription.newForDescription(this.identifierProvider.getIdentifier(siriusForDescription))
                .iterableProvider(iterableProvider)
                .iterator(siriusForDescription.getIterator())
                .ifDescriptions(ifDescriptions)
                .build();
         // @formatter:on
-
     }
 }

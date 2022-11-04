@@ -46,8 +46,8 @@ import org.eclipse.sirius.components.forms.components.PageComponent;
 import org.eclipse.sirius.components.forms.components.PageComponentProps;
 import org.eclipse.sirius.components.forms.components.RadioComponent;
 import org.eclipse.sirius.components.forms.components.RadioComponentProps;
-import org.eclipse.sirius.components.forms.components.RichTextComponentProps;
 import org.eclipse.sirius.components.forms.components.RichTextComponent;
+import org.eclipse.sirius.components.forms.components.RichTextComponentProps;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponentProps;
 import org.eclipse.sirius.components.forms.components.TextareaComponent;
@@ -73,6 +73,7 @@ import org.eclipse.sirius.components.representations.IProps;
 public class FormComponentPropsValidator implements IComponentPropsValidator {
 
     @Override
+    @SuppressWarnings("checkstyle:JavaNCSS")
     public boolean validateComponentProps(Class<?> componentType, IProps props) {
         boolean checkValidProps = false;
 

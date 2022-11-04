@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -59,6 +60,10 @@ public final class Edge {
     private String sourceId;
 
     private String targetId;
+
+    private Set<ViewModifier> modifiers;
+
+    private ViewModifier state;
 
     private EdgeStyle style;
 
@@ -116,6 +121,14 @@ public final class Edge {
         return this.targetId;
     }
 
+    public Set<ViewModifier> getModifiers() {
+        return this.modifiers;
+    }
+
+    public ViewModifier getState() {
+        return this.state;
+    }
+
     public EdgeStyle getStyle() {
         return this.style;
     }
@@ -142,9 +155,9 @@ public final class Edge {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, sourceId: {6}, targetId: {7}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, sourceId: {6}, targetId: {7}, state: {8}'}'"; //$NON-NLS-1$
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.sourceId,
-                this.targetId);
+                this.targetId, this.state.name());
     }
 
     /**
@@ -176,6 +189,10 @@ public final class Edge {
 
         private String targetId;
 
+        private Set<ViewModifier> modifiers;
+
+        private ViewModifier state;
+
         private EdgeStyle style;
 
         private List<Position> routingPoints;
@@ -200,6 +217,8 @@ public final class Edge {
             this.endLabel = edge.getEndLabel();
             this.sourceId = edge.getSourceId();
             this.targetId = edge.getTargetId();
+            this.modifiers = edge.getModifiers();
+            this.state = edge.getState();
             this.style = edge.getStyle();
             this.routingPoints = edge.getRoutingPoints();
             this.sourceAnchorRelativePosition = edge.getSourceAnchorRelativePosition();
@@ -256,6 +275,16 @@ public final class Edge {
             return this;
         }
 
+        public Builder modifiers(Set<ViewModifier> modifiers) {
+            this.modifiers = Objects.requireNonNull(modifiers);
+            return this;
+        }
+
+        public Builder state(ViewModifier state) {
+            this.state = Objects.requireNonNull(state);
+            return this;
+        }
+
         public Builder style(EdgeStyle style) {
             this.style = Objects.requireNonNull(style);
             return this;
@@ -289,6 +318,8 @@ public final class Edge {
             edge.endLabel = this.endLabel;
             edge.sourceId = Objects.requireNonNull(this.sourceId);
             edge.targetId = Objects.requireNonNull(this.targetId);
+            edge.modifiers = Objects.requireNonNull(this.modifiers);
+            edge.state = Objects.requireNonNull(this.state);
             edge.style = Objects.requireNonNull(this.style);
             edge.routingPoints = Objects.requireNonNull(this.routingPoints);
             edge.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);

@@ -39,7 +39,7 @@ public class DiagramElementExportService {
         this.imageRegistry = Objects.requireNonNull(imageRegistry);
     }
 
-    public StringBuilder exportLabel(Label label) {
+    public StringBuilder exportLabel(Label label, float opacity) {
         StringBuilder labelExport = new StringBuilder();
         Position position = label.getPosition();
         Position alignment = label.getAlignment();
@@ -48,11 +48,14 @@ public class DiagramElementExportService {
         labelExport.append("<g "); //$NON-NLS-1$
         labelExport.append("transform=\""); //$NON-NLS-1$
         labelExport.append("translate(" + position.getX() + ", " + position.getY() + ") "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        labelExport.append("translate(" + alignment.getX() + ", " + alignment.getY() + ")\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        labelExport.append("translate(" + alignment.getX() + ", " + alignment.getY() + ")\" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        labelExport.append("style=\""); //$NON-NLS-1$
+        labelExport.append("opacity: " + opacity + ";"); //$NON-NLS-1$ //$NON-NLS-2$
+        labelExport.append("\" "); //$NON-NLS-1$
         labelExport.append(">"); //$NON-NLS-1$
 
         if (!(style.getIconURL().isEmpty())) {
-            labelExport.append(this.exportImageElement(style.getIconURL(), -20, -12, Optional.empty()));
+            labelExport.append(this.exportImageElement(style.getIconURL(), -20, -12, Optional.empty(), 1));
         }
 
         labelExport.append(this.exportTextElement(label.getText(), label.getType(), style));
@@ -60,7 +63,7 @@ public class DiagramElementExportService {
         return labelExport.append("</g>"); //$NON-NLS-1$
     }
 
-    public StringBuilder exportImageElement(String imageURL, int x, int y, Optional<Size> size) {
+    public StringBuilder exportImageElement(String imageURL, int x, int y, Optional<Size> size, float nodeOpacity) {
         StringBuilder imageExport = new StringBuilder();
         UUID symbolId = this.imageRegistry.registerImage(imageURL);
         if (symbolId != null) {
@@ -69,6 +72,9 @@ public class DiagramElementExportService {
             imageExport.append("x=\"" + x + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
             imageExport.append("y=\"" + y + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
             size.ifPresent(it -> imageExport.append(this.addSizeParam(it)));
+            imageExport.append("style=\""); //$NON-NLS-1$
+            imageExport.append("opacity: " + nodeOpacity + "; "); //$NON-NLS-1$ //$NON-NLS-2$
+            imageExport.append("\" "); //$NON-NLS-1$
             imageExport.append("/>"); //$NON-NLS-1$
         }
         return imageExport;
@@ -90,21 +96,15 @@ public class DiagramElementExportService {
         return gExport.append(">"); //$NON-NLS-1$
     }
 
-    public StringBuilder exportRectangleElement(Size size, Optional<Integer> borderRadius, Optional<String> color, Optional<String> borderColor, Optional<Integer> borderSize,
-            Optional<LineStyle> borderStyle) {
-        return this.exportRectangleElement(size, Position.at(0, 0), borderRadius, color, borderColor, borderSize, borderStyle);
-    }
-
-    public StringBuilder exportRectangleElement(Size size, Position position, Optional<Integer> borderRadius, Optional<String> color, Optional<String> borderColor, Optional<Integer> borderSize,
-            Optional<LineStyle> borderStyle) {
+    public StringBuilder exportRectangleElement(Size size, Position position, RectangleStyle rectangleStyle) {
         StringBuilder rectangle = new StringBuilder();
 
         rectangle.append("<rect "); //$NON-NLS-1$
         rectangle.append("x=\"" + position.getX() + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
         rectangle.append("y=\"" + position.getY() + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-        borderRadius.ifPresent(radius -> rectangle.append("rx=\"" + radius + "\" ")); //$NON-NLS-1$ //$NON-NLS-2$
+        Optional.ofNullable(rectangleStyle.getBorderRadius()).ifPresent(radius -> rectangle.append("rx=\"" + radius + "\" ")); //$NON-NLS-1$ //$NON-NLS-2$
         rectangle.append(this.addSizeParam(size));
-        rectangle.append(this.exportRectangleStyleParam(color, borderColor, borderSize, borderStyle));
+        rectangle.append(this.exportRectangleStyleParam(rectangleStyle));
 
         return rectangle.append("/> "); //$NON-NLS-1$
     }
@@ -178,18 +178,21 @@ public class DiagramElementExportService {
         return textExport.append(";"); //$NON-NLS-1$
     }
 
-    private StringBuilder exportRectangleStyleParam(Optional<String> color, Optional<String> borderColor, Optional<Integer> borderSize, Optional<LineStyle> borderStyle) {
+    private StringBuilder exportRectangleStyleParam(RectangleStyle rectangleStyle) {
         StringBuilder styleExport = new StringBuilder();
 
         styleExport.append("style=\""); //$NON-NLS-1$
-        if (color.isPresent()) {
-            styleExport.append("fill: " + color.get() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
+        if (Optional.ofNullable(rectangleStyle.getColor()).isPresent()) {
+            styleExport.append("fill: " + rectangleStyle.getColor() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
             styleExport.append("fill-opacity: " + 0 + "; "); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        borderColor.ifPresent(it -> styleExport.append("stroke: " + it + "; ")); //$NON-NLS-1$ //$NON-NLS-2$
-        borderSize.ifPresent(it -> styleExport.append("stroke-width: " + it + "px; ")); //$NON-NLS-1$ //$NON-NLS-2$
-        borderStyle.ifPresent(style -> styleExport.append(this.exportBorderStyle(style)));
+
+        styleExport.append("opacity: " + rectangleStyle.getOpacity() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
+
+        Optional.ofNullable(rectangleStyle.getBorderColor()).ifPresent(it -> styleExport.append("stroke: " + it + "; ")); //$NON-NLS-1$ //$NON-NLS-2$
+        Optional.ofNullable(rectangleStyle.getBorderSize()).ifPresent(it -> styleExport.append("stroke-width: " + it + "px; ")); //$NON-NLS-1$ //$NON-NLS-2$
+        Optional.ofNullable(rectangleStyle.getBorderStyle()).ifPresent(style -> styleExport.append(this.exportBorderStyle(style)));
 
         return styleExport.append("\""); //$NON-NLS-1$
     }

@@ -183,7 +183,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         //@formatter:on
 
         if (diagramDescription.isPresent()) {
-          //@formatter:off
+            //@formatter:off
             List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
                     .filter(provider -> provider.canHandle(diagramDescription.get()))
                     .collect(Collectors.toList());

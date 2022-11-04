@@ -168,7 +168,7 @@ public class DefaultTestDiagramDescriptionProvider {
     };
 
     private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
-     // @formatter:off
+        // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
                 .map(name -> name.split(NODE_NAME_SEPARATOR))

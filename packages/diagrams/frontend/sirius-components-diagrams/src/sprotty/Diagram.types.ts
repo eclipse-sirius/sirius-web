@@ -28,6 +28,7 @@ export class Node extends SNode implements WithEditableLabel {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
+  state: ViewModifier;
 }
 
 export class BorderNode extends SPort implements WithEditableLabel {
@@ -38,9 +39,12 @@ export class BorderNode extends SPort implements WithEditableLabel {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
+  state: ViewModifier;
 }
 
-export interface INodeStyle {}
+export interface INodeStyle {
+  opacity: number;
+}
 
 export class ImageNodeStyle implements INodeStyle {
   imageURL: string;
@@ -48,6 +52,7 @@ export class ImageNodeStyle implements INodeStyle {
   borderRadius: number;
   borderSize: number;
   borderStyle: LineStyle;
+  opacity: number;
 }
 export class ParametricSVGNodeStyle implements INodeStyle {
   svgURL: string;
@@ -56,6 +61,7 @@ export class ParametricSVGNodeStyle implements INodeStyle {
   borderSize: number;
   borderStyle: LineStyle;
   backgroundColor: string;
+  opacity: number;
 }
 export class RectangularNodeStyle implements INodeStyle {
   color: string;
@@ -64,6 +70,7 @@ export class RectangularNodeStyle implements INodeStyle {
   borderSize: number;
   borderStyle: LineStyle;
   withHeader: boolean;
+  opacity: number;
 }
 
 export enum LineStyle {
@@ -75,6 +82,7 @@ export enum LineStyle {
 
 export class IconLabelNodeStyle implements INodeStyle {
   backgroundColor: string;
+  opacity: number;
 }
 
 export interface Ratio {
@@ -92,6 +100,7 @@ export class Edge extends SEdge implements WithEditableLabel {
   targetObjectLabel: string;
   sourceAnchorRelativePosition: Ratio;
   targetAnchorRelativePosition: Ratio;
+  state: ViewModifier;
 }
 
 export class EdgeStyle {
@@ -100,6 +109,7 @@ export class EdgeStyle {
   size: number;
   sourceArrow: ArrowStyle;
   targetArrow: ArrowStyle;
+  opacity: number;
 }
 
 export enum ArrowStyle {
@@ -139,4 +149,11 @@ export class LabelStyle {
   italic: boolean;
   strikeThrough: boolean;
   underline: boolean;
+  opacity: number;
+}
+
+export enum ViewModifier {
+  Normal = 'Normal',
+  Faded = 'Faded',
+  Hidden = 'Hidden',
 }

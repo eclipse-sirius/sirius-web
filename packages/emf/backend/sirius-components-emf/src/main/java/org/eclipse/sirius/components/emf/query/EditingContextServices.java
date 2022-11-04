@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,12 +38,12 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 public final class EditingContextServices {
 
     public Collection<EObject> allContents(IEditingContext editingContext) {
-        //@formatter:off
-       return this.getResourceset(editingContext)
-               .stream()
+        // @formatter:off
+        return this.getResourceset(editingContext)
+                .stream()
                .flatMap(this::collectAllContent)
                .collect(Collectors.toList());
-        //@formatter:on
+        // @formatter:on
     }
 
     public Collection<EObject> contents(IEditingContext editingContext) {
@@ -60,7 +60,7 @@ public final class EditingContextServices {
 
     public EObject getObjectById(IEditingContext editingContext, String id) {
         //@formatter:off
-       return this.getResourceset(editingContext)
+        return this.getResourceset(editingContext)
                 .stream()
                 .map(ResourceSet::getResources)
                 .flatMap(EList::stream)
@@ -73,12 +73,12 @@ public final class EditingContextServices {
 
     private Optional<ResourceSet> getResourceset(IEditingContext editingContext) {
         //@formatter:off
-       return  Optional.of(editingContext)
+        return  Optional.of(editingContext)
                .filter(EditingContext.class::isInstance)
                .map(EditingContext.class::cast)
                .map(EditingContext::getDomain)
                .map(EditingDomain::getResourceSet);
-       //@formatter:on
+        //@formatter:on
     }
 
     private Stream<EObject> collectAllContent(ResourceSet resourceSet) {

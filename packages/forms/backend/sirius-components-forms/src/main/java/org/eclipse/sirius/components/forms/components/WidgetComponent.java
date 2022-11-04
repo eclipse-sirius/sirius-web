@@ -52,6 +52,7 @@ public class WidgetComponent implements IComponent {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:JavaNCSS")
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         AbstractWidgetDescription widgetDescription = this.props.getWidgetDescription();

@@ -75,6 +75,7 @@ import org.eclipse.sirius.components.representations.IProps;
 public class FormElementFactory implements IElementFactory {
 
     @Override
+    @SuppressWarnings("checkstyle:JavaNCSS")
     public Object instantiateElement(String type, IProps props, List<Object> children) {
         Object object = null;
         if (FormElementProps.TYPE.equals(type) && props instanceof FormElementProps) {
@@ -512,7 +513,7 @@ public class FormElementFactory implements IElementFactory {
                  .children(widgets)
                  .diagnostics(diagnostics)
                  .build();
-       // @formatter:on
+        // @formatter:on
     }
 
     private TreeWidget instantiateTree(TreeElementProps props, List<Object> children) {
@@ -526,7 +527,7 @@ public class FormElementFactory implements IElementFactory {
                 .expandedNodesIds(props.getExpandedNodesIds())
                 .diagnostics(diagnostics)
                 .build();
-       // @formatter:on
+        // @formatter:on
     }
 
     private Image instantiateImage(ImageElementProps props, List<Object> children) {
@@ -537,7 +538,7 @@ public class FormElementFactory implements IElementFactory {
                  .label(props.getLabel())
                  .url(props.getUrl())
                  .diagnostics(diagnostics);
-       // @formatter:on
+        // @formatter:on
 
         if (props.getIconURL() != null) {
             imagebuilder.iconURL(props.getIconURL());
@@ -561,7 +562,7 @@ public class FormElementFactory implements IElementFactory {
             builder.iconURL(props.getIconURL());
         }
         return builder.build();
-       // @formatter:on
+        // @formatter:on
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {

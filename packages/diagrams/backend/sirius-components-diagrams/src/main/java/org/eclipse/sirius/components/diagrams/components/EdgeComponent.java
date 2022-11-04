@@ -15,10 +15,12 @@ package org.eclipse.sirius.components.diagrams.components;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -27,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
@@ -35,6 +38,8 @@ import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps.Builder;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeEvent;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
@@ -50,6 +55,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * The component used to render an edge.
  *
  * @author sbegaudeau
+ * @author tgiraudet
  */
 public class EdgeComponent implements IComponent {
 
@@ -123,6 +129,11 @@ public class EdgeComponent implements IComponent {
                     Optional<Edge> optionalPreviousEdge = this.props.getEdgesRequestor().getById(id);
                     Builder edgeElementPropsBuilder = EdgeElementProps.newEdgeElementProps(id);
 
+                    Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousEdge, id);
+                    edgeElementPropsBuilder.modifiers(modifiers);
+                    ViewModifier state = this.computeState(optionalDiagramEvent, sourceNode, sourceId, targetNode, targetId, modifiers);
+                    edgeElementPropsBuilder.state(state);
+
                     if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof RemoveEdgeEvent) {
                         RemoveEdgeEvent removeEdgeEvent = (RemoveEdgeEvent) optionalDiagramEvent.get();
                         optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, removeEdgeEvent, edgeIdProvider, count);
@@ -183,6 +194,92 @@ public class EdgeComponent implements IComponent {
             }
         }
         return edgeElements;
+    }
+
+    /**
+     * Compute the modifiers set applied on the new edge. The set is by default the set of the previous edge or is empty
+     * if it does not exist.
+     *
+     * If a diagram event is specified and this one requests a modification of the modifier set, applied the event on
+     * the default set.
+     *
+     * @param optionalDiagramEvent
+     *            The optional diagram event modifying the default modifier set of the edge
+     * @param optionalPreviousEdge
+     *            The previous edge from which get the old modifier set. If empty, the old modifier set is set to an
+     *            empty Set
+     * @param id
+     *            The ID of the current edge
+     */
+    private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Edge> optionalPreviousEdge, String id) {
+        Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousEdge.map(Edge::getModifiers).orElse(Set.of()));
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent) {
+            HideDiagramElementEvent hideDiagramElementEvent = (HideDiagramElementEvent) optionalDiagramEvent.get();
+            if (hideDiagramElementEvent.getElementIds().contains(id)) {
+                if (hideDiagramElementEvent.hideElement()) {
+                    modifiers.add(ViewModifier.Hidden);
+                } else {
+                    modifiers.remove(ViewModifier.Hidden);
+                }
+            }
+        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent) {
+            FadeDiagramElementEvent fadeDiagramElementEvent = (FadeDiagramElementEvent) optionalDiagramEvent.get();
+            if (fadeDiagramElementEvent.getElementIds().contains(id)) {
+                if (fadeDiagramElementEvent.fadeElement()) {
+                    modifiers.add(ViewModifier.Faded);
+                } else {
+                    modifiers.remove(ViewModifier.Faded);
+                }
+            }
+        }
+        return modifiers;
+    }
+
+    /**
+     * Compute the state of the current edge.
+     *
+     * This state is computed from the modifier set of the current edge and the states of the source and target nodes.
+     * If the new state of one of these nodes is {@link ViewModifier#Hidden}, the state of this new edge is
+     * {@link ViewModifier#Hidden} too. If these nodes are not hidden, the state of the current edge is the
+     * {@link ViewModifier#getState(Collection) dominant state} of the set or {@link ViewModifier#DEFAULT_MODIFIER} if
+     * empty.
+     *
+     * @param optionalDiagramEvent
+     *            The optional diagram event, it is used to know the new state of the source and target nodes
+     * @param sourceNode
+     *            The source node element
+     * @param sourceId
+     *            The source node ID
+     * @param sourceTarget
+     *            The target node element
+     * @param targetId
+     *            The target node ID
+     * @param modifiers
+     *            The modifier set of the building edge
+     */
+    private ViewModifier computeState(Optional<IDiagramEvent> optionalDiagramEvent, Element sourceNode, String sourceId, Element targetNode, String targetId, Set<ViewModifier> modifiers) {
+        ViewModifier state = new ViewStateProvider().getState(modifiers);
+
+        ViewModifier sourceState = this.getStateFromElement(sourceNode);
+        ViewModifier targetState = this.getStateFromElement(targetNode);
+
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent) {
+            var diagramEvent = (HideDiagramElementEvent) optionalDiagramEvent.get();
+            boolean isSourceHidden = (diagramEvent.getElementIds().contains(sourceId) && diagramEvent.hideElement())
+                    || (!diagramEvent.getElementIds().contains(sourceId) && sourceState == ViewModifier.Hidden);
+
+            boolean isTargetHidden = (diagramEvent.getElementIds().contains(targetId) && diagramEvent.hideElement())
+                    || (!diagramEvent.getElementIds().contains(targetId) && targetState == ViewModifier.Hidden);
+
+            if (isSourceHidden || isTargetHidden) {
+                state = ViewModifier.Hidden;
+            }
+        } else {
+            if (sourceState == ViewModifier.Hidden || targetState == ViewModifier.Hidden) {
+                state = ViewModifier.Hidden;
+            }
+        }
+        return state;
     }
 
     /**
@@ -394,6 +491,16 @@ public class EdgeComponent implements IComponent {
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
                 .orElse(UUID.randomUUID().toString());
+        // @formatter:on
+    }
+
+    private ViewModifier getStateFromElement(Element nodeElement) {
+        // @formatter:off
+        return Optional.of(nodeElement.getProps())
+                .filter(NodeElementProps.class::isInstance)
+                .map(NodeElementProps.class::cast)
+                .map(NodeElementProps::getState)
+                .orElse(ViewModifier.Normal);
         // @formatter:on
     }
 

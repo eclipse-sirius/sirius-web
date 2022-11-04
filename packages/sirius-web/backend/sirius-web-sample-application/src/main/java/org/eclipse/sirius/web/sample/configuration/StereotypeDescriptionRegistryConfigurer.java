@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.sample.configuration;
 import fr.obeo.dsl.designer.sample.flow.FlowFactory;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -30,7 +29,6 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -70,8 +68,6 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
     private static final String TIMER_NAME = "siriusweb_stereotype_load"; //$NON-NLS-1$
 
     private final StereotypeBuilder stereotypeBuilder;
-
-    private final Environment environment;
 
     // @formatter:off
     private final List<String> sampleDomainNames = List.of(
@@ -319,8 +315,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final boolean studiosEnabled;
 
-    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled, Environment environment) {
-        this.environment = Objects.requireNonNull(environment);
+    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
         this.studiosEnabled = studiosEnabled;
         this.random = new Random();

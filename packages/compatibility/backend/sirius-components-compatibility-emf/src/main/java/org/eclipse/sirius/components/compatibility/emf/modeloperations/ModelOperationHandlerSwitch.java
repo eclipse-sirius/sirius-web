@@ -75,6 +75,7 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     @Override
+    @SuppressWarnings("checkstyle:JavaNCSS")
     public Optional<IModelOperationHandler> apply(ModelOperation modelOperation) {
         Optional<IModelOperationHandler> optionalModelOperationHandler = Optional.empty();
         if (modelOperation instanceof ChangeContext) {

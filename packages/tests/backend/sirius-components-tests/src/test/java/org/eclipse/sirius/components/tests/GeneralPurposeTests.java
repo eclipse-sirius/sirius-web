@@ -63,6 +63,8 @@ public class GeneralPurposeTests {
 
     private static final String CHECKSTYLE_MULTIPLE_STRING_LITERALS = "@SuppressWarnings(\"checkstyle:MultipleStringLiterals\")"; //$NON-NLS-1$
 
+    private static final String CHECKSTYLE_NCSS = "@SuppressWarnings(\"checkstyle:JavaNCSS\")"; //$NON-NLS-1$
+
     private static final String BUILDER = "Builder"; //$NON-NLS-1$
 
     private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF"; //$NON-NLS-1$
@@ -209,6 +211,8 @@ public class GeneralPurposeTests {
             } else if (line.contains(CHECKSTYLE_ILLEGAL_CATCH)) {
                 isValidUsage = true;
             } else if (line.contains(CHECKSTYLE_MULTIPLE_STRING_LITERALS)) {
+                isValidUsage = true;
+            } else if (line.contains(CHECKSTYLE_NCSS)) {
                 isValidUsage = true;
             }
             if (!isValidUsage) {

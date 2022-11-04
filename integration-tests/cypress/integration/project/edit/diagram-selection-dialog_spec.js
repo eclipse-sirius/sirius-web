@@ -43,7 +43,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('Rectangle - CaptureSubSystem').click('topLeft');
     cy.getByTestId('PopupToolbar').should('exist');
 
-    cy.getByTestId('PopupToolbar').findByTestId('expand').click();
+    cy.getByTestId('PopupToolbar').findByTestId('expand').first().click();
     cy.getByTestId('PopupToolbar').findByTestId('Processor with Connection - Tool').click();
     cy.getByTestId('selection-dialog').should('exist');
 
@@ -55,7 +55,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('Rectangle - CaptureSubSystem').click('topLeft');
     cy.getByTestId('PopupToolbar').should('exist');
 
-    cy.getByTestId('PopupToolbar').findByTestId('expand').click();
+    cy.getByTestId('PopupToolbar').findByTestId('expand').first().click();
     cy.getByTestId('PopupToolbar').findByTestId('Processor with Connection - Tool').click();
     cy.getByTestId('selection-dialog').should('exist');
 
@@ -76,7 +76,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
       .then((nodeId) => {
         cy.getByTestId('Rectangle - CaptureSubSystem').click('topLeft');
         cy.getByTestId('PopupToolbar').should('exist');
-        cy.getByTestId('PopupToolbar').findByTestId('expand').click();
+        cy.getByTestId('PopupToolbar').findByTestId('expand').first().click();
         cy.getByTestId('PopupToolbar').findByTestId('Processor with Connection - Tool').click();
         cy.getByTestId('selection-dialog').should('exist');
         cy.getByTestId('selection-dialog').findByTestId('DSP').should('exist');
@@ -97,7 +97,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
       .then((nodeId) => {
         cy.getByTestId('Rectangle - CaptureSubSystem').click('topLeft');
         cy.getByTestId('PopupToolbar').should('exist');
-        cy.getByTestId('PopupToolbar').findByTestId('expand').click();
+        cy.getByTestId('PopupToolbar').findByTestId('expand').first().click();
         cy.getByTestId('PopupToolbar').findByTestId('Processor with Connection - Tool').click();
         cy.getByTestId('selection-dialog').should('exist');
         cy.getByTestId('selection-dialog').findByTestId('DSP').should('exist');

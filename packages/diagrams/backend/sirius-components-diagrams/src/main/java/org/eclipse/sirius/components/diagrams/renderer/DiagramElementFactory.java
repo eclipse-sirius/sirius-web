@@ -115,7 +115,9 @@ public class DiagramElementFactory implements IElementFactory {
                 .size(props.getSize())
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
-                .customizedProperties(props.getCustomizableProperties());
+                .customizedProperties(props.getCustomizableProperties())
+                .state(props.getState())
+                .modifiers(props.getModifiers());
 
         if (props.getChildrenLayoutStrategy() != null) {
             nodeBuilder.childrenLayoutStrategy(props.getChildrenLayoutStrategy());
@@ -145,6 +147,8 @@ public class DiagramElementFactory implements IElementFactory {
                 .routingPoints(props.getRoutingPoints())
                 .sourceAnchorRelativePosition(props.getSourceAnchorRelativePosition())
                 .targetAnchorRelativePosition(props.getTargetAnchorRelativePosition())
+                .state(props.getState())
+                .modifiers(props.getModifiers())
                 .build();
         // @formatter:on
     }
