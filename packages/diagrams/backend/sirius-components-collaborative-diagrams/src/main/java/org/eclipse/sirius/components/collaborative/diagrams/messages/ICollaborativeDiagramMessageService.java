@@ -41,6 +41,8 @@ public interface ICollaborativeDiagramMessageService {
 
     String invalidDrop();
 
+    String invalidNewValue(String newValue);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -100,6 +102,11 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String invalidDrop() {
+            return ""; //$NON-NLS-1$
+        }
+
+        @Override
+        public String invalidNewValue(String newValue) {
             return ""; //$NON-NLS-1$
         }
     }
