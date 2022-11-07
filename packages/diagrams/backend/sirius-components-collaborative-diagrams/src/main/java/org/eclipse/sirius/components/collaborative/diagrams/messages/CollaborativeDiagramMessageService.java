@@ -85,4 +85,9 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     public String invalidDrop() {
         return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_DROP);
     }
+
+    @Override
+    public String invalidNewValue(String newValue) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_NEW_VALUE, new Object[] { newValue });
+    }
 }

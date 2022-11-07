@@ -41,6 +41,8 @@ public final class MessageConstants {
 
     public static final String INVALID_DROP = "INVALID_DROP"; //$NON-NLS-1$
 
+    public static final String INVALID_NEW_VALUE = "INVALID_NEW_VALUE"; //$NON-NLS-1$
+
     private MessageConstants() {
         // Prevent instantiation
     }
