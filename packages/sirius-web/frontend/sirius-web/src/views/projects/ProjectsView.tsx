@@ -290,7 +290,7 @@ const ProjectsTable = ({ projects, onMore }: ProjectsTableProps) => {
           </TableHead>
           <TableBody data-testid="projects">
             {projects.map((project) => (
-              <TableRow key={project.id}>
+              <TableRow key={project.id} hover>
                 <TableCell>
                   <Link component={RouterLink} to={`/projects/${project.id}/edit`} color="inherit">
                     {project.name}
