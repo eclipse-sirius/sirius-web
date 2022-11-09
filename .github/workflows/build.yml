@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup Node SDK
         uses: actions/setup-node@v3
@@ -39,6 +41,10 @@ jobs:
         uses: actions/setup-java@v1.4.3
         with:
           java-version: 11
+
+      - name: Setup some global environment variables
+        run: |
+          echo "git_describe=$(git describe)" >> $GITHUB_ENV
 
       - name: Cache Maven packages
         uses: actions/cache@v2
@@ -131,3 +137,41 @@ jobs:
           npm publish --workspaces
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Configure AWS CLI for Sirius Web
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+
+      - name: Login to Amazon Elastic Container Registry
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build the Docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: sirius-web
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG packages/sirius-web/backend/sirius-web-sample-application
+
+      - name: Upload the Docker image to AWS ECR
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ocp
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Upload the Docker configuration for AWS Elastic Beanstalk
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: sirius-web
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          sed -e "s|IMAGE_NAME|$REGISTRY/$REPOSITORY:$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
+          aws s3 cp Dockerrun.aws.json s3://sirius-web-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
