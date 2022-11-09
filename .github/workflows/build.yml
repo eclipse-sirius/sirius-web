@@ -161,7 +161,7 @@ jobs:
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: ocp
+          REPOSITORY: sirius-web
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
