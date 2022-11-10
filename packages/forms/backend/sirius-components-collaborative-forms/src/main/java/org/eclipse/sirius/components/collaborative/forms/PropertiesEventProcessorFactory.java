@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.forms;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PropertiesEventProcessorFactory implements IRepresentationEventProcessorFactory {
+    public static final String DETAILS_VIEW_ID = UUID.nameUUIDFromBytes("details-view".getBytes()).toString(); //$NON-NLS-1$
 
     private final IPropertiesDescriptionService propertiesDescriptionService;
 
@@ -113,5 +115,4 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         }
         return Optional.empty();
     }
-
 }

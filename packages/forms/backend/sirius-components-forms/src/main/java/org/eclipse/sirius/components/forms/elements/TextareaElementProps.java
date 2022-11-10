@@ -18,6 +18,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.CompletionProposal;
+import org.eclipse.sirius.components.forms.CompletionRequest;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -41,6 +43,8 @@ public final class TextareaElementProps implements IProps {
     private String value;
 
     private Function<String, IStatus> newValueHandler;
+
+    private Function<CompletionRequest, List<CompletionProposal>> completionProposalsProvider;
 
     private TextareaStyle style;
 
@@ -74,6 +78,10 @@ public final class TextareaElementProps implements IProps {
         return this.style;
     }
 
+    public Function<CompletionRequest, List<CompletionProposal>> getCompletionProposalsProvider() {
+        return this.completionProposalsProvider;
+    }
+
     @Override
     public List<Element> getChildren() {
         return this.children;
@@ -85,8 +93,8 @@ public final class TextareaElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.value);
+        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, supportsCompletion: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.value, this.completionProposalsProvider != null);
     }
 
     /**
@@ -107,6 +115,8 @@ public final class TextareaElementProps implements IProps {
         private Function<String, IStatus> newValueHandler;
 
         private TextareaStyle style;
+
+        private Function<CompletionRequest, List<CompletionProposal>> completionProposalsProvider;
 
         private List<Element> children;
 
@@ -139,6 +149,11 @@ public final class TextareaElementProps implements IProps {
             return this;
         }
 
+        public Builder completionProposalsProvider(Function<CompletionRequest, List<CompletionProposal>> completionProposalsProvider) {
+            this.completionProposalsProvider = Objects.requireNonNull(completionProposalsProvider);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -152,6 +167,7 @@ public final class TextareaElementProps implements IProps {
             textareaElementProps.value = Objects.requireNonNull(this.value);
             textareaElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textareaElementProps.style = this.style; // Optional on purpose
+            textareaElementProps.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
             textareaElementProps.children = Objects.requireNonNull(this.children);
             return textareaElementProps;
         }

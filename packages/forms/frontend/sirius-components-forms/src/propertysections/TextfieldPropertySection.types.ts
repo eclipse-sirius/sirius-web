@@ -77,3 +77,43 @@ export interface GQLUpdateWidgetFocusPayload {
 }
 
 export interface GQLUpdateWidgetFocusSuccessPayload extends GQLUpdateWidgetFocusPayload {}
+
+export interface GQLCompletionProposalsQueryData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  stuff: string;
+  editingContext: GQLEditingContext;
+}
+export interface GQLEditingContext {
+  representation: GQLRepresentation;
+}
+
+export interface GQLRepresentation {
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  __typename: string;
+  completionProposals: GQLCompletionProposal[];
+}
+
+export interface GQLCompletionProposal {
+  description: string;
+  textToInsert: string;
+  charsToReplace: number;
+}
+
+export interface GQLCompletionProposalsQueryVariables {
+  editingContextId: string;
+  formId: string;
+  widgetId: string;
+  currentText: string;
+  cursorPosition: number;
+}
+
+export interface CompletionRequest {
+  currentText: string;
+  cursorPosition: number;
+}

@@ -10,19 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Popover from '@material-ui/core/Popover';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import React, { FocusEvent, useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { GQLTextarea, GQLWidget } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
+  GQLCompletionProposal,
+  GQLCompletionProposalsQueryData,
+  GQLCompletionProposalsQueryVariables,
   GQLEditTextfieldInput,
   GQLEditTextfieldMutationData,
   GQLEditTextfieldMutationVariables,
@@ -37,7 +45,10 @@ import {
 } from './TextfieldPropertySection.types';
 import {
   ChangeValueEvent,
+  CompletionDismissedEvent,
+  CompletionReceivedEvent,
   InitializeEvent,
+  RequestCompletionEvent,
   SchemaValue,
   ShowToastEvent,
   TextfieldPropertySectionContext,
@@ -55,6 +66,32 @@ const useStyle = makeStyles<Theme, TextfieldStyleProps>(() => ({
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
 }));
+
+export const getCompletionProposalsQuery = gql`
+  query completionProposals(
+    $editingContextId: ID!
+    $formId: ID!
+    $widgetId: ID!
+    $currentText: String!
+    $cursorPosition: Int!
+  ) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $formId) {
+          description {
+            ... on FormDescription {
+              completionProposals(widgetId: $widgetId, currentText: $currentText, cursorPosition: $cursorPosition) {
+                description
+                textToInsert
+                charsToReplace
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const editTextfieldMutation = gql`
   mutation editTextfield($input: EditTextfieldInput!) {
@@ -93,6 +130,8 @@ export const TextfieldPropertySection = ({
   subscribers,
   readOnly,
 }: TextfieldPropertySectionProps) => {
+  const inputElt = useRef<HTMLInputElement>();
+
   const props: TextfieldStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
@@ -109,7 +148,7 @@ export const TextfieldPropertySection = ({
     TextfieldPropertySectionEvent
   >(textfieldPropertySectionMachine);
   const { textfieldPropertySection, toast } = schemaValue as SchemaValue;
-  const { value, message } = context;
+  const { value, completionRequest, proposals, message } = context;
 
   useEffect(() => {
     const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
@@ -212,15 +251,116 @@ export const TextfieldPropertySection = ({
     sendEditedValue();
   };
 
+  const [getCompletionProposals, { loading: proposalsLoading, data: proposalsData, error: proposalsError }] =
+    useLazyQuery<GQLCompletionProposalsQueryData, GQLCompletionProposalsQueryVariables>(getCompletionProposalsQuery);
+  useEffect(() => {
+    if (!proposalsLoading) {
+      if (proposalsError) {
+        const message = proposalsError.message;
+        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+        dispatch(showToastEvent);
+      }
+      if (proposalsData) {
+        const proposalsReceivedEvent: CompletionReceivedEvent = {
+          type: 'COMPLETION_RECEIVED',
+          proposals: proposalsData.viewer.editingContext.representation.description.completionProposals,
+        };
+        dispatch(proposalsReceivedEvent);
+      }
+    }
+  }, [proposalsLoading, proposalsData, proposalsError, dispatch]);
+
   const onKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     if ('Enter' === event.key && !event.shiftKey) {
       event.preventDefault();
       sendEditedValue();
     }
+    const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
+    dispatch(dismissCompletionEvent);
   };
 
+  // Reacting to Ctrl-Space to trigger completion can not be done with onKeyPress.
+  // We need a stateful combination of onKeyDown/onKeyUp for that.
+  const [controlDown, setControlDown] = useState<boolean>(false);
+
+  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      const proposalsMenu = document.getElementById('completion-proposals');
+      if (proposalsMenu && proposalsMenu.firstChild) {
+        (proposalsMenu.firstChild as HTMLElement).focus();
+      }
+    } else if ('Control' === event.key) {
+      setControlDown(true);
+    } else if ('Escape' === event.key) {
+      const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
+      dispatch(dismissCompletionEvent);
+    }
+    if (widget.supportsCompletion && controlDown && event.key === ' ') {
+      const cursorPosition = (event.target as HTMLInputElement).selectionStart;
+      const variables: GQLCompletionProposalsQueryVariables = {
+        editingContextId,
+        formId,
+        widgetId: widget.id,
+        currentText: value,
+        cursorPosition,
+      };
+      getCompletionProposals({ variables });
+      const requestCompletionEvent: RequestCompletionEvent = {
+        type: 'COMPLETION_REQUESTED',
+        currentText: value,
+        cursorPosition,
+      };
+      dispatch(requestCompletionEvent);
+    }
+  };
+  const onKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if ('Control' === event.key) {
+      setControlDown(false);
+    }
+  };
+
+  const [caretPos, setCaretPos] = useState<number | null>(null);
+  useEffect(() => {
+    if (caretPos && inputElt.current) {
+      inputElt.current.setSelectionRange(caretPos, caretPos);
+      inputElt.current.focus();
+      setCaretPos(null);
+    }
+  }, [caretPos, inputElt.current]);
+
+  let proposalsList = null;
+  if (proposals) {
+    const dismissProposals = () => {
+      const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
+      dispatch(dismissCompletionEvent);
+    };
+    const applyProposal = (proposal: GQLCompletionProposal) => {
+      const result = applyCompletionProposal(
+        { textValue: value, cursorPosition: completionRequest.cursorPosition },
+        proposal
+      );
+      const changeValueEvent: ChangeValueEvent = { type: 'CHANGE_VALUE', value: result.textValue };
+      dispatch(changeValueEvent);
+      setCaretPos(result.cursorPosition);
+      dismissProposals();
+    };
+    proposalsList = (
+      <ProposalsList
+        anchor={inputElt}
+        proposals={proposals}
+        onProposalSelected={applyProposal}
+        onClose={dismissProposals}
+      />
+    );
+  }
+
   return (
-    <div>
+    <div
+      onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          onBlur();
+        }
+      }}>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
       <TextField
         name={widget.label}
@@ -231,14 +371,16 @@ export const TextfieldPropertySection = ({
         multiline={isTextarea(widget)}
         maxRows={isTextarea(widget) ? 4 : 1}
         fullWidth
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
         onChange={onChange}
-        onBlur={onBlur}
         onFocus={onFocus}
         onKeyPress={onKeyPress}
         data-testid={widget.label}
         disabled={readOnly}
         error={widget.diagnostics.length > 0}
         helperText={widget.diagnostics[0]?.message}
+        inputRef={inputElt}
         InputProps={
           widget.style
             ? {
@@ -247,6 +389,7 @@ export const TextfieldPropertySection = ({
             : {}
         }
       />
+      {proposalsList}
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -265,4 +408,62 @@ export const TextfieldPropertySection = ({
       />
     </div>
   );
+};
+
+// Proposals UI
+
+export interface ProposalsListProps {
+  anchor: React.MutableRefObject<HTMLElement>;
+  proposals: GQLCompletionProposal[];
+  onProposalSelected: (proposal: GQLCompletionProposal) => void;
+  onClose: () => void;
+}
+
+const ProposalsList = ({ anchor, proposals, onProposalSelected, onClose }: ProposalsListProps) => {
+  return (
+    <Popover
+      open={true}
+      onClose={onClose}
+      anchorEl={anchor.current}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}>
+      <MenuList id="completion-proposals" data-testid="completion-proposals">
+        {proposals.map((proposal, index) => (
+          <Tooltip
+            data-testid={`proposal-${proposal.textToInsert}-${proposal.charsToReplace}`}
+            key={index}
+            title={proposal.description}
+            placement="right">
+            <MenuItem button onClick={() => onProposalSelected(proposal)}>
+              <ListItemText primary={proposal.textToInsert} />
+            </MenuItem>
+          </Tooltip>
+        ))}
+      </MenuList>
+    </Popover>
+  );
+};
+
+// Proposal handling (exported for testing)
+
+export interface TextFieldState {
+  textValue: string;
+  cursorPosition: number;
+}
+
+export const applyCompletionProposal = (
+  initialState: TextFieldState,
+  proposal: GQLCompletionProposal
+): TextFieldState => {
+  const prefix = initialState.textValue.substring(0, initialState.cursorPosition);
+  const inserted = proposal.textToInsert.substring(proposal.charsToReplace);
+  const suffix = initialState.textValue.substring(initialState.cursorPosition);
+  const newValue = prefix + inserted + suffix;
+  return { textValue: newValue, cursorPosition: (prefix + inserted).length };
 };

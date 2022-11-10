@@ -293,6 +293,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createGroupDisplayModeFromString(eDataType, initialValue);
         case ViewPackage.FLEX_DIRECTION:
             return this.createFlexDirectionFromString(eDataType, initialValue);
+        case ViewPackage.INTERPRETED_EXPRESSION:
+            return this.createInterpretedExpressionFromString(eDataType, initialValue);
+        case ViewPackage.DOMAIN_TYPE:
+            return this.createDomainTypeFromString(eDataType, initialValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -318,6 +322,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.convertGroupDisplayModeToString(eDataType, instanceValue);
         case ViewPackage.FLEX_DIRECTION:
             return this.convertFlexDirectionToString(eDataType, instanceValue);
+        case ViewPackage.INTERPRETED_EXPRESSION:
+            return this.convertInterpretedExpressionToString(eDataType, instanceValue);
+        case ViewPackage.DOMAIN_TYPE:
+            return this.convertDomainTypeToString(eDataType, instanceValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -1184,6 +1192,42 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      */
     public String convertFlexDirectionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String createInterpretedExpressionFromString(EDataType eDataType, String initialValue) {
+        return (String) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertInterpretedExpressionToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String createDomainTypeFromString(EDataType eDataType, String initialValue) {
+        return (String) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertDomainTypeToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
     }
 
     /**

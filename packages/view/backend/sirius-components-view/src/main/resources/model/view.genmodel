@@ -52,6 +52,8 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/column"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/columnReverse"/>
     </genEnums>
+    <genDataTypes ecoreDataType="view.ecore#//InterpretedExpression"/>
+    <genDataTypes ecoreDataType="view.ecore#//DomainType"/>
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
     </genClasses>

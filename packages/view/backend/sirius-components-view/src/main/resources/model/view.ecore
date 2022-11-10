@@ -8,11 +8,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="RepresentationDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="NewRepresentationDescription"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="titleExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        eType="#//InterpretedExpression" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="titleExpression" eType="#//InterpretedExpression"
         defaultValueLiteral="aql:'New Representation'"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="#//RepresentationDescription">
@@ -28,10 +28,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="NewRepresentationDescription"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:self.eContents()"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:self.eContents()"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"
         defaultValueLiteral="aql:self.name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
         containment="true"/>
@@ -59,9 +59,9 @@
         eType="#//LayoutStrategyDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="#//InterpretedExpression"
         defaultValueLiteral=""/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endLabelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endLabelExpression" eType="#//InterpretedExpression"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceNodeDescriptions"
@@ -69,9 +69,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodeDescriptions"
         lowerBound="1" upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceNodesExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetNodesExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:self.eCrossReferences()"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:self.eCrossReferences()"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//EdgeStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
@@ -111,7 +111,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="black"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sizeComputationExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="1"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RectangularNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
@@ -186,11 +186,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ChangeContext" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:self"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateInstance" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referenceName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" lowerBound="1"
@@ -200,31 +200,30 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnsetValue" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementExpression" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteElement" eSuperTypes="#//Operation"/>
   <eClassifiers xsi:type="ecore:EClass" name="CreateView" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parentViewExpression" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:selectedNode"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:selectedNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementDescription" eType="#//DiagramElementDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticElementExpression"
-        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="aql:self"/>
+        lowerBound="1" eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteView" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewExpression" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:selectedNode"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:selectedNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conditional" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:false"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="#//Conditional">
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
@@ -241,11 +240,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GroupDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayMode" lowerBound="1"
         eType="#//GroupDisplayMode" defaultValueLiteral="LIST"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:self"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolbarActions" upperBound="-1"
         eType="#//ButtonDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="widgets" upperBound="-1"
@@ -257,10 +256,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//TextfieldDescriptionStyle"
@@ -269,7 +268,7 @@
         eType="#//ConditionalTextfieldDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//CheckboxDescriptionStyle"
@@ -278,10 +277,10 @@
         eType="#//ConditionalCheckboxDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidatesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidatesExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidateLabelExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//SelectDescriptionStyle"
@@ -290,10 +289,10 @@
         eType="#//ConditionalSelectDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidatesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidatesExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidateLabelExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//MultiSelectDescriptionStyle"
@@ -302,7 +301,7 @@
         eType="#//ConditionalMultiSelectDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextAreaDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//TextareaDescriptionStyle"
@@ -311,15 +310,15 @@
         eType="#//ConditionalTextareaDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RichTextDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RadioDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidatesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidatesExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="candidateLabelExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//RadioDescriptionStyle"
@@ -328,9 +327,9 @@
         eType="#//ConditionalRadioDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BarChartDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="yAxisLabelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="yAxisLabelExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//BarChartDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -341,8 +340,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="250"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PieChartDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//PieChartDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -356,18 +355,18 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ButtonDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="buttonLabelExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//ButtonDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalButtonDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImageDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="urlExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxWidthExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="urlExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxWidthExpression" eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="FlexDirection">
     <eLiterals name="row" literal="row"/>
@@ -426,7 +425,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalPieChartDescriptionStyle"
       eSuperTypes="#//Conditional #//PieChartDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="LabelDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//LabelDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -437,7 +436,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLabelDescriptionStyle" eSuperTypes="#//Conditional #//LabelDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="LinkDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//LinkDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -448,10 +447,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLinkDescriptionStyle" eSuperTypes="#//Conditional #//LinkDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListDescription" eSuperTypes="#//WidgetDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDeletableExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//ListDescriptionStyle"
@@ -460,7 +459,9 @@
         eType="#//ConditionalListDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalListDescriptionStyle" eSuperTypes="#//Conditional #//ListDescriptionStyle"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="InterpretedExpression" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DomainType" instanceClassName="java.lang.String"/>
 </ecore:EPackage>

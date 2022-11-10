@@ -35,6 +35,8 @@ public final class Textarea extends AbstractWidget {
 
     private TextareaStyle style;
 
+    private Function<CompletionRequest, List<CompletionProposal>> completionProposalsProvider;
+
     private Textarea() {
         // Prevent instantiation
     }
@@ -51,14 +53,22 @@ public final class Textarea extends AbstractWidget {
         return this.style;
     }
 
+    public boolean isSupportsCompletion() {
+        return this.completionProposalsProvider != null;
+    }
+
+    public Function<CompletionRequest, List<CompletionProposal>> getCompletionProposalsProvider() {
+        return this.completionProposalsProvider;
+    }
+
     public static Builder newTextarea(String id) {
         return new Builder(id);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.label, this.value);
+        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, supportsCompletion: {4}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.label, this.value, this.completionProposalsProvider != null);
     }
 
     /**
@@ -79,6 +89,8 @@ public final class Textarea extends AbstractWidget {
         private Function<String, IStatus> newValueHandler;
 
         private TextareaStyle style;
+
+        private Function<CompletionRequest, List<CompletionProposal>> completionProposalsProvider;
 
         private List<Diagnostic> diagnostics;
 
@@ -111,6 +123,11 @@ public final class Textarea extends AbstractWidget {
             return this;
         }
 
+        public Builder completionProposalsProvider(Function<CompletionRequest, List<CompletionProposal>> completionProposalsProvider) {
+            this.completionProposalsProvider = Objects.requireNonNull(completionProposalsProvider);
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -124,6 +141,7 @@ public final class Textarea extends AbstractWidget {
             textarea.value = Objects.requireNonNull(this.value);
             textarea.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textarea.style = this.style; // Optional on purpose
+            textarea.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
             textarea.diagnostics = Objects.requireNonNull(this.diagnostics);
             return textarea;
         }

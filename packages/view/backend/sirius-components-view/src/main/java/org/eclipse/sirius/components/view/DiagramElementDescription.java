@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,7 +69,7 @@ public interface DiagramElementDescription extends EObject {
      * @return the value of the '<em>Domain Type</em>' attribute.
      * @see #setDomainType(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getDiagramElementDescription_DomainType()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.DomainType"
      * @generated
      */
     String getDomainType();
@@ -92,7 +92,7 @@ public interface DiagramElementDescription extends EObject {
      * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
      * @see #setSemanticCandidatesExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getDiagramElementDescription_SemanticCandidatesExpression()
-     * @model default="aql:self.eContents()"
+     * @model default="aql:self.eContents()" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getSemanticCandidatesExpression();

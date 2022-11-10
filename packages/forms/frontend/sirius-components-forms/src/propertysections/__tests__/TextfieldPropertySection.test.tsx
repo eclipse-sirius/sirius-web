@@ -14,7 +14,16 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
+import { GQLTextfield } from '../../form/FormEventFragments.types';
 import {
+  editTextfieldMutation,
+  getCompletionProposalsQuery,
+  TextfieldPropertySection,
+  updateWidgetFocusMutation,
+} from '../../propertysections/TextfieldPropertySection';
+import {
+  GQLCompletionProposalsQueryData,
+  GQLCompletionProposalsQueryVariables,
   GQLEditTextfieldMutationData,
   GQLEditTextfieldMutationVariables,
   GQLEditTextfieldSuccessPayload,
@@ -22,13 +31,7 @@ import {
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusSuccessPayload,
-} from '../..//propertysections/TextfieldPropertySection.types';
-import { GQLTextfield } from '../../form/FormEventFragments.types';
-import {
-  editTextfieldMutation,
-  TextfieldPropertySection,
-  updateWidgetFocusMutation,
-} from '../../propertysections/TextfieldPropertySection';
+} from '../../propertysections/TextfieldPropertySection.types';
 
 vi.mock('uuid', () => ({ v4: () => '48be95fc-3422-45d3-b1f9-d590e847e9e1' }));
 
@@ -40,6 +43,7 @@ const defaultTextField: GQLTextfield = {
   label: 'Name:',
   iconURL: null,
   stringValue: 'Composite Processor',
+  supportsCompletion: false,
   diagnostics: [],
   style: null,
 };
@@ -50,6 +54,7 @@ const textFieldWithStyle: GQLTextfield = {
   label: 'Name:',
   iconURL: null,
   stringValue: 'Composite Processor',
+  supportsCompletion: false,
   diagnostics: [],
   style: {
     backgroundColor: '#de1000',
@@ -68,6 +73,7 @@ const textFieldWithEmptyStyle: GQLTextfield = {
   label: 'Name:',
   iconURL: null,
   stringValue: 'Composite Processor',
+  supportsCompletion: false,
   diagnostics: [],
   style: {
     backgroundColor: '',
@@ -295,4 +301,245 @@ test('should render the textfield with empty style', async () => {
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
+});
+
+test('should support completion if configured', async () => {
+  const textFieldWithCompletion: GQLTextfield = {
+    __typename: 'Textfield',
+    id: 'textfieldId',
+    label: 'Text:',
+    iconURL: null,
+    stringValue: 'fo',
+    supportsCompletion: true,
+    diagnostics: [],
+    style: {
+      backgroundColor: 'lightblue',
+      foregroundColor: '',
+      fontSize: 14,
+      italic: false,
+      bold: false,
+      underline: false,
+      strikeThrough: false,
+    },
+  };
+
+  const leaveWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
+    input: {
+      id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+      editingContextId: 'editingContextId',
+      representationId: 'formId',
+      widgetId: 'textfieldId',
+      selected: false,
+    },
+  };
+
+  let leaveWidgetFocusCalled = false;
+  const leaveWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: updateWidgetFocusMutation,
+      variables: leaveWidgetFocusVariables,
+    },
+    result: () => {
+      leaveWidgetFocusCalled = true;
+      return { data: updateWidgetFocusSuccessData };
+    },
+  };
+
+  let updateWidgetFocusCalled = false;
+  const updateWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: updateWidgetFocusMutation,
+      variables: updateWidgetFocusVariables,
+    },
+    result: () => {
+      updateWidgetFocusCalled = true;
+      return { data: updateWidgetFocusSuccessData };
+    },
+  };
+
+  let completionRequestCalled = false;
+
+  const getCompletionProposalsVariables: GQLCompletionProposalsQueryVariables = {
+    editingContextId: 'editingContextId',
+    formId: 'formId',
+    widgetId: 'textfieldId',
+    currentText: 'fo',
+    cursorPosition: 2,
+  };
+
+  const completionResultData: GQLCompletionProposalsQueryData = {
+    viewer: {
+      stuff: 'hello',
+      editingContext: {
+        representation: {
+          description: {
+            completionProposals: [
+              {
+                description: 'Choice 1',
+                textToInsert: 'foo',
+                charsToReplace: 1,
+              },
+              {
+                description: 'Choice 2',
+                textToInsert: 'fooBar',
+                charsToReplace: 2,
+              },
+            ],
+            __typename: 'FormDescription',
+          },
+        },
+      },
+    },
+  };
+  const completionRequestMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: getCompletionProposalsQuery,
+      variables: getCompletionProposalsVariables,
+    },
+    result: () => {
+      completionRequestCalled = true;
+      return { data: completionResultData };
+    },
+  };
+
+  const mocks = [
+    updateWidgetFocusSuccessMock,
+    completionRequestMock,
+    ,
+    leaveWidgetFocusSuccessMock,
+    updateWidgetFocusSuccessMock,
+  ];
+  const { baseElement } = render(
+    <MockedProvider mocks={mocks}>
+      <TextfieldPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={textFieldWithCompletion}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+
+  const element: HTMLInputElement = screen.getByTestId('Text:').querySelector('input');
+  expect(element.value).toBe('fo');
+
+  await act(async () => {
+    userEvent.click(element);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    await waitFor(() => {
+      expect(updateWidgetFocusCalled).toBeTruthy();
+      expect(element.value).toBe('fo');
+      expect(baseElement).toMatchSnapshot();
+    });
+
+    userEvent.type(element, '[ControlLeft>] ');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    await waitFor(() => {
+      expect(completionRequestCalled).toBeTruthy();
+      expect(baseElement).toMatchSnapshot();
+      expect(screen.getByTestId('completion-proposals')).toBeDefined();
+      expect(screen.getByTestId('proposal-foo-1')).toBeDefined();
+      expect(screen.getByTestId('proposal-fooBar-2')).toBeDefined();
+    });
+    screen.getByTestId('proposal-fooBar-2').click();
+    await waitFor(() => {
+      expect(element.value).toBe('fooBar');
+    });
+  });
+});
+
+test('should not trigger completion request if not configured', async () => {
+  const textFieldWithoutCompletion: GQLTextfield = {
+    __typename: 'Textfield',
+    id: 'textfieldId',
+    label: 'Text:',
+    iconURL: null,
+    stringValue: 'fo',
+    supportsCompletion: false,
+    diagnostics: [],
+    style: {
+      backgroundColor: 'lightblue',
+      foregroundColor: '',
+      fontSize: 14,
+      italic: false,
+      bold: false,
+      underline: false,
+      strikeThrough: false,
+    },
+  };
+
+  const leaveWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
+    input: {
+      id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+      editingContextId: 'editingContextId',
+      representationId: 'formId',
+      widgetId: 'textfieldId',
+      selected: false,
+    },
+  };
+
+  let leaveWidgetFocusCalled = false;
+  const leaveWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: updateWidgetFocusMutation,
+      variables: leaveWidgetFocusVariables,
+    },
+    result: () => {
+      leaveWidgetFocusCalled = true;
+      return { data: updateWidgetFocusSuccessData };
+    },
+  };
+
+  let updateWidgetFocusCalled = false;
+  const updateWidgetFocusSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: updateWidgetFocusMutation,
+      variables: updateWidgetFocusVariables,
+    },
+    result: () => {
+      updateWidgetFocusCalled = true;
+      return { data: updateWidgetFocusSuccessData };
+    },
+  };
+
+  const mocks = [updateWidgetFocusSuccessMock, leaveWidgetFocusSuccessMock];
+  const { baseElement } = render(
+    <MockedProvider mocks={mocks}>
+      <TextfieldPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={textFieldWithoutCompletion}
+        subscribers={[]}
+        readOnly={false}
+      />
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+
+  const element: HTMLInputElement = screen.getByTestId('Text:').querySelector('input');
+  expect(element.value).toBe('fo');
+
+  await act(async () => {
+    userEvent.click(element);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    await waitFor(() => {
+      expect(updateWidgetFocusCalled).toBeTruthy();
+      expect(element.value).toBe('fo');
+      expect(baseElement).toMatchSnapshot();
+    });
+
+    userEvent.type(element, '[ControlLeft>] ');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    await waitFor(() => {
+      expect(leaveWidgetFocusCalled).toBeFalsy();
+      expect(baseElement).toMatchSnapshot();
+      expect(screen.queryByTestId('completion-proposals')).toBeNull();
+    });
+  });
 });

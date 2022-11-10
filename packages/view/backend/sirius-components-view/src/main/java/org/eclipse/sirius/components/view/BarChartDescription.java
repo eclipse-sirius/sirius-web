@@ -92,7 +92,7 @@ public interface BarChartDescription extends WidgetDescription {
      * @return the value of the '<em>YAxis Label Expression</em>' attribute.
      * @see #setYAxisLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription_YAxisLabelExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getYAxisLabelExpression();

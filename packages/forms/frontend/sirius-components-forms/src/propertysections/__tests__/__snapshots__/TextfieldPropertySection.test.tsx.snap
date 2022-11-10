@@ -234,6 +234,129 @@ exports[`should display the error received 2`] = `
 </body>
 `;
 
+exports[`should not trigger completion request if not configured 1`] = `
+<body
+  style=""
+>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-43"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-44"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-41 makeStyles-style-42 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should not trigger completion request if not configured 2`] = `
+<body
+  style=""
+>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-43"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-44"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-41 makeStyles-style-42 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should not trigger completion request if not configured 3`] = `
+<body
+  style=""
+>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-43"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-44"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-41 makeStyles-style-42 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`should render a readOnly textfield 1`] = `
 <div>
   <div>
@@ -422,6 +545,240 @@ exports[`should render the textfield without style 1`] = `
         </div>
       </div>
     </div>
+  </div>
+</body>
+`;
+
+exports[`should support completion if configured 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-38"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-39"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-36 makeStyles-style-37 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should support completion if configured 2`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-38"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-39"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-36 makeStyles-style-37 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should support completion if configured 3`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-38"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-39"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-36 makeStyles-style-37 MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should support completion if configured 4`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  >
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-38"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Text:
+        </h6>
+        <div
+          class="makeStyles-subscribers-39"
+        />
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        data-testid="Text:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-style-36 makeStyles-style-37 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+            name="Text:"
+            placeholder="Text:"
+            type="text"
+            value="fo"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="MuiPopover-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      style="z-index: -1; position: fixed; right: 0px; bottom: 0px; top: 0px; left: 0px; background-color: transparent;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiPaper-root MuiPopover-paper MuiPaper-elevation8 MuiPaper-rounded"
+      style="opacity: 1; transform: scale(1, 1); transition: opacity 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; top: 16px; left: 16px; transform-origin: -16px -16px;"
+      tabindex="-1"
+    >
+      <ul
+        class="MuiList-root MuiList-padding"
+        data-testid="completion-proposals"
+        id="completion-proposals"
+        role="menu"
+        tabindex="-1"
+      >
+        <li
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+          data-testid="proposal-foo-1"
+          role="menuitem"
+          tabindex="0"
+          title="Choice 1"
+        >
+          <div
+            class="MuiListItemText-root"
+          >
+            <span
+              class="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+            >
+              foo
+            </span>
+          </div>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </li>
+        <li
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+          data-testid="proposal-fooBar-2"
+          role="menuitem"
+          tabindex="-1"
+          title="Choice 2"
+        >
+          <div
+            class="MuiListItemText-root"
+          >
+            <span
+              class="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+            >
+              fooBar
+            </span>
+          </div>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </li>
+      </ul>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
   </div>
 </body>
 `;

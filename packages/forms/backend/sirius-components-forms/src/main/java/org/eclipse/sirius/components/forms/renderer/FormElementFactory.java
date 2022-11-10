@@ -349,6 +349,9 @@ public class FormElementFactory implements IElementFactory {
                 .newValueHandler(props.getNewValueHandler())
                 .diagnostics(diagnostics);
 
+        if (props.getCompletionProposalsProvider() != null) {
+            textareaBuilder.completionProposalsProvider(props.getCompletionProposalsProvider());
+        }
         if (props.getIconURL() != null) {
             textareaBuilder.iconURL(props.getIconURL());
         }
@@ -371,6 +374,9 @@ public class FormElementFactory implements IElementFactory {
                 .diagnostics(diagnostics);
         // @formatter:on
 
+        if (props.getCompletionProposalsProvider() != null) {
+            textfieldBuilder.completionProposalsProvider(props.getCompletionProposalsProvider());
+        }
         if (props.getIconURL() != null) {
             textfieldBuilder.iconURL(props.getIconURL());
         }

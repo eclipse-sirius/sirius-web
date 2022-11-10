@@ -110,7 +110,7 @@ public interface GroupDescription extends EObject {
      * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
      * @see #setSemanticCandidatesExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getGroupDescription_SemanticCandidatesExpression()
-     * @model default="aql:self"
+     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getSemanticCandidatesExpression();

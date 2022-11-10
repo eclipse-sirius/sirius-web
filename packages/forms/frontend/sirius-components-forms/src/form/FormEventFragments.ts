@@ -51,6 +51,7 @@ export const widgetFields = `
     label
     iconURL
     stringValue: value
+    supportsCompletion
     style {
       backgroundColor
       foregroundColor
@@ -66,6 +67,7 @@ export const widgetFields = `
     label
     iconURL
     stringValue: value
+    supportsCompletion
     style {
       backgroundColor
       foregroundColor

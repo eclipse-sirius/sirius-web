@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ public interface Conditional extends EObject {
      * @return the value of the '<em>Condition</em>' attribute.
      * @see #setCondition(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getConditional_Condition()
-     * @model default="aql:false" required="true"
+     * @model default="aql:false" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
      */
     String getCondition();

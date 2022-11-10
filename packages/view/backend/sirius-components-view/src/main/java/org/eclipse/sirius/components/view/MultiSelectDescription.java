@@ -70,7 +70,7 @@ public interface MultiSelectDescription extends WidgetDescription {
      * @return the value of the '<em>Candidates Expression</em>' attribute.
      * @see #setCandidatesExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescription_CandidatesExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getCandidatesExpression();
@@ -93,7 +93,7 @@ public interface MultiSelectDescription extends WidgetDescription {
      * @return the value of the '<em>Candidate Label Expression</em>' attribute.
      * @see #setCandidateLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescription_CandidateLabelExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getCandidateLabelExpression();

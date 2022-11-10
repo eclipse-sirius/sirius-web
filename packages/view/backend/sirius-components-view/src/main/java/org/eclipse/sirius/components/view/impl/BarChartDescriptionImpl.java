@@ -314,7 +314,8 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public EList<ConditionalBarChartDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalBarChartDescriptionStyle.class, this, ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalBarChartDescriptionStyle.class, this,
+                    ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

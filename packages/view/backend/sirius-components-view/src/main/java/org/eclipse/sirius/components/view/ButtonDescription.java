@@ -43,7 +43,7 @@ public interface ButtonDescription extends WidgetDescription {
      * @return the value of the '<em>Button Label Expression</em>' attribute.
      * @see #setButtonLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getButtonDescription_ButtonLabelExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getButtonLabelExpression();

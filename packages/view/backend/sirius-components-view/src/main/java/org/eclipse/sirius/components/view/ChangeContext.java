@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ public interface ChangeContext extends Operation {
      * @return the value of the '<em>Expression</em>' attribute.
      * @see #setExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getChangeContext_Expression()
-     * @model default="aql:self" required="true"
+     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
      */
     String getExpression();

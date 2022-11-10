@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public interface CreateInstance extends Operation {
      * @return the value of the '<em>Type Name</em>' attribute.
      * @see #setTypeName(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getCreateInstance_TypeName()
-     * @model required="true"
+     * @model dataType="org.eclipse.sirius.components.view.DomainType" required="true"
      * @generated
      */
     String getTypeName();
