@@ -19,6 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.CompletionProposal;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -41,6 +42,8 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
 
     private Function<VariableManager, TextfieldStyle> styleProvider;
+
+    private Function<VariableManager, List<CompletionProposal>> completionProposalsProvider;
 
     private TextfieldDescription() {
         // Prevent instantiation
@@ -68,6 +71,10 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, TextfieldStyle> getStyleProvider() {
         return this.styleProvider;
+    }
+
+    public Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider() {
+        return this.completionProposalsProvider;
     }
 
     public static Builder newTextfieldDescription(String id) {
@@ -106,6 +113,8 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
         private Function<Object, String> messageProvider;
 
         private Function<VariableManager, TextfieldStyle> styleProvider = vm -> null;
+
+        private Function<VariableManager, List<CompletionProposal>> completionProposalsProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -156,6 +165,11 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder completionProposalsProvider(Function<VariableManager, List<CompletionProposal>> completionProposalsProvider) {
+            this.completionProposalsProvider = Objects.requireNonNull(completionProposalsProvider);
+            return this;
+        }
+
         public TextfieldDescription build() {
             TextfieldDescription textfieldDescription = new TextfieldDescription();
             textfieldDescription.id = Objects.requireNonNull(this.id);
@@ -168,6 +182,7 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
             textfieldDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             textfieldDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             textfieldDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            textfieldDescription.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
             return textfieldDescription;
         }
 

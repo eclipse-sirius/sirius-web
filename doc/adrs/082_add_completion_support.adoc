@@ -1,0 +1,260 @@
+ADR-082 - Add support for optional text completion on textfield widgets
+
+== Context
+
+When editing text fields which are not "free form" but correspond to some constrained DSL, it would be nice to have support for completion proposals (computed on the backend).
+For example: AQL expressions or domain types in view definitions.
+
+This should be optional, only enabled on Textfield widgets which explicitly provide a _completion proposal provider_.
+Ideally, there should be some visible affordance on such widgets to tell the end-user that completion is available on this widget.
+
+The user-experience should be globally similar, but simpler, to what is customary in editors and IDEs like VS Code or Eclipse.
+
+- triggered on some key combination (Ctrl+Space if possible), which sends a request to the backend;
+- upon receiving the possible completion proposals from the backend, open them in a list at the cursor's position;
+- if the user selects one of the proposals (using the mouse or, ideally, using the arrow keys), insert the proposal's text and move the cursort after the insertion point.
+
+== Decision
+
+NOTE: Everything mentioned below which applies to the `Textfield` widget and the corresponding `TextfieldDescription` also applies to `Textarea` and `TextareaDescription`.
+
+=== Generic backend support
+
+==== Java APIs
+
+The existing `Textfield` widget will be extended to provide _optional_ support for a completion proposal provider:
+
+[source,java]
+----
+public final class TextfieldDescription extends AbstractWidgetDescription {
+    // ADDED
+    public Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider() {
+        return this.completionProposalsProvider;
+    }
+}
+----
+
+Text fields which do not such support completion should return `null` here.
+
+A completion proposal provider gets access to the following variables:
+
+- `self`: the semantic object associated with the widget instance on which the completion is requested;
+- `editingContext`: the current editing context;
+- `currentText` (a `String`): the full text in the text field at the moment the user asked for completion. This may be a non-commited value (if the field is begin edited/dirty);
+- `cursorPosition` (an `int`): the position of the cursor inside `currentText` at which the user asked for completion.
+
+A proposal provider should return a non-null (but possibly empty) list of `CompletionProposal`:
+
+[source,java]
+----
+public final class CompletionProposal {
+    private String description;
+
+    private String textToInsert;
+
+    private int charsToReplace;
+
+    public CompletionProposal(String description, String textToInsert, int charsToReplace) {
+        this.description = Objects.requireNonNull(description);
+        this.textToInsert = Objects.requireNonNull(textToInsert);
+        this.charsToReplace = Objects.requireNonNull(charsToReplace);
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public String getTextToInsert() {
+        return this.textToInsert;
+    }
+
+    public int getCharsToReplace() {
+        return this.charsToReplace;
+    }
+}
+----
+
+The returned proposals will be presented to the user in the order they are returned.
+A proposal provider can decide to sort them with some specific criterion to present the best/most probable candidates first if appropriate.
+If no such criterion exists, it is recommended (but not enforced) to sort the proposals in lexicographical order of the `textToInsert` for usability.
+
+==== GraphQL
+
+The `Textfield` and `Textarea` widgets GraphQL types will get a new boolean attributes `supportsCompletion`.
+It will be `true` only for widgets whose description have a non-`null` completion proposal provider.
+This allows the frontend to enable completion support only for text field instances which support it.
+
+[source]
+----
+type Textarea implements Widget {
+  supportsCompletion: Boolean
+}
+
+type Textfield implements Widget {
+  supportsCompletion: Boolean
+}
+----
+
+To request completion on a widget which supports it, the client will invoke the new query `completionProposals`:
+
+[source]
+----
+// in forms.graphqls
+type FormDescription implements RepresentationDescription {
+  completionProposals(widgetId: ID!, currentText: String!, cursorPosition: Int!): [CompletionProposal!]!
+}
+
+type CompletionProposal {
+  description: String!
+  textToInsert: String!
+  charsToReplace: Int!
+}
+----
+
+The `FormDescriptionCompletionProposalsDataFetcher` which interprets this query will wrap the query paramters into a `CompletionRequestInput` and dispatch it to the `editingContextEventProcessorRegistry` as usual.
+It will be interpreted by the new `CompletionProposalEventHandler` (an `IFormEventHandler`) by finding the target widget and invoking its proposal provider like this:
+
+[source,java]
+----
+if (formInput instanceof CompletionRequestInput) {
+    CompletionRequestInput input = (CompletionRequestInput) formInput;
+    CompletionRequest request = new CompletionRequest(input.getCurrentText(), input.getCursorPosition());
+    // @formatter:off
+    List<CompletionProposal> proposals = this.formQueryService.findWidget(form, input.getWidgetId())
+            .flatMap(this::getProposalProvider)
+            .map(proposalsProvider -> proposalsProvider.apply(request))
+            .orElse(List.of());
+    // @formatter:on
+    payload = new CompletionRequestSuccessPayload(formInput.getId(), proposals);
+}
+----
+
+=== Generic frontend support
+
+On the frontend, only `TextfieldPropertySection` (and the associated files) will be impacted.
+
+The state machine will get 3 new sub-states to track completion workflow:
+
+- `idle`: no completion request is in progress.
+- `requested`: the user has requested completion; the request has been sent to the backend and is stored in the machine's context as `completionRequest: CompletionRequest | null`;
+- `received`: the backend has returned the requested proposals, and they are stored in the machine's context as `proposals: GQLCompletionProposal[] | null` for displaying to the end-user.
+
+The following new events are defined to control this workflow:
+
+[source,typescript]
+----
+export type RequestCompletionEvent = { type: 'COMPLETION_REQUESTED'; currentText: string; cursorPosition: number };
+export type CompletionReceivedEvent = { type: 'COMPLETION_RECEIVED'; proposals: GQLCompletionProposal[] };
+export type CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
+----
+
+Completion will be requested by the user with `Ctrl-Space` (as is usual in most IDEs).
+Listening to this particular key chord can not be done with a plain `onKeyPress`
+It requires a combination of `onKeyDown`, `onKeyUp` and a new `boolean` state to track the state of the `Control` key.
+
+[source,javascript]
+----
+  const [controlDown, setControlDown] = useState<boolean>(false);
+
+  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if ('Control' === event.key) {
+      setControlDown(true);
+    }
+    if (widget.supportsCompletion && controlDown && event.key === ' ') {
+      // Ctrl-Space => launch completion request
+    }
+  }
+
+  const onKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if ('Control' === event.key) {
+      setControlDown(false);
+    }
+  };
+----
+
+When the user hits `Control-Space`, the frontend invokes the `completionProposals()` GraphQL query and moves into the `requested` state.
+To get the cursor position needed as part of the query we use `(event.target as HTMLInputElement).selectionStart`.
+
+Once the frontend receives the proposals from the backend, it moves into the `received` state, and presents the proposals into a "popup list" positioned below the text input.
+When the user selects one of the entry in the proposals list, we apply the corresponding change to the text field value and update the cursor position after the text inserted (using `setSelectionRange`).
+
+=== Application to AQL expressions and domain type fields in the View DSL definition
+
+The generic support described above will be implemented in the properties of the View DSL elements to support completion of valid domain types and of AQL expressions in the corresponding text fields for representation descriptions.
+
+The corresponding property sheets are currently generated automatically using the default generic rules.
+We do not want to have to rewrite custom property sheets for every element of the View DSL which contains a domain type or AQL expression field.
+
+We will "fork" the implementation of the default rules (`PropertiesDefaultDescriptionProvider`) into a new `ViewPropertiesDescriptionRegistryConfigurer` which only applies to elements from the View DSL *and* is not one of the few View elements which already have their custom property sheet implementation:
+
+[source,java]
+----
+    private boolean handles(VariableManager variableManager) {
+        // @formatter:off
+        Optional<EObject> selectedElement = ...;
+        boolean isViewElement = selectedElement
+                .map(EObject::eClass)
+                .map(EClassifier::getEPackage)
+                .filter(ViewPackage.eINSTANCE::equals)
+                .isPresent();
+        boolean hasCustomProperties = selectedElement.map(EObject::eClass).filter(TYPES_WITH_CUSTOM_PROPERTIES::contains).isPresent();
+        // @formatter:on
+        return isViewElement && !hasCustomProperties;
+    }
+----
+
+The rules applied by `ViewPropertiesDescriptionRegistryConfigurer` are the same as the default generic rules, with one difference for text fields.
+
+Instead of the generic `EStringIfDescriptionProvider`, we introduce the new `CustomizableEStringIfDescriptionProvider` which takes an additional `ITextfieldCustomizer`:
+
+[source,java]
+----
+public interface ITextfieldCustomizer {
+    boolean handles(EAttribute eAttribute);
+    Function<VariableManager, TextareaStyle> getStyleProvider();
+    Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider();
+}
+----
+
+This allows a Spring `@Component` to take over the style and completion prorposal provider or specific text fields.
+
+[source,java]
+----
+@Component
+public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
+    @Override
+    public boolean handles(EAttribute eAttribute) {
+        return eAttribute.getEType() == EcorePackage.Literals.ESTRING && (eAttribute.getName().toLowerCase().endsWith("expression") || "condition".equals(eAttribute.getName()));
+    }
+}
+
+@Component
+public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
+    @Override
+    public boolean handles(EAttribute eAttribute) {
+        EClassifier eType = eAttribute.getEType();
+        return eType.equals(EcorePackage.Literals.ESTRING) && List.of("domainType", "typeName").contains(eAttribute.getName());
+    }
+}
+----
+
+In `DomainTypeTextfieldCustomizer` we we use the same logic as in `DiagramDescriptionValidator` to find the valid domain types and simply return them in alphabetical order.
+
+For AQL completion, we will expose the existing AQL completion feature in `AQLInterpreter` in the new method `ICompletionResult getProposals(String expression, int offset)`.
+For the moment we only provide the very minimal typing information to AQL: the presence of the `self` variable which represents an `EObject`.
+
+In `AQLTextfieldCustomizer` we need an `AQLInterpreter` to invoke this.
+We will reuse the same logic as in `ViewConverter.createInterpreter(View, List<EPackage>)`.
+
+The customized AQL and Domain Type text fields will get specific background colors to tell the user they follow a specific syntax and support completion.
+They will use a yellow (resp. green) background to follow the same convention as in the Sirius Desktop VSM editor, but use specific yellow and green colors which match the overall Sirius Web color palette.
+
+== Status
+
+Accepted.
+
+== Consequence
+
+- We may want to generalize the mechanism introduced to specialize/configure widgets produced by generic rules into the general `PropertiesDefaultDescriptionProvider`.
+- We may want to provide a mechanism for completion proposal providers (ore more generally, any Java handler) to access the already exisinting AQL interpreter instead of having to re-create an equivalent one (with the performance and maintainability issues this creates).
+- The precision of the AQL completion is very limited and could be improved by exposing more information about which variables are available and their types for each expression.

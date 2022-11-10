@@ -65,7 +65,7 @@ public interface RadioDescription extends WidgetDescription {
      * @return the value of the '<em>Candidates Expression</em>' attribute.
      * @see #setCandidatesExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getRadioDescription_CandidatesExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getCandidatesExpression();
@@ -88,7 +88,7 @@ public interface RadioDescription extends WidgetDescription {
      * @return the value of the '<em>Candidate Label Expression</em>' attribute.
      * @see #setCandidateLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getRadioDescription_CandidateLabelExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getCandidateLabelExpression();

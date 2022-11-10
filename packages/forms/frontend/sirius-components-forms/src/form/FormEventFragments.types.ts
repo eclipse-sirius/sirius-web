@@ -131,6 +131,7 @@ export interface GQLDiagnostic {
 
 export interface GQLTextfield extends GQLWidget {
   stringValue: string;
+  supportsCompletion: boolean;
   style: GQLTextfieldStyle;
 }
 
@@ -146,6 +147,7 @@ export interface GQLTextfieldStyle {
 
 export interface GQLTextarea extends GQLWidget {
   stringValue: string;
+  supportsCompletion: boolean;
   style: GQLTextareaStyle;
 }
 

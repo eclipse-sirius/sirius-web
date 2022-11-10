@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -55,6 +56,7 @@ import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
 import org.springframework.stereotype.Component;
@@ -79,11 +81,14 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private final IValidationService validationService;
 
+    private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
+
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, IValidationService validationService,
-            List<IParametricSVGImageRegistry> parametricSVGImageRegistries) {
+            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.validationService = Objects.requireNonNull(validationService);
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
+        this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
     }
 
     @Override
@@ -185,7 +190,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private List<AbstractControlDescription> getGeneralControlDescription() {
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
-                this.createTextField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createExpressionField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
                         style -> ((NodeStyleDescription) style).getSizeComputationExpression(),
                         (style, newSizeExpression) -> ((NodeStyleDescription) style).setSizeComputationExpression(newSizeExpression),
                         ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION),
@@ -311,6 +316,33 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .build();
+        // @formatter:on
+    }
+
+    private TextareaDescription createExpressionField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
+        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
+            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
+            if (optionalDiagramMapping.isPresent()) {
+                writer.accept(optionalDiagramMapping.get(), newValue);
+                return new Success();
+            } else {
+                return new Failure(""); //$NON-NLS-1$
+            }
+        };
+
+        // @formatter:off
+        return TextareaDescription.newTextareaDescription(id)
+                .idProvider(variableManager -> id)
+                .labelProvider(variableManager -> title)
+                .valueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .completionProposalsProvider(this.aqlTextfieldCustomizer.getCompletionProposalsProvider())
+                .styleProvider(this.aqlTextfieldCustomizer.getStyleProvider())
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();

@@ -18,6 +18,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
@@ -49,7 +51,10 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
     private final IRepresentationService representationService;
 
-    public EditingContextRepresentationDataFetcher(IRepresentationService representationService) {
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    public EditingContextRepresentationDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IRepresentationService representationService) {
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.representationService = Objects.requireNonNull(representationService);
     }
 
@@ -61,14 +66,35 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
 
+        // Search among the active representations first. They are already loaded in memory and include transient
+        // representations.
         // @formatter:off
-        var representationMetadata = this.representationService.getRepresentationDescriptorForProjectId(editingContextId, representationId)
-                .map(RepresentationDescriptor::getRepresentation)
-                .map(this::toRepresentationMetadata)
-                .orElse(null);
+        var representationMetadata = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                    .flatMap(editingContextEventProcessor -> editingContextEventProcessor.getRepresentationEventProcessors().stream())
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getRepresentation().getId().equals(representationId))
+                    .map(IRepresentationEventProcessor::getRepresentation)
+                    .filter(ISemanticRepresentation.class::isInstance)
+                    .map(ISemanticRepresentation.class::cast)
+                    .map((ISemanticRepresentation representation) -> {
+                        // @formatter:off
+                        return new RepresentationMetadata(representation.getId(),
+                                                          representation.getKind(),
+                                                          representation.getLabel(),
+                                                          representation.getDescriptionId(),
+                                                          representation.getTargetObjectId());
+                        // @formatter:on
+                }).findFirst();
+        // @formatter:on
+
+        // @formatter:off
+        if (representationMetadata.isEmpty()) {
+            representationMetadata = this.representationService.getRepresentationDescriptorForProjectId(editingContextId, representationId)
+                    .map(RepresentationDescriptor::getRepresentation)
+                    .map(this::toRepresentationMetadata);
+        }
 
         return DataFetcherResult.<RepresentationMetadata>newResult()
-                .data(representationMetadata)
+                .data(representationMetadata.orElse(null))
                 .localContext(localContext)
                 .build();
         // @formatter:on

@@ -66,7 +66,7 @@ public interface ListDescription extends WidgetDescription {
      * @return the value of the '<em>Display Expression</em>' attribute.
      * @see #setDisplayExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getListDescription_DisplayExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getDisplayExpression();
@@ -89,7 +89,7 @@ public interface ListDescription extends WidgetDescription {
      * @return the value of the '<em>Is Deletable Expression</em>' attribute.
      * @see #setIsDeletableExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getListDescription_IsDeletableExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getIsDeletableExpression();

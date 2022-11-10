@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public interface UnsetValue extends Operation {
      * @return the value of the '<em>Element Expression</em>' attribute.
      * @see #setElementExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getUnsetValue_ElementExpression()
-     * @model required="true"
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
      */
     String getElementExpression();

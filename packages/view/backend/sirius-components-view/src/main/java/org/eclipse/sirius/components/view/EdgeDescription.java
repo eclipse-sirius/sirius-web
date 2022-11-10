@@ -45,7 +45,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @return the value of the '<em>Begin Label Expression</em>' attribute.
      * @see #setBeginLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_BeginLabelExpression()
-     * @model default=""
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getBeginLabelExpression();
@@ -68,7 +68,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @return the value of the '<em>End Label Expression</em>' attribute.
      * @see #setEndLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_EndLabelExpression()
-     * @model default=""
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getEndLabelExpression();
@@ -136,7 +136,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @return the value of the '<em>Source Nodes Expression</em>' attribute.
      * @see #setSourceNodesExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_SourceNodesExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getSourceNodesExpression();
@@ -159,7 +159,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @return the value of the '<em>Target Nodes Expression</em>' attribute.
      * @see #setTargetNodesExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_TargetNodesExpression()
-     * @model default="aql:self.eCrossReferences()"
+     * @model default="aql:self.eCrossReferences()" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getTargetNodesExpression();

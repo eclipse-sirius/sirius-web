@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.forms;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,7 @@ public class FormDescriptionAggregator {
                 .map(objectService::getId)
                 .orElse(null);
 
-        return Optional.of(FormDescription.newFormDescription(UUID.randomUUID().toString())
+        return Optional.of(FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
                 .label("Aggregated form description") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)

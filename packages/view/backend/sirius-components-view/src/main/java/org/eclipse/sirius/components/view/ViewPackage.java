@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -6132,6 +6133,25 @@ public interface ViewPackage extends EPackage {
     int FLEX_DIRECTION = 85;
 
     /**
+     * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see java.lang.String
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
+     * @generated
+     */
+    int INTERPRETED_EXPRESSION = 86;
+
+    /**
+     * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see java.lang.String
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
+     * @generated
+     */
+    int DOMAIN_TYPE = 87;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8949,6 +8969,28 @@ public interface ViewPackage extends EPackage {
     EEnum getFlexDirection();
 
     /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Interpreted Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Interpreted Expression</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     * @generated
+     */
+    EDataType getInterpretedExpression();
+
+    /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Domain Type</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Domain Type</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     * @generated
+     */
+    EDataType getDomainType();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -11177,6 +11219,26 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EEnum FLEX_DIRECTION = eINSTANCE.getFlexDirection();
+
+        /**
+         * The meta object literal for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @see java.lang.String
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
+         * @generated
+         */
+        EDataType INTERPRETED_EXPRESSION = eINSTANCE.getInterpretedExpression();
+
+        /**
+         * The meta object literal for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
+         * -->
+         *
+         * @see java.lang.String
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
+         * @generated
+         */
+        EDataType DOMAIN_TYPE = eINSTANCE.getDomainType();
 
     }
 

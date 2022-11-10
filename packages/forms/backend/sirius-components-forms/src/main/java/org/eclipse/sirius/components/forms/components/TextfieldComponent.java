@@ -14,9 +14,10 @@ package org.eclipse.sirius.components.forms.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.forms.CompletionProposal;
+import org.eclipse.sirius.components.forms.CompletionRequest;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps.Builder;
@@ -49,9 +50,8 @@ public class TextfieldComponent implements IComponent {
         String label = textfieldDescription.getLabelProvider().apply(variableManager);
         String iconURL = textfieldDescription.getIconURLProvider().apply(variableManager);
         String value = textfieldDescription.getValueProvider().apply(variableManager);
-        BiFunction<VariableManager, String, IStatus> genericHandler = textfieldDescription.getNewValueHandler();
         Function<String, IStatus> specializedHandler = newValue -> {
-            return genericHandler.apply(variableManager, newValue);
+            return textfieldDescription.getNewValueHandler().apply(variableManager, newValue);
         };
         var textfieldStyle = textfieldDescription.getStyleProvider().apply(variableManager);
 
@@ -64,6 +64,15 @@ public class TextfieldComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (textfieldDescription.getCompletionProposalsProvider() != null) {
+            Function<CompletionRequest, List<CompletionProposal>> proposalsProvider = request -> {
+                VariableManager completionVariables = variableManager.createChild();
+                completionVariables.put(CompletionRequest.CURRENT_TEXT, request.getCurrentText());
+                completionVariables.put(CompletionRequest.CURSOR_POSITION, request.getCursorPosition());
+                return textfieldDescription.getCompletionProposalsProvider().apply(completionVariables);
+            };
+            textfieldElementPropsBuilder.completionProposalsProvider(proposalsProvider);
+        }
         if (iconURL != null) {
             textfieldElementPropsBuilder.iconURL(iconURL);
         }

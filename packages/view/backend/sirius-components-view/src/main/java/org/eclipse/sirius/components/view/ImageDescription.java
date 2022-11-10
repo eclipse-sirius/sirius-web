@@ -58,7 +58,7 @@ public interface ImageDescription extends WidgetDescription {
      * @return the value of the '<em>Max Width Expression</em>' attribute.
      * @see #setMaxWidthExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getImageDescription_MaxWidthExpression()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getMaxWidthExpression();

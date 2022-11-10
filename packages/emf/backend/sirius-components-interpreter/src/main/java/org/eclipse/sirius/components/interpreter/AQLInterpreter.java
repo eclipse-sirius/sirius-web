@@ -16,6 +16,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,15 +25,20 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
+import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.runtime.IQueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.QueryCompletion;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EPackage;
@@ -160,5 +167,15 @@ public class AQLInterpreter {
         }
 
         diagnostic.getChildren().forEach(childDiagnostic -> this.log(expression, childDiagnostic));
+    }
+
+    public ICompletionResult getProposals(String expression, int offset) {
+        IQueryCompletionEngine engine = QueryCompletion.newEngine(this.queryEnvironment);
+        Map<String, Set<IType>> variableTypes = new LinkedHashMap<>();
+        final Set<IType> potentialTypes = new LinkedHashSet<>(1);
+        potentialTypes.add(new EClassifierType(this.queryEnvironment, EcorePackage.Literals.EOBJECT));
+        variableTypes.put("self", potentialTypes); //$NON-NLS-1$
+
+        return engine.getCompletion(expression, offset, variableTypes);
     }
 }

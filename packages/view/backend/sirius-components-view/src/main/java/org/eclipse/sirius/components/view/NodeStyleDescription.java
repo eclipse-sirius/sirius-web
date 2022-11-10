@@ -61,7 +61,7 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
      * @return the value of the '<em>Size Computation Expression</em>' attribute.
      * @see #setSizeComputationExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyleDescription_SizeComputationExpression()
-     * @model default="1"
+     * @model default="1" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getSizeComputationExpression();

@@ -191,6 +191,7 @@ type Textarea implements Widget {
   iconURL: String
   value: String!
   style: TextareaStyle
+  supportsCompletion: Boolean
 }
 
 type TextareaStyle {
@@ -210,6 +211,7 @@ type Textfield implements Widget {
   iconURL: String
   value: String!
   style: TextfieldStyle
+  supportsCompletion: Boolean
 }
 
 type TextfieldStyle {
@@ -347,6 +349,13 @@ type RichText implements Widget {
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
+  completionProposals(widgetId: ID!, currentText: String!, cursorPosition: Int!): [CompletionProposal!]!
+}
+
+type CompletionProposal {
+  description: String!
+  textToInsert: String!
+  charsToReplace: Int!
 }
 
 extend type Mutation {

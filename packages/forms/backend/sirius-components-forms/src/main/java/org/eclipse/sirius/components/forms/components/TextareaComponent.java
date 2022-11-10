@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.forms.CompletionProposal;
+import org.eclipse.sirius.components.forms.CompletionRequest;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps.Builder;
@@ -27,7 +29,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * The component used to create the textarea widget.
+ * The component used to render the textarea widget.
  *
  * @author sbegaudeau
  */
@@ -62,6 +64,15 @@ public class TextareaComponent implements IComponent {
                 .newValueHandler(specializedHandler)
                 .children(children);
 
+        if (textareaDescription.getCompletionProposalsProvider() != null) {
+            Function<CompletionRequest, List<CompletionProposal>> proposalsProvider = request -> {
+                VariableManager completionVariables = variableManager.createChild();
+                completionVariables.put(CompletionRequest.CURRENT_TEXT, request.getCurrentText());
+                completionVariables.put(CompletionRequest.CURSOR_POSITION, request.getCursorPosition());
+                return textareaDescription.getCompletionProposalsProvider().apply(completionVariables);
+            };
+            textareaElementPropsBuilder.completionProposalsProvider(proposalsProvider);
+        }
         if (iconURL != null) {
             textareaElementPropsBuilder.iconURL(iconURL);
         }

@@ -34,7 +34,7 @@ public interface ListDescriptionStyle extends WidgetDescriptionStyle, LabelStyle
      * @return the value of the '<em>Color</em>' attribute.
      * @see #setColor(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getListDescriptionStyle_Color()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getColor();
