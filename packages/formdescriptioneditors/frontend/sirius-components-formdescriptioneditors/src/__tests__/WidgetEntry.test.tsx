@@ -73,7 +73,7 @@ const deletePieChartWidgetVariables: GQLDeleteWidgetMutationVariables = {
   },
 };
 const deleteWidgetSuccessPayload: GQLDeleteWidgetSuccessPayload = {
-  __typename: 'AddWidgetSuccessPayload',
+  __typename: 'DeleteWidgetSuccessPayload',
   id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
 };
 const deleteWidgetSuccessData: GQLDeleteWidgetMutationData = { deleteWidget: deleteWidgetSuccessPayload };

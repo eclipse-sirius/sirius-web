@@ -178,7 +178,7 @@ export const ToolbarActions = ({
         onDrop={handleDrop}
       />
       <div className={classes.newToolbarAction}>
-        <Tooltip title={'Add new Toolbar Action'} arrow key={'FormDescriptionEditor-ToolbarActions-NewAction'}>
+        <Tooltip title={'Add new Toolbar Action'} arrow data-testid={'FormDescriptionEditor-ToolbarActions-NewAction'}>
           <IconButton size="small" aria-label="add" color="primary" onClick={handleAddToolbarAction}>
             <AddIcon />
           </IconButton>

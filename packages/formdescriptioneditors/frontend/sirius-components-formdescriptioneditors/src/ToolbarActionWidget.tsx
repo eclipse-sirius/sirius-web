@@ -204,7 +204,7 @@ export const ToolbarActionWidget = ({
       draggable="true"
       onDragStart={handleDragStart}>
       <div
-        data-testid="ToolbarAction-DropArea"
+        data-testid={`ToolbarAction-DropArea-${toolbarAction.id}`}
         className={classes.placeholder}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
