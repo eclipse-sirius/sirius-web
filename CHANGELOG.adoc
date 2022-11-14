@@ -9,7 +9,11 @@
 
 === Bug fixes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1431[#1431] The default implementation of the Property View should not try to handle a multi valuated EStructuralFeature of type String
+- https://github.com/eclipse-sirius/sirius-components/issues/1431[#1431] [form] The default implementation of the Property View should not try to handle a multi valuated EStructuralFeature of type String
+
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1453[#1453] [diagram] Add new arrow styles Circle, FillCircle and CrossedCircle
 
 == v2022.11.0
 

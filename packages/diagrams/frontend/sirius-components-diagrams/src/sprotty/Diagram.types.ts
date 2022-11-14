@@ -114,6 +114,9 @@ export enum ArrowStyle {
   OutputArrow = 'OutputArrow',
   OutputClosedArrow = 'OutputClosedArrow',
   OutputFillClosedArrow = 'OutputFillClosedArrow',
+  Circle = 'Circle',
+  FillCircle = 'FillCircle',
+  CrossedCircle = 'CrossedCircle',
 }
 
 /**

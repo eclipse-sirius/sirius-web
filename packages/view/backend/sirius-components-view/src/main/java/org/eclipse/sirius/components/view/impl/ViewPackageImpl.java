@@ -4047,6 +4047,9 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.FILL_DIAMOND);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_ARROW_WITH_DIAMOND);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_ARROW_WITH_FILL_DIAMOND);
+        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CIRCLE);
+        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.FILL_CIRCLE);
+        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CROSSED_CIRCLE);
 
         this.initEEnum(this.lineStyleEEnum, LineStyle.class, "LineStyle"); //$NON-NLS-1$
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.SOLID);

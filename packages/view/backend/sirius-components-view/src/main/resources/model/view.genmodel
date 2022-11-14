@@ -28,6 +28,9 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/FillDiamond"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputArrowWithDiamond"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/InputArrowWithFillDiamond"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/Circle"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/FillCircle"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//ArrowStyle/CrossedCircle"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//LineStyle">
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Solid"/>
