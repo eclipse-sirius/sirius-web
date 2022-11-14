@@ -7,6 +7,7 @@
 - [ADR-075] Add support for a basic image widget
 - [ADR-076] Allow users to upload their own custom images
 - [ADR-077] Improve support for direct edit in diagram
+- [ADR-078] Add support for toolbar actions in Form/FormDescriptionEditor
 
 === Dependency update
 
@@ -67,8 +68,9 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1316[#1316] [diagram] Support parametric svg node style
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Add support for edition of routing points in diagrams
-- https://github.com/eclipse-sirius/sirius-components/issues/1397[1397] [diagram] Add support for reused node descriptions
+- https://github.com/eclipse-sirius/sirius-components/issues/1397[#1397] [diagram] Add support for reused node descriptions
 - https://github.com/eclipse-sirius/sirius-components/issues/780[#780] [diagram] Add support for edge reconnection. Edge reconnection descriptions can be defined either inside a classical Sirius desktop VSM or, using the View DSL. While using the Sirius desktop VSM you can define a tool to do both target and source reconnection, you will need to define a tool to reconnect the source and another one to reconnect the target using the View DSL
+- https://github.com/eclipse-sirius/sirius-components/issues/1439[#1439] [form] Add support for toolbar actions in Form/FormDescriptionEditor
 
 == v2022.9.0
 
