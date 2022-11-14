@@ -12,8 +12,10 @@
  *******************************************************************************/
 /** @jsx svg */
 /** @jsxRuntime classic */
-import { PolylineEdgeView, svg } from 'sprotty';
-import { toDegrees } from 'sprotty-protocol';
+import { VNode } from 'snabbdom';
+import { PolylineEdgeView, RenderingContext, svg } from 'sprotty';
+import { Point, toDegrees } from 'sprotty-protocol';
+import { ArrowStyle, Edge, Label } from '../Diagram.types';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 /**
@@ -29,7 +31,7 @@ export class EdgeView extends PolylineEdgeView {
    * @param context The context
    */
   // @ts-ignore
-  renderLine(edge, segments, context) {
+  renderLine(edge: Edge, segments: Point[], context: RenderingContext) {
     const { style } = edge;
     const styleObject = {
       stroke: style.color,
@@ -70,7 +72,7 @@ export class EdgeView extends PolylineEdgeView {
       <path class-sprotty-edge={true} class-selection-helper={true} d={path} style={selectionHelperStyleObject} />
     );
 
-    const dataTestid = edge.children[0]?.text ?? edge.id;
+    const dataTestid = (edge.children[0] as Label)?.text ?? edge.id;
     return (
       <g attrs-data-testid={`Edge - ${dataTestid}`}>
         <path class-sprotty-edge={true} d={path} style={styleObject} />
@@ -85,7 +87,7 @@ export class EdgeView extends PolylineEdgeView {
    * @param {*} edge The edge
    * @param {*} styleObject The styles that will be applied
    */
-  applyFeedback(edge, styleObject) {
+  applyFeedback(edge: Edge, styleObject) {
     if (edge.selected) {
       styleObject['stroke'] = 'var(--blue-lagoon)';
     }
@@ -102,7 +104,7 @@ export class EdgeView extends PolylineEdgeView {
    * @param segments The segments
    * @param context The context
    */
-  override renderAdditionals(edge, segments, context) {
+  override renderAdditionals(edge: Edge, segments: Point[], _context: RenderingContext): VNode[] {
     const { style } = edge;
     const styleObject = {
       stroke: style.color,
@@ -119,20 +121,20 @@ export class EdgeView extends PolylineEdgeView {
     return [...source, ...target];
   }
 
-  renderSource(styleObject, segments) {
+  renderSource(styleObject, segments: Point[]): VNode[] {
     const p1 = segments[1];
     const p2 = segments[0];
 
     return this.renderArrow(p1, p2, styleObject.sourceArrowStyle, styleObject);
   }
 
-  renderTarget(styleObject, segments) {
+  renderTarget(styleObject, segments: Point[]): VNode[] {
     const p1 = segments[segments.length - 2];
     const p2 = segments[segments.length - 1];
     return this.renderArrow(p1, p2, styleObject.targetArrowStyle, styleObject);
   }
 
-  renderArrow(p1, p2, arrowStyle, styleObject) {
+  renderArrow(p1: Point, p2: Point, arrowStyle: ArrowStyle, styleObject): VNode[] {
     const strokeWidth = styleObject !== undefined ? styleObject['stroke-width'] : 1;
 
     // Path definitions scaled with the stroke-width style attribute
@@ -179,12 +181,14 @@ export class EdgeView extends PolylineEdgeView {
       arrow = this.buildCircleArrow(p1, p2, styleObjectCopy, strokeWidth);
     } else if (arrowStyle === 'FillCircle') {
       arrow = this.buildFillCircleArrow(p1, p2, styleObjectCopy, strokeWidth);
+    } else if (arrowStyle === 'CrossedCircle') {
+      arrow = this.buildCrossedCircleArrow(p1, p2, styleObjectCopy, strokeWidth);
     }
 
     return [arrow];
   }
 
-  buildOutputArrow(path, p1, p2, styleObject, strokeWidth) {
+  buildOutputArrow(path: string, p1: Point, p2: Point, styleObject, strokeWidth: number) {
     styleObject.fill = '#ffffff';
     const offsetX = p2.x + strokeWidth;
     const offsetY = p2.y;
@@ -194,7 +198,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildInputArrow(path, p1, p2, styleObject) {
+  buildInputArrow(path: string, p1: Point, p2: Point, styleObject) {
     styleObject.fill = 'none';
     const offsetX = p2.x;
     const offsetY = p2.y;
@@ -204,7 +208,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildOutputClosedArrow(path, p1, p2, styleObject, strokeWidth) {
+  buildOutputClosedArrow(path: string, p1: Point, p2: Point, styleObject, strokeWidth: number) {
     styleObject.fill = '#ffffff';
     const offsetX = p2.x + 5.5 + strokeWidth;
     const offsetY = p2.y;
@@ -214,7 +218,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildInputClosedArrow(path, p1, p2, styleObject) {
+  buildInputClosedArrow(path: string, p1: Point, p2: Point, styleObject) {
     styleObject.fill = '#ffffff';
     const offsetX = p2.x;
     const offsetY = p2.y;
@@ -224,7 +228,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildOutputFillClosedArrow(path, p1, p2, styleObject, strokeWidth) {
+  buildOutputFillClosedArrow(path: string, p1: Point, p2: Point, styleObject, strokeWidth: number) {
     const offsetX = p2.x + 5.5 + strokeWidth;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p2, p1));
@@ -233,7 +237,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildInputFillClosedArrow(path, p1, p2, styleObject) {
+  buildInputFillClosedArrow(path: string, p1: Point, p2: Point, styleObject) {
     const offsetX = p2.x;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p1, p2));
@@ -242,7 +246,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildDiamondArrow(path, p1, p2, styleObject) {
+  buildDiamondArrow(path: string, p1: Point, p2: Point, styleObject) {
     styleObject.fill = '#ffffff';
     const offsetX = p2.x;
     const offsetY = p2.y;
@@ -252,7 +256,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildFillDiamondArrow(path, p1, p2, styleObject) {
+  buildFillDiamondArrow(path: string, p1: Point, p2: Point, styleObject) {
     const offsetX = p2.x;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p2, p1));
@@ -261,7 +265,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildInputArrowWithDiamond(path, p1, p2, styleObject, strokeWidth) {
+  buildInputArrowWithDiamond(path: string, p1: Point, p2: Point, styleObject, strokeWidth: number) {
     styleObject.fill = '#ffffff';
     const offsetX = p2.x + strokeWidth;
     const offsetY = p2.y;
@@ -271,7 +275,7 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildInputArrowWithFillDiamond(path, p1, p2, styleObject, strokeWidth) {
+  buildInputArrowWithFillDiamond(path: string, p1: Point, p2: Point, styleObject, strokeWidth: number) {
     const offsetX = p2.x + strokeWidth;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p2, p1));
@@ -280,20 +284,55 @@ export class EdgeView extends PolylineEdgeView {
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
   }
 
-  buildCircleArrow(p1, p2, styleObject, strokeWidth) {
+  buildCircleArrow(p1: Point, p2: Point, styleObject, strokeWidth: number) {
     styleObject.fill = '#ffffff';
     const rotation = `rotate(${toDegrees(angle(p2, p1))} ${p2.x} ${p2.y})`;
     const transform = `${rotation} translate(${p2.x + 5} ${p2.y})`;
     return <circle transform={transform} r={4 + strokeWidth} style={styleObject} />;
   }
 
-  buildFillCircleArrow(p1, p2, styleObject, strokeWidth) {
+  buildFillCircleArrow(p1: Point, p2: Point, styleObject, strokeWidth: number) {
     const rotation = `rotate(${toDegrees(angle(p2, p1))} ${p2.x} ${p2.y})`;
     const transform = `${rotation} translate(${p2.x + 5} ${p2.y})`;
     return <circle transform={transform} r={4 + strokeWidth} style={styleObject} />;
   }
 
-  buildArrowPath(path, translateX, translateY, styleObject, rotationAngle, rotationX, rotationY) {
+  buildCrossedCircleArrow(p1: Point, p2: Point, styleObject, strokeWidth: number) {
+    styleObject.fill = '#ffffff';
+    const rotation = `rotate(${toDegrees(angle(p2, p1))} ${p2.x} ${p2.y})`;
+    const transform = `${rotation} translate(${p2.x + 5} ${p2.y})`;
+    return (
+      <g>
+        <circle transform={transform} r={4 + strokeWidth} style={styleObject} />
+        <line
+          transform={transform}
+          x1={-1 * (4 + strokeWidth)}
+          y1={0}
+          x2={4 + strokeWidth}
+          y2={0}
+          style={styleObject}
+        />
+        <line
+          transform={transform}
+          x1={0}
+          y1={-1 * (4 + strokeWidth)}
+          x2={0}
+          y2={4 + strokeWidth}
+          style={styleObject}
+        />
+      </g>
+    );
+  }
+
+  buildArrowPath(
+    path: string,
+    translateX: number,
+    translateY: number,
+    styleObject,
+    rotationAngle: number,
+    rotationX: number,
+    rotationY: number
+  ) {
     let rotation = '';
     if (rotationAngle !== undefined) {
       if (rotationX !== undefined && rotationY !== undefined) {
@@ -309,6 +348,6 @@ export class EdgeView extends PolylineEdgeView {
 }
 
 // range (-PI, PI]
-function angle(a, b) {
+function angle(a: Point, b: Point): number {
   return Math.atan2(b.y - a.y, b.x - a.x);
 }

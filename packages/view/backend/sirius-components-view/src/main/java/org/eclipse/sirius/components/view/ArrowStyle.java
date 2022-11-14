@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,7 +124,31 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    INPUT_ARROW_WITH_FILL_DIAMOND(10, "InputArrowWithFillDiamond", "InputArrowWithFillDiamond"); //$NON-NLS-1$ //$NON-NLS-2$
+    INPUT_ARROW_WITH_FILL_DIAMOND(10, "InputArrowWithFillDiamond", "InputArrowWithFillDiamond"), //$NON-NLS-1$ //$NON-NLS-2$
+    /**
+     * The '<em><b>Circle</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #CIRCLE_VALUE
+     * @generated
+     * @ordered
+     */
+    CIRCLE(11, "Circle", "Circle"), //$NON-NLS-1$ //$NON-NLS-2$
+    /**
+     * The '<em><b>Fill Circle</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #FILL_CIRCLE_VALUE
+     * @generated
+     * @ordered
+     */
+    FILL_CIRCLE(12, "FillCircle", "FillCircle"), //$NON-NLS-1$ //$NON-NLS-2$
+    /**
+     * The '<em><b>Crossed Circle</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #CROSSED_CIRCLE_VALUE
+     * @generated
+     * @ordered
+     */
+    CROSSED_CIRCLE(13, "CrossedCircle", "CrossedCircle"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
      * The '<em><b>None</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -237,12 +261,42 @@ public enum ArrowStyle implements Enumerator {
     public static final int INPUT_ARROW_WITH_FILL_DIAMOND_VALUE = 10;
 
     /**
+     * The '<em><b>Circle</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #CIRCLE
+     * @model name="Circle"
+     * @generated
+     * @ordered
+     */
+    public static final int CIRCLE_VALUE = 11;
+
+    /**
+     * The '<em><b>Fill Circle</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #FILL_CIRCLE
+     * @model name="FillCircle"
+     * @generated
+     * @ordered
+     */
+    public static final int FILL_CIRCLE_VALUE = 12;
+
+    /**
+     * The '<em><b>Crossed Circle</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #CROSSED_CIRCLE
+     * @model name="CrossedCircle"
+     * @generated
+     * @ordered
+     */
+    public static final int CROSSED_CIRCLE_VALUE = 13;
+
+    /**
      * An array of all the '<em><b>Arrow Style</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private static final ArrowStyle[] VALUES_ARRAY = new ArrowStyle[] { NONE, OUTPUT_ARROW, INPUT_ARROW, OUTPUT_CLOSED_ARROW, INPUT_CLOSED_ARROW, OUTPUT_FILL_CLOSED_ARROW, INPUT_FILL_CLOSED_ARROW,
-            DIAMOND, FILL_DIAMOND, INPUT_ARROW_WITH_DIAMOND, INPUT_ARROW_WITH_FILL_DIAMOND, };
+            DIAMOND, FILL_DIAMOND, INPUT_ARROW_WITH_DIAMOND, INPUT_ARROW_WITH_FILL_DIAMOND, CIRCLE, FILL_CIRCLE, CROSSED_CIRCLE, };
 
     /**
      * A public read-only list of all the '<em><b>Arrow Style</b></em>' enumerators. <!-- begin-user-doc --> <!--
@@ -323,6 +377,12 @@ public enum ArrowStyle implements Enumerator {
             return INPUT_ARROW_WITH_DIAMOND;
         case INPUT_ARROW_WITH_FILL_DIAMOND_VALUE:
             return INPUT_ARROW_WITH_FILL_DIAMOND;
+        case CIRCLE_VALUE:
+            return CIRCLE;
+        case FILL_CIRCLE_VALUE:
+            return FILL_CIRCLE;
+        case CROSSED_CIRCLE_VALUE:
+            return CROSSED_CIRCLE;
         }
         return null;
     }
