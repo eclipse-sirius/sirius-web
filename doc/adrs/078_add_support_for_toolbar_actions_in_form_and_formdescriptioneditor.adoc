@@ -1,0 +1,32 @@
+= ADR-078 - Add support for toolbar actions in Form/FormDescriptionEditor
+
+== Context
+
+We want to be able to support the toolbar actions in Form/FormDescriptionEditor.
+The toolbar actions are buttons located at the top of a Group/Page inside a Form/FormDescriptionEditor.
+The toolbar actions are inspired from https://www.eclipse.org/sirius/doc/specifier/properties/Properties_View_Description.html#group-toolbar-action in Eclipse Sirius Desktop.
+
+== Decision
+
+The Form/FormDescriptionEditor will have a new toolbar actions list, separated from the widgets list.
+A ToolbarAction will be a Button widget, as it already exists for the widgets of a Form/FormDescriptionEditor.
+In the FormDescriptionEditor, it will be possible to add new ToolbarActions from a dedicated '+' button located at the end of the toolbar.
+In the FormDescriptionEditor, it will be possible to delete a ToolbarAction by selecting it and then press Delete key, as it is already the case for the widgets.
+In the FormDescriptionEditor, it will be possible to move existing toolbar actions by drag and dropping them.
+In the FormDescriptionEditor, new/existing widgets can't be moved in the ToolbarActions drop areas.
+In the FormDescriptionEditor, existing ToolbarActions can't be moved in the existing widgets drop areas.
+
+=== Frontend
+
+The Material-UI button will be used to handle the new ToolbarAction widget.
+
+=== Backend
+
+The View DSL will be modified, introducing the following concept on EClass FormDescription:
+* new contained multi-valued reference : `toolbarActions` with type `ButtonDescription`.
+
+The View DSL converter will be updated to take into account the new widget.
+
+== Status
+
+Work in progress
