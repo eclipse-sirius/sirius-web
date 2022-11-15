@@ -174,12 +174,15 @@ public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
 ```
 
 The algorithm to do the layout of the list layout strategy will be something like:
+
 - Ask the size of its children (the width for a column direction, the height for a row direction)
 - Take the max value a give it to its children
 
 The algorithm to do the layout of the free form strategy will be something like:
+
 - The node asks its children to do their layout
 - The node layout himself
+
 In fact the free form layout is quite the same behavior as now.
 
 [WARNING]

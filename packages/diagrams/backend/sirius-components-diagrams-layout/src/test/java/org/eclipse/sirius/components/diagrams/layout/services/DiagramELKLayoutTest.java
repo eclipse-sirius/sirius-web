@@ -107,7 +107,7 @@ public class DiagramELKLayoutTest {
 
         // Check that the parent node and the label have the right size
         assertThat(firstParent.getLabel().getSize()).isEqualTo(Size.of(161.8818359375, 32.197265625));
-        assertThat(firstParent.getSize()).isEqualTo(Size.of(171.8818359375, 82.2958984375));
+        assertThat(firstParent.getSize()).isEqualTo(Size.of(174, 131.197265625));
 
         // Check that the inner node is under the multi line label area
         assertThat(firstParent.getChildNodes().get(0).getPosition()).isEqualTo(Position.at(12, 49.197265625));
