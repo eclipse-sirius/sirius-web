@@ -80,32 +80,15 @@ public class LayoutService implements ILayoutService {
 
     @Override
     public Diagram layout(IEditingContext editingContext, Diagram diagram) {
-        ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
+        ISiriusWebLayoutConfigurator layoutConfigurator = this.getLayoutConfigurator(editingContext, diagram);
 
+        ELKConvertedDiagram convertedDiagram = this.prepareForLayout(editingContext, diagram, layoutConfigurator);
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
-        // @formatter:off
-        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast);
-        // @formatter:on
 
-        ISiriusWebLayoutConfigurator layoutConfigurator;
-        if (optionalDiagramDescription.isPresent()) {
-            var diagramDescription = optionalDiagramDescription.get();
-            elkDiagram = this.layoutConfiguratorRegistry.applyBeforeLayout(elkDiagram, editingContext, diagram, diagramDescription);
-            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, diagramDescription);
-        } else {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
-        }
-
-        ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);
         IGraphLayoutEngine engine = new RecursiveGraphLayoutEngine();
         engine.layout(elkDiagram, new BasicProgressMonitor());
 
-        if (optionalDiagramDescription.isPresent()) {
-            var diagramDescription = optionalDiagramDescription.get();
-            elkDiagram = this.layoutConfiguratorRegistry.applyAfterLayout(elkDiagram, editingContext, diagram, diagramDescription);
-        }
+        elkDiagram = layoutConfigurator.applyAfterLayout(elkDiagram, editingContext, diagram);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
         Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements, layoutConfigurator);
@@ -130,18 +113,37 @@ public class LayoutService implements ILayoutService {
     public Diagram incrementalLayout(IEditingContext editingContext, Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
         IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
+        ISiriusWebLayoutConfigurator layoutConfigurator = this.getLayoutConfigurator(editingContext, newDiagram);
 
-        var representationDescription = this.representationDescriptionSearchService.findById(editingContext, newDiagram.getDescriptionId());
-        ISiriusWebLayoutConfigurator layoutConfigurator;
-        if (representationDescription.isPresent() && representationDescription.get() instanceof DiagramDescription) {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(newDiagram, (DiagramDescription) representationDescription.get());
-        } else {
-            layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
-        }
         this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, convertedDiagram, layoutConfigurator);
 
         Map<String, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);
+    }
+
+    private ISiriusWebLayoutConfigurator getLayoutConfigurator(IEditingContext editingContext, Diagram diagram) {
+        // @formatter:off
+        var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast);
+        // @formatter:on
+
+        ISiriusWebLayoutConfigurator layoutConfigurator = this.layoutConfiguratorRegistry.getDefaultLayoutConfigurator();
+        if (optionalDiagramDescription.isPresent()) {
+            var diagramDescription = optionalDiagramDescription.get();
+            layoutConfigurator = this.layoutConfiguratorRegistry.getLayoutConfigurator(diagram, diagramDescription);
+        }
+        return layoutConfigurator;
+    }
+
+    private ELKConvertedDiagram prepareForLayout(IEditingContext editingContext, Diagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
+        ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
+        ElkNode elkDiagram = convertedDiagram.getElkDiagram();
+
+        ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);
+        elkDiagram = layoutConfigurator.applyBeforeLayout(elkDiagram, editingContext, diagram);
+
+        return convertedDiagram;
     }
 
 }

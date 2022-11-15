@@ -15,7 +15,9 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -53,6 +55,13 @@ public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
             double nodeWidth = this.childNodeIncrementalLayoutEngine.getNodeWidth(optionalDiagramEvent, child, layoutConfigurator).orElse(0d);
             if (maxWidth < nodeWidth) {
                 maxWidth = nodeWidth;
+            }
+            IPropertyHolder childProperties = layoutConfigurator.configureByType(child.getNodeType());
+            if (childProperties.hasProperty(CoreOptions.NODE_SIZE_CONSTRAINTS) && childProperties.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS).contains(SizeConstraint.MINIMUM_SIZE)) {
+                KVector childMinSize = childProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+                if (maxWidth < childMinSize.x) {
+                    maxWidth = childMinSize.x;
+                }
             }
         }
 

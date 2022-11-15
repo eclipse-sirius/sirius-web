@@ -59,6 +59,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1426[#1426] [forms] Add support for optional text completion on textfield widgets. This is enabled in the View DSL properties for domain types and AQL expressions
 - https://github.com/eclipse-sirius/sirius-components/issues/1507[#1507] [diagram] Missing variables during execution of a source reconnection tool from the View description (otherEnd,semanticOtherEnd,edgeView and editingContext)
 - https://github.com/eclipse-sirius/sirius-components/issues/1521[#1521] [view] Canonical creation tools from contextual toolbar have no icons
+- https://github.com/eclipse-sirius/sirius-components/issues/1467[#1467] [layout] Elk is now able to compute a list layout. It is an internal change, and thus, nothing should change for the end user
 
 == v2022.11.0
 
