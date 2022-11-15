@@ -18,10 +18,10 @@ import java.util.Objects;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
+import org.eclipse.elk.alg.layered.options.OrderingStrategy;
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.PortLabelPlacement;
@@ -96,6 +96,8 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(LayeredOptions.SPACING_EDGE_NODE_BETWEEN_LAYERS, SPACING_NODE_EDGE);
 
         configurator.configureByType(NodeType.NODE_RECTANGLE)
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.NODE_LABELS)) // FIXME: Keep some space for the label event if it is empty
+                .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
@@ -106,6 +108,8 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         configurator.configureByType(NodeType.NODE_ICON_LABEL)
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.NODE_LABELS))
+                .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(3d, 12d, 3d, 6d))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, EnumSet.of(NodeLabelPlacement.INSIDE, NodeLabelPlacement.V_CENTER, NodeLabelPlacement.H_LEFT));
 
@@ -121,12 +125,13 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
 
         configurator.configureByChildrenLayoutStrategy(ListLayoutStrategy.class)
-                .setProperty(CoreOptions.ALGORITHM, FixedLayouterOptions.ALGORITHM_ID)
-                .setProperty(CoreOptions.NODE_SIZE_FIXED_GRAPH_SIZE, true)
-                .setProperty(CoreOptions.PADDING, new ElkPadding(0, 0, 0, 0))
+                .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
+                .setProperty(LayeredOptions.CONSIDER_MODEL_ORDER, OrderingStrategy.NODES_AND_EDGES)
+                .setProperty(CoreOptions.PADDING, new ElkPadding(5, 0, 0, 0))
                 .setProperty(CoreOptions.SPACING_NODE_NODE, 0d);
 
         configurator.configureByChildrenLayoutStrategy(FreeFormLayoutStrategy.class)
+                .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))

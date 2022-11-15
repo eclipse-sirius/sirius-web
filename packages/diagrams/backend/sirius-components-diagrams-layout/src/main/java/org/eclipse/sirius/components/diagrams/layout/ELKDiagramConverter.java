@@ -12,19 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.alg.common.nodespacing.NodeLabelAndSizeCalculator;
+import org.eclipse.elk.core.options.Alignment;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
-import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.graph.ElkConnectableShape;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
@@ -38,13 +35,10 @@ import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
-import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
@@ -88,292 +82,14 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
     @Override
     public ELKConvertedDiagram convert(Diagram diagram) {
-        Diagram initializedDiagram = this.initializeDiagram(diagram);
-
-        ElkNode elkDiagram = this.convertDiagram(initializedDiagram);
+        ElkNode elkDiagram = this.convertDiagram(diagram);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
         Map<String, ElkConnectableShape> connectableShapeIndex = new LinkedHashMap<>();
-        initializedDiagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
-        initializedDiagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        diagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        diagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
 
         return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
-    }
-
-    /**
-     * Looks for {@link Node} with {@link ListLayoutStrategy} in the <em>diagram</em> in order to initialize them.
-     *
-     * @param diagram
-     *            The {@link Diagram} in which {@link Node} with {@link ListLayoutStrategy} will be initialized
-     * @return A new {@link Diagram} containing initialized {@link Node} with {@link ListLayoutStrategy}
-     */
-    private Diagram initializeDiagram(Diagram diagram) {
-        List<Node> childNodes = this.initializeNodes(diagram.getNodes());
-        // @formatter:off
-        return Diagram.newDiagram(diagram)
-                .nodes(childNodes)
-                .build();
-        // @formatter:on
-    }
-
-    /**
-     * Looks for {@link Node} with {@link ListLayoutStrategy} in the <em>nodes</em> list in order to initialize them.
-     *
-     * <p>
-     * If a node has children, the node is initialized.
-     * </p>
-     *
-     * @param nodes
-     *            the list of {@link Node} in which {@link Node}s with {@link ListLayoutStrategy} will be initialized
-     * @return A new list of {@link Node} containing initialized {@link Node} with {@link ListLayoutStrategy}
-     */
-    private List<Node> initializeNodes(List<Node> nodes) {
-        List<Node> childNodes = new ArrayList<>();
-        for (Node node : nodes) {
-            Node childNode = node;
-            if (node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-                childNode = this.initializeNodeList(node);
-            } else if (!node.getChildNodes().isEmpty()) {
-                childNode = this.initializeNode(node);
-            }
-            childNodes.add(childNode);
-        }
-        return childNodes;
-    }
-
-    /**
-     * Looks for {@link Node} with {@link ListLayoutStrategy} in the <em>node</em> children in order to initialize them.
-     *
-     * @param node
-     *            the {@link Node} in which {@link Node} with {@link ListLayoutStrategy} children will be initialized
-     * @return
-     */
-    private Node initializeNode(Node node) {
-        List<Node> childNodes = this.initializeNodes(node.getChildNodes());
-        // @formatter:off
-        return Node.newNode(node)
-                .childNodes(childNodes)
-                .build();
-        // @formatter:on
-    }
-
-    private double getLargestChildWidth(List<Node> children) {
-        // @formatter:off
-        double largestChildWidth = children.stream()
-                .map(Node::getLabel)
-                .map(this.textBoundsService::getBounds)
-                .map(TextBounds::getSize)
-                .mapToDouble(Size::getWidth)
-                .map(width -> width + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_RIGHT + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT)
-                .max()
-                .orElse(-1);
-        // @formatter:on
-
-        for (Node child : children) {
-            double childLargestChildWidth = this.getLargestChildWidth(child.getChildNodes());
-            if (childLargestChildWidth > largestChildWidth) {
-                largestChildWidth = childLargestChildWidth;
-            }
-        }
-
-        return largestChildWidth;
-    }
-
-    /**
-     * Returns the size of the given {@link Node} with {@link ListLayoutStrategy}, which is the max value between the
-     * highest children item width, the node label width and {@link} LayoutOptionValues#MIN_WIDTH_CONSTRAINT}.
-     *
-     * @param nodeList
-     *            The {@link Node} with {@link ListLayoutStrategy} we want the width
-     * @return the size of the given {@link Node} with {@link ListLayoutStrategy}
-     */
-    private double getNodeListWidth(Node nodeList) {
-        TextBounds nodeListLabelTextBounds = this.textBoundsService.getBounds(nodeList.getLabel());
-        double largestchildWidth = this.getLargestChildWidth(nodeList.getChildNodes());
-
-        // @formatter:off
-         return Arrays.asList(
-                largestchildWidth,
-                nodeListLabelTextBounds.getSize().getWidth() + LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING * 2,
-                LayoutOptionValues.MIN_WIDTH_CONSTRAINT)
-              .stream()
-              .mapToDouble(Number::doubleValue)
-              .max()
-              .orElse(LayoutOptionValues.MIN_WIDTH_CONSTRAINT);
-         // @formatter:on
-    }
-
-    /**
-     * Initializes the given {@link Node} with {@link ListLayoutStrategy} with size and its children with size and
-     * position in order let ELK use the size and position for these elements.
-     *
-     * <p>
-     * It is possible to let ELK use the size and position for these elements thanks to ELK options that have been used
-     * in the ELK configuration.
-     * </p>
-     *
-     * @see LayoutConfiguratorRegistry#getDefaultLayoutConfigurator()
-     * @param nodeList
-     *            The {@link Node} with {@link ListLayoutStrategy} to initialize
-     * @return a new initialized {@link Node}
-     */
-    private Node initializeNodeList(Node nodeList) {
-        List<Node> childNodes = nodeList.getChildNodes();
-        double nodeListWidth = this.getNodeListWidth(nodeList);
-        double nodeLabelHeight = nodeList.getLabel().getSize().getHeight();
-
-        List<Node> initializedChildren = new ArrayList<>();
-        for (Node child : childNodes) {
-            if (child.getStyle() instanceof IconLabelNodeStyle) {
-                Node initializeIconLabelNode = this.initializeIconLabelNode(child, initializedChildren, nodeListWidth, nodeLabelHeight);
-                initializedChildren.add(initializeIconLabelNode);
-            } else if (child.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-                Node initializeListCompartment = this.initializeListCompartment(child, initializedChildren, nodeListWidth, nodeLabelHeight);
-                initializedChildren.add(initializeListCompartment);
-            }
-        }
-
-        double nodeListHeight = this.getNodeListHeight(initializedChildren, nodeLabelHeight);
-        Size nodelistSize = Size.of(nodeListWidth, nodeListHeight);
-
-        // @formatter:off
-        return Node.newNode(nodeList)
-                .size(nodelistSize)
-                .childNodes(initializedChildren)
-                .build();
-        // @formatter:on
-    }
-
-    private Node initializeListCompartment(Node compartment, List<Node> initializedSiblings, double nodeListWidth, double nodeListLabelHeight) {
-        List<Node> childNodes = compartment.getChildNodes();
-
-        double compartmentLabelHeight = 0;
-        if (!compartment.getLabel().getText().isEmpty()) {
-            compartmentLabelHeight = compartment.getLabel().getSize().getHeight();
-        }
-
-        List<Node> initializedChildren = new ArrayList<>();
-        for (Node child : childNodes) {
-            if (child.getStyle() instanceof IconLabelNodeStyle) {
-                Node initializeIconLabelNode = this.initializeIconLabelNode(child, initializedChildren, nodeListWidth, compartmentLabelHeight);
-                initializedChildren.add(initializeIconLabelNode);
-            } else if (child.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-                Node initializeListCompartment = this.initializeListCompartment(child, initializedChildren, nodeListWidth, compartmentLabelHeight);
-                initializedChildren.add(initializeListCompartment);
-            }
-        }
-
-        double nodeListHeight = this.getNodeListHeight(initializedChildren, compartmentLabelHeight);
-        Size nodelistSize = Size.of(nodeListWidth, nodeListHeight);
-
-        double compartmentNodePosY = this.getCurrentCompartmentYPosition(initializedSiblings, nodeListLabelHeight);
-        Position compartmentNodePosition = Position.at(0, compartmentNodePosY);
-
-        // @formatter:off
-        return Node.newNode(compartment)
-                .size(nodelistSize)
-                .position(compartmentNodePosition)
-                .childNodes(initializedChildren)
-                .build();
-        // @formatter:on
-    }
-
-    /**
-     * Returns the {@link Node} with {@link ListLayoutStrategy} height.
-     *
-     * <p>
-     * The height of a {@link Node} with {@link ListLayoutStrategy} is the sum of the vertical position of the last
-     * children, the height of the last children and {@link LayoutOptionValues#DEFAULT_ELK_PADDING}. The height cannot
-     * be smaller than {@link LayoutOptionValues#MIN_HEIGHT_CONSTRAINT}.
-     * </p>
-     *
-     * @param nodeListChildren
-     *            The list of {@link Node} with {@link ListLayoutStrategy} children
-     * @param nodeLabelHeight
-     * @return the node {@link Node} with {@link ListLayoutStrategy} height
-     */
-    private double getNodeListHeight(List<Node> nodeListChildren, double nodeLabelHeight) {
-        double nodeListHeight = nodeLabelHeight + LayoutOptionValues.NODE_LIST_ELK_PADDING_TOP;
-        if (!nodeListChildren.isEmpty()) {
-            Node lastNodeListItem = nodeListChildren.get(nodeListChildren.size() - 1);
-            nodeListHeight = lastNodeListItem.getPosition().getY() + lastNodeListItem.getSize().getHeight();
-        }
-
-        if (nodeListHeight < LayoutOptionValues.MIN_HEIGHT_CONSTRAINT) {
-            nodeListHeight = LayoutOptionValues.MIN_HEIGHT_CONSTRAINT;
-        }
-        return nodeListHeight;
-    }
-
-    private Node initializeIconLabelNode(Node iconLabelNode, List<Node> previousSiblings, double nodeListWidth, double nodeListLabelHeight) {
-        double iconLabelNodeHeight = this.getIconLabelNodeHeight(iconLabelNode);
-        Size iconLabelNodeSize = Size.of(nodeListWidth, iconLabelNodeHeight);
-
-        double iconLabelNodePosY = this.getCurrentListItemYPosition(previousSiblings, nodeListLabelHeight);
-        Position iconLabelNodePosition = Position.at(0, iconLabelNodePosY);
-
-        // @formatter:off
-        Label updatedLabel = Label.newLabel(iconLabelNode.getLabel())
-                .position(Position.at(6, 3))
-                .build();
-
-        return Node.newNode(iconLabelNode)
-                .label(updatedLabel)
-                .size(iconLabelNodeSize)
-                .position(iconLabelNodePosition)
-                .build();
-        // @formatter:on
-    }
-
-    /**
-     * Return the current list item Y position.
-     *
-     * <p>
-     * If the list of eldest siblings is empty, the position of the current node child in the {@link Node} with
-     * {@link ListLayoutStrategy} is the sum of {@link LayoutOptionValues#NODE_LIST_ELK_PADDING_TOP} and
-     * {@link LayoutOptionValues#DEFAULT_ELK_NODE_LABELS_PADDING}. Otherwise, the list of the current node child in the
-     * {@link Node} with {@link ListLayoutStrategy} is the sum of the Y position of the previous sibling, the height of
-     * the previous sibling and the {@link LayoutOptionValues#NODE_LIST_ELK_NODE_NODE_GAP}.
-     * </p>
-     *
-     * @param handledIconLabelNodes
-     *            The list of the eldest siblings
-     * @param nodeListLabelHeight
-     *            The label height of the {@link Node} with {@link ListLayoutStrategy}
-     * @return the current list item Y position
-     */
-    private double getCurrentListItemYPosition(List<Node> handledIconLabelNodes, double nodeListLabelHeight) {
-        double iconLabelNodeYPosition = 0;
-        if (handledIconLabelNodes.isEmpty()) {
-            if (nodeListLabelHeight != 0) {
-                iconLabelNodeYPosition = nodeListLabelHeight + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
-            }
-        } else {
-            Node previousIconLabelNodeSibling = handledIconLabelNodes.get(handledIconLabelNodes.size() - 1);
-            iconLabelNodeYPosition = previousIconLabelNodeSibling.getPosition().getY() + previousIconLabelNodeSibling.getSize().getHeight();
-        }
-        return iconLabelNodeYPosition;
-    }
-
-    private double getCurrentCompartmentYPosition(List<Node> handledIconLabelNodes, double parentNodeLabelHeight) {
-        double iconLabelNodeYPosition = 0;
-        if (handledIconLabelNodes.isEmpty()) {
-            iconLabelNodeYPosition = parentNodeLabelHeight + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
-        } else {
-            Node previousIconLabelNodeSibling = handledIconLabelNodes.get(handledIconLabelNodes.size() - 1);
-            iconLabelNodeYPosition = previousIconLabelNodeSibling.getPosition().getY() + previousIconLabelNodeSibling.getSize().getHeight();
-        }
-        return iconLabelNodeYPosition;
-    }
-
-    private double getIconLabelNodeHeight(Node nodeListItem) {
-        double iconLabelNodeHeight = 0;
-        if (!nodeListItem.getLabel().getText().isEmpty()) {
-            TextBounds iconLabelNodeTextBounds = this.textBoundsService.getBounds(nodeListItem.getLabel());
-            iconLabelNodeHeight = iconLabelNodeTextBounds.getSize().getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_TOP
-                    + LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_BOTTOM;
-        }
-        return iconLabelNodeHeight;
     }
 
     private ElkNode convertDiagram(Diagram diagram) {
@@ -394,16 +110,12 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
 
         if (ListLayoutStrategy.class.equals(parent.getProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY))) {
-            elkNode.setLocation(node.getPosition().getX(), node.getPosition().getY());
+            elkNode.setProperty(CoreOptions.ALIGNMENT, Alignment.LEFT);
         }
 
-        if (node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy || NodeType.NODE_ICON_LABEL.equals(node.getType())) {
-            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
-        } else {
-            double width = textBounds.getSize().getWidth();
-            double height = textBounds.getSize().getHeight();
-            elkNode.setDimensions(width, height);
-        }
+        double width = textBounds.getSize().getWidth();
+        double height = textBounds.getSize().getHeight();
+        elkNode.setDimensions(width, height);
 
         elkNode.setParent(parent);
         connectableShapeIndex.put(elkNode.getIdentifier(), elkNode);
@@ -475,16 +187,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         elkLabel.setProperty(PROPERTY_TYPE, label.getType());
         elkLabel.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
 
-        if (NodeType.NODE_ICON_LABEL.equals(elkGraphElement.getProperty(PROPERTY_TYPE))) {
-            // should be removed once we will be able to define the list layout with ELK without using the fixed layout.
-            elkLabel.setProperty(FixedLayouterOptions.POSITION, new KVector(LayoutOptionValues.NODE_LIST_ELK_NODE_LABELS_PADDING_LEFT, 3));
-        }
-
-        if (label.getText().isEmpty() && !label.getStyle().getIconURL().isEmpty() || isInsideHeader) {
-            elkLabel.setText(" "); //$NON-NLS-1$
-        } else {
-            elkLabel.setText(label.getText());
-        }
+        this.handleElkLabel(label, elkLabel, isInsideHeader);
 
         elkLabel.setParent(elkGraphElement);
 
@@ -495,6 +198,46 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         elkLabel.eAdapters().add(new AlignmentHolder(textBounds.getAlignment()));
 
         id2ElkGraphElements.put(label.getId(), elkLabel);
+    }
+
+    /**
+     * Decides if the label will be displayed or not, taken into account or not.
+     *
+     * We have three cases to handle:
+     * <ul>
+     * <li>The sirius-components label is empty but it has an icon or is inside a header: some space will be reserved
+     * for the icon or the header.</li>
+     * <li>The sirius-components label is empty and does not have icon nor is inside a header: the label will not be
+     * displayed.</li>
+     * <li>The sirius-components label has some text: the label will be displayed.</li>
+     * </ul>
+     *
+     * <p>
+     * Note: For the first two points, Elk will reserve some space for any Elk label that exists (even if the text is
+     * empty). The Elk label height or width (of a node) will be used as padding to position its node children (see
+     * {@link NodeLabelAndSizeCalculator#computeInsideNodeLabelPadding()} called by ElkGraphImporter#createLGraph()).
+     * That reminds me this method will not work the day we will support label on right or left position. Elk will not
+     * display the label if the text is empty (ElkGraphImporter#transformNode() around L.855). So, to handle the first
+     * point we add a whitespace to the Elk label to force Elk to "display" the label. For the second point because we
+     * don't want the label to be taken into account at all, we force the Elk label dimension to (0,0).
+     * </p>
+     *
+     * @param label
+     *            The sirius-components label used to create the Elk label
+     * @param elkLabel
+     *            The Elk label created from the sirius-components label
+     * @param isInsideHeader
+     *            Whether the label is inside a header or not.
+     */
+    private void handleElkLabel(Label label, ElkLabel elkLabel, boolean isInsideHeader) {
+        if (label.getText().isEmpty() && (!label.getStyle().getIconURL().isEmpty() || isInsideHeader)) {
+            elkLabel.setText(" "); //$NON-NLS-1$
+        } else if (label.getText().isEmpty()) {
+            // workaround to prevent an empty label to be considered by Elk.
+            elkLabel.setDimensions(0, 0);
+        } else {
+            elkLabel.setText(label.getText());
+        }
     }
 
     private void convertEdge(Edge edge, ElkNode elkDiagram, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {
