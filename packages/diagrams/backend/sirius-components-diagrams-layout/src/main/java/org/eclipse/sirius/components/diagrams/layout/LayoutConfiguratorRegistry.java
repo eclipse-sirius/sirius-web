@@ -160,7 +160,7 @@ public class LayoutConfiguratorRegistry {
                 return customLayout.get().applyBeforeLayout(elkDiagram, editingContext, diagram);
             }
         }
-        return elkDiagram;
+        return this.getDefaultLayoutConfigurator().applyBeforeLayout(elkDiagram, editingContext, diagram);
     }
 
     public ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram, DiagramDescription diagramDescription) {
@@ -170,7 +170,7 @@ public class LayoutConfiguratorRegistry {
                 return customLayout.get().applyAfterLayout(elkDiagram, editingContext, diagram);
             }
         }
-        return elkDiagram;
+        return this.getDefaultLayoutConfigurator().applyAfterLayout(elkDiagram, editingContext, diagram);
     }
 
 }

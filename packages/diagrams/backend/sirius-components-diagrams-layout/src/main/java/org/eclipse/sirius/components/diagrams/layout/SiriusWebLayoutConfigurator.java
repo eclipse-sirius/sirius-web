@@ -12,14 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.ElkGraphElement;
+import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 
 /**
  * Specialized {@link LayoutConfigurator} that can configure layout options based on the {@code id} and {@code type}
@@ -113,6 +120,37 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
             thisHolder.copyProperties(entry.getValue());
         }
         return this;
+    }
+
+    @Override
+    public ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram) {
+        List<ElkNode> children = this.collectChildrenNode(elkDiagram);
+        for (ElkNode elkNode : children) {
+            if (this.shouldAdjustChildrenSize(elkNode)) {
+                this.adjustChildrenSize(elkNode);
+            }
+        }
+
+        return ISiriusWebLayoutConfigurator.super.applyAfterLayout(elkDiagram, editingContext, diagram);
+    }
+
+    private List<ElkNode> collectChildrenNode(ElkNode elkDiagram) {
+        List<ElkNode> children = new ArrayList<>(elkDiagram.getChildren());
+        for (ElkNode child : elkDiagram.getChildren()) {
+            children.addAll(this.collectChildrenNode(child));
+        }
+        return Collections.unmodifiableList(children);
+    }
+
+    private boolean shouldAdjustChildrenSize(ElkNode elkNode) {
+        return ListLayoutStrategy.class.equals(elkNode.getProperty(ELKDiagramConverter.PROPERTY_CHILDREN_LAYOUT_STRATEGY));
+    }
+
+    private void adjustChildrenSize(ElkNode elkNode) {
+        double parentWidth = elkNode.getWidth();
+        for (ElkNode child : elkNode.getChildren()) {
+            child.setWidth(parentWidth);
+        }
     }
 
 }
