@@ -60,6 +60,7 @@
 				<version>3.1.0</version>
 				<configuration>
 					<configLocation>../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<encoding>UTF-8</encoding>
 					<failsOnError>true</failsOnError>
 					<consoleOutput>true</consoleOutput>
