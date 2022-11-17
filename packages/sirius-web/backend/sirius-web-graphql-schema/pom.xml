@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-graphql-schema</artifactId>
-	<version>2022.11.0</version>
+	<version>2022.11.1</version>
 	<name>sirius-web-graphql-schema</name>
 	<description>Sirius Web GraphQL Schema</description>
 
@@ -47,32 +47,32 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-selection</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -82,13 +82,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2022.11.0</version>
+			<version>2022.11.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
