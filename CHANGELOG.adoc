@@ -12,6 +12,7 @@
 
 - [backenđ] Upgrade to Apache Batik 1.16.0 (from 1.14.0)
 - [backend] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v2.7.5[Spring Boot 2.7.5]
+- [backend] Switch to EMFJson 2.3.3
 
 === Bug fixes
 
