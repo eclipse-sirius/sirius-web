@@ -15,8 +15,6 @@
     <module name="SuppressWarningsHolder"/>
     <module name="JavadocMethod">
       <property name="severity" value="ignore"/>
-      <property name="allowMissingPropertyJavadoc" value="true"/>
-      <property name="suppressLoadErrors" value="true"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="error"/>
     </module>
     <module name="JavadocStyle">
