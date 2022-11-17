@@ -128,8 +128,7 @@ public class DynamicFormsTests {
     private EClass[] eClasses = new EClass[3];
 
     @Test
-    void testRenderEcoreForm() throws Exception {
-
+    void testRenderEcoreForm() {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form result = this.render(eClassFormDescription, this.eClasses[0]);
@@ -153,40 +152,195 @@ public class DynamicFormsTests {
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
         org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
+        Image image = (Image) group.getWidgets().get(13);
 
+        this.checkTextfield(textfield, false, false);
+        this.checkTextarea(textarea, false, false);
+        this.checkMultiSelect(multiSelect, false, false);
+        this.checkCheckbox(checkBox, false, false);
+        this.checkSelect(select, false, false);
+        this.checkRadio(radio, false, false);
+        this.checkButton(button, false, false);
+        this.checkLabel(labelWidget, false, false);
+        this.checkLink(link, false, false);
+        this.checkList(list, false, false);
+        this.checkBarChart(chartWidgetWithBarChart, false, false);
+        this.checkPieChart(chartWidgetWithPieChart, false, false);
+        this.checkImage(image);
+        this.checkFlexboxContainer(flexboxContainer, false, false);
+    }
+
+    @Test
+    void testRenderEcoreFormWithStyle() {
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(true, false);
+        Form result = this.render(eClassFormDescription, this.eClasses[0]);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPages()).hasSize(1);
+        assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
+
+        Group group = result.getPages().get(0).getGroups().get(0);
+        assertThat(group.getWidgets()).hasSize(14);
+        Textfield textfield = (Textfield) group.getWidgets().get(0);
+        Textarea textarea = (Textarea) group.getWidgets().get(1);
+        MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
+        Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
+        Select select = (Select) group.getWidgets().get(4);
+        Radio radio = (Radio) group.getWidgets().get(5);
+        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
+        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
+        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
+        Button button = (Button) group.getWidgets().get(9);
+        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
+        Link link = (Link) group.getWidgets().get(11);
+        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
+
+        this.checkTextfield(textfield, true, false);
+        this.checkTextarea(textarea, true, false);
+        this.checkMultiSelect(multiSelect, true, false);
+        this.checkCheckbox(checkBox, true, false);
+        this.checkSelect(select, true, false);
+        this.checkRadio(radio, true, false);
+        this.checkButton(button, true, false);
+        this.checkLabel(labelWidget, true, false);
+        this.checkLink(link, true, false);
+        this.checkList(list, true, false);
+        this.checkBarChart(chartWidgetWithBarChart, true, false);
+        this.checkPieChart(chartWidgetWithPieChart, true, false);
+        // image widget doesn't have style
+        this.checkFlexboxContainer(flexboxContainer, true, false);
+    }
+
+    @Test
+    void testRenderEcoreFormWithConditionalStyle() {
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(true, true);
+        Form result = this.render(eClassFormDescription, this.eClasses[0]);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPages()).hasSize(1);
+        assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
+
+        Group group = result.getPages().get(0).getGroups().get(0);
+        assertThat(group.getWidgets()).hasSize(14);
+        Textfield textfield = (Textfield) group.getWidgets().get(0);
+        Textarea textarea = (Textarea) group.getWidgets().get(1);
+        MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
+        Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
+        Select select = (Select) group.getWidgets().get(4);
+        Radio radio = (Radio) group.getWidgets().get(5);
+        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
+        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
+        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
+        Button button = (Button) group.getWidgets().get(9);
+        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
+        Link link = (Link) group.getWidgets().get(11);
+        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
+
+        this.checkTextfield(textfield, false, true);
+        this.checkTextarea(textarea, false, true);
+        this.checkMultiSelect(multiSelect, false, true);
+        this.checkCheckbox(checkBox, false, true);
+        this.checkSelect(select, false, true);
+        this.checkRadio(radio, false, true);
+        this.checkButton(button, false, true);
+        this.checkLabel(labelWidget, false, true);
+        this.checkLink(link, false, true);
+        this.checkList(list, false, true);
+        this.checkBarChart(chartWidgetWithBarChart, false, true);
+        this.checkPieChart(chartWidgetWithPieChart, false, true);
+        // image widget doesn't have conditional style
+        this.checkFlexboxContainer(flexboxContainer, false, true);
+    }
+
+    @Test
+    void testEditingEcoreForm() {
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
+        Form form = this.render(eClassFormDescription, this.eClasses[0]);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(14);
+
+        this.checkValuesEditing(this.eClasses[0], form);
+    }
+
+    @Test
+    void testSetNullOnSelectEcoreForm() {
+        this.buildFixture();
+        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
+        Form form = this.render(eClassFormDescription, this.eClasses[0]);
+        Group group = form.getPages().get(0).getGroups().get(0);
+        Select select = (Select) group.getWidgets().get(4);
+        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
+        assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isFalse();
+        select.getNewValueHandler().apply(null);
+        assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isTrue();
+    }
+
+    private void checkTextfield(Textfield textfield, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testNoStyle(textfield);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(textfield);
+        } else if (checkStyle) {
+            this.testStyle(textfield);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(textfield);
+        }
+    }
 
+    private void checkTextarea(Textarea textarea, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
         assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
-        this.testNoStyle(textarea);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(textarea);
+        } else if (checkStyle) {
+            this.testStyle(textarea);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(textarea);
+        }
+    }
 
+    private void checkMultiSelect(MultiSelect multiSelect, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(multiSelect.getOptions()).hasSize(3);
         assertThat(multiSelect.getValues()).hasSize(2);
         assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
         assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
-        this.testNoStyle(multiSelect);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(multiSelect);
+        } else if (checkStyle) {
+            this.testStyle(multiSelect);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(multiSelect);
+        }
+    }
 
+    private void checkCheckbox(Checkbox checkBox, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(checkBox.isValue()).isTrue();
         assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
-        this.testNoStyle(checkBox);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(checkBox);
+        } else if (checkStyle) {
+            this.testStyle(checkBox);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(checkBox);
+        }
+    }
 
+    private void checkSelect(Select select, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(select.getOptions()).hasSize(3);
         assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
         assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
-        this.testNoStyle(select);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(select);
+        } else if (checkStyle) {
+            this.testStyle(select);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(select);
+        }
+    }
 
-        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
-        this.testNoStyle(labelWidget);
-
-        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
-        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
-        this.testNoStyle(link);
-
-        this.checkList(list, false, false);
-
+    private void checkRadio(Radio radio, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(radio.getOptions()).hasSize(3);
         assertThat(radio.getOptions()).allSatisfy(option -> {
             if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
@@ -196,19 +350,49 @@ public class DynamicFormsTests {
             }
         });
         assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
-        this.testNoStyle(radio);
-
-        this.checkBarChart(chartWidgetWithBarChart, false, false);
-        this.checkPieChart(chartWidgetWithPieChart, false, false);
-
-        this.renderEcoreFormOnWidgetContainer(flexboxContainer);
-        this.renderEcoreFormOnButton(button);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(radio);
+        } else if (checkStyle) {
+            this.testStyle(radio);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(radio);
+        }
     }
 
-    private void renderEcoreFormOnButton(Button button) {
+    private void checkButton(Button button, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testNoStyle(button);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(button);
+        } else if (checkStyle) {
+            this.testStyle(button);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(button);
+        }
+    }
+
+    private void checkLabel(LabelWidget labelWidget, boolean checkStyle, boolean checkConditionalStyle) {
+        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(labelWidget);
+        } else if (checkStyle) {
+            this.testStyle(labelWidget);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(labelWidget);
+        }
+    }
+
+    private void checkLink(Link link, boolean checkStyle, boolean checkConditionalStyle) {
+        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
+        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(link);
+        } else if (checkStyle) {
+            this.testStyle(link);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(link);
+        }
     }
 
     private void checkList(org.eclipse.sirius.components.forms.List list, boolean checkStyle, boolean checkConditionalStyle) {
@@ -308,112 +492,13 @@ public class DynamicFormsTests {
         assertThat(entries.get(index)).extracting(PieChartEntry::getValue).isEqualTo(expectedValue);
     }
 
-    private void renderEcoreFormOnWidgetContainer(FlexboxContainer flexboxContainer) {
-        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
-        List<AbstractWidget> children = flexboxContainer.getChildren();
-        assertThat(children).hasSize(2);
-        assertThat(children.get(0)).isInstanceOf(Textfield.class);
-        assertThat(children.get(1)).isInstanceOf(Checkbox.class);
-
-        Textfield childrenTextfield = (Textfield) children.get(0);
-        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testNoStyle(childrenTextfield);
-
-        Checkbox childrenCheckbox = (Checkbox) children.get(1);
-        assertThat(childrenCheckbox.isValue()).isTrue();
-        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
-        this.testNoStyle(childrenCheckbox);
-    }
-
-    @Test
-    void testRenderEcoreFormWithStyle() throws Exception {
-
-        this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(true, false);
-        Form result = this.render(eClassFormDescription, this.eClasses[0]);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getPages()).hasSize(1);
-        assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
-
-        Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(14);
-        Textfield textfield = (Textfield) group.getWidgets().get(0);
-        Textarea textarea = (Textarea) group.getWidgets().get(1);
-        MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
-        Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
-        Select select = (Select) group.getWidgets().get(4);
-        Radio radio = (Radio) group.getWidgets().get(5);
-        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
-        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
-        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
-        Button button = (Button) group.getWidgets().get(9);
-        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
-        Link link = (Link) group.getWidgets().get(11);
-        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
-        Image image = (Image) group.getWidgets().get(13);
-
-        assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testStyle(textfield);
-
-        assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
-        assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
-        this.testStyle(textarea);
-
-        assertThat(multiSelect.getOptions()).hasSize(3);
-        assertThat(multiSelect.getValues()).hasSize(2);
-        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
-        this.testStyle(multiSelect);
-
-        assertThat(checkBox.isValue()).isTrue();
-        assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
-        this.testStyle(checkBox);
-
-        assertThat(select.getOptions()).hasSize(3);
-        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
-        assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
-        this.testStyle(select);
-
-        assertThat(radio.getOptions()).hasSize(3);
-        radio.getOptions().forEach(option -> {
-            if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
-                assertThat(option.isSelected()).isTrue();
-            } else {
-                assertThat(option.isSelected()).isFalse();
-            }
-        });
-        assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
-        this.testStyle(radio);
-
-        this.renderEcoreFormWithStyleOnWidgetContainer(flexboxContainer);
-
-        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
-        this.testStyle(labelWidget);
-
-        assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testStyle(button);
-
-        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
-        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
-        this.testStyle(link);
-
-        this.checkList(list, true, false);
-
-        this.checkBarChart(chartWidgetWithBarChart, true, false);
-
-        this.checkPieChart(chartWidgetWithPieChart, true, false);
-
+    private void checkImage(Image image) {
         assertThat(image.getLabel()).isEqualTo("Icon for EClass Class1"); //$NON-NLS-1$
         assertThat(image.getUrl()).isEqualTo("icons/Class1.svg"); //$NON-NLS-1$
         assertThat(image.getMaxWidth()).isEqualTo("30%"); //$NON-NLS-1$
     }
 
-    private void renderEcoreFormWithStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
+    private void checkFlexboxContainer(FlexboxContainer flexboxContainer, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
         List<AbstractWidget> children = flexboxContainer.getChildren();
         assertThat(children).hasSize(2);
@@ -423,135 +508,24 @@ public class DynamicFormsTests {
         Textfield childrenTextfield = (Textfield) children.get(0);
         assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
         assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testStyle(childrenTextfield);
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(childrenTextfield);
+        } else if (checkStyle) {
+            this.testStyle(childrenTextfield);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(childrenTextfield);
+        }
 
         Checkbox childrenCheckbox = (Checkbox) children.get(1);
         assertThat(childrenCheckbox.isValue()).isTrue();
         assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
-        this.testStyle(childrenCheckbox);
-    }
-
-    @Test
-    void testRenderEcoreFormWithConditionalStyle() throws Exception {
-
-        this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(true, true);
-        Form result = this.render(eClassFormDescription, this.eClasses[0]);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getPages()).hasSize(1);
-        assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
-
-        Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(14);
-        Textfield textfield = (Textfield) group.getWidgets().get(0);
-        Textarea textarea = (Textarea) group.getWidgets().get(1);
-        MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
-        Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
-        Select select = (Select) group.getWidgets().get(4);
-        Radio radio = (Radio) group.getWidgets().get(5);
-        ChartWidget chartWidgetWithBarChart = (ChartWidget) group.getWidgets().get(6);
-        ChartWidget chartWidgetWithPieChart = (ChartWidget) group.getWidgets().get(7);
-        FlexboxContainer flexboxContainer = (FlexboxContainer) group.getWidgets().get(8);
-        Button button = (Button) group.getWidgets().get(9);
-        LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
-        Link link = (Link) group.getWidgets().get(11);
-        org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
-
-        assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testConditionalStyle(textfield);
-
-        assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
-        assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
-        this.testConditionalStyle(textarea);
-
-        assertThat(multiSelect.getOptions()).hasSize(3);
-        assertThat(multiSelect.getValues()).hasSize(2);
-        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
-        this.testConditionalStyle(multiSelect);
-
-        assertThat(checkBox.isValue()).isTrue();
-        assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
-        this.testConditionalStyle(checkBox);
-
-        assertThat(select.getOptions()).hasSize(3);
-        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
-        assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
-        this.testConditionalStyle(select);
-
-        assertThat(radio.getOptions()).hasSize(3);
-        assertThat(radio.getOptions()).allSatisfy(option -> {
-            if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
-                assertThat(option.isSelected()).isTrue();
-            } else {
-                assertThat(option.isSelected()).isFalse();
-            }
-        });
-        assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
-        this.testConditionalStyle(radio);
-
-        this.renderEcoreFormWithConditionalStyleOnWidgetContainer(flexboxContainer);
-
-        assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testConditionalStyle(button);
-
-        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
-        this.testConditionalStyle(labelWidget);
-
-        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
-        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
-        this.testConditionalStyle(link);
-
-        this.checkList(list, false, true);
-
-        this.checkBarChart(chartWidgetWithBarChart, false, true);
-
-        this.checkPieChart(chartWidgetWithPieChart, false, true);
-    }
-
-    private void renderEcoreFormWithConditionalStyleOnWidgetContainer(FlexboxContainer flexboxContainer) {
-        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
-        List<AbstractWidget> children = flexboxContainer.getChildren();
-        assertThat(children).hasSize(2);
-        assertThat(children.get(0)).isInstanceOf(Textfield.class);
-        assertThat(children.get(1)).isInstanceOf(Checkbox.class);
-
-        Textfield childrenTextfield = (Textfield) children.get(0);
-        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
-        this.testConditionalStyle(childrenTextfield);
-
-        Checkbox childrenCheckbox = (Checkbox) children.get(1);
-        assertThat(childrenCheckbox.isValue()).isTrue();
-        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
-        this.testConditionalStyle(childrenCheckbox);
-    }
-
-    @Test
-    void testEditingEcoreForm() throws Exception {
-        this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
-        Form form = this.render(eClassFormDescription, this.eClasses[0]);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(14);
-
-        this.checkValuesEditing(this.eClasses[0], form);
-    }
-
-    @Test
-    void testSetNullOnSelectEcoreForm() throws Exception {
-        this.buildFixture();
-        FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
-        Form form = this.render(eClassFormDescription, this.eClasses[0]);
-        Group group = form.getPages().get(0).getGroups().get(0);
-        Select select = (Select) group.getWidgets().get(4);
-        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
-        assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isFalse();
-        select.getNewValueHandler().apply(null);
-        assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isTrue();
+        if (!(checkStyle || checkConditionalStyle)) {
+            this.testNoStyle(childrenCheckbox);
+        } else if (checkStyle) {
+            this.testStyle(childrenCheckbox);
+        } else if (checkConditionalStyle) {
+            this.testConditionalStyle(childrenCheckbox);
+        }
     }
 
     private void checkValuesEditing(EClass eClass, Form form) {
