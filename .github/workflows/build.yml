@@ -89,7 +89,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: vscode
-          path: vscode-extension/sirius-web-2022.11.1.vsix
+          path: vscode-extension/sirius-web-2022.11.2.vsix
           retention-days: 20
 
       - name: Store code coverage results
