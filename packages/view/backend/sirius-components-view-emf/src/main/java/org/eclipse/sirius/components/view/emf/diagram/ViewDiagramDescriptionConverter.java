@@ -23,9 +23,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -307,10 +310,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
+            List<NodeDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
+
             // Add custom tools
             int i = 0;
             for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
-                List<NodeDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
 
                 // @formatter:off
                 SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.getToolId(nodeDescription, i++))
@@ -338,7 +342,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
                             return this.canonicalBehaviors.createNewNode(nodeDescription, variableManager);
                         })
-                        .targetDescriptions(Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList()))
+                        .targetDescriptions(allTargetDescriptions)
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
                         .build();
                 // @formatter:on
@@ -400,8 +404,17 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         var targetDescriptions = Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList());
         allTargetDescriptions.addAll(targetDescriptions);
 
-        var crossReferencesAdapter = nodeDescription.eResource().getResourceSet().eAdapters().stream().filter(ECrossReferenceAdapter.class::isInstance).map(ECrossReferenceAdapter.class::cast)
-                .findFirst().orElse(new ECrossReferenceAdapter());
+        // @formatter:off
+        var crossReferencesAdapter = Optional.ofNullable(nodeDescription.eResource())
+                .map(Resource::getResourceSet)
+                .map(ResourceSet::eAdapters)
+                .orElseGet(BasicEList::new)
+                .stream()
+                .filter(ECrossReferenceAdapter.class::isInstance)
+                .map(ECrossReferenceAdapter.class::cast)
+                .findFirst()
+                .orElse(new ECrossReferenceAdapter());
+        // @formatter:on
         var crossReferences = crossReferencesAdapter.getInverseReferences(nodeDescription);
         for (Setting setting : crossReferences) {
             if (setting.getEObject() instanceof org.eclipse.sirius.components.view.NodeDescription) {
