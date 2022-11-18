@@ -17,10 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -29,6 +32,8 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
+import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -126,9 +131,12 @@ public class DynamicDiagramsTests {
     }
 
     private Diagram render(DiagramDescription diagramDescription, Object target) {
-        // Wrap into a View, as expected by ViewConverter
+        // Wrap into a View and put it inside a proper Resource(Set), as expected by ViewConverter
         View view = ViewFactory.eINSTANCE.createView();
         view.getDescriptions().add(diagramDescription);
+        Resource res = new JSONResourceFactory().createResource(URI.createURI(EditingContext.RESOURCE_SCHEME + ":///fixture")); //$NON-NLS-1$
+        res.getContents().add(view);
+        new ResourceSetImpl().getResources().add(res);
 
         ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of());
         var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext());
