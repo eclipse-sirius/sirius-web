@@ -30,8 +30,6 @@ import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.components.GroupComponent;
 import org.eclipse.sirius.components.forms.components.GroupComponentProps;
-import org.eclipse.sirius.components.forms.components.GroupContentsComponent;
-import org.eclipse.sirius.components.forms.components.GroupToolbarComponent;
 import org.eclipse.sirius.components.forms.components.IfComponent;
 import org.eclipse.sirius.components.forms.components.IfComponentProps;
 import org.eclipse.sirius.components.forms.components.ImageComponent;
@@ -56,13 +54,14 @@ import org.eclipse.sirius.components.forms.components.TextareaComponent;
 import org.eclipse.sirius.components.forms.components.TextareaComponentProps;
 import org.eclipse.sirius.components.forms.components.TextfieldComponent;
 import org.eclipse.sirius.components.forms.components.TextfieldComponentProps;
+import org.eclipse.sirius.components.forms.components.ToolbarActionComponent;
+import org.eclipse.sirius.components.forms.components.ToolbarActionComponentProps;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
 import org.eclipse.sirius.components.forms.components.TreeComponentProps;
 import org.eclipse.sirius.components.forms.components.WidgetComponent;
 import org.eclipse.sirius.components.forms.components.WidgetComponentProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
-import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -125,10 +124,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof ImageComponentProps;
         } else if (RichTextComponent.class.equals(componentType)) {
             checkValidProps = props instanceof RichTextComponentProps;
-        } else if (GroupToolbarComponent.class.equals(componentType)) {
-            checkValidProps = props instanceof FragmentProps;
-        } else if (GroupContentsComponent.class.equals(componentType)) {
-            checkValidProps = props instanceof FragmentProps;
+        } else if (ToolbarActionComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof ToolbarActionComponentProps;
         }
 
         return checkValidProps;

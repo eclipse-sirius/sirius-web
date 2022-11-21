@@ -12,6 +12,16 @@
  *******************************************************************************/
 import { GQLSelect, GQLSubscriber } from '../form/FormEventFragments.types';
 
+export interface SelectStyleProps {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface SelectPropertySectionProps {
   editingContextId: string;
   formId: string;

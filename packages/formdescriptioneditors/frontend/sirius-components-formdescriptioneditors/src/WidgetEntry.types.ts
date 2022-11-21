@@ -11,43 +11,71 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLFlexDirection } from '@eclipse-sirius/sirius-components-forms';
-import React from 'react';
 import {
-  GQLAbstractFormDescriptionEditorWidget,
-  GQLFormDescriptionEditorFlexboxContainer,
-  GQLFormDescriptionEditorToolbarAction,
-  GQLFormDescriptionEditorWidget,
-} from './FormDescriptionEditorEventFragment.types';
+  GQLButton,
+  GQLChartWidget,
+  GQLCheckbox,
+  GQLFlexboxContainer,
+  GQLFlexDirection,
+  GQLImage,
+  GQLLabelWidget,
+  GQLLink,
+  GQLList,
+  GQLMultiSelect,
+  GQLRadio,
+  GQLRichText,
+  GQLSelect,
+  GQLTextarea,
+  GQLTextfield,
+  GQLToolbarAction,
+  GQLWidget,
+} from '@eclipse-sirius/sirius-components-forms';
+import React from 'react';
 
 export interface WidgetEntryProps {
   editingContextId: string;
   representationId: string;
   containerId: string | null;
-  toolbarActions: GQLFormDescriptionEditorToolbarAction[];
-  siblings: GQLAbstractFormDescriptionEditorWidget[];
-  widget: GQLAbstractFormDescriptionEditorWidget;
+  toolbarActions: GQLToolbarAction[];
+  siblings: GQLWidget[];
+  widget: GQLWidget;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
   flexDirection: GQLFlexDirection;
   flexGrow: number;
 }
 
-export interface WidgetProps {
-  widget: GQLFormDescriptionEditorWidget;
+interface WidgetProps<WidgetType extends GQLWidget> {
+  widget: WidgetType;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
-  onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => void;
+  onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLWidget) => void;
 }
+
+export type BarChartWidgetProps = WidgetProps<GQLChartWidget>;
+export type ButtonWidgetProps = WidgetProps<GQLButton>;
+export type CheckboxWidgetProps = WidgetProps<GQLCheckbox>;
 
 export interface FlexboxContainerWidgetProps {
   editingContextId: string;
   representationId: string;
-  toolbarActions: GQLFormDescriptionEditorToolbarAction[];
-  widget: GQLFormDescriptionEditorFlexboxContainer;
+  toolbarActions: GQLToolbarAction[];
+  widget: GQLFlexboxContainer;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
 }
+
+export type ImageWidgetProps = WidgetProps<GQLImage>;
+export type LabelWidgetProps = WidgetProps<GQLLabelWidget>;
+export type LinkWidgetProps = WidgetProps<GQLLink>;
+export type ListWidgetProps = WidgetProps<GQLList>;
+export type MultiSelectWidgetProps = WidgetProps<GQLMultiSelect>;
+export type PieChartWidgetProps = WidgetProps<GQLChartWidget>;
+export type RadioWidgetProps = WidgetProps<GQLRadio>;
+export type RichTextWidgetProps = WidgetProps<GQLRichText>;
+export type SelectWidgetProps = WidgetProps<GQLSelect>;
+export type TextareaWidgetProps = WidgetProps<GQLTextarea>;
+export type TextfieldWidgetProps = WidgetProps<GQLTextfield>;
 
 export interface WidgetEntryState {
   message: string | null;

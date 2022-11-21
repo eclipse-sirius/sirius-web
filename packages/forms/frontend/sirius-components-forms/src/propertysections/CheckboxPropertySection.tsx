@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
   CheckboxPropertySectionProps,
+  CheckboxStyleProps,
   GQLEditCheckboxInput,
   GQLEditCheckboxMutationData,
   GQLEditCheckboxMutationVariables,
@@ -34,11 +35,7 @@ import {
 } from './CheckboxPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-export interface StyleProps {
-  color: string | null;
-}
-
-const useStyle = makeStyles<Theme, StyleProps>((theme) => ({
+const useStyle = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
   style: {
     color: ({ color }) => (color ? color : theme.palette.primary.light),
     '&.Mui-checked': {
@@ -79,7 +76,7 @@ export const CheckboxPropertySection = ({
   subscribers,
   readOnly,
 }: CheckboxPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: CheckboxStyleProps = {
     color: widget.style?.color ?? null,
   };
   const classes = useStyle(props);

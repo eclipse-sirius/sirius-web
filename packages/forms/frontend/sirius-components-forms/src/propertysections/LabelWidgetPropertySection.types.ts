@@ -12,6 +12,15 @@
  *******************************************************************************/
 import { GQLLabelWidget, GQLSubscriber } from '../form/FormEventFragments.types';
 
+export interface LabelStyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface LabelWidgetPropertySectionProps {
   widget: GQLLabelWidget;
   subscribers: GQLSubscriber[];

@@ -15,15 +15,11 @@ package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.components.formdescriptioneditors.AbstractFormDescriptionEditorWidget;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorFlexboxContainer;
-import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorToolbarAction;
-import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorWidget;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorFlexboxContainerElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorToolbarActionElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorWidgetElementProps;
+import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.ToolbarAction;
+import org.eclipse.sirius.components.forms.renderer.FormElementFactory;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -34,32 +30,33 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 public class FormDescriptionEditorElementFactory implements IElementFactory {
 
+    private final FormElementFactory formElementFactory;
+
+    public FormDescriptionEditorElementFactory() {
+        this.formElementFactory = new FormElementFactory();
+    }
+
     @Override
     public Object instantiateElement(String type, IProps props, List<Object> children) {
         Object object = null;
         if (FormDescriptionEditorElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorElementProps) {
-            object = this.instantiateForm((FormDescriptionEditorElementProps) props, children);
-        } else if (FormDescriptionEditorWidgetElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorWidgetElementProps) {
-            object = this.instantiateWidget((FormDescriptionEditorWidgetElementProps) props, children);
-        } else if (FormDescriptionEditorFlexboxContainerElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorFlexboxContainerElementProps) {
-            object = this.instantiateFlexboxContainer((FormDescriptionEditorFlexboxContainerElementProps) props, children);
-        } else if (FormDescriptionEditorToolbarActionElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorToolbarActionElementProps) {
-            object = this.instantiateToolbarAction((FormDescriptionEditorToolbarActionElementProps) props, children);
+            object = this.instantiateFormDescriptionEditor((FormDescriptionEditorElementProps) props, children);
+        } else {
+            object = this.formElementFactory.instantiateElement(type, props, children);
         }
         return object;
     }
 
-    private FormDescriptionEditor instantiateForm(FormDescriptionEditorElementProps props, List<Object> children) {
+    private FormDescriptionEditor instantiateFormDescriptionEditor(FormDescriptionEditorElementProps props, List<Object> children) {
         // @formatter:off
-        List<FormDescriptionEditorToolbarAction> toolbarActions = children.stream()
-                .filter(FormDescriptionEditorToolbarAction.class::isInstance)
-                .map(FormDescriptionEditorToolbarAction.class::cast)
+        List<ToolbarAction> toolbarActions = children.stream()
+                .filter(ToolbarAction.class::isInstance)
+                .map(ToolbarAction.class::cast)
                 .collect(Collectors.toList());
 
-        List<AbstractFormDescriptionEditorWidget> widgets = children.stream()
-                .filter(AbstractFormDescriptionEditorWidget.class::isInstance)
-                .filter(c -> !(c instanceof FormDescriptionEditorToolbarAction))
-                .map(AbstractFormDescriptionEditorWidget.class::cast)
+        List<AbstractWidget> widgets = children.stream()
+                .filter(c -> c instanceof AbstractWidget && !(c instanceof ToolbarAction))
+                .map(AbstractWidget.class::cast)
                 .collect(Collectors.toList());
 
         return FormDescriptionEditor.newFormDescriptionEditor(props.getId())
@@ -68,42 +65,6 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
                 .descriptionId(props.getDescriptionId())
                 .toolbarActions(toolbarActions)
                 .widgets(widgets)
-                .build();
-        // @formatter:on
-    }
-
-    private FormDescriptionEditorWidget instantiateWidget(FormDescriptionEditorWidgetElementProps props, List<Object> children) {
-        // @formatter:off
-        return FormDescriptionEditorWidget.newFormDescriptionEditorWidget(props.getId())
-                .label(props.getLabel())
-                .kind(props.getKind())
-                .build();
-        // @formatter:on
-    }
-
-    private FormDescriptionEditorFlexboxContainer instantiateFlexboxContainer(FormDescriptionEditorFlexboxContainerElementProps props, List<Object> children) {
-        // @formatter:off
-        List<AbstractFormDescriptionEditorWidget> widgets = children.stream()
-                .filter(AbstractFormDescriptionEditorWidget.class::isInstance)
-                .map(AbstractFormDescriptionEditorWidget.class::cast)
-                .collect(Collectors.toList());
-
-        return FormDescriptionEditorFlexboxContainer.newFormDescriptionEditorFlexboxContainer(props.getId())
-                .label(props.getLabel())
-                .kind(props.getKind())
-                .flexDirection(props.getFlexDirection().getLiteral())
-                .flexWrap("wrap") //$NON-NLS-1$
-                .flexGrow(1)
-                .children(widgets)
-                .build();
-        // @formatter:on
-    }
-
-    private FormDescriptionEditorToolbarAction instantiateToolbarAction(FormDescriptionEditorToolbarActionElementProps props, List<Object> children) {
-        // @formatter:off
-        return FormDescriptionEditorToolbarAction.newFormDescriptionEditorToolbarAction(props.getId())
-                .label(props.getLabel())
-                .kind(props.getKind())
                 .build();
         // @formatter:on
     }

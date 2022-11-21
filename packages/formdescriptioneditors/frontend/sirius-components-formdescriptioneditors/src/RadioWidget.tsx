@@ -10,22 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getTextDecorationLineValue, RadioStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { RadioWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, RadioStyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
-export const RadioWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+export const RadioWidget = ({ widget, selection }: RadioWidgetProps) => {
+  const props: RadioStyleProps = {
+    color: widget.style?.color ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -56,19 +72,52 @@ export const RadioWidget = ({ widget, selection }: WidgetProps) => {
         <FormControlLabel
           value={'value1'}
           control={<Radio color="primary" data-testid={'value1'} />}
-          label={'Value 1'}
+          label={
+            <Typography
+              classes={
+                widget.style
+                  ? {
+                      root: classes.style,
+                    }
+                  : {}
+              }>
+              {'Value 1'}
+            </Typography>
+          }
           checked={false}
         />
         <FormControlLabel
           value={'value2'}
           control={<Radio color="primary" data-testid={'value2'} inputRef={ref} />}
-          label={'Value 2'}
+          label={
+            <Typography
+              classes={
+                widget.style
+                  ? {
+                      root: classes.style,
+                    }
+                  : {}
+              }>
+              {'Value 2'}
+            </Typography>
+          }
           checked={true}
         />
         <FormControlLabel
           value={'value3'}
           control={<Radio color="primary" data-testid={'value2'} />}
-          label={'Value 3'}
+          label={
+            <Typography
+              classes={
+                widget.style
+                  ? {
+                      root: classes.style,
+                    }
+                  : {}
+              }>
+              {'Value 3'}
+            </Typography>
+          }
           checked={false}
         />
       </RadioGroup>

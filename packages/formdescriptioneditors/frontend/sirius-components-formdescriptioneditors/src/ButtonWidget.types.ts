@@ -10,18 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.formdescriptioneditors;
 
-/**
- * Any widget contained in the form description editor representation.
- *
- * @author arichard
- */
-public interface IFormDescriptionEditorWidget {
-
-    String getId();
-
-    String getKind();
-
-    String getLabel();
+export interface ButtonWidgetState {
+  imageURL: string | null;
+  validImage: boolean;
+  selected: boolean;
 }

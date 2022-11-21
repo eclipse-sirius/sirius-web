@@ -10,21 +10,39 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getTextDecorationLineValue, SelectStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { SelectWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, SelectStyleProps>((theme) => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
-export const SelectWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+export const SelectWidget = ({ widget, selection }: SelectWidgetProps) => {
+  const props: SelectStyleProps = {
+    backgroundColor: widget.style?.backgroundColor ?? null,
+    foregroundColor: widget.style?.foregroundColor ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -51,13 +69,58 @@ export const SelectWidget = ({ widget, selection }: WidgetProps) => {
         value="value1"
         inputRef={ref}
         onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}>
-        <MenuItem value="">
+        onBlur={() => setSelected(false)}
+        inputProps={
+          widget.style
+            ? {
+                className: classes.style,
+              }
+            : {}
+        }>
+        <MenuItem
+          value=""
+          classes={
+            widget.style
+              ? {
+                  root: classes.style,
+                }
+              : {}
+          }>
           <em>None</em>
         </MenuItem>
-        <MenuItem value="value1">Value 1</MenuItem>
-        <MenuItem value="value2">Value 2</MenuItem>
-        <MenuItem value="value3">Value 3</MenuItem>
+        <MenuItem
+          value="value1"
+          classes={
+            widget.style
+              ? {
+                  root: classes.style,
+                }
+              : {}
+          }>
+          Value 1
+        </MenuItem>
+        <MenuItem
+          value="value2"
+          classes={
+            widget.style
+              ? {
+                  root: classes.style,
+                }
+              : {}
+          }>
+          Value 2
+        </MenuItem>
+        <MenuItem
+          value="value3"
+          classes={
+            widget.style
+              ? {
+                  root: classes.style,
+                }
+              : {}
+          }>
+          Value 3
+        </MenuItem>
       </Select>
     </div>
   );

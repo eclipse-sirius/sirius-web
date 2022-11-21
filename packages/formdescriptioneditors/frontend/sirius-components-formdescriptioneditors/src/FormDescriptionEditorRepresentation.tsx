@@ -344,7 +344,7 @@ export const FormDescriptionEditorRepresentation = ({
             onDragStart={handleDragStart}>
             <TextFormatIcon />
             <Typography variant="caption" gutterBottom>
-              Rich Text
+              RichText
             </Typography>
           </div>
           <div
@@ -414,17 +414,6 @@ export const FormDescriptionEditorRepresentation = ({
             </Typography>
           </div>
           <div
-            id="Image"
-            data-testid="FormDescriptionEditor-Image"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStart}>
-            <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom>
-              Image
-            </Typography>
-          </div>
-          <div
             id="Link"
             data-testid="FormDescriptionEditor-Link"
             draggable="true"
@@ -444,6 +433,17 @@ export const FormDescriptionEditorRepresentation = ({
             <FormatListBulletedIcon />
             <Typography variant="caption" gutterBottom>
               List
+            </Typography>
+          </div>
+          <div
+            id="Image"
+            data-testid="FormDescriptionEditor-Image"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
+            <Typography variant="caption" gutterBottom>
+              Image
             </Typography>
           </div>
           <div

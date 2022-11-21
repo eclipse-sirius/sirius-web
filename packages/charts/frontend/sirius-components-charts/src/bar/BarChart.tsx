@@ -15,19 +15,22 @@ import { useEffect, useRef } from 'react';
 import { getFontSize, getFontStyle, getFontWeight, getTextDecoration } from '../chartOperations';
 import { BarChartProps } from './BarChart.types';
 
+const marginTop = 20;
+const marginBottom = 30;
+const marginRight = 0;
+const marginLeft = 40;
+const xPadding = 0.1;
+const yType = d3.scaleLinear;
+const yFormat = 'f';
+const x = (d) => d.key;
+const y = (d) => d.value;
+
 export const BarChart = ({ width, height, chart }: BarChartProps) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
-    const marginTop = 20;
-    const marginBottom = 30;
-    const marginRight = 0;
-    const marginLeft = 40;
     const xRange = [marginLeft, width - marginRight]; // [left, right]
     const yRange = [height - marginBottom, marginTop]; // [bottom, top]
-    const xPadding = 0.1;
-    const yType = d3.scaleLinear;
-    const yFormat = 'f';
 
     if (d3Container.current && chart) {
       const { entries: data, label: yLabel, style } = chart;
@@ -35,8 +38,6 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
       const fontStyle = getFontStyle(style);
       const fontWeight = getFontWeight(style);
       const textDecoration = getTextDecoration(style);
-      const x = (d) => d.key;
-      const y = (d) => d.value;
       let color: string;
       if (style?.barsColor != null && style?.barsColor.length > 0) {
         color = style?.barsColor;
@@ -68,7 +69,8 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
       selection.selectAll('*').remove(); // Remove existing content.
       const svg = selection
         .attr('viewBox', [0, 0, width, height])
-        .attr('style', `max-width: 100%; max-height: ${height}; height: auto; height: intrinsic;`);
+        .attr('style', `max-width: 100%; max-height: ${height}; height: auto; height: intrinsic;`)
+        .attr('pointer-events', 'none'); // allow selection anywhere in the svg
 
       svg
         .append('g')

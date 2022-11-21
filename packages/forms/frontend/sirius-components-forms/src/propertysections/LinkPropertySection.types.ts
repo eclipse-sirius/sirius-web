@@ -12,6 +12,15 @@
  *******************************************************************************/
 import { GQLLink } from '../form/FormEventFragments.types';
 
+export interface LinkStyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface LinkPropertySectionProps {
   widget: GQLLink;
 }

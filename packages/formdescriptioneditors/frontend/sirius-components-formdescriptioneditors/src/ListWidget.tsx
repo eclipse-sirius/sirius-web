@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { getTextDecorationLineValue, ListStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -21,9 +22,16 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { ListWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   icon: {
     width: '16px',
     height: '16px',
@@ -34,10 +42,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ListWidget = ({ widget, selection }: WidgetProps) => {
-  const [selected, setSelected] = useState<Boolean>(false);
+export const ListWidget = ({ widget, selection }: ListWidgetProps) => {
+  const props: ListStyleProps = {
+    color: widget.style?.color ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
 
-  const classes = useStyles();
+  const [selected, setSelected] = useState<Boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -59,7 +75,7 @@ export const ListWidget = ({ widget, selection }: WidgetProps) => {
           <TableRow>
             <TableCell>
               {' '}
-              <Typography color="textPrimary">
+              <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
                 Value 1
               </Typography>
@@ -73,7 +89,7 @@ export const ListWidget = ({ widget, selection }: WidgetProps) => {
           <TableRow>
             <TableCell>
               {' '}
-              <Typography color="textPrimary">
+              <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
                 Value 2
               </Typography>
@@ -87,7 +103,7 @@ export const ListWidget = ({ widget, selection }: WidgetProps) => {
           <TableRow>
             <TableCell>
               {' '}
-              <Typography color="textPrimary">
+              <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
                 Value 3
               </Typography>

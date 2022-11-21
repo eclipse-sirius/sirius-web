@@ -12,6 +12,23 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import {
+  GQLButton,
+  GQLChartWidget,
+  GQLCheckbox,
+  GQLFlexboxContainer,
+  GQLImage,
+  GQLLabelWidget,
+  GQLLink,
+  GQLList,
+  GQLMultiSelect,
+  GQLRadio,
+  GQLRichText,
+  GQLSelect,
+  GQLTextarea,
+  GQLTextfield,
+  GQLWidget,
+} from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -33,8 +50,6 @@ import {
   GQLDeleteWidgetMutationVariables,
   GQLDeleteWidgetPayload,
   GQLErrorPayload,
-  GQLFormDescriptionEditorFlexboxContainer,
-  GQLFormDescriptionEditorWidget,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
@@ -168,7 +183,7 @@ export const WidgetEntry = ({
         {
           id: widget.id,
           label: widget.label,
-          kind: `siriusComponents://semantic?domain=view&entity=${widget.kind}Description`,
+          kind: `siriusComponents://semantic?domain=view&entity=${widget.__typename}Description`,
         },
       ],
     };
@@ -213,7 +228,7 @@ export const WidgetEntry = ({
     onDropBefore(event, widget);
   };
 
-  const onDropBefore = (event: React.DragEvent<HTMLDivElement>, widget: GQLFormDescriptionEditorWidget) => {
+  const onDropBefore = (event: React.DragEvent<HTMLDivElement>, widget: GQLWidget) => {
     const id: string = event.dataTransfer.getData('text/plain');
 
     let index: number = siblings.indexOf(widget);
@@ -252,158 +267,161 @@ export const WidgetEntry = ({
   };
 
   let widgetElement: JSX.Element | null = null;
-  if (widget.kind === 'Textfield') {
-    widgetElement = (
-      <TextfieldWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'TextArea') {
-    widgetElement = (
-      <TextAreaWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'RichText') {
-    widgetElement = (
-      <RichTextWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'Checkbox') {
-    widgetElement = (
-      <CheckboxWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'Radio') {
-    widgetElement = (
-      <RadioWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'Select') {
-    widgetElement = (
-      <SelectWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'MultiSelect') {
-    widgetElement = (
-      <MultiSelectWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'Button') {
+  if (widget.__typename === 'Button') {
     widgetElement = (
       <ButtonWidget
         data-testid={widget.id}
-        widget={widget}
+        widget={widget as GQLButton}
         selection={selection}
         setSelection={setSelection}
         onDropBefore={onDropBefore}
       />
     );
-  } else if (widget.kind === 'Label') {
+  } else if (widget.__typename === 'Checkbox') {
     widgetElement = (
-      <LabelWidget
+      <CheckboxWidget
         data-testid={widget.id}
-        widget={widget}
+        widget={widget as GQLCheckbox}
         selection={selection}
         setSelection={setSelection}
         onDropBefore={onDropBefore}
       />
     );
-  } else if (widget.kind === 'Link') {
-    widgetElement = (
-      <LinkWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'List') {
-    widgetElement = (
-      <ListWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'BarChart') {
-    widgetElement = (
-      <BarChartWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'PieChart') {
-    widgetElement = (
-      <PieChartWidget
-        data-testid={widget.id}
-        widget={widget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
-  } else if (widget.kind === 'FlexboxContainer') {
+  } else if (widget.__typename === 'FlexboxContainer') {
     widgetElement = (
       <FlexboxContainerWidget
         data-testid={widget.id}
         editingContextId={editingContextId}
         representationId={representationId}
         toolbarActions={toolbarActions}
-        widget={widget as GQLFormDescriptionEditorFlexboxContainer}
+        widget={widget as GQLFlexboxContainer}
         selection={selection}
         setSelection={setSelection}
       />
     );
-  } else if (widget.kind === 'Image') {
+  } else if (widget.__typename === 'Image') {
     widgetElement = (
       <ImageWidget
         data-testid={widget.id}
-        widget={widget}
+        widget={widget as GQLImage}
         selection={selection}
         setSelection={setSelection}
         onDropBefore={onDropBefore}
       />
     );
+  } else if (widget.__typename === 'LabelWidget') {
+    widgetElement = (
+      <LabelWidget
+        data-testid={widget.id}
+        widget={widget as GQLLabelWidget}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'Link') {
+    widgetElement = (
+      <LinkWidget
+        data-testid={widget.id}
+        widget={widget as GQLLink}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'List') {
+    widgetElement = (
+      <ListWidget
+        data-testid={widget.id}
+        widget={widget as GQLList}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'MultiSelect') {
+    widgetElement = (
+      <MultiSelectWidget
+        data-testid={widget.id}
+        widget={widget as GQLMultiSelect}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'Radio') {
+    widgetElement = (
+      <RadioWidget
+        data-testid={widget.id}
+        widget={widget as GQLRadio}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'RichText') {
+    widgetElement = (
+      <RichTextWidget
+        data-testid={widget.id}
+        widget={widget as GQLRichText}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'Select') {
+    widgetElement = (
+      <SelectWidget
+        data-testid={widget.id}
+        widget={widget as GQLSelect}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'Textarea') {
+    widgetElement = (
+      <TextAreaWidget
+        data-testid={widget.id}
+        widget={widget as GQLTextarea}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'Textfield') {
+    widgetElement = (
+      <TextfieldWidget
+        data-testid={widget.id}
+        widget={widget as GQLTextfield}
+        selection={selection}
+        setSelection={setSelection}
+        onDropBefore={onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'ChartWidget') {
+    const chartWidget: GQLChartWidget = widget as GQLChartWidget;
+    if (chartWidget.chart.metadata.kind === 'BarChart') {
+      widgetElement = (
+        <BarChartWidget
+          data-testid={widget.id}
+          widget={widget as GQLChartWidget}
+          selection={selection}
+          setSelection={setSelection}
+          onDropBefore={onDropBefore}
+        />
+      );
+    } else if (chartWidget.chart.metadata.kind === 'PieChart') {
+      widgetElement = (
+        <PieChartWidget
+          data-testid={widget.id}
+          widget={widget as GQLChartWidget}
+          selection={selection}
+          setSelection={setSelection}
+          onDropBefore={onDropBefore}
+        />
+      );
+    }
   }
   return (
     <div

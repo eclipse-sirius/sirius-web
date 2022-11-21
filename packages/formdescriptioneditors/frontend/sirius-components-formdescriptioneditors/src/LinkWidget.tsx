@@ -10,19 +10,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getTextDecorationLineValue, LinkStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { LinkWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, LinkStyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
-export const LinkWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+export const LinkWidget = ({ widget, selection }: LinkWidgetProps) => {
+  const props: LinkStyleProps = {
+    color: widget.style?.color ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -38,10 +54,10 @@ export const LinkWidget = ({ widget, selection }: WidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div className={selected ? classes.selected : ''}>
       <Link
         ref={ref}
-        className={selected ? classes.selected : ''}
+        className={classes.style}
         onClick={(event) => {
           event.preventDefault();
           setSelected(true);

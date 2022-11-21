@@ -108,7 +108,7 @@ export interface GQLGroup {
   id: string;
   label: string;
   displayMode: GQLGroupDisplayMode;
-  toolbarActions: GQLButton[];
+  toolbarActions: GQLToolbarAction[];
   widgets: GQLWidget[];
 }
 
@@ -261,7 +261,6 @@ export interface GQLLinkStyle {
 }
 
 export interface GQLButton extends GQLWidget {
-  label: string;
   buttonLabel: string | null;
   imageURL: string | null;
   style: GQLButtonStyle;
@@ -277,8 +276,13 @@ export interface GQLButtonStyle {
   strikeThrough: boolean | null;
 }
 
+export interface GQLToolbarAction extends GQLWidget {
+  buttonLabel: string | null;
+  imageURL: string | null;
+  style: GQLButtonStyle;
+}
+
 export interface GQLChartWidget extends GQLWidget {
-  label: string;
   chart: GQLChart;
 }
 
@@ -328,7 +332,6 @@ export interface GQLPieChartEntry {
   value: number;
 }
 export interface GQLLabelWidget extends GQLWidget {
-  label: string;
   stringValue: string;
   style: GQLLabelWidgetStyle;
 }
@@ -342,7 +345,6 @@ export interface GQLLabelWidgetStyle {
   strikeThrough: boolean | null;
 }
 export interface GQLFlexboxContainer extends GQLWidget {
-  label: string;
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
   flexGrow: number;

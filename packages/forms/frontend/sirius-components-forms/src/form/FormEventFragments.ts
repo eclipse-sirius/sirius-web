@@ -32,81 +32,7 @@ export const widgetSubscriptionsUpdatedEventPayloadFragment = `
   }
 `;
 
-export const formRefreshedEventPayloadFragment = `
-  fragment formRefreshedEventPayloadFragment on FormRefreshedEventPayload {
-    id
-    form {
-      id
-      metadata {
-        label
-      }
-      pages {
-        id
-        label
-        groups {
-          id
-          label
-          displayMode
-          toolbarActions {
-            ...widgetFields
-          }
-          widgets {
-            ...widgetFields
-            ... on FlexboxContainer {
-              ...flexboxContainerFields
-            }
-          }
-        }
-      }
-    }
-  }
-
-  fragment widgetFields on Widget {
-    ...commonFields
-    ... on Textfield {
-      ...textfieldFields
-    }
-    ... on Textarea {
-      ...textareaFields
-    }
-    ... on Checkbox {
-      ...checkboxFields
-    }
-    ... on Select {
-      ...selectFields
-    }
-    ... on MultiSelect {
-      ...multiSelectFields
-    }
-    ... on Radio {
-      ...radioFields
-    }
-    ... on List {
-      ...listFields
-    }
-    ... on Link {
-      ...linkFields
-    }
-    ... on Button {
-      ...buttonFields
-    }
-    ... on LabelWidget {
-      ...labelFields
-    }
-    ... on ChartWidget {
-      ...chartWidgetFields
-    }
-    ... on TreeWidget {
-      ...treeWidgetFields
-    }
-    ... on Image {
-      ...imageFields
-    }
-    ... on RichText {
-      ...richTextFields
-    }
-  }
-
+export const commonFields = `
   fragment commonFields on Widget {
     id
     __typename
@@ -116,7 +42,11 @@ export const formRefreshedEventPayloadFragment = `
       message
     }
   }
+`;
 
+export const widgetFields = `
+  ${commonFields}
+  
   fragment textfieldFields on Textfield {
     label
     iconURL
@@ -261,6 +191,21 @@ export const formRefreshedEventPayloadFragment = `
     }
   }
 
+  fragment toolbarActionFields on ToolbarAction {
+    label
+    buttonLabel
+    imageURL
+    style {
+      backgroundColor
+      foregroundColor
+      fontSize
+      italic
+      bold
+      underline
+      strikeThrough
+    }
+  }
+
   fragment chartWidgetFields on ChartWidget {
     label
     chart {
@@ -288,6 +233,7 @@ export const formRefreshedEventPayloadFragment = `
           label
           kind
         }
+        label
         entries {
           key
           value
@@ -305,7 +251,7 @@ export const formRefreshedEventPayloadFragment = `
       }
     }
   } 
-  
+
   fragment labelFields on LabelWidget {
     label
     stringValue: value
@@ -319,6 +265,86 @@ export const formRefreshedEventPayloadFragment = `
     }
   }
 
+  fragment treeWidgetFields on TreeWidget {
+    label
+    iconURL
+    expandedNodesIds
+    nodes {
+      id
+      parentId
+      label
+      kind
+      imageURL
+      selectable
+    }
+  }
+
+  fragment imageFields on Image {
+    label
+    iconURL
+    url
+    maxWidth
+  }
+
+  fragment richTextFields on RichText {
+    label
+    iconURL
+    stringValue: value
+  }
+
+  fragment widgetFields on Widget {
+    ...commonFields
+    ... on Textfield {
+      ...textfieldFields
+    }
+    ... on Textarea {
+      ...textareaFields
+    }
+    ... on Checkbox {
+      ...checkboxFields
+    }
+    ... on Select {
+      ...selectFields
+    }
+    ... on MultiSelect {
+      ...multiSelectFields
+    }
+    ... on Radio {
+      ...radioFields
+    }
+    ... on List {
+      ...listFields
+    }
+    ... on Link {
+      ...linkFields
+    }
+    ... on Button {
+      ...buttonFields
+    }
+    ... on ToolbarAction {
+      ...toolbarActionFields
+    }
+    ... on LabelWidget {
+      ...labelFields
+    }
+    ... on ChartWidget {
+      ...chartWidgetFields
+    }
+    ... on TreeWidget {
+      ...treeWidgetFields
+    }
+    ... on Image {
+      ...imageFields
+    }
+    ... on RichText {
+      ...richTextFields
+    }
+  }
+`;
+
+export const flexboxContainerFields = `
+  ${commonFields}
+  ${widgetFields}
   fragment flexboxContainerFields on FlexboxContainer {
     ...commonFields
     label
@@ -349,31 +375,37 @@ export const formRefreshedEventPayloadFragment = `
       }
     }
   }
+`;
 
-  fragment treeWidgetFields on TreeWidget {
-    label
-    iconURL
-    expandedNodesIds
-    nodes {
+export const formRefreshedEventPayloadFragment = `
+  ${widgetFields}
+  ${flexboxContainerFields}
+  fragment formRefreshedEventPayloadFragment on FormRefreshedEventPayload {
+    id
+    form {
       id
-      parentId
-      label
-      kind
-      imageURL
-      selectable
+      metadata {
+        label
+      }
+      pages {
+        id
+        label
+        groups {
+          id
+          label
+          displayMode
+          toolbarActions {
+            ...commonFields
+            ...toolbarActionFields
+          }
+          widgets {
+            ...widgetFields
+            ... on FlexboxContainer {
+              ...flexboxContainerFields
+            }
+          }
+        }
+      }
     }
   }
-
-  fragment imageFields on Image {
-    label
-    iconURL
-    url
-    maxWidth
-  }
-
-  fragment richTextFields on RichText {
-    label
-    iconURL
-    stringValue: value
-  }
-  `;
+`;

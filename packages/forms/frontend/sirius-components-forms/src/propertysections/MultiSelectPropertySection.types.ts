@@ -12,6 +12,16 @@
  *******************************************************************************/
 import { GQLMultiSelect, GQLSubscriber } from '../form/FormEventFragments.types';
 
+export interface MultiSelectStyleProps {
+  backgroundColor: string | null;
+  foregroundColor: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface MultiSelectPropertySectionProps {
   editingContextId: string;
   formId: string;

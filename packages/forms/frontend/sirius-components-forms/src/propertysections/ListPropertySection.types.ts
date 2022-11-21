@@ -13,6 +13,15 @@
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLList, GQLSubscriber } from '../form/FormEventFragments.types';
 
+export interface ListStyleProps {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
+}
+
 export interface ListPropertySectionProps {
   editingContextId: string;
   formId: string;

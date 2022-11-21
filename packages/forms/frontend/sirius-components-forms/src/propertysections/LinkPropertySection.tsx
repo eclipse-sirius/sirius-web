@@ -13,35 +13,23 @@
 import Link from '@material-ui/core/Link';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
-import { LinkPropertySectionProps } from './LinkPropertySection.types';
-interface StyleProps {
-  color: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
-}
+import { LinkPropertySectionProps, LinkStyleProps } from './LinkPropertySection.types';
 
-const useStyle = makeStyles<Theme, StyleProps>(() => ({
-  style: ({ color }) => {
-    const style = {
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    };
-    if (color) {
-      style['color'] = color;
-    }
-    return style;
+const useStyle = makeStyles<Theme, LinkStyleProps>(() => ({
+  style: {
+    color: ({ color }) => (color ? color : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
 }));
+
 /**
  * Defines the content of a Link property section.
  */
 export const LinkPropertySection = ({ widget }: LinkPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: LinkStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
     italic: widget.style?.italic ?? null,
@@ -49,8 +37,8 @@ export const LinkPropertySection = ({ widget }: LinkPropertySectionProps) => {
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-
   const classes = useStyle(props);
+
   return (
     <div>
       <Link className={classes.style} id={widget.id} href={widget.url} rel="noopener noreferrer" target="_blank">

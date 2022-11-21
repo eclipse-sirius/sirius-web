@@ -33,6 +33,7 @@ import {
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
   TextfieldPropertySectionProps,
+  TextfieldStyleProps,
 } from './TextfieldPropertySection.types';
 import {
   ChangeValueEvent,
@@ -44,17 +45,7 @@ import {
   textfieldPropertySectionMachine,
 } from './TextfieldPropertySectionMachine';
 
-export interface StyleProps {
-  backgroundColor: string | null;
-  foregroundColor: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
-}
-
-const useStyle = makeStyles<Theme, StyleProps>(() => ({
+const useStyle = makeStyles<Theme, TextfieldStyleProps>(() => ({
   style: {
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
@@ -102,7 +93,7 @@ export const TextfieldPropertySection = ({
   subscribers,
   readOnly,
 }: TextfieldPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: TextfieldStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
     fontSize: widget.style?.fontSize ?? null,

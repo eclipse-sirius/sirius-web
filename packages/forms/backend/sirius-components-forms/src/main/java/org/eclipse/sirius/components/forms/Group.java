@@ -31,7 +31,7 @@ public final class Group {
 
     private GroupDisplayMode displayMode;
 
-    private List<Button> toolbarActions;
+    private List<ToolbarAction> toolbarActions;
 
     private List<AbstractWidget> widgets;
 
@@ -47,7 +47,7 @@ public final class Group {
         return this.label;
     }
 
-    public List<Button> getToolbarActions() {
+    public List<ToolbarAction> getToolbarActions() {
         return this.toolbarActions;
     }
 
@@ -82,7 +82,7 @@ public final class Group {
 
         private GroupDisplayMode displayMode = GroupDisplayMode.LIST;
 
-        private List<Button> toolbarActions = List.of();
+        private List<ToolbarAction> toolbarActions = List.of();
 
         private List<AbstractWidget> widgets;
 
@@ -100,7 +100,7 @@ public final class Group {
             return this;
         }
 
-        public Builder toolbarActions(List<Button> toolbarActions) {
+        public Builder toolbarActions(List<ToolbarAction> toolbarActions) {
             this.toolbarActions = Objects.requireNonNull(toolbarActions);
             return this;
         }

@@ -11,10 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ButtonStyleProps, getTextDecorationLineValue, GQLButton } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useState } from 'react';
+import CloseIcon from '@material-ui/icons/Close';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { deleteToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -23,17 +27,48 @@ import {
   GQLDeleteToolbarActionMutationVariables,
   GQLDeleteToolbarActionPayload,
   GQLErrorPayload,
-  GQLFormDescriptionEditorToolbarAction,
   GQLMoveToolbarActionInput,
   GQLMoveToolbarActionMutationData,
   GQLMoveToolbarActionMutationVariables,
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionProps, ToolbarActionState } from './ToolbarActionWidget.types';
 
-const useStyle = makeStyles<Theme>(() => ({
+const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
     minWidth: '32px',
     lineHeight: 1.25,
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.light),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    '&:hover': {
+      backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.main),
+      color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    },
+  },
+  selected: {
+    minWidth: '32px',
+    lineHeight: 1.25,
+    backgroundColor: theme.palette.secondary.light,
+    color: 'white',
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main,
+      color: 'white',
+      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    },
   },
   toolbarAction: {
     display: 'flex',
@@ -46,6 +81,9 @@ const useStyle = makeStyles<Theme>(() => ({
   },
   dragOver: {
     border: 'dashed 1px red',
+  },
+  icon: {
+    marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
   },
 }));
 
@@ -60,19 +98,74 @@ export const ToolbarActionWidget = ({
   selection,
   setSelection,
 }: ToolbarActionProps) => {
-  const classes = useStyle();
+  const props: ButtonStyleProps = {
+    backgroundColor: toolbarAction.style?.backgroundColor ?? null,
+    foregroundColor: toolbarAction.style?.foregroundColor ?? null,
+    fontSize: toolbarAction.style?.fontSize ?? null,
+    italic: toolbarAction.style?.italic ?? null,
+    bold: toolbarAction.style?.bold ?? null,
+    underline: toolbarAction.style?.underline ?? null,
+    strikeThrough: toolbarAction.style?.strikeThrough ?? null,
+    iconOnly: toolbarAction.buttonLabel ? false : true,
+  };
+  const classes = useStyles(props);
 
-  const initialState: ToolbarActionState = { message: null, selected: false };
+  const { httpOrigin }: ServerContextValue = useContext(ServerContext);
+
+  const initialState: ToolbarActionState = {
+    imageURL: toolbarAction.imageURL,
+    validImage: false,
+    message: null,
+    selected: false,
+  };
   const [state, setState] = useState<ToolbarActionState>(initialState);
+
+  const onErrorLoadingImage = () => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        validImage: false,
+      };
+    });
+  };
+
+  useEffect(() => {
+    let newURL: string = null;
+    let validURL = true;
+    if (!toolbarAction.imageURL) {
+      validURL = false;
+    } else if (toolbarAction.imageURL.startsWith('http://') || toolbarAction.imageURL.startsWith('https://')) {
+      newURL = toolbarAction.imageURL;
+    } else {
+      newURL = httpOrigin + toolbarAction.imageURL;
+    }
+    setState((prevState) => {
+      return {
+        ...prevState,
+        imageURL: newURL,
+        validImage: validURL,
+      };
+    });
+  }, [toolbarAction.imageURL]);
 
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === toolbarAction.id)) {
       ref.current.focus();
-      setState({ message: state.message, selected: true });
+      setState((prevState) => {
+        return {
+          ...prevState,
+          selected: true,
+        };
+      });
     } else {
-      setState({ message: state.message, selected: false });
+      setState((prevState) => {
+        return {
+          ...prevState,
+          selected: false,
+        };
+      });
     }
   }, [selection, toolbarAction]);
 
@@ -86,12 +179,22 @@ export const ToolbarActionWidget = ({
   useEffect(() => {
     if (!deleteToolbarActionLoading) {
       if (deleteToolbarActionError) {
-        setState({ message: deleteToolbarActionError.message, selected: state.selected });
+        setState((prevState) => {
+          return {
+            ...prevState,
+            message: deleteToolbarActionError.message,
+          };
+        });
       }
       if (deleteToolbarActionData) {
         const { deleteToolbarAction } = deleteToolbarActionData;
         if (isErrorPayload(deleteToolbarAction)) {
-          setState({ message: deleteToolbarAction.message, selected: state.selected });
+          setState((prevState) => {
+            return {
+              ...prevState,
+              message: deleteToolbarAction.message,
+            };
+          });
         }
       }
     }
@@ -105,12 +208,22 @@ export const ToolbarActionWidget = ({
   useEffect(() => {
     if (!moveToolbarActionLoading) {
       if (moveToolbarActionError) {
-        setState({ message: moveToolbarActionError.message, selected: state.selected });
+        setState((prevState) => {
+          return {
+            ...prevState,
+            message: moveToolbarActionError.message,
+          };
+        });
       }
       if (moveToolbarActionData) {
         const { moveToolbarAction } = moveToolbarActionData;
         if (isErrorPayload(moveToolbarAction)) {
-          setState({ message: moveToolbarAction.message, selected: state.selected });
+          setState((prevState) => {
+            return {
+              ...prevState,
+              message: moveToolbarAction.message,
+            };
+          });
         }
       }
     }
@@ -138,10 +251,7 @@ export const ToolbarActionWidget = ({
     onDropBefore(event, toolbarAction);
   };
 
-  const onDropBefore = (
-    event: React.DragEvent<HTMLDivElement>,
-    toolbarAction: GQLFormDescriptionEditorToolbarAction
-  ) => {
+  const onDropBefore = (event: React.DragEvent<HTMLDivElement>, toolbarAction: GQLButton) => {
     const id: string = event.dataTransfer.getData('text/plain');
 
     let index: number = siblings.indexOf(toolbarAction);
@@ -173,7 +283,7 @@ export const ToolbarActionWidget = ({
         {
           id: toolbarAction.id,
           label: toolbarAction.label,
-          kind: `siriusComponents://semantic?domain=view&entity=${toolbarAction.kind}Description`,
+          kind: `siriusComponents://semantic?domain=view&entity=${toolbarAction.__typename}Description`,
         },
       ],
     };
@@ -213,14 +323,71 @@ export const ToolbarActionWidget = ({
       />
       <Button
         data-testid={toolbarAction.label}
-        classes={{ root: classes.style }}
+        classes={state.selected ? { root: classes.selected } : { root: classes.style }}
         variant="contained"
-        color={state.selected ? 'secondary' : 'primary'}
-        onFocus={() => setState({ message: state.message, selected: true })}
-        onBlur={() => setState({ message: state.message, selected: false })}
+        onFocus={() =>
+          setState((prevState) => {
+            return {
+              ...prevState,
+              selected: true,
+            };
+          })
+        }
+        onBlur={() =>
+          setState((prevState) => {
+            return {
+              ...prevState,
+              selected: false,
+            };
+          })
+        }
         ref={ref}>
+        {state.validImage && state.imageURL ? (
+          <img
+            className={classes.icon}
+            width="16"
+            height="16"
+            alt={toolbarAction.label}
+            src={state.imageURL}
+            onError={onErrorLoadingImage}
+          />
+        ) : null}
         Lorem
       </Button>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={!!state.message}
+        autoHideDuration={3000}
+        onClose={() =>
+          setState((prevState) => {
+            return {
+              ...prevState,
+              message: null,
+            };
+          })
+        }
+        message={state.message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() =>
+              setState((prevState) => {
+                return {
+                  ...prevState,
+                  message: null,
+                };
+              })
+            }>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
     </div>
   );
 };

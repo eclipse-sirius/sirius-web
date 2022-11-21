@@ -18,41 +18,13 @@ type FormDescriptionEditorRefreshedEventPayload {
 type FormDescriptionEditor implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
-  toolbarActions: [FormDescriptionEditorToolbarAction!]!
-  widgets: [AbstractFormDescriptionEditorWidget!]!
+  toolbarActions: [ToolbarAction!]!
+  widgets: [Widget!]!
 }
 
 type FormDescriptionEditorDescription implements RepresentationDescription {
   id: ID!
   label: String!
-}
-
-interface AbstractFormDescriptionEditorWidget {
-  id: ID!
-  kind: String!
-  label: String!
-}
-
-type FormDescriptionEditorWidget implements AbstractFormDescriptionEditorWidget {
-	id: ID!
-	kind: String!
-	label: String!
-}
-
-type FormDescriptionEditorFlexboxContainer implements AbstractFormDescriptionEditorWidget {
-	id: ID!
-	kind: String!
-	label: String!
-	flexDirection: String!
-	flexWrap: String!
-	flexGrow: Int!
-	children: [AbstractFormDescriptionEditorWidget!]!
-}
-
-type FormDescriptionEditorToolbarAction implements AbstractFormDescriptionEditorWidget {
-	id: ID!
-	kind: String!
-	label: String!
 }
 
 extend type Mutation {

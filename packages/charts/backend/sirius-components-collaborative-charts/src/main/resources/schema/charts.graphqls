@@ -47,6 +47,7 @@ type BarChartStyle {
 type PieChart implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
+  label: String!
   entries: [PieChartEntry!]!
   style: PieChartStyle
 }

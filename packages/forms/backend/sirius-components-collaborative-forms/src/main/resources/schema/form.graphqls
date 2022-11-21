@@ -61,7 +61,7 @@ type Group {
   id: ID!
   label: String!
   displayMode: GroupDisplayMode!
-  toolbarActions: [Button!]!
+  toolbarActions: [ToolbarAction!]!
   widgets: [Widget!]!
 }
 
@@ -276,6 +276,16 @@ type ButtonStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+}
+
+type ToolbarAction implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  buttonLabel: String
+  imageURL: String
+  iconURL: String
+  style: ButtonStyle
 }
 
 union Chart = BarChart | PieChart

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.ToolbarAction;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
@@ -42,9 +44,9 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     private String descriptionId;
 
-    private List<FormDescriptionEditorToolbarAction> toolbarActions;
+    private List<ToolbarAction> toolbarActions;
 
-    private List<AbstractFormDescriptionEditorWidget> widgets;
+    private List<AbstractWidget> widgets;
 
     private FormDescriptionEditor() {
         // Prevent instantiation
@@ -75,11 +77,11 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
         return this.descriptionId;
     }
 
-    public List<FormDescriptionEditorToolbarAction> getToolbarActions() {
+    public List<ToolbarAction> getToolbarActions() {
         return this.toolbarActions;
     }
 
-    public List<AbstractFormDescriptionEditorWidget> getWidgets() {
+    public List<AbstractWidget> getWidgets() {
         return this.widgets;
     }
 
@@ -114,9 +116,9 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
         private String descriptionId;
 
-        private List<FormDescriptionEditorToolbarAction> toolbarActions;
+        private List<ToolbarAction> toolbarActions;
 
-        private List<AbstractFormDescriptionEditorWidget> widgets;
+        private List<AbstractWidget> widgets;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -146,12 +148,12 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             return this;
         }
 
-        public Builder toolbarActions(List<FormDescriptionEditorToolbarAction> toolbarActions) {
+        public Builder toolbarActions(List<ToolbarAction> toolbarActions) {
             this.toolbarActions = Objects.requireNonNull(toolbarActions);
             return this;
         }
 
-        public Builder widgets(List<AbstractFormDescriptionEditorWidget> widgets) {
+        public Builder widgets(List<AbstractWidget> widgets) {
             this.widgets = Objects.requireNonNull(widgets);
             return this;
         }

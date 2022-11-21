@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -67,7 +69,15 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
     @Override
     public FormDescriptionEditor create(String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
-        FormDescriptionEditor newFormDescriptionEditor = this.doRender(label, targetObject, editingContext, formDescriptionEditorDescription, Optional.empty());
+        // @formatter:off
+        FormDescriptionEditor newFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
+                .label(label)
+                .targetObjectId(this.objectService.getId(targetObject))
+                .descriptionId(formDescriptionEditorDescription.getId())
+                .toolbarActions(List.of()) // We don't store form description editor toolbar actions, it will be re-render by the FormDescriptionEditorProcessor.
+                .widgets(List.of()) // We don't store form description editor widgets, it will be re-render by the FormDescriptionEditorProcessor.
+                .build();
+        // @formatter:on
 
         this.representationPersistenceService.save(editingContext, newFormDescriptionEditor);
 
@@ -111,8 +121,6 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
         Element element = new Element(FormDescriptionEditorComponent.class, formDescriptionEditorComponentProps);
 
         FormDescriptionEditor newFormDescriptionEditor = new FormDescriptionEditorRenderer().render(element);
-
-        this.representationPersistenceService.save(editingContext, newFormDescriptionEditor);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

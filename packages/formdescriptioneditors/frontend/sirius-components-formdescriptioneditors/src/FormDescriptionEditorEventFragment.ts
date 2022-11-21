@@ -11,8 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
+import { flexboxContainerFields, widgetFields } from '@eclipse-sirius/sirius-components-forms';
 
 export const formDescriptionEditorEventSubscription = gql`
+  ${widgetFields}
+  ${flexboxContainerFields}
   subscription formDescriptionEditorEvent($input: FormDescriptionEditorEventInput!) {
     formDescriptionEditorEvent(input: $input) {
       __typename
@@ -38,43 +41,13 @@ export const formDescriptionEditorEventSubscription = gql`
             }
           }
           toolbarActions {
-            id
-            label
-            kind
+            ...commonFields
+            ...toolbarActionFields
           }
           widgets {
-            id
-            label
-            kind
-            ... on FormDescriptionEditorFlexboxContainer {
-              flexDirection
-              flexWrap
-              flexGrow
-              children {
-                id
-                label
-                kind
-                ... on FormDescriptionEditorFlexboxContainer {
-                  flexDirection
-                  flexWrap
-                  flexGrow
-                  children {
-                    id
-                    label
-                    kind
-                    ... on FormDescriptionEditorFlexboxContainer {
-                      flexDirection
-                      flexWrap
-                      flexGrow
-                      children {
-                        id
-                        label
-                        kind
-                      }
-                    }
-                  }
-                }
-              }
+            ...widgetFields
+            ... on FlexboxContainer {
+              ...flexboxContainerFields
             }
           }
         }

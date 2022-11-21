@@ -19,18 +19,19 @@ import { useEffect, useRef } from 'react';
 import { getFontSize, getFontStyle, getFontWeight, getTextDecoration } from '../chartOperations';
 import { PieChartProps } from './PieChart.types';
 
+const name = (d) => d.key; // given d in data, returns the (ordinal) label
+const value = (d) => d.value; // given d in data, returns the (quantitative) value
+const innerRadius = 0; // inner radius of pie, in pixels (non-zero for donut)
+const format = ','; // a format specifier for values (in the label)
+const strokeLinejoin = 'round'; // line join of stroke separating wedges
+
 export const PieChart = ({ width, height, chart }: PieChartProps) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
     const { entries: data, style } = chart;
-    const name = (d) => d.key; // given d in data, returns the (ordinal) label
-    const value = (d) => d.value; // given d in data, returns the (quantitative) value
-    const innerRadius = 0; // inner radius of pie, in pixels (non-zero for donut)
     const outerRadius = Math.min(width, height) / 2; // outer radius of pie, in pixels
     const labelRadius = innerRadius * 0.2 + outerRadius * 0.8; // center radius of labels
-    const format = ','; // a format specifier for values (in the label)
-    const strokeLinejoin = 'round'; // line join of stroke separating wedges
     const stroke = innerRadius > 0 ? 'none' : getStrokeColorValue(style); // stroke separating widths
     const padAngle = stroke === 'none' ? 1 / outerRadius : 0; // angular separation between wedges
     const strokeWidth = getStrokeWidth(style); // width of stroke separating wedges
@@ -84,7 +85,8 @@ export const PieChart = ({ width, height, chart }: PieChartProps) => {
       .attr('width', width)
       .attr('height', height)
       .attr('viewBox', [-width / 2, -height / 2, width, height])
-      .attr('style', 'max-width: 100%; height: auto; height: intrinsic;');
+      .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
+      .attr('pointer-events', 'none'); // allow selection anywhere in the svg
 
     svg
       .append('g')

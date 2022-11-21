@@ -12,20 +12,11 @@
  *******************************************************************************/
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { PropertySectionLabel } from './PropertySectionLabel';
-import { LabelWidgetPropertySectionProps } from './LabelWidgetPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { LabelStyleProps, LabelWidgetPropertySectionProps } from './LabelWidgetPropertySection.types';
+import { PropertySectionLabel } from './PropertySectionLabel';
 
-export interface StyleProps {
-  color: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
-}
-
-const useStyle = makeStyles<Theme, StyleProps>(() => ({
+const useStyle = makeStyles<Theme, LabelStyleProps>(() => ({
   style: {
     color: ({ color }) => (color ? color : 'inherit'),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
@@ -36,7 +27,7 @@ const useStyle = makeStyles<Theme, StyleProps>(() => ({
 }));
 
 export const LabelWidgetPropertySection = ({ widget, subscribers }: LabelWidgetPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: LabelStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
     italic: widget.style?.italic ?? null,

@@ -15,3 +15,7 @@ import { GQLImage } from '../form/FormEventFragments.types';
 export interface ImagePropertySectionProps {
   widget: GQLImage;
 }
+
+export interface ImageStyleProps {
+  maxWidth: string | null;
+}

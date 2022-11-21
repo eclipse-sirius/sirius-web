@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLChartWidget, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
@@ -22,7 +23,6 @@ import {
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
   GQLDeleteWidgetSuccessPayload,
-  GQLFormDescriptionEditorWidget,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
   GQLMoveWidgetSuccessPayload,
@@ -69,7 +69,7 @@ const deletePieChartWidgetVariables: GQLDeleteWidgetMutationVariables = {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
-    widgetId: 'PieChart1',
+    widgetId: 'ChartWidget1',
   },
 };
 const deleteWidgetSuccessPayload: GQLDeleteWidgetSuccessPayload = {
@@ -95,10 +95,22 @@ const moveWidgetSuccessPayload: GQLMoveWidgetSuccessPayload = {
 const moveWidgetSuccessData: GQLMoveWidgetMutationData = { moveWidget: moveWidgetSuccessPayload };
 
 test('should drop the Textfield in the drop area', async () => {
-  const textfieldWidget: GQLFormDescriptionEditorWidget = {
+  const textfieldWidget: GQLTextfield = {
     id: 'Textfield1',
     label: 'Textfield1',
-    kind: 'Textfield',
+    iconURL: null,
+    __typename: 'Textfield',
+    diagnostics: [],
+    stringValue: '',
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
 
   let addWidgetCalled: boolean = false;
@@ -147,10 +159,22 @@ test('should drop the Textfield in the drop area', async () => {
 });
 
 test('should delete the Textfield from the drop area', async () => {
-  const textfieldWidget: GQLFormDescriptionEditorWidget = {
+  const textfieldWidget: GQLTextfield = {
     id: 'Textfield1',
     label: 'Textfield1',
-    kind: 'Textfield',
+    iconURL: null,
+    __typename: 'Textfield',
+    diagnostics: [],
+    stringValue: '',
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
 
   let deleteWidgetCalled: boolean = false;
@@ -198,10 +222,33 @@ test('should delete the Textfield from the drop area', async () => {
 });
 
 test('should delete the PieChart from the drop area', async () => {
-  const pieChartWidget: GQLFormDescriptionEditorWidget = {
-    id: 'PieChart1',
+  const pieChart: GQLPieChart = {
+    metadata: {
+      description: { id: 'PieChartDescription' },
+      id: 'PieChart1',
+      kind: 'PieChart',
+      label: 'PieChart1',
+    },
     label: 'PieChart1',
-    kind: 'PieChart',
+    entries: [{ key: 'entry1', value: 1 }],
+    style: {
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+      colors: ['blue'],
+      strokeColor: null,
+      strokeWidth: null,
+    },
+  };
+  const pieChartWidget: GQLChartWidget = {
+    id: 'ChartWidget1',
+    label: 'PieChart1',
+    iconURL: null,
+    __typename: 'ChartWidget',
+    diagnostics: [],
+    chart: pieChart,
   };
 
   let deleteWidgetCalled: boolean = false;
@@ -248,10 +295,22 @@ test('should delete the PieChart from the drop area', async () => {
 });
 
 test('should move the existing Textfield from/into the drop area', async () => {
-  const textfieldWidget: GQLFormDescriptionEditorWidget = {
+  const textfieldWidget: GQLTextfield = {
     id: 'Textfield1',
     label: 'Textfield1',
-    kind: 'TextfieldDescription',
+    iconURL: null,
+    __typename: 'Textfield',
+    diagnostics: [],
+    stringValue: '',
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
 
   let moveWidgetCalled: boolean = false;
