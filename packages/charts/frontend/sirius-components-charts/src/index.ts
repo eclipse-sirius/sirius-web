@@ -18,5 +18,6 @@ export type Chart = BarChartRepresentation | PieChartRepresentation;
 
 export * from './bar/BarChart';
 export * from './bar/BarChart.types';
+export * from './Charts.types';
 export * from './pie/PieChart';
 export * from './pie/PieChart.types';

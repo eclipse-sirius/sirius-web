@@ -13,9 +13,7 @@
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorFlexboxContainerElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorToolbarActionElementProps;
-import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorWidgetElementProps;
+import org.eclipse.sirius.components.forms.renderer.FormInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -26,18 +24,20 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 public class FormDescriptionEditorInstancePropsValidator implements IInstancePropsValidator {
 
+    private final FormInstancePropsValidator formInstancePropsValidator;
+
+    public FormDescriptionEditorInstancePropsValidator() {
+        this.formInstancePropsValidator = new FormInstancePropsValidator();
+    }
+
     @Override
     public boolean validateInstanceProps(String type, IProps props) {
         boolean checkValidProps = false;
 
         if (FormDescriptionEditorElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof FormDescriptionEditorElementProps;
-        } else if (FormDescriptionEditorWidgetElementProps.TYPE.equals(type)) {
-            checkValidProps = props instanceof FormDescriptionEditorWidgetElementProps;
-        } else if (FormDescriptionEditorFlexboxContainerElementProps.TYPE.equals(type)) {
-            checkValidProps = props instanceof FormDescriptionEditorFlexboxContainerElementProps;
-        } else if (FormDescriptionEditorToolbarActionElementProps.TYPE.equals(type)) {
-            checkValidProps = props instanceof FormDescriptionEditorToolbarActionElementProps;
+        } else {
+            checkValidProps = this.formInstancePropsValidator.validateInstanceProps(type, props);
         }
         return checkValidProps;
     }

@@ -31,8 +31,6 @@ import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
-import org.eclipse.sirius.components.forms.GroupContents;
-import org.eclipse.sirius.components.forms.GroupToolbar;
 import org.eclipse.sirius.components.forms.Image;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Link;
@@ -43,6 +41,7 @@ import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.ToolbarAction;
 import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.elements.ButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
@@ -61,10 +60,10 @@ import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
+import org.eclipse.sirius.components.forms.elements.ToolbarActionElementProps;
 import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
-import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -120,48 +119,19 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateImage((ImageElementProps) props, children);
         } else if (RichTextElementProps.TYPE.equals(type) && props instanceof RichTextElementProps) {
             object = this.instantiateRichText((RichTextElementProps) props, children);
-        } else if (GroupToolbar.TYPE.equals(type) && props instanceof FragmentProps) {
-            object = this.instanciateGroupToolbar((FragmentProps) props, children);
-        } else if (GroupContents.TYPE.equals(type) && props instanceof FragmentProps) {
-            object = this.instanciateGroupContents((FragmentProps) props, children);
+        } else if (ToolbarActionElementProps.TYPE.equals(type) && props instanceof ToolbarActionElementProps) {
+            object = this.instantiateToolbarAction((ToolbarActionElementProps) props, children);
         }
 
         return object;
     }
 
-    private Object instanciateGroupToolbar(FragmentProps props, List<Object> children) {
-        // @formatter:off
-        List<Button> toolbarActions = children.stream()
-                .filter(Button.class::isInstance)
-                .map(Button.class::cast)
-                .collect(Collectors.toList());
-
-        return GroupToolbar.newGroupToolbar()
-                .toolbarActions(toolbarActions)
-                .build();
-        // @formatter:on
-    }
-
-    private Object instanciateGroupContents(FragmentProps props, List<Object> children) {
-        // @formatter:off
-        List<AbstractWidget> widgets = children.stream()
-                .filter(AbstractWidget.class::isInstance)
-                .map(AbstractWidget.class::cast)
-                .collect(Collectors.toList());
-
-        return GroupContents.newGroupContents()
-                .widgets(widgets)
-                .build();
-        // @formatter:on
-    }
-
     private Object instantiateBarChart(BarChartElementProps props) {
-        BarChartElementProps barChartElementProps = props;
-        List<BarChartEntry> entries = this.getBarChartEntries(barChartElementProps);
+        List<BarChartEntry> entries = this.getBarChartEntries(props);
         // @formatter:off
-        Builder builder = BarChart.newBarChart(barChartElementProps.getId())
-                .descriptionId(barChartElementProps.getDescriptionId())
-                .label(barChartElementProps.getLabel())
+        Builder builder = BarChart.newBarChart(props.getId())
+                .descriptionId(props.getDescriptionId())
+                .label(props.getLabel())
                 .entries(entries);
         // @formatter:on
 
@@ -172,14 +142,11 @@ public class FormElementFactory implements IElementFactory {
     }
 
     private Object instantiatePieChart(PieChartElementProps props) {
-        PieChartElementProps pieChartElementProps = props;
-        List<PieChartEntry> entries = this.getPieChartEntries(pieChartElementProps);
-        // The label is not used for pieChart. This attribute is inherited from IRepresentation
-        String label = "pieChart"; //$NON-NLS-1$
+        List<PieChartEntry> entries = this.getPieChartEntries(props);
         // @formatter:off
-        org.eclipse.sirius.components.charts.piechart.PieChart.Builder builder = PieChart.newPieChart(pieChartElementProps.getId())
-                .descriptionId(pieChartElementProps.getDescriptionId())
-                .label(label)
+        org.eclipse.sirius.components.charts.piechart.PieChart.Builder builder = PieChart.newPieChart(props.getId())
+                .descriptionId(props.getDescriptionId())
+                .label(props.getLabel())
                 .entries(entries);
         // @formatter:on
 
@@ -189,10 +156,10 @@ public class FormElementFactory implements IElementFactory {
         return builder.build();
     }
 
-    private List<BarChartEntry> getBarChartEntries(BarChartElementProps barChartElementProps) {
+    private List<BarChartEntry> getBarChartEntries(BarChartElementProps props) {
         List<BarChartEntry> entries = new ArrayList<>();
-        List<String> keys = barChartElementProps.getKeys();
-        List<Number> values = barChartElementProps.getValues();
+        List<String> keys = props.getKeys();
+        List<Number> values = props.getValues();
         if (values.size() == keys.size()) {
             for (int i = 0; i < values.size(); i++) {
                 entries.add(new BarChartEntry(keys.get(i), values.get(i)));
@@ -201,10 +168,10 @@ public class FormElementFactory implements IElementFactory {
         return entries;
     }
 
-    private List<PieChartEntry> getPieChartEntries(PieChartElementProps pieChartElementProps) {
+    private List<PieChartEntry> getPieChartEntries(PieChartElementProps props) {
         List<PieChartEntry> entries = new ArrayList<>();
-        List<String> keys = pieChartElementProps.getKeys();
-        List<Number> values = pieChartElementProps.getValues();
+        List<String> keys = props.getKeys();
+        List<Number> values = props.getValues();
         if (values.size() == keys.size()) {
             for (int i = 0; i < values.size(); i++) {
                 entries.add(new PieChartEntry(keys.get(i), values.get(i)));
@@ -245,19 +212,16 @@ public class FormElementFactory implements IElementFactory {
 
     private Group instantiateGroup(GroupElementProps props, List<Object> children) {
         // @formatter:off
-        List<Button> toolbarActions = children.stream()
-                .filter(GroupToolbar.class::isInstance)
-                .map(GroupToolbar.class::cast)
-                .findFirst()
-                .map(GroupToolbar::getToolbarActions)
-                .orElse(List.of());
+        List<ToolbarAction> toolbarActions = children.stream()
+                .filter(ToolbarAction.class::isInstance)
+                .map(ToolbarAction.class::cast)
+                .collect(Collectors.toList());
 
         List<AbstractWidget> widgets = children.stream()
-                .filter(GroupContents.class::isInstance)
-                .map(GroupContents.class::cast)
-                .findFirst()
-                .map(GroupContents::getWidgets)
-                .orElse(List.of());
+                .filter(c -> c instanceof AbstractWidget && !(c instanceof ToolbarAction))
+                .map(AbstractWidget.class::cast)
+                .collect(Collectors.toList());
+
 
         return Group.newGroup(props.getId())
                 .label(props.getLabel())
@@ -456,6 +420,31 @@ public class FormElementFactory implements IElementFactory {
         }
         if (props.getButtonLabel() != null) {
             buttonBuilder.buttonLabel(props.getButtonLabel());
+        }
+        if (props.getImageURL() != null) {
+            buttonBuilder.imageURL(props.getImageURL());
+        }
+        if (props.getStyle() != null) {
+            buttonBuilder.style(props.getStyle());
+        }
+
+        return buttonBuilder.build();
+    }
+
+    private ToolbarAction instantiateToolbarAction(ToolbarActionElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+
+        // @formatter:off
+        ToolbarAction.Builder buttonBuilder = ToolbarAction.newToolbarAction(props.getId())
+                 .label(props.getLabel())
+                 .pushButtonHandler(props.getPushButtonHandler())
+                 .diagnostics(diagnostics);
+        // @formatter:on
+        if (props.getIconURL() != null) {
+            buttonBuilder.iconURL(props.getIconURL());
+        }
+        if (props.getToolbarActionLabel() != null) {
+            buttonBuilder.buttonLabel(props.getToolbarActionLabel());
         }
         if (props.getImageURL() != null) {
             buttonBuilder.imageURL(props.getImageURL());

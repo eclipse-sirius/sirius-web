@@ -10,20 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { CheckboxStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Checkbox from '@material-ui/core/Checkbox';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { CheckboxWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
+  style: {
+    color: ({ color }) => (color ? color : theme.palette.primary.light),
+    '&.Mui-checked': {
+      color: ({ color }) => (color ? color : theme.palette.primary.light),
+    },
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
-export const CheckboxWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+export const CheckboxWidget = ({ widget, selection }: CheckboxWidgetProps) => {
+  const props: CheckboxStyleProps = {
+    color: widget.style?.color ?? null,
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -49,6 +59,7 @@ export const CheckboxWidget = ({ widget, selection }: WidgetProps) => {
         inputRef={ref}
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
+        classes={widget.style ? { root: classes.style } : {}}
       />
     </div>
   );

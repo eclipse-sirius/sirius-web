@@ -10,23 +10,41 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getTextDecorationLineValue, MultiSelectStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { MultiSelectWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
-export const MultiSelectWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+export const MultiSelectWidget = ({ widget, selection }: MultiSelectWidgetProps) => {
+  const props: MultiSelectStyleProps = {
+    backgroundColor: widget.style?.backgroundColor ?? null,
+    foregroundColor: widget.style?.foregroundColor ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -55,18 +73,52 @@ export const MultiSelectWidget = ({ widget, selection }: WidgetProps) => {
         renderValue={() => 'Value 1, Value 3'}
         inputRef={ref}
         onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}>
+        onBlur={() => setSelected(false)}
+        inputProps={
+          widget.style
+            ? {
+                className: classes.style,
+              }
+            : {}
+        }>
         <MenuItem key={'value1'} value={'value1'}>
           <Checkbox checked={true} />
-          <ListItemText primary={'Value 1'} />
+          <ListItemText
+            primary={'Value 1'}
+            primaryTypographyProps={
+              widget.style
+                ? {
+                    className: classes.style,
+                  }
+                : {}
+            }
+          />
         </MenuItem>
         <MenuItem key={'value2'} value={'value2'}>
           <Checkbox checked={false} />
-          <ListItemText primary={'Value 2'} />
+          <ListItemText
+            primary={'Value 2'}
+            primaryTypographyProps={
+              widget.style
+                ? {
+                    className: classes.style,
+                  }
+                : {}
+            }
+          />
         </MenuItem>
         <MenuItem key={'value3'} value={'value3'}>
           <Checkbox checked={true} />
-          <ListItemText primary={'Value 3'} />
+          <ListItemText
+            primary={'Value 3'}
+            primaryTypographyProps={
+              widget.style
+                ? {
+                    className: classes.style,
+                  }
+                : {}
+            }
+          />
         </MenuItem>
       </Select>
     </div>

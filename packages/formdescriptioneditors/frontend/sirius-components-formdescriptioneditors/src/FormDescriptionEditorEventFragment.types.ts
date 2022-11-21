@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLFlexDirection, GQLFlexWrap } from '@eclipse-sirius/sirius-components-forms';
+import { GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 
 export interface GQLFormDescriptionEditorEventSubscription {
   formDescriptionEditorEvent: GQLFormDescriptionEditorEventPayload;
@@ -71,26 +71,9 @@ export interface GQLRepresentationDescription {
 export interface GQLFormDescriptionEditor extends GQLRepresentation {
   id: string;
   metadata: GQLRepresentationMetadata;
-  toolbarActions: GQLFormDescriptionEditorToolbarAction[];
-  widgets: GQLAbstractFormDescriptionEditorWidget[];
+  toolbarActions: GQLToolbarAction[];
+  widgets: GQLWidget[];
 }
-
-export interface GQLAbstractFormDescriptionEditorWidget {
-  id: string;
-  label: string;
-  kind: string;
-}
-
-export interface GQLFormDescriptionEditorWidget extends GQLAbstractFormDescriptionEditorWidget {}
-
-export interface GQLFormDescriptionEditorFlexboxContainer extends GQLAbstractFormDescriptionEditorWidget {
-  flexDirection: GQLFlexDirection;
-  flexWrap: GQLFlexWrap;
-  flexGrow: number;
-  children: GQLAbstractFormDescriptionEditorWidget[];
-}
-
-export interface GQLFormDescriptionEditorToolbarAction extends GQLAbstractFormDescriptionEditorWidget {}
 
 export interface GQLAddWidgetInput {
   id: string;

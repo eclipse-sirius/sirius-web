@@ -10,7 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export * from './form/FormEventFragments';
 export * from './form/FormEventFragments.types';
+export type { ButtonStyleProps } from './propertysections/ButtonPropertySection.types';
+export type { CheckboxStyleProps } from './propertysections/CheckboxPropertySection.types';
+export * from './propertysections/getTextDecorationLineValue';
+export type { ImageStyleProps } from './propertysections/ImagePropertySection.types';
+export type { LabelStyleProps } from './propertysections/LabelWidgetPropertySection.types';
+export type { LinkStyleProps } from './propertysections/LinkPropertySection.types';
+export type { ListStyleProps } from './propertysections/ListPropertySection.types';
+export type { MultiSelectStyleProps } from './propertysections/MultiSelectPropertySection.types';
+export type { RadioStyleProps } from './propertysections/RadioPropertySection.types';
+export type { SelectStyleProps } from './propertysections/SelectPropertySection.types';
+export type { TextfieldStyleProps } from './propertysections/TextfieldPropertySection.types';
 export * from './representations/FormRepresentation';
 export * from './views/DetailsView';
 export * from './views/RelatedElementsView';

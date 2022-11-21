@@ -12,6 +12,10 @@
  *******************************************************************************/
 import { GQLCheckbox, GQLSubscriber } from '../form/FormEventFragments.types';
 
+export interface CheckboxStyleProps {
+  color: string | null;
+}
+
 export interface CheckboxPropertySectionProps {
   editingContextId: string;
   formId: string;

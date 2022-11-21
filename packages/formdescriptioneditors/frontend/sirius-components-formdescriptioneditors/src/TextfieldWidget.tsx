@@ -10,20 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
+import { getTextDecorationLineValue, TextfieldStyleProps } from '@eclipse-sirius/sirius-components-forms';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { TextfieldWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
+  style: {
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
   selected: {
     color: theme.palette.primary.main,
   },
 }));
 
-export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
-  const classes = useStyles();
+export const TextfieldWidget = ({ widget, selection }: TextfieldWidgetProps) => {
+  const props: TextfieldStyleProps = {
+    backgroundColor: widget.style?.backgroundColor ?? null,
+    foregroundColor: widget.style?.foregroundColor ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -49,9 +67,14 @@ export const TextfieldWidget = ({ widget, selection }: WidgetProps) => {
         inputRef={ref}
         onFocus={() => setSelected(true)}
         onBlur={() => setSelected(false)}
-        InputProps={{
-          readOnly: true,
-        }}
+        InputProps={
+          widget.style
+            ? {
+                className: classes.style,
+                readOnly: true,
+              }
+            : { readOnly: true }
+        }
         value="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       />
     </div>

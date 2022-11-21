@@ -11,18 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLFormDescriptionEditorToolbarAction } from './FormDescriptionEditorEventFragment.types';
+import { GQLButton } from '@eclipse-sirius/sirius-components-forms';
 
 export interface ToolbarActionProps {
   editingContextId: string;
   representationId: string;
-  siblings: GQLFormDescriptionEditorToolbarAction[];
-  toolbarAction: GQLFormDescriptionEditorToolbarAction;
+  siblings: GQLButton[];
+  toolbarAction: GQLButton;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
 }
 
 export interface ToolbarActionState {
+  imageURL: string | null;
+  validImage: boolean;
   message: string | null;
   selected: boolean;
 }

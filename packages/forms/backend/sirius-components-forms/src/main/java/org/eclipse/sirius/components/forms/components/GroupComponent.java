@@ -67,30 +67,25 @@ public class GroupComponent implements IComponent {
             String label = groupDescription.getLabelProvider().apply(groupVariableManager);
             GroupDisplayMode displayMode = groupDescription.getDisplayModeProvider().apply(groupVariableManager);
 
-            List<Element> toolbarActions = new ArrayList<>();
+            List<Element> groupChildren = new ArrayList<>();
             for (ButtonDescription toolbarActionDescription : groupDescription.getToolbarActionDescriptions()) {
-                toolbarActions.add(new Element(ButtonComponent.class, new ButtonComponentProps(groupVariableManager, toolbarActionDescription)));
+                groupChildren.add(new Element(ToolbarActionComponent.class, new ToolbarActionComponentProps(groupVariableManager, toolbarActionDescription)));
             }
 
             // @formatter:off
-            List<Element> groupContents = new ArrayList<>();
             List<AbstractControlDescription> controlDescriptions = groupDescription.getControlDescriptions();
             for (AbstractControlDescription controlDescription : controlDescriptions) {
                 if (controlDescription instanceof AbstractWidgetDescription) {
                     AbstractWidgetDescription widgetDescription = (AbstractWidgetDescription) controlDescription;
                     WidgetComponentProps widgetComponentProps = new WidgetComponentProps(groupVariableManager, widgetDescription);
-                    groupContents.add(new Element(WidgetComponent.class, widgetComponentProps));
+                    groupChildren.add(new Element(WidgetComponent.class, widgetComponentProps));
                 } else if (controlDescription instanceof ForDescription) {
                     ForDescription forDescription = (ForDescription) controlDescription;
                     ForComponentProps forComponentProps = new ForComponentProps(groupVariableManager, forDescription);
-                    groupContents.add(new Element(ForComponent.class, forComponentProps));
+                    groupChildren.add(new Element(ForComponent.class, forComponentProps));
                 }
             }
 
-            List<Element> groupChildren = List.of(
-                    new Element(GroupToolbarComponent.class, new FragmentProps(toolbarActions)),
-                    new Element(GroupContentsComponent.class, new FragmentProps(groupContents))
-            );
             GroupElementProps groupElementProps = GroupElementProps.newGroupElementProps(id)
                     .label(label)
                     .displayMode(displayMode)

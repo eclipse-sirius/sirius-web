@@ -85,7 +85,7 @@ public final class BarChart implements IChart {
     }
 
     /**
-     * The builder of the bar-chart element props.
+     * The builder of the bar-chart.
      *
      * @author fbarbin
      */

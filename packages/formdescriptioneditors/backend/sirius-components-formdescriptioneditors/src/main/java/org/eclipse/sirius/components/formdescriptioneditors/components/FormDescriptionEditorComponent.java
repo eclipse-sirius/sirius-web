@@ -18,18 +18,18 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.formdescriptioneditors.description.AbstractFormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
-import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorFlexboxContainerDescription;
-import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorToolbarActionDescription;
-import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorWidgetDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
+import org.eclipse.sirius.components.forms.components.ToolbarActionComponent;
+import org.eclipse.sirius.components.forms.components.ToolbarActionComponentProps;
+import org.eclipse.sirius.components.forms.components.WidgetComponent;
+import org.eclipse.sirius.components.forms.components.WidgetComponentProps;
+import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.WidgetDescription;
 
 /**
  * The component used to render the form description editor.
@@ -40,8 +40,11 @@ public class FormDescriptionEditorComponent implements IComponent {
 
     private final FormDescriptionEditorComponentProps props;
 
+    private final ViewFormDescriptionEditorConverterSwitch converter;
+
     public FormDescriptionEditorComponent(FormDescriptionEditorComponentProps props) {
         this.props = props;
+        this.converter = new ViewFormDescriptionEditorConverterSwitch(props.getFormDescriptionEditorDescription(), props.getVariableManager());
     }
 
     @Override
@@ -63,59 +66,22 @@ public class FormDescriptionEditorComponent implements IComponent {
 
         List<Element> childrenWidgets = new ArrayList<>();
 
-        formDescription.getToolbarActions().forEach(toolbarActionDescription -> {
+        formDescription.getToolbarActions().forEach(viewToolbarActionDescription -> {
             VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, toolbarActionDescription);
-            String toolbarActionId = targetObjectIdProvider.apply(childVariableManager);
-            String toolbarActionKind = this.getKind(toolbarActionDescription);
-            String toolbarActionLabel = toolbarActionDescription.getName();
-            if (toolbarActionLabel == null) {
-                toolbarActionLabel = toolbarActionKind;
+            childVariableManager.put(VariableManager.SELF, viewToolbarActionDescription);
+            AbstractWidgetDescription toolbarActionDescription = this.converter.doSwitch(viewToolbarActionDescription);
+            if (toolbarActionDescription instanceof ButtonDescription) {
+                ToolbarActionComponentProps toolbarActionComponentProps = new ToolbarActionComponentProps(childVariableManager, (ButtonDescription) toolbarActionDescription);
+                childrenWidgets.add(new Element(ToolbarActionComponent.class, toolbarActionComponentProps));
             }
-            // @formatter:off
-            FormDescriptionEditorToolbarActionDescription fdeToolbarActionDescription = FormDescriptionEditorToolbarActionDescription.newFormDescriptionEditorToolbarActionDescription(toolbarActionId)
-                    .label(toolbarActionLabel)
-                    .kind(toolbarActionKind)
-                    .build();
-            // @formatter:on
-            FormDescriptionEditorToolbarActionComponentProps fdeToolbarActionComponentProps = new FormDescriptionEditorToolbarActionComponentProps(fdeToolbarActionDescription);
-            childrenWidgets.add(new Element(FormDescriptionEditorToolbarActionComponent.class, fdeToolbarActionComponentProps));
         });
 
-        formDescription.getWidgets().forEach(widgetDescription -> {
-
+        formDescription.getWidgets().forEach(viewWidgetDescription -> {
             VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, widgetDescription);
-            String widgetId = targetObjectIdProvider.apply(childVariableManager);
-            String widgetKind = this.getKind(widgetDescription);
-            String widgetLabel = widgetDescription.getName();
-            if (widgetLabel == null) {
-                widgetLabel = widgetKind;
-            }
-
-            if (widgetDescription instanceof FlexboxContainerDescription) {
-                List<AbstractFormDescriptionEditorWidgetDescription> childrenDescriptions = this.transformDescriptions(((FlexboxContainerDescription) widgetDescription).getChildren(),
-                        childVariableManager, targetObjectIdProvider);
-                // @formatter:off
-                FormDescriptionEditorFlexboxContainerDescription fdeFlexboxContainerDescription = FormDescriptionEditorFlexboxContainerDescription.newFormDescriptionEditorFlexboxContainerDescription(widgetId)
-                        .label(widgetLabel)
-                        .kind(widgetKind)
-                        .flexDirection(((FlexboxContainerDescription) widgetDescription).getFlexDirection())
-                        .children(childrenDescriptions)
-                        .build();
-                // @formatter:on
-                FormDescriptionEditorFlexboxContainerComponentProps fdeFlexboxContainerComponentProps = new FormDescriptionEditorFlexboxContainerComponentProps(fdeFlexboxContainerDescription);
-                childrenWidgets.add(new Element(FormDescriptionEditorFlexboxContainerComponent.class, fdeFlexboxContainerComponentProps));
-            } else if (widgetDescription instanceof WidgetDescription) {
-                // @formatter:off
-                FormDescriptionEditorWidgetDescription fdeWidgetDescription = FormDescriptionEditorWidgetDescription.newFormDescriptionEditorWidgetDescription(widgetId)
-                        .label(widgetLabel)
-                        .kind(widgetKind)
-                        .build();
-                // @formatter:on
-                FormDescriptionEditorWidgetComponentProps fdeWidgetComponentProps = new FormDescriptionEditorWidgetComponentProps(fdeWidgetDescription);
-                childrenWidgets.add(new Element(FormDescriptionEditorWidgetComponent.class, fdeWidgetComponentProps));
-            }
+            childVariableManager.put(VariableManager.SELF, viewWidgetDescription);
+            AbstractWidgetDescription widgetDescription = this.converter.doSwitch(viewWidgetDescription);
+            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription);
+            childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
         });
 
         // @formatter:off
@@ -128,49 +94,5 @@ public class FormDescriptionEditorComponent implements IComponent {
         // @formatter:on
 
         return new Element(FormDescriptionEditorElementProps.TYPE, formDescriptionEditorElementProps);
-    }
-
-    private String getKind(WidgetDescription widget) {
-        return widget.eClass().getName().replace("Description", ""); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    private List<AbstractFormDescriptionEditorWidgetDescription> transformDescriptions(List<WidgetDescription> widgetDescriptions, VariableManager variableManager,
-            Function<VariableManager, String> targetObjectIdProvider) {
-        List<AbstractFormDescriptionEditorWidgetDescription> fdeWidgetDescriptions = new ArrayList<>();
-
-        widgetDescriptions.forEach(widgetDescription -> {
-
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, widgetDescription);
-            String widgetId = targetObjectIdProvider.apply(childVariableManager);
-            String widgetKind = this.getKind(widgetDescription);
-            String widgetLabel = widgetDescription.getName();
-            if (widgetLabel == null) {
-                widgetLabel = widgetKind;
-            }
-
-            if (widgetDescription instanceof FlexboxContainerDescription) {
-                List<AbstractFormDescriptionEditorWidgetDescription> childrenDescriptions = this.transformDescriptions(((FlexboxContainerDescription) widgetDescription).getChildren(),
-                        childVariableManager, targetObjectIdProvider);
-                // @formatter:off
-                FormDescriptionEditorFlexboxContainerDescription fdeFlexboxContainerDescription = FormDescriptionEditorFlexboxContainerDescription.newFormDescriptionEditorFlexboxContainerDescription(widgetId)
-                        .label(widgetLabel)
-                        .kind(widgetKind)
-                        .flexDirection(((FlexboxContainerDescription) widgetDescription).getFlexDirection())
-                        .children(childrenDescriptions)
-                        .build();
-                // @formatter:on
-                fdeWidgetDescriptions.add(fdeFlexboxContainerDescription);
-            } else if (widgetDescription instanceof WidgetDescription) {
-                // @formatter:off
-                FormDescriptionEditorWidgetDescription fdeWidgetDescription = FormDescriptionEditorWidgetDescription.newFormDescriptionEditorWidgetDescription(widgetId)
-                        .label(widgetLabel)
-                        .kind(widgetKind)
-                        .build();
-                // @formatter:on
-                fdeWidgetDescriptions.add(fdeWidgetDescription);
-            }
-        });
-        return fdeWidgetDescriptions;
     }
 }

@@ -14,14 +14,10 @@ import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useContext, useEffect, useState } from 'react';
-import { ImagePropertySectionProps } from './ImagePropertySection.types';
+import { ImagePropertySectionProps, ImageStyleProps } from './ImagePropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-interface ImageStylesProps {
-  maxWidth: string | null;
-}
-
-const useImageStyles = makeStyles<Theme, ImageStylesProps>((_theme) => ({
+const useImageStyles = makeStyles<Theme, ImageStyleProps>(() => ({
   container: {
     display: 'grid',
     gridTemplateColumns: ({ maxWidth }) => {
@@ -53,7 +49,7 @@ export const ImagePropertySection = ({ widget }: ImagePropertySectionProps) => {
     setValidImage(true);
   }, [widget.url]);
 
-  let imageURL;
+  let imageURL: string;
   if (widget.url.startsWith('http://') || widget.url.startsWith('https://')) {
     imageURL = widget.url;
   } else {

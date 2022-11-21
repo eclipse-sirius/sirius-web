@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { PieChart, PieChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
+import { GQLPieChart } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { PieChartWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -22,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const PieChartWidget = ({ widget, selection }: WidgetProps) => {
+export const PieChartWidget = ({ widget, selection }: PieChartWidgetProps) => {
   const classes = useStyles();
+  const pieChartWidget = widget.chart as GQLPieChart;
+
   const chart: PieChartRepresentation = {
     entries: [
       { key: '<5', value: 19912018 },
@@ -45,7 +48,7 @@ export const PieChartWidget = ({ widget, selection }: WidgetProps) => {
       { key: '80-84', value: 5811429 },
       { key: '≥85', value: 5938752 },
     ],
-    style: null,
+    style: pieChartWidget.style,
   };
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -61,18 +64,16 @@ export const PieChartWidget = ({ widget, selection }: WidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div
+      data-testid={pieChartWidget.label}
+      onFocus={() => setSelected(true)}
+      onBlur={() => setSelected(false)}
+      ref={ref}
+      tabIndex={0}>
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {widget.label}
+        {pieChartWidget.label}
       </Typography>
-      <div
-        data-testid={widget.label}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-        ref={ref}
-        tabIndex={0}>
-        <PieChart width={300} height={300} chart={chart} />
-      </div>
+      <PieChart width={300} height={300} chart={chart} />
     </div>
   );
 };

@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import {
@@ -27,7 +28,6 @@ import {
   GQLDeleteToolbarActionMutationVariables,
   GQLDeleteToolbarActionSuccessPayload,
   GQLFormDescriptionEditor,
-  GQLFormDescriptionEditorToolbarAction,
   GQLMoveToolbarActionMutationData,
   GQLMoveToolbarActionMutationVariables,
   GQLMoveToolbarActionSuccessPayload,
@@ -114,10 +114,23 @@ const moveToolbarActionAtTheEndSuccessData: GQLMoveToolbarActionMutationData = {
 };
 
 test('add ToolbarAction by clicking on the Add Toolbar Action button', async () => {
-  const toolbarAction: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction1',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
@@ -168,15 +181,41 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
 });
 
 test('delete the ToolbarAction from the ToolbarActions', async () => {
-  const toolbarAction1: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction1: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction1',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
-  const toolbarAction2: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
     label: 'ToolbarAction2',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction2',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
@@ -230,15 +269,41 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
 });
 
 test('move the existing ToolbarAction from/into the drop area', async () => {
-  const toolbarAction1: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction1: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction1',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
-  const toolbarAction2: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
     label: 'ToolbarAction2',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction2',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
@@ -293,15 +358,41 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
 });
 
 test('move the existing ToolbarAction from/into the drop area located at the end of the ToolbarActions', async () => {
-  const toolbarAction1: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction1: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction1',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
-  const toolbarAction2: GQLFormDescriptionEditorToolbarAction = {
+  const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
     label: 'ToolbarAction2',
-    kind: 'ToolbarAction',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction2',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
   };
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',

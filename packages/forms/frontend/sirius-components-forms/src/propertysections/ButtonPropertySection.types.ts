@@ -20,7 +20,7 @@ export interface ButtonPropertySectionProps {
   readOnly: boolean;
 }
 
-export interface ButtonPropertySectionStyleProps {
+export interface ButtonStyleProps {
   backgroundColor: string | null;
   foregroundColor: string | null;
   fontSize: number | null;

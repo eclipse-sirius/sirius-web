@@ -17,6 +17,7 @@ exports[`render pie-chart widget 1`] = `
     </div>
     <svg
       height="300"
+      pointer-events="none"
       style="max-width: 100%; height: auto; height: intrinsic;"
       viewBox="-150,-150,300,300"
       width="300"
@@ -162,6 +163,7 @@ exports[`render pie-chart widget with empty style 1`] = `
     </div>
     <svg
       height="300"
+      pointer-events="none"
       style="max-width: 100%; height: auto; height: intrinsic;"
       viewBox="-150,-150,300,300"
       width="300"
@@ -307,6 +309,7 @@ exports[`render pie-chart widget with style 1`] = `
     </div>
     <svg
       height="300"
+      pointer-events="none"
       style="max-width: 100%; height: auto; height: intrinsic;"
       viewBox="-150,-150,300,300"
       width="300"
@@ -452,6 +455,7 @@ exports[`render the bar-chart widget 1`] = `
     </div>
     <svg
       height="250"
+      pointer-events="none"
       style="max-width: 100%; max-height: 250; height: auto; height: intrinsic;"
       viewBox="0,0,500,250"
       width="500"
@@ -735,6 +739,7 @@ exports[`render the bar-chart widget with empty style 1`] = `
     </div>
     <svg
       height="250"
+      pointer-events="none"
       style="max-width: 100%; max-height: 250; height: auto; height: intrinsic;"
       viewBox="0,0,500,250"
       width="500"
@@ -1018,6 +1023,7 @@ exports[`render the bar-chart widget with style 1`] = `
     </div>
     <svg
       height="250"
+      pointer-events="none"
       style="max-width: 100%; max-height: 250; height: auto; height: intrinsic;"
       viewBox="0,0,500,250"
       width="500"

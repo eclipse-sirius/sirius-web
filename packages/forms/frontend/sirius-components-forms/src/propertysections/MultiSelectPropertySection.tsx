@@ -30,20 +30,11 @@ import {
   GQLErrorPayload,
   GQLUpdateWidgetFocusMutationData,
   MultiSelectPropertySectionProps,
+  MultiSelectStyleProps,
 } from './MultiSelectPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-export interface StyleProps {
-  backgroundColor: string | null;
-  foregroundColor: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
-}
-
-const useStyle = makeStyles<Theme, StyleProps>(() => ({
+const useStyle = makeStyles<Theme, MultiSelectStyleProps>(() => ({
   style: {
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
@@ -86,7 +77,7 @@ export const MultiSelectPropertySection = ({
   subscribers,
   readOnly,
 }: MultiSelectPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: MultiSelectStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
     fontSize: widget.style?.fontSize ?? null,

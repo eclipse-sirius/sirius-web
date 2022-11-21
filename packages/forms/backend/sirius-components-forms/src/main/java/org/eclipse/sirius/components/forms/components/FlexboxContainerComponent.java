@@ -54,13 +54,11 @@ public class FlexboxContainerComponent implements IComponent {
         List<Element> childrenWidgets = new ArrayList<>();
 
         flexboxContainerDescription.getChildren().forEach(widget -> {
-            VariableManager childVariableManager = variableManager.createChild();
             var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
-            var optionalIdCounter = variableManager.get(GroupComponent.WIDGET_ID_PROVIDER_COUNTER, Object.class);
 
-            if (optionalSelf.isPresent() && optionalIdCounter.isPresent()) {
+            if (optionalSelf.isPresent()) {
+                VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, optionalSelf.get());
-                childVariableManager.put(GroupComponent.WIDGET_ID_PROVIDER_COUNTER, optionalIdCounter.get());
                 childrenWidgets.add(new Element(WidgetComponent.class, new WidgetComponentProps(childVariableManager, widget)));
             }
         });

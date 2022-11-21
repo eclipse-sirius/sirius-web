@@ -35,6 +35,7 @@ import {
   GQLDeleteListItemPayload,
   GQLErrorPayload,
   ListPropertySectionProps,
+  ListStyleProps,
 } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
@@ -59,15 +60,8 @@ export const clickListItemMutation = gql`
     }
   }
 `;
-interface StyleProps {
-  color: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
-}
-const useListPropertySectionStyles = makeStyles<Theme, StyleProps>((theme) => ({
+
+const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
   cell: {
     display: 'flex',
     flexDirection: 'row',
@@ -134,7 +128,7 @@ export const ListPropertySection = ({
   readOnly,
   setSelection,
 }: ListPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: ListStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
     italic: widget.style?.italic ?? null,

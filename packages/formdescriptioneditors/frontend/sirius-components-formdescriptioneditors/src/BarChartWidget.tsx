@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { BarChart, BarChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
+import { GQLBarChart } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { BarChartWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -22,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const BarChartWidget = ({ widget, selection }: WidgetProps) => {
+export const BarChartWidget = ({ widget, selection }: BarChartWidgetProps) => {
   const classes = useStyles();
+  const barChartWidget = widget.chart as GQLBarChart;
+
   const chart: BarChartRepresentation = {
     label: 'Frequency',
     entries: [
@@ -54,7 +57,7 @@ export const BarChartWidget = ({ widget, selection }: WidgetProps) => {
       { key: 'Y', value: 0.01974 },
       { key: 'Z', value: 0.00074 },
     ],
-    style: null,
+    style: barChartWidget.style,
   };
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -70,13 +73,16 @@ export const BarChartWidget = ({ widget, selection }: WidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div
+      data-testid={barChartWidget.label}
+      onFocus={() => setSelected(true)}
+      onBlur={() => setSelected(false)}
+      ref={ref}
+      tabIndex={0}>
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {widget.label}
+        {barChartWidget.label}
       </Typography>
-      <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
-        <BarChart width={500} height={250} chart={chart} />
-      </div>
+      <BarChart width={500} height={250} chart={chart} />
     </div>
   );
 };

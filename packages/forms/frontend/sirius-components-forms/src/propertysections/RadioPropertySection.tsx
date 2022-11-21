@@ -36,6 +36,7 @@ import {
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
   RadioPropertySectionProps,
+  RadioStyleProps,
 } from './RadioPropertySection.types';
 
 export const editRadioMutation = gql`
@@ -59,16 +60,8 @@ export const updateWidgetFocusMutation = gql`
     }
   }
 `;
-export interface StyleProps {
-  color: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
-}
 
-const useRadioPropertySectionStyles = makeStyles<Theme, StyleProps>(() => ({
+const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>(() => ({
   radioGroupRoot: {
     flexDirection: 'row',
   },
@@ -91,7 +84,7 @@ export const RadioPropertySection = ({
   subscribers,
   readOnly,
 }: RadioPropertySectionProps) => {
-  const props: StyleProps = {
+  const props: RadioStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
     italic: widget.style?.italic ?? null,

@@ -27,7 +27,7 @@ import TitleIcon from '@material-ui/icons/Title';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { useEffect, useRef, useState } from 'react';
-import { WidgetProps } from './WidgetEntry.types';
+import { RichTextWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -73,7 +73,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup);
 
-export const RichTextWidget = ({ widget, selection }: WidgetProps) => {
+export const RichTextWidget = ({ widget, selection }: RichTextWidgetProps) => {
   const classes = useStyles();
 
   const [selected, setSelected] = useState<boolean>(false);

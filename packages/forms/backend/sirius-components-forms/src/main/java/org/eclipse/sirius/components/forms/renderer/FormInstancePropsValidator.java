@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.forms.renderer;
 
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
 import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementProps;
-import org.eclipse.sirius.components.forms.GroupContents;
-import org.eclipse.sirius.components.forms.GroupToolbar;
 import org.eclipse.sirius.components.forms.elements.ButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.ChartWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.CheckboxElementProps;
@@ -33,9 +31,9 @@ import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
+import org.eclipse.sirius.components.forms.elements.ToolbarActionElementProps;
 import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
-import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -92,10 +90,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof ImageElementProps;
         } else if (RichTextElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof RichTextElementProps;
-        } else if (GroupToolbar.TYPE.equals(type)) {
-            checkValidProps = props instanceof FragmentProps;
-        } else if (GroupContents.TYPE.equals(type)) {
-            checkValidProps = props instanceof FragmentProps;
+        } else if (ToolbarActionElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof ToolbarActionElementProps;
         }
 
         return checkValidProps;

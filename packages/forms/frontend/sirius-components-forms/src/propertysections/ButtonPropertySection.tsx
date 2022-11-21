@@ -22,7 +22,7 @@ import { useContext, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
   ButtonPropertySectionProps,
-  ButtonPropertySectionStyleProps,
+  ButtonStyleProps,
   GQLErrorPayload,
   GQLPushButtonInput,
   GQLPushButtonMutationData,
@@ -36,7 +36,7 @@ import {
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyle = makeStyles<Theme, ButtonPropertySectionStyleProps>((theme) => ({
+const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.light),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
@@ -94,7 +94,7 @@ export const ButtonPropertySection = ({
   subscribers,
   readOnly,
 }: ButtonPropertySectionProps) => {
-  const props: ButtonPropertySectionStyleProps = {
+  const props: ButtonStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
     fontSize: widget.style?.fontSize ?? null,
