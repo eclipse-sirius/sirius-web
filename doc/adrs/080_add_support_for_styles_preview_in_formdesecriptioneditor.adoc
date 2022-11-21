@@ -1,0 +1,51 @@
+= ADR-080 - Add support for styles preview in formdescriptioneditor
+
+== Context
+
+In the FormDescriptionEditor, we want to be able to see the style options applied if the values are "static" (e.g. bold font), when no AQL expression is involved.
+
+== Decision
+
+Use the existing data structure in forms to benefit from the Widgets' style properties, instead of create the same style properties on form description editor side.
+
+=== GraphQL API
+
+Delete `AbstractFormDescriptionEditorWidget` and its subtypes in `formdescriptioneditor.graphqls`.
+Use existing Widgets from `form.graphqls` instead.
+
+The `FormDescriptionEditor` in `formdescriptioneditor.graphqls` will evolve from:
+[source,gql]
+----
+type FormDescriptionEditor implements Representation {
+   id: ID!
+   metadata: RepresentationMetadata!
+   toolbarActions: [FormDescriptionEditorToolbarAction!]!
+   widgets: [AbstractFormDescriptionEditorWidget!]!
+}
+----
+
+to:
+[source,gql]
+----
+type FormDescriptionEditor implements Representation {
+   id: ID!
+   metadata: RepresentationMetadata!
+   toolbarActions: [ToolbarAction!]!
+   widgets: [Widget!]!
+}
+----
+
+=== Frontend
+
+Use existing `*StyleProps (e.g. `TextfieldStyleProps`) from `sirius-components-forms` for `*Widget.tsx` (e.g. `TextfieldWidget.tsx`) in `sirius-components-formdescriptioneditors`. Use those properties in the CSS style applied to the widgets.
+
+Use graphql fragments from `FormEventFragments.ts` in `FormDescriptionEditorEventFragment.ts`.
+
+=== Backend
+
+Delete `AbstractFormDescriptionEditorWidget.java` and its subtypes in `sirius-components-formdescriptioneditors`.
+Use existing Widgets from `sirius-components-forms` instead.
+
+== Status
+
+Work in progress

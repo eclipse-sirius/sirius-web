@@ -9,6 +9,7 @@
 - [ADR-077] Improve support for direct edit in diagram
 - [ADR-078] Add support for toolbar actions in Form/FormDescriptionEditor
 - [ADR-079] Add support for a rich text edition widget
+- [ADR-080] Add support for styles preview in FormDescriptionEditor
 
 === Dependency update
 
