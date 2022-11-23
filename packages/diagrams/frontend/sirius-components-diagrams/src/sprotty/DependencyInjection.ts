@@ -41,7 +41,6 @@ import {
   updateModule,
   viewportModule,
   ZoomMouseListener,
-  zorderModule,
 } from 'sprotty';
 import { Action, Point, RequestPopupModelAction, SetPopupModelAction } from 'sprotty-protocol';
 import { siriusCommonModule } from './common/siriusCommonModule';
@@ -63,6 +62,7 @@ import { ParametricSVGImageView } from './views/ParametricSVGImageView';
 import { RectangleView } from './views/RectangleView';
 import { RoutingHandleView } from './views/RoutingHandleView';
 import { VolatileRoutingHandleView } from './views/VolatileRoutingHandleView';
+import { siriusZOrderModule } from './zorder/siriusZOrderModule';
 
 const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, rebind) => {
   rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -142,7 +142,7 @@ export const createDependencyInjectionContainer = (
     siriusRoutingModule,
     siriusEdgeEditModule,
     edgeLayoutModule,
-    zorderModule,
+    siriusZOrderModule,
     siriusWebContainerModule,
     labelEditModule,
     siriusLabelEditUiModule
