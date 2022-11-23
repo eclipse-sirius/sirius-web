@@ -100,7 +100,12 @@ export const contextualPaletteMachine = Machine<
             },
           },
           loaded: {
-            type: 'final',
+            on: {
+              HANDLE_TOOL_SECTIONS_RESULT: [
+                { cond: 'isValidResult', target: 'loaded', actions: 'setToolSections' },
+                { target: 'error' },
+              ],
+            },
           },
           error: {
             type: 'final',

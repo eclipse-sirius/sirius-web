@@ -148,6 +148,8 @@ export const ContextualPalette = ({
   const { toast, contextualPalette } = value as SchemaValue;
   const { toolSections, message } = context;
 
+  const diagramElementId = diagramElement.id;
+
   const {
     loading: toolSectionsLoading,
     data: toolSectionsData,
@@ -156,7 +158,7 @@ export const ContextualPalette = ({
     variables: {
       editingContextId,
       diagramId: representationId,
-      diagramElementId: diagramElement.id,
+      diagramElementId,
     },
   });
 
@@ -199,14 +201,14 @@ export const ContextualPalette = ({
       }
     };
     return (
-      <div className={classes.toolSection} key={diagramElement.id + toolSection.id}>
+      <div className={classes.toolSection} key={diagramElementId + toolSection.id}>
         <ToolSection toolSection={toolSection} onToolClick={handleToolClick} />
       </div>
     );
   });
 
   const paletteContent =
-    contextualPalette === 'loaded' ? (
+    contextualPalette === 'loaded' && !toolSectionsLoading && toolSectionsData ? (
       <div className={classes.toolbar} data-testid="PopupToolbar" key="PopupToolbar">
         <div className={classes.toolEntries}>
           {atLeastOneSingleClickOnTwoDiagramElementsTool ? (
