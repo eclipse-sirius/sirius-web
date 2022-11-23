@@ -352,15 +352,18 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
                                 .newValueHandler((variableManager, newValue) -> {
                                         var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
+                                        IStatus status = new Failure("The BorderStyle is not found as self variable"); //$NON-NLS-1$
                                         if (optionalBorderStyle.isPresent()) {
-                                            if (newValue != null && LineStyle.get(newValue) != null) {
+                                            if (newValue == null || newValue.isBlank()) {
+                                                optionalBorderStyle.get().setBorderLineStyle(null);
+                                            } else if (LineStyle.get(newValue) != null) {
                                                 optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
                                             } else {
-                                                optionalBorderStyle.get().setBorderLineStyle(LineStyle.SOLID);
+                                                status = new Failure("Incorrect LineStyle newValue: " + newValue); //$NON-NLS-1$
                                             }
-                                            return new Success();
+                                            status =  new Success();
                                         }
-                                        return new Failure(""); //$NON-NLS-1$
+                                        return status;
                                 })
                                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
                                 .kindProvider(this::kindProvider)
