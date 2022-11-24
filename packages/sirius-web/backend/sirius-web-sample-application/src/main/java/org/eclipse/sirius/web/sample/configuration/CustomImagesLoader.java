@@ -12,18 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.configuration;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
 import org.eclipse.sirius.web.persistence.repositories.ICustomImageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,51 +41,51 @@ public class CustomImagesLoader implements CommandLineRunner {
 
     private final ICustomImageRepository customImageRepository;
 
-    public CustomImagesLoader(ICustomImageRepository customImageRepository) {
+    private final String imagesPathPattern;
+
+    private final PathMatchingResourcePatternResolver patternResolver;
+
+    public CustomImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.sirius.web.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
         this.customImageRepository = Objects.requireNonNull(customImageRepository);
+        this.imagesPathPattern = imagesPathPattern;
+        this.patternResolver = new PathMatchingResourcePatternResolver(Objects.requireNonNull(resourceLoader));
     }
 
     @Override
     public void run(String... args) throws Exception {
-        String rootPath = System.getProperty("org.eclipse.sirius.web.customImages.path"); //$NON-NLS-1$
-        if (rootPath != null) {
-            this.importAllImages(Paths.get(rootPath));
-        }
-    }
-
-    public void importAllImages(Path rootPath) throws IOException {
-        try (var images = Files.walk(rootPath).filter(this::isImageFile)) {
-            int prefixLength = rootPath.toString().length() + 1;
-            images.forEach(imgPath -> {
-                try {
-                    CustomImageEntity customImageEntity = this.loadImageFile(imgPath);
-                    String fullLabel = imgPath.toString().substring(prefixLength).replace("/", " / "); //$NON-NLS-1$ //$NON-NLS-2$
-                    customImageEntity.setLabel(this.trimFileExtension(fullLabel));
-                    customImageEntity = this.customImageRepository.save(customImageEntity);
-                } catch (IOException e) {
-                    this.logger.warn("Error loading image {}: {}", imgPath, e.getMessage()); //$NON-NLS-1$
+        if (this.imagesPathPattern != null) {
+            Resource[] resources = this.patternResolver.getResources(this.imagesPathPattern);
+            for (Resource resource : resources) {
+                Optional<String> contentType = this.getContentType(resource);
+                if (contentType.isPresent() && contentType.get().startsWith("image/")) { //$NON-NLS-1$
+                    this.importImageFromResource(resource, contentType.get());
                 }
-            });
+            }
         }
     }
 
-    private boolean isImageFile(Path path) {
+    private void importImageFromResource(Resource resource, String contentType) {
         try {
-            String probedType = Files.probeContentType(path);
-            return probedType != null && probedType.startsWith("image/"); //$NON-NLS-1$
-        } catch (IOException ioe) {
-            return false;
+            CustomImageEntity customImageEntity = new CustomImageEntity();
+            // No project set: these are global images
+            customImageEntity.setLabel(Optional.ofNullable(resource.getFilename()).map(this::trimFileExtension).orElse("")); //$NON-NLS-1$
+            customImageEntity.setContentType(contentType);
+            try (BufferedInputStream stream = new BufferedInputStream(resource.getInputStream())) {
+                customImageEntity.setContent(stream.readAllBytes());
+            }
+            customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
+            this.customImageRepository.save(customImageEntity);
+        } catch (IOException e) {
+            this.logger.warn("Error loading resource {}: {}", resource, e.getMessage()); //$NON-NLS-1$
         }
     }
 
-    private CustomImageEntity loadImageFile(Path imgPath) throws IOException {
-        CustomImageEntity customImageEntity = new CustomImageEntity();
-        // No project set: these are global images
-        customImageEntity.setLabel(this.trimFileExtension(imgPath.getFileName().toString()));
-        customImageEntity.setContentType(Files.probeContentType(imgPath));
-        customImageEntity.setContent(Files.readAllBytes(imgPath));
-        customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
-        return customImageEntity;
+    private Optional<String> getContentType(Resource resource) {
+        try {
+            return Optional.ofNullable(resource.getURL().openConnection().getContentType());
+        } catch (IOException e) {
+            return Optional.empty();
+        }
     }
 
     private String trimFileExtension(String fileName) {
