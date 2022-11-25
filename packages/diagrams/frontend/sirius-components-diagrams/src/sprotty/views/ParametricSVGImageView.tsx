@@ -12,7 +12,7 @@
  *******************************************************************************/
 /** @jsx svg */
 /** @jsxRuntime classic */
-import { RectangularNodeView, RenderingContext, svg, SLabel } from 'sprotty';
+import { RectangularNodeView, RenderingContext, SLabel, svg } from 'sprotty';
 import { Node, ParametricSVGNodeStyle } from '../Diagram.types';
 import { createResizeHandles } from './ViewUtils';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
@@ -91,6 +91,7 @@ export class ParametricSVGImageView extends RectangularNodeView {
     if (labelIndex > -1) {
       nodeLabel = node.children.at(labelIndex) as SLabel;
     }
+
     return (
       <g
         attrs-data-testid={`Image - ${nodeLabel?.text}`}
@@ -104,6 +105,7 @@ export class ParametricSVGImageView extends RectangularNodeView {
           y={rectanglePosition.y}
           width={rectangleSize.width}
           height={rectangleSize.height}
+          style={styleObject}
           href={svgUrl}
         />
         {selectedHandles}
