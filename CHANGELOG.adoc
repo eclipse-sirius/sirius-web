@@ -43,6 +43,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1428[#1428] [layout] Add support for List layout compartment. We rely on the layout strategy engine handler switch and the layout engine handler switch to dispatch to the correct behavior depending on how children should be laid out and the type of the node. This kind of architecture has already been implemented for model operation for the View DSL. Nothing has changed if nodes have to be laid out freely.
 - https://github.com/eclipse-sirius/sirius-components/issues/1439[#1439] [form] Add support for toolbar actions in Form/FormDescriptionEditor
 - https://github.com/eclipse-sirius/sirius-components/issues/1437[#1437] [form] Add support for styles preview in FormDescriptionEditor
+- https://github.com/eclipse-sirius/sirius-components/issues/1467[#1467] [layout] Elk is now able to compute a list layout. It is an internal change, and thus, nothing should change for the end user.
 
 == v2022.11.0
 

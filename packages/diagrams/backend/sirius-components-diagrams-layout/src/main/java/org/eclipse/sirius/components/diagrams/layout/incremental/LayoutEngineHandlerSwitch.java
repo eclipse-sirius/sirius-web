@@ -74,7 +74,7 @@ public class LayoutEngineHandlerSwitch implements Function<String, Optional<INod
     }
 
     private Optional<INodeIncrementalLayoutEngine> caseIconLabelNodeLayoutEngine() {
-        return Optional.of(new IconLabelIncrementalLayoutEngine());
+        return Optional.of(new IconLabelIncrementalLayoutEngine(this.customLabelPositionProviders));
     }
 
     private Optional<INodeIncrementalLayoutEngine> caseParametricSVGLayoutEngine() {

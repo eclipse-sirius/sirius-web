@@ -27,9 +27,8 @@ import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.PortLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.core.options.SizeOptions;
+import org.eclipse.elk.core.util.IndividualSpacings;
 import org.eclipse.elk.graph.ElkEdge;
-import org.eclipse.elk.graph.ElkNode;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
@@ -55,6 +54,11 @@ public class LayoutConfiguratorRegistry {
      * The space between two nodes.
      */
     private static final Double SPACING_NODE_NODE = Double.valueOf(50.0);
+
+    /**
+     * The space between the outside label and the border it is associated with.
+     */
+    private static final Double SPACING_LABEL_NODE = Double.valueOf(5d);
 
     /**
      * The space between node and edges.
@@ -90,13 +94,14 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.ALGORITHM, LayeredOptions.ALGORITHM_ID)
                 .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
                 .setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
+                .setProperty(LayeredOptions.SPACING_LABEL_NODE, SPACING_LABEL_NODE)
                 .setProperty(LayeredOptions.SPACING_NODE_NODE, SPACING_NODE_NODE)
                 .setProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS, SPACING_NODE_NODE)
                 .setProperty(LayeredOptions.SPACING_EDGE_NODE, SPACING_NODE_EDGE)
                 .setProperty(LayeredOptions.SPACING_EDGE_NODE_BETWEEN_LAYERS, SPACING_NODE_EDGE);
 
         configurator.configureByType(NodeType.NODE_RECTANGLE)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.NODE_LABELS)) // FIXME: Keep some space for the label event if it is empty
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.NODE_LABELS))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
@@ -107,10 +112,17 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
+        /*
+         * Two things here:
+         * - First, the node label padding apply only on inside label on the side it is defined. Because we put it on V_CENTER and H_LEFT, we only need to defined the label padding on the left
+         * - Secondly, by default the node label padding is not defined on node containing the label, but on its parent. With Spacing individual we can define the label padding on the node itself.
+         */
+        IndividualSpacings iconLabelIndividualSpacing = new IndividualSpacings();
+        iconLabelIndividualSpacing.setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(0, 0, 0, 5));
         configurator.configureByType(NodeType.NODE_ICON_LABEL)
+                .setProperty(CoreOptions.SPACING_INDIVIDUAL, iconLabelIndividualSpacing)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.NODE_LABELS))
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
-                .setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(3d, 12d, 3d, 6d))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, EnumSet.of(NodeLabelPlacement.INSIDE, NodeLabelPlacement.V_CENTER, NodeLabelPlacement.H_LEFT));
 
         configurator.configureByType(NodeType.NODE_IMAGE)
@@ -135,6 +147,7 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free())
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
+                .setProperty(LayeredOptions.SPACING_LABEL_NODE, SPACING_LABEL_NODE)
                 .setProperty(CoreOptions.PADDING, new ElkPadding(12, 12, 12, 12));
 
         configurator.configure(ElkEdge.class).setProperty(CoreOptions.SPACING_EDGE_LABEL, 3d);
@@ -152,25 +165,4 @@ public class LayoutConfiguratorRegistry {
         }
         return this.getDefaultLayoutConfigurator();
     }
-
-    public ElkNode applyBeforeLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram, DiagramDescription diagramDescription) {
-        for (var customLayoutProvider : this.customLayoutProviders) {
-            var customLayout = customLayoutProvider.getLayoutConfigurator(diagram, diagramDescription);
-            if (customLayout.isPresent()) {
-                return customLayout.get().applyBeforeLayout(elkDiagram, editingContext, diagram);
-            }
-        }
-        return this.getDefaultLayoutConfigurator().applyBeforeLayout(elkDiagram, editingContext, diagram);
-    }
-
-    public ElkNode applyAfterLayout(ElkNode elkDiagram, IEditingContext editingContext, Diagram diagram, DiagramDescription diagramDescription) {
-        for (var customLayoutProvider : this.customLayoutProviders) {
-            var customLayout = customLayoutProvider.getLayoutConfigurator(diagram, diagramDescription);
-            if (customLayout.isPresent()) {
-                return customLayout.get().applyAfterLayout(elkDiagram, editingContext, diagram);
-            }
-        }
-        return this.getDefaultLayoutConfigurator().applyAfterLayout(elkDiagram, editingContext, diagram);
-    }
-
 }

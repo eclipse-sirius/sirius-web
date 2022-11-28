@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayou
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelSizeProvider;
 
 /**
  * The incremental layout engine to layout parametric SVG nodes.
@@ -48,11 +49,14 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
 
     private final List<ICustomNodeLabelPositionProvider> customLabelPositionProviders;
 
+    private final NodeLabelSizeProvider nodeLabelSizeProvider;
+
     public ParametricSVGIncrementalLayoutEngine(ChildLayoutStrategyEngineHandler childLayoutStrategyEngineHandler, IBorderNodeLayoutEngine borderNodeLayoutEngine,
             List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
         this.childLayoutStrategyEngineHandler = Objects.requireNonNull(childLayoutStrategyEngineHandler);
         this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
         this.customLabelPositionProviders = Objects.requireNonNull(customLabelPositionProviders);
+        this.nodeLabelSizeProvider = new NodeLabelSizeProvider();
     }
 
     @Override
@@ -69,10 +73,10 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
         double yOffset = elkPadding.top;
 
         Builder newNodeSizeBuilder = Size.newSize().width(elkPadding.left + childrenAreaSize.getWidth() + elkPadding.right);
-        double newNodeHeight = childrenAreaSize.getHeight();
+        double newNodeHeight = elkPadding.top + childrenAreaSize.getHeight() + elkPadding.bottom;
 
         if (this.shouldConsiderNodeLabel(nodeLayoutData, layoutConfigurator)) {
-            Size labelWithPaddingSize = this.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
+            Size labelWithPaddingSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
             newNodeHeight += labelWithPaddingSize.getHeight();
             yOffset += labelWithPaddingSize.getHeight();
         }
@@ -147,10 +151,10 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
         double yOffset = elkPadding.top;
 
         Builder newNodeSizeBuilder = Size.newSize().width(maxWidth);
-        double newNodeHeight = childrenAreaSize.getHeight();
+        double newNodeHeight = elkPadding.top + childrenAreaSize.getHeight() + elkPadding.bottom;
 
         if (this.shouldConsiderNodeLabel(nodeLayoutData, layoutConfigurator)) {
-            Size labelWithPaddingSize = this.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
+            Size labelWithPaddingSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
             newNodeHeight += labelWithPaddingSize.getHeight();
             yOffset += labelWithPaddingSize.getHeight();
         }
@@ -231,13 +235,6 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
         }
 
         return nodeMinimalWidth;
-    }
-
-    private Size getLabelWithPaddingSize(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(node.getNodeType());
-        ElkPadding labelPadding = nodeTypePropertyHolder.getProperty(CoreOptions.NODE_LABELS_PADDING);
-        LabelLayoutData label = node.getLabel();
-        return Size.of(labelPadding.left + label.getTextBounds().getSize().getWidth() + labelPadding.right, labelPadding.top + label.getTextBounds().getSize().getHeight() + labelPadding.bottom);
     }
 
     private boolean shouldConsiderNodeLabel(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
