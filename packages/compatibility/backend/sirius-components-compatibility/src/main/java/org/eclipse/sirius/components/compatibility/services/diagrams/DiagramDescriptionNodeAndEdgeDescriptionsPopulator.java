@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.compatibility.services.diagrams;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -87,7 +87,7 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
 
     @Override
     public Builder populate(Builder builder, DiagramDescription siriusDiagramDescription, AQLInterpreter interpreter) {
-        Map<UUID, NodeDescription> id2NodeDescriptions = new HashMap<>();
+        Map<UUID, NodeDescription> id2NodeDescriptions = new LinkedHashMap<>();
 
         // @formatter:off
         List<Layer> layers = LayerModelHelper.getAllLayers(siriusDiagramDescription).stream()

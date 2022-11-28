@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,8 +35,8 @@ public class ViewDiagramDescriptionConverterContext {
 
     public ViewDiagramDescriptionConverterContext(AQLInterpreter interpreter) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.convertedNodes = new HashMap<>();
-        this.convertedEdges = new HashMap<>();
+        this.convertedNodes = new LinkedHashMap<>();
+        this.convertedEdges = new LinkedHashMap<>();
     }
 
     public Map<org.eclipse.sirius.components.view.EdgeDescription, EdgeDescription> getConvertedEdges() {
