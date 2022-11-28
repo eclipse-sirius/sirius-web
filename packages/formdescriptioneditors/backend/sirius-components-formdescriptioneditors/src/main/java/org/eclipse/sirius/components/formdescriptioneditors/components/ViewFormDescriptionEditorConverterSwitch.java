@@ -414,7 +414,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         return ImageDescription.newImageDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> Optional.ofNullable(viewImageDescription.getName()).orElse("Image")) //$NON-NLS-1$
-                .urlProvider(vm -> viewImageDescription.getUrlExpression())
+                .urlProvider(vm -> Optional.ofNullable(viewImageDescription.getUrlExpression()).orElse("")) //$NON-NLS-1$
                 .maxWidthProvider(vm -> viewImageDescription.getMaxWidthExpression())
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "") //$NON-NLS-1$
