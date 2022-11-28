@@ -98,6 +98,15 @@ export const ToolbarActionWidget = ({
   selection,
   setSelection,
 }: ToolbarActionProps) => {
+  const initialState: ToolbarActionState = {
+    buttonLabel: toolbarAction.buttonLabel,
+    imageURL: toolbarAction.imageURL,
+    validImage: false,
+    message: null,
+    selected: false,
+  };
+  const [state, setState] = useState<ToolbarActionState>(initialState);
+
   const props: ButtonStyleProps = {
     backgroundColor: toolbarAction.style?.backgroundColor ?? null,
     foregroundColor: toolbarAction.style?.foregroundColor ?? null,
@@ -106,19 +115,11 @@ export const ToolbarActionWidget = ({
     bold: toolbarAction.style?.bold ?? null,
     underline: toolbarAction.style?.underline ?? null,
     strikeThrough: toolbarAction.style?.strikeThrough ?? null,
-    iconOnly: toolbarAction.buttonLabel ? false : true,
+    iconOnly: state.buttonLabel ? false : true,
   };
   const classes = useStyles(props);
 
   const { httpOrigin }: ServerContextValue = useContext(ServerContext);
-
-  const initialState: ToolbarActionState = {
-    imageURL: toolbarAction.imageURL,
-    validImage: false,
-    message: null,
-    selected: false,
-  };
-  const [state, setState] = useState<ToolbarActionState>(initialState);
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {
@@ -131,7 +132,7 @@ export const ToolbarActionWidget = ({
 
   useEffect(() => {
     let newURL: string = null;
-    let validURL = true;
+    let validURL: boolean = true;
     if (!toolbarAction.imageURL) {
       validURL = false;
     } else if (toolbarAction.imageURL.startsWith('http://') || toolbarAction.imageURL.startsWith('https://')) {
@@ -139,14 +140,27 @@ export const ToolbarActionWidget = ({
     } else {
       newURL = httpOrigin + toolbarAction.imageURL;
     }
+
+    const buttonLabel: string = toolbarAction.buttonLabel;
+    const isButtonLabelBlank: boolean = buttonLabel == null || buttonLabel.trim() === '';
+    let newButtonLabel: string = null;
+    if (validURL && isButtonLabelBlank) {
+      newButtonLabel = null;
+    } else if (!isButtonLabelBlank && !buttonLabel.startsWith('aql:')) {
+      newButtonLabel = buttonLabel;
+    } else {
+      newButtonLabel = 'Lorem';
+    }
+
     setState((prevState) => {
       return {
         ...prevState,
+        buttonLabel: newButtonLabel,
         imageURL: newURL,
         validImage: validURL,
       };
     });
-  }, [toolbarAction.imageURL]);
+  }, [toolbarAction.imageURL, toolbarAction.buttonLabel]);
 
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -352,7 +366,7 @@ export const ToolbarActionWidget = ({
             onError={onErrorLoadingImage}
           />
         ) : null}
-        Lorem
+        {state.buttonLabel}
       </Button>
       <Snackbar
         anchorOrigin={{

@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 export interface ButtonWidgetState {
+  buttonLabel: string | null;
   imageURL: string | null;
   validImage: boolean;
   selected: boolean;

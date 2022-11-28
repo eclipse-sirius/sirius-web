@@ -45,6 +45,14 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
 }));
 
 export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
+  const initialState: ButtonWidgetState = {
+    buttonLabel: widget.buttonLabel,
+    imageURL: widget.imageURL,
+    validImage: false,
+    selected: false,
+  };
+  const [state, setState] = useState<ButtonWidgetState>(initialState);
+
   const props: ButtonStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
@@ -53,13 +61,11 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
-    iconOnly: widget.buttonLabel ? false : true,
+    iconOnly: state.buttonLabel ? false : true,
   };
   const classes = useStyles(props);
 
   const { httpOrigin }: ServerContextValue = useContext(ServerContext);
-  const initialState: ButtonWidgetState = { imageURL: widget.imageURL, validImage: false, selected: false };
-  const [state, setState] = useState<ButtonWidgetState>(initialState);
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {
@@ -72,7 +78,7 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
 
   useEffect(() => {
     let newURL: string = null;
-    let validURL = true;
+    let validURL: boolean = true;
     if (!widget.imageURL) {
       validURL = false;
     } else if (widget.imageURL.startsWith('http://') || widget.imageURL.startsWith('https://')) {
@@ -80,14 +86,27 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
     } else {
       newURL = httpOrigin + widget.imageURL;
     }
+
+    const buttonLabel: string = widget.buttonLabel;
+    const isButtonLabelBlank: boolean = buttonLabel == null || buttonLabel.trim() === '';
+    let newButtonLabel: string = null;
+    if (validURL && isButtonLabelBlank) {
+      newButtonLabel = null;
+    } else if (!isButtonLabelBlank && !buttonLabel.startsWith('aql:')) {
+      newButtonLabel = buttonLabel;
+    } else {
+      newButtonLabel = 'Lorem';
+    }
+
     setState((prevState) => {
       return {
         ...prevState,
+        buttonLabel: newButtonLabel,
         imageURL: newURL,
         validImage: validURL,
       };
     });
-  }, [widget.imageURL]);
+  }, [widget.imageURL, widget.buttonLabel]);
 
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -146,7 +165,7 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
             onError={onErrorLoadingImage}
           />
         ) : null}
-        Lorem
+        {state.buttonLabel}
       </Button>
     </div>
   );

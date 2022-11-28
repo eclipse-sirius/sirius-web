@@ -23,6 +23,7 @@ export interface ToolbarActionProps {
 }
 
 export interface ToolbarActionState {
+  buttonLabel: string | null;
   imageURL: string | null;
   validImage: boolean;
   message: string | null;
