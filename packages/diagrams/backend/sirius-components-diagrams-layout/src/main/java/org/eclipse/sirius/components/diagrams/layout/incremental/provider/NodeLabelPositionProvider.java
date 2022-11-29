@@ -14,14 +14,16 @@ package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
+import org.eclipse.elk.graph.ElkGraphElement;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.RectangleSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.BorderNodesOnSide;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
@@ -34,12 +36,12 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayout
  */
 public class NodeLabelPositionProvider {
 
-    private final ISiriusWebLayoutConfigurator layoutConfigurator;
+    private final Map<String, ElkGraphElement> elementId2ElkNode;
 
     private final NodeLabelSizeProvider nodeLabelSizeProvider;
 
-    public NodeLabelPositionProvider(ISiriusWebLayoutConfigurator layoutConfigurator) {
-        this.layoutConfigurator = Objects.requireNonNull(layoutConfigurator);
+    public NodeLabelPositionProvider(Map<String, ElkGraphElement> elementId2ElkElement) {
+        this.elementId2ElkNode = Objects.requireNonNull(elementId2ElkElement);
         this.nodeLabelSizeProvider = new NodeLabelSizeProvider();
     }
 
@@ -52,9 +54,10 @@ public class NodeLabelPositionProvider {
 
     private double getHorizontalPosition(NodeLayoutData node, LabelLayoutData label, List<BorderNodesOnSide> borderNodesOnSides) {
         double x = 0d;
-        EnumSet<NodeLabelPlacement> nodeLabelPlacementSet = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
-        ElkPadding nodeLabelsPadding = this.nodeLabelSizeProvider.getLabelPadding(node, this.layoutConfigurator);
-        double spacingLabelNode = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.SPACING_LABEL_NODE);
+        IPropertyHolder nodeProperties = this.elementId2ElkNode.get(node.getId());
+        EnumSet<NodeLabelPlacement> nodeLabelPlacementSet = nodeProperties.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
+        ElkPadding nodeLabelsPadding = this.nodeLabelSizeProvider.getLabelPadding(node, this.elementId2ElkNode);
+        double spacingLabelNode = nodeProperties.getProperty(CoreOptions.SPACING_LABEL_NODE);
         boolean outside = this.isOutside(nodeLabelPlacementSet);
         double leftPadding = 0d;
         double rightPadding = 0d;
@@ -81,7 +84,7 @@ public class NodeLabelPositionProvider {
                         shiftToWest = 1;
                     }
                 }
-                double portOffset = Optional.ofNullable(this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET)).orElse(0.);
+                double portOffset = Optional.ofNullable(nodeProperties.getProperty(CoreOptions.PORT_BORDER_OFFSET)).orElse(0.);
                 double offSetAccordingToBorderNodes = -portOffset / 2 * (shiftToEast - shiftToWest);
 
                 x = (node.getSize().getWidth() - label.getTextBounds().getSize().getWidth()) / 2 + offSetAccordingToBorderNodes;
@@ -102,9 +105,10 @@ public class NodeLabelPositionProvider {
 
     private double getVerticalPosition(NodeLayoutData node, LabelLayoutData label) {
         double y = 0d;
-        EnumSet<NodeLabelPlacement> nodeLabelPlacementSet = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
-        ElkPadding nodeLabelsPadding = this.nodeLabelSizeProvider.getLabelPadding(node, this.layoutConfigurator);
-        double spacingLabelNode = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.SPACING_LABEL_NODE);
+        IPropertyHolder nodeProperties = this.elementId2ElkNode.get(node.getId());
+        EnumSet<NodeLabelPlacement> nodeLabelPlacementSet = nodeProperties.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
+        ElkPadding nodeLabelsPadding = this.nodeLabelSizeProvider.getLabelPadding(node, this.elementId2ElkNode);
+        double spacingLabelNode = nodeProperties.getProperty(CoreOptions.SPACING_LABEL_NODE);
         boolean outside = this.isOutside(nodeLabelPlacementSet);
         double topPadding = 0d;
         double bottomPadding = 0d;

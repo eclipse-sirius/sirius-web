@@ -91,7 +91,7 @@ public class LayoutService implements ILayoutService {
         elkDiagram = layoutConfigurator.applyAfterLayout(elkDiagram, editingContext, diagram);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
-        Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements, layoutConfigurator);
+        Diagram layoutedDiagram = this.elkLayoutedDiagramProvider.getLayoutedDiagram(diagram, elkDiagram, id2ElkGraphElements);
 
         if (this.logger.isDebugEnabled()) {
             // @formatter:off
@@ -115,7 +115,8 @@ public class LayoutService implements ILayoutService {
         DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
         ISiriusWebLayoutConfigurator layoutConfigurator = this.getLayoutConfigurator(editingContext, newDiagram);
 
-        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, convertedDiagram, layoutConfigurator);
+        ELKConvertedDiagram elkConvertedDiagram = this.prepareForLayout(editingContext, newDiagram, layoutConfigurator);
+        this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, convertedDiagram, elkConvertedDiagram.getId2ElkGraphElements());
 
         Map<String, ILayoutData> id2LayoutData = convertedDiagram.getId2LayoutData();
         return this.incrementalLayoutedDiagramProvider.getLayoutedDiagram(newDiagram, diagramLayoutData, id2LayoutData);

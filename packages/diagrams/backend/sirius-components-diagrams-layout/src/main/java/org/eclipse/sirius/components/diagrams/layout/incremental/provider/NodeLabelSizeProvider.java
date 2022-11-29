@@ -13,13 +13,14 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 
 /**
@@ -45,8 +46,8 @@ public class NodeLabelSizeProvider {
      *            The layout configuration
      * @return the size of the label on which the label padding has been added according to the configuration.
      */
-    public Size getLabelWithPaddingSize(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder nodeProperties = layoutConfigurator.configureByType(node.getNodeType());
+    public Size getLabelWithPaddingSize(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(node.getId());
         EnumSet<NodeLabelPlacement> placement = nodeProperties.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
         Size labelSize = node.getLabel().getTextBounds().getSize();
 
@@ -54,7 +55,7 @@ public class NodeLabelSizeProvider {
             return labelSize;
         }
 
-        ElkPadding labelPadding = this.getLabelPadding(node, layoutConfigurator);
+        ElkPadding labelPadding = this.getLabelPadding(node, elementId2ElkElement);
         double paddingTop = 0;
         double paddingBottom = 0;
         double paddingLeft = 0;
@@ -84,10 +85,10 @@ public class NodeLabelSizeProvider {
         // @formatter:on
     }
 
-    public ElkPadding getLabelPadding(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public ElkPadding getLabelPadding(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         ElkPadding padding = null;
 
-        IPropertyHolder iconLabelProperties = layoutConfigurator.configureByType(node.getNodeType());
+        IPropertyHolder iconLabelProperties = elementId2ElkElement.get(node.getId());
         if (iconLabelProperties.hasProperty(CoreOptions.SPACING_INDIVIDUAL)) {
             IPropertyHolder individualSpacings = iconLabelProperties.getProperty(CoreOptions.SPACING_INDIVIDUAL);
             if (individualSpacings.hasProperty(CoreOptions.NODE_LABELS_PADDING)) {
@@ -97,7 +98,7 @@ public class NodeLabelSizeProvider {
 
         if (padding == null && node.getParent() instanceof NodeLayoutData) {
             NodeLayoutData parent = (NodeLayoutData) node.getParent();
-            padding = layoutConfigurator.configureByType(parent.getNodeType()).getProperty(CoreOptions.NODE_LABELS_PADDING);
+            padding = elementId2ElkElement.get(parent.getId()).getProperty(CoreOptions.NODE_LABELS_PADDING);
         }
 
         if (padding == null) {

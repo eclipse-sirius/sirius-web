@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
+import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 
 /**
  * Used to customized the position of the node label for the ELK and incremental layout.
@@ -26,5 +27,5 @@ import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurato
  */
 public interface ICustomNodeLabelPositionProvider {
 
-    Optional<Position> getLabelPosition(ISiriusWebLayoutConfigurator layoutConfigurator, Size initialLabelSize, Size nodeSize, String nodeType, INodeStyle nodeStyle);
+    Optional<Position> getLabelPosition(Map<String, ElkGraphElement> elementId2ElkElement, Size initialLabelSize, Size nodeSize, String nodeId, INodeStyle nodeStyle);
 }

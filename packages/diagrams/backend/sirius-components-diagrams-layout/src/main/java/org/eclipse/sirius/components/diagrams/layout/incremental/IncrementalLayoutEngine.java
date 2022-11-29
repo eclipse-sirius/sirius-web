@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -31,7 +32,6 @@ import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeEvent;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.events.UpdateEdgeRoutingPointsEvent;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
@@ -89,15 +89,15 @@ public class IncrementalLayoutEngine {
         this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
     }
 
-    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, IncrementalLayoutConvertedDiagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        this.nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
-        this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(layoutConfigurator);
+    public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, IncrementalLayoutConvertedDiagram diagram, Map<String, ElkGraphElement> elementId2ElkElement) {
+        this.nodeLabelPositionProvider = new NodeLabelPositionProvider(elementId2ElkElement);
+        this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(elementId2ElkElement);
         DiagramLayoutData diagramLayoutData = diagram.getDiagramLayoutData();
         Optional<Position> optionalDelta = this.getDeltaFromMoveEvent(optionalDiagramElementEvent, diagram);
 
         // first we layout all the nodes
         for (NodeLayoutData node : diagramLayoutData.getChildrenNodes()) {
-            this.layoutNode(optionalDiagramElementEvent, node, layoutConfigurator);
+            this.layoutNode(optionalDiagramElementEvent, node, elementId2ElkElement);
         }
 
         // resolve overlaps due to previous changes
@@ -182,14 +182,14 @@ public class IncrementalLayoutEngine {
         // @formatter:on
     }
 
-    private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
 
         var optionalNodeIncrementalLayoutEngine = this.layoutEngineHandlerSwitchProvider.getLayoutEngineHandlerSwitch().apply(node.getNodeType());
 
         if (optionalNodeIncrementalLayoutEngine.isPresent() && node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
             var nodeIncrementalLayoutEngine = optionalNodeIncrementalLayoutEngine.get();
-            NodeLayoutData layoutedNode = nodeIncrementalLayoutEngine.layout(optionalDiagramElementEvent, node, layoutConfigurator);
+            NodeLayoutData layoutedNode = nodeIncrementalLayoutEngine.layout(optionalDiagramElementEvent, node, elementId2ElkElement);
 
             // recompute the node position
             Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, layoutedNode);
@@ -202,14 +202,14 @@ public class IncrementalLayoutEngine {
         } else {
             for (NodeLayoutData childNode : node.getChildrenNodes()) {
                 if (NodeType.NODE_ICON_LABEL.equals(childNode.getNodeType())) {
-                    this.layoutIconLabelNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
+                    this.layoutIconLabelNode(optionalDiagramElementEvent, childNode, elementId2ElkElement);
                 } else {
-                    this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
+                    this.layoutNode(optionalDiagramElementEvent, childNode, elementId2ElkElement);
                 }
             }
 
             // compute the node size according to what has been done in the previous steps
-            Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);
+            Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, elementId2ElkElement);
             if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
                 node.setSize(size);
                 node.setChanged(true);
@@ -231,14 +231,14 @@ public class IncrementalLayoutEngine {
             // update the border node once the current node bounds are updated
             Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
             List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds,
-                    layoutConfigurator);
+                    elementId2ElkElement);
 
             // recompute the label
             if (node.getLabel() != null) {
                 // @formatter:off
                 Position nodeLabelPosition = this.customLabelPositionProviders.stream()
-                        .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(layoutConfigurator, node.getLabel().getTextBounds().getSize(), node.getSize(),
-                                node.getNodeType(), node.getStyle()))
+                        .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(elementId2ElkElement, node.getLabel().getTextBounds().getSize(), node.getSize(),
+                                node.getId(), node.getStyle()))
                         .flatMap(Optional::stream)
                         .findFirst()
                         .orElseGet(() -> this.nodeLabelPositionProvider.getPosition(node, node.getLabel(), borderNodesOnSide));
@@ -248,10 +248,10 @@ public class IncrementalLayoutEngine {
         }
     }
 
-    private void layoutIconLabelNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private void layoutIconLabelNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
 
-        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);
+        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, elementId2ElkElement);
         if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
             node.setSize(size);
             node.setChanged(true);
@@ -266,190 +266,14 @@ public class IncrementalLayoutEngine {
 
         // update the border node once the current node bounds are updated
         Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
-        List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds, layoutConfigurator);
+        List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds,
+                elementId2ElkElement);
 
         // recompute the label
         if (node.getLabel() != null) {
             node.getLabel().setPosition(this.nodeLabelPositionProvider.getPosition(node, node.getLabel(), borderNodesOnSide));
         }
     }
-
-    // /**
-    // * Update the border nodes position according to the side length change where it is located.<br>
-    // * The aim is to keep the positioning ratio of the border node on its side.
-    // */
-    // private List<BorderNodesOnSide> layoutBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent,
-    // List<NodeLayoutData> borderNodesLayoutData, Bounds initialNodeBounds, Bounds newNodeBounds,
-    // ISiriusWebLayoutConfigurator layoutConfigurator) {
-    // List<BorderNodesOnSide> borderNodesPerSide = new ArrayList<>();
-    // if (!borderNodesLayoutData.isEmpty()) {
-    // for (NodeLayoutData nodeLayoutData : borderNodesLayoutData) {
-    // // 1- update the position of the border node if it has been explicitly moved
-    // this.updateBorderNodePosition(optionalDiagramElementEvent, nodeLayoutData);
-    //
-    // Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, nodeLayoutData, layoutConfigurator);
-    // if (!this.getRoundedSize(size).equals(this.getRoundedSize(nodeLayoutData.getSize()))) {
-    // nodeLayoutData.setSize(size);
-    // nodeLayoutData.setChanged(true);
-    // }
-    // }
-    //
-    // // 2- recompute the border node
-    // borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(),
-    // layoutConfigurator);
-    //
-    // // 3 - move the border node along the side according to the side change
-    // this.updateBorderNodeAccordingParentResize(optionalDiagramElementEvent, initialNodeBounds, newNodeBounds,
-    // borderNodesPerSide, borderNodesLayoutData.get(0).getParent().getId());
-    //
-    // // 4- set the label position if the border is newly created
-    // this.updateBorderNodeLabel(optionalDiagramElementEvent, borderNodesPerSide);
-    // }
-    // return borderNodesPerSide;
-    // }
-    //
-    // private void updateBorderNodeLabel(Optional<IDiagramEvent> optionalDiagramElementEvent, List<BorderNodesOnSide>
-    // borderNodesPerSideList) {
-    //
-    // for (BorderNodesOnSide borderNodesOnSide : borderNodesPerSideList) {
-    // RectangleSide side = borderNodesOnSide.getSide();
-    // List<NodeLayoutData> borderNodes = borderNodesOnSide.getBorderNodes();
-    // for (NodeLayoutData borderNodeLayoutData : borderNodes) {
-    // this.borderNodeLabelPositionProvider.updateLabelPosition(optionalDiagramElementEvent, side,
-    // borderNodeLayoutData);
-    // }
-    // }
-    // }
-    //
-    // /**
-    // * Move the border node along the side according to the parent Size changes.
-    // */
-    // private void updateBorderNodeAccordingParentResize(Optional<IDiagramEvent> optionalDiagramElementEvent, Bounds
-    // initialNodeBounds, Bounds newNodeBounds,
-    // List<BorderNodesOnSide> borderNodesPerSideList, String parentId) {
-//        // @formatter:off
-//        boolean isParentRectangleResized = optionalDiagramElementEvent
-//            .filter(ResizeEvent.class::isInstance)
-//            .map(ResizeEvent.class::cast)
-//            .map(ResizeEvent::getNodeId)
-//            .filter(parentId::equals)
-//            .isPresent();
-//        // @formatter:on
-    //
-    // if (isParentRectangleResized && !initialNodeBounds.equals(newNodeBounds)) {
-    // EnumMap<RectangleSide, Double> sideHomotheticRatio = this.getHomotheticRatio(initialNodeBounds.getSize(),
-    // newNodeBounds.getSize());
-    //
-    // Size initialSize = initialNodeBounds.getSize();
-    // Size newSize = newNodeBounds.getSize();
-    //
-    // for (BorderNodesOnSide borderNodesOnSide : borderNodesPerSideList) {
-    // RectangleSide side = borderNodesOnSide.getSide();
-    // List<NodeLayoutData> borderNodes = borderNodesOnSide.getBorderNodes();
-    // double homotheticRatio = sideHomotheticRatio.get(side);
-    // for (NodeLayoutData borderNodeLayoutData : borderNodes) {
-    // // The border node position is done in the parent node coordinate system
-    // Position position = borderNodeLayoutData.getPosition();
-    // Size size = borderNodeLayoutData.getSize();
-    // if (RectangleSide.NORTH.equals(side)) {
-    // borderNodeLayoutData.setPosition(Position.at((position.getX() + size.getWidth() / 2) * homotheticRatio -
-    // size.getWidth() / 2, position.getY()));
-    // } else if (RectangleSide.SOUTH.equals(side)) {
-    // double dySouthShift = newSize.getHeight() - initialSize.getHeight();
-    // borderNodeLayoutData.setPosition(Position.at((position.getX() + size.getWidth() / 2) * homotheticRatio -
-    // size.getWidth() / 2, position.getY() + dySouthShift));
-    // } else if (RectangleSide.WEST.equals(side)) {
-    // borderNodeLayoutData.setPosition(Position.at(position.getX(), (position.getY() + size.getHeight() / 2) *
-    // homotheticRatio - size.getHeight() / 2));
-    // } else if (RectangleSide.EAST.equals(side)) {
-    // double dxEastShift = newSize.getWidth() - initialSize.getWidth();
-    // borderNodeLayoutData.setPosition(Position.at(position.getX() + dxEastShift, (position.getY() + size.getHeight() /
-    // 2) * homotheticRatio - size.getHeight() / 2));
-    // }
-    // }
-    // }
-    // }
-    // }
-    //
-    // private void updateBorderNodePosition(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData
-    // nodeLayoutData) {
-//        // @formatter:off
-//        optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
-//            .map(MoveEvent.class::cast)
-//            .map(MoveEvent::getNodeId)
-//            .filter(nodeLayoutData.getId()::equals)
-//            .ifPresent(nodeId  -> {
-//                Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
-//                if (!position.equals(nodeLayoutData.getPosition())) {
-//                    nodeLayoutData.setPosition(position);
-//                    nodeLayoutData.setChanged(true);
-//                    nodeLayoutData.setPinned(true);
-//                }
-//        });
-//        // @formatter:on
-    // }
-    //
-    // /**
-    // * Update the border node by snapping it to the parentRectangle, that is moving it to the closest point of the
-    // * parentRectangle.
-    // *
-    // * @param borderNodesLayoutData
-    // * the border nodes which position is given in the rectangle upper right corner coordinates system
-    // * @return for each side of the given parentRectangle, the list of the updates border node
-    // */
-    // private List<BorderNodesOnSide> snapBorderNodes(List<NodeLayoutData> borderNodesLayoutData, Size parentRectangle,
-    // ISiriusWebLayoutConfigurator layoutConfigurator) {
-    // EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide = new EnumMap<>(RectangleSide.class);
-    //
-    // Geometry geometry = new Geometry();
-    //
-    // for (NodeLayoutData borderNodeLayoutData : borderNodesLayoutData) {
-    // double portOffset =
-    // layoutConfigurator.configureByType(borderNodeLayoutData.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET).doubleValue();
-    //
-    // Bounds borderNodeRectangle =
-    // Bounds.newBounds().position(borderNodeLayoutData.getPosition()).size(borderNodeLayoutData.getSize()).build();
-    // PointOnRectangleInfo borderNodePositionOnSide = geometry.snapBorderNodeOnRectangle(borderNodeRectangle,
-    // parentRectangle, portOffset);
-    // // update the border node
-    // borderNodeLayoutData.setPosition(borderNodePositionOnSide.getPosition());
-    //
-    // borderNodesPerSide.computeIfAbsent(borderNodePositionOnSide.getSide(), side -> new ArrayList<>());
-    // borderNodesPerSide.get(borderNodePositionOnSide.getSide()).add(borderNodeLayoutData);
-    // }
-    //
-//        // @formatter:off
-//        return borderNodesPerSide.entrySet().stream()
-//                .map(entry -> new BorderNodesOnSide(entry.getKey(), entry.getValue()))
-//                .collect(Collectors.toList());
-//        // @formatter:on
-    // }
-    //
-    // /**
-    // * This method compares two rectangles and for each side return the homothetic ratio.
-    // */
-    // private EnumMap<RectangleSide, Double> getHomotheticRatio(Size rectangle1, Size rectangle2) {
-    // EnumMap<RectangleSide, Double> sideToHomotheticRatio = new EnumMap<>(RectangleSide.class);
-    // double initialHeight = rectangle1.getHeight();
-    // double initialWidth = rectangle1.getWidth();
-    // double newHeight = rectangle2.getHeight();
-    // double newWidth = rectangle2.getWidth();
-    //
-    // double verticalRatio = 0;
-    // if (initialHeight != 0) {
-    // verticalRatio = newHeight / initialHeight;
-    // }
-    // double horizontalRatio = 0;
-    // if (initialWidth != 0) {
-    // horizontalRatio = newWidth / initialWidth;
-    // }
-    // sideToHomotheticRatio.put(RectangleSide.NORTH, horizontalRatio);
-    // sideToHomotheticRatio.put(RectangleSide.SOUTH, horizontalRatio);
-    // sideToHomotheticRatio.put(RectangleSide.EAST, verticalRatio);
-    // sideToHomotheticRatio.put(RectangleSide.WEST, verticalRatio);
-    //
-    // return sideToHomotheticRatio;
-    // }
 
     private Ratio getPositionProportionOfEdgeEndAbsolutePosition(NodeLayoutData nodeLayoutData, Position absolutePosition) {
         Position nodeAbsolutePosition = nodeLayoutData.getAbsolutePosition();

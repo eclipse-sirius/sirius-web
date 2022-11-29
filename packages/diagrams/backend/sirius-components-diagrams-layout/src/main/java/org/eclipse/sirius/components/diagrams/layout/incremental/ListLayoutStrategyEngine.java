@@ -12,17 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 
@@ -46,17 +47,17 @@ public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
     }
 
     @Override
-    public Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder childrenLayoutStrategyPropertyHolder = layoutConfigurator.configureByChildrenLayoutStrategy(node.getChildrenLayoutStrategy().getClass());
+    public Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(node.getId());
 
-        double maxWidth = this.childNodeIncrementalLayoutEngine.getNodeMinimalWidth(node, layoutConfigurator).orElse(0d);
+        double maxWidth = this.childNodeIncrementalLayoutEngine.getNodeMinimalWidth(node, elementId2ElkElement).orElse(0d);
 
         for (NodeLayoutData child : node.getChildrenNodes()) {
-            double nodeWidth = this.childNodeIncrementalLayoutEngine.getNodeWidth(optionalDiagramEvent, child, layoutConfigurator).orElse(0d);
+            double nodeWidth = this.childNodeIncrementalLayoutEngine.getNodeWidth(optionalDiagramEvent, child, elementId2ElkElement).orElse(0d);
             if (maxWidth < nodeWidth) {
                 maxWidth = nodeWidth;
             }
-            IPropertyHolder childProperties = layoutConfigurator.configureByType(child.getNodeType());
+            IPropertyHolder childProperties = elementId2ElkElement.get(child.getId());
             if (childProperties.hasProperty(CoreOptions.NODE_SIZE_CONSTRAINTS) && childProperties.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS).contains(SizeConstraint.MINIMUM_SIZE)) {
                 KVector childMinSize = childProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
                 if (maxWidth < childMinSize.x) {
@@ -72,10 +73,10 @@ public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
         double theMaxWidth = maxWidth;
         double nextChildYPosition = 0;
         for (NodeLayoutData child : node.getChildrenNodes()) {
-            NodeLayoutData updatedSizeNode = this.childNodeIncrementalLayoutEngine.layout(optionalDiagramEvent, child, layoutConfigurator, theMaxWidth).orElse(child);
+            NodeLayoutData updatedSizeNode = this.childNodeIncrementalLayoutEngine.layout(optionalDiagramEvent, child, elementId2ElkElement, theMaxWidth).orElse(child);
             updatedSizeNode.setPosition(Position.at(0, nextChildYPosition));
 
-            double gapBetweenNodes = childrenLayoutStrategyPropertyHolder.getProperty(CoreOptions.SPACING_NODE_NODE);
+            double gapBetweenNodes = nodeProperties.getProperty(CoreOptions.SPACING_NODE_NODE);
             nextChildYPosition = nextChildYPosition + updatedSizeNode.getSize().getHeight() + gapBetweenNodes;
         }
 
@@ -83,15 +84,15 @@ public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
     }
 
     @Override
-    public Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator, double width) {
-        IPropertyHolder childrenLayoutStrategyPropertyHolder = layoutConfigurator.configureByChildrenLayoutStrategy(node.getChildrenLayoutStrategy().getClass());
+    public Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement, double width) {
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(node.getId());
 
         double nextChildYPosition = 0;
         for (NodeLayoutData child : node.getChildrenNodes()) {
-            NodeLayoutData updatedSizeNode = this.childNodeIncrementalLayoutEngine.layout(optionalDiagramEvent, child, layoutConfigurator, width).orElse(child);
+            NodeLayoutData updatedSizeNode = this.childNodeIncrementalLayoutEngine.layout(optionalDiagramEvent, child, elementId2ElkElement, width).orElse(child);
             updatedSizeNode.setPosition(Position.at(0, nextChildYPosition));
 
-            double gapBetweenNodes = childrenLayoutStrategyPropertyHolder.getProperty(CoreOptions.SPACING_NODE_NODE);
+            double gapBetweenNodes = nodeProperties.getProperty(CoreOptions.SPACING_NODE_NODE);
             nextChildYPosition = nextChildYPosition + updatedSizeNode.getSize().getHeight() + gapBetweenNodes;
         }
 

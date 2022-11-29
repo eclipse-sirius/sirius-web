@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
+import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 
 /**
@@ -30,9 +31,9 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayout
  */
 public interface INodeIncrementalLayoutEngine {
 
-    NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator);
+    NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement);
 
-    NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, double maxWidth);
+    NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement, double maxWidth);
 
     /**
      * Return the width of the node. This may lay the node out
@@ -41,12 +42,12 @@ public interface INodeIncrementalLayoutEngine {
      *            The optional diagram event
      * @param nodeLayoutData
      *            The node we need the width
-     * @param layoutConfigurator
-     *            The {@link ISiriusWebLayoutConfigurator}
+     * @param elementId2ElkElement
+     *            the map of element id to elk element, used to retrieve properties of elk elements
      * @return The node width
      */
-    double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator);
+    double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement);
 
-    double getNodeMinimalWidth(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator);
+    double getNodeMinimalWidth(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement);
 
 }

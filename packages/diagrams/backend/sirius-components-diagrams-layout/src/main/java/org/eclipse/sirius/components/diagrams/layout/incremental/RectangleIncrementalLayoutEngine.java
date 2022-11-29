@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -29,7 +31,6 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.Size.Builder;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
@@ -62,16 +63,16 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     @Override
-    public double getNodeMinimalWidth(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(node.getNodeType());
+    public double getNodeMinimalWidth(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(node.getId());
         double nodeMinimalWidth = 0;
-        if (this.isNodeLabelInside(node, layoutConfigurator)) {
-            ElkPadding padding = nodeTypePropertyHolder.getProperty(CoreOptions.PADDING);
+        if (this.isNodeLabelInside(node, elementId2ElkElement)) {
+            ElkPadding padding = nodeProperties.getProperty(CoreOptions.PADDING);
             nodeMinimalWidth = node.getLabel().getTextBounds().getSize().getWidth() + padding.right + padding.left;
         }
 
-        if (nodeTypePropertyHolder.hasProperty(CoreOptions.NODE_SIZE_CONSTRAINTS) && nodeTypePropertyHolder.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS).contains(SizeConstraint.MINIMUM_SIZE)) {
-            KVector childMinSize = nodeTypePropertyHolder.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+        if (nodeProperties.hasProperty(CoreOptions.NODE_SIZE_CONSTRAINTS) && nodeProperties.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS).contains(SizeConstraint.MINIMUM_SIZE)) {
+            KVector childMinSize = nodeProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
             if (nodeMinimalWidth < childMinSize.x) {
                 nodeMinimalWidth = childMinSize.x;
             }
@@ -81,35 +82,33 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     @Override
-    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
+    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
+        NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider(elementId2ElkElement);
         Bounds initialNodeBounds = Bounds.newBounds().position(nodeLayoutData.getPosition()).size(nodeLayoutData.getSize()).build();
 
-        Size childrenAreaSize = this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, layoutConfigurator).orElseGet(() -> Size.of(0, 0));
+        Size childrenAreaSize = this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, elementId2ElkElement).orElseGet(() -> Size.of(0, 0));
 
-        IPropertyHolder childrenLayoutStrategyPropertyHolder = layoutConfigurator.configureByChildrenLayoutStrategy(nodeLayoutData.getChildrenLayoutStrategy().getClass());
-        ElkPadding elkPadding = childrenLayoutStrategyPropertyHolder.getProperty(CoreOptions.PADDING);
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(nodeLayoutData.getId());
+        ElkPadding elkPadding = nodeProperties.getProperty(CoreOptions.PADDING);
         double xOffset = elkPadding.left;
         double yOffset = elkPadding.top + this.handleHeader(nodeLayoutData);
 
-        this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, layoutConfigurator, childrenAreaSize.getWidth());
+        this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, elementId2ElkElement, childrenAreaSize.getWidth());
 
         // Update node size
         Builder newNodeSizeBuilder = Size.newSize().width(elkPadding.left + childrenAreaSize.getWidth() + elkPadding.right);
         double newNodeHeight = elkPadding.top + childrenAreaSize.getHeight() + elkPadding.bottom;
 
         newNodeHeight += this.handleHeader(nodeLayoutData);
-
-        if (this.shouldConsiderNodeLabel(nodeLayoutData, layoutConfigurator)) {
-            Size labelWithPaddingSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
+        if (this.shouldConsiderNodeLabel(nodeLayoutData, elementId2ElkElement)) {
+            Size labelWithPaddingSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, elementId2ElkElement);
             newNodeHeight += labelWithPaddingSize.getHeight();
             yOffset += labelWithPaddingSize.getHeight();
         }
 
-        IPropertyHolder nodePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
-        EnumSet<SizeConstraint> sizeConstraints = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
+        EnumSet<SizeConstraint> sizeConstraints = nodeProperties.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
         if (sizeConstraints.contains(SizeConstraint.MINIMUM_SIZE)) {
-            KVector minimumSize = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+            KVector minimumSize = nodeProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
             if (newNodeHeight < minimumSize.y) {
                 newNodeHeight = minimumSize.y;
             }
@@ -144,14 +143,14 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
         // update the border node once the current node bounds are updated
         Bounds newBounds = Bounds.newBounds().position(nodeLayoutData.getPosition()).size(nodeLayoutData.getSize()).build();
         List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramEvent, nodeLayoutData.getBorderNodes(), initialNodeBounds, newBounds,
-                layoutConfigurator);
+                elementId2ElkElement);
 
         // recompute the label
         if (nodeLayoutData.getLabel() != null) {
             // @formatter:off
             Position nodeLabelPosition = this.customLabelPositionProviders.stream()
-                    .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(layoutConfigurator, nodeLayoutData.getLabel().getTextBounds().getSize(), nodeLayoutData.getSize(),
-                            nodeLayoutData.getNodeType(), nodeLayoutData.getStyle()))
+                    .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(elementId2ElkElement, nodeLayoutData.getLabel().getTextBounds().getSize(), nodeLayoutData.getSize(),
+                            nodeLayoutData.getId(), nodeLayoutData.getStyle()))
                     .flatMap(Optional::stream)
                     .findFirst()
                     .orElseGet(() -> nodeLabelPositionProvider.getPosition(nodeLayoutData, nodeLayoutData.getLabel(), borderNodesOnSide));
@@ -163,30 +162,29 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     @Override
-    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, double maxWidth) {
-        NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
+    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement, double maxWidth) {
+        NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider(elementId2ElkElement);
         Bounds initialNodeBounds = Bounds.newBounds().position(nodeLayoutData.getPosition()).size(nodeLayoutData.getSize()).build();
 
-        Size childrenAreaSize = this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, layoutConfigurator, maxWidth).orElseGet(() -> Size.of(0, 0));
+        Size childrenAreaSize = this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, elementId2ElkElement, maxWidth).orElseGet(() -> Size.of(0, 0));
 
-        IPropertyHolder childrenLayoutStrategyPropertyHolder = layoutConfigurator.configureByChildrenLayoutStrategy(nodeLayoutData.getChildrenLayoutStrategy().getClass());
-        ElkPadding elkPadding = childrenLayoutStrategyPropertyHolder.getProperty(CoreOptions.PADDING);
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(nodeLayoutData.getId());
+        ElkPadding elkPadding = nodeProperties.getProperty(CoreOptions.PADDING);
         double xOffset = elkPadding.left;
         double yOffset = elkPadding.top + this.handleHeader(nodeLayoutData);
 
         Builder newNodeSizeBuilder = Size.newSize().width(maxWidth);
         double newNodeHeight = elkPadding.top + childrenAreaSize.getHeight() + elkPadding.bottom;
 
-        if (this.shouldConsiderNodeLabel(nodeLayoutData, layoutConfigurator)) {
-            Size labelWithPaddingSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
+        if (this.shouldConsiderNodeLabel(nodeLayoutData, elementId2ElkElement)) {
+            Size labelWithPaddingSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, elementId2ElkElement);
             newNodeHeight += labelWithPaddingSize.getHeight();
             yOffset += labelWithPaddingSize.getHeight();
         }
 
-        IPropertyHolder nodePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
-        EnumSet<SizeConstraint> sizeConstraints = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
+        EnumSet<SizeConstraint> sizeConstraints = nodeProperties.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
         if (sizeConstraints.contains(SizeConstraint.MINIMUM_SIZE)) {
-            KVector minimumSize = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+            KVector minimumSize = nodeProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
             if (newNodeHeight < minimumSize.y) {
                 newNodeHeight = minimumSize.y;
             }
@@ -221,14 +219,14 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
         // update the border node once the current node bounds are updated
         Bounds newBounds = Bounds.newBounds().position(nodeLayoutData.getPosition()).size(nodeLayoutData.getSize()).build();
         List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramEvent, nodeLayoutData.getBorderNodes(), initialNodeBounds, newBounds,
-                layoutConfigurator);
+                elementId2ElkElement);
 
         // recompute the label
         if (nodeLayoutData.getLabel() != null) {
             // @formatter:off
             Position nodeLabelPosition = this.customLabelPositionProviders.stream()
-                    .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(layoutConfigurator, nodeLayoutData.getLabel().getTextBounds().getSize(), nodeLayoutData.getSize(),
-                            nodeLayoutData.getNodeType(), nodeLayoutData.getStyle()))
+                    .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(elementId2ElkElement, nodeLayoutData.getLabel().getTextBounds().getSize(), nodeLayoutData.getSize(),
+                            nodeLayoutData.getId(), nodeLayoutData.getStyle()))
                     .flatMap(Optional::stream)
                     .findFirst()
                     .orElseGet(() -> nodeLabelPositionProvider.getPosition(nodeLayoutData, nodeLayoutData.getLabel(), borderNodesOnSide));
@@ -261,28 +259,28 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     @Override
-    public double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder childrenLayoutStrategyPropertyHolder = layoutConfigurator.configureByChildrenLayoutStrategy(nodeLayoutData.getChildrenLayoutStrategy().getClass());
-        ElkPadding elkPadding = childrenLayoutStrategyPropertyHolder.getProperty(CoreOptions.PADDING);
+    public double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(nodeLayoutData.getId());
+        ElkPadding elkPadding = nodeProperties.getProperty(CoreOptions.PADDING);
 
-        Size childrenAreaSize = this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, layoutConfigurator).orElseGet(() -> Size.of(0, 0));
+        Size childrenAreaSize = this.childLayoutStrategyEngineHandler.layoutChildren(optionalDiagramEvent, nodeLayoutData, elementId2ElkElement).orElseGet(() -> Size.of(0, 0));
 
         return elkPadding.left + childrenAreaSize.getWidth() + elkPadding.right;
     }
 
-    private boolean shouldConsiderNodeLabel(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private boolean shouldConsiderNodeLabel(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         boolean shouldConsiderNodeLabel = true;
         LabelLayoutData label = node.getLabel();
 
         shouldConsiderNodeLabel = label.getTextBounds().getSize().getWidth() != 0;
-        shouldConsiderNodeLabel = shouldConsiderNodeLabel && this.isNodeLabelInside(node, layoutConfigurator);
+        shouldConsiderNodeLabel = shouldConsiderNodeLabel && this.isNodeLabelInside(node, elementId2ElkElement);
 
         return shouldConsiderNodeLabel;
     }
 
-    private boolean isNodeLabelInside(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(node.getNodeType());
-        EnumSet<NodeLabelPlacement> nodeLabelPlacement = nodeTypePropertyHolder.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
+    private boolean isNodeLabelInside(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(node.getId());
+        EnumSet<NodeLabelPlacement> nodeLabelPlacement = nodeProperties.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
         return nodeLabelPlacement.contains(NodeLabelPlacement.INSIDE);
     }
 }

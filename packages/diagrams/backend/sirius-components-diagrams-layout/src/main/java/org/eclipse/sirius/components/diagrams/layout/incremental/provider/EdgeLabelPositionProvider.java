@@ -13,14 +13,14 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.graph.ElkEdge;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
@@ -34,18 +34,14 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayout
  */
 public class EdgeLabelPositionProvider {
 
-    private final ISiriusWebLayoutConfigurator layoutConfigurator;
+    private final Map<String, ElkGraphElement> elementId2ElkElement;
 
-    public EdgeLabelPositionProvider(ISiriusWebLayoutConfigurator layoutConfigurator) {
-        this.layoutConfigurator = Objects.requireNonNull(layoutConfigurator);
+    public EdgeLabelPositionProvider(Map<String, ElkGraphElement> elementId2ElkNode) {
+        this.elementId2ElkElement = Objects.requireNonNull(elementId2ElkNode);
     }
 
     public Position getCenterPosition(EdgeLayoutData edge, LabelLayoutData label) {
-        Double spacingEdgeLabel = null;
-        spacingEdgeLabel = this.layoutConfigurator.configureByElementClass(ElkEdge.class).getProperty(CoreOptions.SPACING_EDGE_LABEL);
-        if (spacingEdgeLabel == null) {
-            spacingEdgeLabel = CoreOptions.SPACING_EDGE_LABEL.getDefault();
-        }
+        double spacingEdgeLabel = this.elementId2ElkElement.get(edge.getId()).getProperty(CoreOptions.SPACING_EDGE_LABEL);
         Position position = Position.UNDEFINED;
         List<Position> routingPoints = edge.getRoutingPoints();
 
