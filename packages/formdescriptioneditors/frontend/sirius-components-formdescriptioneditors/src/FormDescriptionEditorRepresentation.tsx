@@ -315,36 +315,25 @@ export const FormDescriptionEditorRepresentation = ({
         <div className={classes.widgets}>
           <Typography gutterBottom>Widgets</Typography>
           <div
-            id="Textfield"
-            data-testid="FormDescriptionEditor-Textfield"
+            id="BarChart"
+            data-testid="FormDescriptionEditor-BarChart"
             draggable="true"
             className={classes.widgetKind}
             onDragStart={handleDragStart}>
-            <TextFieldsIcon />
+            <BarChartIcon />
             <Typography variant="caption" gutterBottom>
-              Textfield
+              BarChart
             </Typography>
           </div>
           <div
-            id="TextArea"
-            data-testid="FormDescriptionEditor-TextArea"
+            id="Button"
+            data-testid="FormDescriptionEditor-Button"
             draggable="true"
             className={classes.widgetKind}
             onDragStart={handleDragStart}>
-            <TextFieldsIcon />
+            <Button width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
-              Textarea
-            </Typography>
-          </div>
-          <div
-            id="RichText"
-            data-testid="FormDescriptionEditor-RichText"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStart}>
-            <TextFormatIcon />
-            <Typography variant="caption" gutterBottom>
-              RichText
+              Button
             </Typography>
           </div>
           <div
@@ -359,36 +348,25 @@ export const FormDescriptionEditorRepresentation = ({
             </Typography>
           </div>
           <div
-            id="Radio"
-            data-testid="FormDescriptionEditor-Radio"
+            id="FlexboxContainer"
+            data-testid="FormDescriptionEditor-FlexboxContainer"
             draggable="true"
             className={classes.widgetKind}
             onDragStart={handleDragStart}>
-            <RadioButtonCheckedIcon />
-            <Typography variant="caption" gutterBottom>
-              Radio
+            <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
+            <Typography variant="caption" gutterBottom align="center">
+              Flexbox Container
             </Typography>
           </div>
           <div
-            id="Select"
-            data-testid="FormDescriptionEditor-Select"
+            id="Image"
+            data-testid="FormDescriptionEditor-Image"
             draggable="true"
             className={classes.widgetKind}
             onDragStart={handleDragStart}>
-            <ArrowDropDownCircleIcon />
+            <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
-              Select
-            </Typography>
-          </div>
-          <div
-            id="MultiSelect"
-            data-testid="FormDescriptionEditor-MultiSelect"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStart}>
-            <ArrowDropDownCircleIcon />
-            <Typography variant="caption" gutterBottom>
-              MultiSelect
+              Image
             </Typography>
           </div>
           <div
@@ -400,17 +378,6 @@ export const FormDescriptionEditorRepresentation = ({
             <LabelOutlinedIcon />
             <Typography variant="caption" gutterBottom>
               Label
-            </Typography>
-          </div>
-          <div
-            id="Button"
-            data-testid="FormDescriptionEditor-Button"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStart}>
-            <Button width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom>
-              Button
             </Typography>
           </div>
           <div
@@ -436,25 +403,14 @@ export const FormDescriptionEditorRepresentation = ({
             </Typography>
           </div>
           <div
-            id="Image"
-            data-testid="FormDescriptionEditor-Image"
+            id="MultiSelect"
+            data-testid="FormDescriptionEditor-MultiSelect"
             draggable="true"
             className={classes.widgetKind}
             onDragStart={handleDragStart}>
-            <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
+            <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
-              Image
-            </Typography>
-          </div>
-          <div
-            id="BarChart"
-            data-testid="FormDescriptionEditor-BarChart"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStart}>
-            <BarChartIcon />
-            <Typography variant="caption" gutterBottom>
-              BarChart
+              MultiSelect
             </Typography>
           </div>
           <div
@@ -469,14 +425,58 @@ export const FormDescriptionEditorRepresentation = ({
             </Typography>
           </div>
           <div
-            id="FlexboxContainer"
-            data-testid="FormDescriptionEditor-FlexboxContainer"
+            id="Radio"
+            data-testid="FormDescriptionEditor-Radio"
             draggable="true"
             className={classes.widgetKind}
             onDragStart={handleDragStart}>
-            <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom align="center">
-              Flexbox Container
+            <RadioButtonCheckedIcon />
+            <Typography variant="caption" gutterBottom>
+              Radio
+            </Typography>
+          </div>
+          <div
+            id="RichText"
+            data-testid="FormDescriptionEditor-RichText"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <TextFormatIcon />
+            <Typography variant="caption" gutterBottom>
+              RichText
+            </Typography>
+          </div>
+          <div
+            id="Select"
+            data-testid="FormDescriptionEditor-Select"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <ArrowDropDownCircleIcon />
+            <Typography variant="caption" gutterBottom>
+              Select
+            </Typography>
+          </div>
+          <div
+            id="TextArea"
+            data-testid="FormDescriptionEditor-TextArea"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <TextFieldsIcon />
+            <Typography variant="caption" gutterBottom>
+              Textarea
+            </Typography>
+          </div>
+          <div
+            id="Textfield"
+            data-testid="FormDescriptionEditor-Textfield"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <TextFieldsIcon />
+            <Typography variant="caption" gutterBottom>
+              Textfield
             </Typography>
           </div>
         </div>
