@@ -31,7 +31,7 @@ import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import SaveIcon from '@material-ui/icons/Save';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import SubjectIcon from '@material-ui/icons/Subject';
 import TitleIcon from '@material-ui/icons/Title';
@@ -332,7 +332,7 @@ export const ToolbarPlugin = ({ readOnly, pristine, onEdited, onSave }: ToolbarP
               onSave(markdown);
             });
           }}>
-          <SaveAltIcon fontSize="small" color={pristine ? 'disabled' : 'primary'} />
+          <SaveIcon fontSize="small" color={pristine ? 'disabled' : 'primary'} />
         </ToggleButton>
       </StyledToggleButtonGroup>
     </Paper>
