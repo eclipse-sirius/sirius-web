@@ -3563,13 +3563,29 @@ public interface ViewPackage extends EPackage {
     int BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__WIDTH = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Height</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__HEIGHT = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>Bar Chart Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int BAR_CHART_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int BAR_CHART_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Bar Chart Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -8515,6 +8531,29 @@ public interface ViewPackage extends EPackage {
     EReference getBarChartDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.BarChartDescription#getWidth
+     * <em>Width</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Width</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getWidth()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_Width();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.BarChartDescription#getHeight <em>Height</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Height</em>'.
+     * @see org.eclipse.sirius.components.view.BarChartDescription#getHeight()
+     * @see #getBarChartDescription()
+     * @generated
+     */
+    EAttribute getBarChartDescription_Height();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.PieChartDescription <em>Pie Chart
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -10718,6 +10757,22 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getBarChartDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the '<em><b>Width</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__WIDTH = eINSTANCE.getBarChartDescription_Width();
+
+        /**
+         * The meta object literal for the '<em><b>Height</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BAR_CHART_DESCRIPTION__HEIGHT = eINSTANCE.getBarChartDescription_Height();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.PieChartDescriptionImpl

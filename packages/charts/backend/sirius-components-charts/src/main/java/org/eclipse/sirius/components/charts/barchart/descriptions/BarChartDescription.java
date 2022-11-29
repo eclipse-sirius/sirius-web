@@ -41,6 +41,10 @@ public final class BarChartDescription implements IChartDescription {
 
     private Function<VariableManager, BarChartStyle> styleProvider;
 
+    private int width;
+
+    private int height;
+
     private BarChartDescription() {
         // prevent instantiation
     }
@@ -71,6 +75,14 @@ public final class BarChartDescription implements IChartDescription {
         return this.styleProvider;
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
     public static Builder newBarChartDescription(String id) {
         return new Builder(id);
     }
@@ -93,6 +105,10 @@ public final class BarChartDescription implements IChartDescription {
         private Function<VariableManager, List<String>> keysProvider;
 
         private Function<VariableManager, BarChartStyle> styleProvider = variableManager -> null;
+
+        private int width;
+
+        private int height;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -123,6 +139,16 @@ public final class BarChartDescription implements IChartDescription {
             return this;
         }
 
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+
         public BarChartDescription build() {
             BarChartDescription barChartDescription = new BarChartDescription();
             barChartDescription.id = Objects.requireNonNull(this.id);
@@ -131,6 +157,8 @@ public final class BarChartDescription implements IChartDescription {
             barChartDescription.valuesProvider = Objects.requireNonNull(this.valuesProvider);
             barChartDescription.keysProvider = Objects.requireNonNull(this.keysProvider);
             barChartDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            barChartDescription.width = this.width;
+            barChartDescription.height = this.height;
             return barChartDescription;
         }
     }

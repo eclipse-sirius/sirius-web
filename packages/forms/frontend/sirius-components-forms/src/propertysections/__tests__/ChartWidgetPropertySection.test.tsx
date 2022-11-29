@@ -101,6 +101,8 @@ const defaultBarChart: GQLBarChart = {
   metadata: barChartMetadata,
   entries: barChartentries,
   style: null,
+  width: 500,
+  height: 250,
 };
 const defaultBarChartWithStyle: GQLBarChart = {
   label: 'values',
@@ -114,6 +116,8 @@ const defaultBarChartWithStyle: GQLBarChart = {
     strikeThrough: true,
     underline: true,
   },
+  width: 500,
+  height: 250,
 };
 
 const defaultBarChartWithEmptyStyle: GQLBarChart = {
@@ -128,6 +132,8 @@ const defaultBarChartWithEmptyStyle: GQLBarChart = {
     strikeThrough: false,
     underline: false,
   },
+  width: 500,
+  height: 250,
 };
 const defaultPieChartWidget: GQLChartWidget = {
   id: 'id',

@@ -41,6 +41,10 @@ public final class BarChartElementProps implements IProps {
 
     private BarChartStyle style;
 
+    private int width;
+
+    private int height;
+
     private BarChartElementProps() {
         // prevent instantiation
     }
@@ -69,6 +73,14 @@ public final class BarChartElementProps implements IProps {
         return this.style;
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
     public static Builder newBarChartElementProps(String id) {
         return new Builder(id);
     }
@@ -91,6 +103,10 @@ public final class BarChartElementProps implements IProps {
         private List<String> keys;
 
         private BarChartStyle style;
+
+        private int width;
+
+        private int height;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -121,6 +137,16 @@ public final class BarChartElementProps implements IProps {
             return this;
         }
 
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+
         public BarChartElementProps build() {
             BarChartElementProps barChartElementProps = new BarChartElementProps();
             barChartElementProps.id = Objects.requireNonNull(this.id);
@@ -129,6 +155,8 @@ public final class BarChartElementProps implements IProps {
             barChartElementProps.values = Objects.requireNonNull(this.values);
             barChartElementProps.keys = Objects.requireNonNull(this.keys);
             barChartElementProps.style = this.style; // Optional on purpose
+            barChartElementProps.width = this.width;
+            barChartElementProps.height = this.height;
             return barChartElementProps;
         }
     }

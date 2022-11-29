@@ -55,6 +55,8 @@ public class BarChartComponent implements IComponent {
                 .label(label)
                 .descriptionId(barChartDescription.getId())
                 .values(values)
+                .width(barChartDescription.getWidth())
+                .height(barChartDescription.getHeight())
                 .keys(keys);
         // @formatter:on
 

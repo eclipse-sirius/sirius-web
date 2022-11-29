@@ -243,6 +243,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/yAxisLabelExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//BarChartDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//BarChartDescription/conditionalStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/width"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BarChartDescription/height"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//PieChartDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescription/valuesExpression"/>

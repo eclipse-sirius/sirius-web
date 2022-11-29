@@ -296,6 +296,8 @@ export interface GQLBarChart extends GQLRepresentation {
   label: string;
   entries: GQLBarChartEntry[];
   style: GQLBarChartStyle | null;
+  width: number;
+  height: number;
 }
 
 export interface GQLFontStyle {

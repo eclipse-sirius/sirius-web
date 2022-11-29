@@ -15,20 +15,22 @@ import { useEffect, useRef } from 'react';
 import { getFontSize, getFontStyle, getFontWeight, getTextDecoration } from '../chartOperations';
 import { BarChartProps } from './BarChart.types';
 
-const marginTop = 20;
+const marginTop = 30;
 const marginBottom = 30;
 const marginRight = 0;
-const marginLeft = 40;
+const marginLeft = 50;
 const xPadding = 0.1;
 const yType = d3.scaleLinear;
 const yFormat = 'f';
 const x = (d) => d.key;
 const y = (d) => d.value;
 
-export const BarChart = ({ width, height, chart }: BarChartProps) => {
+export const BarChart = ({ chart }: BarChartProps) => {
   const d3Container = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
+    const width = chart.width;
+    const height = chart.height;
     const xRange = [marginLeft, width - marginRight]; // [left, right]
     const yRange = [height - marginBottom, marginTop]; // [bottom, top]
 
@@ -67,10 +69,7 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
 
       const selection = d3.select(d3Container.current);
       selection.selectAll('*').remove(); // Remove existing content.
-      const svg = selection
-        .attr('viewBox', [0, 0, width, height])
-        .attr('style', `max-width: 100%; max-height: ${height}; height: auto; height: intrinsic;`)
-        .attr('pointer-events', 'none'); // allow selection anywhere in the svg
+      const svg = selection.attr('viewBox', [0, 0, width, height]).attr('pointer-events', 'none'); // allow selection anywhere in the svg
 
       svg
         .append('g')
@@ -122,7 +121,7 @@ export const BarChart = ({ width, height, chart }: BarChartProps) => {
         )
         .call(xAxis);
     }
-  }, [width, height, chart, d3Container]);
+  }, [chart, d3Container]);
 
-  return <svg ref={d3Container} width={width} height={height} />;
+  return <svg ref={d3Container} width={chart.width} height={chart.height} />;
 };
