@@ -2986,6 +2986,26 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getBarChartDescription_Width() {
+        return (EAttribute) this.barChartDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getBarChartDescription_Height() {
+        return (EAttribute) this.barChartDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getPieChartDescription() {
         return this.pieChartDescriptionEClass;
     }
@@ -3427,6 +3447,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION);
         this.createEReference(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__STYLE);
         this.createEReference(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__WIDTH);
+        this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__HEIGHT);
 
         this.pieChartDescriptionEClass = this.createEClass(PIE_CHART_DESCRIPTION);
         this.createEAttribute(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__VALUES_EXPRESSION);
@@ -3992,6 +4014,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getBarChartDescription_ConditionalStyles(), this.getConditionalBarChartDescriptionStyle(), null, "conditionalStyles", null, 0, -1, BarChartDescription.class, //$NON-NLS-1$
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBarChartDescription_Width(), this.ecorePackage.getEInt(), "width", "500", 1, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBarChartDescription_Height(), this.ecorePackage.getEInt(), "height", "250", 1, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pieChartDescriptionEClass, PieChartDescription.class, "PieChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
         this.initEAttribute(this.getPieChartDescription_ValuesExpression(), this.ecorePackage.getEString(), "valuesExpression", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$

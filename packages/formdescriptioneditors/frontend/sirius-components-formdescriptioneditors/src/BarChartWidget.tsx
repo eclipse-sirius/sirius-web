@@ -12,14 +12,17 @@
  *******************************************************************************/
 import { BarChart, BarChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
 import { GQLBarChart } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { BarChartWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme>((theme) => ({
   selected: {
     color: theme.palette.primary.main,
+  },
+  chart: {
+    overflowX: 'auto',
   },
 }));
 
@@ -58,6 +61,8 @@ export const BarChartWidget = ({ widget, selection }: BarChartWidgetProps) => {
       { key: 'Z', value: 0.00074 },
     ],
     style: barChartWidget.style,
+    width: barChartWidget.width,
+    height: barChartWidget.height,
   };
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -82,7 +87,9 @@ export const BarChartWidget = ({ widget, selection }: BarChartWidgetProps) => {
       <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
         {barChartWidget.label}
       </Typography>
-      <BarChart width={500} height={250} chart={chart} />
+      <div className={classes.chart}>
+        <BarChart chart={chart} />
+      </div>
     </div>
   );
 };

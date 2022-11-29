@@ -460,6 +460,8 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
+                .width(viewBarChartDescription.getWidth())
+                .height(viewBarChartDescription.getHeight())
                 .build();
         // @formatter:on
         return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);

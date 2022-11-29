@@ -43,6 +43,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl#getConditionalStyles <em>Conditional
  * Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl#getWidth <em>Width</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl#getHeight <em>Height</em>}</li>
  * </ul>
  *
  * @generated
@@ -127,6 +129,46 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
      * @ordered
      */
     protected EList<ConditionalBarChartDescriptionStyle> conditionalStyles;
+
+    /**
+     * The default value of the '{@link #getWidth() <em>Width</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getWidth()
+     * @generated
+     * @ordered
+     */
+    protected static final int WIDTH_EDEFAULT = 500;
+
+    /**
+     * The cached value of the '{@link #getWidth() <em>Width</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getWidth()
+     * @generated
+     * @ordered
+     */
+    protected int width = WIDTH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeight() <em>Height</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getHeight()
+     * @generated
+     * @ordered
+     */
+    protected static final int HEIGHT_EDEFAULT = 250;
+
+    /**
+     * The cached value of the '{@link #getHeight() <em>Height</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getHeight()
+     * @generated
+     * @ordered
+     */
+    protected int height = HEIGHT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -272,10 +314,55 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public EList<ConditionalBarChartDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalBarChartDescriptionStyle.class, this,
-                    ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalBarChartDescriptionStyle.class, this, ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setWidth(int newWidth) {
+        int oldWidth = this.width;
+        this.width = newWidth;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.BAR_CHART_DESCRIPTION__WIDTH, oldWidth, this.width));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setHeight(int newHeight) {
+        int oldHeight = this.height;
+        this.height = newHeight;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT, oldHeight, this.height));
     }
 
     /**
@@ -312,6 +399,10 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
             return this.getStyle();
         case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
             return this.getConditionalStyles();
+        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+            return this.getWidth();
+        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+            return this.getHeight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -341,6 +432,12 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
             this.getConditionalStyles().clear();
             this.getConditionalStyles().addAll((Collection<? extends ConditionalBarChartDescriptionStyle>) newValue);
             return;
+        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+            this.setWidth((Integer) newValue);
+            return;
+        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+            this.setHeight((Integer) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -368,6 +465,12 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
         case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
             this.getConditionalStyles().clear();
             return;
+        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+            this.setWidth(WIDTH_EDEFAULT);
+            return;
+        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+            this.setHeight(HEIGHT_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -390,6 +493,10 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
             return this.style != null;
         case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
             return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+            return this.width != WIDTH_EDEFAULT;
+        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+            return this.height != HEIGHT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -411,6 +518,10 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
         result.append(this.keysExpression);
         result.append(", yAxisLabelExpression: "); //$NON-NLS-1$
         result.append(this.yAxisLabelExpression);
+        result.append(", width: "); //$NON-NLS-1$
+        result.append(this.width);
+        result.append(", height: "); //$NON-NLS-1$
+        result.append(this.height);
         result.append(')');
         return result.toString();
     }

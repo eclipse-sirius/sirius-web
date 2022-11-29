@@ -11,18 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { BarChart, PieChart } from '@eclipse-sirius/sirius-components-charts';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { GQLBarChart, GQLChart, GQLPieChart } from '../form/FormEventFragments.types';
 import { ChartWidgetPropertySectionProps } from './ChartWidgetPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
+const useStyles = makeStyles<Theme>(() => ({
+  chart: {
+    overflowX: 'auto',
+  },
+}));
+
 /**
- * Defines the content of a Link property section.
+ * Defines the content of a Chart property section.
  */
 export const ChartWidgetPropertySection = ({ widget, subscribers }: ChartWidgetPropertySectionProps) => {
+  const classes = useStyles();
   const { chart } = widget;
   let chartComponent: JSX.Element | null;
   if (isBarChart(chart)) {
-    chartComponent = <BarChart width={500} height={250} chart={chart} />;
+    chartComponent = (
+      <div className={classes.chart}>
+        <BarChart chart={chart} />
+      </div>
+    );
   } else if (isPieChart(chart)) {
     chartComponent = <PieChart width={300} height={300} chart={chart} />;
   }

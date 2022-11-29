@@ -14,8 +14,6 @@
 import { FontStyle } from '../Charts.types';
 
 export interface BarChartProps {
-  width: number;
-  height: number;
   chart: BarChartRepresentation;
 }
 
@@ -23,6 +21,8 @@ export interface BarChartRepresentation {
   label: string;
   entries: BarChartRepresentationEntry[];
   style: BarChartStyle | null;
+  width: number;
+  height: number;
 }
 export interface BarChartRepresentationEntry {
   key: string;

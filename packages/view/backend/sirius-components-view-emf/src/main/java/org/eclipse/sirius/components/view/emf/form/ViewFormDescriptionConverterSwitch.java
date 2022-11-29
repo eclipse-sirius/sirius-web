@@ -381,6 +381,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
                 .styleProvider(styleProvider)
+                .width(viewBarChartDescription.getWidth())
+                .height(viewBarChartDescription.getHeight())
                 .build();
         // @formatter:on
         return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);

@@ -297,8 +297,7 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public EList<ConditionalMultiSelectDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this,
-                    ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this, ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

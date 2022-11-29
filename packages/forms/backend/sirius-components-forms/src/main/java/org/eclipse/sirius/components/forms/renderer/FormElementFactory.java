@@ -132,6 +132,8 @@ public class FormElementFactory implements IElementFactory {
         Builder builder = BarChart.newBarChart(props.getId())
                 .descriptionId(props.getDescriptionId())
                 .label(props.getLabel())
+                .width(props.getWidth())
+                .height(props.getHeight())
                 .entries(entries);
         // @formatter:on
 

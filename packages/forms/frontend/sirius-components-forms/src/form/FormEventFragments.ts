@@ -227,6 +227,8 @@ export const widgetFields = `
           underline
           strikeThrough
         }
+        width
+        height
       }
       ... on PieChart {
         metadata {

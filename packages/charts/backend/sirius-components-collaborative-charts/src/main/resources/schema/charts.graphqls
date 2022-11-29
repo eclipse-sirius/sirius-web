@@ -28,6 +28,8 @@ type BarChart implements Representation {
   label: String!
   entries: [BarChartEntry!]!
   style: BarChartStyle
+  width: Int!
+  height: Int!
 }
 
 type BarChartEntry {

@@ -55,6 +55,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
             this.addValuesExpressionPropertyDescriptor(object);
             this.addKeysExpressionPropertyDescriptor(object);
             this.addYAxisLabelExpressionPropertyDescriptor(object);
+            this.addWidthPropertyDescriptor(object);
+            this.addHeightPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -94,6 +96,30 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
                 this.getString("_UI_BarChartDescription_yAxisLabelExpression_feature"), //$NON-NLS-1$
                 this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_yAxisLabelExpression_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Width feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addWidthPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BarChartDescription_width_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.BAR_CHART_DESCRIPTION__WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Height feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addHeightPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_BarChartDescription_height_feature"), //$NON-NLS-1$
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ViewPackage.Literals.BAR_CHART_DESCRIPTION__HEIGHT, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -174,6 +200,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
         case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
         case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
         case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:

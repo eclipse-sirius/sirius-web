@@ -30,6 +30,8 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getConditionalStyles <em>Conditional
  * Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getWidth <em>Width</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.BarChartDescription#getHeight <em>Height</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription()
@@ -140,5 +142,51 @@ public interface BarChartDescription extends WidgetDescription {
      * @generated
      */
     EList<ConditionalBarChartDescriptionStyle> getConditionalStyles();
+
+    /**
+     * Returns the value of the '<em><b>Width</b></em>' attribute. The default value is <code>"500"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Width</em>' attribute.
+     * @see #setWidth(int)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription_Width()
+     * @model default="500" required="true"
+     * @generated
+     */
+    int getWidth();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.BarChartDescription#getWidth <em>Width</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Width</em>' attribute.
+     * @see #getWidth()
+     * @generated
+     */
+    void setWidth(int value);
+
+    /**
+     * Returns the value of the '<em><b>Height</b></em>' attribute. The default value is <code>"250"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Height</em>' attribute.
+     * @see #setHeight(int)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getBarChartDescription_Height()
+     * @model default="250" required="true"
+     * @generated
+     */
+    int getHeight();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.BarChartDescription#getHeight <em>Height</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Height</em>' attribute.
+     * @see #getHeight()
+     * @generated
+     */
+    void setHeight(int value);
 
 } // BarChartDescription

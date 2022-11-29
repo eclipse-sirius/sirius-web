@@ -42,6 +42,10 @@ public final class BarChart implements IChart {
 
     private BarChartStyle style;
 
+    private int width;
+
+    private int height;
+
     private BarChart() {
         // Prevent instantiation
     }
@@ -74,14 +78,22 @@ public final class BarChart implements IChart {
         return this.style;
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
     public static Builder newBarChart(String id) {
         return new Builder(id);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind);
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}, width: {5}, height: {6}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind, this.width, this.height);
     }
 
     /**
@@ -103,6 +115,10 @@ public final class BarChart implements IChart {
         private List<BarChartEntry> entries;
 
         private BarChartStyle style;
+
+        private int width;
+
+        private int height;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -128,6 +144,16 @@ public final class BarChart implements IChart {
             return this;
         }
 
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+
         public BarChart build() {
             BarChart barChart = new BarChart();
             barChart.id = Objects.requireNonNull(this.id);
@@ -136,6 +162,8 @@ public final class BarChart implements IChart {
             barChart.kind = Objects.requireNonNull(this.kind);
             barChart.entries = Objects.requireNonNull(this.entries);
             barChart.style = this.style;
+            barChart.width = this.width;
+            barChart.height = this.height;
             return barChart;
         }
     }
