@@ -17,7 +17,6 @@ import {
   ListNode,
   REMOVE_LIST_COMMAND,
 } from '@lexical/list';
-import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $createHeadingNode, $isHeadingNode } from '@lexical/rich-text';
 import { $wrapNodes } from '@lexical/selection';
@@ -31,7 +30,6 @@ import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import SaveIcon from '@material-ui/icons/Save';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import SubjectIcon from '@material-ui/icons/Subject';
 import TitleIcon from '@material-ui/icons/Title';
@@ -46,25 +44,13 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
 import { useCallback, useEffect, useState } from 'react';
-
-export interface ToolbarPluginProps {
-  readOnly: boolean;
-  pristine: boolean;
-  onEdited: () => void;
-  onSave: (newValue: string) => void;
-}
+import { ToolbarPluginProps } from './RichTextEditor.types';
 
 const useToolbarStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     borderBottom: `1px solid ${theme.palette.divider}`,
-    flexWrap: 'wrap',
-  },
-  formattingActions: {
-    display: 'flex',
-    flexDirection: 'row',
     flexWrap: 'wrap',
   },
   divider: {
@@ -91,7 +77,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup);
 
-export const ToolbarPlugin = ({ readOnly, pristine, onEdited, onSave }: ToolbarPluginProps) => {
+export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const [editor] = useLexicalComposerContext();
 
   const [isBold, setIsBold] = useState<boolean>(false);
@@ -197,142 +183,116 @@ export const ToolbarPlugin = ({ readOnly, pristine, onEdited, onSave }: ToolbarP
   const classes = useToolbarStyles({});
   return (
     <Paper elevation={0} className={classes.paper}>
-      <div className={classes.formattingActions}>
-        <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'paragraph'}
-            key={'paragraph'}
-            onClick={() => {
-              editor.update(() => {
-                const selection = $getSelection();
-                if ($isRangeSelection(selection)) {
-                  $wrapNodes(selection, () => $createParagraphNode());
-                  onEdited();
-                }
-              });
-            }}>
-            <SubjectIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'header1'}
-            key={'header1'}
-            onClick={() => {
-              editor.update(() => {
-                const selection = $getSelection();
-                if ($isRangeSelection(selection)) {
-                  $wrapNodes(selection, () => $createHeadingNode('h1'));
-                  onEdited();
-                }
-              });
-            }}>
-            <TitleIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'bullet-list'}
-            key={'bullet-list'}
-            onClick={() => {
-              if (blockType !== 'ul') {
-                editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, null);
-              } else {
-                editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
-              }
-              onEdited();
-            }}>
-            <FormatListBulletedIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'number-list'}
-            key={'number-list'}
-            onClick={() => {
-              if (blockType !== 'ol') {
-                editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, null);
-              } else {
-                editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
-              }
-              onEdited();
-            }}>
-            <FormatListNumberedIcon fontSize="small" />
-          </ToggleButton>
-        </StyledToggleButtonGroup>
-        <Divider flexItem orientation="vertical" className={classes.divider} />
-        <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'bold'}
-            key={'bold'}
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
-              onEdited();
-            }}>
-            <FormatBoldIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            value={'italic'}
-            key={'italic'}
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
-              onEdited();
-            }}>
-            <FormatItalicIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'underline'}
-            key={'underline'}
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
-              onEdited();
-            }}>
-            <FormatUnderlinedIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'code'}
-            key={'code'}
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-              onEdited();
-            }}>
-            <CodeIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton
-            classes={{ root: classes.button }}
-            disabled={readOnly}
-            value={'strikethrough'}
-            key={'strikethrough'}
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
-              onEdited();
-            }}>
-            <StrikethroughSIcon fontSize="small" />
-          </ToggleButton>
-        </StyledToggleButtonGroup>
-      </div>
       <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
         <ToggleButton
           classes={{ root: classes.button }}
-          disabled={readOnly || pristine}
-          value={'save'}
-          key={'save'}
+          disabled={readOnly}
+          value={'paragraph'}
+          key={'paragraph'}
           onClick={() => {
-            editor.getEditorState().read(() => {
-              const markdown = $convertToMarkdownString(TRANSFORMERS);
-              onSave(markdown);
+            editor.update(() => {
+              const selection = $getSelection();
+              if ($isRangeSelection(selection)) {
+                $wrapNodes(selection, () => $createParagraphNode());
+              }
             });
           }}>
-          <SaveIcon fontSize="small" color={pristine ? 'disabled' : 'primary'} />
+          <SubjectIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'header1'}
+          key={'header1'}
+          onClick={() => {
+            editor.update(() => {
+              const selection = $getSelection();
+              if ($isRangeSelection(selection)) {
+                $wrapNodes(selection, () => $createHeadingNode('h1'));
+              }
+            });
+          }}>
+          <TitleIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'bullet-list'}
+          key={'bullet-list'}
+          onClick={() => {
+            if (blockType !== 'ul') {
+              editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, null);
+            } else {
+              editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
+            }
+          }}>
+          <FormatListBulletedIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'number-list'}
+          key={'number-list'}
+          onClick={() => {
+            if (blockType !== 'ol') {
+              editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, null);
+            } else {
+              editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
+            }
+          }}>
+          <FormatListNumberedIcon fontSize="small" />
+        </ToggleButton>
+      </StyledToggleButtonGroup>
+      <Divider flexItem orientation="vertical" className={classes.divider} />
+      <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'bold'}
+          key={'bold'}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+          }}>
+          <FormatBoldIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          value={'italic'}
+          key={'italic'}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+          }}>
+          <FormatItalicIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'underline'}
+          key={'underline'}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
+          }}>
+          <FormatUnderlinedIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'code'}
+          key={'code'}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+          }}>
+          <CodeIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'strikethrough'}
+          key={'strikethrough'}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+          }}>
+          <StrikethroughSIcon fontSize="small" />
         </ToggleButton>
       </StyledToggleButtonGroup>
     </Paper>

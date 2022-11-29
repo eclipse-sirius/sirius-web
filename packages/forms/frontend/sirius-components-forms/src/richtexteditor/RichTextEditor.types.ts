@@ -11,11 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ReactNode } from 'react';
+
 export interface RichTextEditorProps {
   value: string;
   placeholder: string;
-  onChange: (value: string) => void;
   onFocus: () => void;
-  onSave: (newValue) => void;
+  onBlur: (newValue: string) => void;
   readOnly: boolean;
+}
+
+export interface ToolbarPluginProps {
+  readOnly: boolean;
+}
+
+export interface UpdateValuePluginProps {
+  markdownText: string;
+}
+
+export interface OnBlurPluginProps {
+  onBlur: (markdownText: string) => void;
+  children: ReactNode;
 }
