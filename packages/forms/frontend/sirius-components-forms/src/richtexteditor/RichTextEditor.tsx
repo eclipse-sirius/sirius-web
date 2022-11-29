@@ -19,91 +19,66 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextNode } from 'lexical';
-import { useCallback, useEffect, useState } from 'react';
+import { FocusEvent, useCallback, useEffect } from 'react';
 import { ListPlugin } from './ListPlugin';
-import { RichTextEditorProps } from './RichTextEditor.types';
+import { OnBlurPluginProps, RichTextEditorProps, UpdateValuePluginProps } from './RichTextEditor.types';
 import { ToolbarPlugin } from './ToolbarPlugin';
 
 interface ContentEditableProps {
   onFocus: () => void;
   readOnly: boolean;
-  edited: boolean;
-  onSave: (newValue: string) => void;
 }
-
-const useContentEditableStyles = makeStyles((theme) => ({
-  message: {
-    position: 'absolute',
-    textAlign: 'right',
-    padding: theme.spacing(1),
-    bottom: 0,
-    right: 0,
-  },
-}));
 
 /**
  * A content-editable div managed by lexical, but which also invokes our onFocus callback.
  */
-const ContentEditable = ({ onFocus, readOnly, edited, onSave }: ContentEditableProps): JSX.Element => {
+const ContentEditable = ({ onFocus, readOnly }: ContentEditableProps): JSX.Element => {
   const [editor] = useLexicalComposerContext();
-  const classes = useContentEditableStyles();
   const ref = useCallback(
     (rootElement: null | HTMLElement) => {
       editor.setRootElement(rootElement);
     },
     [editor]
   );
-  let message = null;
-  if (edited) {
-    message = (
-      <div className={classes.message}>
-        <Button
-          color="primary"
-          variant="contained"
-          size="small"
-          onClick={() => {
-            editor.getEditorState().read(() => {
-              const markdown = $convertToMarkdownString(TRANSFORMERS);
-              onSave(markdown);
-            });
-          }}>
-          Save changes
-        </Button>
-      </div>
-    );
-  }
-  return (
-    <div>
-      <div ref={ref} contentEditable={!readOnly} spellCheck={false} onFocus={onFocus}></div>
-      {message}
-    </div>
-  );
+  return <div ref={ref} contentEditable={!readOnly} spellCheck={false} onFocus={onFocus}></div>;
 };
 
 /**
  * Updates the editor's content when we get a new value for the widget's text.
  */
-const ValueUpdater = ({
-  value,
-  setEdited,
-}: {
-  value: string;
-  setEdited: (edited: boolean) => void;
-}): JSX.Element | null => {
+const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     editor.update(() => {
-      $convertFromMarkdownString(value, TRANSFORMERS);
-      setEdited(null);
+      $convertFromMarkdownString(markdownText, TRANSFORMERS);
     });
-  }, [editor, value]);
+  }, [editor, markdownText]);
   return null;
+};
+
+/**
+ * Invokes the supplied callback with the markdown representation of the document
+ * when focus is moved out of the editor area (including the toolbar).
+ */
+const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): JSX.Element => {
+  const [editor] = useLexicalComposerContext();
+  return (
+    <div
+      onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          editor.getEditorState().read(() => {
+            const markdown = $convertToMarkdownString(TRANSFORMERS);
+            onBlur(markdown);
+          });
+        }
+      }}>
+      {children}
+    </div>
+  );
 };
 
 const useRichTextEditorStyles = makeStyles((theme) => ({
@@ -201,9 +176,7 @@ const useRichTextEditorStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RichTextEditor = ({ value, placeholder, readOnly, onFocus, onSave }: RichTextEditorProps) => {
-  const [edited, setEdited] = useState<boolean | null>(null);
-
+export const RichTextEditor = ({ value, placeholder, readOnly, onFocus, onBlur }: RichTextEditorProps) => {
   const classes = useRichTextEditorStyles();
   const theme = {
     placeholder: classes.editorPlaceholder,
@@ -236,41 +209,21 @@ export const RichTextEditor = ({ value, placeholder, readOnly, onFocus, onSave }
     nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, HorizontalRuleNode, TextNode, CodeNode, LinkNode],
     editorState: () => $convertFromMarkdownString(value, TRANSFORMERS),
   };
-  const save = (newValue: string) => {
-    onSave(newValue);
-    setEdited(false);
-  };
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <ToolbarPlugin
-        readOnly={readOnly}
-        pristine={!edited}
-        onEdited={() => {
-          setEdited(true);
-        }}
-        onSave={save}
-      />
-      <div className={classes.editorContainer}>
-        <RichTextPlugin
-          contentEditable={<ContentEditable onFocus={onFocus} readOnly={readOnly} edited={edited} onSave={save} />}
-          placeholder={<div className={classes.editorPlaceholder}>{placeholder}</div>}
-          ErrorBoundary={LexicalErrorBoundary}
-        />
-        <ValueUpdater value={value} setEdited={setEdited} />
-        <ListPlugin />
-        <OnChangePlugin
-          ignoreSelectionChange={true}
-          onChange={() => {
-            if (edited === null) {
-              // this is the initial render, not a real "change"
-              setEdited(false);
-            } else {
-              setEdited(true);
-            }
-          }}
-        />
-        <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-      </div>
+      <OnBlurPlugin onBlur={onBlur}>
+        <UpdateValuePlugin markdownText={value} />
+        <ToolbarPlugin readOnly={readOnly} />
+        <div className={classes.editorContainer}>
+          <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+          <ListPlugin />
+          <RichTextPlugin
+            contentEditable={<ContentEditable onFocus={onFocus} readOnly={readOnly} />}
+            placeholder={<div className={classes.editorPlaceholder}>{placeholder}</div>}
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+        </div>
+      </OnBlurPlugin>
     </LexicalComposer>
   );
 };

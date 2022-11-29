@@ -20,7 +20,6 @@ import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import SaveIcon from '@material-ui/icons/Save';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import SubjectIcon from '@material-ui/icons/Subject';
 import TitleIcon from '@material-ui/icons/Title';
@@ -47,13 +46,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     borderBottom: `1px solid ${theme.palette.divider}`,
-    flexWrap: 'wrap',
-  },
-  formattingActions: {
-    display: 'flex',
-    flexDirection: 'row',
     flexWrap: 'wrap',
   },
   divider: {
@@ -82,9 +75,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
 
 export const RichTextWidget = ({ widget, selection }: RichTextWidgetProps) => {
   const classes = useStyles();
-
   const [selected, setSelected] = useState<boolean>(false);
-
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -103,67 +94,60 @@ export const RichTextWidget = ({ widget, selection }: RichTextWidgetProps) => {
       </Typography>
       <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
         <Paper elevation={0} className={classes.paper}>
-          <div className={classes.formattingActions}>
-            <StyledToggleButtonGroup size="small">
-              <ToggleButton
-                classes={{ root: classes.button }}
-                selected
-                disabled={false}
-                value={'paragraph'}
-                key={'paragraph'}>
-                <SubjectIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.button }}
-                selected={false}
-                disabled={false}
-                value={'header1'}
-                key={'header1'}>
-                <TitleIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.button }}
-                selected={false}
-                disabled={false}
-                value={'bullet-list'}
-                key={'bullet-list'}>
-                <FormatListBulletedIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.button }}
-                selected={false}
-                disabled={false}
-                value={'number-list'}
-                key={'number-list'}>
-                <FormatListNumberedIcon fontSize="small" />
-              </ToggleButton>
-            </StyledToggleButtonGroup>
-            <Divider flexItem orientation="vertical" className={classes.divider} />
-            <StyledToggleButtonGroup size="small">
-              <ToggleButton classes={{ root: classes.button }} disabled={false} value={'bold'} key={'bold'}>
-                <FormatBoldIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton classes={{ root: classes.button }} value={'italic'} key={'italic'}>
-                <FormatItalicIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton classes={{ root: classes.button }} disabled={false} value={'underline'} key={'underline'}>
-                <FormatUnderlinedIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton classes={{ root: classes.button }} disabled={false} value={'code'} key={'code'}>
-                <CodeIcon fontSize="small" />
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.button }}
-                disabled={false}
-                value={'strikethrough'}
-                key={'strikethrough'}>
-                <StrikethroughSIcon fontSize="small" />
-              </ToggleButton>
-            </StyledToggleButtonGroup>
-          </div>
           <StyledToggleButtonGroup size="small">
-            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'save'} key={'save'}>
-              <SaveIcon fontSize="small" />
+            <ToggleButton
+              classes={{ root: classes.button }}
+              selected
+              disabled={false}
+              value={'paragraph'}
+              key={'paragraph'}>
+              <SubjectIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              selected={false}
+              disabled={false}
+              value={'header1'}
+              key={'header1'}>
+              <TitleIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              selected={false}
+              disabled={false}
+              value={'bullet-list'}
+              key={'bullet-list'}>
+              <FormatListBulletedIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              selected={false}
+              disabled={false}
+              value={'number-list'}
+              key={'number-list'}>
+              <FormatListNumberedIcon fontSize="small" />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+          <Divider flexItem orientation="vertical" className={classes.divider} />
+          <StyledToggleButtonGroup size="small">
+            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'bold'} key={'bold'}>
+              <FormatBoldIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton classes={{ root: classes.button }} value={'italic'} key={'italic'}>
+              <FormatItalicIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'underline'} key={'underline'}>
+              <FormatUnderlinedIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'code'} key={'code'}>
+              <CodeIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={false}
+              value={'strikethrough'}
+              key={'strikethrough'}>
+              <StrikethroughSIcon fontSize="small" />
             </ToggleButton>
           </StyledToggleButtonGroup>
         </Paper>

@@ -33,8 +33,6 @@ import {
   RichTextPropertySectionProps,
 } from './RichTextPropertySection.types';
 import {
-  ChangeValueEvent,
-  InitializeEvent,
   RichTextPropertySectionContext,
   RichTextPropertySectionEvent,
   RichTextPropertySectionMachine,
@@ -83,17 +81,7 @@ export const RichTextPropertySection = ({
     RichTextPropertySectionEvent
   >(RichTextPropertySectionMachine);
   const { toast } = schemaValue as SchemaValue;
-  const { value, message } = context;
-
-  useEffect(() => {
-    const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
-    dispatch(initializeEvent);
-  }, [dispatch, widget.stringValue]);
-
-  const onChange = (newText: string) => {
-    const changeValueEvent: ChangeValueEvent = { type: 'CHANGE_VALUE', value: newText };
-    dispatch(changeValueEvent);
-  };
+  const { message } = context;
 
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
@@ -111,15 +99,12 @@ export const RichTextPropertySection = ({
 
   useEffect(() => {
     if (!updateRichTextLoading) {
-      let hasError = false;
       if (updateRichTextError) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
           message: 'An unexpected error has occurred, please refresh the page',
         };
         dispatch(showToastEvent);
-
-        hasError = true;
       }
       if (updateRichTextData) {
         const { editRichText } = updateRichTextData;
@@ -127,17 +112,10 @@ export const RichTextPropertySection = ({
           const { message } = editRichText;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
           dispatch(showToastEvent);
-
-          hasError = true;
         }
       }
-
-      if (hasError) {
-        const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
-        dispatch(initializeEvent);
-      }
     }
-  }, [updateRichTextLoading, updateRichTextData, updateRichTextError, widget, dispatch]);
+  }, [updateRichTextLoading, updateRichTextData, updateRichTextError, dispatch]);
 
   const [
     updateWidgetFocus,
@@ -178,9 +156,9 @@ export const RichTextPropertySection = ({
   }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError, dispatch]);
 
   const onFocus = () => sendUpdateWidgetFocus(true);
-  const onSave = (newValue: string) => {
+  const onBlur = (currentText: string) => {
     sendUpdateWidgetFocus(false);
-    sendEditedValue(newValue);
+    sendEditedValue(currentText);
   };
 
   return (
@@ -188,11 +166,10 @@ export const RichTextPropertySection = ({
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
       <div data-testid={widget.label}>
         <RichTextEditor
-          value={value}
+          value={widget.stringValue}
           placeholder={widget.label}
-          onChange={onChange}
           onFocus={onFocus}
-          onSave={onSave}
+          onBlur={onBlur}
           readOnly={readOnly}
         />
       </div>
