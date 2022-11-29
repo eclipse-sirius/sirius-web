@@ -27,12 +27,14 @@ import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LinkDescription;
 import org.eclipse.sirius.components.view.ListDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.RadioDescription;
+import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextfieldDescription;
@@ -179,33 +181,23 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
-        textfieldDescription.setStyle(ViewFactory.eINSTANCE.createTextfieldDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textfieldDescription));
+        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, barChartDescription));
+
+        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        buttonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, buttonDescription));
 
         CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setStyle(ViewFactory.eINSTANCE.createCheckboxDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, checkboxDescription));
 
-        SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
-        selectDescription.setStyle(ViewFactory.eINSTANCE.createSelectDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, selectDescription));
+        FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, flexboxContainerDescription));
 
-        MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
-        multiSelectDescription.setStyle(ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, multiSelectDescription));
-
-        TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
-        textareaDescription.setStyle(ViewFactory.eINSTANCE.createTextareaDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textareaDescription));
-
-        RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
-        radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, radioDescription));
-
-        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
-        buttonDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, buttonDescription));
+        ImageDescription imageDescription = ViewFactory.eINSTANCE.createImageDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, imageDescription));
 
         LabelDescription labelDescription = ViewFactory.eINSTANCE.createLabelDescription();
         labelDescription.setStyle(ViewFactory.eINSTANCE.createLabelDescriptionStyle());
@@ -219,16 +211,32 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         listDescription.setStyle(ViewFactory.eINSTANCE.createListDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, listDescription));
 
-        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
-        barChartDescription.setStyle(ViewFactory.eINSTANCE.createBarChartDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, barChartDescription));
+        MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
+        multiSelectDescription.setStyle(ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, multiSelectDescription));
 
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
         pieChartDescription.setStyle(ViewFactory.eINSTANCE.createPieChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, pieChartDescription));
 
-        FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, flexboxContainerDescription));
+        RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
+        radioDescription.setStyle(ViewFactory.eINSTANCE.createRadioDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, radioDescription));
+
+        RichTextDescription richTextDescription = ViewFactory.eINSTANCE.createRichTextDescription();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, richTextDescription));
+
+        SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
+        selectDescription.setStyle(ViewFactory.eINSTANCE.createSelectDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, selectDescription));
+
+        TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
+        textareaDescription.setStyle(ViewFactory.eINSTANCE.createTextareaDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textareaDescription));
+
+        TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
+        textfieldDescription.setStyle(ViewFactory.eINSTANCE.createTextfieldDescriptionStyle());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textfieldDescription));
     }
 
 }
