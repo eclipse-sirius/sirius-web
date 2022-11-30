@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwi
 import org.eclipse.sirius.components.compatibility.messages.ICompatibilityMessageService;
 import org.eclipse.sirius.components.compatibility.services.api.IODesignRegistry;
 import org.eclipse.sirius.components.core.api.Environment;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -81,7 +82,7 @@ public class CompatibilityReconnectionToolsExecutor implements IReconnectionTool
     }
 
     @Override
-    public IStatus execute(ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
+    public IStatus execute(IEditingContext editingContext, ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
             DiagramDescription diagramDescription) {
         IStatus status = new Failure(this.compatibilityMessageService.noReconnectionToolDefined());
 
@@ -185,7 +186,7 @@ public class CompatibilityReconnectionToolsExecutor implements IReconnectionTool
 
     private VariableManager createVariableManager(ReconnectionToolInterpreterData toolInterpreterData) {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(IInterpreterSiriusVariables.DIAGRAM, toolInterpreterData.getDiagram());
+        variableManager.put(IInterpreterSiriusVariables.DIAGRAM, toolInterpreterData.getDiagramContext().getDiagram());
         variableManager.put(IInterpreterSiriusVariables.SOURCE, toolInterpreterData.getSemanticReconnectionSource());
         variableManager.put(IInterpreterSiriusVariables.SOURCE_VIEW, toolInterpreterData.getReconnectionSourceView());
         variableManager.put(IInterpreterSiriusVariables.TARGET, toolInterpreterData.getSemanticReconnectionTarget());
