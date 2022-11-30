@@ -2,6 +2,16 @@ name: Pull Request Checks
 
 on:
   pull_request:
+    types:
+      [
+        opened,
+        synchronize,
+        reopened,
+        labeled,
+        unlabeled,
+        milestoned,
+        demilestoned,
+      ]
 
 jobs:
   build:
@@ -28,3 +38,13 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-copyright.js
+
+      - name: Check that the labels of the pull request are ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-labels.js
+
+      - name: Check that the milestone of the pull request is ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-milestone.js
