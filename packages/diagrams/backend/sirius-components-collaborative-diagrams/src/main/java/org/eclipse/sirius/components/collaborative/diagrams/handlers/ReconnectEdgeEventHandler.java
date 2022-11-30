@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -119,7 +118,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), reconnectEdgeInput.getEdgeId());
 
         if (optionalEdge.isPresent()) {
-            IStatus status = this.invokeReconnectEdgeTool(optionalEdge.get(), editingContext, diagramContext.getDiagram(), reconnectEdgeInput);
+            IStatus status = this.invokeReconnectEdgeTool(optionalEdge.get(), editingContext, diagramContext, reconnectEdgeInput);
             if (status instanceof Success) {
                 diagramContext.setDiagramEvent(new ReconnectEdgeEvent(reconnectEdgeInput.getReconnectEdgeKind(), reconnectEdgeInput.getEdgeId(), reconnectEdgeInput.getNewEdgeEndId(),
                         reconnectEdgeInput.getNewEdgeEndPosition()));
@@ -138,8 +137,10 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus invokeReconnectEdgeTool(Edge edge, IEditingContext editingContext, Diagram diagram, ReconnectEdgeInput reconnectEdgeInput) {
+    private IStatus invokeReconnectEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext, ReconnectEdgeInput reconnectEdgeInput) {
         IStatus status = new Failure(""); //$NON-NLS-1$
+
+        var diagram = diagramContext.getDiagram();
 
         // @formatter:off
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
@@ -190,7 +191,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
 
                 // @formatter:off
                 ReconnectionToolInterpreterData reconnectionToolInterpreterData = ReconnectionToolInterpreterData.newReconnectionToolInterpreterData()
-                    .diagram(diagram)
+                    .diagramContext(diagramContext)
                     .semanticReconnectionSource(optionalPreviousSemanticEdgeEnd.get())
                     .reconnectionSourceView(optionalPreviousEdgeEnd.get())
                     .semanticReconnectionTarget(optionalNewSemanticEdgeEnd.get())
@@ -198,10 +199,11 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
                     .semanticElement(optionalSemanticTargetElement.get())
                     .otherEdgeEnd(optionalOtherEdgeEnd.get())
                     .edgeView(edge)
+                    .kind(reconnectEdgeKind)
                     .build();
                 // @formatter:on
 
-                status = reconnectionToolsExecutor.execute(reconnectionToolInterpreterData, edge, optionalEdgeDescription.get(), reconnectEdgeKind, diagramDescription);
+                status = reconnectionToolsExecutor.execute(editingContext, reconnectionToolInterpreterData, edge, optionalEdgeDescription.get(), reconnectEdgeKind, diagramDescription);
             }
         }
         return status;

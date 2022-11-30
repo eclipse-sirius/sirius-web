@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.api;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -27,7 +28,8 @@ public interface IReconnectionToolsExecutor {
 
     boolean canExecute(DiagramDescription diagramDescription);
 
-    IStatus execute(ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind, DiagramDescription diagramDescription);
+    IStatus execute(IEditingContext editingContext, ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
+            DiagramDescription diagramDescription);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -42,7 +44,7 @@ public interface IReconnectionToolsExecutor {
         }
 
         @Override
-        public IStatus execute(ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
+        public IStatus execute(IEditingContext editingContext, ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
                 DiagramDescription diagramDescription) {
             return null;
         }

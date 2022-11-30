@@ -122,7 +122,7 @@ public class ReconnectEdgeEventHandlerTests {
             }
 
             @Override
-            public IStatus execute(ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
+            public IStatus execute(IEditingContext editingContext, ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
                     DiagramDescription diagramDescription) {
                 return new Success();
             }

@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 
 /**
  * Used to transfer reconnection data to the variable manager in the compatibility layer to reconnect an edge.
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 @Immutable
 public final class ReconnectionToolInterpreterData {
 
-    private Diagram diagram;
+    private IDiagramContext diagramContext;
 
     private Object semanticReconnectionSource;
 
@@ -41,12 +41,14 @@ public final class ReconnectionToolInterpreterData {
 
     private Object edgeView;
 
+    private ReconnectEdgeKind kind;
+
     private ReconnectionToolInterpreterData() {
         // Prevent instantiation
     }
 
-    public Diagram getDiagram() {
-        return this.diagram;
+    public IDiagramContext getDiagramContext() {
+        return this.diagramContext;
     }
 
     public Object getSemanticReconnectionSource() {
@@ -77,6 +79,10 @@ public final class ReconnectionToolInterpreterData {
         return this.edgeView;
     }
 
+    public ReconnectEdgeKind getKind() {
+        return this.kind;
+    }
+
     public static Builder newReconnectionToolInterpreterData() {
         return new Builder();
     }
@@ -88,7 +94,7 @@ public final class ReconnectionToolInterpreterData {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private Diagram diagram;
+        private IDiagramContext diagramContext;
 
         private Object semanticReconnectionSource;
 
@@ -104,8 +110,10 @@ public final class ReconnectionToolInterpreterData {
 
         private Object edgeView;
 
-        public Builder diagram(Diagram diagram) {
-            this.diagram = Objects.requireNonNull(diagram);
+        private ReconnectEdgeKind kind;
+
+        public Builder diagramContext(IDiagramContext diagramContext) {
+            this.diagramContext = Objects.requireNonNull(diagramContext);
             return this;
         }
 
@@ -144,9 +152,14 @@ public final class ReconnectionToolInterpreterData {
             return this;
         }
 
+        public Builder kind(ReconnectEdgeKind kind) {
+            this.kind = Objects.requireNonNull(kind);
+            return this;
+        }
+
         public ReconnectionToolInterpreterData build() {
             ReconnectionToolInterpreterData reconnectionToolInterpreterData = new ReconnectionToolInterpreterData();
-            reconnectionToolInterpreterData.diagram = Objects.requireNonNull(this.diagram);
+            reconnectionToolInterpreterData.diagramContext = Objects.requireNonNull(this.diagramContext);
             reconnectionToolInterpreterData.semanticReconnectionSource = Objects.requireNonNull(this.semanticReconnectionSource);
             reconnectionToolInterpreterData.reconnectionSourceView = Objects.requireNonNull(this.reconnectionSourceView);
             reconnectionToolInterpreterData.semanticReconnectionTarget = Objects.requireNonNull(this.semanticReconnectionTarget);
@@ -154,6 +167,7 @@ public final class ReconnectionToolInterpreterData {
             reconnectionToolInterpreterData.semanticElement = Objects.requireNonNull(this.semanticElement);
             reconnectionToolInterpreterData.otherEdgeEnd = Objects.requireNonNull(this.otherEdgeEnd);
             reconnectionToolInterpreterData.edgeView = Objects.requireNonNull(this.edgeView);
+            reconnectionToolInterpreterData.kind = Objects.requireNonNull(this.kind);
             return reconnectionToolInterpreterData;
         }
 
