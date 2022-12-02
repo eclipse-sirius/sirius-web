@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-compatibility-emf</artifactId>
-	<version>2022.11.2</version>
+	<version>2022.11.3</version>
 	<name>sirius-components-compatibility-emf</name>
 	<description>Sirius Components Compatibility EMF</description>
 
@@ -58,22 +58,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-compatibility</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,19 +83,19 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2022.11.2</version>
+			<version>2022.11.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
