@@ -1,0 +1,9 @@
+{
+  "printWidth": 120,
+  "parser": "babel",
+  "singleQuote": true,
+  "jsxBracketSameLine": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "semi": true
+}

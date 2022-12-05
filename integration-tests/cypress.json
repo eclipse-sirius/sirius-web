@@ -1,0 +1,18 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "screenshotsFolder": "target/screenshots",
+  "videosFolder": "target/videos",
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "target/result-[hash].xml",
+    "toConsole": true
+  },
+  "env": {
+    "baseAPIUrl": "http://localhost:8080"
+  },
+  "viewportWidth": 1920,
+  "viewportHeight": 1080,
+  "defaultCommandTimeout": 60000,
+  "requestTimeout": 60000,
+  "responseTimeout": 60000
+}

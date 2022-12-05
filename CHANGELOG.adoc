@@ -34,7 +34,6 @@
 - [diagram] When clicking on a node in a diagram, the creation tools list is now always in the same order
 - https://github.com/eclipse-sirius/sirius-components/issues/1485[#1485] [diagram] Select the relevant edge reconnection tools
 
-
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1453[#1453] [diagram] Add new arrow styles Circle, FillCircle and CrossedCircle
@@ -47,6 +46,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1437[#1437] [form] Add support for styles preview in FormDescriptionEditor
 - https://github.com/eclipse-sirius/sirius-components/issues/1494[#1494] [form] Add width and height attributes to BarChart
 - https://github.com/eclipse-sirius/sirius-components/issues/1510[#1510] [form] Add support for multi-groups in Form/FormDescriptionEditor
+- https://github.com/eclipse-sirius/sirius-components/issues/1504[#1504] [releng] Add Cypress-based integration tests
 
 == v2022.11.0
 
