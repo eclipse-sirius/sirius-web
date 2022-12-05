@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -82,6 +83,28 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
             });
         }
         return dynamicRepresentationDescriptions;
+    }
+
+    @Override
+    public Optional<IRepresentationDescription> findDynamicRepresentationDescriptionById(IEditingContext editingContext, String representationDescriptionId) {
+        if (this.isStudioDefinitionEnabled) {
+            List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);
+            for (DocumentEntity documentEntity : this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI)) {
+                Resource resource = this.loadDocumentAsEMF(documentEntity);
+                for (View view : this.getViewDefinitions(resource).collect(Collectors.toList())) {
+                    // @formatter:off
+                    var candidate = this.viewConverter.convert(view, accessibleEPackages).stream()
+                                        .filter(Objects::nonNull)
+                                        .filter(representationDescription -> Objects.equals(representationDescriptionId, representationDescription.getId()))
+                                        .findFirst();
+                    // @formatter:on
+                    if (candidate.isPresent()) {
+                        return candidate;
+                    }
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {

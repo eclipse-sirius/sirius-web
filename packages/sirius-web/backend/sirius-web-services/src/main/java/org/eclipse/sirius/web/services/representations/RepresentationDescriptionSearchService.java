@@ -54,7 +54,10 @@ public class RepresentationDescriptionSearchService implements IRepresentationDe
 
     @Override
     public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
-        return Optional.ofNullable(this.findAll(editingContext).get(representationDescriptionId));
+        // @formatter:off
+        return this.registry.getRepresentationDescription(representationDescriptionId)
+                .or(() -> this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptionById(editingContext, representationDescriptionId));
+        // @formatter:on
     }
 
 }
