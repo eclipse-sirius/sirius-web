@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:flow="http://www.obeo.fr/dsl/designer/sample/flow" consumption="500" name="Robot" temperature="50" routingRules="">
+  <elements xmi:type="flow:CompositeProcessor" consumption="200" usage="standard" name="Central_Unit" temperature="25" weight="23" routingRules="Case Robot.temperature >= 70 °C:&#xA;  /!\ critical /!\;&#xA;">
+    <elements xmi:type="flow:Processor" usage="standard" incomingFlows="//@elements.2/@outgoingFlows.0" capacity="4" load="4" consumption="40" name="DSP" volume="4">
+      <outgoingFlows usage="standard" load="4" target="//@elements.0/@elements.1"/>
+    </elements>
+    <elements xmi:type="flow:Processor" usage="high" incomingFlows="//@elements.1/@elements.0/@outgoingFlows.0 //@elements.1/@elements.4/@outgoingFlows.0 //@elements.0/@elements.0/@outgoingFlows.0" capacity="15" load="18" consumption="150" name="Motion_Engine" volume="18"/>
+    <elements xmi:type="flow:Fan" consumption="10"/>
+    <powerOutputs>
+      <links target="//@elements.1/@powerInputs.0"/>
+    </powerOutputs>
+  </elements>
+  <elements xmi:type="flow:CompositeProcessor" consumption="300" usage="standard" name="CaptureSubSystem" temperature="28" weight="33" routingRules=" Case  CaptureSubSystem.temperature > 70 °C:&#xA; /!\ critical  /!\;&#xA; &#xA;">
+    <elements xmi:type="flow:Processor" usage="standard" incomingFlows="//@elements.1/@elements.2/@outgoingFlows.0" load="8" consumption="100" name="Radar_Capture" volume="8">
+      <outgoingFlows usage="high" capacity="6" load="8" target="//@elements.0/@elements.1"/>
+      <outgoingFlows usage="high" capacity="6" load="8" target="//@elements.1/@elements.3"/>
+    </elements>
+    <elements xmi:type="flow:DataSource" usage="standard" name="Back_Camera" volume="6">
+      <outgoingFlows usage="standard" capacity="6" load="6" target="//@elements.1/@elements.4"/>
+    </elements>
+    <elements xmi:type="flow:DataSource" name="Radar" volume="8">
+      <outgoingFlows usage="high" capacity="6" load="8" target="//@elements.1/@elements.0"/>
+    </elements>
+    <elements xmi:type="flow:Processor" usage="standard" incomingFlows="//@elements.1/@elements.0/@outgoingFlows.1" load="8" consumption="100" name="Engine" volume="8"/>
+    <elements xmi:type="flow:Processor" usage="standard" incomingFlows="//@elements.1/@elements.1/@outgoingFlows.0" load="6" consumption="100" name="GPU" volume="6">
+      <outgoingFlows usage="standard" load="6" target="//@elements.0/@elements.1"/>
+    </elements>
+    <elements xmi:type="flow:Fan" speed="20"/>
+    <powerInputs/>
+  </elements>
+  <elements xmi:type="flow:DataSource" usage="standard" name="Wifi" volume="4">
+    <outgoingFlows usage="standard" capacity="4" load="4" target="//@elements.0/@elements.0"/>
+  </elements>
+</flow:System>

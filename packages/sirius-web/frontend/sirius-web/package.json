@@ -63,7 +63,7 @@
     }
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "build": "vite build",
     "test": "vitest --run --config vite.config.js",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",

@@ -1,0 +1,19 @@
+{
+  "name": "sirius-web-integration-tests",
+  "version": "2022.11.2",
+  "license": "EPL-2.0",
+  "private": true,
+  "devDependencies": {
+    "clipboardy": "2.3.0",
+    "cypress": "9.1.1",
+    "cypress-file-upload": "5.0.8"
+  },
+  "scripts": {
+    "start": "cypress open",
+    "start:dev": "cypress open --config-file cypress-dev.json",
+    "format-lint": "prettier --list-different \"cypress/**/*.js\""
+  },
+  "dependencies": {
+    "prettier": "2.7.1"
+  }
+}
