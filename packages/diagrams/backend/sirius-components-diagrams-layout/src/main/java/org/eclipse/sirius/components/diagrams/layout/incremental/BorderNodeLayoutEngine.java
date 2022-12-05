@@ -17,17 +17,18 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.api.Geometry;
 import org.eclipse.sirius.components.diagrams.layout.api.PointOnRectangleInfo;
@@ -60,14 +61,14 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
 
     @Override
     public List<BorderNodesOnSide> layoutBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent, List<NodeLayoutData> borderNodesLayoutData, Bounds initialNodeBounds, Bounds newNodeBounds,
-            ISiriusWebLayoutConfigurator layoutConfigurator) {
+            Map<String, ElkGraphElement> elementId2ElkElement) {
         List<BorderNodesOnSide> borderNodesPerSide = new ArrayList<>();
         if (!borderNodesLayoutData.isEmpty()) {
             for (NodeLayoutData nodeLayoutData : borderNodesLayoutData) {
                 // 1- update the position of the border node if it has been explicitly moved
                 this.updateBorderNodePosition(optionalDiagramElementEvent, nodeLayoutData);
 
-                Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, nodeLayoutData, layoutConfigurator);
+                Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, nodeLayoutData, elementId2ElkElement);
                 if (!this.getRoundedSize(size).equals(this.getRoundedSize(nodeLayoutData.getSize()))) {
                     nodeLayoutData.setSize(size);
                     nodeLayoutData.setChanged(true);
@@ -75,7 +76,7 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
             }
 
             // 2- recompute the border node
-            borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), layoutConfigurator);
+            borderNodesPerSide = this.snapBorderNodes(borderNodesLayoutData, initialNodeBounds.getSize(), elementId2ElkElement);
 
             // 3 - move the border node along the side according to the side change
             this.updateBorderNodeAccordingParentResize(optionalDiagramElementEvent, initialNodeBounds, newNodeBounds, borderNodesPerSide, borderNodesLayoutData.get(0).getParent().getId());
@@ -166,13 +167,13 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
      *            the border nodes which position is given in the rectangle upper right corner coordinates system
      * @return for each side of the given parentRectangle, the list of the updates border node
      */
-    private List<BorderNodesOnSide> snapBorderNodes(List<NodeLayoutData> borderNodesLayoutData, Size parentRectangle, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private List<BorderNodesOnSide> snapBorderNodes(List<NodeLayoutData> borderNodesLayoutData, Size parentRectangle, Map<String, ElkGraphElement> elementId2ElkElement) {
         EnumMap<RectangleSide, List<NodeLayoutData>> borderNodesPerSide = new EnumMap<>(RectangleSide.class);
 
         Geometry geometry = new Geometry();
 
         for (NodeLayoutData borderNodeLayoutData : borderNodesLayoutData) {
-            double portOffset = layoutConfigurator.configureByType(borderNodeLayoutData.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET).doubleValue();
+            double portOffset = elementId2ElkElement.get(borderNodeLayoutData.getId()).getProperty(CoreOptions.PORT_BORDER_OFFSET).doubleValue();
 
             Bounds borderNodeRectangle = Bounds.newBounds().position(borderNodeLayoutData.getPosition()).size(borderNodeLayoutData.getSize()).build();
             PointOnRectangleInfo borderNodePositionOnSide = geometry.snapBorderNodeOnRectangle(borderNodeRectangle, parentRectangle, portOffset);

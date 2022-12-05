@@ -13,21 +13,25 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
-import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.Size.Builder;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
-import org.eclipse.sirius.components.diagrams.layout.incremental.data.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelSizeProvider;
 
 /**
  * The incremental layout engine to layout icon label nodes.
@@ -36,19 +40,28 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayout
  */
 public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutEngine {
 
+    private final NodeLabelSizeProvider nodeLabelSizeProvider;
+
+    private final List<ICustomNodeLabelPositionProvider> customLabelPositionProviders;
+
+    public IconLabelIncrementalLayoutEngine(List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
+        this.nodeLabelSizeProvider = new NodeLabelSizeProvider();
+        this.customLabelPositionProviders = Objects.requireNonNull(customLabelPositionProviders);
+    }
+
     @Override
-    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
         // Positions the label inside the node icon label if the icon label is just created.
-        ElkPadding nodeLabelPadding = layoutConfigurator.configureByType(NodeType.NODE_ICON_LABEL).getProperty(CoreOptions.NODE_LABELS_PADDING);
+        ElkPadding nodeLabelPadding = this.nodeLabelSizeProvider.getLabelPadding(nodeLayoutData, elementId2ElkElement);
         if (nodeLayoutData.getLabel().getPosition().equals(Position.UNDEFINED)) {
             nodeLayoutData.getLabel().setPosition(Position.at(nodeLabelPadding.left, nodeLabelPadding.top));
         }
 
-        Size labelSize = this.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator);
+        Size labelSize = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, elementId2ElkElement);
         Builder newNodeSizeBuilder = Size.newSize().width(labelSize.getWidth());
         double newNodeHeight = labelSize.getHeight();
 
-        IPropertyHolder nodePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
+        IPropertyHolder nodePropertyHolder = elementId2ElkElement.get(nodeLayoutData.getId());
         EnumSet<SizeConstraint> sizeConstraints = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
         if (sizeConstraints.contains(SizeConstraint.MINIMUM_SIZE)) {
             KVector minimumSize = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
@@ -69,19 +82,13 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     @Override
-    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, double maxWidth) {
-        // Positions the label inside the node icon label if the icon label is just created.
-        ElkPadding nodeLabelPadding = layoutConfigurator.configureByType(NodeType.NODE_ICON_LABEL).getProperty(CoreOptions.NODE_LABELS_PADDING);
-        if (nodeLayoutData.getLabel().getPosition().equals(Position.UNDEFINED)) {
-            // The position of the label could be different if the regarding the ELK property
-            // CoreOptions.NODE_LABELS_PLACEMENT
-            nodeLayoutData.getLabel().setPosition(Position.at(nodeLabelPadding.left, nodeLabelPadding.top));
-        }
+    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement, double maxWidth) {
+        NodeLabelPositionProvider nodeLabelPositionProvider = new NodeLabelPositionProvider(elementId2ElkElement);
 
         Builder newNodeSizeBuilder = Size.newSize().width(maxWidth);
-        double newNodeHeight = this.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator).getHeight();
+        double newNodeHeight = this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, elementId2ElkElement).getHeight();
 
-        IPropertyHolder nodePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
+        IPropertyHolder nodePropertyHolder = elementId2ElkElement.get(nodeLayoutData.getId());
         EnumSet<SizeConstraint> sizeConstraints = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
         if (sizeConstraints.contains(SizeConstraint.MINIMUM_SIZE)) {
             KVector minimumSize = nodePropertyHolder.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
@@ -98,23 +105,29 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
             nodeLayoutData.setChanged(true);
         }
 
+        // recompute the label
+        if (nodeLayoutData.getLabel() != null) {
+            // @formatter:off
+            Position nodeLabelPosition = this.customLabelPositionProviders.stream()
+                    .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(elementId2ElkElement, nodeLayoutData.getLabel().getTextBounds().getSize(), nodeLayoutData.getSize(),
+                            nodeLayoutData.getId(), nodeLayoutData.getStyle()))
+                    .flatMap(Optional::stream)
+                    .findFirst()
+                    .orElseGet(() -> nodeLabelPositionProvider.getPosition(nodeLayoutData, nodeLayoutData.getLabel(), List.of()));
+            // @formatter:on
+            nodeLayoutData.getLabel().setPosition(nodeLabelPosition);
+        }
+
         return nodeLayoutData;
     }
 
     @Override
-    public double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        return this.getLabelWithPaddingSize(nodeLayoutData, layoutConfigurator).getWidth();
-    }
-
-    private Size getLabelWithPaddingSize(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(node.getNodeType());
-        ElkPadding labelPadding = nodeTypePropertyHolder.getProperty(CoreOptions.NODE_LABELS_PADDING);
-        LabelLayoutData label = node.getLabel();
-        return Size.of(labelPadding.left + label.getTextBounds().getSize().getWidth() + labelPadding.right, labelPadding.top + label.getTextBounds().getSize().getHeight() + labelPadding.bottom);
+    public double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
+        return this.nodeLabelSizeProvider.getLabelWithPaddingSize(nodeLayoutData, elementId2ElkElement).getWidth();
     }
 
     @Override
-    public double getNodeMinimalWidth(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        return this.getLabelWithPaddingSize(node, layoutConfigurator).getWidth();
+    public double getNodeMinimalWidth(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
+        return this.nodeLabelSizeProvider.getLabelWithPaddingSize(node, elementId2ElkElement).getWidth();
     }
 }

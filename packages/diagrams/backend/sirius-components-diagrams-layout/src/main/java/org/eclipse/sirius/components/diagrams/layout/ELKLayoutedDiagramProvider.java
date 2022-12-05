@@ -51,13 +51,13 @@ public class ELKLayoutedDiagramProvider {
         this.customLabelPositionProviders = customLabelPositionProviders;
     }
 
-    public Diagram getLayoutedDiagram(Diagram diagram, ElkNode elkDiagram, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public Diagram getLayoutedDiagram(Diagram diagram, ElkNode elkDiagram, Map<String, ElkGraphElement> elementId2ElkElement) {
         Size size = Size.of(elkDiagram.getWidth(), elkDiagram.getHeight());
         Position position = Position.at(elkDiagram.getX(), elkDiagram.getY());
 
         // @formatter:off
-        List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), id2ElkGraphElements, layoutConfigurator);
-        List<Edge> edges = this.getLayoutedEdges(diagram.getEdges(), id2ElkGraphElements);
+        List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), elementId2ElkElement);
+        List<Edge> edges = this.getLayoutedEdges(diagram.getEdges(), elementId2ElkElement);
 
         return Diagram.newDiagram(diagram)
                 .position(position)
@@ -68,26 +68,26 @@ public class ELKLayoutedDiagramProvider {
         // @formatter:on
     }
 
-    private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ElkGraphElement> elementId2ElkElement) {
         // @formatter:off
         return nodes.stream().flatMap(node -> {
-            return Optional.ofNullable(id2ElkGraphElements.get(node.getId().toString()))
+            return Optional.ofNullable(elementId2ElkElement.get(node.getId().toString()))
                     .filter(ElkConnectableShape.class::isInstance)
                     .map(ElkConnectableShape.class::cast)
-                    .map(elkNode -> this.getLayoutedNode(node, elkNode, id2ElkGraphElements, layoutConfigurator))
+                    .map(elkNode -> this.getLayoutedNode(node, elkNode, elementId2ElkElement))
                     .stream();
         }).collect(Collectors.toUnmodifiableList());
         // @formatter:on
     }
 
-    private Node getLayoutedNode(Node node, ElkConnectableShape elkConnectableShape, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private Node getLayoutedNode(Node node, ElkConnectableShape elkConnectableShape, Map<String, ElkGraphElement> elementId2ElkElement) {
         Size size = Size.of(elkConnectableShape.getWidth(), elkConnectableShape.getHeight());
         Position position = Position.at(elkConnectableShape.getX(), elkConnectableShape.getY());
 
-        Label label = this.getNodeLayoutedLabel(node, id2ElkGraphElements, 0, 0, layoutConfigurator);
+        Label label = this.getNodeLayoutedLabel(node, elementId2ElkElement, 0, 0);
 
-        List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2ElkGraphElements, layoutConfigurator);
-        List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2ElkGraphElements, layoutConfigurator);
+        List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), elementId2ElkElement);
+        List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), elementId2ElkElement);
         // @formatter:off
         return Node.newNode(node)
                 .label(label)
@@ -230,9 +230,10 @@ public class ELKLayoutedDiagramProvider {
         return layoutedLabel;
     }
 
-    private Label getNodeLayoutedLabel(Node node, Map<String, ElkGraphElement> id2ElkGraphElements, double xOffset, double yOffset, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    // TODO: we might remove that
+    private Label getNodeLayoutedLabel(Node node, Map<String, ElkGraphElement> elementId2ElkElement, double xOffset, double yOffset) {
         Label layoutedLabel = node.getLabel();
-        var optionalElkBeginLabel = Optional.of(id2ElkGraphElements.get(node.getLabel().getId().toString())).filter(ElkLabel.class::isInstance).map(ElkLabel.class::cast);
+        var optionalElkBeginLabel = Optional.of(elementId2ElkElement.get(node.getLabel().getId().toString())).filter(ElkLabel.class::isInstance).map(ElkLabel.class::cast);
         if (optionalElkBeginLabel.isPresent()) {
             ElkLabel elkLabel = optionalElkBeginLabel.get();
 
@@ -246,8 +247,9 @@ public class ELKLayoutedDiagramProvider {
                         return Size.of(elkNode.getWidth(), elkNode.getHeight());
                     })
                     .flatMap(nodeSize -> {
+                        // TODO: This should be put in before layout to specify an elk property for the behavior we want
                         return this.customLabelPositionProviders.stream()
-                                .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(layoutConfigurator, size, nodeSize, node.getType(), node.getStyle()))
+                                .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(elementId2ElkElement, size, nodeSize, node.getId(), node.getStyle()))
                                 .flatMap(Optional::stream)
                                 .findFirst();
                     })

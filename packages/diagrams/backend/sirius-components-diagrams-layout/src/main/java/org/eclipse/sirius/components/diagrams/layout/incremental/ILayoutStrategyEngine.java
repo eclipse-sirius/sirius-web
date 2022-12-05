@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
+import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 
 /**
@@ -37,11 +38,11 @@ public interface ILayoutStrategyEngine {
      *            The optional diagram event
      * @param node
      *            The node whose children will be laid out
-     * @param layoutConfigurator
-     *            the layout configurator
+     * @param elementId2ElkElement
+     *            the map of element id to elk element, used to retrieve properties of elk elements
      * @return The size of the area children needed to be laid out correctly
      */
-    Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator);
+    Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement);
 
     /**
      * Lays out the given node children's and returns the size of the area children needed to be laid out correctly.
@@ -54,11 +55,11 @@ public interface ILayoutStrategyEngine {
      *            The optional diagram event
      * @param node
      *            The node whose children will be laid out
-     * @param layoutConfigurator
-     *            the layout configurator
+     * @param elementId2ElkElement
+     *            the map of element id to elk element, used to retrieve properties of elk elements
      * @param width
      *            The width children have to do their layout
      * @return The size of the area children needed to be laid out correctly
      */
-    Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator, double width);
+    Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement, double width);
 }

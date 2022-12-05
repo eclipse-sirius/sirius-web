@@ -13,12 +13,13 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
 
@@ -38,21 +39,21 @@ public class ChildLayoutStrategyEngineHandler {
         this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
     }
 
-    Optional<Size> layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    Optional<Size> layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         LayoutStrategyEngineHandlerSwitch layoutStrategyEngineHandlerSwitch = new LayoutStrategyEngineHandlerSwitch(this.borderNodeLayoutEngine, this.customLabelPositionProviders);
 
         var optionalLayoutStrategyEngine = layoutStrategyEngineHandlerSwitch.apply(node.getChildrenLayoutStrategy());
         return optionalLayoutStrategyEngine.map(layoutStrategyEngine -> {
-            return layoutStrategyEngine.layoutChildren(optionalDiagramEvent, node, layoutConfigurator);
+            return layoutStrategyEngine.layoutChildren(optionalDiagramEvent, node, elementId2ElkElement);
         });
     }
 
-    Optional<Size> layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator, double width) {
+    Optional<Size> layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement, double width) {
         LayoutStrategyEngineHandlerSwitch layoutStrategyEngineHandlerSwitch = new LayoutStrategyEngineHandlerSwitch(this.borderNodeLayoutEngine, this.customLabelPositionProviders);
 
         var optionalLayoutStrategyEngine = layoutStrategyEngineHandlerSwitch.apply(node.getChildrenLayoutStrategy());
         return optionalLayoutStrategyEngine.map(layoutStrategyEngine -> {
-            return layoutStrategyEngine.layoutChildren(optionalDiagramEvent, node, layoutConfigurator, width);
+            return layoutStrategyEngine.layoutChildren(optionalDiagramEvent, node, elementId2ElkElement, width);
         });
     }
 

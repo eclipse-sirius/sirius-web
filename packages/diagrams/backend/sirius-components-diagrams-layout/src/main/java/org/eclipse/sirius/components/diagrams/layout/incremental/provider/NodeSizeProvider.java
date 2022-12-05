@@ -12,18 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.graph.ElkGraphElement;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.springframework.stereotype.Service;
@@ -61,10 +63,12 @@ public class NodeSizeProvider {
      * @param optionalDiagramElementEvent
      *            The event which is currently taken into account
      * @param node
-     *            the {@link NodeLayoutData} for which we want to retrieve the new size.
+     *            The {@link NodeLayoutData} for which we want to retrieve the new size.
+     * @param elementId2ElkElement
+     *            The map of element id to elk element. Used to retrieve elk properties of a node
      * @return the new {@link Size} if updated or the current one.
      */
-    public Size getSize(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public Size getSize(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         Size size;
         if (this.isRelevantResizeEvent(optionalDiagramElementEvent, node)) {
             node.setResizedByUser(true);
@@ -78,7 +82,7 @@ public class NodeSizeProvider {
         } else if (this.isAlreadySized(node)) {
             size = node.getSize();
         } else {
-            size = this.getInitialSize(node, layoutConfigurator);
+            size = this.getInitialSize(node, elementId2ElkElement);
         }
         return size;
     }
@@ -92,12 +96,13 @@ public class NodeSizeProvider {
         // @formatter:on
     }
 
-    private Size getInitialSize(NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    private Size getInitialSize(NodeLayoutData node, Map<String, ElkGraphElement> elementId2ElkElement) {
         double width = DEFAULT_WIDTH;
         double height = DEFAULT_HEIGHT;
-        KVector nodeSizeMinimum = layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+        IPropertyHolder nodeProperties = elementId2ElkElement.get(node.getId());
+        KVector nodeSizeMinimum = nodeProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
         if (nodeSizeMinimum.equals(new KVector()) && node.getChildrenLayoutStrategy() != null) {
-            nodeSizeMinimum = layoutConfigurator.configureByChildrenLayoutStrategy(node.getChildrenLayoutStrategy().getClass()).getProperty(CoreOptions.NODE_SIZE_MINIMUM);
+            nodeSizeMinimum = nodeProperties.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
         }
         if (nodeSizeMinimum != null) {
             width = nodeSizeMinimum.x;

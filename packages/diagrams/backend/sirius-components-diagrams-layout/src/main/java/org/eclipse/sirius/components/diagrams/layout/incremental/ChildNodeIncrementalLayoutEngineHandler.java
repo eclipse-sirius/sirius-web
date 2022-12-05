@@ -13,11 +13,12 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
 
@@ -37,43 +38,43 @@ public class ChildNodeIncrementalLayoutEngineHandler {
         this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
     }
 
-    public Optional<NodeLayoutData> layout(Optional<IDiagramEvent> diagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public Optional<NodeLayoutData> layout(Optional<IDiagramEvent> diagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
         LayoutEngineHandlerSwitch layoutEngineHandlerSwitch = new LayoutEngineHandlerSwitch(this.borderNodeLayoutEngine, this.customLabelPositionProviders);
 
         var optionalLayoutEngine = layoutEngineHandlerSwitch.apply(nodeLayoutData.getNodeType());
 
         return optionalLayoutEngine.map(layoutEngine -> {
-            return layoutEngine.layout(diagramEvent, nodeLayoutData, layoutConfigurator);
+            return layoutEngine.layout(diagramEvent, nodeLayoutData, elementId2ElkElement);
         });
     }
 
-    public Optional<NodeLayoutData> layout(Optional<IDiagramEvent> diagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, double nodeWidth) {
+    public Optional<NodeLayoutData> layout(Optional<IDiagramEvent> diagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement, double nodeWidth) {
         LayoutEngineHandlerSwitch layoutEngineHandlerSwitch = new LayoutEngineHandlerSwitch(this.borderNodeLayoutEngine, this.customLabelPositionProviders);
 
         var optionalLayoutEngine = layoutEngineHandlerSwitch.apply(nodeLayoutData.getNodeType());
 
         return optionalLayoutEngine.map(layoutEngine -> {
-            return layoutEngine.layout(diagramEvent, nodeLayoutData, layoutConfigurator, nodeWidth);
+            return layoutEngine.layout(diagramEvent, nodeLayoutData, elementId2ElkElement, nodeWidth);
         });
     }
 
-    public Optional<Double> getNodeWidth(Optional<IDiagramEvent> diagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public Optional<Double> getNodeWidth(Optional<IDiagramEvent> diagramEvent, NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
         LayoutEngineHandlerSwitch layoutEngineHandlerSwitch = new LayoutEngineHandlerSwitch(this.borderNodeLayoutEngine, this.customLabelPositionProviders);
 
         var optionalLayoutEngine = layoutEngineHandlerSwitch.apply(nodeLayoutData.getNodeType());
 
         return optionalLayoutEngine.map(layoutEngine -> {
-            return layoutEngine.getNodeWidth(diagramEvent, nodeLayoutData, layoutConfigurator);
+            return layoutEngine.getNodeWidth(diagramEvent, nodeLayoutData, elementId2ElkElement);
         });
     }
 
-    public Optional<Double> getNodeMinimalWidth(NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public Optional<Double> getNodeMinimalWidth(NodeLayoutData nodeLayoutData, Map<String, ElkGraphElement> elementId2ElkElement) {
         LayoutEngineHandlerSwitch layoutEngineHandlerSwitch = new LayoutEngineHandlerSwitch(this.borderNodeLayoutEngine, this.customLabelPositionProviders);
 
         var optionalLayoutEngine = layoutEngineHandlerSwitch.apply(nodeLayoutData.getNodeType());
 
         return optionalLayoutEngine.map(layoutEngine -> {
-            return layoutEngine.getNodeMinimalWidth(nodeLayoutData, layoutConfigurator);
+            return layoutEngine.getNodeMinimalWidth(nodeLayoutData, elementId2ElkElement);
         });
     }
 

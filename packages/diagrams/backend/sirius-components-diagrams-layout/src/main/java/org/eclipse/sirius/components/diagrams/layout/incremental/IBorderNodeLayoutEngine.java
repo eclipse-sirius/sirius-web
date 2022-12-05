@@ -13,10 +13,11 @@
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 
@@ -32,6 +33,6 @@ public interface IBorderNodeLayoutEngine {
      * positioning ratio of the border node on its side.
      */
     List<BorderNodesOnSide> layoutBorderNodes(Optional<IDiagramEvent> optionalDiagramElementEvent, List<NodeLayoutData> borderNodesLayoutData, Bounds initialNodeBounds, Bounds newNodeBounds,
-            ISiriusWebLayoutConfigurator layoutConfigurator);
+            Map<String, ElkGraphElement> elementId2ElkElement);
 
 }
