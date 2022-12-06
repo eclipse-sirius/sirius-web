@@ -29,7 +29,6 @@ import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import SubjectIcon from '@material-ui/icons/Subject';
 import TitleIcon from '@material-ui/icons/Title';
@@ -82,7 +81,6 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
 
   const [isBold, setIsBold] = useState<boolean>(false);
   const [isItalic, setIsItalic] = useState<boolean>(false);
-  const [isUnderline, setIsUnderline] = useState<boolean>(false);
   const [isStrikeTrough, setIsStrikeTrough] = useState<boolean>(false);
   const [isCode, setIsCode] = useState<boolean>(false);
   const [blockType, setBlockType] = useState('paragraph');
@@ -90,7 +88,6 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const updateButtons = (toggled) => {
     setIsBold(toggled.includes('bold'));
     setIsItalic(toggled.includes('italic'));
-    setIsUnderline(toggled.includes('underline'));
     setIsStrikeTrough(toggled.includes('strikethrough'));
     setIsCode(toggled.includes('code'));
     if (toggled.includes('paragraph')) {
@@ -118,7 +115,6 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
       if (elementDOM !== null) {
         setIsBold(selection.hasFormat('bold'));
         setIsItalic(selection.hasFormat('italic'));
-        setIsUnderline(selection.hasFormat('underline'));
         setIsStrikeTrough(selection.hasFormat('strikethrough'));
         setIsCode(selection.hasFormat('code'));
         if ($isListNode(element)) {
@@ -169,9 +165,6 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   }
   if (isItalic) {
     toggled.push('italic');
-  }
-  if (isUnderline) {
-    toggled.push('underline');
   }
   if (isStrikeTrough) {
     toggled.push('strikethrough');
@@ -263,16 +256,6 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
           }}>
           <FormatItalicIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'underline'}
-          key={'underline'}
-          onClick={() => {
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
-          }}>
-          <FormatUnderlinedIcon fontSize="small" />
         </ToggleButton>
         <ToggleButton
           classes={{ root: classes.button }}
