@@ -172,6 +172,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
 
             var optionalNewEdgeEnd = this.getNode(diagram.getNodes(), reconnectEdgeInput.getNewEdgeEndId());
             var optionalNewSemanticEdgeEnd = optionalNewEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectService.getObject(editingContext, targetObjectId));
+            var optionalSemanticOtherEdgeEnd = optionalOtherEdgeEnd.map(Node::getTargetObjectId).flatMap(otherEndEdgeId -> this.objectService.getObject(editingContext, otherEndEdgeId));
 
             boolean canExecuteReconnectTool = optionalReconnectionToolExecutor.isPresent();
             canExecuteReconnectTool = canExecuteReconnectTool && optionalSemanticTargetElement.isPresent();
@@ -180,6 +181,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             canExecuteReconnectTool = canExecuteReconnectTool && optionalPreviousSemanticEdgeEnd.isPresent();
             canExecuteReconnectTool = canExecuteReconnectTool && optionalNewSemanticEdgeEnd.isPresent();
             canExecuteReconnectTool = canExecuteReconnectTool && optionalOtherEdgeEnd.isPresent();
+            canExecuteReconnectTool = canExecuteReconnectTool && optionalSemanticOtherEdgeEnd.isPresent();
 
             if (canExecuteReconnectTool && reconnectEdgeInput.getNewEdgeEndId().equals(optionalPreviousEdgeEnd.get().getId())) {
                 canExecuteReconnectTool = false;
@@ -198,6 +200,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
                     .reconnectionTargetView(optionalNewEdgeEnd.get())
                     .semanticElement(optionalSemanticTargetElement.get())
                     .otherEdgeEnd(optionalOtherEdgeEnd.get())
+                    .semanticOtherEdgeEnd(optionalSemanticOtherEdgeEnd.get())
                     .edgeView(edge)
                     .kind(reconnectEdgeKind)
                     .build();

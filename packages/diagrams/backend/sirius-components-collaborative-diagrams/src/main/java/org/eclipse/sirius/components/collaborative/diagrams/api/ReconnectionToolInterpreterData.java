@@ -39,6 +39,8 @@ public final class ReconnectionToolInterpreterData {
 
     private Object otherEdgeEnd;
 
+    private Object semanticOtherEdgeEnd;
+
     private Object edgeView;
 
     private ReconnectEdgeKind kind;
@@ -57,6 +59,10 @@ public final class ReconnectionToolInterpreterData {
 
     public Object getReconnectionSourceView() {
         return this.reconnectionSourceView;
+    }
+
+    public Object getSemanticOtherEdgeEnd() {
+        return this.semanticOtherEdgeEnd;
     }
 
     public Object getSemanticReconnectionTarget() {
@@ -112,6 +118,8 @@ public final class ReconnectionToolInterpreterData {
 
         private ReconnectEdgeKind kind;
 
+        private Object semanticOtherEdgeEnd;
+
         public Builder diagramContext(IDiagramContext diagramContext) {
             this.diagramContext = Objects.requireNonNull(diagramContext);
             return this;
@@ -147,6 +155,11 @@ public final class ReconnectionToolInterpreterData {
             return this;
         }
 
+        public Builder semanticOtherEdgeEnd(Object semanticOtherEdgeEnd) {
+            this.semanticOtherEdgeEnd = Objects.requireNonNull(semanticOtherEdgeEnd);
+            return this;
+        }
+
         public Builder edgeView(Object edgeView) {
             this.edgeView = Objects.requireNonNull(edgeView);
             return this;
@@ -168,6 +181,7 @@ public final class ReconnectionToolInterpreterData {
             reconnectionToolInterpreterData.otherEdgeEnd = Objects.requireNonNull(this.otherEdgeEnd);
             reconnectionToolInterpreterData.edgeView = Objects.requireNonNull(this.edgeView);
             reconnectionToolInterpreterData.kind = Objects.requireNonNull(this.kind);
+            reconnectionToolInterpreterData.semanticOtherEdgeEnd = Objects.requireNonNull(this.semanticOtherEdgeEnd);
             return reconnectionToolInterpreterData;
         }
 

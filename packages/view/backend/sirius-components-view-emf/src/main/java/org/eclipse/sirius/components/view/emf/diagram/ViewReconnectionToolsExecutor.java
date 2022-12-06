@@ -114,7 +114,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                 }
 
                 for (org.eclipse.sirius.components.view.EdgeReconnectionTool edgeReconnectionTool : edgeReconnectionTools) {
-                    VariableManager variableManager = this.createVariableManager(toolInterpreterData);
+                    VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 
                     AQLInterpreter interpreter = this.createInterpreter((View) viewDiagramDescription.eContainer(), this.getAccessibleEPackages(editingContext));
                     var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.editService, toolInterpreterData.getDiagramContext(), Map.of());
@@ -127,7 +127,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         return status;
     }
 
-    private VariableManager createVariableManager(ReconnectionToolInterpreterData toolInterpreterData) {
+    private VariableManager createVariableManager(ReconnectionToolInterpreterData toolInterpreterData, IEditingContext editingContext) {
         VariableManager variableManager = new VariableManager();
         variableManager.put("diagram", toolInterpreterData.getDiagramContext().getDiagram()); //$NON-NLS-1$
         variableManager.put("semanticReconnectionSource", toolInterpreterData.getSemanticReconnectionSource()); //$NON-NLS-1$
@@ -135,6 +135,10 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         variableManager.put("semanticReconnectionTarget", toolInterpreterData.getSemanticReconnectionTarget()); //$NON-NLS-1$
         variableManager.put("reconnectionTargetView", toolInterpreterData.getReconnectionTargetView()); //$NON-NLS-1$
         variableManager.put("edgeSemanticElement", toolInterpreterData.getSemanticElement()); //$NON-NLS-1$
+        variableManager.put("otherEnd", toolInterpreterData.getOtherEdgeEnd()); //$NON-NLS-1$
+        variableManager.put("semanticOtherEnd", toolInterpreterData.getSemanticOtherEdgeEnd()); //$NON-NLS-1$
+        variableManager.put("edgeView", toolInterpreterData.getEdgeView()); //$NON-NLS-1$
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         return variableManager;
     }
 
