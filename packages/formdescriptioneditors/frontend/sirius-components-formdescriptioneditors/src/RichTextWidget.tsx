@@ -19,7 +19,6 @@ import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import SubjectIcon from '@material-ui/icons/Subject';
 import TitleIcon from '@material-ui/icons/Title';
@@ -135,9 +134,6 @@ export const RichTextWidget = ({ widget, selection }: RichTextWidgetProps) => {
             </ToggleButton>
             <ToggleButton classes={{ root: classes.button }} value={'italic'} key={'italic'}>
               <FormatItalicIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'underline'} key={'underline'}>
-              <FormatUnderlinedIcon fontSize="small" />
             </ToggleButton>
             <ToggleButton classes={{ root: classes.button }} disabled={false} value={'code'} key={'code'}>
               <CodeIcon fontSize="small" />
