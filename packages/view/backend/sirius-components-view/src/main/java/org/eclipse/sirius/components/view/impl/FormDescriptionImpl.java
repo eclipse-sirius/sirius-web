@@ -20,10 +20,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.WidgetDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Form Description</b></em>'. <!-- end-user-doc
@@ -39,24 +38,14 @@ import org.eclipse.sirius.components.view.WidgetDescription;
  */
 public class FormDescriptionImpl extends RepresentationDescriptionImpl implements FormDescription {
     /**
-     * The cached value of the '{@link #getToolbarActions() <em>Toolbar Actions</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getToolbarActions()
-     * @generated
-     * @ordered
-     */
-    protected EList<ButtonDescription> toolbarActions;
-
-    /**
-     * The cached value of the '{@link #getWidgets() <em>Widgets</em>}' containment reference list. <!-- begin-user-doc
+     * The cached value of the '{@link #getGroups() <em>Groups</em>}' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #getWidgets()
+     * @see #getGroups()
      * @generated
      * @ordered
      */
-    protected EList<WidgetDescription> widgets;
+    protected EList<GroupDescription> groups;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -83,24 +72,11 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
-    public EList<ButtonDescription> getToolbarActions() {
-        if (this.toolbarActions == null) {
-            this.toolbarActions = new EObjectContainmentEList<>(ButtonDescription.class, this, ViewPackage.FORM_DESCRIPTION__TOOLBAR_ACTIONS);
+    public EList<GroupDescription> getGroups() {
+        if (this.groups == null) {
+            this.groups = new EObjectContainmentEList<>(GroupDescription.class, this, ViewPackage.FORM_DESCRIPTION__GROUPS);
         }
-        return this.toolbarActions;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EList<WidgetDescription> getWidgets() {
-        if (this.widgets == null) {
-            this.widgets = new EObjectContainmentEList<>(WidgetDescription.class, this, ViewPackage.FORM_DESCRIPTION__WIDGETS);
-        }
-        return this.widgets;
+        return this.groups;
     }
 
     /**
@@ -111,10 +87,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__TOOLBAR_ACTIONS:
-            return ((InternalEList<?>) this.getToolbarActions()).basicRemove(otherEnd, msgs);
-        case ViewPackage.FORM_DESCRIPTION__WIDGETS:
-            return ((InternalEList<?>) this.getWidgets()).basicRemove(otherEnd, msgs);
+        case ViewPackage.FORM_DESCRIPTION__GROUPS:
+            return ((InternalEList<?>) this.getGroups()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -127,10 +101,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__TOOLBAR_ACTIONS:
-            return this.getToolbarActions();
-        case ViewPackage.FORM_DESCRIPTION__WIDGETS:
-            return this.getWidgets();
+        case ViewPackage.FORM_DESCRIPTION__GROUPS:
+            return this.getGroups();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -144,13 +116,9 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__TOOLBAR_ACTIONS:
-            this.getToolbarActions().clear();
-            this.getToolbarActions().addAll((Collection<? extends ButtonDescription>) newValue);
-            return;
-        case ViewPackage.FORM_DESCRIPTION__WIDGETS:
-            this.getWidgets().clear();
-            this.getWidgets().addAll((Collection<? extends WidgetDescription>) newValue);
+        case ViewPackage.FORM_DESCRIPTION__GROUPS:
+            this.getGroups().clear();
+            this.getGroups().addAll((Collection<? extends GroupDescription>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -164,11 +132,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__TOOLBAR_ACTIONS:
-            this.getToolbarActions().clear();
-            return;
-        case ViewPackage.FORM_DESCRIPTION__WIDGETS:
-            this.getWidgets().clear();
+        case ViewPackage.FORM_DESCRIPTION__GROUPS:
+            this.getGroups().clear();
             return;
         }
         super.eUnset(featureID);
@@ -182,10 +147,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__TOOLBAR_ACTIONS:
-            return this.toolbarActions != null && !this.toolbarActions.isEmpty();
-        case ViewPackage.FORM_DESCRIPTION__WIDGETS:
-            return this.widgets != null && !this.widgets.isEmpty();
+        case ViewPackage.FORM_DESCRIPTION__GROUPS:
+            return this.groups != null && !this.groups.isEmpty();
         }
         return super.eIsSet(featureID);
     }

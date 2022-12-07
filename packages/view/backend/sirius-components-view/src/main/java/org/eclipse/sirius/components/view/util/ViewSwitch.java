@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
@@ -499,6 +500,13 @@ public class ViewSwitch<T> extends Switch<T> {
             T result = this.caseFormDescription(formDescription);
             if (result == null)
                 result = this.caseRepresentationDescription(formDescription);
+            if (result == null)
+                result = this.defaultCase(theEObject);
+            return result;
+        }
+        case ViewPackage.GROUP_DESCRIPTION: {
+            GroupDescription groupDescription = (GroupDescription) theEObject;
+            T result = this.caseGroupDescription(groupDescription);
             if (result == null)
                 result = this.defaultCase(theEObject);
             return result;
@@ -1516,6 +1524,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseFormDescription(FormDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Group Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Group Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseGroupDescription(GroupDescription object) {
         return null;
     }
 

@@ -236,10 +236,24 @@
     <eLiterals name="UNSYNCHRONIZED" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="#//RepresentationDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
+        eType="#//GroupDescription" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GroupDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayMode" lowerBound="1"
+        eType="#//GroupDisplayMode" defaultValueLiteral="LIST"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolbarActions" upperBound="-1"
         eType="#//ButtonDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="widgets" upperBound="-1"
         eType="#//WidgetDescription" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="GroupDisplayMode">
+    <eLiterals name="LIST"/>
+    <eLiterals name="TOGGLEABLE_AREAS" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLFlexboxContainer, GQLGroup, GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 import { Kind } from './FormDescriptionEditorRepresentation.types';
 
 export const isKind = (value: string): value is Kind => {
@@ -30,4 +32,40 @@ export const isKind = (value: string): value is Kind => {
     value === 'Image' ||
     value === 'RichText'
   );
+};
+
+export const isGroup = (element: GQLWidget | GQLGroup): boolean => {
+  return element.__typename === 'Group';
+};
+
+export const isFlexboxContainer = (element: GQLWidget | GQLGroup): boolean => {
+  return element.__typename === 'FlexboxContainer';
+};
+
+export const getAllWidgets = (formDescriptionEditor: GQLFormDescriptionEditor): GQLWidget[] => {
+  let allWidgets: GQLWidget[] = [];
+  formDescriptionEditor.groups.forEach((group: GQLGroup) => {
+    group.widgets.forEach((widget: GQLWidget) => {
+      if (isFlexboxContainer(widget)) {
+        allWidgets = allWidgets.concat(getAllFlexboxContainerWidgets(widget as GQLFlexboxContainer));
+      }
+      allWidgets.push(widget);
+    });
+  });
+  return allWidgets;
+};
+
+const getAllFlexboxContainerWidgets = (flexboxContainer: GQLFlexboxContainer): GQLWidget[] => {
+  let allWidgets: GQLWidget[] = [];
+  flexboxContainer.children.forEach((widget: GQLWidget) => {
+    if (isFlexboxContainer(widget)) {
+      allWidgets = allWidgets.concat(getAllFlexboxContainerWidgets(widget as GQLFlexboxContainer));
+    }
+    allWidgets.push(widget);
+  });
+  return allWidgets;
+};
+
+export const getAllToolbarActions = (formDescriptionEditor: GQLFormDescriptionEditor): GQLToolbarAction[] => {
+  return formDescriptionEditor.groups.flatMap((g: GQLGroup) => g.toolbarActions);
 };

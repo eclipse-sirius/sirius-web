@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -34,7 +33,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
@@ -101,12 +100,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     private boolean addWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String containerId, String kind, int index) {
         boolean success = false;
-        var optionalSelf = Optional.empty();
-        if (containerId != null) {
-            optionalSelf = this.objectService.getObject(editingContext, containerId);
-        } else {
-            optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
-        }
+        var optionalSelf = this.objectService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
             EClassifier eClassifier = ViewPackage.eINSTANCE.getEClassifier(kind + "Description"); //$NON-NLS-1$
@@ -117,8 +111,8 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 }
                 if (widgetDescription instanceof WidgetDescription) {
                     this.createStyle((WidgetDescription) widgetDescription);
-                    if (container instanceof FormDescription) {
-                        ((FormDescription) container).getWidgets().add(index, (WidgetDescription) widgetDescription);
+                    if (container instanceof GroupDescription) {
+                        ((GroupDescription) container).getWidgets().add(index, (WidgetDescription) widgetDescription);
                         success = true;
                     } else if (container instanceof FlexboxContainerDescription) {
                         ((FlexboxContainerDescription) container).getChildren().add(index, (WidgetDescription) widgetDescription);

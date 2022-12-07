@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
@@ -37,6 +39,8 @@ public class FormDescriptionEditorComponentPropsValidator implements IComponentP
 
         if (FormDescriptionEditorComponent.class.equals(componentType)) {
             checkValidProps = props instanceof FormDescriptionEditorComponentProps;
+        } else if (FormDescriptionEditorGroupComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorGroupComponentProps;
         } else {
             checkValidProps = this.formComponentPropsValidator.validateComponentProps(componentType, props);
         }

@@ -31,25 +31,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface FormDescription extends RepresentationDescription {
     /**
-     * Returns the value of the '<em><b>Toolbar Actions</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.view.ButtonDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Groups</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.GroupDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Toolbar Actions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getFormDescription_ToolbarActions()
+     * @return the value of the '<em>Groups</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getFormDescription_Groups()
      * @model containment="true"
      * @generated
      */
-    EList<ButtonDescription> getToolbarActions();
-
-    /**
-     * Returns the value of the '<em><b>Widgets</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.WidgetDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Widgets</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getFormDescription_Widgets()
-     * @model containment="true"
-     * @generated
-     */
-    EList<WidgetDescription> getWidgets();
+    EList<GroupDescription> getGroups();
 
 } // FormDescription

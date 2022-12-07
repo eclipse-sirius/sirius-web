@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.view.ButtonDescription;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -108,12 +108,12 @@ public class MoveToolbarActionEventHandler implements IFormDescriptionEditorEven
             var objectToMove = this.objectService.getObject(editingContext, toolbarActionId);
             if (objectToMove.filter(ButtonDescription.class::isInstance).isPresent()) {
                 ButtonDescription toolbarActionToMove = (ButtonDescription) objectToMove.get();
-                if (container instanceof FormDescription) {
+                if (container instanceof GroupDescription) {
                     try {
                         if (container.equals(toolbarActionToMove.eContainer())) {
-                            ((FormDescription) container).getToolbarActions().move(index, toolbarActionToMove);
+                            ((GroupDescription) container).getToolbarActions().move(index, toolbarActionToMove);
                         } else {
-                            ((FormDescription) container).getToolbarActions().add(index, toolbarActionToMove);
+                            ((GroupDescription) container).getToolbarActions().add(index, toolbarActionToMove);
                         }
                         success = true;
                     } catch (IndexOutOfBoundsException exception) {

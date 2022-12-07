@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
+import { GQLGroup, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import {
@@ -50,7 +50,7 @@ const addToolbarActionVariables: GQLAddToolbarActionMutationVariables = {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
-    containerId: null,
+    containerId: 'group1',
   },
 };
 const addToolbarActionSuccessPayload: GQLAddToolbarActionSuccessPayload = {
@@ -83,7 +83,7 @@ const moveToolbarActionVariables: GQLMoveToolbarActionMutationVariables = {
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
     toolbarActionId: 'ToolbarAction2',
-    containerId: null,
+    containerId: 'group1',
     index: 0,
   },
 };
@@ -101,7 +101,7 @@ const moveToolbarActionAtTheEndVariables: GQLMoveToolbarActionMutationVariables 
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
     toolbarActionId: 'ToolbarAction2',
-    containerId: null,
+    containerId: 'group1',
     index: 1,
   },
 };
@@ -132,6 +132,16 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
       strikeThrough: null,
     },
   };
+
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [],
+    toolbarActions: [toolbarAction],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
     metadata: {
@@ -140,9 +150,9 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
       kind: 'FormDescriptionEditor',
       label: 'FormDescriptionEditor1',
     },
-    toolbarActions: [toolbarAction],
-    widgets: [],
+    groups: [group],
   };
+
   let addToolbarActionCalled: boolean = false;
   const addToolbarActionSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -163,13 +173,14 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        group={group}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
     </MockedProvider>
   );
 
-  const element: HTMLElement = screen.getByTestId('FormDescriptionEditor-ToolbarActions-NewAction');
+  const element: HTMLElement = screen.getByTestId(`Group-ToolbarActions-NewAction-${group.id}`);
   element.click();
 
   await act(async () => {
@@ -217,6 +228,16 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
       strikeThrough: null,
     },
   };
+
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [],
+    toolbarActions: [toolbarAction1, toolbarAction2],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
     metadata: {
@@ -225,8 +246,7 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
       kind: 'FormDescriptionEditor',
       label: 'FormDescriptionEditor1',
     },
-    toolbarActions: [toolbarAction1, toolbarAction2],
-    widgets: [],
+    groups: [group],
   };
 
   let deleteToolbarActionCalled: boolean = false;
@@ -249,6 +269,7 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        group={group}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
@@ -305,6 +326,16 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
       strikeThrough: null,
     },
   };
+
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [],
+    toolbarActions: [toolbarAction1, toolbarAction2],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
     metadata: {
@@ -313,8 +344,7 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
       kind: 'FormDescriptionEditor',
       label: 'FormDescriptionEditor1',
     },
-    toolbarActions: [toolbarAction1, toolbarAction2],
-    widgets: [],
+    groups: [group],
   };
 
   let moveToolbarActionCalled: boolean = false;
@@ -337,6 +367,7 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        group={group}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
@@ -394,6 +425,16 @@ test('move the existing ToolbarAction from/into the drop area located at the end
       strikeThrough: null,
     },
   };
+
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [],
+    toolbarActions: [toolbarAction1, toolbarAction2],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
     metadata: {
@@ -402,8 +443,7 @@ test('move the existing ToolbarAction from/into the drop area located at the end
       kind: 'FormDescriptionEditor',
       label: 'FormDescriptionEditor1',
     },
-    toolbarActions: [toolbarAction1, toolbarAction2],
-    widgets: [],
+    groups: [group],
   };
 
   let moveToolbarActionAtTheEndCalled: boolean = false;
@@ -426,13 +466,14 @@ test('move the existing ToolbarAction from/into the drop area located at the end
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        group={group}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
     </MockedProvider>
   );
 
-  const element: HTMLElement = screen.getByTestId('FormDescriptionEditor-ToolbarActions-DropArea');
+  const element: HTMLElement = screen.getByTestId(`Group-ToolbarActions-DropArea-${group.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
   dataTransfer.setData('text/plain', 'ToolbarAction2');

@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.forms.AbstractWidget;
-import org.eclipse.sirius.components.forms.ToolbarAction;
+import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.renderer.FormElementFactory;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
@@ -49,23 +48,18 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
 
     private FormDescriptionEditor instantiateFormDescriptionEditor(FormDescriptionEditorElementProps props, List<Object> children) {
         // @formatter:off
-        List<ToolbarAction> toolbarActions = children.stream()
-                .filter(ToolbarAction.class::isInstance)
-                .map(ToolbarAction.class::cast)
-                .collect(Collectors.toList());
-
-        List<AbstractWidget> widgets = children.stream()
-                .filter(c -> c instanceof AbstractWidget && !(c instanceof ToolbarAction))
-                .map(AbstractWidget.class::cast)
+        List<Group> groups = children.stream()
+                .filter(Group.class::isInstance)
+                .map(Group.class::cast)
                 .collect(Collectors.toList());
 
         return FormDescriptionEditor.newFormDescriptionEditor(props.getId())
                 .label(props.getLabel())
                 .targetObjectId(props.getTargetObjectId())
                 .descriptionId(props.getDescriptionId())
-                .toolbarActions(toolbarActions)
-                .widgets(widgets)
+                .groups(groups)
                 .build();
         // @formatter:on
     }
+
 }

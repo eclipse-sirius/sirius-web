@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
- * The properties of the form description editor widget element.
+ * The properties of the form description editor element.
  *
  * @author arichard
  */
@@ -75,7 +75,7 @@ public final class FormDescriptionEditorElementProps implements IProps {
     }
 
     /**
-     * The builder of the form description editor widget element props.
+     * The builder of the form description editor element props.
      *
      * @author arichard
      */

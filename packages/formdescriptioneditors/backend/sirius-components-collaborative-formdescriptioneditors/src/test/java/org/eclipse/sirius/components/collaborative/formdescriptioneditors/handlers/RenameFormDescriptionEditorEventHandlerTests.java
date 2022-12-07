@@ -56,8 +56,7 @@ public class RenameFormDescriptionEditorEventHandlerTests {
                 .label(OLD_LABEL)
                 .descriptionId(formDescriptionEditorDescriptionId)
                 .targetObjectId(targetObjectId.toString())
-                .toolbarActions(List.of())
-                .widgets(List.of())
+                .groups(List.of())
                 .build();
         // @formatter:on
 

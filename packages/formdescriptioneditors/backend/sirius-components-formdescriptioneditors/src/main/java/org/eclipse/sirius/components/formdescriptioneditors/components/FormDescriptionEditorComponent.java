@@ -20,12 +20,6 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.forms.components.ToolbarActionComponent;
-import org.eclipse.sirius.components.forms.components.ToolbarActionComponentProps;
-import org.eclipse.sirius.components.forms.components.WidgetComponent;
-import org.eclipse.sirius.components.forms.components.WidgetComponentProps;
-import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
-import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -40,11 +34,8 @@ public class FormDescriptionEditorComponent implements IComponent {
 
     private final FormDescriptionEditorComponentProps props;
 
-    private final ViewFormDescriptionEditorConverterSwitch converter;
-
     public FormDescriptionEditorComponent(FormDescriptionEditorComponentProps props) {
         this.props = props;
-        this.converter = new ViewFormDescriptionEditorConverterSwitch(props.getFormDescriptionEditorDescription(), props.getVariableManager());
     }
 
     @Override
@@ -66,22 +57,11 @@ public class FormDescriptionEditorComponent implements IComponent {
 
         List<Element> childrenWidgets = new ArrayList<>();
 
-        formDescription.getToolbarActions().forEach(viewToolbarActionDescription -> {
+        formDescription.getGroups().forEach(viewGroupDescription -> {
             VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, viewToolbarActionDescription);
-            AbstractWidgetDescription toolbarActionDescription = this.converter.doSwitch(viewToolbarActionDescription);
-            if (toolbarActionDescription instanceof ButtonDescription) {
-                ToolbarActionComponentProps toolbarActionComponentProps = new ToolbarActionComponentProps(childVariableManager, (ButtonDescription) toolbarActionDescription);
-                childrenWidgets.add(new Element(ToolbarActionComponent.class, toolbarActionComponentProps));
-            }
-        });
-
-        formDescription.getWidgets().forEach(viewWidgetDescription -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, viewWidgetDescription);
-            AbstractWidgetDescription widgetDescription = this.converter.doSwitch(viewWidgetDescription);
-            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription);
-            childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
+            childVariableManager.put(VariableManager.SELF, viewGroupDescription);
+            FormDescriptionEditorGroupComponentProps fdeGroupComponentProps = new FormDescriptionEditorGroupComponentProps(childVariableManager, this.props.getFormDescriptionEditorDescription());
+            childrenWidgets.add(new Element(FormDescriptionEditorGroupComponent.class, fdeGroupComponentProps));
         });
 
         // @formatter:off

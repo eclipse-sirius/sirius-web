@@ -30,27 +30,28 @@ import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import TextFormatIcon from '@material-ui/icons/TextFormat';
+import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
-  addWidgetMutation,
+  addGroupMutation,
   formDescriptionEditorEventSubscription,
-  moveWidgetMutation,
+  moveGroupMutation,
 } from './FormDescriptionEditorEventFragment';
 import {
-  GQLAddWidgetInput,
-  GQLAddWidgetMutationData,
-  GQLAddWidgetMutationVariables,
+  GQLAddGroupInput,
+  GQLAddGroupMutationData,
+  GQLAddGroupMutationVariables,
   GQLAddWidgetPayload,
   GQLErrorPayload,
   GQLFormDescriptionEditorEventInput,
   GQLFormDescriptionEditorEventSubscription,
   GQLFormDescriptionEditorEventVariables,
-  GQLMoveWidgetInput,
-  GQLMoveWidgetMutationData,
-  GQLMoveWidgetMutationVariables,
+  GQLMoveGroupInput,
+  GQLMoveGroupMutationData,
+  GQLMoveGroupMutationVariables,
   GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import {
@@ -63,9 +64,8 @@ import {
   SchemaValue,
   ShowToastEvent,
 } from './FormDescriptionEditorRepresentationMachine';
+import { Group } from './Group';
 import { Button } from './icons/Button';
-import { ToolbarActions } from './ToolbarActions';
-import { WidgetEntry } from './WidgetEntry';
 import { isKind } from './WidgetOperations';
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -76,6 +76,9 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     width: '100%',
     overflowX: 'auto',
+  },
+  hover: {
+    borderColor: theme.palette.primary.main,
   },
   header: {
     padding: '4px 8px 4px 8px',
@@ -108,12 +111,6 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     padding: '4px 8px 4px 8px',
     overflowY: 'auto',
   },
-  labelAndToolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    overflowX: 'auto',
-  },
   body: {
     display: 'flex',
     flexDirection: 'column',
@@ -121,10 +118,19 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     overflowX: 'auto',
   },
   bottomDropArea: {
-    height: '100px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'whitesmoke',
+    borderRadius: '10px',
+    color: 'gray',
+    height: '60px',
   },
   dragOver: {
-    border: 'dashed 1px red',
+    borderWidth: '1px',
+    borderStyle: 'dashed',
+    borderColor: theme.palette.primary.main,
   },
   subscribers: {
     marginLeft: 'auto',
@@ -190,51 +196,51 @@ export const FormDescriptionEditorRepresentation = ({
     }
   );
 
-  const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
-    GQLAddWidgetMutationData,
-    GQLAddWidgetMutationVariables
-  >(addWidgetMutation);
+  const [addGroup, { loading: addGroupLoading, data: addGroupData, error: addGroupError }] = useMutation<
+    GQLAddGroupMutationData,
+    GQLAddGroupMutationVariables
+  >(addGroupMutation);
 
   useEffect(() => {
-    if (!addWidgetLoading) {
-      if (addWidgetError) {
-        const message: string = addWidgetError.message;
+    if (!addGroupLoading) {
+      if (addGroupError) {
+        const message: string = addGroupError.message;
         const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
         dispatch(showToastEvent);
       }
-      if (addWidgetData) {
-        const { addWidget } = addWidgetData;
-        if (isErrorPayload(addWidget)) {
-          const { message } = addWidget;
+      if (addGroupData) {
+        const { addGroup } = addGroupData;
+        if (isErrorPayload(addGroup)) {
+          const { message } = addGroup;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
           dispatch(showToastEvent);
         }
       }
     }
-  }, [addWidgetLoading, addWidgetData, addWidgetError, dispatch]);
+  }, [addGroupLoading, addGroupData, addGroupError, dispatch]);
 
-  const [moveWidget, { loading: moveWidgetLoading, data: moveWidgetData, error: moveWidgetError }] = useMutation<
-    GQLMoveWidgetMutationData,
-    GQLMoveWidgetMutationVariables
-  >(moveWidgetMutation);
+  const [moveGroup, { loading: moveGroupLoading, data: moveGroupData, error: moveGroupError }] = useMutation<
+    GQLMoveGroupMutationData,
+    GQLMoveGroupMutationVariables
+  >(moveGroupMutation);
 
   useEffect(() => {
-    if (!moveWidgetLoading) {
-      if (moveWidgetError) {
-        const message: string = moveWidgetError.message;
+    if (!moveGroupLoading) {
+      if (moveGroupError) {
+        const message: string = moveGroupError.message;
         const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
         dispatch(showToastEvent);
       }
-      if (moveWidgetData) {
-        const { moveWidget } = moveWidgetData;
-        if (isErrorPayload(moveWidget)) {
-          const { message } = moveWidget;
+      if (moveGroupData) {
+        const { moveGroup } = moveGroupData;
+        if (isErrorPayload(moveGroup)) {
+          const { message } = moveGroup;
           const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
           dispatch(showToastEvent);
         }
       }
     }
-  }, [moveWidgetLoading, moveWidgetData, moveWidgetError, dispatch]);
+  }, [moveGroupLoading, moveGroupData, moveGroupError, dispatch]);
 
   useEffect(() => {
     if (error) {
@@ -274,36 +280,36 @@ export const FormDescriptionEditorRepresentation = ({
     event.currentTarget.classList.remove(classes.dragOver);
 
     const id: string = event.dataTransfer.getData('text/plain');
-    let index = formDescriptionEditor.widgets.length;
+    let index = formDescriptionEditor.groups.length;
 
-    if (isKind(id)) {
-      const addWidgetInput: GQLAddWidgetInput = {
+    if (id === 'Group') {
+      const addGroupInput: GQLAddGroupInput = {
         id: uuid(),
         editingContextId,
         representationId,
-        containerId: null,
-        kind: id,
         index,
       };
-      const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
-      addWidget({ variables: addWidgetVariables });
+      const addGroupVariables: GQLAddGroupMutationVariables = { input: addGroupInput };
+      addGroup({ variables: addGroupVariables });
+    } else if (isKind(id)) {
+      // forbid to drag and drop new widgets into groups area
+      return;
     } else {
-      if (formDescriptionEditor.toolbarActions.find((w) => w.id === id)) {
-        // forbid to drag and drop toolbarAction into widgets area
-        return;
-      } else if (formDescriptionEditor.widgets.find((w) => w.id === id)) {
+      if (formDescriptionEditor.groups.find((g) => g.id === id)) {
         index--;
+      } else {
+        // forbid to drag and drop existing widgets or toolbarActions into groups area
+        return;
       }
-      const moveWidgetInput: GQLMoveWidgetInput = {
+      const moveGroupInput: GQLMoveGroupInput = {
         id: uuid(),
         editingContextId,
         representationId,
-        containerId: null,
-        widgetId: id,
+        groupId: id,
         index,
       };
-      const moveWidgetVariables: GQLMoveWidgetMutationVariables = { input: moveWidgetInput };
-      moveWidget({ variables: moveWidgetVariables });
+      const moveGroupVariables: GQLMoveGroupMutationVariables = { input: moveGroupInput };
+      moveGroup({ variables: moveGroupVariables });
     }
   };
 
@@ -313,6 +319,18 @@ export const FormDescriptionEditorRepresentation = ({
     content = (
       <div className={classes.main}>
         <div className={classes.widgets}>
+          <Typography gutterBottom>Groups</Typography>
+          <div
+            id="Group"
+            data-testid="FormDescriptionEditor-Group"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <ViewAgendaIcon />
+            <Typography variant="caption" gutterBottom>
+              Group
+            </Typography>
+          </div>
           <Typography gutterBottom>Widgets</Typography>
           <div
             id="BarChart"
@@ -356,6 +374,17 @@ export const FormDescriptionEditorRepresentation = ({
             <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom align="center">
               Flexbox Container
+            </Typography>
+          </div>
+          <div
+            id="List"
+            data-testid="FormDescriptionEditor-List"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStart}>
+            <FormatListBulletedIcon />
+            <Typography variant="caption" gutterBottom>
+              List
             </Typography>
           </div>
           <div
@@ -481,31 +510,16 @@ export const FormDescriptionEditorRepresentation = ({
           </div>
         </div>
         <div className={classes.preview}>
-          <div className={classes.labelAndToolbar}>
-            <Typography>Preview</Typography>
-            <ToolbarActions
-              data-testid={'FormDescriptionEditor-ToolbarActions'}
-              editingContextId={editingContextId}
-              representationId={representationId}
-              formDescriptionEditor={formDescriptionEditor}
-              selection={selection}
-              setSelection={setSelection}
-            />
-          </div>
           <div className={classes.body}>
-            {formDescriptionEditor.widgets.map((widget) => (
-              <WidgetEntry
-                key={widget.id}
+            {formDescriptionEditor.groups.map((group) => (
+              <Group
+                key={group.id}
                 editingContextId={editingContextId}
                 representationId={representationId}
-                containerId={null}
-                toolbarActions={formDescriptionEditor.toolbarActions}
-                siblings={formDescriptionEditor.widgets}
-                widget={widget}
+                formDescriptionEditor={formDescriptionEditor}
+                group={group}
                 selection={selection}
                 setSelection={setSelection}
-                flexDirection={'column'}
-                flexGrow={1}
               />
             ))}
             <div
@@ -514,8 +528,9 @@ export const FormDescriptionEditorRepresentation = ({
               onDragEnter={handleDragEnter}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            />
+              onDrop={handleDrop}>
+              <Typography variant="body1">{'Drag and drop a group here'}</Typography>
+            </div>
           </div>
         </div>
       </div>

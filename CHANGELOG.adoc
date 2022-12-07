@@ -46,6 +46,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1439[#1439] [form] Add support for toolbar actions in Form/FormDescriptionEditor
 - https://github.com/eclipse-sirius/sirius-components/issues/1437[#1437] [form] Add support for styles preview in FormDescriptionEditor
 - https://github.com/eclipse-sirius/sirius-components/issues/1494[#1494] [form] Add width and height attributes to BarChart
+- https://github.com/eclipse-sirius/sirius-components/issues/1510[#1510] [form] Add support for multi-groups in Form/FormDescriptionEditor
 
 == v2022.11.0
 

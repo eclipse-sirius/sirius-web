@@ -706,6 +706,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.GroupDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected GroupDescriptionItemProvider groupDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.GroupDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createGroupDescriptionAdapter() {
+        if (this.groupDescriptionItemProvider == null) {
+            this.groupDescriptionItemProvider = new GroupDescriptionItemProvider(this);
+        }
+
+        return this.groupDescriptionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextfieldDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1778,6 +1801,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.conditionalEdgeStyleItemProvider.dispose();
         if (this.formDescriptionItemProvider != null)
             this.formDescriptionItemProvider.dispose();
+        if (this.groupDescriptionItemProvider != null)
+            this.groupDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionItemProvider != null)
             this.textfieldDescriptionItemProvider.dispose();
         if (this.checkboxDescriptionItemProvider != null)

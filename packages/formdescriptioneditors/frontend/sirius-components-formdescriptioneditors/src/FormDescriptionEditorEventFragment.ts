@@ -40,17 +40,64 @@ export const formDescriptionEditorEventSubscription = gql`
               id
             }
           }
-          toolbarActions {
-            ...commonFields
-            ...toolbarActionFields
-          }
-          widgets {
-            ...widgetFields
-            ... on FlexboxContainer {
-              ...flexboxContainerFields
+          groups {
+            id
+            label
+            displayMode
+            toolbarActions {
+              ...commonFields
+              ...toolbarActionFields
+            }
+            widgets {
+              ...widgetFields
+              ... on FlexboxContainer {
+                ...flexboxContainerFields
+              }
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const addGroupMutation = gql`
+  mutation addGroup($input: AddGroupInput!) {
+    addGroup(input: $input) {
+      __typename
+      ... on AddGroupSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const deleteGroupMutation = gql`
+  mutation deleteGroup($input: DeleteGroupInput!) {
+    deleteGroup(input: $input) {
+      __typename
+      ... on DeleteGroupSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const moveGroupMutation = gql`
+  mutation moveGroup($input: MoveGroupInput!) {
+    moveGroup(input: $input) {
+      __typename
+      ... on MoveGroupSuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
       }
     }
   }

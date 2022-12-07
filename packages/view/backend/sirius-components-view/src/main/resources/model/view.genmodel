@@ -42,6 +42,10 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/SYNCHRONIZED"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/UNSYNCHRONIZED"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//GroupDisplayMode">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//GroupDisplayMode/LIST"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//GroupDisplayMode/TOGGLEABLE_AREAS"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//FlexDirection">
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/row"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/rowReverse"/>
@@ -184,8 +188,15 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalEdgeStyle"/>
     <genClasses ecoreClass="view.ecore#//FormDescription">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/toolbarActions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/widgets"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/groups"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//GroupDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//GroupDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//GroupDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//GroupDescription/displayMode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//GroupDescription/semanticCandidatesExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//GroupDescription/toolbarActions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//GroupDescription/widgets"/>
     </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//WidgetDescription/name"/>

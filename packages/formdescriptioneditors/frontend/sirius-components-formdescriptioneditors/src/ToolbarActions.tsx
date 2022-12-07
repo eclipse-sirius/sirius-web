@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { useMutation } from '@apollo/client';
+import { GQLGroup, GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -34,7 +35,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
-import { isKind } from './WidgetOperations';
+import { getAllWidgets, isKind } from './WidgetOperations';
 
 const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
   toolbar: {
@@ -46,13 +47,23 @@ const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
     whiteSpace: 'nowrap',
   },
   toolbarActionDropArea: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'whitesmoke',
+    border: '1px solid whitesmoke',
+    borderRadius: '5px',
     width: '20px',
+    height: '30px',
   },
   newToolbarAction: {
     paddingLeft: theme.spacing(1),
   },
   dragOver: {
-    border: 'dashed 1px red',
+    borderWidth: '1px',
+    borderStyle: 'dashed',
+    borderColor: theme.palette.primary.main,
   },
 }));
 
@@ -64,6 +75,7 @@ export const ToolbarActions = ({
   editingContextId,
   representationId,
   formDescriptionEditor,
+  group,
   selection,
   setSelection,
 }: ToolbarActionsProps) => {
@@ -114,7 +126,7 @@ export const ToolbarActions = ({
       id: uuid(),
       editingContextId,
       representationId,
-      containerId: null,
+      containerId: group.id,
     };
     const addToolbarActionVariables: GQLAddToolbarActionMutationVariables = { input: addToolbarActionInput };
     addToolbarAction({ variables: addToolbarActionVariables });
@@ -137,32 +149,41 @@ export const ToolbarActions = ({
     event.currentTarget.classList.remove(classes.dragOver);
 
     const id: string = event.dataTransfer.getData('text/plain');
-    let index = formDescriptionEditor.toolbarActions.length - 1; // Move at the end of the toolbar
 
-    // We only accept drop of ToolbarAction, no other existing/new Widgets allowed
-    if (!isKind(id) && formDescriptionEditor.widgets.find((w) => w.id === id) === undefined) {
-      const moveToolbarActionInput: GQLMoveToolbarActionInput = {
-        id: uuid(),
-        editingContextId,
-        representationId,
-        containerId: null,
-        toolbarActionId: id,
-        index,
-      };
-      const moveToolbarActionVariables: GQLMoveToolbarActionMutationVariables = { input: moveToolbarActionInput };
-      moveToolbarAction({ variables: moveToolbarActionVariables });
+    if (isKind(id)) {
+      return;
+    } else if (id === 'Group') {
+      return;
+    } else if (getAllWidgets(formDescriptionEditor).find((w: GQLWidget) => w.id === id)) {
+      return;
+    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+      return;
     }
+
+    let index = group.toolbarActions.length - 1; // Move at the end of the toolbar
+
+    const moveToolbarActionInput: GQLMoveToolbarActionInput = {
+      id: uuid(),
+      editingContextId,
+      representationId,
+      containerId: group.id,
+      toolbarActionId: id,
+      index,
+    };
+    const moveToolbarActionVariables: GQLMoveToolbarActionMutationVariables = { input: moveToolbarActionInput };
+    moveToolbarAction({ variables: moveToolbarActionVariables });
   };
 
   return (
     <div className={classes.toolbar}>
-      {formDescriptionEditor.toolbarActions.map((toolbarAction) => (
+      {group.toolbarActions.map((toolbarAction: GQLToolbarAction) => (
         <div className={classes.toolbarAction} key={toolbarAction.id}>
           <ToolbarActionWidget
             data-testid={toolbarAction.id}
             editingContextId={editingContextId}
             representationId={representationId}
-            siblings={formDescriptionEditor.toolbarActions}
+            formDescriptionEditor={formDescriptionEditor}
+            group={group}
             toolbarAction={toolbarAction}
             selection={selection}
             setSelection={setSelection}
@@ -170,7 +191,7 @@ export const ToolbarActions = ({
         </div>
       ))}
       <div
-        data-testid="FormDescriptionEditor-ToolbarActions-DropArea"
+        data-testid={`Group-ToolbarActions-DropArea-${group.id}`}
         className={classes.toolbarActionDropArea}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
@@ -178,7 +199,7 @@ export const ToolbarActions = ({
         onDrop={handleDrop}
       />
       <div className={classes.newToolbarAction}>
-        <Tooltip title={'Add new Toolbar Action'} arrow data-testid={'FormDescriptionEditor-ToolbarActions-NewAction'}>
+        <Tooltip title={'Add new Toolbar Action'} arrow data-testid={`Group-ToolbarActions-NewAction-${group.id}`}>
           <IconButton size="small" aria-label="add" color="primary" onClick={handleAddToolbarAction}>
             <AddIcon />
           </IconButton>

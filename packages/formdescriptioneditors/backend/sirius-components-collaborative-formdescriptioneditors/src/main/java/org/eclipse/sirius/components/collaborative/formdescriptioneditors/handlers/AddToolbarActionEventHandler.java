@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.springframework.stereotype.Service;
 
@@ -99,12 +99,12 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
         }
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
-            if (container instanceof FormDescription) {
+            if (container instanceof GroupDescription) {
                 var toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
                 toolbarActionDescription.setName("ToolbarAction"); //$NON-NLS-1$
                 var toolbarActionDescriptionStyle = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
                 toolbarActionDescription.setStyle(toolbarActionDescriptionStyle);
-                ((FormDescription) container).getToolbarActions().add(toolbarActionDescription);
+                ((GroupDescription) container).getToolbarActions().add(toolbarActionDescription);
                 success = true;
             }
         }

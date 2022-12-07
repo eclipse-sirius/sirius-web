@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -54,14 +55,16 @@ public class DeleteToolbarActionEventHandlerTests {
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        formDescription.getGroups().add(groupDescription);
         ButtonDescription toolbarButton = ViewFactory.eINSTANCE.createButtonDescription();
-        formDescription.getToolbarActions().add(toolbarButton);
+        groupDescription.getToolbarActions().add(toolbarButton);
         var objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 Optional<Object> result = Optional.empty();
                 if (formDescriptionEditor.getDescriptionId().equals(objectId)) {
-                    result = Optional.of(formDescription);
+                    result = Optional.of(groupDescription);
                 } else if (TOOLBAR_ACTION_ID.equals(objectId)) {
                     result = Optional.of(toolbarButton);
                 }
