@@ -253,6 +253,14 @@ public interface ViewFactory extends EFactory {
     FormDescription createFormDescription();
 
     /**
+     * Returns a new object of class '<em>Group Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Group Description</em>'.
+     * @generated
+     */
+    GroupDescription createGroupDescription();
+
+    /**
      * Returns a new object of class '<em>Textfield Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Textfield Description</em>'.

@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.forms.AbstractWidget;
-import org.eclipse.sirius.components.forms.ToolbarAction;
+import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
@@ -44,9 +43,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     private String descriptionId;
 
-    private List<ToolbarAction> toolbarActions;
-
-    private List<AbstractWidget> widgets;
+    private List<Group> groups;
 
     private FormDescriptionEditor() {
         // Prevent instantiation
@@ -77,12 +74,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
         return this.descriptionId;
     }
 
-    public List<ToolbarAction> getToolbarActions() {
-        return this.toolbarActions;
-    }
-
-    public List<AbstractWidget> getWidgets() {
-        return this.widgets;
+    public List<Group> getGroups() {
+        return this.groups;
     }
 
     public static Builder newFormDescriptionEditor(String id) {
@@ -116,9 +109,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
         private String descriptionId;
 
-        private List<ToolbarAction> toolbarActions;
-
-        private List<AbstractWidget> widgets;
+        private List<Group> groups;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -129,8 +120,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             this.label = formDescriptionEditor.label;
             this.targetObjectId = formDescriptionEditor.targetObjectId;
             this.descriptionId = formDescriptionEditor.descriptionId;
-            this.toolbarActions = formDescriptionEditor.toolbarActions;
-            this.widgets = formDescriptionEditor.widgets;
+            this.groups = formDescriptionEditor.groups;
         }
 
         public Builder label(String label) {
@@ -148,13 +138,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             return this;
         }
 
-        public Builder toolbarActions(List<ToolbarAction> toolbarActions) {
-            this.toolbarActions = Objects.requireNonNull(toolbarActions);
-            return this;
-        }
-
-        public Builder widgets(List<AbstractWidget> widgets) {
-            this.widgets = Objects.requireNonNull(widgets);
+        public Builder groups(List<Group> groups) {
+            this.groups = Objects.requireNonNull(groups);
             return this;
         }
 
@@ -165,8 +150,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             formDescriptionEditor.label = Objects.requireNonNull(this.label);
             formDescriptionEditor.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             formDescriptionEditor.descriptionId = Objects.requireNonNull(this.descriptionId);
-            formDescriptionEditor.toolbarActions = Objects.requireNonNull(this.toolbarActions);
-            formDescriptionEditor.widgets = Objects.requireNonNull(this.widgets);
+            formDescriptionEditor.groups = Objects.requireNonNull(this.groups);
             return formDescriptionEditor;
         }
     }

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.forms.handlers;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -27,8 +28,10 @@ import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborative
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Button;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.ToolbarAction;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -80,12 +83,16 @@ public class PushButtonEventHandler implements IFormEventHandler {
             PushButtonInput input = (PushButtonInput) formInput;
 
             // @formatter:off
-            IStatus status = this.formQueryService.findWidget(form, input.getButtonId())
-                    .filter(Button.class::isInstance)
-                    .map(Button.class::cast)
-                    .map(Button::getPushButtonHandler)
-                    .map(Supplier::get)
-                    .orElse(new Failure("")); //$NON-NLS-1$
+            Optional<AbstractWidget> optionalWidget = this.formQueryService.findWidget(form, input.getButtonId());
+            var handler = optionalWidget.filter(Button.class::isInstance)
+                                        .map(Button.class::cast)
+                                        .map(Button::getPushButtonHandler);
+            if (handler.isEmpty()) {
+                handler = optionalWidget.filter(ToolbarAction.class::isInstance)
+                                        .map(ToolbarAction.class::cast)
+                                        .map(ToolbarAction::getPushButtonHandler);
+            }
+            IStatus status = handler.map(Supplier::get).orElse(new Failure("")); //$NON-NLS-1$
             // @formatter:on
 
             if (status instanceof Success) {

@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import { GQLGroup, GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -33,7 +34,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { WidgetEntry } from './WidgetEntry';
 import { FlexboxContainerWidgetProps } from './WidgetEntry.types';
-import { isKind } from './WidgetOperations';
+import { getAllToolbarActions, isKind } from './WidgetOperations';
 
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -43,8 +44,6 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
     color: theme.palette.primary.main,
   },
   widget: {
-    border: 'solid 1px lightgrey',
-    padding: '0px 0px 0px 4px',
     width: '100%',
   },
   container: {
@@ -54,20 +53,30 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
     '& > *': {
       marginBottom: theme.spacing(0),
     },
+    paddingLeft: theme.spacing(1),
   },
   bottomDropArea: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'whitesmoke',
+    borderRadius: '10px',
+    color: 'gray',
     height: '30px',
     width: '100%',
   },
   dragOver: {
-    border: 'dashed 1px red',
+    borderWidth: '1px',
+    borderStyle: 'dashed',
+    borderColor: theme.palette.primary.main,
   },
 }));
 
 export const FlexboxContainerWidget = ({
   editingContextId,
   representationId,
-  toolbarActions,
+  formDescriptionEditor,
   widget,
   selection,
   setSelection,
@@ -159,6 +168,15 @@ export const FlexboxContainerWidget = ({
     event.currentTarget.classList.remove(classes.dragOver);
 
     const id: string = event.dataTransfer.getData('text/plain');
+
+    if (id === 'Group') {
+      return;
+    } else if (getAllToolbarActions(formDescriptionEditor).find((tba: GQLToolbarAction) => tba.id === id)) {
+      return;
+    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+      return;
+    }
+
     let index = widget.children.length;
 
     if (isKind(id)) {
@@ -173,7 +191,7 @@ export const FlexboxContainerWidget = ({
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
     } else {
-      if (widget.children.find((w) => w.id === id)) {
+      if (widget.children.find((w: GQLWidget) => w.id === id)) {
         index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
@@ -189,15 +207,14 @@ export const FlexboxContainerWidget = ({
     }
   };
 
-  let children = widget.children.map((childWidget) => {
+  let children = widget.children.map((childWidget: GQLWidget) => {
     return (
       <WidgetEntry
         key={childWidget.id}
         editingContextId={editingContextId}
         representationId={representationId}
-        containerId={widget.id}
-        toolbarActions={toolbarActions}
-        siblings={widget.children}
+        formDescriptionEditor={formDescriptionEditor}
+        container={widget}
         widget={childWidget}
         selection={selection}
         setSelection={setSelection}
@@ -226,13 +243,14 @@ export const FlexboxContainerWidget = ({
       </Typography>
       <div className={classes.container}>{children}</div>
       <div
-        data-testid={`${widget.id}-DropArea`}
+        data-testid={`FlexboxContainer-Widgets-DropArea-${widget.id}`}
         className={classes.bottomDropArea}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      />
+        onDrop={handleDrop}>
+        <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
+      </div>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

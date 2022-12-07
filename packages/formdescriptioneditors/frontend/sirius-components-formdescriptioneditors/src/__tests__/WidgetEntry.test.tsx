@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLChartWidget, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
+import { GQLChartWidget, GQLGroup, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
@@ -23,6 +23,7 @@ import {
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
   GQLDeleteWidgetSuccessPayload,
+  GQLFormDescriptionEditor,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
   GQLMoveWidgetSuccessPayload,
@@ -45,7 +46,7 @@ const addWidgetVariables: GQLAddWidgetMutationVariables = {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
-    containerId: null,
+    containerId: 'group1',
     kind: 'Textfield',
     index: 0,
   },
@@ -84,7 +85,7 @@ const moveWidgetVariables: GQLMoveWidgetMutationVariables = {
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
     widgetId: 'Textfield2',
-    containerId: null,
+    containerId: 'group1',
     index: 0,
   },
 };
@@ -113,6 +114,26 @@ test('should drop the Textfield in the drop area', async () => {
     },
   };
 
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [textfieldWidget],
+    toolbarActions: [],
+  };
+
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'formDescriptionEditorId',
+    metadata: {
+      id: 'FormDescriptionEditor1',
+      description: { id: 'FormDescriptionEditorRepresentation' },
+      kind: 'FormDescriptionEditor',
+      label: 'FormDescriptionEditor1',
+    },
+    groups: [group],
+  };
+
   let addWidgetCalled: boolean = false;
   const addWidgetSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -132,9 +153,8 @@ test('should drop the Textfield in the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        containerId={null}
-        toolbarActions={[]}
-        siblings={[]}
+        formDescriptionEditor={formDescriptionEditor}
+        container={group}
         flexDirection={'row'}
         flexGrow={0}
         widget={textfieldWidget}
@@ -144,7 +164,7 @@ test('should drop the Textfield in the drop area', async () => {
     </MockedProvider>
   );
 
-  const element: HTMLElement = screen.getByTestId('WidgetEntry-DropArea');
+  const element: HTMLElement = screen.getByTestId(`WidgetEntry-DropArea-${textfieldWidget.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
   dataTransfer.setData('text/plain', 'Textfield');
@@ -177,6 +197,26 @@ test('should delete the Textfield from the drop area', async () => {
     },
   };
 
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [textfieldWidget],
+    toolbarActions: [],
+  };
+
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'formDescriptionEditorId',
+    metadata: {
+      id: 'FormDescriptionEditor1',
+      description: { id: 'FormDescriptionEditorRepresentation' },
+      kind: 'FormDescriptionEditor',
+      label: 'FormDescriptionEditor1',
+    },
+    groups: [group],
+  };
+
   let deleteWidgetCalled: boolean = false;
   const deleteWidgetSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -196,9 +236,8 @@ test('should delete the Textfield from the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        containerId={null}
-        toolbarActions={[]}
-        siblings={[]}
+        formDescriptionEditor={formDescriptionEditor}
+        container={group}
         flexDirection={'row'}
         flexGrow={0}
         widget={textfieldWidget}
@@ -251,6 +290,26 @@ test('should delete the PieChart from the drop area', async () => {
     chart: pieChart,
   };
 
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [pieChartWidget],
+    toolbarActions: [],
+  };
+
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'formDescriptionEditorId',
+    metadata: {
+      id: 'FormDescriptionEditor1',
+      description: { id: 'FormDescriptionEditorRepresentation' },
+      kind: 'FormDescriptionEditor',
+      label: 'FormDescriptionEditor1',
+    },
+    groups: [group],
+  };
+
   let deleteWidgetCalled: boolean = false;
   const deleteWidgetSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -270,9 +329,8 @@ test('should delete the PieChart from the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        containerId={null}
-        toolbarActions={[]}
-        siblings={[]}
+        formDescriptionEditor={formDescriptionEditor}
+        container={group}
         flexDirection={'row'}
         flexGrow={0}
         widget={pieChartWidget}
@@ -313,6 +371,26 @@ test('should move the existing Textfield from/into the drop area', async () => {
     },
   };
 
+  const group: GQLGroup = {
+    id: 'group1',
+    displayMode: 'LIST',
+    __typename: 'Group',
+    label: 'group1',
+    widgets: [textfieldWidget],
+    toolbarActions: [],
+  };
+
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'formDescriptionEditorId',
+    metadata: {
+      id: 'FormDescriptionEditor1',
+      description: { id: 'FormDescriptionEditorRepresentation' },
+      kind: 'FormDescriptionEditor',
+      label: 'FormDescriptionEditor1',
+    },
+    groups: [group],
+  };
+
   let moveWidgetCalled: boolean = false;
   const moveWidgetSuccessMock: MockedResponse<Record<string, any>> = {
     request: {
@@ -332,9 +410,8 @@ test('should move the existing Textfield from/into the drop area', async () => {
       <WidgetEntry
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
-        containerId={null}
-        toolbarActions={[]}
-        siblings={[]}
+        formDescriptionEditor={formDescriptionEditor}
+        container={group}
         flexDirection={'row'}
         flexGrow={0}
         widget={textfieldWidget}
@@ -344,7 +421,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
     </MockedProvider>
   );
 
-  const element: HTMLElement = screen.getByTestId('WidgetEntry-DropArea');
+  const element: HTMLElement = screen.getByTestId(`WidgetEntry-DropArea-${textfieldWidget.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
   dataTransfer.setData('text/plain', 'Textfield2');

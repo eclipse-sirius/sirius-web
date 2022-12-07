@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -46,10 +47,12 @@ public class AddToolbarActionEventHandlerTests {
     @Test
     public void testAddToolbarAction() {
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        formDescription.getGroups().add(groupDescription);
         var objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-                return Optional.of(formDescription);
+                return Optional.of(groupDescription);
             }
         };
         var handler = new AddToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
@@ -68,6 +71,6 @@ public class AddToolbarActionEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(AddToolbarActionSuccessPayload.class);
-        assertThat(formDescription.getToolbarActions()).hasSize(1);
+        assertThat(groupDescription.getToolbarActions()).hasSize(1);
     }
 }

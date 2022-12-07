@@ -2676,22 +2676,13 @@ public interface ViewPackage extends EPackage {
     int FORM_DESCRIPTION__TITLE_EXPRESSION = REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Toolbar Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Groups</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FORM_DESCRIPTION__TOOLBAR_ACTIONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Widgets</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int FORM_DESCRIPTION__WIDGETS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
+    int FORM_DESCRIPTION__GROUPS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Form Description</em>' class. <!-- begin-user-doc --> <!--
@@ -2700,7 +2691,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FORM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+    int FORM_DESCRIPTION_FEATURE_COUNT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Form Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2711,6 +2702,85 @@ public interface ViewPackage extends EPackage {
     int FORM_DESCRIPTION_OPERATION_COUNT = REPRESENTATION_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.GroupDescriptionImpl <em>Group
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDescription()
+     * @generated
+     */
+    int GROUP_DESCRIPTION = 38;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__LABEL_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Display Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__DISPLAY_MODE = 2;
+
+    /**
+     * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 3;
+
+    /**
+     * The feature id for the '<em><b>Toolbar Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__TOOLBAR_ACTIONS = 4;
+
+    /**
+     * The feature id for the '<em><b>Widgets</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__WIDGETS = 5;
+
+    /**
+     * The number of structural features of the '<em>Group Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION_FEATURE_COUNT = 6;
+
+    /**
+     * The number of operations of the '<em>Group Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl <em>Widget
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2718,7 +2788,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescription()
      * @generated
      */
-    int WIDGET_DESCRIPTION = 38;
+    int WIDGET_DESCRIPTION = 39;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2763,7 +2833,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescription()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION = 39;
+    int TEXTFIELD_DESCRIPTION = 40;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2844,7 +2914,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescription()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION = 40;
+    int CHECKBOX_DESCRIPTION = 41;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2925,7 +2995,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescription()
      * @generated
      */
-    int SELECT_DESCRIPTION = 41;
+    int SELECT_DESCRIPTION = 42;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3024,7 +3094,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescription()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION = 42;
+    int MULTI_SELECT_DESCRIPTION = 43;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3123,7 +3193,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextAreaDescription()
      * @generated
      */
-    int TEXT_AREA_DESCRIPTION = 43;
+    int TEXT_AREA_DESCRIPTION = 44;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3204,7 +3274,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRichTextDescription()
      * @generated
      */
-    int RICH_TEXT_DESCRIPTION = 44;
+    int RICH_TEXT_DESCRIPTION = 45;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3267,7 +3337,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescription()
      * @generated
      */
-    int RADIO_DESCRIPTION = 45;
+    int RADIO_DESCRIPTION = 46;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3365,7 +3435,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescriptionStyle()
      * @generated
      */
-    int WIDGET_DESCRIPTION_STYLE = 51;
+    int WIDGET_DESCRIPTION_STYLE = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
@@ -3375,7 +3445,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 52;
+    int TEXTFIELD_DESCRIPTION_STYLE = 53;
 
     /**
      * The meta object id for the
@@ -3386,7 +3456,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 53;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
@@ -3396,7 +3466,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 54;
+    int CHECKBOX_DESCRIPTION_STYLE = 55;
 
     /**
      * The meta object id for the
@@ -3407,7 +3477,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 55;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 56;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
@@ -3417,7 +3487,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 56;
+    int SELECT_DESCRIPTION_STYLE = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
@@ -3427,7 +3497,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 57;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 58;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
@@ -3437,7 +3507,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 58;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 59;
 
     /**
      * The meta object id for the
@@ -3448,7 +3518,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 59;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 60;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
@@ -3458,7 +3528,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 60;
+    int TEXTAREA_DESCRIPTION_STYLE = 61;
 
     /**
      * The meta object id for the
@@ -3469,7 +3539,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 61;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 62;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
@@ -3479,7 +3549,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 62;
+    int RADIO_DESCRIPTION_STYLE = 63;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
@@ -3489,7 +3559,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 63;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 64;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl <em>Bar Chart
@@ -3499,7 +3569,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION = 46;
+    int BAR_CHART_DESCRIPTION = 47;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3604,7 +3674,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescription()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION = 47;
+    int PIE_CHART_DESCRIPTION = 48;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3684,7 +3754,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexboxContainerDescription()
      * @generated
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION = 48;
+    int FLEXBOX_CONTAINER_DESCRIPTION = 49;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3746,7 +3816,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
      * @generated
      */
-    int BUTTON_DESCRIPTION = 49;
+    int BUTTON_DESCRIPTION = 50;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3836,7 +3906,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getImageDescription()
      * @generated
      */
-    int IMAGE_DESCRIPTION = 50;
+    int IMAGE_DESCRIPTION = 51;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4755,7 +4825,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 64;
+    int BUTTON_DESCRIPTION_STYLE = 65;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4841,7 +4911,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 65;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 66;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4935,7 +5005,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescriptionStyle()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION_STYLE = 66;
+    int BAR_CHART_DESCRIPTION_STYLE = 67;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5012,7 +5082,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalBarChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 67;
+    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 68;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5096,7 +5166,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescriptionStyle()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION_STYLE = 68;
+    int PIE_CHART_DESCRIPTION_STYLE = 69;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5189,7 +5259,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalPieChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 69;
+    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 70;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5289,7 +5359,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelDescription()
      * @generated
      */
-    int LABEL_DESCRIPTION = 70;
+    int LABEL_DESCRIPTION = 71;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5360,7 +5430,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelDescriptionStyle()
      * @generated
      */
-    int LABEL_DESCRIPTION_STYLE = 71;
+    int LABEL_DESCRIPTION_STYLE = 72;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5436,7 +5506,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLabelDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 72;
+    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 73;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5520,7 +5590,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescription()
      * @generated
      */
-    int LINK_DESCRIPTION = 73;
+    int LINK_DESCRIPTION = 74;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5591,7 +5661,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescriptionStyle()
      * @generated
      */
-    int LINK_DESCRIPTION_STYLE = 74;
+    int LINK_DESCRIPTION_STYLE = 75;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5667,7 +5737,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLinkDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 75;
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 76;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5751,7 +5821,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListDescription()
      * @generated
      */
-    int LIST_DESCRIPTION = 76;
+    int LIST_DESCRIPTION = 77;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5849,7 +5919,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListDescriptionStyle()
      * @generated
      */
-    int LIST_DESCRIPTION_STYLE = 77;
+    int LIST_DESCRIPTION_STYLE = 78;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5925,7 +5995,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalListDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 78;
+    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 79;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6009,7 +6079,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 79;
+    int LAYOUT_DIRECTION = 80;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
@@ -6019,7 +6089,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 80;
+    int ARROW_STYLE = 81;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -6029,7 +6099,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 81;
+    int LINE_STYLE = 82;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -6039,7 +6109,17 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 82;
+    int SYNCHRONIZATION_POLICY = 83;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
+     * Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.GroupDisplayMode
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
+     * @generated
+     */
+    int GROUP_DISPLAY_MODE = 84;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -6049,7 +6129,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 83;
+    int FLEX_DIRECTION = 85;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -7288,27 +7368,96 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.FormDescription#getToolbarActions <em>Toolbar Actions</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.FormDescription#getGroups <em>Groups</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @return the meta object for the containment reference list '<em>Toolbar Actions</em>'.
-     * @see org.eclipse.sirius.components.view.FormDescription#getToolbarActions()
+     * @return the meta object for the containment reference list '<em>Groups</em>'.
+     * @see org.eclipse.sirius.components.view.FormDescription#getGroups()
      * @see #getFormDescription()
      * @generated
      */
-    EReference getFormDescription_ToolbarActions();
+    EReference getFormDescription_Groups();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.GroupDescription <em>Group
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Group Description</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription
+     * @generated
+     */
+    EClass getGroupDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.GroupDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription#getName()
+     * @see #getGroupDescription()
+     * @generated
+     */
+    EAttribute getGroupDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.GroupDescription#getLabelExpression <em>Label Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription#getLabelExpression()
+     * @see #getGroupDescription()
+     * @generated
+     */
+    EAttribute getGroupDescription_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.GroupDescription#getDisplayMode <em>Display Mode</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Display Mode</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription#getDisplayMode()
+     * @see #getGroupDescription()
+     * @generated
+     */
+    EAttribute getGroupDescription_DisplayMode();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.GroupDescription#getSemanticCandidatesExpression <em>Semantic
+     * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription#getSemanticCandidatesExpression()
+     * @see #getGroupDescription()
+     * @generated
+     */
+    EAttribute getGroupDescription_SemanticCandidatesExpression();
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.FormDescription#getWidgets <em>Widgets</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.GroupDescription#getToolbarActions <em>Toolbar Actions</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the containment reference list '<em>Widgets</em>'.
-     * @see org.eclipse.sirius.components.view.FormDescription#getWidgets()
-     * @see #getFormDescription()
+     * @return the meta object for the containment reference list '<em>Toolbar Actions</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription#getToolbarActions()
+     * @see #getGroupDescription()
      * @generated
      */
-    EReference getFormDescription_Widgets();
+    EReference getGroupDescription_ToolbarActions();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.GroupDescription#getWidgets <em>Widgets</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Widgets</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDescription#getWidgets()
+     * @see #getGroupDescription()
+     * @generated
+     */
+    EReference getGroupDescription_Widgets();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.WidgetDescription <em>Widget
@@ -8780,6 +8929,16 @@ public interface ViewPackage extends EPackage {
     EEnum getSynchronizationPolicy();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
+     * Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Group Display Mode</em>'.
+     * @see org.eclipse.sirius.components.view.GroupDisplayMode
+     * @generated
+     */
+    EEnum getGroupDisplayMode();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex
      * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9790,12 +9949,62 @@ public interface ViewPackage extends EPackage {
         EClass FORM_DESCRIPTION = eINSTANCE.getFormDescription();
 
         /**
+         * The meta object literal for the '<em><b>Groups</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FORM_DESCRIPTION__GROUPS = eINSTANCE.getFormDescription_Groups();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
+         * <em>Group Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDescription()
+         * @generated
+         */
+        EClass GROUP_DESCRIPTION = eINSTANCE.getGroupDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute GROUP_DESCRIPTION__NAME = eINSTANCE.getGroupDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute GROUP_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getGroupDescription_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Display Mode</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute GROUP_DESCRIPTION__DISPLAY_MODE = eINSTANCE.getGroupDescription_DisplayMode();
+
+        /**
+         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getGroupDescription_SemanticCandidatesExpression();
+
+        /**
          * The meta object literal for the '<em><b>Toolbar Actions</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference FORM_DESCRIPTION__TOOLBAR_ACTIONS = eINSTANCE.getFormDescription_ToolbarActions();
+        EReference GROUP_DESCRIPTION__TOOLBAR_ACTIONS = eINSTANCE.getGroupDescription_ToolbarActions();
 
         /**
          * The meta object literal for the '<em><b>Widgets</b></em>' containment reference list feature. <!--
@@ -9803,7 +10012,7 @@ public interface ViewPackage extends EPackage {
          *
          * @generated
          */
-        EReference FORM_DESCRIPTION__WIDGETS = eINSTANCE.getFormDescription_Widgets();
+        EReference GROUP_DESCRIPTION__WIDGETS = eINSTANCE.getGroupDescription_Widgets();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl
@@ -10948,6 +11157,16 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EEnum SYNCHRONIZATION_POLICY = eINSTANCE.getSynchronizationPolicy();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
+         * Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.GroupDisplayMode
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
+         * @generated
+         */
+        EEnum GROUP_DISPLAY_MODE = eINSTANCE.getGroupDisplayMode();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex

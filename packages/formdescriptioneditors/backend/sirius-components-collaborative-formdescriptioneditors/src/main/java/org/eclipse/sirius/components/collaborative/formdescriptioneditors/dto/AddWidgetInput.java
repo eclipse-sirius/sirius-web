@@ -47,7 +47,7 @@ public class AddWidgetInput implements IFormDescriptionEditorInput {
         this.representationId = Objects.requireNonNull(representationId);
         this.containerId = containerId;
         this.kind = Objects.requireNonNull(kind);
-        this.index = Objects.requireNonNull(index);
+        this.index = index;
     }
 
     @Override

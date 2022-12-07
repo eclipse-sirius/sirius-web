@@ -12,7 +12,14 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { ButtonStyleProps, getTextDecorationLineValue, GQLButton } from '@eclipse-sirius/sirius-components-forms';
+import {
+  ButtonStyleProps,
+  getTextDecorationLineValue,
+  GQLButton,
+  GQLGroup,
+  GQLToolbarAction,
+  GQLWidget,
+} from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -32,6 +39,7 @@ import {
   GQLMoveToolbarActionMutationVariables,
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionProps, ToolbarActionState } from './ToolbarActionWidget.types';
+import { getAllWidgets, isKind } from './WidgetOperations';
 
 const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
@@ -76,11 +84,20 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     flexGrow: 1,
   },
   placeholder: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'whitesmoke',
+    border: '1px solid whitesmoke',
+    borderRadius: '5px',
     height: 'inherit',
     width: '20px',
   },
   dragOver: {
-    border: 'dashed 1px red',
+    borderWidth: '1px',
+    borderStyle: 'dashed',
+    borderColor: theme.palette.primary.main,
   },
   icon: {
     marginRight: ({ iconOnly }) => (iconOnly ? theme.spacing(0) : theme.spacing(2)),
@@ -93,7 +110,8 @@ const isErrorPayload = (payload: GQLDeleteToolbarActionPayload): payload is GQLE
 export const ToolbarActionWidget = ({
   editingContextId,
   representationId,
-  siblings,
+  formDescriptionEditor,
+  group,
   toolbarAction,
   selection,
   setSelection,
@@ -267,13 +285,23 @@ export const ToolbarActionWidget = ({
 
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, toolbarAction: GQLButton) => {
     const id: string = event.dataTransfer.getData('text/plain');
+    // We only accept drop of ToolbarAction, no Widget or Group allowed
+    if (isKind(id)) {
+      return;
+    } else if (id === 'Group') {
+      return;
+    } else if (getAllWidgets(formDescriptionEditor).find((w: GQLWidget) => w.id === id)) {
+      return;
+    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+      return;
+    }
 
-    let index: number = siblings.indexOf(toolbarAction);
+    let index: number = group.toolbarActions.indexOf(toolbarAction);
     if (index <= 0) {
       index = 0;
     }
 
-    const movedToolbarActionIndex = siblings.findIndex((tba) => tba.id === id);
+    const movedToolbarActionIndex = group.toolbarActions.findIndex((tba: GQLToolbarAction) => tba.id === id);
     if (movedToolbarActionIndex > -1 && movedToolbarActionIndex < index) {
       index--;
     }
@@ -281,7 +309,7 @@ export const ToolbarActionWidget = ({
       id: uuid(),
       editingContextId,
       representationId,
-      containerId: null,
+      containerId: group.id,
       toolbarActionId: id,
       index,
     };
@@ -321,12 +349,7 @@ export const ToolbarActionWidget = ({
   };
 
   return (
-    <div
-      className={classes.toolbarAction}
-      onClick={handleClick}
-      onKeyDown={handleDelete}
-      draggable="true"
-      onDragStart={handleDragStart}>
+    <div className={classes.toolbarAction}>
       <div
         data-testid={`ToolbarAction-DropArea-${toolbarAction.id}`}
         className={classes.placeholder}
@@ -335,39 +358,41 @@ export const ToolbarActionWidget = ({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       />
-      <Button
-        data-testid={toolbarAction.label}
-        classes={state.selected ? { root: classes.selected } : { root: classes.style }}
-        variant="contained"
-        onFocus={() =>
-          setState((prevState) => {
-            return {
-              ...prevState,
-              selected: true,
-            };
-          })
-        }
-        onBlur={() =>
-          setState((prevState) => {
-            return {
-              ...prevState,
-              selected: false,
-            };
-          })
-        }
-        ref={ref}>
-        {state.validImage && state.imageURL ? (
-          <img
-            className={classes.icon}
-            width="16"
-            height="16"
-            alt={toolbarAction.label}
-            src={state.imageURL}
-            onError={onErrorLoadingImage}
-          />
-        ) : null}
-        {state.buttonLabel}
-      </Button>
+      <div onClick={handleClick} onKeyDown={handleDelete} draggable="true" onDragStart={handleDragStart}>
+        <Button
+          data-testid={toolbarAction.label}
+          classes={state.selected ? { root: classes.selected } : { root: classes.style }}
+          variant="contained"
+          onFocus={() =>
+            setState((prevState) => {
+              return {
+                ...prevState,
+                selected: true,
+              };
+            })
+          }
+          onBlur={() =>
+            setState((prevState) => {
+              return {
+                ...prevState,
+                selected: false,
+              };
+            })
+          }
+          ref={ref}>
+          {state.validImage && state.imageURL ? (
+            <img
+              className={classes.icon}
+              width="16"
+              height="16"
+              alt={toolbarAction.label}
+              src={state.imageURL}
+              onError={onErrorLoadingImage}
+            />
+          ) : null}
+          {state.buttonLabel}
+        </Button>
+      </div>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

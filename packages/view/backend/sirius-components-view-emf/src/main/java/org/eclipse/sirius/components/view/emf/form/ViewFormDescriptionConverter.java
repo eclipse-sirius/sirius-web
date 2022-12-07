@@ -25,12 +25,14 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -49,6 +51,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     public static final String NEW_VALUE = "newValue"; //$NON-NLS-1$
 
     private static final String DEFAULT_FORM_LABEL = "Form"; //$NON-NLS-1$
+
+    private static final String DEFAULT_GROUP_LABEL = ""; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
@@ -69,36 +73,24 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
         ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
         // @formatter:off
-        List<AbstractControlDescription> controlDescriptions = viewFormDescription.getWidgets().stream()
-                .map(dispatcher::doSwitch)
-                .collect(Collectors.toList());
-
-        List<ButtonDescription> toolbarActionDescriptions = viewFormDescription.getToolbarActions().stream()
-                .map(dispatcher::doSwitch)
-                .filter(ButtonDescription.class::isInstance)
-                .map(ButtonDescription.class::cast)
-                .collect(Collectors.toList());
-
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
 
+        List<GroupDescription> groupDescriptions = viewFormDescription.getGroups().stream()
+                .map(g -> this.instantiateGroup(g, dispatcher, interpreter))
+                .filter(GroupDescription.class::isInstance)
+                .map(GroupDescription.class::cast)
+                .collect(Collectors.toList());
+
         String descriptionId = this.getDescriptionId(viewFormDescription);
-        GroupDescription groupDescription = GroupDescription.newGroupDescription(descriptionId + "_group") //$NON-NLS-1$
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
-                .semanticElementsProvider(semanticElementsProvider)
-                .controlDescriptions(controlDescriptions)
-                .toolbarActionDescriptions(toolbarActionDescriptions)
-                .build();
         PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page") //$NON-NLS-1$
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
                 .semanticElementsProvider(semanticElementsProvider)
                 .canCreatePredicate(variableManager -> true)
-                .groupDescriptions(List.of(groupDescription))
+                .groupDescriptions(groupDescriptions)
                 .build();
 
         // @formatter:on
-        List<GroupDescription> groupDescriptions = List.of(groupDescription);
         List<PageDescription> pageDescriptions = List.of(pageDescription);
 
         // @formatter:off
@@ -123,6 +115,32 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         // @formatter:on
     }
 
+    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, ViewFormDescriptionConverterSwitch dispatcher, AQLInterpreter interpreter) {
+
+        // @formatter:off
+        List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getWidgets().stream()
+                .map(dispatcher::doSwitch)
+                .collect(Collectors.toList());
+
+        List<ButtonDescription> toolbarActionDescriptions = viewGroupDescription.getToolbarActions().stream()
+                .map(dispatcher::doSwitch)
+                .filter(ButtonDescription.class::isInstance)
+                .map(ButtonDescription.class::cast)
+                .collect(Collectors.toList());
+
+        String descriptionId = this.getDescriptionId(viewGroupDescription);
+
+        return GroupDescription.newGroupDescription(descriptionId)
+                .idProvider(variableManager -> UUID.randomUUID().toString())
+                .labelProvider(variableManager -> this.computeGroupLabel(viewGroupDescription, variableManager, interpreter))
+                .semanticElementsProvider(this.getSemanticElementsProvider(viewGroupDescription, interpreter))
+                .controlDescriptions(controlDescriptions)
+                .toolbarActionDescriptions(toolbarActionDescriptions)
+                .displayModeProvider(variableManager -> this.getGroupDisplayMode(viewGroupDescription))
+                .build();
+        // @formatter:on
+    }
+
     private String computeFormLabel(org.eclipse.sirius.components.view.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String title = this.evaluateString(interpreter, variableManager, viewFormDescription.getTitleExpression());
         if (title == null || title.isBlank()) {
@@ -130,6 +148,28 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         } else {
             return title;
         }
+    }
+
+    private String computeGroupLabel(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String label = this.evaluateString(interpreter, variableManager, viewGroupDescription.getLabelExpression());
+        if (label == null || label.isBlank()) {
+            return DEFAULT_GROUP_LABEL;
+        } else {
+            return label;
+        }
+    }
+
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, AQLInterpreter interpreter) {
+        return variableManager -> {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewGroupDescription.getSemanticCandidatesExpression());
+            List<Object> candidates = result.asObjects().orElse(List.of());
+            // @formatter:off
+            return candidates.stream()
+                    .filter(EObject.class::isInstance)
+                    .map(EObject.class::cast)
+                    .collect(Collectors.toList());
+            // @formatter:on
+        };
     }
 
     private String evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
@@ -162,4 +202,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
     }
 
+    private GroupDisplayMode getGroupDisplayMode(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription) {
+        org.eclipse.sirius.components.view.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
+        return GroupDisplayMode.valueOf(viewDisplayMode.getLiteral());
+    }
 }

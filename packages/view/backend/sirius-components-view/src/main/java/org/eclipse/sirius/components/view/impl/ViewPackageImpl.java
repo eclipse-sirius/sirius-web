@@ -58,6 +58,8 @@ import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.GroupDisplayMode;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
@@ -382,6 +384,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EClass groupDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass widgetDescriptionEClass = null;
 
     /**
@@ -691,6 +700,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EEnum synchronizationPolicyEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum groupDisplayModeEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1886,7 +1902,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EReference getFormDescription_ToolbarActions() {
+    public EReference getFormDescription_Groups() {
         return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1896,8 +1912,68 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EReference getFormDescription_Widgets() {
-        return (EReference) this.formDescriptionEClass.getEStructuralFeatures().get(1);
+    public EClass getGroupDescription() {
+        return this.groupDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getGroupDescription_Name() {
+        return (EAttribute) this.groupDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getGroupDescription_LabelExpression() {
+        return (EAttribute) this.groupDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getGroupDescription_DisplayMode() {
+        return (EAttribute) this.groupDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getGroupDescription_SemanticCandidatesExpression() {
+        return (EAttribute) this.groupDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupDescription_ToolbarActions() {
+        return (EReference) this.groupDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupDescription_Widgets() {
+        return (EReference) this.groupDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -3206,6 +3282,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EEnum getGroupDisplayMode() {
+        return this.groupDisplayModeEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getFlexDirection() {
         return this.flexDirectionEEnum;
     }
@@ -3388,8 +3474,15 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
         this.formDescriptionEClass = this.createEClass(FORM_DESCRIPTION);
-        this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__TOOLBAR_ACTIONS);
-        this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__WIDGETS);
+        this.createEReference(this.formDescriptionEClass, FORM_DESCRIPTION__GROUPS);
+
+        this.groupDescriptionEClass = this.createEClass(GROUP_DESCRIPTION);
+        this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__NAME);
+        this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__DISPLAY_MODE);
+        this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
+        this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__TOOLBAR_ACTIONS);
+        this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__WIDGETS);
 
         this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__NAME);
@@ -3563,6 +3656,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
         this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
+        this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
     }
 
@@ -3914,9 +4008,21 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
         this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-        this.initEReference(this.getFormDescription_ToolbarActions(), this.getButtonDescription(), null, "toolbarActions", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+        this.initEReference(this.getFormDescription_Groups(), this.getGroupDescription(), null, "groups", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, //$NON-NLS-1$
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.groupDescriptionEClass, GroupDescription.class, "GroupDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        this.initEAttribute(this.getGroupDescription_Name(), this.ecorePackage.getEString(), "name", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, //$NON-NLS-1$
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getGroupDescription_LabelExpression(), this.ecorePackage.getEString(), "labelExpression", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getGroupDescription_DisplayMode(), this.getGroupDisplayMode(), "displayMode", "LIST", 1, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getGroupDescription_SemanticCandidatesExpression(), this.ecorePackage.getEString(), "semanticCandidatesExpression", "aql:self", 0, 1, GroupDescription.class, //$NON-NLS-1$ //$NON-NLS-2$
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getGroupDescription_ToolbarActions(), this.getButtonDescription(), null, "toolbarActions", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getFormDescription_Widgets(), this.getWidgetDescription(), null, "widgets", null, 0, -1, FormDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+        this.initEReference(this.getGroupDescription_Widgets(), this.getWidgetDescription(), null, "widgets", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.widgetDescriptionEClass, WidgetDescription.class, "WidgetDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -4210,6 +4316,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEEnum(this.synchronizationPolicyEEnum, SynchronizationPolicy.class, "SynchronizationPolicy"); //$NON-NLS-1$
         this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.SYNCHRONIZED);
         this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.UNSYNCHRONIZED);
+
+        this.initEEnum(this.groupDisplayModeEEnum, GroupDisplayMode.class, "GroupDisplayMode"); //$NON-NLS-1$
+        this.addEEnumLiteral(this.groupDisplayModeEEnum, GroupDisplayMode.LIST);
+        this.addEEnumLiteral(this.groupDisplayModeEEnum, GroupDisplayMode.TOGGLEABLE_AREAS);
 
         this.initEEnum(this.flexDirectionEEnum, FlexDirection.class, "FlexDirection"); //$NON-NLS-1$
         this.addEEnumLiteral(this.flexDirectionEEnum, FlexDirection.ROW);

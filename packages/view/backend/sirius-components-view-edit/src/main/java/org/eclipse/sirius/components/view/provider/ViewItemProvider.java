@@ -29,6 +29,7 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -158,6 +159,8 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
 
         FormDescription newFormDescription = ViewFactory.eINSTANCE.createFormDescription();
         newFormDescription.setName("New Form Description"); //$NON-NLS-1$
+        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        newFormDescription.getGroups().add(groupDescription);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));
 
     }

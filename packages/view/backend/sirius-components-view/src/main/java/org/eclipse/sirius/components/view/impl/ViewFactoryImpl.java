@@ -54,6 +54,8 @@ import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.GroupDisplayMode;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
@@ -186,6 +188,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createConditionalEdgeStyle();
         case ViewPackage.FORM_DESCRIPTION:
             return this.createFormDescription();
+        case ViewPackage.GROUP_DESCRIPTION:
+            return this.createGroupDescription();
         case ViewPackage.TEXTFIELD_DESCRIPTION:
             return this.createTextfieldDescription();
         case ViewPackage.CHECKBOX_DESCRIPTION:
@@ -285,6 +289,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.createLineStyleFromString(eDataType, initialValue);
         case ViewPackage.SYNCHRONIZATION_POLICY:
             return this.createSynchronizationPolicyFromString(eDataType, initialValue);
+        case ViewPackage.GROUP_DISPLAY_MODE:
+            return this.createGroupDisplayModeFromString(eDataType, initialValue);
         case ViewPackage.FLEX_DIRECTION:
             return this.createFlexDirectionFromString(eDataType, initialValue);
         default:
@@ -308,6 +314,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
             return this.convertLineStyleToString(eDataType, instanceValue);
         case ViewPackage.SYNCHRONIZATION_POLICY:
             return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
+        case ViewPackage.GROUP_DISPLAY_MODE:
+            return this.convertGroupDisplayModeToString(eDataType, instanceValue);
         case ViewPackage.FLEX_DIRECTION:
             return this.convertFlexDirectionToString(eDataType, instanceValue);
         default:
@@ -610,6 +618,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public FormDescription createFormDescription() {
         FormDescriptionImpl formDescription = new FormDescriptionImpl();
         return formDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public GroupDescription createGroupDescription() {
+        GroupDescriptionImpl groupDescription = new GroupDescriptionImpl();
+        return groupDescription;
     }
 
     /**
@@ -1122,6 +1141,27 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     public String convertSynchronizationPolicyToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public GroupDisplayMode createGroupDisplayModeFromString(EDataType eDataType, String initialValue) {
+        GroupDisplayMode result = GroupDisplayMode.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertGroupDisplayModeToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

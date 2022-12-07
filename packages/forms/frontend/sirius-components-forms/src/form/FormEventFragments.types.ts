@@ -110,6 +110,7 @@ export interface GQLGroup {
   displayMode: GQLGroupDisplayMode;
   toolbarActions: GQLToolbarAction[];
   widgets: GQLWidget[];
+  __typename: string;
 }
 
 export type GQLGroupDisplayMode = 'LIST' | 'TOGGLEABLE_AREAS';

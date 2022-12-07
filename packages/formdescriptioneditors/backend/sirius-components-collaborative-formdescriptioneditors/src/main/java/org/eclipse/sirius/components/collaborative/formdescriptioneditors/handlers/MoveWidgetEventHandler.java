@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -29,8 +28,10 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.WidgetDescription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -45,6 +46,8 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(MoveWidgetEventHandler.class);
 
     private final IObjectService objectService;
 
@@ -94,31 +97,30 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
 
     private boolean moveWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String containerId, String widgetId, int index) {
         boolean success = false;
-        var optionalSelf = Optional.empty();
-        if (containerId != null) {
-            optionalSelf = this.objectService.getObject(editingContext, containerId);
-        } else {
-            optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
-        }
+        var optionalSelf = this.objectService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
             var objectToMove = this.objectService.getObject(editingContext, widgetId);
             if (objectToMove.filter(WidgetDescription.class::isInstance).isPresent()) {
                 WidgetDescription widgetToMove = (WidgetDescription) objectToMove.get();
-                if (container instanceof FormDescription) {
-                    if (container.equals(widgetToMove.eContainer())) {
-                        ((FormDescription) container).getWidgets().move(index, widgetToMove);
-                    } else {
-                        ((FormDescription) container).getWidgets().add(index, widgetToMove);
+                try {
+                    if (container instanceof GroupDescription) {
+                        if (container.equals(widgetToMove.eContainer())) {
+                            ((GroupDescription) container).getWidgets().move(index, widgetToMove);
+                        } else {
+                            ((GroupDescription) container).getWidgets().add(index, widgetToMove);
+                        }
+                        success = true;
+                    } else if (container instanceof FlexboxContainerDescription) {
+                        if (container.equals(widgetToMove.eContainer())) {
+                            ((FlexboxContainerDescription) container).getChildren().move(index, widgetToMove);
+                        } else {
+                            ((FlexboxContainerDescription) container).getChildren().add(index, widgetToMove);
+                        }
+                        success = true;
                     }
-                    success = true;
-                } else if (container instanceof FlexboxContainerDescription) {
-                    if (container.equals(widgetToMove.eContainer())) {
-                        ((FlexboxContainerDescription) container).getChildren().move(index, widgetToMove);
-                    } else {
-                        ((FlexboxContainerDescription) container).getChildren().add(index, widgetToMove);
-                    }
-                    success = true;
+                } catch (IndexOutOfBoundsException exception) {
+                    this.logger.warn(exception.getMessage(), exception);
                 }
             }
         }

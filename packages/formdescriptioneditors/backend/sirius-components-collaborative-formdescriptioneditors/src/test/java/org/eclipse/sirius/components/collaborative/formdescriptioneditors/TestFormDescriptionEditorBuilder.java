@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
+import org.eclipse.sirius.components.forms.Group;
 
 /**
  * Utility class used to help build form description editors for unit tests.
@@ -32,12 +33,17 @@ public class TestFormDescriptionEditorBuilder {
 
     public FormDescriptionEditor getFormDescriptionEditor(String id) {
         // @formatter:off
+        Group group = Group.newGroup(UUID.randomUUID().toString())
+            .label("group1") //$NON-NLS-1$
+            .widgets(List.of())
+            .toolbarActions(List.of())
+            .build();
+
         return FormDescriptionEditor.newFormDescriptionEditor(id)
                 .label("formDescriptionEditorLabel") //$NON-NLS-1$
                 .descriptionId(UUID.randomUUID().toString())
                 .targetObjectId("formDescriptionEditorTargetObjectId") //$NON-NLS-1$
-                .toolbarActions(List.of())
-                .widgets(List.of())
+                .groups(List.of(group))
                 .build();
         // @formatter:on
     }

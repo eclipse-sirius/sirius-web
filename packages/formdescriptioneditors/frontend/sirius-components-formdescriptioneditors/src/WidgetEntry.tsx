@@ -17,6 +17,7 @@ import {
   GQLChartWidget,
   GQLCheckbox,
   GQLFlexboxContainer,
+  GQLGroup,
   GQLImage,
   GQLLabelWidget,
   GQLLink,
@@ -27,11 +28,13 @@ import {
   GQLSelect,
   GQLTextarea,
   GQLTextfield,
+  GQLToolbarAction,
   GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
@@ -67,9 +70,9 @@ import { SelectWidget } from './SelectWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
-import { isKind } from './WidgetOperations';
+import { getAllToolbarActions, isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
 
-const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>(() => ({
+const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) => ({
   widget: {
     display: 'flex',
     flexDirection: ({ flexDirection }) => flexDirection,
@@ -77,16 +80,40 @@ const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>(() => ({
   },
   widgetElement: {
     flexGrow: ({ flexGrow }) => flexGrow,
+    border: ({ kind }) => (kind === 'FlexboxContainer' ? '1px solid gray' : '1px solid transparent'),
+    '&:hover': {
+      borderColor: theme.palette.primary.main,
+    },
+    '&:has($widgetElement:hover)': {
+      borderStyle: 'dashed',
+    },
   },
   placeholder: {
     height: ({ flexDirection }) =>
       flexDirection === 'column' || flexDirection === 'column-reverse' ? '10px' : 'inherit',
     width: ({ flexDirection }) => (flexDirection === 'row' || flexDirection === 'row-reverse' ? '10px' : 'inherit'),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'whitesmoke',
+    border: '1px solid whitesmoke',
+    borderRadius: '5px',
   },
   dragOver: {
-    border: 'dashed 1px red',
+    borderWidth: '1px',
+    borderStyle: 'dashed',
+    borderColor: theme.palette.primary.main,
   },
 }));
+
+const WidgetTooltip = withStyles((theme: Theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.primary.main,
+    margin: '0px',
+    borderRadius: '0px',
+  },
+}))(Tooltip);
 
 const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
@@ -95,16 +122,15 @@ const isErrorPayload = (
 export const WidgetEntry = ({
   editingContextId,
   representationId,
-  containerId,
-  toolbarActions,
-  siblings,
+  formDescriptionEditor,
+  container,
   widget,
   selection,
   setSelection,
   flexDirection,
   flexGrow,
 }: WidgetEntryProps) => {
-  const classes = useWidgetEntryStyles({ flexDirection, flexGrow });
+  const classes = useWidgetEntryStyles({ flexDirection, flexGrow, kind: widget.__typename });
 
   const initialState: WidgetEntryState = { message: null };
   const [state, setState] = useState<WidgetEntryState>(initialState);
@@ -206,23 +232,23 @@ export const WidgetEntry = ({
     }
   };
 
-  const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
+  const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData('text/plain', widget.id);
     event.stopPropagation();
   };
-  const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
+  const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.add(classes.dragOver);
   };
-  const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
+  const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.add(classes.dragOver);
   };
-  const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
+  const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
-  const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
+  const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
     onDropBefore(event, widget);
@@ -230,8 +256,23 @@ export const WidgetEntry = ({
 
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, widget: GQLWidget) => {
     const id: string = event.dataTransfer.getData('text/plain');
+    // We only accept drop of Widgets, no ToolbarAction or Group allowed
+    if (id === 'Group') {
+      return;
+    } else if (getAllToolbarActions(formDescriptionEditor).find((tba: GQLToolbarAction) => tba.id === id)) {
+      return;
+    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+      return;
+    }
 
-    let index: number = siblings.indexOf(widget);
+    let children: GQLWidget[] = null;
+    if (isGroup(container)) {
+      children = (container as GQLGroup).widgets;
+    } else if (isFlexboxContainer(container)) {
+      children = (container as GQLFlexboxContainer).children;
+    }
+
+    let index: number = children.indexOf(widget);
     if (index <= 0) {
       index = 0;
     }
@@ -241,15 +282,14 @@ export const WidgetEntry = ({
         id: uuid(),
         editingContextId,
         representationId,
-        containerId,
+        containerId: container.id,
         kind: id,
         index,
       };
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
-    } else if (toolbarActions.find((w) => w.id === id) === undefined) {
-      // We only accept drop of Widgets, no ToolbarAction allowed
-      const movedWidgetIndex = siblings.findIndex((w) => w.id === id);
+    } else {
+      const movedWidgetIndex = children.findIndex((w: GQLWidget) => w.id === id);
       if (movedWidgetIndex > -1 && movedWidgetIndex < index) {
         index--;
       }
@@ -257,7 +297,7 @@ export const WidgetEntry = ({
         id: uuid(),
         editingContextId,
         representationId,
-        containerId,
+        containerId: container.id,
         widgetId: id,
         index,
       };
@@ -293,7 +333,8 @@ export const WidgetEntry = ({
         data-testid={widget.id}
         editingContextId={editingContextId}
         representationId={representationId}
-        toolbarActions={toolbarActions}
+        formDescriptionEditor={formDescriptionEditor}
+        container={container}
         widget={widget as GQLFlexboxContainer}
         selection={selection}
         setSelection={setSelection}
@@ -423,22 +464,27 @@ export const WidgetEntry = ({
       );
     }
   }
+
   return (
-    <div
-      className={classes.widget}
-      onClick={handleClick}
-      onKeyDown={handleDelete}
-      draggable="true"
-      onDragStart={handleDragStart}>
+    <div className={classes.widget}>
       <div
-        data-testid="WidgetEntry-DropArea"
+        data-testid={`WidgetEntry-DropArea-${widget.id}`}
         className={classes.placeholder}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       />
-      <div className={classes.widgetElement}>{widgetElement}</div>
+      <WidgetTooltip title={widget.__typename} placement="top-end">
+        <div
+          className={classes.widgetElement}
+          onClick={handleClick}
+          onKeyDown={handleDelete}
+          draggable="true"
+          onDragStart={handleDragStart}>
+          {widgetElement}
+        </div>
+      </WidgetTooltip>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

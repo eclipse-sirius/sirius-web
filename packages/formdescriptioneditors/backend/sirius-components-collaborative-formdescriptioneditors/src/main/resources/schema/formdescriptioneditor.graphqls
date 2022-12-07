@@ -18,8 +18,7 @@ type FormDescriptionEditorRefreshedEventPayload {
 type FormDescriptionEditor implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
-  toolbarActions: [ToolbarAction!]!
-  widgets: [Widget!]!
+  groups: [Group!]!
 }
 
 type FormDescriptionEditorDescription implements RepresentationDescription {
@@ -28,6 +27,9 @@ type FormDescriptionEditorDescription implements RepresentationDescription {
 }
 
 extend type Mutation {
+  addGroup(input: AddGroupInput!): AddGroupPayload!
+  deleteGroup(input: DeleteGroupInput!): DeleteGroupPayload!
+  moveGroup(input: MoveGroupInput!): MoveGroupPayload!
   addWidget(input: AddWidgetInput!): AddWidgetPayload!
   deleteWidget(input: DeleteWidgetInput!): DeleteWidgetPayload!
   moveWidget(input: MoveWidgetInput!): MoveWidgetPayload!
@@ -36,11 +38,51 @@ extend type Mutation {
   moveToolbarAction(input: MoveToolbarActionInput!): MoveToolbarActionPayload!
 }
 
+input AddGroupInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  index: Int!
+}
+
+union AddGroupPayload = AddGroupSuccessPayload | ErrorPayload
+
+type AddGroupSuccessPayload {
+  id: ID!
+}
+
+input DeleteGroupInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  groupId: String!
+}
+
+union DeleteGroupPayload = DeleteGroupSuccessPayload | ErrorPayload
+
+type DeleteGroupSuccessPayload {
+  id: ID!
+}
+
+input MoveGroupInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  groupId: String!
+  index: Int!
+}
+
+union MoveGroupPayload = MoveGroupSuccessPayload | ErrorPayload
+
+type MoveGroupSuccessPayload {
+  id: ID!
+}
+
 input AddWidgetInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  containerId: ID
+  containerId: ID!
   kind: String!
   index: Int!
 }
@@ -83,7 +125,7 @@ input AddToolbarActionInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  containerId: ID
+  containerId: ID!
 }
 
 union AddToolbarActionPayload = AddToolbarActionSuccessPayload | ErrorPayload

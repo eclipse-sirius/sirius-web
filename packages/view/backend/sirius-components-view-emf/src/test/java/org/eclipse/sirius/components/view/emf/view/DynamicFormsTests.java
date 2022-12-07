@@ -88,6 +88,7 @@ import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.LabelDescription;
 import org.eclipse.sirius.components.view.LabelDescriptionStyle;
@@ -602,34 +603,37 @@ public class DynamicFormsTests {
         formDescription.setName("Simple Ecore Form"); //$NON-NLS-1$
         formDescription.setTitleExpression("aql:self.name"); //$NON-NLS-1$
         formDescription.setDomainType("ecore::EClass"); //$NON-NLS-1$
+        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        groupDescription.setLabelExpression("aql:self.name"); //$NON-NLS-1$
+        formDescription.getGroups().add(groupDescription);
         TextfieldDescription textfieldDescription = this.createTextfield(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(textfieldDescription);
+        groupDescription.getWidgets().add(textfieldDescription);
         TextAreaDescription textAreaDescription = this.createTextArea(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(textAreaDescription);
+        groupDescription.getWidgets().add(textAreaDescription);
         MultiSelectDescription multiSelectDescription = this.createMultiSelect(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(multiSelectDescription);
+        groupDescription.getWidgets().add(multiSelectDescription);
         CheckboxDescription checkboxDescription = this.createCheckbox(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(checkboxDescription);
+        groupDescription.getWidgets().add(checkboxDescription);
         SelectDescription selectDescription = this.createSelect(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(selectDescription);
+        groupDescription.getWidgets().add(selectDescription);
         RadioDescription radioDescription = this.createRadio(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(radioDescription);
+        groupDescription.getWidgets().add(radioDescription);
         BarChartDescription barChartDescription = this.createBarChart(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(barChartDescription);
+        groupDescription.getWidgets().add(barChartDescription);
         PieChartDescription pieChartDescription = this.createPieChart(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(pieChartDescription);
+        groupDescription.getWidgets().add(pieChartDescription);
         FlexboxContainerDescription flexboxContainerDescription = this.createFlexboxContainer(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(flexboxContainerDescription);
+        groupDescription.getWidgets().add(flexboxContainerDescription);
         ButtonDescription buttonDescription = this.createButton(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(buttonDescription);
+        groupDescription.getWidgets().add(buttonDescription);
         LabelDescription labelDescription = this.createLabel(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(labelDescription);
+        groupDescription.getWidgets().add(labelDescription);
         LinkDescription linkDescription = this.createLink(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(linkDescription);
+        groupDescription.getWidgets().add(linkDescription);
         ListDescription listDescription = this.createList(withStyle, withConditionalStyle);
-        formDescription.getWidgets().add(listDescription);
+        groupDescription.getWidgets().add(listDescription);
         ImageDescription imageDescription = this.createImage();
-        formDescription.getWidgets().add(imageDescription);
+        groupDescription.getWidgets().add(imageDescription);
         return formDescription;
     }
 

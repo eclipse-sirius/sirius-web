@@ -74,8 +74,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
                 .label(label)
                 .targetObjectId(this.objectService.getId(targetObject))
                 .descriptionId(formDescriptionEditorDescription.getId())
-                .toolbarActions(List.of()) // We don't store form description editor toolbar actions, it will be re-render by the FormDescriptionEditorProcessor.
-                .widgets(List.of()) // We don't store form description editor widgets, it will be re-render by the FormDescriptionEditorProcessor.
+                .groups(List.of()) // We don't store form description editor groups, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
         // @formatter:on
 

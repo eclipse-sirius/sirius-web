@@ -54,6 +54,7 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ImageDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
@@ -336,6 +337,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseFormDescription(FormDescription object) {
             return ViewAdapterFactory.this.createFormDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseGroupDescription(GroupDescription object) {
+            return ViewAdapterFactory.this.createGroupDescriptionAdapter();
         }
 
         @Override
@@ -1070,6 +1076,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.GroupDescription
+     * <em>Group Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.GroupDescription
+     * @generated
+     */
+    public Adapter createGroupDescriptionAdapter() {
         return null;
     }
 

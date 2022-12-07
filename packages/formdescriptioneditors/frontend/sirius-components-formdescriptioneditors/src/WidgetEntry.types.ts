@@ -17,6 +17,7 @@ import {
   GQLCheckbox,
   GQLFlexboxContainer,
   GQLFlexDirection,
+  GQLGroup,
   GQLImage,
   GQLLabelWidget,
   GQLLink,
@@ -27,17 +28,16 @@ import {
   GQLSelect,
   GQLTextarea,
   GQLTextfield,
-  GQLToolbarAction,
   GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import React from 'react';
+import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
 export interface WidgetEntryProps {
   editingContextId: string;
   representationId: string;
-  containerId: string | null;
-  toolbarActions: GQLToolbarAction[];
-  siblings: GQLWidget[];
+  formDescriptionEditor: GQLFormDescriptionEditor;
+  container: GQLGroup | GQLFlexboxContainer;
   widget: GQLWidget;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
@@ -59,7 +59,8 @@ export type CheckboxWidgetProps = WidgetProps<GQLCheckbox>;
 export interface FlexboxContainerWidgetProps {
   editingContextId: string;
   representationId: string;
-  toolbarActions: GQLToolbarAction[];
+  formDescriptionEditor: GQLFormDescriptionEditor;
+  container: GQLGroup | GQLFlexboxContainer;
   widget: GQLFlexboxContainer;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
@@ -84,4 +85,5 @@ export interface WidgetEntryState {
 export interface WidgetEntryStyleProps {
   flexDirection: GQLFlexDirection;
   flexGrow: number;
+  kind: string;
 }

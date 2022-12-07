@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -53,12 +54,14 @@ public class MoveToolbarActionEventHandlerTests {
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        formDescription.getGroups().add(groupDescription);
         ButtonDescription toolbarButton1 = ViewFactory.eINSTANCE.createButtonDescription();
         ButtonDescription toolbarButton2 = ViewFactory.eINSTANCE.createButtonDescription();
         ButtonDescription toolbarButton3 = ViewFactory.eINSTANCE.createButtonDescription();
-        formDescription.getToolbarActions().add(toolbarButton1);
-        formDescription.getToolbarActions().add(toolbarButton2);
-        formDescription.getToolbarActions().add(toolbarButton3);
+        groupDescription.getToolbarActions().add(toolbarButton1);
+        groupDescription.getToolbarActions().add(toolbarButton2);
+        groupDescription.getToolbarActions().add(toolbarButton3);
 
         var objectService = new IObjectService.NoOp() {
             @Override
@@ -72,20 +75,22 @@ public class MoveToolbarActionEventHandlerTests {
                     result = Optional.of(toolbarButton2);
                 } else if ("button3".equals(objectId)) { //$NON-NLS-1$
                     result = Optional.of(toolbarButton3);
+                } else if (formDescriptionEditor.getGroups().get(0).getId().equals(objectId)) {
+                    result = Optional.of(groupDescription);
                 }
                 return result;
             }
         };
 
         this.invokMove(formDescriptionEditor, objectService, "button2", 0); //$NON-NLS-1$
-        assertThat(formDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1, toolbarButton3));
+        assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1, toolbarButton3));
         this.invokMove(formDescriptionEditor, objectService, "button1", 2); //$NON-NLS-1$
-        assertThat(formDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton3, toolbarButton1));
+        assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton3, toolbarButton1));
     }
 
     private void invokMove(FormDescriptionEditor formDescriptionEditor, NoOp objectService, String toolbarActionId, int index) {
         var handler = new MoveToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getDescriptionId(), toolbarActionId, index); //$NON-NLS-1$
+        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getGroups().get(0).getId(), toolbarActionId, index); //$NON-NLS-1$
 
         assertThat(handler.canHandle(input)).isTrue();
 

@@ -47,7 +47,7 @@ public class MoveWidgetInput implements IFormDescriptionEditorInput {
         this.representationId = Objects.requireNonNull(representationId);
         this.containerId = containerId;
         this.widgetId = Objects.requireNonNull(widgetId);
-        this.index = Objects.requireNonNull(index);
+        this.index = index;
     }
 
     @Override
