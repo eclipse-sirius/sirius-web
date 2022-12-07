@@ -1,0 +1,35 @@
+= ADR-081 - Add support for multi-groups in Form/FormDescriptionEditor
+
+== Context
+
+Today, forms and form description editors only handle one group.
+We want to be able to support multi-groups in forms and form description editors.
+
+== Decision
+
+In forms, groups are stacked vertically.
+In form description editors, groups can be drag and dropped in the preview area. 
+In forms and form description editors, groups contains widgets.
+In form description editors, it will be possible to delete a Group by selecting it and then press Delete key, as it is already the case for the widgets.
+In form description editors, it will be possible to move existing toolbar actions by drag and dropping them.
+In form description editors, new/existing groups can't be moved in the ToolbarActions drop areas or Widgets areas.
+In form description editors, existing ToolbarActions and Widgets can't be moved in the existing Groups drop areas.
+
+Both group display modes (list and toggleable_areas) will also be handled.
+
+=== Frontend
+
+A simple div will be used to handle the new Group.
+
+=== Backend
+
+The View DSL will be modified, introducing the following concept on EClass `FormDescription`:
+
+* new contained multi-valued reference : `groups` with type `GroupDescription`.
+
+The new `GroupDescription` will contains `widgets` and `toolbarActions` previously contained in `FormDescription`.
+The View DSL converter will be updated to take into account the new Group element.
+
+== Status
+
+Work in progress
