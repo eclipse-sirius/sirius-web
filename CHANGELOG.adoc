@@ -10,6 +10,7 @@
 - [ADR-078] Add support for toolbar actions in Form/FormDescriptionEditor
 - [ADR-079] Add support for a rich text edition widget
 - [ADR-080] Add support for styles preview in FormDescriptionEditor
+- [ADR-081] Add support for multi-groups in Form/FormDescriptionEditor
 
 === Breaking changes
 
