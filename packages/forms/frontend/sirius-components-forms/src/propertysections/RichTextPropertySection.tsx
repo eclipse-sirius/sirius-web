@@ -158,7 +158,9 @@ export const RichTextPropertySection = ({
   const onFocus = () => sendUpdateWidgetFocus(true);
   const onBlur = (currentText: string) => {
     sendUpdateWidgetFocus(false);
-    sendEditedValue(currentText);
+    if (currentText !== widget.stringValue) {
+      sendEditedValue(currentText);
+    }
   };
 
   return (
