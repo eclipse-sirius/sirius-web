@@ -1,0 +1,40 @@
+= ADR-084 - Improve support for View elements' tools icons
+== Context
+
+Today, when a diagram is created based on View Diagram Description, all tools (user created tools and canonical tools) have default icons (one for the Nodes and one for the Edges). Furthermore, these default icons come from the Domain project. If the Domain project is not included in the end-user application, then tools have no icons.
+
+== Decision
+
+Improve the support for View elements' tools icons by providing an `IViewToolImageProviderFactory`, based on the same principle than `IToolImageProviderFactory` from the compatibility layer.
+Also provide a `ViewToolImageProvider` based on the same principle than `ToolImageProvider` from the compatibility layer.
+Default icons (when no domain type is found) will also be available in the View project instead of relying ones from Domain project.
+
+=== Frontend
+
+No modification of the frontend.
+
+=== Backend
+
+New `IViewToolImageProviderFactory`:
+
+[source,java]
+----
+public interface IViewToolImageProviderFactory {
+    Supplier<String> getToolImageProvider(DiagramElementDescription viewDiagramElementDescription);
+}
+----
+
+New `IViewToolImageProviderFactory`:
+
+[source,java]
+----
+public class ViewToolImageProvider implements Supplier<String> {
+@Override
+    public String get() {
+        // return icon computed from the domain type of the Node/Edge, or default icon.
+    }}
+----
+
+== Status
+
+Work in progress
