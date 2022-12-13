@@ -80,6 +80,7 @@ import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.CanonicalBehaviors;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -96,11 +97,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private static final String NODE_CREATION_TOOL_SECTION = "Node Creation";
 
-    private static final String NODE_CREATION_TOOL_ICON = "/img/Entity.svg";
-
     private static final String EDGE_CREATION_TOOL_SECTION = "Edge Creation";
-
-    private static final String EDGE_CREATION_TOOL_ICON = "/img/Relation.svg";
 
     private final IObjectService objectService;
 
@@ -121,7 +118,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
     };
 
-    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders) {
+    private final IViewToolImageProvider viewToolImageProvider;
+
+    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IViewToolImageProvider viewToolImageProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.stylesFactory = new StylesFactory(Objects.requireNonNull(iNodeStyleProviders), this.objectService);
@@ -129,6 +128,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
         this.canonicalBehaviors = new CanonicalBehaviors(objectService, editService);
+        this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
     }
 
     @Override
@@ -233,8 +233,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     .map(ConditionalNodeStyle::getStyle)
                     .findFirst()
                     .orElseGet(viewNodeDescription::getStyle);
-            Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                                                                       .map(IEditingContext::getId);
+            Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
             // @formatter:on
             return this.stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);
         };
@@ -308,17 +307,37 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private List<ToolSection> createToolSections(ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+        var nodeCreationTools = this.getNodeTools(converterContext, capturedConvertedNodes);
+        var edgeTools = this.getEdgeTools(converterContext, capturedConvertedNodes);
+
+        // @formatter:off
+        var nodeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
+                .label(NODE_CREATION_TOOL_SECTION)
+                .tools(nodeCreationTools)
+                .imageURL("")
+                .build();
+        var edgeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
+                .label(EDGE_CREATION_TOOL_SECTION)
+                .tools(edgeTools)
+                .imageURL("")
+                .build();
+        return List.of(nodeCreationToolSection, edgeCreationToolSection);
+        // @formatter:on
+    }
+
+    private List<ITool> getNodeTools(ViewDiagramDescriptionConverterContext converterContext, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedConvertedNodes) {
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
             List<NodeDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
+            String imageURL = this.viewToolImageProvider.getImage(nodeDescription);
+
             // Add custom tools
             int i = 0;
             for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
-
                 // @formatter:off
                 SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.getToolId(nodeDescription, i++))
                         .label(nodeTool.getName())
-                        .imageURL(NODE_CREATION_TOOL_ICON)
+                        .imageURL(imageURL)
                         .handler(variableManager -> {
                             VariableManager child = variableManager.createChild();
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
@@ -335,7 +354,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 // @formatter:off
                 SingleClickOnDiagramElementTool tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_creationTool")
                         .label("New " + this.getSimpleTypeName(nodeDescription.getDomainType()))
-                        .imageURL(NODE_CREATION_TOOL_ICON)
+                        .imageURL(imageURL)
                         .handler(variableManager ->  {
                             VariableManager child = variableManager.createChild();
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
@@ -348,16 +367,21 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 nodeCreationTools.add(tool);
             }
         }
+        return nodeCreationTools;
+    }
 
+    private List<ITool> getEdgeTools(ViewDiagramDescriptionConverterContext converterContext, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedConvertedNodes) {
         List<ITool> edgeTools = new ArrayList<>();
         for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
+            String imageURL = this.viewToolImageProvider.getImage(edgeDescription);
+
             // Add custom tools
             int i = 0;
             for (EdgeTool edgeTool : edgeDescription.getEdgeTools()) {
                 // @formatter:off
                 SingleClickOnTwoDiagramElementsTool customTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(this.getToolId(edgeDescription, i++))
                         .label(edgeTool.getName())
-                        .imageURL(EDGE_CREATION_TOOL_ICON)
+                        .imageURL(imageURL)
                         .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
@@ -376,7 +400,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 // @formatter:off
                 SingleClickOnTwoDiagramElementsTool tool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(this.idProvider.apply(edgeDescription) + "_creationTool")
                         .label("New " + this.getSimpleTypeName(edgeDescription.getDomainType()))
-                        .imageURL(EDGE_CREATION_TOOL_ICON)
+                        .imageURL(imageURL)
                         .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                                 .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
                                 .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
@@ -391,20 +415,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 edgeTools.add(tool);
             }
         }
-
-        // @formatter:off
-        var nodeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
-                .label(NODE_CREATION_TOOL_SECTION)
-                .tools(nodeCreationTools)
-                .imageURL("")
-                .build();
-        var edgeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
-                .label(EDGE_CREATION_TOOL_SECTION)
-                .tools(edgeTools)
-                .imageURL("")
-                .build();
-        return List.of(nodeCreationToolSection, edgeCreationToolSection);
-        // @formatter:on
+        return edgeTools;
     }
 
     private List<NodeDescription> getAllTargetDescriptions(org.eclipse.sirius.components.view.NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {

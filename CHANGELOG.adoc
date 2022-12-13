@@ -58,6 +58,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1446[#1446] [diagram] Add support for hidden and faded edges
 - https://github.com/eclipse-sirius/sirius-components/issues/1426[#1426] [forms] Add support for optional text completion on textfield widgets. This is enabled in the View DSL properties for domain types and AQL expressions
 - https://github.com/eclipse-sirius/sirius-components/issues/1507[#1507] [diagram] Missing variables during execution of a source reconnection tool from the View description (otherEnd,semanticOtherEnd,edgeView and editingContext)
+- https://github.com/eclipse-sirius/sirius-components/issues/1521[#1521] [view] Canonical creation tools from contextual toolbar have no icons
 
 == v2022.11.0
 
