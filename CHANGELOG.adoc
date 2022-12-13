@@ -13,6 +13,7 @@
 - [ADR-081] Add support for multi-groups in Form/FormDescriptionEditor
 - [ADR-082]Add support for optional text completion on textfield widgets
 - [ADR-083] Add the possibility to hide or fade a diagram element
+- [ADR-084] Improve support for View elements' tools icons
 
 === Breaking changes
 
