@@ -1,0 +1,74 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug All sirius-components-core Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "--config",
+        "${workspaceFolder}/packages/core/frontend/sirius-components-core/vite.config.js",
+        "run",
+        "--dir",
+        "${workspaceFolder}/packages/core/frontend/sirius-components-core/src"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug All sirius-components-forms Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "--config",
+        "${workspaceFolder}/packages/forms/frontend/sirius-components-forms/vite.config.js",
+        "run",
+        "--dir",
+        "${workspaceFolder}/packages/forms/frontend/sirius-components-forms/src"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug All sirius-components-formdescriptioneditors Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "--config",
+        "${workspaceFolder}/packages/formdescriptioneditors/frontend/sirius-components-formdescriptioneditors/vite.config.js",
+        "run",
+        "--dir",
+        "${workspaceFolder}/packages/formdescriptioneditors/frontend/sirius-components-formdescriptioneditors/src"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug All sirius-components-trees Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "--config",
+        "${workspaceFolder}/packages/trees/frontend/sirius-components-trees/vite.config.js",
+        "run",
+        "--dir",
+        "${workspaceFolder}/packages/trees/frontend/sirius-components-trees/src"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    }
+  ]
+}
