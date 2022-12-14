@@ -28,8 +28,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
-import org.eclipse.sirius.components.compatibility.api.IToolImageProviderFactory;
 import org.eclipse.sirius.components.compatibility.services.SelectModelElementVariableProvider;
+import org.eclipse.sirius.components.compatibility.services.diagrams.api.IToolImageProvider;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -112,14 +112,14 @@ public class ToolProvider implements IToolProvider {
 
     private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
-    private final IToolImageProviderFactory toolImageProviderFactory;
+    private final IToolImageProvider toolImageProvider;
 
     public ToolProvider(IIdentifierProvider identifierProvider, IAQLInterpreterFactory interpreterFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
-            IToolImageProviderFactory toolImageProviderFactory) {
+            IToolImageProvider toolImageProvider) {
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
-        this.toolImageProviderFactory = Objects.requireNonNull(toolImageProviderFactory);
+        this.toolImageProvider = Objects.requireNonNull(toolImageProvider);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class ToolProvider implements IToolProvider {
     private SingleClickOnDiagramElementTool convertNodeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
         String id = this.identifierProvider.getIdentifier(nodeCreationTool);
         String label = new IdentifiedElementQuery(nodeCreationTool).getLabel();
-        String imagePath = this.toolImageProviderFactory.getToolImageProvider(nodeCreationTool).get();
+        String imagePath = this.toolImageProvider.getImage(nodeCreationTool);
         List<NodeDescription> targetDescriptions = this.getParentNodeDescriptions(nodeCreationTool.getNodeMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(nodeCreationTool.getVariable());
         String selectionDescriptionId = null;
@@ -264,7 +264,7 @@ public class ToolProvider implements IToolProvider {
             ContainerCreationDescription containerCreationDescription) {
         String id = this.identifierProvider.getIdentifier(containerCreationDescription);
         String label = new IdentifiedElementQuery(containerCreationDescription).getLabel();
-        String imagePath = this.toolImageProviderFactory.getToolImageProvider(containerCreationDescription).get();
+        String imagePath = this.toolImageProvider.getImage(containerCreationDescription);
         List<NodeDescription> targetDescriptions = this.getParentNodeDescriptions(containerCreationDescription.getContainerMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(containerCreationDescription.getVariable());
         String selectionDescriptionId = null;
@@ -287,7 +287,7 @@ public class ToolProvider implements IToolProvider {
             ToolDescription toolDescription) {
         String id = this.identifierProvider.getIdentifier(toolDescription);
         String label = new IdentifiedElementQuery(toolDescription).getLabel();
-        String imagePath = this.toolImageProviderFactory.getToolImageProvider(toolDescription).get();
+        String imagePath = this.toolImageProvider.getImage(toolDescription);
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
@@ -313,7 +313,7 @@ public class ToolProvider implements IToolProvider {
             OperationAction operationAction) {
         String id = this.identifierProvider.getIdentifier(operationAction);
         String label = new IdentifiedElementQuery(operationAction).getLabel();
-        String imagePath = this.toolImageProviderFactory.getToolImageProvider(operationAction).get();
+        String imagePath = this.toolImageProvider.getImage(operationAction);
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
@@ -362,7 +362,7 @@ public class ToolProvider implements IToolProvider {
             EdgeCreationDescription edgeCreationDescription) {
         String id = this.identifierProvider.getIdentifier(edgeCreationDescription);
         String label = new IdentifiedElementQuery(edgeCreationDescription).getLabel();
-        String imagePath = this.toolImageProviderFactory.getToolImageProvider(edgeCreationDescription).get();
+        String imagePath = this.toolImageProvider.getImage(edgeCreationDescription);
         // @formatter:off
         List<SingleClickOnTwoDiagramElementsCandidate> edgeCandidates = new ArrayList<>();
         for (EdgeMapping edgeMapping : edgeCreationDescription.getEdgeMappings()) {
@@ -397,7 +397,7 @@ public class ToolProvider implements IToolProvider {
             DeleteElementDescription deleteElementDescription) {
         String id = this.identifierProvider.getIdentifier(deleteElementDescription);
         String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
-        String imagePath = this.toolImageProviderFactory.getToolImageProvider(deleteElementDescription).get();
+        String imagePath = this.toolImageProvider.getImage(deleteElementDescription);
 
         List<DiagramElementMapping> mappings = deleteElementDescription.getMappings();
 

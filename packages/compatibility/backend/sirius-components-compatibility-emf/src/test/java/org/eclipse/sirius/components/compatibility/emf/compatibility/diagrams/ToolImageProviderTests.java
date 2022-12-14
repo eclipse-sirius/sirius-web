@@ -38,9 +38,9 @@ public class ToolImageProviderTests {
 
         IObjectService objectService = new IObjectService.NoOp();
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
-        ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry, toolDescription);
+        ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry);
 
-        String convertedIconPath = toolImageProvider.get();
+        String convertedIconPath = toolImageProvider.getImage(toolDescription);
         assertThat(convertedIconPath.equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
     }
 
@@ -51,9 +51,9 @@ public class ToolImageProviderTests {
 
         IObjectService objectService = new IObjectService.NoOp();
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
-        ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry, operationAction);
+        ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry);
 
-        String convertedIconPath = toolImageProvider.get();
+        String convertedIconPath = toolImageProvider.getImage(operationAction);
         assertThat(convertedIconPath.equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
     }
 }
