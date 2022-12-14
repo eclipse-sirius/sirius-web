@@ -83,7 +83,6 @@ export interface GQLCompletionProposalsQueryData {
 }
 
 export interface GQLViewer {
-  stuff: string;
   editingContext: GQLEditingContext;
 }
 export interface GQLEditingContext {

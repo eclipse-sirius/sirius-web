@@ -369,7 +369,6 @@ test('should support completion if configured', async () => {
 
   const completionResultData: GQLCompletionProposalsQueryData = {
     viewer: {
-      stuff: 'hello',
       editingContext: {
         representation: {
           description: {
