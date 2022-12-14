@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.compatibility.emf.EPackageService;
+import org.eclipse.sirius.components.compatibility.services.diagrams.api.IToolImageProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
@@ -33,6 +33,7 @@ import org.eclipse.sirius.diagram.description.tool.NodeCreationDescription;
 import org.eclipse.sirius.ecore.extender.business.api.accessor.EcoreMetamodelDescriptor;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
+import org.springframework.stereotype.Service;
 
 /**
  * Class used to compute the image of a tool.
@@ -40,7 +41,8 @@ import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
  * @author pcdavid
  * @author sbegaudeau
  */
-public class ToolImageProvider implements Supplier<String> {
+@Service
+public class ToolImageProvider implements IToolImageProvider {
 
     private static final String ICON_PATH = "iconPath";
 
@@ -52,31 +54,28 @@ public class ToolImageProvider implements Supplier<String> {
 
     private final EPackage.Registry ePackageRegistry;
 
-    private final AbstractToolDescription abstractToolDescription;
-
-    public ToolImageProvider(IObjectService objectService, EPackage.Registry ePackageRegistry, AbstractToolDescription abstractToolDescription) {
+    public ToolImageProvider(IObjectService objectService, EPackage.Registry ePackageRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
-        this.abstractToolDescription = Objects.requireNonNull(abstractToolDescription);
     }
 
     @Override
-    public String get() {
+    public String getImage(AbstractToolDescription abstractToolDescription) {
         // @formatter:off
-        return this.getImagePathFromIconPath()
-                .or(this::getImagePathFromDomainClass)
+        return this.getImagePathFromIconPath(abstractToolDescription)
+                .or(() -> this.getImagePathFromDomainClass(abstractToolDescription))
                 .orElse("");
         // @formatter:on
     }
 
-    private Optional<String> getImagePathFromIconPath() {
-        var optionalIconPathEAttribute = Optional.ofNullable(this.abstractToolDescription.eClass().getEStructuralFeature(ICON_PATH));
+    private Optional<String> getImagePathFromIconPath(AbstractToolDescription abstractToolDescription) {
+        var optionalIconPathEAttribute = Optional.ofNullable(abstractToolDescription.eClass().getEStructuralFeature(ICON_PATH));
 
         if (optionalIconPathEAttribute.isEmpty()) {
-            optionalIconPathEAttribute = Optional.ofNullable(this.abstractToolDescription.eClass().getEStructuralFeature(ICON));
+            optionalIconPathEAttribute = Optional.ofNullable(abstractToolDescription.eClass().getEStructuralFeature(ICON));
         }
         // @formatter:off
-        return optionalIconPathEAttribute.map(this.abstractToolDescription::eGet)
+        return optionalIconPathEAttribute.map(abstractToolDescription::eGet)
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .filter(iconPath -> !iconPath.isBlank())
@@ -97,9 +96,9 @@ public class ToolImageProvider implements Supplier<String> {
         return path;
     }
 
-    private Optional<String> getImagePathFromDomainClass() {
+    private Optional<String> getImagePathFromDomainClass(AbstractToolDescription abstractToolDescription) {
         // @formatter:off
-        var optionalInstance = this.getMappings().stream()
+        var optionalInstance = this.getMappings(abstractToolDescription).stream()
                 .map(this::getDomainClass)
                 .flatMap(Optional::stream)
                 .filter(domainClass -> !domainClass.isBlank())
@@ -110,15 +109,15 @@ public class ToolImageProvider implements Supplier<String> {
         return optionalInstance.map(instance -> this.objectService.getImagePath(optionalInstance.get()));
     }
 
-    private List<DiagramElementMapping> getMappings() {
+    private List<DiagramElementMapping> getMappings(AbstractToolDescription abstractToolDescription) {
         List<DiagramElementMapping> mappings = new ArrayList<>();
 
-        if (this.abstractToolDescription instanceof NodeCreationDescription) {
-            mappings.addAll(((NodeCreationDescription) this.abstractToolDescription).getNodeMappings());
-        } else if (this.abstractToolDescription instanceof ContainerCreationDescription) {
-            mappings.addAll(((ContainerCreationDescription) this.abstractToolDescription).getContainerMappings());
-        } else if (this.abstractToolDescription instanceof EdgeCreationDescription) {
-            mappings.addAll(((EdgeCreationDescription) this.abstractToolDescription).getEdgeMappings());
+        if (abstractToolDescription instanceof NodeCreationDescription) {
+            mappings.addAll(((NodeCreationDescription) abstractToolDescription).getNodeMappings());
+        } else if (abstractToolDescription instanceof ContainerCreationDescription) {
+            mappings.addAll(((ContainerCreationDescription) abstractToolDescription).getContainerMappings());
+        } else if (abstractToolDescription instanceof EdgeCreationDescription) {
+            mappings.addAll(((EdgeCreationDescription) abstractToolDescription).getEdgeMappings());
         }
 
         return mappings;

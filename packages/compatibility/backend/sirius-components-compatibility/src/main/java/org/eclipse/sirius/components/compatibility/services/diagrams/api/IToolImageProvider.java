@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.compatibility.api;
-
-import java.util.function.Supplier;
+package org.eclipse.sirius.components.compatibility.services.diagrams.api;
 
 import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
 
 /**
- * Used to provide a function which will give us the image path for a tool.
+ * Used to compute the image of a tool.
  *
  * @author sbegaudeau
  */
-public interface IToolImageProviderFactory {
-    Supplier<String> getToolImageProvider(AbstractToolDescription abstractToolDescription);
+public interface IToolImageProvider {
+    String getImage(AbstractToolDescription abstractToolDescription);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IToolImageProvider {
+        @Override
+        public String getImage(AbstractToolDescription abstractToolDescription) {
+            return "";
+        }
+    }
 }
