@@ -39,6 +39,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1482[#1482] [core] Allow CustomImageLoader to get images from packaged projects. To import images from local files on startup, set `-Dorg.eclipse.sirius.web.customImages.pattern="file:///local/path/to/folder/with/files/**"`. To import images from a folder inside a packaged JAR, use `-Dorg.eclipse.sirius.web.customImages.pattern="classpath:path/in/jar/**"`. The syntax supports Ant-style path patterns.
+- https://github.com/eclipse-sirius/sirius-components/issues/1517[#1517] [core] Remove the error for strings which are not marked as non-externalized
 
 === New Features
 
