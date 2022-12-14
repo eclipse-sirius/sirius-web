@@ -148,33 +148,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Configure AWS CLI for Sirius Web
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-3
-
-      - name: Login to Amazon Elastic Container Registry
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Build the Docker image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: sirius-web
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG packages/sirius-web/backend/sirius-web-sample-application
-
-      - name: Upload the Docker image to AWS ECR
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: sirius-web
-          IMAGE_TAG: ${{ env.git_describe }}
-        run: |
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker build -t siriusweb packages/sirius-web/backend/sirius-web-sample-application
 
       - name: Run end to end tests against the application
         if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
@@ -199,6 +179,32 @@ jobs:
           name: cypress-screenshots
           path: integration-tests/target/screenshots/**/*.png
           retention-days: 5
+
+      - name: Configure AWS CLI for Sirius Web
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+
+      - name: Login to Amazon Elastic Container Registry
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Tag the Docker image
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: docker tag siriusweb $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Upload the Docker image to AWS ECR
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: sirius-web
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Upload the Docker configuration for AWS Elastic Beanstalk
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
