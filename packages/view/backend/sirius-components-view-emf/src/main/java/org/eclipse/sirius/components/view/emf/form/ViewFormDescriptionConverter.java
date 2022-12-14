@@ -131,7 +131,10 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         String descriptionId = this.getDescriptionId(viewGroupDescription);
 
         return GroupDescription.newGroupDescription(descriptionId)
-                .idProvider(variableManager -> UUID.randomUUID().toString())
+                .idProvider(variableManager -> {
+                    String selfId = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse("");
+                    return UUID.nameUUIDFromBytes((selfId + descriptionId).getBytes()).toString();
+                })
                 .labelProvider(variableManager -> this.computeGroupLabel(viewGroupDescription, variableManager, interpreter))
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewGroupDescription, interpreter))
                 .controlDescriptions(controlDescriptions)
