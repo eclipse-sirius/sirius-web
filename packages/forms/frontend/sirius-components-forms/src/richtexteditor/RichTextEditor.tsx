@@ -22,7 +22,7 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextNode } from 'lexical';
+import { $setSelection, TextNode } from 'lexical';
 import { FocusEvent, useCallback, useEffect } from 'react';
 import { ListPlugin } from './ListPlugin';
 import { OnBlurPluginProps, RichTextEditorProps, UpdateValuePluginProps } from './RichTextEditor.types';
@@ -55,6 +55,7 @@ const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Elemen
   useEffect(() => {
     editor.update(() => {
       $convertFromMarkdownString(markdownText, TRANSFORMERS);
+      $setSelection(null);
     });
   }, [editor, markdownText]);
   return null;
@@ -207,7 +208,6 @@ export const RichTextEditor = ({ value, placeholder, readOnly, onFocus, onBlur }
     onError: console.error,
     theme,
     nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, HorizontalRuleNode, TextNode, CodeNode, LinkNode],
-    editorState: () => $convertFromMarkdownString(value, TRANSFORMERS),
   };
   return (
     <LexicalComposer initialConfig={initialConfig}>
