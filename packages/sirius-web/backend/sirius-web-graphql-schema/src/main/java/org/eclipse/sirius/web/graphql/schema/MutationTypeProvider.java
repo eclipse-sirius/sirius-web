@@ -18,8 +18,8 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class MutationTypeProvider {
-    public static final String TYPE = "Mutation"; //$NON-NLS-1$
+    public static final String TYPE = "Mutation";
 
-    public static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    public static final String INPUT_ARGUMENT = "input";
 
 }

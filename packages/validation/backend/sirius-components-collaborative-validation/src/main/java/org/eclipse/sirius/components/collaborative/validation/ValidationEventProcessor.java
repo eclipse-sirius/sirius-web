@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,7 +89,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
-                .tag(Monitoring.NAME, "validation") //$NON-NLS-1$
+                .tag(Monitoring.NAME, "validation")
                 .register(meterRegistry);
         // @formatter:on
 
@@ -116,7 +116,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
                 IValidationEventHandler validationEventHandler = optionalValidationEventHandler.get();
                 validationEventHandler.handle(payloadSink, changeDescriptionSink, this.validationContext.getValidation(), validationInput);
             } else {
-                this.logger.warn("No handler found for event: {}", validationInput); //$NON-NLS-1$
+                this.logger.warn("No handler found for event: {}", validationInput);
             }
         }
     }
@@ -132,7 +132,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
             if (this.sink.currentSubscriberCount() > 0) {
                 EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().getId(), validation));
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a ValidationRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    String pattern = "An error has occurred while emitting a ValidationRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
                 }
             }
@@ -166,7 +166,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
         ValidationComponentProps validationComponentProps = new ValidationComponentProps(variableManager, this.validationDescription, Optional.ofNullable(this.validationContext.getValidation()));
         Element element = new Element(ValidationComponent.class, validationComponentProps);
         Validation validation = new ValidationRenderer().render(element);
-        this.logger.trace("Validation refreshed: {}", this.editingContext.getId()); //$NON-NLS-1$
+        this.logger.trace("Validation refreshed: {}", this.editingContext.getId());
         return validation;
     }
 
@@ -185,13 +185,13 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the validation event processor {}", this.editingContext.getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the validation event processor {}", this.editingContext.getId());
 
         this.subscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
     }

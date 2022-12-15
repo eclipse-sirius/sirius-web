@@ -28,8 +28,8 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author hmarchadour
  */
 public class StereotypeDescriptionTypeProvider {
-    public static final String TYPE = "StereotypeDescription"; //$NON-NLS-1$
+    public static final String TYPE = "StereotypeDescription";
 
-    public static final String LABEL_FIELD = "label"; //$NON-NLS-1$
+    public static final String LABEL_FIELD = "label";
 
 }

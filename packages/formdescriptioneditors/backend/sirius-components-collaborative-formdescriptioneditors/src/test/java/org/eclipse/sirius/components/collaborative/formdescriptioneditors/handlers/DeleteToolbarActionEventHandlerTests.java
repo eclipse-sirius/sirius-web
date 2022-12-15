@@ -48,7 +48,7 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class DeleteToolbarActionEventHandlerTests {
-    private static final String TOOLBAR_ACTION_ID = "toolbarActionId"; //$NON-NLS-1$
+    private static final String TOOLBAR_ACTION_ID = "toolbarActionId";
 
     @Test
     public void testDeleteToolbarAction() {
@@ -81,7 +81,7 @@ public class DeleteToolbarActionEventHandlerTests {
             }
         };
         var handler = new DeleteToolbarActionEventHandler(objectService, editService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new DeleteToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", TOOLBAR_ACTION_ID); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new DeleteToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", TOOLBAR_ACTION_ID);
 
         assertThat(handler.canHandle(input)).isTrue();
 

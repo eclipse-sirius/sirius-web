@@ -76,7 +76,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectExportService implements IProjectExportService {
 
-    private static final String CURRENT_MANIFEST_VERSION = "1.0"; //$NON-NLS-1$
+    private static final String CURRENT_MANIFEST_VERSION = "1.0";
 
     private final Logger logger = LoggerFactory.getLogger(ProjectExportService.class);
 
@@ -166,13 +166,13 @@ public class ProjectExportService implements IProjectExportService {
             if (optionalBytes.isPresent()) {
                 byte[] bytes = optionalBytes.get();
                 id2DocumentName.put(document.getId().toString(), document.getName());
-                String name = projectName + "/documents/" + document.getId() + "." + JsonResourceFactoryImpl.EXTENSION; //$NON-NLS-1$ //$NON-NLS-2$
+                String name = projectName + "/documents/" + document.getId() + "." + JsonResourceFactoryImpl.EXTENSION;
                 ZipEntry zipEntry = this.createZipEntry(name, bytes.length);
                 zippedOut.putNextEntry(zipEntry);
                 zippedOut.write(bytes);
                 zippedOut.closeEntry();
             } else {
-                this.logger.warn("The serialization of the document {} has failed.", document.getName()); //$NON-NLS-1$
+                this.logger.warn("The serialization of the document {} has failed.", document.getName());
             }
         }
         return id2DocumentName;
@@ -212,7 +212,7 @@ public class ProjectExportService implements IProjectExportService {
             representationManifests.put(representationId.toString(), representationManifest);
 
             byte[] bytes = new ObjectMapper().writeValueAsBytes(representationDescriptor);
-            String name = projectName + "/representations/" + representationId + "." + JsonResourceFactoryImpl.EXTENSION; //$NON-NLS-1$ //$NON-NLS-2$
+            String name = projectName + "/representations/" + representationId + "." + JsonResourceFactoryImpl.EXTENSION;
             ZipEntry zipEntry = this.createZipEntry(name, bytes.length);
             zippedout.putNextEntry(zipEntry);
             zippedout.write(bytes);
@@ -245,7 +245,7 @@ public class ProjectExportService implements IProjectExportService {
             .orElse(descriptionId.toString());
         // @formatter:on
 
-        String uriFragment = ""; //$NON-NLS-1$
+        String uriFragment = "";
         String targetObjectId = representationDescriptor.getTargetObjectId();
         for (Resource resource : resourceSet.getResources()) {
             EObject eObject = resource.getEObject(targetObjectId);
@@ -255,7 +255,7 @@ public class ProjectExportService implements IProjectExportService {
             }
         }
         if (uriFragment.isEmpty()) {
-            this.logger.warn("The serialization of the representationManifest won't be complete."); //$NON-NLS-1$
+            this.logger.warn("The serialization of the representationManifest won't be complete.");
         }
         // @formatter:off
         return RepresentationManifest.newRepresentationManifest()
@@ -332,7 +332,7 @@ public class ProjectExportService implements IProjectExportService {
         // @formatter:on
 
         byte[] manifestContent = this.objectMapper.writeValueAsBytes(projectManifest);
-        ZipEntry zipEntry = new ZipEntry(projectName + "/manifest.json"); //$NON-NLS-1$
+        ZipEntry zipEntry = new ZipEntry(projectName + "/manifest.json");
         zippedout.putNextEntry(zipEntry);
         zippedout.write(manifestContent);
         zippedout.closeEntry();

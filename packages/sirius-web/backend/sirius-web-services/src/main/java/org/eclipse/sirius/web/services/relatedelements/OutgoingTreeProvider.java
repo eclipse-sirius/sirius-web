@@ -48,15 +48,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author pcdavid
  */
 public class OutgoingTreeProvider {
-    private static final String WIDGET_ID = "related/outgoing"; //$NON-NLS-1$
+    private static final String WIDGET_ID = "related/outgoing";
 
-    private static final String TITLE = "Outgoing"; //$NON-NLS-1$
+    private static final String TITLE = "Outgoing";
 
-    private static final String WIDGET_ICON_URL = "/images/east_black_24dp.svg"; //$NON-NLS-1$
+    private static final String WIDGET_ICON_URL = "/images/east_black_24dp.svg";
 
-    private static final String OUTGOING_REFERENCE_ICON_URL = "/images/east_black_24dp.svg"; //$NON-NLS-1$
+    private static final String OUTGOING_REFERENCE_ICON_URL = "/images/east_black_24dp.svg";
 
-    private static final String OUTGOING_REFERENCE_KIND = "siriusWeb://category/outgoing-references"; //$NON-NLS-1$
+    private static final String OUTGOING_REFERENCE_KIND = "siriusWeb://category/outgoing-references";
 
     private final IObjectService objectService;
 
@@ -135,7 +135,7 @@ public class OutgoingTreeProvider {
         String result = null;
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof EReference) {
-            result = "reference/" + ((EReference) self).getName(); //$NON-NLS-1$
+            result = "reference/" + ((EReference) self).getName();
         } else if (self != null) {
             result = this.objectService.getId(self);
         }

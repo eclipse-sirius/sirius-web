@@ -48,13 +48,13 @@ import reactor.core.publisher.Sinks.One;
  */
 public class ChangeVisibilityEventHandlerTests {
 
-    private static final String NODE_ID = "nodeId"; //$NON-NLS-1$
+    private static final String NODE_ID = "nodeId";
 
-    private static final String EDGE_ID = "edgeId"; //$NON-NLS-1$
+    private static final String EDGE_ID = "edgeId";
 
-    private static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
+    private static final String EDITING_CONTEXT_ID = "editingContextId";
 
-    private static final String REPRESENTATION_ID = "representationId"; //$NON-NLS-1$
+    private static final String REPRESENTATION_ID = "representationId";
 
     private final IDiagramQueryService diagramQueryService = new IDiagramQueryService.NoOp() {
         @Override

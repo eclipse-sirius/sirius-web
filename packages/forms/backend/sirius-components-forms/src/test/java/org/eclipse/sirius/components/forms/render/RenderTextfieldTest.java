@@ -51,8 +51,8 @@ public class RenderTextfieldTest {
     public void setup() {
         // @formatter:off
         this.style = TextfieldStyle.newTextfieldStyle()
-                .foregroundColor("black") //$NON-NLS-1$
-                .backgroundColor("white") //$NON-NLS-1$
+                .foregroundColor("black")
+                .backgroundColor("white")
                 .fontSize(12)
                 .italic(false)
                 .bold(false)
@@ -66,12 +66,12 @@ public class RenderTextfieldTest {
     @Test
     public void testRenderTextfieldWithoutProposalProvider() {
         // @formatter:off
-        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription("textfieldDescriptionId") //$NON-NLS-1$
-                .idProvider(this.constantProvider("testfieldId")) //$NON-NLS-1$
-                .labelProvider(this.constantProvider("label")) //$NON-NLS-1$
-                .valueProvider(this.constantProvider("value")) //$NON-NLS-1$
-                .newValueHandler((v, s) -> new Success()).diagnosticsProvider(variableManager -> List.of()).kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription("textfieldDescriptionId")
+                .idProvider(this.constantProvider("testfieldId"))
+                .labelProvider(this.constantProvider("label"))
+                .valueProvider(this.constantProvider("value"))
+                .newValueHandler((v, s) -> new Success()).diagnosticsProvider(variableManager -> List.of()).kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(this.constantProvider(this.style)).build();
 
         // @formatter:on
@@ -91,16 +91,16 @@ public class RenderTextfieldTest {
 
     @Test
     public void testRenderTextfieldWithProposalProvider() {
-        List<CompletionProposal> proposals = List.of(new CompletionProposal("Proposal", "textToInsert", 0)); //$NON-NLS-1$ //$NON-NLS-2$
+        List<CompletionProposal> proposals = List.of(new CompletionProposal("Proposal", "textToInsert", 0));
 
         // @formatter:off
-        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription("textfieldDescriptionId") //$NON-NLS-1$
-                .idProvider(this.constantProvider("testfieldId")) //$NON-NLS-1$
-                .labelProvider(this.constantProvider("label")) //$NON-NLS-1$
-                .valueProvider(this.constantProvider("value")) //$NON-NLS-1$
+        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription("textfieldDescriptionId")
+                .idProvider(this.constantProvider("testfieldId"))
+                .labelProvider(this.constantProvider("label"))
+                .valueProvider(this.constantProvider("value"))
                 .completionProposalsProvider(this.constantProvider(proposals))
-                .newValueHandler((v, s) -> new Success()).diagnosticsProvider(variableManager -> List.of()).kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .newValueHandler((v, s) -> new Success()).diagnosticsProvider(variableManager -> List.of()).kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(this.constantProvider(this.style)).build();
         // @formatter:on
 
@@ -115,7 +115,7 @@ public class RenderTextfieldTest {
         Textfield renderedTextField = (Textfield) form.getPages().get(0).getGroups().get(0).getWidgets().get(0);
         assertThat(renderedTextField.getCompletionProposalsProvider()).isNotNull();
         assertThat(renderedTextField.isSupportsCompletion()).isTrue();
-        assertThat(renderedTextField.getCompletionProposalsProvider().apply(new CompletionRequest("", 0))).isEqualTo(proposals); //$NON-NLS-1$
+        assertThat(renderedTextField.getCompletionProposalsProvider().apply(new CompletionRequest("", 0))).isEqualTo(proposals);
     }
 
     private Form renderForm(FormDescription formDescription) {
@@ -128,29 +128,29 @@ public class RenderTextfieldTest {
 
     private FormDescription createSingleWidgetForm(TextfieldDescription textDescription) {
         // @formatter:off
-        GroupDescription groupDescription = GroupDescription.newGroupDescription("groupDescriptionId") //$NON-NLS-1$
-                .idProvider(this.constantProvider("groupId")) //$NON-NLS-1$
-                .labelProvider(this.constantProvider("groupLabel")) //$NON-NLS-1$
+        GroupDescription groupDescription = GroupDescription.newGroupDescription("groupDescriptionId")
+                .idProvider(this.constantProvider("groupId"))
+                .labelProvider(this.constantProvider("groupLabel"))
                 .displayModeProvider(this.constantProvider(GroupDisplayMode.LIST))
                 .toolbarActionDescriptions(List.of())
                 .controlDescriptions(List.of(textDescription))
                 .semanticElementsProvider(this.constantProvider(List.of(this.self)))
                 .build();
-        PageDescription pageDescription = PageDescription.newPageDescription("pageDescriptionId") //$NON-NLS-1$
-                .idProvider(this.constantProvider("pageId")) //$NON-NLS-1$
-                .labelProvider(this.constantProvider("pageLabel")) //$NON-NLS-1$
+        PageDescription pageDescription = PageDescription.newPageDescription("pageDescriptionId")
+                .idProvider(this.constantProvider("pageId"))
+                .labelProvider(this.constantProvider("pageLabel"))
                 .canCreatePredicate(variableManager -> true)
                 .groupDescriptions(List.of(groupDescription))
                 .semanticElementsProvider(this.constantProvider(List.of(this.self)))
                 .build();
-        FormDescription formDescription = FormDescription.newFormDescription("formDescriptionId") //$NON-NLS-1$
-                .label("formDescriptionLabel") //$NON-NLS-1$
-                .idProvider(this.constantProvider("formId")) //$NON-NLS-1$
-                .labelProvider(this.constantProvider("formLabel")) //$NON-NLS-1$
+        FormDescription formDescription = FormDescription.newFormDescription("formDescriptionId")
+                .label("formDescriptionLabel")
+                .idProvider(this.constantProvider("formId"))
+                .labelProvider(this.constantProvider("formLabel"))
                 .canCreatePredicate(variableManager -> true)
                 .groupDescriptions(List.of(groupDescription))
                 .pageDescriptions(List.of(pageDescription))
-                .targetObjectIdProvider(this.constantProvider("selfId")) //$NON-NLS-1$
+                .targetObjectIdProvider(this.constantProvider("selfId"))
                 .build();
         return formDescription;
         // @formatter:on

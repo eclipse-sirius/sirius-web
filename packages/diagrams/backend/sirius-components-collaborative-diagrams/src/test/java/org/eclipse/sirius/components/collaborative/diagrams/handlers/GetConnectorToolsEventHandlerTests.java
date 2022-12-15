@@ -68,40 +68,40 @@ public class GetConnectorToolsEventHandlerTests {
 
     private static final UUID DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
 
-    private static final String DIAGRAM_LABEL = "DiagramLabel"; //$NON-NLS-1$
+    private static final String DIAGRAM_LABEL = "DiagramLabel";
 
-    private static final String TOOLSECTION_ID = "ToolSection"; //$NON-NLS-1$
+    private static final String TOOLSECTION_ID = "ToolSection";
 
-    private static final String CONNECTOR_TOOL_ID = "ConnectorTool"; //$NON-NLS-1$
+    private static final String CONNECTOR_TOOL_ID = "ConnectorTool";
 
-    private static final String NOT_CONNECTOR_TOOL_ID = "NotConnectorTool"; //$NON-NLS-1$
+    private static final String NOT_CONNECTOR_TOOL_ID = "NotConnectorTool";
 
-    private static final String TOOLSECTION_LABEL = "ToolSectionLabel"; //$NON-NLS-1$
+    private static final String TOOLSECTION_LABEL = "ToolSectionLabel";
 
-    private static final String CONNECTOR_TOOL_LABEL = "ConnectorToolLabel"; //$NON-NLS-1$
+    private static final String CONNECTOR_TOOL_LABEL = "ConnectorToolLabel";
 
-    private static final String NOT_CONNECTOR_TOOL_LABEL = "NotConnectorToolLabel"; //$NON-NLS-1$
+    private static final String NOT_CONNECTOR_TOOL_LABEL = "NotConnectorToolLabel";
 
-    private static final String DIAGRAM_ID = "diagramId"; //$NON-NLS-1$
+    private static final String DIAGRAM_ID = "diagramId";
 
-    private static final String SOURCE_NODE_ID = "sourceNodeId"; //$NON-NLS-1$
+    private static final String SOURCE_NODE_ID = "sourceNodeId";
 
-    private static final String TARGET_NODE_ID = "targetNodeId"; //$NON-NLS-1$
+    private static final String TARGET_NODE_ID = "targetNodeId";
 
-    private static final String SOURCE_NODE_TARGET_ID = "sourceNodeTargetId"; //$NON-NLS-1$
+    private static final String SOURCE_NODE_TARGET_ID = "sourceNodeTargetId";
 
-    private static final String TARGET_NODE_TARGET_ID = "targetNodeTargetId"; //$NON-NLS-1$
+    private static final String TARGET_NODE_TARGET_ID = "targetNodeTargetId";
 
     private Node getNode(String id, String targetObjectId) {
         // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
-                .color("#000000") //$NON-NLS-1$
+                .color("#000000")
                 .fontSize(16)
-                .iconURL("") //$NON-NLS-1$
+                .iconURL("")
                 .build();
         Label label = Label.newLabel(UUID.randomUUID().toString())
-                .type("labelType") //$NON-NLS-1$
-                .text("text") //$NON-NLS-1$
+                .type("labelType")
+                .text("text")
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)
@@ -111,8 +111,8 @@ public class GetConnectorToolsEventHandlerTests {
         return Node.newNode(id)
                 .type(NodeType.NODE_RECTANGLE)
                 .targetObjectId(targetObjectId)
-                .targetObjectKind("") //$NON-NLS-1$
-                .targetObjectLabel("") //$NON-NLS-1$
+                .targetObjectKind("")
+                .targetObjectLabel("")
                 .descriptionId(NODE_DESCRIPTION_ID)
                 .label(label)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
@@ -141,32 +141,32 @@ public class GetConnectorToolsEventHandlerTests {
                 .candidates(List.of(candidates))
                 .handler(variableManager -> new Success())
                 .label(CONNECTOR_TOOL_LABEL)
-                .imageURL("") //$NON-NLS-1$
+                .imageURL("")
                 .build();
 
         SingleClickOnTwoDiagramElementsTool notConnectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(NOT_CONNECTOR_TOOL_ID)
                 .candidates(List.of(candidates))
                 .handler(variableManager -> new Success())
                 .label(NOT_CONNECTOR_TOOL_LABEL)
-                .imageURL("") //$NON-NLS-1$
+                .imageURL("")
                 .build();
 
         ToolSection toolSection = ToolSection.newToolSection(TOOLSECTION_ID)
                 .label(TOOLSECTION_LABEL)
                 .tools(List.of(connectorTool, notConnectorTool))
-                .imageURL("") //$NON-NLS-1$
+                .imageURL("")
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID.toString())
-                .label("") //$NON-NLS-1$
+                .label("")
                 .canCreatePredicate(variableManager -> true)
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of(toolSection))
                 .tools(List.of())
-                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .dropHandler(variableManager -> new Failure(""))
                 .build();
         //@formatter:on
 
@@ -230,7 +230,7 @@ public class GetConnectorToolsEventHandlerTests {
         return Diagram.newDiagram(id)
                 .label(DIAGRAM_LABEL)
                 .descriptionId(DIAGRAM_DESCRIPTION_ID.toString())
-                .targetObjectId("diagramTargetObjectId") //$NON-NLS-1$
+                .targetObjectId("diagramTargetObjectId")
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .nodes(nodes)

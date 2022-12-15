@@ -25,24 +25,24 @@ import org.eclipse.sirius.components.forms.Group;
  */
 public class TestFormDescriptionEditorBuilder {
 
-    public static final String IMAGE_PNG = "/image.png"; //$NON-NLS-1$
+    public static final String IMAGE_PNG = "/image.png";
 
     public static final String TOOL_IMAGE_URL = IMAGE_PNG;
 
-    public static final String TOOL_LABEL = "toolLabel"; //$NON-NLS-1$
+    public static final String TOOL_LABEL = "toolLabel";
 
     public FormDescriptionEditor getFormDescriptionEditor(String id) {
         // @formatter:off
         Group group = Group.newGroup(UUID.randomUUID().toString())
-            .label("group1") //$NON-NLS-1$
+            .label("group1")
             .widgets(List.of())
             .toolbarActions(List.of())
             .build();
 
         return FormDescriptionEditor.newFormDescriptionEditor(id)
-                .label("formDescriptionEditorLabel") //$NON-NLS-1$
+                .label("formDescriptionEditorLabel")
                 .descriptionId(UUID.randomUUID().toString())
-                .targetObjectId("formDescriptionEditorTargetObjectId") //$NON-NLS-1$
+                .targetObjectId("formDescriptionEditorTargetObjectId")
                 .groups(List.of(group))
                 .build();
         // @formatter:on

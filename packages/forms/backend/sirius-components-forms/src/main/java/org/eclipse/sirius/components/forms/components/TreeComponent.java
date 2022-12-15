@@ -32,11 +32,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TreeComponent implements IComponent {
 
-    public static final String ROOT_VARIABLE = "root"; //$NON-NLS-1$
+    public static final String ROOT_VARIABLE = "root";
 
-    public static final String ANCESTORS_VARIABLE = "ancestors"; //$NON-NLS-1$
+    public static final String ANCESTORS_VARIABLE = "ancestors";
 
-    public static final String NODES_VARIABLE = "nodes"; //$NON-NLS-1$
+    public static final String NODES_VARIABLE = "nodes";
 
     private final TreeComponentProps props;
 

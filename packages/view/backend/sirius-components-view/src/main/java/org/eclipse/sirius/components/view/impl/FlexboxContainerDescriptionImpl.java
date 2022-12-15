@@ -223,7 +223,7 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (flexDirection: "); //$NON-NLS-1$
+        result.append(" (flexDirection: ");
         result.append(this.flexDirection);
         result.append(')');
         return result.toString();

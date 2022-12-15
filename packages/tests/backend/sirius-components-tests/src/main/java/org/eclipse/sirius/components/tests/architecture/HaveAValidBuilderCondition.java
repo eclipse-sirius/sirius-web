@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,21 +36,21 @@ import java.util.stream.Collectors;
  */
 public class HaveAValidBuilderCondition extends ArchCondition<JavaClass> {
 
-    private static final String BUILD_METHOD_NAME = "build"; //$NON-NLS-1$
+    private static final String BUILD_METHOD_NAME = "build";
 
-    private static final String LAMBDA = "lambda$"; //$NON-NLS-1$
+    private static final String LAMBDA = "lambda$";
 
     private final JavaClasses javaClasses;
 
     public HaveAValidBuilderCondition(JavaClasses javaClasses) {
-        super("have a builder"); //$NON-NLS-1$
+        super("have a builder");
         this.javaClasses = Objects.requireNonNull(javaClasses);
     }
 
     @Override
     public void check(JavaClass javaClass, ConditionEvents events) {
         String fullName = javaClass.getFullName();
-        JavaClass builderJavaClass = this.javaClasses.get(fullName + "$Builder"); //$NON-NLS-1$
+        JavaClass builderJavaClass = this.javaClasses.get(fullName + "$Builder");
 
         boolean isValidBuilder = builderJavaClass.getModifiers().contains(FINAL);
         isValidBuilder = isValidBuilder && builderJavaClass.getModifiers().contains(PUBLIC);
@@ -85,9 +85,9 @@ public class HaveAValidBuilderCondition extends ArchCondition<JavaClass> {
 
         isValidBuilder = isValidBuilder && buildMethodCount == 1;
 
-        String message = "The builder is valid"; //$NON-NLS-1$
+        String message = "The builder is valid";
         if (!isValidBuilder) {
-            message = MessageFormat.format("The builder of the class {0} is not valid", javaClass.getSimpleName()); //$NON-NLS-1$
+            message = MessageFormat.format("The builder of the class {0} is not valid", javaClass.getSimpleName());
         }
         events.add(new SimpleConditionEvent(builderJavaClass, isValidBuilder, message));
     }

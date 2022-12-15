@@ -51,13 +51,13 @@ import org.eclipse.sirius.components.view.ViewPackage;
  */
 public class DiagramDescriptionValidator implements EValidator {
 
-    public static final String DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The diagram description \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
+    public static final String DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The diagram description \"%1$s\" does not have a valid domain class";
 
-    public static final String DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The element description \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
+    public static final String DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The element description \"%1$s\" does not have a valid domain class";
 
-    public static final String CREATE_INSTANCE_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The create instance operation \"%1$s\" does not have a valid domain class"; //$NON-NLS-1$
+    public static final String CREATE_INSTANCE_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The create instance operation \"%1$s\" does not have a valid domain class";
 
-    public static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf"; //$NON-NLS-1$
+    public static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf";
 
     @Override
     public boolean validate(EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -107,7 +107,7 @@ public class DiagramDescriptionValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    "The condition should not be empty", //$NON-NLS-1$
+                    "The condition should not be empty",
                     new Object [] {
                             conditional,
                             ViewPackage.Literals.CONDITIONAL__CONDITION,
@@ -128,7 +128,7 @@ public class DiagramDescriptionValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    "The style should not be empty", //$NON-NLS-1$
+                    "The style should not be empty",
                     new Object [] {
                             conditionalNodeStyle,
                             ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
@@ -149,7 +149,7 @@ public class DiagramDescriptionValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    "The color should not be empty", //$NON-NLS-1$
+                    "The color should not be empty",
                     new Object [] {
                             nodeStyle,
                             ViewPackage.Literals.STYLE__COLOR,
@@ -168,7 +168,7 @@ public class DiagramDescriptionValidator implements EValidator {
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        String domainType = Optional.ofNullable(diagramDescription.getDomainType()).orElse(""); //$NON-NLS-1$
+        String domainType = Optional.ofNullable(diagramDescription.getDomainType()).orElse("");
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
@@ -206,7 +206,7 @@ public class DiagramDescriptionValidator implements EValidator {
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        String domainType = Optional.ofNullable(diagramElementDescription.getDomainType()).orElse(""); //$NON-NLS-1$
+        String domainType = Optional.ofNullable(diagramElementDescription.getDomainType()).orElse("");
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
@@ -244,7 +244,7 @@ public class DiagramDescriptionValidator implements EValidator {
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        String domainType = Optional.ofNullable(createInstance.getTypeName()).orElse(""); //$NON-NLS-1$
+        String domainType = Optional.ofNullable(createInstance.getTypeName()).orElse("");
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
@@ -282,7 +282,7 @@ public class DiagramDescriptionValidator implements EValidator {
             result = true;
         } else if (entity.eContainer() instanceof Domain) {
             String domainName = ((Domain) entity.eContainer()).getName();
-            result = Objects.equals(domainType, domainName + "::" + entity.getName()); //$NON-NLS-1$
+            result = Objects.equals(domainType, domainName + "::" + entity.getName());
         }
         return result;
     }

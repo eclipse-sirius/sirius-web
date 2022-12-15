@@ -42,7 +42,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PropertiesEventProcessorFactory implements IRepresentationEventProcessorFactory {
-    public static final String DETAILS_VIEW_ID = UUID.nameUUIDFromBytes("details-view".getBytes()).toString(); //$NON-NLS-1$
+    public static final String DETAILS_VIEW_ID = UUID.nameUUIDFromBytes("details-view".getBytes()).toString();
 
     private final IPropertiesDescriptionService propertiesDescriptionService;
 

@@ -45,7 +45,7 @@ import reactor.core.publisher.Flux;
 @SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionEditingContextEventDataFetcher.EDITING_CONTEXT_EVENT_FIELD)
 public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
 
-    public static final String EDITING_CONTEXT_EVENT_FIELD = "editingContextEvent"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_EVENT_FIELD = "editingContextEvent";
 
     private final ObjectMapper objectMapper;
 

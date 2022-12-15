@@ -82,7 +82,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     public FormEventProcessor(IEditingContext editingContext, FormCreationParameters formCreationParameters, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
             IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.logger.trace("Creating the form event processor {}", formCreationParameters.getId()); //$NON-NLS-1$
+        this.logger.trace("Creating the form event processor {}", formCreationParameters.getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.formCreationParameters = Objects.requireNonNull(formCreationParameters);
@@ -130,7 +130,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                     IFormEventHandler formEventHandler = optionalFormEventHandler.get();
                     formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentForm.get(), formInput);
                 } else {
-                    this.logger.warn("No handler found for event: {}", formInput); //$NON-NLS-1$
+                    this.logger.warn("No handler found for event: {}", formInput);
                 }
             }
         }
@@ -146,7 +146,7 @@ public class FormEventProcessor implements IFormEventProcessor {
             if (this.sink.currentSubscriberCount() > 0) {
                 EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().getId(), form));
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
                 }
             }
@@ -176,7 +176,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         Element element = new Element(FormComponent.class, formComponentProps);
         Form form = new FormRenderer().render(element);
 
-        this.logger.trace("Form refreshed: {}", form.getId()); //$NON-NLS-1$
+        this.logger.trace("Form refreshed: {}", form.getId());
 
         return form;
     }
@@ -197,14 +197,14 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the form event processor {}", this.formCreationParameters.getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the form event processor {}", this.formCreationParameters.getId());
 
         this.subscriptionManager.dispose();
         this.widgetSubscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
     }

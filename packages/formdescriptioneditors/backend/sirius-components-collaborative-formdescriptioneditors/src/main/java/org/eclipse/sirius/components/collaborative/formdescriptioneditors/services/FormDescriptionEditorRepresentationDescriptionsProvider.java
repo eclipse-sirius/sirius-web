@@ -31,7 +31,7 @@ public class FormDescriptionEditorRepresentationDescriptionsProvider implements 
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
-        return representationDescription.getId().equals(UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()).toString()); //$NON-NLS-1$
+        return representationDescription.getId().equals(UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()).toString());
     }
 
     @Override

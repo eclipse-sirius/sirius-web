@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,6 @@ public class ColorDescriptionConverterTests {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         ColorDescriptionConverter colorProvider = new ColorDescriptionConverter(interpreter, Collections.emptyMap());
         String color = colorProvider.convert(fixedColor);
-        assertThat(color).isEqualTo("#0f0110"); //$NON-NLS-1$
+        assertThat(color).isEqualTo("#0f0110");
     }
 }

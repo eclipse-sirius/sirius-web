@@ -50,7 +50,7 @@ import reactor.core.publisher.Mono;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteDocumentDataFetcher.DELETE_DOCUMENT_FIELD)
 public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_DOCUMENT_FIELD = "deleteDocument"; //$NON-NLS-1$
+    public static final String DELETE_DOCUMENT_FIELD = "deleteDocument";
 
     private final ObjectMapper objectMapper;
 

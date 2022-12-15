@@ -19,7 +19,7 @@ package org.eclipse.sirius.components.diagrams;
  */
 public final class ListLayoutStrategy implements ILayoutStrategy {
 
-    public static final String KIND = "List"; //$NON-NLS-1$
+    public static final String KIND = "List";
 
     @Override
     public String getKind() {

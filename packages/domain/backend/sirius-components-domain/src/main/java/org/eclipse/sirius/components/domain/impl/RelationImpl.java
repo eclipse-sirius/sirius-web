@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -226,7 +226,7 @@ public class RelationImpl extends FeatureImpl implements Relation {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (containment: "); //$NON-NLS-1$
+        result.append(" (containment: ");
         result.append(this.containment);
         result.append(')');
         return result.toString();

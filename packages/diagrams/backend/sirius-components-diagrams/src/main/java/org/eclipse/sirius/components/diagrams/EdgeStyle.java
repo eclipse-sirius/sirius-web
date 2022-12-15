@@ -64,7 +64,7 @@ public final class EdgeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'size: {1}, lineStyle: {2}, sourceArrow: {3}, targetArrow: {4}, color: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'size: {1}, lineStyle: {2}, sourceArrow: {3}, targetArrow: {4}, color: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.size, this.lineStyle, this.sourceArrow, this.targetArrow, this.color);
     }
 

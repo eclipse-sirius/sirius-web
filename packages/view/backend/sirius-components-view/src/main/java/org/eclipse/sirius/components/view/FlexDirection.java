@@ -34,7 +34,7 @@ public enum FlexDirection implements Enumerator {
      * @generated
      * @ordered
      */
-    ROW(0, "row", "row"), //$NON-NLS-1$ //$NON-NLS-2$
+    ROW(0, "row", "row"),
 
     /**
      * The '<em><b>Row Reverse</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +43,7 @@ public enum FlexDirection implements Enumerator {
      * @generated
      * @ordered
      */
-    ROW_REVERSE(1, "rowReverse", "row-reverse"), //$NON-NLS-1$ //$NON-NLS-2$
+    ROW_REVERSE(1, "rowReverse", "row-reverse"),
 
     /**
      * The '<em><b>Column</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -52,7 +52,7 @@ public enum FlexDirection implements Enumerator {
      * @generated
      * @ordered
      */
-    COLUMN(2, "column", "column"), //$NON-NLS-1$ //$NON-NLS-2$
+    COLUMN(2, "column", "column"),
 
     /**
      * The '<em><b>Column Reverse</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -61,7 +61,7 @@ public enum FlexDirection implements Enumerator {
      * @generated
      * @ordered
      */
-    COLUMN_REVERSE(3, "columnReverse", "column-reverse"); //$NON-NLS-1$ //$NON-NLS-2$
+    COLUMN_REVERSE(3, "columnReverse", "column-reverse");
 
     /**
      * The '<em><b>Row</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

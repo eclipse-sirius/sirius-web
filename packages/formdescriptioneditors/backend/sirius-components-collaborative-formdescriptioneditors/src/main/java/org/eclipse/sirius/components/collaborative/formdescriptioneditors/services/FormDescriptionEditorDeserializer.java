@@ -39,7 +39,7 @@ public class FormDescriptionEditorDeserializer implements IRepresentationDeseria
     @Override
     public boolean canHandle(ObjectNode root) {
         // @formatter:off
-        return Optional.ofNullable(root.get("kind")) //$NON-NLS-1$
+        return Optional.ofNullable(root.get("kind"))
                 .map(JsonNode::asText)
                 .filter(FormDescriptionEditor.KIND::equals)
                 .isPresent();

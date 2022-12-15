@@ -113,7 +113,7 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
         }
 
         if (optionalModelOperationHandler.isEmpty()) {
-            String pattern = "The model operation {} is not currently supported"; //$NON-NLS-1$
+            String pattern = "The model operation {} is not currently supported";
             this.logger.warn(pattern, modelOperation.getClass().getSimpleName());
         }
 

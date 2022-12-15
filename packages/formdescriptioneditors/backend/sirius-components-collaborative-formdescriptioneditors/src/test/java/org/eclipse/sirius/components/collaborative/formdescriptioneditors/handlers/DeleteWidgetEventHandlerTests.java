@@ -49,7 +49,7 @@ public class DeleteWidgetEventHandlerTests {
                 return true;
             }
         };
-        var input = new DeleteWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "widgetId"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        var input = new DeleteWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "widgetId");
 
         assertThat(handler.canHandle(input)).isTrue();
 

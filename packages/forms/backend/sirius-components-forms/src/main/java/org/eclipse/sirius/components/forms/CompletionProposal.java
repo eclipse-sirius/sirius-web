@@ -47,7 +47,7 @@ public final class CompletionProposal {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'description: {1}, textToInsert: {2}, charsToReplace: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'description: {1}, textToInsert: {2}, charsToReplace: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.description, this.textToInsert, this.charsToReplace);
     }
 

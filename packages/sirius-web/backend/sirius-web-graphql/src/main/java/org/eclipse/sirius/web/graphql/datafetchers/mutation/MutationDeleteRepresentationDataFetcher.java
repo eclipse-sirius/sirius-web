@@ -51,7 +51,7 @@ import reactor.core.publisher.Mono;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteRepresentationDataFetcher.DELETE_REPRESENTATION_FIELD)
 public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_REPRESENTATION_FIELD = "deleteRepresentation"; //$NON-NLS-1$
+    public static final String DELETE_REPRESENTATION_FIELD = "deleteRepresentation";
 
     private final ObjectMapper objectMapper;
 

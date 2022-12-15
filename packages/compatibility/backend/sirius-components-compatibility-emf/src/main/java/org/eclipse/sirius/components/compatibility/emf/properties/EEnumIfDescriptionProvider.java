@@ -48,9 +48,9 @@ import org.slf4j.LoggerFactory;
  */
 public class EEnumIfDescriptionProvider {
 
-    private static final String IF_DESCRIPTION_ID = "EEnum"; //$NON-NLS-1$
+    private static final String IF_DESCRIPTION_ID = "EEnum";
 
-    private static final String RADIO_DESCRIPTION_ID = "Radio"; //$NON-NLS-1$
+    private static final String RADIO_DESCRIPTION_ID = "Radio";
 
     private final Logger logger = LoggerFactory.getLogger(EEnumIfDescriptionProvider.class);
 
@@ -127,7 +127,7 @@ public class EEnumIfDescriptionProvider {
             if (litteral instanceof Enumerator) {
                 return Integer.valueOf(((Enumerator) litteral).getValue()).toString();
             }
-            return ""; //$NON-NLS-1$
+            return "";
         };
     }
 
@@ -137,7 +137,7 @@ public class EEnumIfDescriptionProvider {
             if (litteral instanceof Enumerator) {
                 return ((Enumerator) litteral).getLiteral();
             }
-            return ""; //$NON-NLS-1$
+            return "";
         };
     }
 
@@ -187,7 +187,7 @@ public class EEnumIfDescriptionProvider {
                 }
             } catch (NumberFormatException exception) {
                 this.logger.warn(exception.getMessage(), exception);
-                return new Failure(""); //$NON-NLS-1$
+                return new Failure("");
             }
             return new Success();
         };

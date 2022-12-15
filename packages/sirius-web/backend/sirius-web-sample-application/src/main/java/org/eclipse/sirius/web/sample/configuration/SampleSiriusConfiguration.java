@@ -29,12 +29,12 @@ public class SampleSiriusConfiguration implements ISiriusConfiguration {
 
     @Override
     public List<String> getODesignPaths() {
-        return List.of("description/flow.odesign"); //$NON-NLS-1$
+        return List.of("description/flow.odesign");
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public ISiriusConfiguration domainModelerDefinition() {
-        return () -> List.of("description/domain.odesign"); //$NON-NLS-1$
+        return () -> List.of("description/domain.odesign");
     }
 }

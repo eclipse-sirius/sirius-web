@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,9 +50,9 @@ public class PageDescriptionConverter {
             Map<org.eclipse.sirius.properties.GroupDescription, GroupDescription> siriusGroup2SiriusWebGroup) {
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, siriusPageDescription.getLabelExpression());
 
-        String domainClass = Optional.ofNullable(siriusPageDescription.getDomainClass()).orElse(""); //$NON-NLS-1$
-        String semanticCandidatesExpression = Optional.ofNullable(siriusPageDescription.getSemanticCandidateExpression()).orElse(""); //$NON-NLS-1$
-        String preconditionExpression = Optional.ofNullable(siriusPageDescription.getPreconditionExpression()).orElse(""); //$NON-NLS-1$
+        String domainClass = Optional.ofNullable(siriusPageDescription.getDomainClass()).orElse("");
+        String semanticCandidatesExpression = Optional.ofNullable(siriusPageDescription.getSemanticCandidateExpression()).orElse("");
+        String preconditionExpression = Optional.ofNullable(siriusPageDescription.getPreconditionExpression()).orElse("");
         var semanticCandidatesProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
 
         Predicate<VariableManager> canCreatePredicate = (variableManager) -> {

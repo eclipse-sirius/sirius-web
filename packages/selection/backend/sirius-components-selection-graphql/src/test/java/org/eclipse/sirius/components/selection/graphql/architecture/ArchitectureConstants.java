@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
  * @author gcoutable
  */
 public final class ArchitectureConstants {
-    public static final String SIRIUS_COMPONENTS_SELECTION_GRAPHQL_ROOT_PACKAGE = "org.eclipse.sirius.components.selection.graphql.."; //$NON-NLS-1$
+    public static final String SIRIUS_COMPONENTS_SELECTION_GRAPHQL_ROOT_PACKAGE = "org.eclipse.sirius.components.selection.graphql..";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()

@@ -133,8 +133,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -145,7 +145,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(viewCheckboxDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewCheckboxDescription.getLabelExpression());
-        String valueExpression = Optional.ofNullable(viewCheckboxDescription.getValueExpression()).orElse(""); //$NON-NLS-1$
+        String valueExpression = Optional.ofNullable(viewCheckboxDescription.getValueExpression()).orElse("");
         BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewCheckboxDescription.getBody());
         Function<VariableManager, CheckboxStyle> styleProvider = variableManager -> {
@@ -169,8 +169,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -211,8 +211,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .optionsProvider(optionsProvider)
                 .newValueHandler(selectNewValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -246,8 +246,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -268,8 +268,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .build();
         // @formatter:on
     }
@@ -309,8 +309,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .optionsProvider(optionsProvider)
                 .newValuesHandler(multiSelectNewValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -358,8 +358,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .optionsProvider(optionsProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -422,8 +422,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .flexDirection(flexDirection)
                 .children(children)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }
@@ -458,8 +458,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .imageURLProvider(imageURLProvider)
                 .pushButtonHandler(pushButtonHandler)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -491,8 +491,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -525,8 +525,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .urlProvider(valueProvider)
                 .styleProvider(styleProvider)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "") //$NON-NLS-1$
-                .messageProvider(diagnostic -> "") //$NON-NLS-1$
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
                 .build();
         // @formatter:on
     }
@@ -573,8 +573,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .itemClickHandlerProvider(itemClickHandlerProvider)
                 .styleProvider(styleProvider)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> ""); //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
         // @formatter:on
 
         return builder.build();
@@ -594,8 +594,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .urlProvider(urlProvider)
                 .maxWidthProvider(maxWidthProvider)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }
@@ -609,7 +609,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
         Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
         if (optionalVariableManager.isEmpty()) {
-            return new Failure("Something went wrong while handling the item click."); //$NON-NLS-1$
+            return new Failure("Something went wrong while handling the item click.");
         } else {
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         }
@@ -626,14 +626,14 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     }
 
     private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
-        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
+        String safeExpression = Optional.ofNullable(expression).orElse("");
         return variableManager -> {
             return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
         };
     }
 
     private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
-        String safeExpression = Optional.ofNullable(expression).orElse(""); //$NON-NLS-1$
+        String safeExpression = Optional.ofNullable(expression).orElse("");
         return variableManager -> {
             return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).collect(Collectors.toList());
         };
@@ -650,8 +650,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .idProvider(idProvider)
                 .chartDescription(chartDescription)
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }
@@ -665,7 +665,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private BiFunction<VariableManager, List<String>, IStatus> getMultiSelectNewValuesHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
-            IStatus status = new Failure("An error occured while handling the new selected values."); //$NON-NLS-1$
+            IStatus status = new Failure("An error occured while handling the new selected values.");
             Optional<IEditingContext> optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
             if (optionalEditingDomain.isPresent()) {
                 IEditingContext editingContext = optionalEditingDomain.get();
@@ -680,7 +680,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
                 Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
                 if (optionalVariableManager.isEmpty()) {
-                    status = new Failure("Something went wrong while handling the MultiSelect widget new values."); //$NON-NLS-1$
+                    status = new Failure("Something went wrong while handling the MultiSelect widget new values.");
                 } else {
                     status = new Success();
                 }
@@ -690,7 +690,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     }
 
     private Function<VariableManager, List<String>> getMultiSelectValuesProvider(String valueExpression) {
-        String safeValueExpression = Optional.ofNullable(valueExpression).orElse(""); //$NON-NLS-1$
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return variableManager -> {
             List<String> values = new ArrayList<>();
             if (!safeValueExpression.isBlank()) {
@@ -704,24 +704,24 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     }
 
     private StringValueProvider getStringValueProvider(String valueExpression) {
-        String safeValueExpression = Optional.ofNullable(valueExpression).orElse(""); //$NON-NLS-1$
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return new StringValueProvider(this.interpreter, safeValueExpression);
     }
 
     private BooleanValueProvider getBooleanValueProvider(String valueExpression) {
-        String safeValueExpression = Optional.ofNullable(valueExpression).orElse(""); //$NON-NLS-1$
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return new BooleanValueProvider(this.interpreter, safeValueExpression);
 
     }
 
     private Function<VariableManager, String> getSelectValueProvider(String valueExpression) {
-        String safeValueExpression = Optional.ofNullable(valueExpression).orElse(""); //$NON-NLS-1$
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return variableManager -> {
             if (!safeValueExpression.isBlank()) {
                 Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression);
-                return result.asObject().map(this.objectService::getId).orElse(""); //$NON-NLS-1$
+                return result.asObject().map(this.objectService::getId).orElse("");
             }
-            return ""; //$NON-NLS-1$
+            return "";
         };
     }
 
@@ -730,7 +730,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
             if (optionalVariableManager.isEmpty()) {
-                return new Failure("Something went wrong while handling the widget operations execution."); //$NON-NLS-1$
+                return new Failure("Something went wrong while handling the widget operations execution.");
             } else {
                 return new Success();
             }
@@ -744,7 +744,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
-                return new Failure("Something went wrong while handling the widget new value."); //$NON-NLS-1$
+                return new Failure("Something went wrong while handling the widget new value.");
             } else {
                 return new Success();
             }
@@ -753,7 +753,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private BiFunction<VariableManager, String, IStatus> getSelectNewValueHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
-            IStatus status = new Failure("An error occured while handling the new selected value."); //$NON-NLS-1$
+            IStatus status = new Failure("An error occured while handling the new selected value.");
 
             Object newValueObject = null;
             if (newValue != null && !newValue.isBlank()) {
@@ -765,7 +765,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
-                status = new Failure("Something went wrong while handling the Select widget new value."); //$NON-NLS-1$
+                status = new Failure("Something went wrong while handling the Select widget new value.");
             } else {
                 status = new Success();
             }
@@ -782,7 +782,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         // @formatter:off
         return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
                 .map(candidate -> this.objectService.getImagePath(candidate))
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     }
 

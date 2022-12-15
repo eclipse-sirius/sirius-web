@@ -28,14 +28,14 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class PageInfoTypeProvider {
-    public static final String TYPE = "PageInfo"; //$NON-NLS-1$
+    public static final String TYPE = "PageInfo";
 
-    public static final String HAS_PREVIOUS_PAGE_FIELD = "hasPreviousPage"; //$NON-NLS-1$
+    public static final String HAS_PREVIOUS_PAGE_FIELD = "hasPreviousPage";
 
-    public static final String HAS_NEXT_PAGE_FIELD = "hasNextPage"; //$NON-NLS-1$
+    public static final String HAS_NEXT_PAGE_FIELD = "hasNextPage";
 
-    public static final String START_CURSOR_FIELD = "startCursor"; //$NON-NLS-1$
+    public static final String START_CURSOR_FIELD = "startCursor";
 
-    public static final String END_CURSOR_FIELD = "endCursor"; //$NON-NLS-1$
+    public static final String END_CURSOR_FIELD = "endCursor";
 
 }

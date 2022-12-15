@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,7 @@ public class CreateChildEventHandlerTests {
         };
 
         CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID().toString(), "parentObjectId", "childCreationDescriptionId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID().toString(), "parentObjectId", "childCreationDescriptionId");
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
         assertThat(handler.canHandle(editingContext, input)).isTrue();

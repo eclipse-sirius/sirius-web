@@ -167,7 +167,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                 Resource inputResource = optionalInputResource.get();
 
                 if (checkProxies && this.containsProxies(inputResource)) {
-                    this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", fileName); //$NON-NLS-1$
+                    this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", fileName);
                 } else {
                     JsonResource ouputResource = new JSONResourceFactory().createResourceFromPath(fileName);
                     resourceSet.getResources().add(ouputResource);
@@ -251,9 +251,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             String line = reader.readLine();
             Map<String, Object> options = new HashMap<>();
             if (line != null) {
-                if (line.contains("{")) { //$NON-NLS-1$
+                if (line.contains("{")) {
                     resource = new JSONResourceFactory().createResource(resourceURI);
-                } else if (line.contains("<")) { //$NON-NLS-1$
+                } else if (line.contains("<")) {
                     resource = new XMIResourceImpl(resourceURI);
                     options = new EMFResourceUtils().getXMILoadOptions();
                 }

@@ -57,7 +57,7 @@ public class SourceEdgeEndReconnectionToolItemProvider extends EdgeReconnectionT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SourceEdgeEndReconnectionTool")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SourceEdgeEndReconnectionTool"));
     }
 
     /**
@@ -78,8 +78,8 @@ public class SourceEdgeEndReconnectionToolItemProvider extends EdgeReconnectionT
     @Override
     public String getText(Object object) {
         String label = ((SourceEdgeEndReconnectionTool) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_SourceEdgeEndReconnectionTool_type") : //$NON-NLS-1$
-                this.getString("_UI_SourceEdgeEndReconnectionTool_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_SourceEdgeEndReconnectionTool_type") :
+                this.getString("_UI_SourceEdgeEndReconnectionTool_type") + " " + label;
     }
 
     /**

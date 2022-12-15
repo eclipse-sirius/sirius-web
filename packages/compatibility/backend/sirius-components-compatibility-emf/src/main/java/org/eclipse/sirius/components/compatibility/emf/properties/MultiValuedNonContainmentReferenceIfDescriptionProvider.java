@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,9 +44,9 @@ import org.slf4j.LoggerFactory;
  */
 public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
 
-    private static final String ID_DESCRIPTION_ID = "MultiValued NonContainment Reference"; //$NON-NLS-1$
+    private static final String ID_DESCRIPTION_ID = "MultiValued NonContainment Reference";
 
-    private static final String MULTI_SELECT_DESCRIPTION_ID = "MultiSelect"; //$NON-NLS-1$
+    private static final String MULTI_SELECT_DESCRIPTION_ID = "MultiSelect";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -103,7 +103,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
 
     private BiFunction<VariableManager, List<String>, IStatus> getNewValuesHandler() {
         return (variableManager, newValues) -> {
-            IStatus status = new Failure(""); //$NON-NLS-1$
+            IStatus status = new Failure("");
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
@@ -131,7 +131,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
                             this.logger.warn(exception.getMessage(), exception);
                         }
                     } else {
-                        this.logger.warn("The " + newValue + " cannot be retrieved and set to " + eReference.getName() + " of " + eObject.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        this.logger.warn("The " + newValue + " cannot be retrieved and set to " + eReference.getName() + " of " + eObject.toString());
                     }
                 }
 

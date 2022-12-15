@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 @Immutable
 
 public final class TreeItem {
-    public static final String SELECTED_TREE_ITEM = "selectedTreeItem"; //$NON-NLS-1$
+    public static final String SELECTED_TREE_ITEM = "selectedTreeItem";
 
     private String id;
 
@@ -92,7 +92,7 @@ public final class TreeItem {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, imageURL: {6}, hasChildren: {7}, expanded: {8}, childCount: {9}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, imageURL: {6}, hasChildren: {7}, expanded: {8}, childCount: {9}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.editable, this.deletable, this.imageURL, this.hasChildren, this.expanded,
                 this.children.size());
     }

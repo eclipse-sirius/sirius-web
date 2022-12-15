@@ -140,7 +140,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             TreeNode expectedNode = expectedTree.getNodes().get(i);
 
             assertThat(actualNode.getLabel()).isEqualTo(expectedNode.getLabel());
-            assertThat("/api/images" + actualNode.getImageURL()).isEqualTo(expectedNode.getImageURL()); //$NON-NLS-1$
+            assertThat("/api/images" + actualNode.getImageURL()).isEqualTo(expectedNode.getImageURL());
             assertThat(actualNode.getKind()).isEqualTo(expectedNode.getKind());
             if (idPolicy == IdPolicy.WITH_ID) {
                 assertThat(actualNode.getId()).isEqualTo(expectedNode.getId());

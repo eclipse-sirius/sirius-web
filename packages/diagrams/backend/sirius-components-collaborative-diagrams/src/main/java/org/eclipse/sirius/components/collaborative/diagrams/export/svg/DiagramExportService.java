@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramExportService implements ISVGDiagramExportService {
-    private static final String SVG_NAMESPACE = "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" "; //$NON-NLS-1$
+    private static final String SVG_NAMESPACE = "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ";
 
     private final NodeExportService nodeExport;
 
@@ -62,17 +62,17 @@ public class DiagramExportService implements ISVGDiagramExportService {
         StringBuilder svg = new StringBuilder();
         svg.append(this.addSvgRoot(diagram));
 
-        svg.append("<g transform=\"scale(1) translate(0,0)\">"); //$NON-NLS-1$ )
+        svg.append("<g transform=\"scale(1) translate(0,0)\">");
 
         Map<String, NodeAndContainerId> id2NodeHierarchy = new HashMap<>();
         diagram.getNodes().forEach(node -> this.exportNode(svg, node, diagram.getId(), id2NodeHierarchy));
         diagram.getEdges().forEach(edge -> svg.append(this.edgeExport.export(edge, id2NodeHierarchy)));
 
-        svg.append("</g>"); //$NON-NLS-1$
+        svg.append("</g>");
 
         svg.append(this.imageRegistry.getReferencedImageSymbols());
 
-        return svg.append("</svg>").toString(); //$NON-NLS-1$
+        return svg.append("</svg>").toString();
     }
 
     private void exportNode(StringBuilder svg, Node node, String diagramId, Map<String, NodeAndContainerId> id2NodeHierarchy) {
@@ -83,12 +83,12 @@ public class DiagramExportService implements ISVGDiagramExportService {
     private StringBuilder addSvgRoot(Diagram diagram) {
         StringBuilder rootSvg = new StringBuilder();
 
-        rootSvg.append("<svg "); //$NON-NLS-1$
+        rootSvg.append("<svg ");
         rootSvg.append(SVG_NAMESPACE);
         rootSvg.append(this.computeViewBox(diagram));
-        rootSvg.append("tabindex=\"0\" "); //$NON-NLS-1$
-        rootSvg.append("style=\"cursor: pointer; outline: transparent solid 1px;\""); //$NON-NLS-1$
-        return rootSvg.append(">"); //$NON-NLS-1$
+        rootSvg.append("tabindex=\"0\" ");
+        rootSvg.append("style=\"cursor: pointer; outline: transparent solid 1px;\"");
+        return rootSvg.append(">");
     }
 
     /**
@@ -119,7 +119,7 @@ public class DiagramExportService implements ISVGDiagramExportService {
     private StringBuilder computeViewBox(Diagram diagram) {
         StringBuilder viewBoxExport = new StringBuilder();
 
-        viewBoxExport.append("viewBox=\""); //$NON-NLS-1$
+        viewBoxExport.append("viewBox=\"");
 
         this.computeElementsCoordinates(diagram);
 
@@ -137,8 +137,8 @@ public class DiagramExportService implements ISVGDiagramExportService {
         double finalWidth = width + padding;
         double finalHeight = height + padding;
 
-        viewBoxExport.append(finalMinX + " " + finalMinY + " " + finalWidth + " " + finalHeight); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        return viewBoxExport.append("\" "); //$NON-NLS-1$
+        viewBoxExport.append(finalMinX + " " + finalMinY + " " + finalWidth + " " + finalHeight);
+        return viewBoxExport.append("\" ");
     }
 
     private void computeElementsCoordinates(Diagram diagram) {

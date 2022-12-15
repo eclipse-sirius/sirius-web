@@ -30,7 +30,7 @@ import graphql.schema.GraphQLNonNull;
  */
 public class LabelFieldProvider {
 
-    public static final String LABEL_FIELD = "label"; //$NON-NLS-1$
+    public static final String LABEL_FIELD = "label";
 
     public GraphQLFieldDefinition getField() {
         // @formatter:off

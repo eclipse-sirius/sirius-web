@@ -45,7 +45,7 @@ import reactor.core.publisher.Flux;
 @SubscriptionDataFetcher(type = "Subscription", field = "formDescriptionEditorEvent")
 public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
 
-    private static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 

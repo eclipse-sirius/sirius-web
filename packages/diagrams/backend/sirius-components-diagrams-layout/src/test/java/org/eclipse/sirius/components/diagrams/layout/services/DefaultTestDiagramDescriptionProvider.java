@@ -57,15 +57,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class DefaultTestDiagramDescriptionProvider {
 
-    private static final String NODE_LIST_ITEM_PREFIX = "listitem"; //$NON-NLS-1$
+    private static final String NODE_LIST_ITEM_PREFIX = "listitem";
 
-    private static final String NODE_LIST_PREFIX = "list"; //$NON-NLS-1$
+    private static final String NODE_LIST_PREFIX = "list";
 
-    private static final String NODE_IMG_PREFIX = "img"; //$NON-NLS-1$
+    private static final String NODE_IMG_PREFIX = "img";
 
-    private static final String NODE_RECT_PREFIX = "rect"; //$NON-NLS-1$
+    private static final String NODE_RECT_PREFIX = "rect";
 
-    private static final String NODE_NAME_SEPARATOR = ":"; //$NON-NLS-1$
+    private static final String NODE_NAME_SEPARATOR = ":";
 
     private IObjectService objectService;
 
@@ -73,7 +73,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getId)
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     };
 
@@ -84,7 +84,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
                 .filter(composedName -> composedName.length >= 2)
                 .map(composedName -> composedName[0])
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
 
         INodeStyle nodeStyle = null;
@@ -96,15 +96,15 @@ public class DefaultTestDiagramDescriptionProvider {
                     .borderSize(1)
                     .borderRadius(3)
                     .borderStyle(LineStyle.Solid)
-                    .color("#E5F5F8") //$NON-NLS-1$
-                    .borderColor("#33B0C3") //$NON-NLS-1$
+                    .color("#E5F5F8")
+                    .borderColor("#33B0C3")
                     .build();
             // @formatter:on
             break;
         case NODE_IMG_PREFIX:
             // @formatter:off
             nodeStyle = ImageNodeStyle.newImageNodeStyle()
-                    .imageURL("") //$NON-NLS-1$
+                    .imageURL("")
                     .scalingFactor(1)
                     .build();
             // @formatter:on
@@ -113,18 +113,18 @@ public class DefaultTestDiagramDescriptionProvider {
             // @formatter:off
             nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
                     .withHeader(true)
-                    .borderColor("black") //$NON-NLS-1$
+                    .borderColor("black")
                     .borderRadius(0)
                     .borderSize(1)
                     .borderStyle(LineStyle.Solid)
-                    .color("white") //$NON-NLS-1$
+                    .color("white")
                     .build();
             // @formatter:on
             break;
         case NODE_LIST_ITEM_PREFIX:
             // @formatter:off
             nodeStyle = IconLabelNodeStyle.newIconLabelNodeStyle()
-                    .backgroundColor("white") //$NON-NLS-1$
+                    .backgroundColor("white")
                     .build();
             // @formatter:on
             break;
@@ -143,7 +143,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .filter(composedName -> composedName.length >= 2)
                 .map(composedName -> composedName[0])
                 .map(prefix -> {
-                    String type = ""; //$NON-NLS-1$
+                    String type = "";
                     switch (prefix) {
                     case NODE_RECT_PREFIX:
                         type = NodeType.NODE_RECTANGLE;
@@ -158,12 +158,12 @@ public class DefaultTestDiagramDescriptionProvider {
                         type = NodeType.NODE_ICON_LABEL;
                         break;
                     default:
-                        type = ""; //$NON-NLS-1$
+                        type = "";
                         break;
                     }
                     return type;
                 })
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     };
 
@@ -203,7 +203,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
                 .filter(composedName -> composedName.length >= 2)
                 .map(composedName -> composedName[1])
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     };
 
@@ -214,7 +214,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(Element::getChildren)
                 .orElse(List.of())
                 .stream()
-                .filter(element -> !element.getName().startsWith("edge:")) //$NON-NLS-1$
+                .filter(element -> !element.getName().startsWith("edge:"))
                 .forEach(children::add);
         return children;
         // @formatter:on
@@ -273,7 +273,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(Element::getChildren)
                 .orElseGet(List::of)
                 .stream()
-                .filter(element -> element.getName().startsWith("edge:")) //$NON-NLS-1$
+                .filter(element -> element.getName().startsWith("edge:"))
                 .map(this.objectService::getId)
                 .map(targetObjectIdToNodeId::get)
                 .map(idToElement::get)
@@ -295,16 +295,16 @@ public class DefaultTestDiagramDescriptionProvider {
 
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(TestLayoutDiagramBuilder.DIAGRAM_DESCRIPTION_ID)
-                 .label("") //$NON-NLS-1$
+                 .label("")
                  .autoLayout(false)
                  .targetObjectIdProvider(this.targetObjectIdProvider)
                  .canCreatePredicate(variableManager -> false)
-                 .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse(""))  //$NON-NLS-1$
+                 .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse("")) 
                  .toolSections(List.of())
                  .tools(List.of())
                  .nodeDescriptions(List.of(nodeDescription))
                  .edgeDescriptions(List.of(edgeDescription))
-                 .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                 .dropHandler(variableManager -> new Failure(""))
                  .build();
         // @formatter:on
 
@@ -317,7 +317,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:off
         return EdgeDescription.newEdgeDescription(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(this.labelProvider)
                 .semanticElementsProvider(variableManager -> {
                     var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
@@ -359,12 +359,12 @@ public class DefaultTestDiagramDescriptionProvider {
                             .lineStyle(LineStyle.Solid)
                             .sourceArrow(ArrowStyle.None)
                             .targetArrow(ArrowStyle.InputArrow)
-                            .color("#002639") //$NON-NLS-1$
+                            .color("#002639")
                             .size(1)
                             .build();
                 })
-                .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$
-                .labelEditHandler((variableManager, newValue) -> new Failure("")) //$NON-NLS-1$
+                .deleteHandler(variableManager -> new Failure(""))
+                .labelEditHandler((variableManager, newValue) -> new Failure(""))
                 .build();
         // @formatter:on
 
@@ -375,7 +375,7 @@ public class DefaultTestDiagramDescriptionProvider {
         return NodeDescription.newNodeDescription(TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID)
                 .typeProvider(this.nodeTypeProvider)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(this.labelProvider)
                 .semanticElementsProvider(this.nodeSemanticElementProvider)
                 .labelDescription(labelDescription)
@@ -384,8 +384,8 @@ public class DefaultTestDiagramDescriptionProvider {
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of(childDescription))
-                .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$
-                .labelEditHandler((variableManager, newValue) -> new Failure("")) //$NON-NLS-1$
+                .deleteHandler(variableManager -> new Failure(""))
+                .labelEditHandler((variableManager, newValue) -> new Failure(""))
                 .build();
         // @formatter:on
     }
@@ -395,7 +395,7 @@ public class DefaultTestDiagramDescriptionProvider {
         return NodeDescription.newNodeDescription(TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID)
                 .typeProvider(this.nodeTypeProvider)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(this.labelProvider)
                 .semanticElementsProvider(this.nodeSemanticElementProvider)
                 .labelDescription(labelDescription)
@@ -403,8 +403,8 @@ public class DefaultTestDiagramDescriptionProvider {
                 .childrenLayoutStrategyProvider(this.childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
                 .borderNodeDescriptions(List.of()).childNodeDescriptions(List.of())
-                .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$
-                .labelEditHandler((variableManager, newValue) -> new Failure("")) //$NON-NLS-1$
+                .deleteHandler(variableManager -> new Failure(""))
+                .labelEditHandler((variableManager, newValue) -> new Failure(""))
                 .build();
         // @formatter:on
     }
@@ -412,7 +412,7 @@ public class DefaultTestDiagramDescriptionProvider {
     private LabelDescription getDefaultLabelDescription() {
         // @formatter:off
         return  LabelDescription.newLabelDescription(UUID.randomUUID().toString())
-                .idProvider(variableManager -> "") //$NON-NLS-1$
+                .idProvider(variableManager -> "")
                 .textProvider(this.labelProvider)
                 .styleDescriptionProvider(variableManager -> {
                     return LabelStyleDescription.newLabelStyleDescription()
@@ -420,9 +420,9 @@ public class DefaultTestDiagramDescriptionProvider {
                             .italicProvider(vm -> false)
                             .underlineProvider(vm -> false)
                             .strikeThroughProvider(vm -> false)
-                            .colorProvider(vm -> "black") //$NON-NLS-1$
+                            .colorProvider(vm -> "black")
                             .fontSizeProvider(vm -> 14)
-                            .iconURLProvider(vm -> "") //$NON-NLS-1$
+                            .iconURLProvider(vm -> "")
                             .build();
                 })
                 .build();

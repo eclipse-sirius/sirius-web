@@ -83,6 +83,6 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
             // @formatter:on
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

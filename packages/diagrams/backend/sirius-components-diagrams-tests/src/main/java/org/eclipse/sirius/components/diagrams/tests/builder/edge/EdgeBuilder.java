@@ -75,7 +75,7 @@ public final class EdgeBuilder {
     }
 
     private String computeEdgeId(String sourceId, String targetId, int edgeCount) {
-        String rawIdentifier = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + ": " + sourceId + " --> " + targetId + " - " + edgeCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String rawIdentifier = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + ": " + sourceId + " --> " + targetId + " - " + edgeCount;
         String id = UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
         return id;
     }
@@ -94,7 +94,7 @@ public final class EdgeBuilder {
                 .lineStyle(LineStyle.Solid)
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
-                .color("#002639") //$NON-NLS-1$
+                .color("#002639")
                 .build();
         // @formatter:on
 
@@ -107,7 +107,7 @@ public final class EdgeBuilder {
 
         // @formatter:off
         return Edge.newEdge(targetObjectId)
-                .type("edge:straight") //$NON-NLS-1$
+                .type("edge:straight")
                 .sourceId(sourceId)
                 .targetId(targetId)
                 .sourceAnchorRelativePosition(sourceEdgeEnd.getEndRatio())
@@ -119,7 +119,7 @@ public final class EdgeBuilder {
                 .routingPoints(this.routingPoints)
                 .style(edgeStyle)
                 .targetObjectId(sourceEdgeEnd.getEndId())
-                .targetObjectKind("") //$NON-NLS-1$
+                .targetObjectKind("")
                 .targetObjectLabel(this.centerLabel.getText())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)

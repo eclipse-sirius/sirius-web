@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ public enum SynchronizationPolicy implements Enumerator {
      * @generated
      * @ordered
      */
-    SYNCHRONIZED(0, "SYNCHRONIZED", "SYNCHRONIZED"), //$NON-NLS-1$ //$NON-NLS-2$
+    SYNCHRONIZED(0, "SYNCHRONIZED", "SYNCHRONIZED"),
 
     /**
      * The '<em><b>UNSYNCHRONIZED</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +43,7 @@ public enum SynchronizationPolicy implements Enumerator {
      * @generated
      * @ordered
      */
-    UNSYNCHRONIZED(1, "UNSYNCHRONIZED", "UNSYNCHRONIZED"); //$NON-NLS-1$ //$NON-NLS-2$
+    UNSYNCHRONIZED(1, "UNSYNCHRONIZED", "UNSYNCHRONIZED");
 
     /**
      * The '<em><b>SYNCHRONIZED</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

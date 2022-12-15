@@ -19,11 +19,11 @@ package org.eclipse.sirius.components.compatibility.messages;
  */
 public final class MessageConstants {
 
-    public static final String NO_RECONNECTION_TOOL_DEFINED = "NO_RECONNECTION_TOOL_DEFINED"; //$NON-NLS-1$
+    public static final String NO_RECONNECTION_TOOL_DEFINED = "NO_RECONNECTION_TOOL_DEFINED";
 
-    public static final String TOOL_EXECUTION_ERROR = "TOOL_EXECUTION_ERROR"; //$NON-NLS-1$
+    public static final String TOOL_EXECUTION_ERROR = "TOOL_EXECUTION_ERROR";
 
-    public static final String TOOL_CANNOT_BE_HANDLED = "TOOL_CANNOT_BE_HANDLED"; //$NON-NLS-1$
+    public static final String TOOL_CANNOT_BE_HANDLED = "TOOL_CANNOT_BE_HANDLED";
 
     private MessageConstants() {
         // Prevent instantiation

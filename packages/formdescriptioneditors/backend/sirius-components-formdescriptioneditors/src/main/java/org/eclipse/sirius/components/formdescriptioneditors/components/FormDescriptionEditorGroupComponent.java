@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.view.GroupDescription;
  */
 public class FormDescriptionEditorGroupComponent implements IComponent {
 
-    private static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
+    private static final String AQL_PREFIX = "aql:";
 
     private final FormDescriptionEditorGroupComponentProps props;
 
@@ -51,7 +51,7 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         var groupDescription = variableManager.get(VariableManager.SELF, GroupDescription.class).get();
         String id = this.props.getFormDescriptionEditorDescription().getTargetObjectIdProvider().apply(variableManager);
-        String label = this.getGroupLabel(groupDescription, "Group"); //$NON-NLS-1$
+        String label = this.getGroupLabel(groupDescription, "Group");
         List<Element> childrenWidgets = new ArrayList<>();
 
         groupDescription.getToolbarActions().forEach(viewToolbarActionDescription -> {

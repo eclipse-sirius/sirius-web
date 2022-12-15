@@ -99,12 +99,12 @@ public class MoveElementOperationHandler implements IModelOperationHandler {
         EcoreIntrinsicExtender ecoreIntrinsicExtender = new EcoreIntrinsicExtender();
         Boolean isMany = ecoreIntrinsicExtender.eIsMany(newContainer, featureName);
         if (isMany == null) {
-            this.logger.warn("The feature {} is unknown on the object {}", featureName, newContainer); //$NON-NLS-1$
+            this.logger.warn("The feature {} is unknown on the object {}", featureName, newContainer);
         } else {
             if (!isMany) {
                 Object currentValueOnContainer = ecoreIntrinsicExtender.eGet(newContainer, featureName);
                 if (currentValueOnContainer == null) {
-                    this.logger.warn("Impossible to add a value to the reference {} of the object {}", featureName, newContainer); //$NON-NLS-1$
+                    this.logger.warn("Impossible to add a value to the reference {} of the object {}", featureName, newContainer);
                     return;
                 }
             } else {

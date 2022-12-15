@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class DeleteViewImpl extends OperationImpl implements DeleteView {
      * @generated
      * @ordered
      */
-    protected static final String VIEW_EXPRESSION_EDEFAULT = "aql:selectedNode"; //$NON-NLS-1$
+    protected static final String VIEW_EXPRESSION_EDEFAULT = "aql:selectedNode";
 
     /**
      * The cached value of the '{@link #getViewExpression() <em>View Expression</em>}' attribute. <!-- begin-user-doc
@@ -161,7 +161,7 @@ public class DeleteViewImpl extends OperationImpl implements DeleteView {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (viewExpression: "); //$NON-NLS-1$
+        result.append(" (viewExpression: ");
         result.append(this.viewExpression);
         result.append(')');
         return result.toString();

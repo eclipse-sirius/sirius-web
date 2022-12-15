@@ -45,7 +45,7 @@ public class LayoutStrategyEngineHandlerSwitch implements Function<ILayoutStrate
         }
 
         if (optionalLayoutStrategyEngine.isEmpty()) {
-            String pattern = "The layout strategy engine {} is not currently supported."; //$NON-NLS-1$
+            String pattern = "The layout strategy engine {} is not currently supported.";
             this.logger.warn(pattern, layoutStrategy.getClass().getSimpleName());
         }
 

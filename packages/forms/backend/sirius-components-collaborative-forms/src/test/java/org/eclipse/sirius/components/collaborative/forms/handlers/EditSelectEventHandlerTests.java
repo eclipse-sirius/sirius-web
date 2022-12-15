@@ -53,9 +53,9 @@ public class EditSelectEventHandlerTests {
 
     @Test
     public void testSelectEdition() {
-        String id = "Select id"; //$NON-NLS-1$
+        String id = "Select id";
 
-        var input = new EditSelectInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "false"); //$NON-NLS-1$
+        var input = new EditSelectInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "false");
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Function<String, IStatus> newValueHandler = newValue -> {
@@ -64,34 +64,34 @@ public class EditSelectEventHandlerTests {
         };
 
         // @formatter:off
-        SelectOption trueOption = SelectOption.newSelectOption("true") //$NON-NLS-1$
-                .label("True") //$NON-NLS-1$
+        SelectOption trueOption = SelectOption.newSelectOption("true")
+                .label("True")
                 .build();
-        SelectOption falseOption = SelectOption.newSelectOption("false") //$NON-NLS-1$
-                .label("False") //$NON-NLS-1$
+        SelectOption falseOption = SelectOption.newSelectOption("false")
+                .label("False")
                 .build();
         Select select = Select.newSelect(id)
-                .label("label") //$NON-NLS-1$
-                .value("true") //$NON-NLS-1$
+                .label("label")
+                .value("true")
                 .newValueHandler(newValueHandler)
                 .options(List.of(trueOption, falseOption))
                 .diagnostics(List.of())
                 .build();
 
-        Group group = Group.newGroup("groupId") //$NON-NLS-1$
-                .label("group label") //$NON-NLS-1$
+        Group group = Group.newGroup("groupId")
+                .label("group label")
                 .widgets(List.of(select))
                 .build();
 
-        Page page = Page.newPage("pageId") //$NON-NLS-1$
-                .label("page label") //$NON-NLS-1$
+        Page page = Page.newPage("pageId")
+                .label("page label")
                 .groups(List.of(group))
                 .build();
 
         Form form = Form.newForm(FORM_ID)
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label") //$NON-NLS-1$
+                .label("form label")
                 .pages(List.of(page))
                 .build();
         // @formatter:on

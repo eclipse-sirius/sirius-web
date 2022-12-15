@@ -18,13 +18,13 @@ package org.eclipse.sirius.components.graphql.api;
  * @author sbegaudeau
  */
 public final class URLConstants {
-    public static final String API_BASE_PATH = "/api"; //$NON-NLS-1$
+    public static final String API_BASE_PATH = "/api";
 
-    public static final String GRAPHQL_BASE_PATH = API_BASE_PATH + "/graphql"; //$NON-NLS-1$
+    public static final String GRAPHQL_BASE_PATH = API_BASE_PATH + "/graphql";
 
-    public static final String GRAPHQL_SUBSCRIPTION_PATH = "/subscriptions"; //$NON-NLS-1$
+    public static final String GRAPHQL_SUBSCRIPTION_PATH = "/subscriptions";
 
-    public static final String IMAGE_BASE_PATH = API_BASE_PATH + "/images"; //$NON-NLS-1$
+    public static final String IMAGE_BASE_PATH = API_BASE_PATH + "/images";
 
     private URLConstants() {
         // Prevent instantiation

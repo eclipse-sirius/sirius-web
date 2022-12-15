@@ -36,7 +36,7 @@ public class ToolbarActionImageURLDataFetcher implements IDataFetcherWithFieldCo
         ToolbarAction toolbarAction = environment.getSource();
         String toolbarActionImageURL = toolbarAction.getImageURL();
         if (toolbarActionImageURL != null && !toolbarActionImageURL.isBlank()) {
-            if (toolbarActionImageURL.startsWith("http://") || toolbarActionImageURL.startsWith("https://")) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (toolbarActionImageURL.startsWith("http://") || toolbarActionImageURL.startsWith("https://")) {
                 imageURL = toolbarActionImageURL;
             } else {
                 imageURL = URLConstants.IMAGE_BASE_PATH + toolbarActionImageURL;

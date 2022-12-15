@@ -23,7 +23,7 @@ import java.util.function.Function;
  */
 public class GetOrCreateRandomIdProvider implements Function<VariableManager, String> {
 
-    public static final String PREVIOUS_REPRESENTATION_ID = "previousRepresentationId"; //$NON-NLS-1$
+    public static final String PREVIOUS_REPRESENTATION_ID = "previousRepresentationId";
 
     @Override
     public String apply(VariableManager variableManager) {

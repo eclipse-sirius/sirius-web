@@ -83,6 +83,6 @@ public class DeleteDocumentTreeItemEventHandler implements IDeleteTreeItemHandle
 
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

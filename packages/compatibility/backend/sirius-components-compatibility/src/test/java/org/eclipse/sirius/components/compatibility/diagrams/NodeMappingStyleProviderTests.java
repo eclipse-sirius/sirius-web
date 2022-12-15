@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,9 +38,9 @@ import org.junit.jupiter.api.Test;
  * @author sbegaudeau
  */
 public class NodeMappingStyleProviderTests {
-    private static final String EXPRESSION_FALSE = "aql:false"; //$NON-NLS-1$
+    private static final String EXPRESSION_FALSE = "aql:false";
 
-    private static final String EXPRESSION_TRUE = "aql:true"; //$NON-NLS-1$
+    private static final String EXPRESSION_TRUE = "aql:true";
 
     /**
      * Non-regression test for Conditional styles issue on nodes.
@@ -64,7 +64,7 @@ public class NodeMappingStyleProviderTests {
 
         assertThat(nodeStyle).isInstanceOf(RectangularNodeStyle.class);
         RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) nodeStyle;
-        assertThat(rectangularNodeStyle.getBorderColor()).isEqualTo("#020202"); //$NON-NLS-1$
+        assertThat(rectangularNodeStyle.getBorderColor()).isEqualTo("#020202");
     }
 
     private ConditionalNodeStyleDescription createConditionalStyle(String predicateExpression, NodeStyleDescription nodeStyleDescription) {

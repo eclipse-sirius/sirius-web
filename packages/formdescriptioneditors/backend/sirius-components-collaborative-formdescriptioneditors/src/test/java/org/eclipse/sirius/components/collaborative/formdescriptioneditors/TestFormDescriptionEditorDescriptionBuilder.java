@@ -24,9 +24,9 @@ public class TestFormDescriptionEditorDescriptionBuilder {
     public FormDescriptionEditorDescription getFormDescriptionEditorDescription(String formDescriptionEditorDescriptionId) {
         // @formatter:off
         return FormDescriptionEditorDescription.newFormDescriptionEditorDescription(formDescriptionEditorDescriptionId)
-            .label("") //$NON-NLS-1$
+            .label("")
             .canCreatePredicate(variableManager -> Boolean.TRUE)
-            .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
+            .targetObjectIdProvider(variableManager -> "targetObjectId")
             .build();
         // @formatter:on
     }

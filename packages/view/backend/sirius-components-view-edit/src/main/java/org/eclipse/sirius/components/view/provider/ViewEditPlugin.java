@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ public final class ViewEditPlugin extends EMFPlugin {
 
     @Override
     protected Object doGetImage(String key) throws IOException {
-        URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key)); //$NON-NLS-1$
+        URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
         InputStream inputStream = url.openStream();
         inputStream.close();
         return url;
@@ -85,21 +85,21 @@ public final class ViewEditPlugin extends EMFPlugin {
      * @return the file extension to be used with the key to specify an image resource.
      */
     protected static String extensionFor(String key) {
-        String result = ".gif"; //$NON-NLS-1$
+        String result = ".gif";
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
             // @formatter:off
-            if ("png".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "gif".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "bmp".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "ico".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "jpg".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "jpeg".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "tif".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "tiff".equalsIgnoreCase(extension) || //$NON-NLS-1$
-                "svg".equalsIgnoreCase(extension)) { //$NON-NLS-1$
-                result = ""; //$NON-NLS-1$
+            if ("png".equalsIgnoreCase(extension) ||
+                "gif".equalsIgnoreCase(extension) ||
+                "bmp".equalsIgnoreCase(extension) ||
+                "ico".equalsIgnoreCase(extension) ||
+                "jpg".equalsIgnoreCase(extension) ||
+                "jpeg".equalsIgnoreCase(extension) ||
+                "tif".equalsIgnoreCase(extension) ||
+                "tiff".equalsIgnoreCase(extension) ||
+                "svg".equalsIgnoreCase(extension)) {
+                result = "";
             }
             // @formatter:on
         }

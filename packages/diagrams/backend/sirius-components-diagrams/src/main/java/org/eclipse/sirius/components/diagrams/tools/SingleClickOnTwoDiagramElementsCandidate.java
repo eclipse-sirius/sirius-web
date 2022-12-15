@@ -45,7 +45,7 @@ public final class SingleClickOnTwoDiagramElementsCandidate {
 
     @Override
     public String toString() {
-        String pattern = "{0} "; //$NON-NLS-1$
+        String pattern = "{0} ";
         return MessageFormat.format(pattern, this.getClass().getSimpleName());
     }
 

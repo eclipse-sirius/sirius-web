@@ -46,7 +46,7 @@ public final class CreateRepresentationSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, representation: '{'id: {2}, type: {3}'}''}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, representation: '{'id: {2}, type: {3}'}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representation.getId(), this.representation.getClass().getSimpleName());
     }
 }

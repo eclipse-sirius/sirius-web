@@ -56,11 +56,11 @@ public class EdgeExportService {
 
             // Should add source and target intersection in routingPoints.
             if (lineRoutingPoints.size() > 1) {
-                edgeExport.append("<g style=\"opacity:" + opacity + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
+                edgeExport.append("<g style=\"opacity:" + opacity + "\">");
                 edgeExport.append(this.exportLine(style, lineRoutingPoints));
                 edgeExport.append(this.exportAdditionals(style, lineRoutingPoints));
                 edgeExport.append(this.exportEdgeLabels(edge));
-                edgeExport.append("</g>"); //$NON-NLS-1$
+                edgeExport.append("</g>");
             }
         }
 
@@ -146,25 +146,25 @@ public class EdgeExportService {
 
     private StringBuilder exportLine(EdgeStyle style, List<Position> rootingPoints) {
         StringBuilder lineExport = new StringBuilder();
-        lineExport.append("<g>"); //$NON-NLS-1$
+        lineExport.append("<g>");
 
-        lineExport.append("<path "); //$NON-NLS-1$
-        lineExport.append("d=\"" + this.exportLinePath(rootingPoints) + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-        lineExport.append("style=\"" + this.exportLineStyle(style) + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        lineExport.append("<path ");
+        lineExport.append("d=\"" + this.exportLinePath(rootingPoints) + "\" ");
+        lineExport.append("style=\"" + this.exportLineStyle(style) + "\"/>");
 
-        return lineExport.append("</g>"); //$NON-NLS-1$
+        return lineExport.append("</g>");
     }
 
     private StringBuilder exportStrokeDasharray(EdgeStyle style) {
         StringBuilder dashArrayExport = new StringBuilder();
         String lineStyleName = style.getLineStyle().toString();
 
-        if (lineStyleName.equals("Dash")) { //$NON-NLS-1$
-            dashArrayExport.append("stroke-dasharray: 5,5;"); //$NON-NLS-1$
-        } else if (lineStyleName.equals("Dot")) { //$NON-NLS-1$
-            dashArrayExport.append("stroke-dasharray: 2,2;"); //$NON-NLS-1$
-        } else if (lineStyleName.equals("Dash_Dot")) { //$NON-NLS-1$
-            dashArrayExport.append("stroke-dasharray: 10,5,2,2,2,5;"); //$NON-NLS-1$
+        if (lineStyleName.equals("Dash")) {
+            dashArrayExport.append("stroke-dasharray: 5,5;");
+        } else if (lineStyleName.equals("Dot")) {
+            dashArrayExport.append("stroke-dasharray: 2,2;");
+        } else if (lineStyleName.equals("Dash_Dot")) {
+            dashArrayExport.append("stroke-dasharray: 10,5,2,2,2,5;");
         }
 
         return dashArrayExport;
@@ -173,10 +173,10 @@ public class EdgeExportService {
     private StringBuilder exportLineStyle(EdgeStyle style) {
         StringBuilder styleExport = new StringBuilder();
 
-        styleExport.append("stroke: " + style.getColor() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
-        styleExport.append("stroke-width: " + style.getSize() + "px; "); //$NON-NLS-1$ //$NON-NLS-2$
-        styleExport.append("pointer-events: stroke; "); //$NON-NLS-1$
-        styleExport.append("fill: none; "); //$NON-NLS-1$
+        styleExport.append("stroke: " + style.getColor() + "; ");
+        styleExport.append("stroke-width: " + style.getSize() + "px; ");
+        styleExport.append("pointer-events: stroke; ");
+        styleExport.append("fill: none; ");
 
         return styleExport.append(this.exportStrokeDasharray(style));
     }
@@ -186,15 +186,15 @@ public class EdgeExportService {
 
         Position[] positions = routingPoints.toArray(Position[]::new);
         Position firstPoint = positions[0];
-        pathExport.append("M "); //$NON-NLS-1$
+        pathExport.append("M ");
         pathExport.append(firstPoint.getX());
-        pathExport.append(","); //$NON-NLS-1$
+        pathExport.append(",");
         pathExport.append(firstPoint.getY());
         for (int i = 1; i < positions.length; i++) {
             Position point = positions[i];
-            pathExport.append(" L "); //$NON-NLS-1$
+            pathExport.append(" L ");
             pathExport.append(point.getX());
-            pathExport.append(","); //$NON-NLS-1$
+            pathExport.append(",");
             pathExport.append(point.getY());
         }
         return pathExport;
@@ -212,29 +212,29 @@ public class EdgeExportService {
 
         String styleName = arrowStyle.toString();
 
-        if (styleName.equals("OutputArrow")) { //$NON-NLS-1$
+        if (styleName.equals("OutputArrow")) {
             arrowExport = this.exportOutputArrow(p1, p2, style);
-        } else if (styleName.equals("InputArrow")) { //$NON-NLS-1$
+        } else if (styleName.equals("InputArrow")) {
             arrowExport = this.exportInputArrow(p1, p2, style);
-        } else if (styleName.equals("OutputClosedArrow")) { //$NON-NLS-1$
+        } else if (styleName.equals("OutputClosedArrow")) {
             arrowExport = this.exportOutputClosedArrow(p1, p2, style, false);
-        } else if (styleName.equals("InputClosedArrow")) { //$NON-NLS-1$
+        } else if (styleName.equals("InputClosedArrow")) {
             arrowExport = this.exportInputClosedArrow(p1, p2, style, false);
-        } else if (styleName.equals("OutputFillClosedArrow")) { //$NON-NLS-1$
+        } else if (styleName.equals("OutputFillClosedArrow")) {
             arrowExport = this.exportOutputClosedArrow(p1, p2, style, true);
-        } else if (styleName.equals("InputFillClosedArrow")) { //$NON-NLS-1$
+        } else if (styleName.equals("InputFillClosedArrow")) {
             arrowExport = this.exportInputClosedArrow(p1, p2, style, true);
-        } else if (styleName.equals("Diamond")) { //$NON-NLS-1$
+        } else if (styleName.equals("Diamond")) {
             arrowExport = this.exportDiamondArrow(p1, p2, style, false);
-        } else if (styleName.equals("FillDiamond")) { //$NON-NLS-1$
+        } else if (styleName.equals("FillDiamond")) {
             arrowExport = this.exportDiamondArrow(p1, p2, style, true);
-        } else if (styleName.equals("InputArrowWithDiamond")) { //$NON-NLS-1$
+        } else if (styleName.equals("InputArrowWithDiamond")) {
             arrowExport = this.exportInputArrowWithDiamond(p1, p2, style, false);
-        } else if (styleName.equals("InputArrowWithFillDiamond")) { //$NON-NLS-1$
+        } else if (styleName.equals("InputArrowWithFillDiamond")) {
             arrowExport = this.exportInputArrowWithDiamond(p1, p2, style, true);
-        } else if (styleName.equals("Circle")) { //$NON-NLS-1$
+        } else if (styleName.equals("Circle")) {
             arrowExport = this.exportCircleArrow(p1, p2, style, false);
-        } else if (styleName.equals("FillCircle")) { //$NON-NLS-1$
+        } else if (styleName.equals("FillCircle")) {
             arrowExport = this.exportCircleArrow(p1, p2, style, true);
         } else {
             arrowExport = new StringBuilder();
@@ -265,7 +265,7 @@ public class EdgeExportService {
         double rotationY = p2.getY();
         StringBuilder path = this.exportBasicArrowPath(style.getSize());
         StringBuilder transformation = this.exportArrowTransformation(rotationAngle, rotationX, rotationY, offsetX, offsetY);
-        StringBuilder arrowStyle = this.exportArrowStyle(style, "none"); //$NON-NLS-1$
+        StringBuilder arrowStyle = this.exportArrowStyle(style, "none");
         return arrowExport.append(this.buildArrowPath(path, transformation, arrowStyle));
     }
 
@@ -273,7 +273,7 @@ public class EdgeExportService {
         StringBuilder arrowExport = new StringBuilder();
         String fillColor;
         if (!fill) {
-            fillColor = "#ffffff"; //$NON-NLS-1$
+            fillColor = "#ffffff";
         } else {
             fillColor = style.getColor();
         }
@@ -292,7 +292,7 @@ public class EdgeExportService {
         StringBuilder arrowExport = new StringBuilder();
         String fillColor;
         if (!fill) {
-            fillColor = "#ffffff"; //$NON-NLS-1$
+            fillColor = "#ffffff";
         } else {
             fillColor = style.getColor();
         }
@@ -312,7 +312,7 @@ public class EdgeExportService {
         StringBuilder arrowExport = new StringBuilder();
         String fillColor;
         if (!fill) {
-            fillColor = "#ffffff"; //$NON-NLS-1$
+            fillColor = "#ffffff";
         } else {
             fillColor = style.getColor();
         }
@@ -332,7 +332,7 @@ public class EdgeExportService {
         StringBuilder arrowExport = new StringBuilder();
         String fillColor;
         if (!fill) {
-            fillColor = "#ffffff"; //$NON-NLS-1$
+            fillColor = "#ffffff";
         } else {
             fillColor = style.getColor();
         }
@@ -351,7 +351,7 @@ public class EdgeExportService {
         StringBuilder arrowExport = new StringBuilder();
         String fillColor;
         if (!fill) {
-            fillColor = "#ffffff"; //$NON-NLS-1$
+            fillColor = "#ffffff";
         } else {
             fillColor = styleObject.getColor();
         }
@@ -362,25 +362,25 @@ public class EdgeExportService {
         double translateY = p2.getY();
 
         StringBuilder arrowTransformation = this.exportArrowTransformation(rotationAngle, rotationX, rotationY, translateX, translateY);
-        arrowExport.append("<circle "); //$NON-NLS-1$
+        arrowExport.append("<circle ");
 
-        arrowExport.append("transform=\""); //$NON-NLS-1$
+        arrowExport.append("transform=\"");
         arrowExport.append(arrowTransformation);
-        arrowExport.append("\" "); //$NON-NLS-1$
+        arrowExport.append("\" ");
 
-        arrowExport.append("r=\""); //$NON-NLS-1$
+        arrowExport.append("r=\"");
         arrowExport.append(4 + styleObject.getSize());
-        arrowExport.append("\" "); //$NON-NLS-1$
+        arrowExport.append("\" ");
 
-        arrowExport.append("style=\""); //$NON-NLS-1$
+        arrowExport.append("style=\"");
         arrowExport.append(this.exportArrowStyle(styleObject, fillColor));
-        arrowExport.append("\" "); //$NON-NLS-1$
+        arrowExport.append("\" ");
 
-        return arrowExport.append("/>"); //$NON-NLS-1$
+        return arrowExport.append("/>");
     }
 
     private StringBuilder exportBasicClosedArrowPath(int strokeWidth) {
-        return this.exportBasicArrowPath(strokeWidth).append("z"); //$NON-NLS-1$
+        return this.exportBasicArrowPath(strokeWidth).append("z");
     }
 
     private StringBuilder exportInputArrowWithDiamondPath(int strokeWidth) {
@@ -390,13 +390,13 @@ public class EdgeExportService {
     private StringBuilder exportBasicArrowPath(int strokeWidth) {
         // Path definitions scaled with the stroke-width style attribute
         StringBuilder basicArrowPathExport = new StringBuilder();
-        basicArrowPathExport.append("m "); //$NON-NLS-1$
+        basicArrowPathExport.append("m ");
         basicArrowPathExport.append(-5 - strokeWidth);
-        basicArrowPathExport.append(" "); //$NON-NLS-1$
+        basicArrowPathExport.append(" ");
         basicArrowPathExport.append(-3.5 - strokeWidth);
-        basicArrowPathExport.append(" L 0 0 L "); //$NON-NLS-1$
+        basicArrowPathExport.append(" L 0 0 L ");
         basicArrowPathExport.append(-5 - strokeWidth);
-        basicArrowPathExport.append(" "); //$NON-NLS-1$
+        basicArrowPathExport.append(" ");
         return basicArrowPathExport.append(3.5 + strokeWidth);
     }
 
@@ -404,84 +404,84 @@ public class EdgeExportService {
         // Path definitions scaled with the stroke-width style attribute
         StringBuilder basicDiamondPathExport = new StringBuilder();
 
-        basicDiamondPathExport.append("m 0 0 L "); //$NON-NLS-1$
+        basicDiamondPathExport.append("m 0 0 L ");
         basicDiamondPathExport.append(5 + strokeWidth);
-        basicDiamondPathExport.append(" "); //$NON-NLS-1$
+        basicDiamondPathExport.append(" ");
         basicDiamondPathExport.append(-3.5 - strokeWidth);
-        basicDiamondPathExport.append(" L "); //$NON-NLS-1$
+        basicDiamondPathExport.append(" L ");
         basicDiamondPathExport.append(10 + strokeWidth * 2);
-        basicDiamondPathExport.append(" 0 L "); //$NON-NLS-1$
+        basicDiamondPathExport.append(" 0 L ");
         basicDiamondPathExport.append(5 + strokeWidth);
-        basicDiamondPathExport.append(" "); //$NON-NLS-1$
+        basicDiamondPathExport.append(" ");
         basicDiamondPathExport.append(3.5 + strokeWidth);
-        return basicDiamondPathExport.append(" z"); //$NON-NLS-1$
+        return basicDiamondPathExport.append(" z");
     }
 
     private StringBuilder exportOffsetArrowPath(int strokeWidth) {
         // Path definitions scaled with the stroke-width style attribute
         StringBuilder offsetArrowPathExport = new StringBuilder();
 
-        offsetArrowPathExport.append("m "); //$NON-NLS-1$
+        offsetArrowPathExport.append("m ");
         offsetArrowPathExport.append((5 + strokeWidth) * 2);
-        offsetArrowPathExport.append(" 0 L "); //$NON-NLS-1$
+        offsetArrowPathExport.append(" 0 L ");
         offsetArrowPathExport.append((5 + strokeWidth) * 2 + (5 + strokeWidth));
-        offsetArrowPathExport.append(" "); //$NON-NLS-1$
+        offsetArrowPathExport.append(" ");
         offsetArrowPathExport.append(-3.5 - strokeWidth);
-        offsetArrowPathExport.append(" M "); //$NON-NLS-1$
+        offsetArrowPathExport.append(" M ");
         offsetArrowPathExport.append((5 + strokeWidth) * 2);
-        offsetArrowPathExport.append(" 0 L "); //$NON-NLS-1$
+        offsetArrowPathExport.append(" 0 L ");
         offsetArrowPathExport.append((5 + strokeWidth) * 2 + (5 + strokeWidth));
-        offsetArrowPathExport.append(" "); //$NON-NLS-1$
+        offsetArrowPathExport.append(" ");
         return offsetArrowPathExport.append(3.5 + strokeWidth);
     }
 
     private StringBuilder buildArrowPath(StringBuilder path, StringBuilder transformation, StringBuilder style) {
         StringBuilder arrowPath = new StringBuilder();
-        arrowPath.append("<path "); //$NON-NLS-1$
-        arrowPath.append("d=\""); //$NON-NLS-1$
+        arrowPath.append("<path ");
+        arrowPath.append("d=\"");
         arrowPath.append(path);
-        arrowPath.append("\" "); //$NON-NLS-1$
+        arrowPath.append("\" ");
 
-        arrowPath.append("transform=\""); //$NON-NLS-1$
+        arrowPath.append("transform=\"");
         arrowPath.append(transformation);
-        arrowPath.append("\" "); //$NON-NLS-1$
+        arrowPath.append("\" ");
 
-        arrowPath.append("style=\""); //$NON-NLS-1$
+        arrowPath.append("style=\"");
         arrowPath.append(style);
-        return arrowPath.append("\"/>"); //$NON-NLS-1$
+        return arrowPath.append("\"/>");
     }
 
     private StringBuilder exportArrowStyle(EdgeStyle style, String fillColor) {
         StringBuilder arrowStyleExport = new StringBuilder();
 
-        arrowStyleExport.append("stroke:"); //$NON-NLS-1$
+        arrowStyleExport.append("stroke:");
         arrowStyleExport.append(style.getColor());
-        arrowStyleExport.append("; "); //$NON-NLS-1$
+        arrowStyleExport.append("; ");
 
-        arrowStyleExport.append("stroke-width:"); //$NON-NLS-1$
+        arrowStyleExport.append("stroke-width:");
         arrowStyleExport.append(style.getSize());
-        arrowStyleExport.append("; "); //$NON-NLS-1$
+        arrowStyleExport.append("; ");
 
-        arrowStyleExport.append("fill:"); //$NON-NLS-1$
+        arrowStyleExport.append("fill:");
         arrowStyleExport.append(fillColor);
-        return arrowStyleExport.append(";"); //$NON-NLS-1$
+        return arrowStyleExport.append(";");
     }
 
     private StringBuilder exportArrowTransformation(double rotationAngle, double rotationX, double rotationY, double translateX, double translateY) {
         StringBuilder transformation = new StringBuilder();
-        transformation.append("rotate("); //$NON-NLS-1$
+        transformation.append("rotate(");
         transformation.append(rotationAngle);
-        transformation.append(" "); //$NON-NLS-1$
+        transformation.append(" ");
         transformation.append(rotationX);
-        transformation.append(" "); //$NON-NLS-1$
+        transformation.append(" ");
         transformation.append(rotationY);
-        transformation.append(")"); //$NON-NLS-1$
+        transformation.append(")");
 
-        transformation.append(" translate("); //$NON-NLS-1$
+        transformation.append(" translate(");
         transformation.append(translateX);
-        transformation.append(" "); //$NON-NLS-1$
+        transformation.append(" ");
         transformation.append(translateY);
-        return transformation.append(")"); //$NON-NLS-1$
+        return transformation.append(")");
     }
 
     private double angle(Position a, Position b) {

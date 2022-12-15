@@ -75,36 +75,36 @@ public class ToolProvider implements IToolProvider {
     /**
      * The name of the compatibility variable used to store and retrieve the edge source from a variable manager.
      */
-    public static final String EDGE_SOURCE = "source"; //$NON-NLS-1$
+    public static final String EDGE_SOURCE = "source";
 
     /**
      * The name of the compatibility variable used to store and retrieve the edge target from a variable manager.
      */
-    public static final String EDGE_TARGET = "target"; //$NON-NLS-1$
+    public static final String EDGE_TARGET = "target";
 
     /**
      * The name of the compatibility variable used to store and retrieve the semantic element on which a node or
      * container creation tool has been invoked.
      */
-    public static final String CONTAINER = "container"; //$NON-NLS-1$
+    public static final String CONTAINER = "container";
 
     /**
      * The name of the compatibility variable used to store and retrieve the graphical element on which a node or
      * container creation tool has been invoked.
      */
-    public static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
+    public static final String CONTAINER_VIEW = "containerView";
 
     /**
      * The name of the compatibility variable used to store and retrieve the graphical element on which a delete element
      * tool has been invoked.
      */
-    public static final String ELEMENT_VIEW = "elementView"; //$NON-NLS-1$
+    public static final String ELEMENT_VIEW = "elementView";
 
     /**
      * The name of the compatibility variable used to store and retrieve the semantic element on which a generic tool
      * has been invoked.
      */
-    public static final String ELEMENT = "element"; //$NON-NLS-1$
+    public static final String ELEMENT = "element";
 
     private final IAQLInterpreterFactory interpreterFactory;
 
@@ -167,7 +167,7 @@ public class ToolProvider implements IToolProvider {
         return ToolSection.newToolSection(toolSectionLabel)
                 .tools(tools)
                 .label(toolSectionLabel)
-                .imageURL(this.getImagePathFromIconPath(siriusToolSection).orElse("")) //$NON-NLS-1$
+                .imageURL(this.getImagePathFromIconPath(siriusToolSection).orElse(""))
                 .build();
         // @formatter:on
     }
@@ -446,7 +446,7 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -480,7 +480,7 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -497,7 +497,7 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -514,7 +514,7 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -533,7 +533,7 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -562,7 +562,7 @@ public class ToolProvider implements IToolProvider {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -616,8 +616,8 @@ public class ToolProvider implements IToolProvider {
 
     private String normalize(String iconPath) {
         String path = iconPath;
-        if (!iconPath.startsWith("/")) { //$NON-NLS-1$
-            path = "/" + iconPath; //$NON-NLS-1$
+        if (!iconPath.startsWith("/")) {
+            path = "/" + iconPath;
         }
 
         int index = path.indexOf('/', 1);

@@ -29,8 +29,8 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class DocumentTypesProvider {
-    public static final String TYPE = "Document"; //$NON-NLS-1$
+    public static final String TYPE = "Document";
 
-    public static final String NAME_FIELD = "name"; //$NON-NLS-1$
+    public static final String NAME_FIELD = "name";
 
 }

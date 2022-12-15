@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String NAME_EDEFAULT = "NewRepresentationDescription"; //$NON-NLS-1$
+    protected static final String NAME_EDEFAULT = "NewRepresentationDescription";
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -66,7 +66,7 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String DOMAIN_TYPE_EDEFAULT = ""; //$NON-NLS-1$
+    protected static final String DOMAIN_TYPE_EDEFAULT = "";
 
     /**
      * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -86,7 +86,7 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = ""; //$NON-NLS-1$
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
 
     /**
      * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
@@ -106,7 +106,7 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String TITLE_EXPRESSION_EDEFAULT = "aql:\'New Representation\'"; //$NON-NLS-1$
+    protected static final String TITLE_EXPRESSION_EDEFAULT = "aql:\'New Representation\'";
 
     /**
      * The cached value of the '{@link #getTitleExpression() <em>Title Expression</em>}' attribute. <!-- begin-user-doc
@@ -328,13 +328,13 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
+        result.append(" (name: ");
         result.append(this.name);
-        result.append(", domainType: "); //$NON-NLS-1$
+        result.append(", domainType: ");
         result.append(this.domainType);
-        result.append(", preconditionExpression: "); //$NON-NLS-1$
+        result.append(", preconditionExpression: ");
         result.append(this.preconditionExpression);
-        result.append(", titleExpression: "); //$NON-NLS-1$
+        result.append(", titleExpression: ");
         result.append(this.titleExpression);
         result.append(')');
         return result.toString();

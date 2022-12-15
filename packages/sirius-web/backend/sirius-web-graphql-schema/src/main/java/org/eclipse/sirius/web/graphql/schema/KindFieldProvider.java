@@ -30,7 +30,7 @@ import graphql.schema.GraphQLNonNull;
  */
 public class KindFieldProvider {
 
-    public static final String KIND_FIELD = "kind"; //$NON-NLS-1$
+    public static final String KIND_FIELD = "kind";
 
     public GraphQLFieldDefinition getField() {
         // @formatter:off

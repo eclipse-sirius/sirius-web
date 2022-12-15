@@ -36,9 +36,9 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class ForOperationHandlerTests {
-    private static final String ITERATOR_VARIABLE_NAME = "i"; //$NON-NLS-1$
+    private static final String ITERATOR_VARIABLE_NAME = "i";
 
-    private static final String EXPRESSION = "aql:Sequence{'a', 'b', 'c'}"; //$NON-NLS-1$
+    private static final String EXPRESSION = "aql:Sequence{'a', 'b', 'c'}";
 
     private ForOperationHandler forOperationHandler;
 
@@ -64,13 +64,13 @@ public class ForOperationHandlerTests {
 
         // used to check that the for operation succeeded
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression("aql:self.renameENamedElementService(self.name+" + ITERATOR_VARIABLE_NAME + "))"); //$NON-NLS-1$//$NON-NLS-2$
+        subChangeContext.setBrowseExpression("aql:self.renameENamedElementService(self.name+" + ITERATOR_VARIABLE_NAME + "))");
         this.forOperation.getSubModelOperations().add(subChangeContext);
 
         IStatus handleResult = this.forOperationHandler.handle(this.operationTestContext.getVariables());
 
         assertTrue(handleResult instanceof Success);
-        assertEquals(OperationTestContext.ROOT_PACKAGE_NAME + "abc", this.operationTestContext.getRootPackage().getName()); //$NON-NLS-1$
+        assertEquals(OperationTestContext.ROOT_PACKAGE_NAME + "abc", this.operationTestContext.getRootPackage().getName());
 
     }
 
@@ -89,8 +89,8 @@ public class ForOperationHandlerTests {
         this.handleAndCheckExecution(null, EXPRESSION, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution(ITERATOR_VARIABLE_NAME, "", this.operationTestContext.getRootPackage()); //$NON-NLS-1$
-        this.handleAndCheckExecution("", EXPRESSION, this.operationTestContext.getRootPackage()); //$NON-NLS-1$
+        this.handleAndCheckExecution(ITERATOR_VARIABLE_NAME, "", this.operationTestContext.getRootPackage());
+        this.handleAndCheckExecution("", EXPRESSION, this.operationTestContext.getRootPackage());
 
         // Check expression with exception case
         this.handleAndCheckExecution(ITERATOR_VARIABLE_NAME, ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());

@@ -51,7 +51,7 @@ import io.micrometer.core.instrument.Timer;
 @Service
 public class EditingContextPersistenceService implements IEditingContextPersistenceService {
 
-    private static final String TIMER_NAME = "siriusweb_editingcontext_save"; //$NON-NLS-1$
+    private static final String TIMER_NAME = "siriusweb_editingcontext_save";
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 

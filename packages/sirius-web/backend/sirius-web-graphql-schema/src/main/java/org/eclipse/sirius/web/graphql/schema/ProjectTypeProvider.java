@@ -31,13 +31,13 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class ProjectTypeProvider {
-    public static final String TYPE = "Project"; //$NON-NLS-1$
+    public static final String TYPE = "Project";
 
-    public static final String NAME_FIELD = "name"; //$NON-NLS-1$
+    public static final String NAME_FIELD = "name";
 
-    public static final String OWNER_FIELD = "owner"; //$NON-NLS-1$
+    public static final String OWNER_FIELD = "owner";
 
-    public static final String VISIBILITY_FIELD = "visibility"; //$NON-NLS-1$
+    public static final String VISIBILITY_FIELD = "visibility";
 
-    public static final String CURRENT_EDITING_CONTEXT_FIELD = "currentEditingContext"; //$NON-NLS-1$
+    public static final String CURRENT_EDITING_CONTEXT_FIELD = "currentEditingContext";
 }

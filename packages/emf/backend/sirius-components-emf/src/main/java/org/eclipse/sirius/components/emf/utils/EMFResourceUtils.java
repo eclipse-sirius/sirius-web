@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,10 +35,10 @@ public class EMFResourceUtils {
      */
     // @formatter:off
     private static final Map<String, Boolean> SAFE_SAX_PARSER_FEATURES = Map.of(
-            "http://xml.org/sax/features/external-general-entities", false, //$NON-NLS-1$
-            "http://xml.org/sax/features/external-parameter-entities", false, //$NON-NLS-1$
-            "http://apache.org/xml/features/nonvalidating/load-external-dtd", false, //$NON-NLS-1$
-            "http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+            "http://xml.org/sax/features/external-general-entities", false,
+            "http://xml.org/sax/features/external-parameter-entities", false,
+            "http://apache.org/xml/features/nonvalidating/load-external-dtd", false,
+            "http://apache.org/xml/features/disallow-doctype-decl", true);
     // @formatter:on
 
     public Map<String, Object> getXMILoadOptions() {

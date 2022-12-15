@@ -68,7 +68,7 @@ public final class Ratio {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'x: {1}, y: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'x: {1}, y: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.x, this.y);
     }
 

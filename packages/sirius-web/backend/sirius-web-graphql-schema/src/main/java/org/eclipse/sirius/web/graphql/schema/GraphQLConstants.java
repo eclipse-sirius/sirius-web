@@ -21,12 +21,12 @@ public final class GraphQLConstants {
     /**
      * The suffix used for GraphQL types used as connection for multi-valued references with pagination support.
      */
-    public static final String CONNECTION = "Connection"; //$NON-NLS-1$
+    public static final String CONNECTION = "Connection";
 
     /**
      * The suffix used for GraphQL types used as an edge for multi-valued references with pagination support.
      */
-    public static final String EDGE = "Edge"; //$NON-NLS-1$
+    public static final String EDGE = "Edge";
 
     /**
      * This class will only be used to store some constants, as such we are hiding its constructor.

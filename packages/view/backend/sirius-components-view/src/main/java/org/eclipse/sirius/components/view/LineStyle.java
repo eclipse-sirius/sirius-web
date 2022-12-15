@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ public enum LineStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    SOLID(0, "Solid", "Solid"), //$NON-NLS-1$ //$NON-NLS-2$
+    SOLID(0, "Solid", "Solid"),
 
     /**
      * The '<em><b>Dash</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +43,7 @@ public enum LineStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    DASH(1, "Dash", "Dash"), //$NON-NLS-1$ //$NON-NLS-2$
+    DASH(1, "Dash", "Dash"),
 
     /**
      * The '<em><b>Dot</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -52,7 +52,7 @@ public enum LineStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    DOT(2, "Dot", "Dot"), //$NON-NLS-1$ //$NON-NLS-2$
+    DOT(2, "Dot", "Dot"),
 
     /**
      * The '<em><b>Dash Dot</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -61,7 +61,7 @@ public enum LineStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    DASH_DOT(3, "Dash_Dot", "Dash_Dot"); //$NON-NLS-1$ //$NON-NLS-2$
+    DASH_DOT(3, "Dash_Dot", "Dash_Dot");
 
     /**
      * The '<em><b>Solid</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

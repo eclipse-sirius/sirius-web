@@ -39,9 +39,9 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class RenameFormEventHandlerTests {
-    private static final String OLD_LABEL = "oldLabel"; //$NON-NLS-1$
+    private static final String OLD_LABEL = "oldLabel";
 
-    private static final String NEW_LABEL = "newLabel"; //$NON-NLS-1$
+    private static final String NEW_LABEL = "newLabel";
 
     @Test
     public void testRenameRepresentation() {

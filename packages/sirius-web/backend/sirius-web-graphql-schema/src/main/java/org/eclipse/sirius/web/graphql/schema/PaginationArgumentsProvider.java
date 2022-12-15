@@ -37,25 +37,25 @@ public class PaginationArgumentsProvider {
      * The name of the parameter used to indicate the number of elements to retrieve using a forward pagination
      * strategy.
      */
-    public static final String FIRST = "first"; //$NON-NLS-1$
+    public static final String FIRST = "first";
 
     /**
      * The name of the parameter used to indicate the number of elements to retrieve using a backward pagination
      * strategy.
      */
-    public static final String LAST = "last"; //$NON-NLS-1$
+    public static final String LAST = "last";
 
     /**
      * The name of the parameter used to indicate after which element should the elements be retrieved using a forward
      * pagination strategy.
      */
-    public static final String AFTER = "after"; //$NON-NLS-1$
+    public static final String AFTER = "after";
 
     /**
      * The name of the parameter used to indicate before which element should the elements be retrieved using a forward
      * pagination strategy.
      */
-    public static final String BEFORE = "before"; //$NON-NLS-1$
+    public static final String BEFORE = "before";
 
     public List<GraphQLArgument> getArguments() {
         // @formatter:off

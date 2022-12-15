@@ -221,7 +221,7 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valueExpression: "); //$NON-NLS-1$
+        result.append(" (valueExpression: ");
         result.append(this.valueExpression);
         result.append(')');
         return result.toString();

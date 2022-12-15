@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,9 +53,9 @@ public class SemanticCandidatesProviderTests {
      */
     @Test
     public void testDomainClassAndSemanticCandidatesExpression() {
-        String domainClass = "ecore::EClass"; //$NON-NLS-1$
-        String semanticCandidatesExpression = "aql:self.eClassifiers"; //$NON-NLS-1$
-        String preconditionExpression = ""; //$NON-NLS-1$
+        String domainClass = "ecore::EClass";
+        String semanticCandidatesExpression = "aql:self.eClassifiers";
+        String preconditionExpression = "";
 
         SemanticCandidatesProvider semanticCandidatesProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
 
@@ -78,9 +78,9 @@ public class SemanticCandidatesProviderTests {
      */
     @Test
     public void testDomainClassSemanticCandidatesExpressionAndPreconditionExpression() {
-        String domainClass = "ecore::EClass"; //$NON-NLS-1$
-        String semanticCandidatesExpression = "aql:self.eClassifiers"; //$NON-NLS-1$
-        String preconditionExpression = "aql:self.name.startsWith('EEnum')"; //$NON-NLS-1$
+        String domainClass = "ecore::EClass";
+        String semanticCandidatesExpression = "aql:self.eClassifiers";
+        String preconditionExpression = "aql:self.name.startsWith('EEnum')";
 
         SemanticCandidatesProvider semanticCandidatesProvider = new SemanticCandidatesProvider(this.interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
 
@@ -98,6 +98,6 @@ public class SemanticCandidatesProviderTests {
         // @formatter:on
 
         assertThat(semanticCandidates).hasSize(2);
-        assertThat(eClasses).extracting(ENamedElement::getName).containsExactly("EEnum", "EEnumLiteral"); //$NON-NLS-1$//$NON-NLS-2$
+        assertThat(eClasses).extracting(ENamedElement::getName).containsExactly("EEnum", "EEnumLiteral");
     }
 }

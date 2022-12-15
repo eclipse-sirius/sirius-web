@@ -73,8 +73,8 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RepresentationDescription_name_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_name_feature", "_UI_RepresentationDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_RepresentationDescription_name_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_name_feature", "_UI_RepresentationDescription_type"),
                 ViewPackage.Literals.REPRESENTATION_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -85,8 +85,8 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addDomainTypePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RepresentationDescription_domainType_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_domainType_feature", "_UI_RepresentationDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_RepresentationDescription_domainType_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_domainType_feature", "_UI_RepresentationDescription_type"),
                 ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -98,8 +98,8 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addPreconditionExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RepresentationDescription_preconditionExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_preconditionExpression_feature", "_UI_RepresentationDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_RepresentationDescription_preconditionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_preconditionExpression_feature", "_UI_RepresentationDescription_type"),
                 ViewPackage.Literals.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -110,8 +110,8 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addTitleExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RepresentationDescription_titleExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_titleExpression_feature", "_UI_RepresentationDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_RepresentationDescription_titleExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_titleExpression_feature", "_UI_RepresentationDescription_type"),
                 ViewPackage.Literals.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -122,7 +122,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RepresentationDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RepresentationDescription.svg"));
     }
 
     /**
@@ -143,8 +143,8 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((RepresentationDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RepresentationDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_RepresentationDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_RepresentationDescription_type") :
+                this.getString("_UI_RepresentationDescription_type") + " " + label;
     }
 
     /**

@@ -82,7 +82,7 @@ public class Hierarchy implements IRepresentation, ISemanticRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, label: {4}, kind: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, label: {4}, kind: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.label, this.kind);
     }
 

@@ -48,13 +48,13 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUploadDocumentDataFetcher.UPLOAD_DOCUMENT_FIELD)
 public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String UPLOAD_DOCUMENT_FIELD = "uploadDocument"; //$NON-NLS-1$
+    public static final String UPLOAD_DOCUMENT_FIELD = "uploadDocument";
 
-    private static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
+    private static final String EDITING_CONTEXT_ID = "editingContextId";
 
-    private static final String FILE = "file"; //$NON-NLS-1$
+    private static final String FILE = "file";
 
-    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String ID = "id";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 

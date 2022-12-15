@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -118,25 +118,25 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
         Size size = this.actual.getSize();
         if (size == null) {
-            this.failWithMessage("Expected diagram's size to be <'{'width: %.2f, height: %.2f'}'> but was null", width, height); //$NON-NLS-1$
+            this.failWithMessage("Expected diagram's size to be <'{'width: %.2f, height: %.2f'}'> but was null", width, height);
         } else {
             if (width != size.getWidth()) {
-                this.failWithMessage("Expected diagram's width to be <%.2f> but was <%.2f>", width, size.getWidth()); //$NON-NLS-1$
+                this.failWithMessage("Expected diagram's width to be <%.2f> but was <%.2f>", width, size.getWidth());
             }
             if (height != size.getHeight()) {
-                this.failWithMessage("Expected diagram's height to be <%.2f> but was <%.2f>", height, size.getHeight()); //$NON-NLS-1$
+                this.failWithMessage("Expected diagram's height to be <%.2f> but was <%.2f>", height, size.getHeight());
             }
         }
 
         Position position = this.actual.getPosition();
         if (position == null) {
-            this.failWithMessage("Expected diagram's position to be <'{'x: %.2f, y: %.2f'}'> but was null", x, y); //$NON-NLS-1$
+            this.failWithMessage("Expected diagram's position to be <'{'x: %.2f, y: %.2f'}'> but was null", x, y);
         } else {
             if (x != position.getX()) {
-                this.failWithMessage("Expected diagram's x to be <%.2f> but was <%.2f>", x, position.getX()); //$NON-NLS-1$
+                this.failWithMessage("Expected diagram's x to be <%.2f> but was <%.2f>", x, position.getX());
             }
             if (y != position.getY()) {
-                this.failWithMessage("Expected diagram's y to be <%.2f> but was <%.2f>", y, position.getY()); //$NON-NLS-1$
+                this.failWithMessage("Expected diagram's y to be <%.2f> but was <%.2f>", y, position.getY());
             }
         }
 
@@ -155,7 +155,7 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
     private void visitNodeId(List<String> ids, Node node) {
         if (ids.contains(node.getId())) {
-            this.failWithMessage("The id of the node <%s> already exist in the diagram", node.getId()); //$NON-NLS-1$
+            this.failWithMessage("The id of the node <%s> already exist in the diagram", node.getId());
         }
         ids.add(node.getId());
         this.visitLabelId(ids, node.getLabel());
@@ -166,7 +166,7 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
     private void visitEdgeId(List<String> ids, Edge edge) {
         if (ids.contains(edge.getId())) {
-            this.failWithMessage("The id of the edge <%s> already exist in the diagram", edge.getId()); //$NON-NLS-1$
+            this.failWithMessage("The id of the edge <%s> already exist in the diagram", edge.getId());
         }
         ids.add(edge.getId());
 
@@ -178,7 +178,7 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
     private void visitLabelId(List<String> ids, Label label) {
         if (label != null) {
             if (ids.contains(label.getId())) {
-                this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId()); //$NON-NLS-1$
+                this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId());
             }
             ids.add(label.getId());
         }

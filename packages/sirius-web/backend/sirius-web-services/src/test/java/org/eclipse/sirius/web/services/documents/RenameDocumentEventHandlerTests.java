@@ -47,16 +47,16 @@ import reactor.core.publisher.Sinks.One;
  * @author fbarbin
  */
 public class RenameDocumentEventHandlerTests {
-    private static final String OLD_NAME = "oldName"; //$NON-NLS-1$
+    private static final String OLD_NAME = "oldName";
 
-    private static final String NEW_NAME = "newName"; //$NON-NLS-1$
+    private static final String NEW_NAME = "newName";
 
     @Test
     public void testRenameDocument() {
         IDocumentService noOpDocumentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> rename(UUID documentId, String newName) {
-                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), newName, "noContent")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), newName, "noContent"));
             }
         };
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpServicesMessageService(), new SimpleMeterRegistry());

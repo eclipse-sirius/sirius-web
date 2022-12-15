@@ -42,7 +42,7 @@ import reactor.core.publisher.Sinks.One;
 public class RenameProjectEventHandlerTests {
     @Test
     public void testRenameProject() {
-        Project project = new Project(UUID.randomUUID(), "newName", new Profile(UUID.randomUUID(), "system"), Visibility.PUBLIC); //$NON-NLS-1$ //$NON-NLS-2$
+        Project project = new Project(UUID.randomUUID(), "newName", new Profile(UUID.randomUUID(), "system"), Visibility.PUBLIC);
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IProjectService projectService = new IProjectService.NoOp() {
@@ -54,7 +54,7 @@ public class RenameProjectEventHandlerTests {
         };
 
         RenameProjectEventHandler handler = new RenameProjectEventHandler(new NoOpServicesMessageService(), projectService);
-        var input = new RenameProjectInput(UUID.randomUUID(), UUID.randomUUID(), "newName"); //$NON-NLS-1$
+        var input = new RenameProjectInput(UUID.randomUUID(), UUID.randomUUID(), "newName");
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo and others.
+ * Copyright (c) 2021, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,9 +57,9 @@ import org.w3c.dom.svg.SVGDocument;
 @Service
 public class ImageSizeProvider {
 
-    private static final String SVGZ_FILE_EXTENSION = "svgz"; //$NON-NLS-1$
+    private static final String SVGZ_FILE_EXTENSION = "svgz";
 
-    private static final String SVG_FILE_EXTENSION = "svg"; //$NON-NLS-1$
+    private static final String SVG_FILE_EXTENSION = "svg";
 
     private static final long MAX_CACHE_SIZE = 1000;
 
@@ -160,7 +160,7 @@ public class ImageSizeProvider {
         File tmpSvg = null;
         try (InputStream inJarInputStream = new BufferedInputStream(url.openStream())) {
             // We will copy the svg file to avoid jar in jar path problems.
-            tmpSvg = java.io.File.createTempFile("sirius-web", extension); //$NON-NLS-1$
+            tmpSvg = java.io.File.createTempFile("sirius-web", extension);
             try (FileOutputStream outputStream = new FileOutputStream(tmpSvg)) {
                 inJarInputStream.transferTo(outputStream);
                 try (InputStream onTmpInputStream = new FileInputStream(tmpSvg)) {
@@ -183,7 +183,7 @@ public class ImageSizeProvider {
                 }
             }
         } catch (IOException | BridgeException exception) {
-            String pattern = "An error has occured while computing the dimensions of {0}: {1}"; //$NON-NLS-1$
+            String pattern = "An error has occured while computing the dimensions of {0}: {1}";
             this.logger.warn(MessageFormat.format(pattern, url.toString(), exception.getMessage()), exception);
         } finally {
             if (tmpSvg != null && tmpSvg.exists()) {

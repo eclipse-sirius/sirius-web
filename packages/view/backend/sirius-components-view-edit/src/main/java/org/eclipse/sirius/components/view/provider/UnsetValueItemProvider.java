@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,8 +63,8 @@ public class UnsetValueItemProvider extends OperationItemProvider {
      */
     protected void addFeatureNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_UnsetValue_featureName_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_UnsetValue_featureName_feature", "_UI_UnsetValue_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_UnsetValue_featureName_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_UnsetValue_featureName_feature", "_UI_UnsetValue_type"),
                 ViewPackage.Literals.UNSET_VALUE__FEATURE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -75,8 +75,8 @@ public class UnsetValueItemProvider extends OperationItemProvider {
      */
     protected void addElementExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_UnsetValue_elementExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_UnsetValue_elementExpression_feature", "_UI_UnsetValue_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_UnsetValue_elementExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_UnsetValue_elementExpression_feature", "_UI_UnsetValue_type"),
                 ViewPackage.Literals.UNSET_VALUE__ELEMENT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -87,7 +87,7 @@ public class UnsetValueItemProvider extends OperationItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/UnsetValue.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/UnsetValue.svg"));
     }
 
     /**
@@ -108,8 +108,8 @@ public class UnsetValueItemProvider extends OperationItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((UnsetValue) object).getFeatureName();
-        return label == null || label.length() == 0 ? this.getString("_UI_UnsetValue_type") : //$NON-NLS-1$
-                this.getString("_UI_UnsetValue_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_UnsetValue_type") :
+                this.getString("_UI_UnsetValue_type") + " " + label;
     }
 
     /**

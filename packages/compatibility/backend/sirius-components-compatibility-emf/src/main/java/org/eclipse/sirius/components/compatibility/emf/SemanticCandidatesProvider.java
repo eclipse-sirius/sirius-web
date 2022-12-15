@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public class SemanticCandidatesProvider implements Function<VariableManager, Lis
      * semantic resources of the session's ResourceSet, while the expression below will only look into the current
      * resource.
      */
-    private static final String DEFAULT_SEMANTIC_CANDIDATES_EXPRESSION = "aql:self.eResource().getContents().eAllContents()"; //$NON-NLS-1$
+    private static final String DEFAULT_SEMANTIC_CANDIDATES_EXPRESSION = "aql:self.eResource().getContents().eAllContents()";
 
     private AQLInterpreter interpreter;
 

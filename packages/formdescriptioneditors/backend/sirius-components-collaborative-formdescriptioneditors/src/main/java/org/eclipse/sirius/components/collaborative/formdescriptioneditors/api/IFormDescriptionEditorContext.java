@@ -24,7 +24,7 @@ public interface IFormDescriptionEditorContext {
     /**
      * The name of the variable used to store and retrieve the form description editor context from a variable manager.
      */
-    String FORMDESCRIPTIONEDITOR_CONTEXT = "formDescriptionEditorContext"; //$NON-NLS-1$
+    String FORMDESCRIPTIONEDITOR_CONTEXT = "formDescriptionEditorContext";
 
     FormDescriptionEditor getFormDescriptionEditor();
 

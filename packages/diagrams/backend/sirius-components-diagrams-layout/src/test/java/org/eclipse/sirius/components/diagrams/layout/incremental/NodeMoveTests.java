@@ -59,18 +59,18 @@ public class NodeMoveTests {
     @Test
     public void testNodeMoveUpdatesEdgeRoutingPoints() {
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root")
             .nodes()
-                .rectangleNode("Parent").at(100, 100).of(500, 500) //$NON-NLS-1$
+                .rectangleNode("Parent").at(100, 100).of(500, 500)
                     .childNodes(new FreeFormLayoutStrategy())
-                        .rectangleNode("First Child").at(100, 100).of(100, 100).and() //$NON-NLS-1$
-                        .rectangleNode("Second Child").at(300, 300).of(100, 100).and() //$NON-NLS-1$
+                        .rectangleNode("First Child").at(100, 100).of(100, 100).and()
+                        .rectangleNode("Second Child").at(300, 300).of(100, 100).and()
                     .and()
                 .and()
             .and()
-            .edge("Contained Edge") //$NON-NLS-1$
-                .from("First Child").at(0.5, 0.5) //$NON-NLS-1$
-                .to("Second Child").at(0.5, 0.5) //$NON-NLS-1$
+            .edge("Contained Edge")
+                .from("First Child").at(0.5, 0.5)
+                .to("Second Child").at(0.5, 0.5)
                 .goingThrough(450, 250)
             .and()
         .build();

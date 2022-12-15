@@ -42,18 +42,18 @@ import org.eclipse.sirius.components.representations.Success;
  */
 public class TestDiagramBuilder {
 
-    public static final String IMAGE_PNG = "/image.png"; //$NON-NLS-1$
+    public static final String IMAGE_PNG = "/image.png";
 
     public static final String TOOL_IMAGE_URL = IMAGE_PNG;
 
-    public static final String TOOL_LABEL = "toolLabel"; //$NON-NLS-1$
+    public static final String TOOL_LABEL = "toolLabel";
 
     public Diagram getDiagram(String id) {
         // @formatter:off
         return Diagram.newDiagram(id)
-                .label("diagramLabel") //$NON-NLS-1$
+                .label("diagramLabel")
                 .descriptionId(UUID.randomUUID().toString())
-                .targetObjectId("diagramTargetObjectId") //$NON-NLS-1$
+                .targetObjectId("diagramTargetObjectId")
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .nodes(List.of())
@@ -65,10 +65,10 @@ public class TestDiagramBuilder {
     public RectangularNodeStyle getRectangularNodeStyle() {
         // @formatter:off
         return RectangularNodeStyle.newRectangularNodeStyle()
-                .borderColor("#000000") //$NON-NLS-1$
+                .borderColor("#000000")
                 .borderSize(1)
                 .borderStyle(LineStyle.Solid)
-                .color("#FFFFFF") //$NON-NLS-1$
+                .color("#FFFFFF")
                 .build();
         // @formatter:on
     }
@@ -85,13 +85,13 @@ public class TestDiagramBuilder {
     public Node getNode(String id) {
         // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
-                .color("#000000") //$NON-NLS-1$
+                .color("#000000")
                 .fontSize(16)
-                .iconURL("") //$NON-NLS-1$
+                .iconURL("")
                 .build();
         Label label = Label.newLabel(UUID.randomUUID().toString())
-                .type("labelType") //$NON-NLS-1$
-                .text("text") //$NON-NLS-1$
+                .type("labelType")
+                .text("text")
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)
@@ -100,9 +100,9 @@ public class TestDiagramBuilder {
 
         return Node.newNode(id)
                 .type(NodeType.NODE_RECTANGLE)
-                .targetObjectId("nodeTargetObjectId") //$NON-NLS-1$
-                .targetObjectKind("") //$NON-NLS-1$
-                .targetObjectLabel("") //$NON-NLS-1$
+                .targetObjectId("nodeTargetObjectId")
+                .targetObjectKind("")
+                .targetObjectLabel("")
                 .descriptionId(UUID.randomUUID())
                 .label(label)
                 .style(this.getRectangularNodeStyle())
@@ -124,14 +124,14 @@ public class TestDiagramBuilder {
                 .lineStyle(LineStyle.Solid)
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
-                .color("#FFFFFF") //$NON-NLS-1$
+                .color("#FFFFFF")
                 .build();
 
         return Edge.newEdge(id)
-                .type("edgeType") //$NON-NLS-1$
-                .targetObjectId("edgeTargetObjectId") //$NON-NLS-1$
-                .targetObjectKind("") //$NON-NLS-1$
-                .targetObjectLabel("") //$NON-NLS-1$
+                .type("edgeType")
+                .targetObjectId("edgeTargetObjectId")
+                .targetObjectKind("")
+                .targetObjectLabel("")
                 .descriptionId(UUID.randomUUID())
                 .sourceId(sourceId)
                 .targetId(targetId)

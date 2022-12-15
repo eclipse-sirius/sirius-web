@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,7 +54,7 @@ public final class IfDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 

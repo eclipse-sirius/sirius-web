@@ -101,7 +101,7 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
 
         // @formatter:off
         INodeStyle style = IconLabelNodeStyle.newIconLabelNodeStyle()
-                .backgroundColor("white") //$NON-NLS-1$
+                .backgroundColor("white")
                 .build();
         // @formatter:on
 
@@ -126,7 +126,7 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
                .customizedProperties(this.customizedProperties)
                .descriptionId(descriptionId)
                .targetObjectId(labelText)
-               .targetObjectKind("") //$NON-NLS-1$
+               .targetObjectKind("")
                .targetObjectLabel(labelText)
                .style(Objects.requireNonNull(style))
                .modifiers(Set.of())

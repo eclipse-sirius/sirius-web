@@ -79,7 +79,7 @@ public class DocumentController {
                 byte[] bytes = optionalBytes.get();
 
                 // @formatter:off
-                ContentDisposition contentDisposition = ContentDisposition.builder("attachment")  //$NON-NLS-1$
+                ContentDisposition contentDisposition = ContentDisposition.builder("attachment") 
                         .filename(document.getName())
                         .build();
                 // @formatter:on

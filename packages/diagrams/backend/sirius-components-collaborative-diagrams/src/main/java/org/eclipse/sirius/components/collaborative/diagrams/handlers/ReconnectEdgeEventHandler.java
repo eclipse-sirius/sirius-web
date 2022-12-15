@@ -138,7 +138,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
     }
 
     private IStatus invokeReconnectEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext, ReconnectEdgeInput reconnectEdgeInput) {
-        IStatus status = new Failure(""); //$NON-NLS-1$
+        IStatus status = new Failure("");
 
         var diagram = diagramContext.getDiagram();
 

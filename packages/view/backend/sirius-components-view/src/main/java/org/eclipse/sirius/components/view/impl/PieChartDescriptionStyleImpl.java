@@ -596,21 +596,21 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(" (fontSize: ");
         result.append(this.fontSize);
-        result.append(", italic: "); //$NON-NLS-1$
+        result.append(", italic: ");
         result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
+        result.append(", bold: ");
         result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
+        result.append(", underline: ");
         result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", colors: "); //$NON-NLS-1$
+        result.append(", colors: ");
         result.append(this.colors);
-        result.append(", strokeWidth: "); //$NON-NLS-1$
+        result.append(", strokeWidth: ");
         result.append(this.strokeWidth);
-        result.append(", strokeColor: "); //$NON-NLS-1$
+        result.append(", strokeColor: ");
         result.append(this.strokeColor);
         result.append(')');
         return result.toString();

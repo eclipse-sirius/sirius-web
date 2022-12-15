@@ -80,7 +80,7 @@ public final class ValidationDescription implements IRepresentationDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,17 +34,17 @@ public class EMFMessageService implements IEMFMessageService {
 
     @Override
     public String unexpectedError() {
-        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR");
     }
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
     }
 
     @Override
     public String invalidNumber(String newValue) {
-        return this.messageSourceAccessor.getMessage("INVALID_NUMBER", new Object[] { newValue }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("INVALID_NUMBER", new Object[] { newValue });
     }
 
 }

@@ -49,7 +49,7 @@ public class CustomImageImportService implements ICustomImageImportService {
 
     @Override
     public IPayload importImage(UUID inputId, String editingContextId, String label, UploadFile file) {
-        IPayload result = new ErrorPayload(inputId, "Error while uploading image " + file.getName()); //$NON-NLS-1$
+        IPayload result = new ErrorPayload(inputId, "Error while uploading image " + file.getName());
         if (this.isImageFile(Path.of(file.getName()))) {
             try {
                 CustomImageEntity customImageEntity = new CustomImageEntity();
@@ -72,7 +72,7 @@ public class CustomImageImportService implements ICustomImageImportService {
                 customImageEntity = this.customImageRepository.save(customImageEntity);
                 result = new UploadImageSuccessPayload(inputId, customImageEntity.getId());
             } catch (IOException e) {
-                result = new ErrorPayload(inputId, String.format("Error while uploading image %s: %s", file.getName(), e.getMessage())); //$NON-NLS-1$
+                result = new ErrorPayload(inputId, String.format("Error while uploading image %s: %s", file.getName(), e.getMessage()));
             }
         }
         return result;
@@ -81,7 +81,7 @@ public class CustomImageImportService implements ICustomImageImportService {
     private boolean isImageFile(Path path) {
         try {
             String probedType = Files.probeContentType(path);
-            return probedType != null && probedType.startsWith("image/"); //$NON-NLS-1$
+            return probedType != null && probedType.startsWith("image/");
         } catch (IOException ioe) {
             return false;
         }

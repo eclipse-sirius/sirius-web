@@ -72,21 +72,21 @@ import io.micrometer.core.instrument.Timer;
 @RequestMapping(URLConstants.IMAGE_BASE_PATH + "/**/*")
 public class ImagesController {
 
-    private static final String EXTENSION_SEPARATOR = "."; //$NON-NLS-1$
+    private static final String EXTENSION_SEPARATOR = ".";
 
-    private static final String IMAGE_GIF_EXTENSION = "gif"; //$NON-NLS-1$
+    private static final String IMAGE_GIF_EXTENSION = "gif";
 
-    private static final String IMAGE_JPG_EXTENSION = "jpeg"; //$NON-NLS-1$
+    private static final String IMAGE_JPG_EXTENSION = "jpeg";
 
-    private static final String IMAGE_PNG_EXTENSION = "png"; //$NON-NLS-1$
+    private static final String IMAGE_PNG_EXTENSION = "png";
 
-    private static final String IMAGE_SVG_EXTENSION = "svg"; //$NON-NLS-1$
+    private static final String IMAGE_SVG_EXTENSION = "svg";
 
-    private static final String CUSTOM_IMAGE_PREFIX = "/custom/"; //$NON-NLS-1$
+    private static final String CUSTOM_IMAGE_PREFIX = "/custom/";
 
-    private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml"); //$NON-NLS-1$
+    private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml");
 
-    private static final String TIMER = "siriusweb_images"; //$NON-NLS-1$
+    private static final String TIMER = "siriusweb_images";
 
     private final List<IImagePathService> pathResourcesServices;
 
@@ -132,7 +132,7 @@ public class ImagesController {
 
     private ResponseEntity<Resource> getCustomImage(String imagePath) {
         ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
-        String[] imageDescriptor = imagePath.substring(CUSTOM_IMAGE_PREFIX.length()).split("/"); //$NON-NLS-1$
+        String[] imageDescriptor = imagePath.substring(CUSTOM_IMAGE_PREFIX.length()).split("/");
         Optional<UUID> optionalImageId = Optional.empty();
         if (imageDescriptor.length == 1) {
             optionalImageId = new IDParser().parse(imageDescriptor[0]);

@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
  */
 @Immutable
 public final class BarChart implements IChart {
-    public static final String KIND = "BarChart"; //$NON-NLS-1$
+    public static final String KIND = "BarChart";
 
     private String id;
 
@@ -92,7 +92,7 @@ public final class BarChart implements IChart {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}, width: {5}, height: {6}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}, width: {5}, height: {6}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind, this.width, this.height);
     }
 

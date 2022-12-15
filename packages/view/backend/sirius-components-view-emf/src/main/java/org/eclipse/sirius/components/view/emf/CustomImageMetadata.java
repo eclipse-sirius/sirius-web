@@ -56,7 +56,7 @@ public final class CustomImageMetadata {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{' id: {1}, projectId: {2}, label: {3}, contentType: {4} '}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId.orElse("none"), this.label, this.contentType); //$NON-NLS-1$
+        String pattern = "{0} '{' id: {1}, projectId: {2}, label: {3}, contentType: {4} '}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId.orElse("none"), this.label, this.contentType);
     }
 }

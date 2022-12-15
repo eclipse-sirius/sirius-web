@@ -51,7 +51,7 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
     private final HierarchyEventFlux hierarchyEventFlux;
 
     public HierarchyEventProcessor(IEditingContext editingContext, HierarchyContext hierarchyContext, ISubscriptionManager subscriptionManager, HierarchyCreationService hierarchyCreationService) {
-        this.logger.trace("Creating the hierarchy event processor {}", hierarchyContext.getHierarchy().getId()); //$NON-NLS-1$
+        this.logger.trace("Creating the hierarchy event processor {}", hierarchyContext.getHierarchy().getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.hierarchyContext = Objects.requireNonNull(hierarchyContext);
@@ -64,7 +64,7 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
         hierarchyContext.update(hierarchy);
         this.hierarchyEventFlux = new HierarchyEventFlux(hierarchy);
 
-        this.logger.trace("Hierarchy refreshed: {})", hierarchy.getId()); //$NON-NLS-1$
+        this.logger.trace("Hierarchy refreshed: {})", hierarchy.getId());
     }
 
     @Override
@@ -87,7 +87,7 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             Hierarchy refreshedHierarchy = this.hierarchyCreationService.refresh(this.editingContext, this.hierarchyContext).orElse(null);
 
-            this.logger.trace("Hierarchy refreshed: {}", refreshedHierarchy.getId()); //$NON-NLS-1$
+            this.logger.trace("Hierarchy refreshed: {}", refreshedHierarchy.getId());
 
             this.hierarchyContext.update(refreshedHierarchy);
             this.hierarchyEventFlux.hierarchyRefreshed(changeDescription.getInput(), refreshedHierarchy);
@@ -117,7 +117,7 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the hierarchy event processor {}", this.hierarchyContext.getHierarchy().getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the hierarchy event processor {}", this.hierarchyContext.getHierarchy().getId());
 
         this.subscriptionManager.dispose();
         this.hierarchyEventFlux.dispose();

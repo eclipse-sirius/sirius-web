@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public class DiagramLabelProvider implements Function<VariableManager, String> {
         String titleExpression = diagramDescription.getTitleExpression();
         if (titleExpression.isBlank()) {
             String defaultName = Optional.ofNullable(diagramDescription.getLabel()).orElse(diagramDescription.getName());
-            titleExpression = MessageFormat.format("aql:''new {0}''", defaultName.replace("'", "''")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            titleExpression = MessageFormat.format("aql:''new {0}''", defaultName.replace("'", "''"));
         }
         this.labelExpression = titleExpression;
     }
@@ -57,7 +57,7 @@ public class DiagramLabelProvider implements Function<VariableManager, String> {
 
         return optionalLabel.orElseGet(() -> {
             Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.labelExpression);
-            return result.asString().orElse(""); //$NON-NLS-1$
+            return result.asString().orElse("");
         });
     }
 

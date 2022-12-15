@@ -62,9 +62,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         var diagramQueryService = new IDiagramQueryService.NoOp();
 
         // @formatter:off
-        var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("toolId") //$NON-NLS-1$
-                .label("label") //$NON-NLS-1$
-                .imageURL("imageURL") //$NON-NLS-1$
+        var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("toolId")
+                .label("label")
+                .imageURL("imageURL")
                 .targetDescriptions(List.of())
                 .selectionDescriptionId(null)
                 .handler(variableManager -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of()))
@@ -85,24 +85,24 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         // @formatter:off
         var input = InvokeSingleClickOnDiagramElementToolInput.newInvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID())
-                .editingContextId("editingContextId") //$NON-NLS-1$
-                .representationId("representationId") //$NON-NLS-1$
-                .diagramElementId("diagramId") //$NON-NLS-1$
-                .toolId("toolId") //$NON-NLS-1$
+                .editingContextId("editingContextId")
+                .representationId("representationId")
+                .diagramElementId("diagramId")
+                .toolId("toolId")
                 .startingPositionX(5.0)
                 .startingPositionY(8.0)
-                .selectedObjectId("selectedObjectId") //$NON-NLS-1$
+                .selectedObjectId("selectedObjectId")
                 .build();
         // @formatter:on
 
-        IEditingContext editingContext = () -> "editingContextId"; //$NON-NLS-1$
+        IEditingContext editingContext = () -> "editingContextId";
 
         assertThat(handler.canHandle(input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram("diagramId")); //$NON-NLS-1$
+        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram("diagramId"));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

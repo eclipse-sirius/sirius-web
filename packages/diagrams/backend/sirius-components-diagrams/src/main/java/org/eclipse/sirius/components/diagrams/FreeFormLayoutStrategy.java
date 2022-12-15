@@ -19,7 +19,7 @@ package org.eclipse.sirius.components.diagrams;
  */
 public final class FreeFormLayoutStrategy implements ILayoutStrategy {
 
-    public static final String KIND = "FreeForm"; //$NON-NLS-1$
+    public static final String KIND = "FreeForm";
 
     @Override
     public String getKind() {

@@ -49,7 +49,7 @@ public class ProjectCustomImageMetadataSearchService implements IProjectCustomIm
     }
 
     private CustomImageMetadata toDTO(CustomImageMetadataEntity customImageMetadataEntity) {
-        String url = String.format("/custom/%s", customImageMetadataEntity.getId().toString()); //$NON-NLS-1$
+        String url = String.format("/custom/%s", customImageMetadataEntity.getId().toString());
         return new CustomImageMetadata(customImageMetadataEntity.getId(), customImageMetadataEntity.getLabel(), url, customImageMetadataEntity.getContentType());
     }
 

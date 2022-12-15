@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class IfOperationHandlerTests {
-    private static final String AQL_TRUE = "true"; //$NON-NLS-1$
+    private static final String AQL_TRUE = "true";
 
     private IfOperationHandler ifOperationHandler;
 
@@ -57,9 +57,9 @@ public class IfOperationHandlerTests {
     @Test
     public void ifOperationHandlerNominalCaseTest() {
         // used to check that the if operation succeeded
-        String newName = "newName"; //$NON-NLS-1$
+        String newName = "newName";
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression("aql:self.renameENamedElementService('" + newName + "'))"); //$NON-NLS-1$//$NON-NLS-2$
+        subChangeContext.setBrowseExpression("aql:self.renameENamedElementService('" + newName + "'))");
         this.ifOperation.getSubModelOperations().add(subChangeContext);
 
         // check the nominal case
@@ -86,7 +86,7 @@ public class IfOperationHandlerTests {
         this.handleAndCheckExecution(null, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", this.operationTestContext.getRootPackage()); //$NON-NLS-1$
+        this.handleAndCheckExecution("", this.operationTestContext.getRootPackage());
 
         // Check expression with exception case
         this.handleAndCheckExecution(ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());

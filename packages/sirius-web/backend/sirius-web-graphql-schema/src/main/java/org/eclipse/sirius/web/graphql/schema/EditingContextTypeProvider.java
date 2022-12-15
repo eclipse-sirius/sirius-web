@@ -19,40 +19,40 @@ package org.eclipse.sirius.web.graphql.schema;
  */
 public class EditingContextTypeProvider {
 
-    public static final String TYPE = "EditingContext"; //$NON-NLS-1$
+    public static final String TYPE = "EditingContext";
 
-    public static final String STEREOTYPE_DESCRIPTIONS_FIELD = "stereotypeDescriptions"; //$NON-NLS-1$
+    public static final String STEREOTYPE_DESCRIPTIONS_FIELD = "stereotypeDescriptions";
 
-    public static final String CHILD_CREATION_DESCRIPTIONS_FIELD = "childCreationDescriptions"; //$NON-NLS-1$
+    public static final String CHILD_CREATION_DESCRIPTIONS_FIELD = "childCreationDescriptions";
 
-    public static final String KIND_ARGUMENT = "kind"; //$NON-NLS-1$
+    public static final String KIND_ARGUMENT = "kind";
 
-    public static final String ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD = "rootObjectCreationDescriptions"; //$NON-NLS-1$
+    public static final String ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD = "rootObjectCreationDescriptions";
 
-    public static final String DOMAIN_ID_ARGUMENT = "domainId"; //$NON-NLS-1$
+    public static final String DOMAIN_ID_ARGUMENT = "domainId";
 
-    public static final String SUGGESTED_ARGUMENT = "suggested"; //$NON-NLS-1$
+    public static final String SUGGESTED_ARGUMENT = "suggested";
 
-    public static final String DOMAINS_FIELD = "domains"; //$NON-NLS-1$
+    public static final String DOMAINS_FIELD = "domains";
 
-    public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions"; //$NON-NLS-1$
+    public static final String REPRESENTATION_DESCRIPTIONS_FIELD = "representationDescriptions";
 
-    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION = "EditingContextRepresentationDescriptionConnection"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_CONNECTION = "EditingContextRepresentationDescriptionConnection";
 
-    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE = "EditingContextRepresentationDescriptionEdge"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_REPRESENTATION_DESCRIPTIONS_EDGE = "EditingContextRepresentationDescriptionEdge";
 
-    public static final String EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_CONNECTION = "EditingContextStereotypeDescriptionConnection"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_CONNECTION = "EditingContextStereotypeDescriptionConnection";
 
-    public static final String EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_EDGE = "EditingContextStereotypeDescriptionEdge"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_STEREOTYPE_DESCRIPTIONS_EDGE = "EditingContextStereotypeDescriptionEdge";
 
-    public static final String EDITING_CONTEXT_REPRESENTATION_CONNECTION = "EditingContextRepresentationConnection"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_REPRESENTATION_CONNECTION = "EditingContextRepresentationConnection";
 
-    public static final String EDITING_CONTEXT_REPRESENTATION_EDGE = "EditingContextRepresentationEdge"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_REPRESENTATION_EDGE = "EditingContextRepresentationEdge";
 
-    public static final String REPRESENTATIONS_FIELD = "representations"; //$NON-NLS-1$
+    public static final String REPRESENTATIONS_FIELD = "representations";
 
-    public static final String REPRESENTATION_FIELD = "representation"; //$NON-NLS-1$
+    public static final String REPRESENTATION_FIELD = "representation";
 
-    public static final String REPRESENTATION_ID_ARGUMENT = "representationId"; //$NON-NLS-1$
+    public static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
 }

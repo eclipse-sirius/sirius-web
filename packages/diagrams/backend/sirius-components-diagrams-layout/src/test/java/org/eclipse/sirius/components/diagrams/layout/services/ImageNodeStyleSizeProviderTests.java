@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ImageNodeStyleSizeProviderTests {
 
-    private static final String IMAGE_PNG = "/image.png"; //$NON-NLS-1$
+    private static final String IMAGE_PNG = "/image.png";
 
     private static final Size SIZE = Size.of(42, 42);
 

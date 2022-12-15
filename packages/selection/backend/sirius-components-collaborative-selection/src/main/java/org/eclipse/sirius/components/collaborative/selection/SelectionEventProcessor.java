@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, String id, Object object, ISubscriptionManager subscriptionManager,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.logger.trace("Creating the selection event processor {}", id); //$NON-NLS-1$
+        this.logger.trace("Creating the selection event processor {}", id);
 
         this.selectionDescription = Objects.requireNonNull(selectionDescription);
         this.editingContext = Objects.requireNonNull(editingContext);
@@ -108,7 +108,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
             if (this.sink.currentSubscriberCount() > 0) {
                 EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(changeDescription.getInput().getId(), selection));
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a SelectionRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    String pattern = "An error has occurred while emitting a SelectionRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
                 }
             }
@@ -135,7 +135,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
         Selection selection = new SelectionRenderer(variableManager, this.selectionDescription).render();
 
-        this.logger.trace("Selection refreshed: {}", selection.getId()); //$NON-NLS-1$
+        this.logger.trace("Selection refreshed: {}", selection.getId());
 
         return selection;
     }
@@ -155,13 +155,13 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the selection event processor {}", this.id); //$NON-NLS-1$
+        this.logger.trace("Disposing the selection event processor {}", this.id);
 
         this.subscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
     }

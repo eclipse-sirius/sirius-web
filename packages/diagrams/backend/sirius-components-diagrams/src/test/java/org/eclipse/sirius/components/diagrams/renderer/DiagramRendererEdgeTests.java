@@ -63,9 +63,9 @@ public class DiagramRendererEdgeTests {
 
     private static final UUID NODE_DESCRIPTION_ID2 = UUID.randomUUID();
 
-    private static final String FIRST_OBJECT_ID = "First"; //$NON-NLS-1$
+    private static final String FIRST_OBJECT_ID = "First";
 
-    private static final String SECOND_OBJECT_ID = "Second"; //$NON-NLS-1$
+    private static final String SECOND_OBJECT_ID = "Second";
 
     /**
      * Creates a diagram with two nodes "First" and "Second" and with an edge between the two nodes.
@@ -138,15 +138,15 @@ public class DiagramRendererEdgeTests {
     private Diagram renderDiagram(List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID)
-                .label("") //$NON-NLS-1$
+                .label("")
                 .canCreatePredicate(variableManager -> true)
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
+                .labelProvider(variableManager -> "Diagram")
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .toolSections(List.of())
                 .tools(List.of())
-                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .dropHandler(variableManager -> new Failure(""))
                 .build();
         // @formatter:on
 
@@ -169,25 +169,25 @@ public class DiagramRendererEdgeTests {
     private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
+                .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
                 .boldProvider(variableManager -> false)
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(variableManager -> "")
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
-                .idProvider(variableManager -> "labelId") //$NON-NLS-1$
-                .textProvider(variableManager -> "Node") //$NON-NLS-1$
+        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
+                .idProvider(variableManager -> "labelId")
+                .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -196,17 +196,17 @@ public class DiagramRendererEdgeTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object; //$NON-NLS-1$
+                return nodeDescriptionId + "__" +  object;
             }
             return null;
         };
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
-                .typeProvider(variableManager -> "") //$NON-NLS-1$
+                .typeProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID, SECOND_OBJECT_ID))
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(nodeStyleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
@@ -251,7 +251,7 @@ public class DiagramRendererEdgeTests {
                     .lineStyle(LineStyle.Dash_Dot)
                     .sourceArrow(ArrowStyle.InputArrowWithDiamond)
                     .targetArrow(ArrowStyle.None)
-                    .color("rgb(1, 2, 3)") //$NON-NLS-1$
+                    .color("rgb(1, 2, 3)")
                     .build();
         };
 
@@ -266,11 +266,11 @@ public class DiagramRendererEdgeTests {
                 .sourceNodeDescriptions(List.of(nodeDescription))
                 .targetNodeDescriptions(List.of(nodeDescription))
                 .targetObjectIdProvider(idProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .styleProvider(edgeStyleProvider)
-                .deleteHandler(variableManager -> new Failure("")) //$NON-NLS-1$
-                .labelEditHandler((variableManager, newLabel) -> new Failure("")) //$NON-NLS-1$
+                .deleteHandler(variableManager -> new Failure(""))
+                .labelEditHandler((variableManager, newLabel) -> new Failure(""))
                 .build();
         // @formatter:on
     }

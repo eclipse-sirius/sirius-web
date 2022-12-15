@@ -18,14 +18,14 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
  * @author lfasani
  */
 public enum SVGAttribute {
-    WIDTH("width"), //$NON-NLS-1$
-    HEIGHT("height"), //$NON-NLS-1$
-    LABELWIDTH("labelWidth"), //$NON-NLS-1$
-    LABELHEIGHT("labelHeight"), //$NON-NLS-1$
-    COLOR("color"), //$NON-NLS-1$
-    BORDERCOLOR("borderColor"), //$NON-NLS-1$
-    BORDERSTYLE("borderStyle"), //$NON-NLS-1$
-    BORDERSIZE("borderSize"); //$NON-NLS-1$
+    WIDTH("width"),
+    HEIGHT("height"),
+    LABELWIDTH("labelWidth"),
+    LABELHEIGHT("labelHeight"),
+    COLOR("color"),
+    BORDERCOLOR("borderColor"),
+    BORDERSTYLE("borderStyle"),
+    BORDERSIZE("borderSize");
 
     private String label;
 

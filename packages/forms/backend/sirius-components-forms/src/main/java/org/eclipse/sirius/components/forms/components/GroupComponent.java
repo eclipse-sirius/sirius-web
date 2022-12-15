@@ -40,7 +40,7 @@ public class GroupComponent implements IComponent {
      * The variable name used to store a {@link WidgetIdCounter} in the {@link VariableManager} of the
      * {@link GroupComponent}.
      */
-    public static final String WIDGET_ID_PROVIDER_COUNTER = "widgetIdProviderCounter"; //$NON-NLS-1$
+    public static final String WIDGET_ID_PROVIDER_COUNTER = "widgetIdProviderCounter";
 
     private GroupComponentProps props;
 

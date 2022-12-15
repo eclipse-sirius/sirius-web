@@ -46,8 +46,8 @@ public class SpringWebSecurityConfiguration extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().disable();
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/api/graphql").authenticated(); //$NON-NLS-1$
-        http.authorizeRequests().antMatchers("/**").permitAll(); //$NON-NLS-1$
+        http.authorizeRequests().antMatchers("/api/graphql").authenticated();
+        http.authorizeRequests().antMatchers("/**").permitAll();
 
         http.httpBasic();
     }
@@ -58,7 +58,7 @@ public class SpringWebSecurityConfiguration extends WebSecurityConfigurerAdapter
             // @formatter:off
             return this.accountRepository.findByUsername(username)
                        .map(account -> new User(account.getUsername(), account.getPassword(), List.of()))
-                       .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User ''{0}'' not found", username))); //$NON-NLS-1$
+                       .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User ''{0}'' not found", username)));
             // @formatter:on
         };
         auth.userDetailsService(accountBasedUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());

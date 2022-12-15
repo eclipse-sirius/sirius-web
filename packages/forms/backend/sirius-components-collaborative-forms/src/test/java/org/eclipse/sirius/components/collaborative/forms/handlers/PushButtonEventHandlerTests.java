@@ -52,7 +52,7 @@ public class PushButtonEventHandlerTests {
 
     @Test
     public void testPushButton() {
-        String id = "Button id"; //$NON-NLS-1$
+        String id = "Button id";
 
         var input = new PushButtonInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id);
 
@@ -64,25 +64,25 @@ public class PushButtonEventHandlerTests {
 
         // @formatter:off
         Button button = Button.newButton(id)
-                .label("label") //$NON-NLS-1$
+                .label("label")
                 .pushButtonHandler(pushButtonHandler)
                 .diagnostics(List.of())
                 .build();
 
-        Group group = Group.newGroup("groupId") //$NON-NLS-1$
-                .label("group label") //$NON-NLS-1$
+        Group group = Group.newGroup("groupId")
+                .label("group label")
                 .widgets(List.of(button))
                 .build();
 
-        Page page = Page.newPage("pageId") //$NON-NLS-1$
-                .label("page label") //$NON-NLS-1$
+        Page page = Page.newPage("pageId")
+                .label("page label")
                 .groups(List.of(group))
                 .build();
 
         Form form = Form.newForm(FORM_ID)
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label") //$NON-NLS-1$
+                .label("form label")
                 .pages(List.of(page))
                 .build();
         // @formatter:on

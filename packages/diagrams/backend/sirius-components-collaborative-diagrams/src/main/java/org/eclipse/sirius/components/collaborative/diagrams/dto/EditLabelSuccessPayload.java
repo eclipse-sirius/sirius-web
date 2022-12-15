@@ -45,7 +45,7 @@ public final class EditLabelSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, diagram: '{'id: {2}, label: {3}'}''}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, diagram: '{'id: {2}, label: {3}'}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.diagram.getId(), this.diagram.getLabel());
     }
 }

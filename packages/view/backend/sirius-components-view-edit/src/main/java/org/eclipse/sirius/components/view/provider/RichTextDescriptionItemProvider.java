@@ -64,8 +64,8 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RichTextDescription_valueExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RichTextDescription_valueExpression_feature", "_UI_RichTextDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_RichTextDescription_valueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RichTextDescription_valueExpression_feature", "_UI_RichTextDescription_type"),
                 ViewPackage.Literals.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -106,7 +106,7 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RichTextDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RichTextDescription.svg"));
     }
 
     /**
@@ -127,8 +127,8 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
     @Override
     public String getText(Object object) {
         String label = ((RichTextDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RichTextDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_RichTextDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_RichTextDescription_type") :
+                this.getString("_UI_RichTextDescription_type") + " " + label;
     }
 
     /**

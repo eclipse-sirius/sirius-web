@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -215,9 +215,9 @@ public class SetValueImpl extends OperationImpl implements SetValue {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (featureName: "); //$NON-NLS-1$
+        result.append(" (featureName: ");
         result.append(this.featureName);
-        result.append(", valueExpression: "); //$NON-NLS-1$
+        result.append(", valueExpression: ");
         result.append(this.valueExpression);
         result.append(')');
         return result.toString();

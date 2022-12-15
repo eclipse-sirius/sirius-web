@@ -513,15 +513,15 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valuesExpression: "); //$NON-NLS-1$
+        result.append(" (valuesExpression: ");
         result.append(this.valuesExpression);
-        result.append(", keysExpression: "); //$NON-NLS-1$
+        result.append(", keysExpression: ");
         result.append(this.keysExpression);
-        result.append(", yAxisLabelExpression: "); //$NON-NLS-1$
+        result.append(", yAxisLabelExpression: ");
         result.append(this.yAxisLabelExpression);
-        result.append(", width: "); //$NON-NLS-1$
+        result.append(", width: ");
         result.append(this.width);
-        result.append(", height: "); //$NON-NLS-1$
+        result.append(", height: ");
         result.append(this.height);
         result.append(')');
         return result.toString();

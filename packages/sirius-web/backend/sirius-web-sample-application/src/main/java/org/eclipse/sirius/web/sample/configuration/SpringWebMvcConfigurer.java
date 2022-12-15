@@ -31,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class SpringWebMvcConfigurer implements WebMvcConfigurer {
-    private static final String[] ALLOWED_ORIGIN_PATTERNS = { "http://localhost:[*]" }; //$NON-NLS-1$
+    private static final String[] ALLOWED_ORIGIN_PATTERNS = { "http://localhost:[*]" };
 
     /**
      * The Spring environment.
@@ -73,13 +73,13 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/graphiql", "/graphiql/index.html"); //$NON-NLS-1$ //$NON-NLS-2$
-        registry.addRedirectViewController("/voyager", "/voyager/index.html"); //$NON-NLS-1$ //$NON-NLS-2$
+        registry.addRedirectViewController("/graphiql", "/graphiql/index.html");
+        registry.addRedirectViewController("/voyager", "/voyager/index.html");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        boolean inDevMode = Arrays.asList(this.environment.getActiveProfiles()).contains("dev"); //$NON-NLS-1$
+        boolean inDevMode = Arrays.asList(this.environment.getActiveProfiles()).contains("dev");
         if (inDevMode) {
             registry.addMapping(URLConstants.API_BASE_PATH + SpringWebMvcConfigurerConstants.ANY_PATTERN).allowedOriginPatterns(ALLOWED_ORIGIN_PATTERNS).allowCredentials(true);
         }

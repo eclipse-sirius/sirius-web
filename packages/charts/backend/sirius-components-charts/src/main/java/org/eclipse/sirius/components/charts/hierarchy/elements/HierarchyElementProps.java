@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 public class HierarchyElementProps implements IProps {
 
-    public static final String TYPE = "Hierarchy"; //$NON-NLS-1$
+    public static final String TYPE = "Hierarchy";
 
     private final String id;
 

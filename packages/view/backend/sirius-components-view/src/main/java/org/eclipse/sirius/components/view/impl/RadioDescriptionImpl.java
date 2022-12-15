@@ -439,11 +439,11 @@ public class RadioDescriptionImpl extends WidgetDescriptionImpl implements Radio
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valueExpression: "); //$NON-NLS-1$
+        result.append(" (valueExpression: ");
         result.append(this.valueExpression);
-        result.append(", candidatesExpression: "); //$NON-NLS-1$
+        result.append(", candidatesExpression: ");
         result.append(this.candidatesExpression);
-        result.append(", candidateLabelExpression: "); //$NON-NLS-1$
+        result.append(", candidateLabelExpression: ");
         result.append(this.candidateLabelExpression);
         result.append(')');
         return result.toString();

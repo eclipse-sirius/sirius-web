@@ -18,7 +18,7 @@ package org.eclipse.sirius.components.diagrams;
  * @author lfasani
  */
 public final class ParametricSVGNodeType {
-    public static final String NODE_TYPE_PARAMETRIC_IMAGE = "node:parametric-svg"; //$NON-NLS-1$
+    public static final String NODE_TYPE_PARAMETRIC_IMAGE = "node:parametric-svg";
 
     private ParametricSVGNodeType() {
         // Prevent instantiation

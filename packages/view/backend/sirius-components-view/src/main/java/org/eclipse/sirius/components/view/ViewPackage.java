@@ -40,21 +40,21 @@ public interface ViewPackage extends EPackage {
      *
      * @generated
      */
-    String eNAME = "view"; //$NON-NLS-1$
+    String eNAME = "view";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    String eNS_URI = "http://www.eclipse.org/sirius-web/view"; //$NON-NLS-1$
+    String eNS_URI = "http://www.eclipse.org/sirius-web/view";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    String eNS_PREFIX = "view"; //$NON-NLS-1$
+    String eNS_PREFIX = "view";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->

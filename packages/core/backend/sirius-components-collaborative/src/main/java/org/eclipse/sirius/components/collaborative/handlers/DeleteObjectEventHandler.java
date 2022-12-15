@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
                 payload = new DeleteObjectSuccessPayload(input.getId());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
-                this.logger.warn("The object with the id {} does not exist", deleteObjectInput.getObjectId()); //$NON-NLS-1$
+                this.logger.warn("The object with the id {} does not exist", deleteObjectInput.getObjectId());
             }
         }
 

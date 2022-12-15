@@ -64,7 +64,7 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ListLayoutStrategyDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ListLayoutStrategyDescription.svg"));
     }
 
     /**
@@ -84,7 +84,7 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_ListLayoutStrategyDescription_type"); //$NON-NLS-1$
+        return this.getString("_UI_ListLayoutStrategyDescription_type");
     }
 
     /**

@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class Node {
-    public static final String SELECTED_NODE = "selectedNode"; //$NON-NLS-1$
+    public static final String SELECTED_NODE = "selectedNode";
 
     private String id;
 
@@ -146,7 +146,7 @@ public final class Node {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
                 this.label.getText(), this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
     }

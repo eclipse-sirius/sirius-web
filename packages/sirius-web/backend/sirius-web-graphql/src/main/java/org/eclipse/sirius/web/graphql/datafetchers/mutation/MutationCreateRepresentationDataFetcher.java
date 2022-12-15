@@ -45,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateRepresentationDataFetcher.CREATE_REPRESENTATION_FIELD)
 public class MutationCreateRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String CREATE_REPRESENTATION_FIELD = "createRepresentation"; //$NON-NLS-1$
+    public static final String CREATE_REPRESENTATION_FIELD = "createRepresentation";
 
     private final ObjectMapper objectMapper;
 

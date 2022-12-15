@@ -28,6 +28,6 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class ProfileTypeProvider {
-    public static final String TYPE = "Profile"; //$NON-NLS-1$
+    public static final String TYPE = "Profile";
 
 }

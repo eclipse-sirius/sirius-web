@@ -60,7 +60,7 @@ public final class UploadDocumentInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, file: '{'name: {3}'}''}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, file: '{'name: {3}'}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.file.getName());
     }
 

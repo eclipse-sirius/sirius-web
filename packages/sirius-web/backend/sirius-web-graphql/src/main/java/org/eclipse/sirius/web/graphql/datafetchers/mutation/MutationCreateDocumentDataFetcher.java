@@ -45,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateDocumentDataFetcher.CREATE_DOCUMENT_FIELD)
 public class MutationCreateDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String CREATE_DOCUMENT_FIELD = "createDocument"; //$NON-NLS-1$
+    public static final String CREATE_DOCUMENT_FIELD = "createDocument";
 
     private final ObjectMapper objectMapper;
 

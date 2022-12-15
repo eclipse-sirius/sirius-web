@@ -39,7 +39,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 public class DomainConverterTests {
 
-    private static final String FIXTURE = "fixture"; //$NON-NLS-1$
+    private static final String FIXTURE = "fixture";
 
     private Optional<EPackage> convert(Domain domain) {
         return new DomainConverter().convert(domain);
@@ -113,13 +113,13 @@ public class DomainConverterTests {
     @Test
     void testConvertSystemDomainDefinition() {
         Domain componentDomain = DomainFactory.eINSTANCE.createDomain();
-        componentDomain.setName("component"); //$NON-NLS-1$
+        componentDomain.setName("component");
 
         Entity namedEntity = DomainFactory.eINSTANCE.createEntity();
-        namedEntity.setName("Named"); //$NON-NLS-1$
+        namedEntity.setName("Named");
         namedEntity.setAbstract(true);
         Attribute nameAttribute = DomainFactory.eINSTANCE.createAttribute();
-        nameAttribute.setName("name"); //$NON-NLS-1$
+        nameAttribute.setName("name");
         nameAttribute.setMany(false);
         nameAttribute.setOptional(false);
         nameAttribute.setType(DataType.STRING);
@@ -128,17 +128,17 @@ public class DomainConverterTests {
         componentDomain.getTypes().add(namedEntity);
 
         Entity systemEntity = DomainFactory.eINSTANCE.createEntity();
-        systemEntity.setName("System"); //$NON-NLS-1$
+        systemEntity.setName("System");
         systemEntity.getSuperTypes().add(namedEntity);
         componentDomain.getTypes().add(systemEntity);
 
         Entity componentEntity = DomainFactory.eINSTANCE.createEntity();
-        componentEntity.setName("Component"); //$NON-NLS-1$
+        componentEntity.setName("Component");
         componentEntity.getSuperTypes().add(namedEntity);
         componentDomain.getTypes().add(componentEntity);
 
         Relation systemComponentsRelation = DomainFactory.eINSTANCE.createRelation();
-        systemComponentsRelation.setName("parts"); //$NON-NLS-1$
+        systemComponentsRelation.setName("parts");
         systemComponentsRelation.setContainment(true);
         systemComponentsRelation.setMany(true);
         systemComponentsRelation.setOptional(true);

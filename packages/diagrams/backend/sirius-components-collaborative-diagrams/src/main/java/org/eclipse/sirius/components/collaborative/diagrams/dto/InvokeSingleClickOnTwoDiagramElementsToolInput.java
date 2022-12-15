@@ -88,7 +88,7 @@ public final class InvokeSingleClickOnTwoDiagramElementsToolInput implements IDi
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramSourceElementId: {4}, diagramTargetElementId: {5}, toolId: {6}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramSourceElementId: {4}, diagramTargetElementId: {5}, toolId: {6}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.diagramSourceElementId, this.diagramTargetElementId,
                 this.toolId);
     }

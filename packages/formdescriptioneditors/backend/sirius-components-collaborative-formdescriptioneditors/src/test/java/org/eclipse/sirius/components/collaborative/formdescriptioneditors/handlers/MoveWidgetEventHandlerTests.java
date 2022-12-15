@@ -52,7 +52,7 @@ public class MoveWidgetEventHandlerTests {
         };
 
         var handler = new MoveWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new MoveWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "widgetId", 0); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        var input = new MoveWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "widgetId", 0);
 
         assertThat(handler.canHandle(input)).isTrue();
 

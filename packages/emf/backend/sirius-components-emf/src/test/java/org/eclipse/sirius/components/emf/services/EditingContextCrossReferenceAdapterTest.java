@@ -96,7 +96,7 @@ public class EditingContextCrossReferenceAdapterTest {
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         this.referencedResource.getContents().add(ePackage);
         this.referencedClass = EcoreFactory.eINSTANCE.createEClass();
-        this.referencedClass.setName("referencedClass"); //$NON-NLS-1$
+        this.referencedClass.setName("referencedClass");
         ePackage.getEClassifiers().add(this.referencedClass);
 
         Resource referencingResource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());

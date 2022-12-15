@@ -63,13 +63,13 @@ public class EdgeAssert extends AbstractAssert<EdgeAssert, Edge> {
                 Position routingPoint = edge.getRoutingPoints().get(i);
 
                 if (actualRoutingPoint == null) {
-                    this.failWithMessage("Expected routing point to be <'{'x: %.2f, y: %.2f'}'> but was null", routingPoint.getX(), routingPoint.getY()); //$NON-NLS-1$
+                    this.failWithMessage("Expected routing point to be <'{'x: %.2f, y: %.2f'}'> but was null", routingPoint.getX(), routingPoint.getY());
                 } else {
                     if (actualRoutingPoint.getX() != routingPoint.getX()) {
-                        this.failWithMessage("Expected routing point's x to be <%.2f> but was <%.2f>", actualRoutingPoint.getX(), routingPoint.getX()); //$NON-NLS-1$
+                        this.failWithMessage("Expected routing point's x to be <%.2f> but was <%.2f>", actualRoutingPoint.getX(), routingPoint.getX());
                     }
                     if (actualRoutingPoint.getY() != routingPoint.getY()) {
-                        this.failWithMessage("Expected routing point's y to be <%.2f> but was <%.2f>", actualRoutingPoint.getY(), routingPoint.getY()); //$NON-NLS-1$
+                        this.failWithMessage("Expected routing point's y to be <%.2f> but was <%.2f>", actualRoutingPoint.getY(), routingPoint.getY());
                     }
                 }
             }

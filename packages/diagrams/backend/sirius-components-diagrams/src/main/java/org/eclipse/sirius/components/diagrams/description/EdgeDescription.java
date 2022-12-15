@@ -35,23 +35,23 @@ public final class EdgeDescription {
     /**
      * The name of the variables which points to the representation element at the source/origin of a particular edge.
      */
-    public static final String EDGE_SOURCE = "edgeSource"; //$NON-NLS-1$
+    public static final String EDGE_SOURCE = "edgeSource";
 
     /**
      * The name of the variables which points to the representation element at the destination/target of a particular
      * edge.
      */
-    public static final String EDGE_TARGET = "edgeTarget"; //$NON-NLS-1$
+    public static final String EDGE_TARGET = "edgeTarget";
 
     /**
      * The name of the variables which points to the semantic element at the source/origin of a particular edge.
      */
-    public static final String SEMANTIC_EDGE_SOURCE = "semanticEdgeSource"; //$NON-NLS-1$
+    public static final String SEMANTIC_EDGE_SOURCE = "semanticEdgeSource";
 
     /**
      * The name of the variables which points to the semantic element at the destination/target of a particular edge.
      */
-    public static final String SEMANTIC_EDGE_TARGET = "semanticEdgeTarget"; //$NON-NLS-1$
+    public static final String SEMANTIC_EDGE_TARGET = "semanticEdgeTarget";
 
     private UUID id;
 
@@ -159,7 +159,7 @@ public final class EdgeDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, sourceNodeDescriptionCount: {2}, targetNodeDescriptionCount: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, sourceNodeDescriptionCount: {2}, targetNodeDescriptionCount: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.sourceNodeDescriptions.size(), this.targetNodeDescriptions.size());
     }
 

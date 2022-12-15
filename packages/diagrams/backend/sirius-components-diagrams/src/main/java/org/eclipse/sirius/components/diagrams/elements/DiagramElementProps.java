@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class DiagramElementProps implements IProps {
-    public static final String TYPE = "Diagram"; //$NON-NLS-1$
+    public static final String TYPE = "Diagram";
 
     private String id;
 
@@ -84,7 +84,7 @@ public final class DiagramElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}'}'";
         return MessageFormat.format(pattern, this.getClass(), this.id);
     }
 

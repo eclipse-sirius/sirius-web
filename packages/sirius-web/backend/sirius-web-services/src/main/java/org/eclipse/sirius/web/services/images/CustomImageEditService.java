@@ -40,7 +40,7 @@ public class CustomImageEditService implements ICustomImageEditService {
 
     @Override
     public IPayload renameImage(UUID inputId, UUID imageId, String newLabel) {
-        IPayload result = new ErrorPayload(inputId, "Unable to rename the image"); //$NON-NLS-1$
+        IPayload result = new ErrorPayload(inputId, "Unable to rename the image");
         Optional<CustomImageMetadataEntity> optionalImageEntity = this.customImageMetadataRepository.findById(imageId);
         if (optionalImageEntity.isPresent()) {
             CustomImageMetadataEntity imageEntity = optionalImageEntity.get();

@@ -31,12 +31,12 @@ public class TestLayoutObjectService extends NoOp {
     public String getId(Object object) {
         if (object instanceof Element) {
             Element element = (Element) object;
-            String[] composedName = element.getName().split(":"); //$NON-NLS-1$
+            String[] composedName = element.getName().split(":");
             if (composedName.length >= 2) {
                 return composedName[1];
             }
         }
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
@@ -64,7 +64,7 @@ public class TestLayoutObjectService extends NoOp {
     }
 
     private boolean isObject(Element element, String objectId) {
-        String[] composedName = element.getName().split(":"); //$NON-NLS-1$
+        String[] composedName = element.getName().split(":");
         if (composedName.length < 2) {
             return false;
         }

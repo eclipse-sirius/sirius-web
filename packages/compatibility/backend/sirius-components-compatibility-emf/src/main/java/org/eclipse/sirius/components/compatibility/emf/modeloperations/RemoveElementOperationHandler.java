@@ -79,7 +79,7 @@ public class RemoveElementOperationHandler implements IModelOperationHandler {
             EObject container = ecoreIntrinsicExtender.eContainer(objectToRemove);
             Object removedElement = ecoreIntrinsicExtender.eRemove(container, containingFeatureName, objectToRemove);
             if (removedElement == null) {
-                this.logger.warn("The removal of the object {} from the instance {} on the feature {} failed.", objectToRemove, container, containingFeatureName); //$NON-NLS-1$
+                this.logger.warn("The removal of the object {} from the instance {} on the feature {} failed.", objectToRemove, container, containingFeatureName);
             }
         }
 

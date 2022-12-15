@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,8 @@ public class LabelStyleDescriptionConverterTests {
 
     @Test
     public void testConvertIconPath() {
-        String pluginName = "my.sirius.plugin"; //$NON-NLS-1$
-        String iconPath = "/my/icon/path/MyIcon.gif"; //$NON-NLS-1$
+        String pluginName = "my.sirius.plugin";
+        String iconPath = "/my/icon/path/MyIcon.gif";
         String iconFullPath = pluginName + iconPath;
 
         ShapeContainerStyleDescription styleDescription = StyleFactory.eINSTANCE.createShapeContainerStyleDescription();

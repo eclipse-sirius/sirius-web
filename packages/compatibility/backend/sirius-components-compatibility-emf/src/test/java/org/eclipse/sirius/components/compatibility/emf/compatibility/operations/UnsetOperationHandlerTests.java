@@ -40,11 +40,11 @@ import org.junit.jupiter.api.Test;
  */
 public class UnsetOperationHandlerTests {
 
-    private static final String NAME_FEATURE = "name"; //$NON-NLS-1$
+    private static final String NAME_FEATURE = "name";
 
-    private static final String EFACTORYINSTANCE_FEATURE = "eFactoryInstance"; //$NON-NLS-1$
+    private static final String EFACTORYINSTANCE_FEATURE = "eFactoryInstance";
 
-    private static final String ECLASSIFIERS_FEATURE = "eClassifiers"; //$NON-NLS-1$
+    private static final String ECLASSIFIERS_FEATURE = "eClassifiers";
 
     private UnsetOperationHandler unsetOperationHandler;
 
@@ -93,7 +93,7 @@ public class UnsetOperationHandlerTests {
     public void unsetMultiValuedFeatureTests() {
         // check that class1 has been removed from rootPackage
         this.unset.setFeatureName(ECLASSIFIERS_FEATURE);
-        this.unset.setElementExpression("aql:self.eClassifiers->first()"); //$NON-NLS-1$
+        this.unset.setElementExpression("aql:self.eClassifiers->first()");
         EClassifier secondClass = this.operationTestContext.getRootPackage().getEClassifiers().get(1);
         IStatus handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());
 
@@ -127,7 +127,7 @@ public class UnsetOperationHandlerTests {
         this.handleAndCheckExecution(null, null, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", "", this.operationTestContext.getRootPackage()); //$NON-NLS-1$ //$NON-NLS-2$
+        this.handleAndCheckExecution("", "", this.operationTestContext.getRootPackage());
 
         // Check expression with exception case
         this.handleAndCheckExecution(NAME_FEATURE, ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());
@@ -138,7 +138,7 @@ public class UnsetOperationHandlerTests {
      */
     @Test
     public void unsetFromDynamicFeatureName() {
-        this.unset.setFeatureName("aql:'na' + 'me'"); //$NON-NLS-1$
+        this.unset.setFeatureName("aql:'na' + 'me'");
         this.unset.setElementExpression(null);
 
         IStatus handleResult = this.unsetOperationHandler.handle(this.operationTestContext.getVariables());

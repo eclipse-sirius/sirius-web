@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ public class DomainClassPredicate implements Predicate<EClass> {
     /**
      * The pattern used to match the separator used by both Sirius and AQL.
      */
-    private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)"); //$NON-NLS-1$
+    private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)");
 
     private String domainClass;
 
@@ -54,7 +54,7 @@ public class DomainClassPredicate implements Predicate<EClass> {
                 className = this.domainClass;
             }
 
-            if (!("EObject".equals(className) && packageName == null) && !("EObject".equals(className) && "ecore".equals(packageName))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            if (!("EObject".equals(className) && packageName == null) && !("EObject".equals(className) && "ecore".equals(packageName))) {
                 boolean result = false;
 
                 List<EClass> eAllTypes = new ArrayList<>();

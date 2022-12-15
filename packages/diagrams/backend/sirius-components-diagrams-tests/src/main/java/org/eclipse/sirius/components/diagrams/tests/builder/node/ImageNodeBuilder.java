@@ -100,7 +100,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
-                .imageURL("") //$NON-NLS-1$
+                .imageURL("")
                 .scalingFactor(1)
                 .build();
         // @formatter:on
@@ -126,7 +126,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
                .customizedProperties(this.customizedProperties)
                .descriptionId(descriptionId)
                .targetObjectId(labelText)
-               .targetObjectKind("") //$NON-NLS-1$
+               .targetObjectKind("")
                .targetObjectLabel(labelText)
                .style(Objects.requireNonNull(style))
                .modifiers(Set.of())

@@ -50,9 +50,9 @@ import org.junit.jupiter.api.Test;
  */
 public class UnsynchronizedDiagramTests {
 
-    private static final String NODE_TYPE = "node:rectangular"; //$NON-NLS-1$
+    private static final String NODE_TYPE = "node:rectangular";
 
-    private static final String TARGET_OBJECT_ID = "targetObjectId"; //$NON-NLS-1$
+    private static final String TARGET_OBJECT_ID = "targetObjectId";
 
     /**
      * This very simple test will validate that we can render synchronized diagram elements. We will use a diagram
@@ -272,21 +272,21 @@ public class UnsynchronizedDiagramTests {
                 .boldProvider(VariableManager -> true)
                 .underlineProvider(VariableManager -> true)
                 .strikeThroughProvider(VariableManager -> true)
-                .colorProvider(VariableManager -> "#FFFFFF") //$NON-NLS-1$
+                .colorProvider(VariableManager -> "#FFFFFF")
                 .fontSizeProvider(variableManager -> 10)
-                .iconURLProvider(VariableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(VariableManager -> "")
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
-                .idProvider(variableManager -> "labelid") //$NON-NLS-1$
-                .textProvider(variableManager -> "label") //$NON-NLS-1$
+        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
+                .idProvider(variableManager -> "labelid")
+                .textProvider(variableManager -> "label")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -296,13 +296,13 @@ public class UnsynchronizedDiagramTests {
             return new FreeFormLayoutStrategy();
         };
 
-        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes())) //$NON-NLS-1$
+        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes()))
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
@@ -312,13 +312,13 @@ public class UnsynchronizedDiagramTests {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes())) //$NON-NLS-1$
+        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes()))
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
@@ -329,13 +329,13 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes())) //$NON-NLS-1$
+        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes()))
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
@@ -346,16 +346,16 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes()).toString()) //$NON-NLS-1$
-                .label("") //$NON-NLS-1$
+        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes()).toString())
+                .label("")
                 .canCreatePredicate(variableManager -> true)
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
-                .labelProvider(variableManager -> "label") //$NON-NLS-1$
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
+                .labelProvider(variableManager -> "label")
                 .nodeDescriptions(List.of(unsynchronizedNodeDescription, synchronizedNodeDescription))
                 .edgeDescriptions(List.of())
                 .toolSections(List.of())
                 .tools(List.of())
-                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .dropHandler(variableManager -> new Failure(""))
                 .build();
         // @formatter:on
 

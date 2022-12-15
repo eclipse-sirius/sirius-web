@@ -19,29 +19,29 @@ package org.eclipse.sirius.components.collaborative.diagrams.messages;
  */
 public final class MessageConstants {
 
-    public static final String INVALID_INPUT = "INVALID_INPUT"; //$NON-NLS-1$
+    public static final String INVALID_INPUT = "INVALID_INPUT";
 
-    public static final String EDGE_NOT_FOUND = "EDGE_NOT_FOUND"; //$NON-NLS-1$
+    public static final String EDGE_NOT_FOUND = "EDGE_NOT_FOUND";
 
-    public static final String RECONNECT_EDGE_SAME_EDGE_END = "RECONNECT_EDGE_SAME_EDGE_END"; //$NON-NLS-1$
+    public static final String RECONNECT_EDGE_SAME_EDGE_END = "RECONNECT_EDGE_SAME_EDGE_END";
 
-    public static final String NODE_NOT_FOUND = "NODE_NOT_FOUND"; //$NON-NLS-1$
+    public static final String NODE_NOT_FOUND = "NODE_NOT_FOUND";
 
-    public static final String SEMANTIC_OBJECT_NOT_FOUND = "SEMANTIC_OBJECT_NOT_FOUND"; //$NON-NLS-1$
+    public static final String SEMANTIC_OBJECT_NOT_FOUND = "SEMANTIC_OBJECT_NOT_FOUND";
 
-    public static final String NODE_DESCRIPTION_NOT_FOUND = "NODE_DESCRIPTION_NOT_FOUND"; //$NON-NLS-1$
+    public static final String NODE_DESCRIPTION_NOT_FOUND = "NODE_DESCRIPTION_NOT_FOUND";
 
-    public static final String EDGE_DESCRIPTION_NOT_FOUND = "EDGE_DESCRIPTION_NOT_FOUND"; //$NON-NLS-1$
+    public static final String EDGE_DESCRIPTION_NOT_FOUND = "EDGE_DESCRIPTION_NOT_FOUND";
 
-    public static final String DELETE_EGDE_FAILED = "DELETE_EGDE_FAILED"; //$NON-NLS-1$
+    public static final String DELETE_EGDE_FAILED = "DELETE_EGDE_FAILED";
 
-    public static final String DELETE_NODE_FAILED = "DELETE_NODE_FAILED"; //$NON-NLS-1$
+    public static final String DELETE_NODE_FAILED = "DELETE_NODE_FAILED";
 
-    public static final String DELETE_FAILED = "DELETE_FAILED"; //$NON-NLS-1$
+    public static final String DELETE_FAILED = "DELETE_FAILED";
 
-    public static final String INVALID_DROP = "INVALID_DROP"; //$NON-NLS-1$
+    public static final String INVALID_DROP = "INVALID_DROP";
 
-    public static final String INVALID_NEW_VALUE = "INVALID_NEW_VALUE"; //$NON-NLS-1$
+    public static final String INVALID_NEW_VALUE = "INVALID_NEW_VALUE";
 
     private MessageConstants() {
         // Prevent instantiation

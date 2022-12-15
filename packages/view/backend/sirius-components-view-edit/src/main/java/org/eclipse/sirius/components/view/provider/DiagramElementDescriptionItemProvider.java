@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,8 +78,8 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_name_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_name_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramElementDescription_name_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_name_feature", "_UI_DiagramElementDescription_type"),
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -90,8 +90,8 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addDomainTypePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_domainType_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_domainType_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramElementDescription_domainType_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_domainType_feature", "_UI_DiagramElementDescription_type"),
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -103,8 +103,8 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addSemanticCandidatesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_semanticCandidatesExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_semanticCandidatesExpression_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramElementDescription_semanticCandidatesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_semanticCandidatesExpression_feature", "_UI_DiagramElementDescription_type"),
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -115,8 +115,8 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_labelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_labelExpression_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramElementDescription_labelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_labelExpression_feature", "_UI_DiagramElementDescription_type"),
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -128,8 +128,8 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addSynchronizationPolicyPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_synchronizationPolicy_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_synchronizationPolicy_feature", "_UI_DiagramElementDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramElementDescription_synchronizationPolicy_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_synchronizationPolicy_feature", "_UI_DiagramElementDescription_type"),
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -171,7 +171,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramElementDescription")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramElementDescription"));
     }
 
     /**
@@ -192,8 +192,8 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((DiagramElementDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_DiagramElementDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_DiagramElementDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_DiagramElementDescription_type") :
+                this.getString("_UI_DiagramElementDescription_type") + " " + label;
     }
 
     /**
@@ -234,12 +234,12 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         LabelEditTool newLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
-        newLabelEditTool.setName("Edit Label"); //$NON-NLS-1$
+        newLabelEditTool.setName("Edit Label");
         newLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, newLabelEditTool));
 
         DeleteTool newDeleteTool = ViewFactory.eINSTANCE.createDeleteTool();
-        newDeleteTool.setName("Delete"); //$NON-NLS-1$
+        newDeleteTool.setName("Delete");
         newDeleteTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, newDeleteTool));
     }

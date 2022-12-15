@@ -112,7 +112,7 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
      * @generated
      * @ordered
      */
-    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self"; //$NON-NLS-1$
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self";
 
     /**
      * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
@@ -420,13 +420,13 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
+        result.append(" (name: ");
         result.append(this.name);
-        result.append(", labelExpression: "); //$NON-NLS-1$
+        result.append(", labelExpression: ");
         result.append(this.labelExpression);
-        result.append(", displayMode: "); //$NON-NLS-1$
+        result.append(", displayMode: ");
         result.append(this.displayMode);
-        result.append(", semanticCandidatesExpression: "); //$NON-NLS-1$
+        result.append(", semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
         result.append(')');
         return result.toString();

@@ -52,62 +52,62 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String edgeNotFound(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String reconnectEdgeSameEdgeEnd() {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String nodeNotFound(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String deleteEdgeFailed(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String deleteNodeFailed(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String deleteFailed() {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String semanticObjectNotFound(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String nodeDescriptionNotFound(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String edgeDescriptionNotFound(String id) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String invalidDrop() {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String invalidNewValue(String newValue) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
     }
 }

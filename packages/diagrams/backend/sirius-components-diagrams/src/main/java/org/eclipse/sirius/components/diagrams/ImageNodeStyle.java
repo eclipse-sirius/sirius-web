@@ -71,7 +71,7 @@ public final class ImageNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'imageURL: {1}', border: '{' size: {2}, color: {3}, style: {4} '}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'imageURL: {1}', border: '{' size: {2}, color: {3}, style: {4} '}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.imageURL, this.borderSize, this.borderColor, this.borderStyle);
     }
 
@@ -86,7 +86,7 @@ public final class ImageNodeStyle implements INodeStyle {
 
         private int scalingFactor;
 
-        private String borderColor = "black"; //$NON-NLS-1$
+        private String borderColor = "black";
 
         private int borderSize;
 

@@ -43,7 +43,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
     /**
      * The background color used to visually distinguish domain types.
      */
-    private static final String BACKGROUND_COLOR = "#e6f4ee"; //$NON-NLS-1$
+    private static final String BACKGROUND_COLOR = "#e6f4ee";
 
     private static final TextareaStyle STYLE = TextareaStyle.newTextareaStyle().backgroundColor(BACKGROUND_COLOR).build();
 
@@ -60,7 +60,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
     @Override
     public Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider() {
         return (VariableManager variableManager) -> {
-            String currentText = variableManager.get(CompletionRequest.CURRENT_TEXT, String.class).orElse(""); //$NON-NLS-1$
+            String currentText = variableManager.get(CompletionRequest.CURRENT_TEXT, String.class).orElse("");
             int cursorPosition = variableManager.get(CompletionRequest.CURSOR_POSITION, Integer.class).orElse(0);
 
             List<String> choices = List.of();
@@ -72,7 +72,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
                 choices = ePackages.stream().flatMap(ePackage -> {
                     return ePackage.getEClassifiers().stream()
                             .filter(EClass.class::isInstance)
-                            .map(eClassifier -> String.format("%s::%s", ePackage.getName(), eClassifier.getName())) //$NON-NLS-1$
+                            .map(eClassifier -> String.format("%s::%s", ePackage.getName(), eClassifier.getName()))
                             .distinct();
                 }).distinct().sorted().collect(Collectors.toList());
                 // @formatter:on
@@ -81,7 +81,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
             // @formatter:off
             return choices.stream()
                     .filter(choice -> choice.startsWith(prefix))
-                    .map(choice -> new CompletionProposal("Choice " + choice, choice, prefix.length())) //$NON-NLS-1$
+                    .map(choice -> new CompletionProposal("Choice " + choice, choice, prefix.length()))
                     .collect(Collectors.toList());
             // @formatter:on
         };

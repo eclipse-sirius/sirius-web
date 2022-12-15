@@ -57,7 +57,7 @@ public class AQLInterpreter {
     /**
      * The prefix used by AQL expressions.
      */
-    private static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
+    private static final String AQL_PREFIX = "aql:";
 
     private final Logger logger = LoggerFactory.getLogger(AQLInterpreter.class);
 
@@ -158,11 +158,11 @@ public class AQLInterpreter {
     private void log(String expression, Diagnostic diagnostic) {
         if (diagnostic.getMessage() != null) {
             if (Diagnostic.INFO == diagnostic.getSeverity()) {
-                this.logger.info("An info has occurred with the expression '{}': {}", expression, diagnostic.getMessage()); //$NON-NLS-1$
+                this.logger.info("An info has occurred with the expression '{}': {}", expression, diagnostic.getMessage());
             } else if (Diagnostic.WARNING == diagnostic.getSeverity()) {
-                this.logger.warn("A warning has occurred with the expression '{}': {}", expression, diagnostic.getMessage()); //$NON-NLS-1$
+                this.logger.warn("A warning has occurred with the expression '{}': {}", expression, diagnostic.getMessage());
             } else if (Diagnostic.ERROR == diagnostic.getSeverity() || Diagnostic.CANCEL == diagnostic.getSeverity()) {
-                this.logger.warn("An error has occurred with the expression '{}': {}", expression, diagnostic.getMessage()); //$NON-NLS-1$
+                this.logger.warn("An error has occurred with the expression '{}': {}", expression, diagnostic.getMessage());
             }
         }
 
@@ -174,7 +174,7 @@ public class AQLInterpreter {
         Map<String, Set<IType>> variableTypes = new LinkedHashMap<>();
         final Set<IType> potentialTypes = new LinkedHashSet<>(1);
         potentialTypes.add(new EClassifierType(this.queryEnvironment, EcorePackage.Literals.EOBJECT));
-        variableTypes.put("self", potentialTypes); //$NON-NLS-1$
+        variableTypes.put("self", potentialTypes);
 
         return engine.getCompletion(expression, offset, variableTypes);
     }

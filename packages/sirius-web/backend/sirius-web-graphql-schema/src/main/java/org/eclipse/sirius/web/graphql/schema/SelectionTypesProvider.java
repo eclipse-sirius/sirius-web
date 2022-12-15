@@ -19,8 +19,8 @@ package org.eclipse.sirius.web.graphql.schema;
  */
 public class SelectionTypesProvider {
 
-    public static final String SELECTION_TYPE = "Selection"; //$NON-NLS-1$
+    public static final String SELECTION_TYPE = "Selection";
 
-    public static final String SELECTION_OBJECT_TYPE = "SelectionObject"; //$NON-NLS-1$
+    public static final String SELECTION_OBJECT_TYPE = "SelectionObject";
 
 }

@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class CollaborativeFormDescriptionEditorMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-web-spring-collaborative-formdescriptioneditors"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-web-spring-collaborative-formdescriptioneditors";
 
     @Bean
     public MessageSourceAccessor collaborativeFormDescriptionEditorMessageSourceAccessor() {

@@ -70,8 +70,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addFontSizePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_LabelStyle_fontSize_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -82,8 +82,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addItalicPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
                         ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -94,8 +94,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addBoldPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
                         ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -106,8 +106,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_LabelStyle_underline_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -118,8 +118,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_LabelStyle_strikeThrough_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -130,8 +130,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addColorsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PieChartDescriptionStyle_colors_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_colors_feature", "_UI_PieChartDescriptionStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_PieChartDescriptionStyle_colors_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_colors_feature", "_UI_PieChartDescriptionStyle_type"),
                 ViewPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__COLORS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -142,8 +142,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addStrokeWidthPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PieChartDescriptionStyle_strokeWidth_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeWidth_feature", "_UI_PieChartDescriptionStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_PieChartDescriptionStyle_strokeWidth_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeWidth_feature", "_UI_PieChartDescriptionStyle_type"),
                 ViewPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -154,8 +154,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addStrokeColorPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PieChartDescriptionStyle_strokeColor_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeColor_feature", "_UI_PieChartDescriptionStyle_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_PieChartDescriptionStyle_strokeColor_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeColor_feature", "_UI_PieChartDescriptionStyle_type"),
                 ViewPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -166,7 +166,7 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalStyle.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalStyle.svg"));
     }
 
     /**
@@ -187,8 +187,8 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
     @Override
     public String getText(Object object) {
         String label = ((ConditionalPieChartDescriptionStyle) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalPieChartDescriptionStyle_type") : //$NON-NLS-1$
-                this.getString("_UI_ConditionalPieChartDescriptionStyle_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalPieChartDescriptionStyle_type") :
+                this.getString("_UI_ConditionalPieChartDescriptionStyle_type") + " " + label;
     }
 
     /**

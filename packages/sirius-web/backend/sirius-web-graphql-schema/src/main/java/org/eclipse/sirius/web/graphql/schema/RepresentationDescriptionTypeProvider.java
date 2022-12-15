@@ -21,6 +21,6 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
  */
 public class RepresentationDescriptionTypeProvider {
 
-    public static final String TYPE = "RepresentationDescription"; //$NON-NLS-1$
+    public static final String TYPE = "RepresentationDescription";
 
 }

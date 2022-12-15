@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,11 +43,11 @@ public class IDManagerTests {
 
     public IDManagerTests() {
         this.ePackage = EcoreFactory.eINSTANCE.createEPackage();
-        this.ePackage.setName("test"); //$NON-NLS-1$
-        this.ePackage.setNsPrefix("test"); //$NON-NLS-1$
-        this.ePackage.setNsURI("http//:test"); //$NON-NLS-1$
+        this.ePackage.setName("test");
+        this.ePackage.setNsPrefix("test");
+        this.ePackage.setNsURI("http//:test");
         this.eClass = EcoreFactory.eINSTANCE.createEClass();
-        this.eClass.setName("Test"); //$NON-NLS-1$
+        this.eClass.setName("Test");
         this.ePackage.getEClassifiers().add(this.eClass);
         this.resourceSet = new ResourceSetImpl();
         this.resourceSet.getPackageRegistry().put(this.ePackage.getNsURI(), this.ePackage);
@@ -84,7 +84,7 @@ public class IDManagerTests {
     private Resource createResource() {
         var options = new HashMap<>();
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
-        JsonResourceImpl resource = new JsonResourceImpl(URI.createURI(""), options); //$NON-NLS-1$
+        JsonResourceImpl resource = new JsonResourceImpl(URI.createURI(""), options);
         this.resourceSet.getResources().add(resource);
         return resource;
     }

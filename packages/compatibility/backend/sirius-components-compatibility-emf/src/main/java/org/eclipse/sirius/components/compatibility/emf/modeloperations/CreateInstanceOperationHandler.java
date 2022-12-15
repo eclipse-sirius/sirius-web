@@ -51,7 +51,7 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
     /**
      * The pattern used to match the separator used by both Sirius and AQL.
      */
-    private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)"); //$NON-NLS-1$
+    private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)");
 
     private final Logger logger = LoggerFactory.getLogger(CreateInstanceOperationHandler.class);
 
@@ -118,11 +118,11 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
 
                 EObject createdInstance = ecoreIntrinsicExtender.createInstance(className);
                 if (createdInstance == null) {
-                    this.logger.warn("The creation of an instance of Type {} failed.", typeName); //$NON-NLS-1$
+                    this.logger.warn("The creation of an instance of Type {} failed.", typeName);
                 } else {
                     Object addedObject = ecoreIntrinsicExtender.eAdd(ownerEObject, referenceName, createdInstance);
                     if (addedObject == null) {
-                        this.logger.warn("The feature {} does not exist on {}.", referenceName, typeName); //$NON-NLS-1$
+                        this.logger.warn("The feature {} does not exist on {}.", referenceName, typeName);
                     } else if (variableName != null && !variableName.isBlank()) {
                         childVariables.put(variableName, createdInstance);
                     }

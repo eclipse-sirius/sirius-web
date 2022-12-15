@@ -59,10 +59,10 @@ public class ListItemEventHandlersTests {
 
     @Test
     public void testListItemDeletion() {
-        String listId = "List id"; //$NON-NLS-1$
-        String listItemId = "element id to delete"; //$NON-NLS-1$
-        String changeKind = "delete something"; //$NON-NLS-1$
-        String changeDescriptionParameterKey = "change_description_parameter_key"; //$NON-NLS-1$
+        String listId = "List id";
+        String listItemId = "element id to delete";
+        String changeKind = "delete something";
+        String changeDescriptionParameterKey = "change_description_parameter_key";
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(changeDescriptionParameterKey, listItemId);
@@ -79,31 +79,31 @@ public class ListItemEventHandlersTests {
                 .deletable(true)
                 .deleteHandler(deleteHandler)
                 .clickHandler(clickEventKind -> new Success())
-                .imageURL("") //$NON-NLS-1$
-                .kind("Diagram") //$NON-NLS-1$
-                .label("empty representation") //$NON-NLS-1$
+                .imageURL("")
+                .kind("Diagram")
+                .label("empty representation")
                 .build();
 
         List list = List.newList(listId)
                 .diagnostics(Collections.emptyList())
                 .items(Collections.singletonList(listItem))
-                .label("") //$NON-NLS-1$
+                .label("")
                 .build();
 
-        Group group = Group.newGroup("groupId") //$NON-NLS-1$
-                .label("group label") //$NON-NLS-1$
+        Group group = Group.newGroup("groupId")
+                .label("group label")
                 .widgets(Collections.singletonList(list))
                 .build();
 
-        Page page = Page.newPage("pageId") //$NON-NLS-1$
-                .label("page label") //$NON-NLS-1$
+        Page page = Page.newPage("pageId")
+                .label("page label")
                 .groups(Collections.singletonList(group))
                 .build();
 
         Form form = Form.newForm(FORM_ID.toString())
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label") //$NON-NLS-1$
+                .label("form label")
                 .pages(Collections.singletonList(page))
                 .build();
         // @formatter:on
@@ -136,10 +136,10 @@ public class ListItemEventHandlersTests {
 
     @Test
     public void testListItemSelection() {
-        String listId = "Listid"; //$NON-NLS-1$
-        String listItemId = "ListItemId"; //$NON-NLS-1$
+        String listId = "Listid";
+        String listItemId = "ListItemId";
         String changeKind = ChangeKind.SEMANTIC_CHANGE;
-        String changeDescriptionParameterKey = "change_description_parameter_key"; //$NON-NLS-1$
+        String changeDescriptionParameterKey = "change_description_parameter_key";
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(changeDescriptionParameterKey, listItemId);
@@ -156,31 +156,31 @@ public class ListItemEventHandlersTests {
                 .deletable(true)
                 .deleteHandler(() -> new Success())
                 .clickHandler(selectHandler)
-                .imageURL("") //$NON-NLS-1$
-                .kind("Diagram") //$NON-NLS-1$
-                .label("empty representation") //$NON-NLS-1$
+                .imageURL("")
+                .kind("Diagram")
+                .label("empty representation")
                 .build();
 
         List list = List.newList(listId)
                 .diagnostics(Collections.emptyList())
                 .items(Collections.singletonList(listItem))
-                .label("") //$NON-NLS-1$
+                .label("")
                 .build();
 
-        Group group = Group.newGroup("groupId") //$NON-NLS-1$
-                .label("group label") //$NON-NLS-1$
+        Group group = Group.newGroup("groupId")
+                .label("group label")
                 .widgets(Collections.singletonList(list))
                 .build();
 
-        Page page = Page.newPage("pageId") //$NON-NLS-1$
-                .label("page label") //$NON-NLS-1$
+        Page page = Page.newPage("pageId")
+                .label("page label")
                 .groups(Collections.singletonList(group))
                 .build();
 
         Form form = Form.newForm(FORM_ID.toString())
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label") //$NON-NLS-1$
+                .label("form label")
                 .pages(Collections.singletonList(page))
                 .build();
         // @formatter:on

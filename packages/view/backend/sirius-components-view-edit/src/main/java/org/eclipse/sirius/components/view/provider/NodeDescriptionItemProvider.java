@@ -72,8 +72,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addReusedChildNodeDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_reusedChildNodeDescriptions_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedChildNodeDescriptions_feature", "_UI_NodeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_NodeDescription_reusedChildNodeDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedChildNodeDescriptions_feature", "_UI_NodeDescription_type"),
                 ViewPackage.Literals.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
@@ -85,8 +85,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addReusedBorderNodeDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_reusedBorderNodeDescriptions_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedBorderNodeDescriptions_feature", "_UI_NodeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_NodeDescription_reusedBorderNodeDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedBorderNodeDescriptions_feature", "_UI_NodeDescription_type"),
                 ViewPackage.Literals.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
@@ -98,8 +98,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addChildrenLayoutStrategyPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_childrenLayoutStrategy_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_childrenLayoutStrategy_feature", "_UI_NodeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_NodeDescription_childrenLayoutStrategy_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_childrenLayoutStrategy_feature", "_UI_NodeDescription_type"),
                 ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, true, false, true, null, null, null));
     }
 
@@ -144,7 +144,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NodeDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NodeDescription.svg"));
     }
 
     /**
@@ -165,8 +165,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     public String getText(Object object) {
         String label = ((NodeDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_NodeDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") :
+                this.getString("_UI_NodeDescription_type") + " " + label;
     }
 
     /**
@@ -203,18 +203,18 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         NodeTool newNodeTool = ViewFactory.eINSTANCE.createNodeTool();
-        newNodeTool.setName("Create Node"); //$NON-NLS-1$
+        newNodeTool.setName("Create Node");
         newNodeTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, newNodeTool));
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeChild.setName("Sub-node"); //$NON-NLS-1$
+        nodeChild.setName("Sub-node");
         nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
         NodeDescription borderNodeChild = ViewFactory.eINSTANCE.createNodeDescription();
-        borderNodeChild.setName("Border node"); //$NON-NLS-1$
+        borderNodeChild.setName("Border node");
         borderNodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         borderNodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
@@ -237,21 +237,21 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        String text = ""; //$NON-NLS-1$
+        String text = "";
         if (feature == ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS) {
-            text = "Sub-node"; //$NON-NLS-1$
+            text = "Sub-node";
         } else if (feature == ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS) {
-            text = "Border node"; //$NON-NLS-1$
+            text = "Border node";
         } else if (child instanceof RectangularNodeStyleDescription) {
-            text = "Style Rectangular"; //$NON-NLS-1$
+            text = "Style Rectangular";
         } else if (child instanceof ImageNodeStyleDescription) {
-            text = "Style Image"; //$NON-NLS-1$
+            text = "Style Image";
         } else if (child instanceof IconLabelNodeStyleDescription) {
-            text = "Style Icon-Label"; //$NON-NLS-1$
+            text = "Style Icon-Label";
         } else if (child instanceof FreeFormLayoutStrategyDescription) {
-            text = "Layout Free Form"; //$NON-NLS-1$
+            text = "Layout Free Form";
         } else if (child instanceof ListLayoutStrategyDescription) {
-            text = "Layout List"; //$NON-NLS-1$
+            text = "Layout List";
         } else {
             text = super.getCreateChildText(owner, feature, child, selection);
         }

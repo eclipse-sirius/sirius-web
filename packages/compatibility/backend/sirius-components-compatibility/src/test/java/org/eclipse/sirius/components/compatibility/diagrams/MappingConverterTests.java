@@ -54,36 +54,36 @@ import org.junit.jupiter.api.Test;
  */
 public class MappingConverterTests {
 
-    private static final String EXPRESSION_FALSE = "aql:false"; //$NON-NLS-1$
+    private static final String EXPRESSION_FALSE = "aql:false";
 
-    private static final String EXPRESSION_TRUE = "aql:true"; //$NON-NLS-1$
+    private static final String EXPRESSION_TRUE = "aql:true";
 
-    private static final String PLUGIN_ID = "my.sirius.plugin"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = "my.sirius.plugin";
 
-    private static final String ICON_PATH = "/my/icon/path/MyIcon.gif"; //$NON-NLS-1$
+    private static final String ICON_PATH = "/my/icon/path/MyIcon.gif";
 
     @Test
     public void testContainerStylePropertiesFromConditionalStyle() {
         ContainerMapping containerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
-        String mappingName = "TestMapping"; //$NON-NLS-1$
+        String mappingName = "TestMapping";
         containerMapping.setName(mappingName);
 
         // @formatter:off
         ContainerStyleDescription defaultStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(defaultStyle)
-                .labelExpression("aql: defaultStyle") //$NON-NLS-1$
+                .labelExpression("aql: defaultStyle")
                 .labelSize(10)
                 .labelColor(this.getColor(1, 1, 1));
 
         ContainerStyleDescription firstConditionalStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(firstConditionalStyle)
-                .labelExpression("aql:'firstConditionalStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'firstConditionalStyle'")
                 .labelSize(4)
                 .labelColor(this.getColor(3, 3, 3));
 
         ContainerStyleDescription secondConditionalStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(secondConditionalStyle)
-                .labelExpression("aql:'secondConditionalStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'secondConditionalStyle'")
                 .labelSize(6)
                 .bold()
                 .italic()
@@ -94,7 +94,7 @@ public class MappingConverterTests {
 
         ContainerStyleDescription thirdConditionalStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(thirdConditionalStyle)
-                .labelExpression("aql:'thirdConditionalStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'thirdConditionalStyle'")
                 .labelSize(8)
                 .labelColor(this.getColor(4, 4, 4));
         // @formatter:on
@@ -131,13 +131,13 @@ public class MappingConverterTests {
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
-        assertThat(text).isEqualTo("secondConditionalStyle"); //$NON-NLS-1$
+        assertThat(text).isEqualTo("secondConditionalStyle");
         assertThat(fontSize).isEqualTo(6);
         assertThat(isBold).isTrue();
         assertThat(isItalic).isTrue();
         assertThat(isUnderline).isTrue();
         assertThat(isStrikeThrough).isTrue();
-        assertThat(color).isEqualTo("#020202"); //$NON-NLS-1$
+        assertThat(color).isEqualTo("#020202");
         assertThat(iconURL).isEqualTo(ICON_PATH);
     }
 
@@ -148,20 +148,20 @@ public class MappingConverterTests {
     @Test
     public void testContainerWithImageSubNode() {
         ContainerMapping containerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
-        containerMapping.setName("EClass"); //$NON-NLS-1$
-        containerMapping.setDomainClass("ecore::EClass"); //$NON-NLS-1$
-        containerMapping.setSemanticCandidatesExpression("aql:self.eClassifiers"); //$NON-NLS-1$
+        containerMapping.setName("EClass");
+        containerMapping.setDomainClass("ecore::EClass");
+        containerMapping.setSemanticCandidatesExpression("aql:self.eClassifiers");
         containerMapping.setChildrenPresentation(ContainerLayout.LIST);
         ContainerStyleDescription containerStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
-        containerStyle.setLabelExpression("aql:self.name"); //$NON-NLS-1$
+        containerStyle.setLabelExpression("aql:self.name");
         containerMapping.setStyle(containerStyle);
 
         NodeMapping itemMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
-        itemMapping.setDomainClass("ecore::EAttribute"); //$NON-NLS-1$
-        itemMapping.setSemanticCandidatesExpression("aql:self.eStructuralFeatures"); //$NON-NLS-1$
+        itemMapping.setDomainClass("ecore::EAttribute");
+        itemMapping.setSemanticCandidatesExpression("aql:self.eStructuralFeatures");
         WorkspaceImageDescription imageStyle = StyleFactory.eINSTANCE.createWorkspaceImageDescription();
-        imageStyle.setLabelExpression("aql:self.name"); //$NON-NLS-1$
-        imageStyle.setWorkspacePath("path/to/image.svg"); //$NON-NLS-1$
+        imageStyle.setLabelExpression("aql:self.name");
+        imageStyle.setWorkspacePath("path/to/image.svg");
         itemMapping.setStyle(imageStyle);
         containerMapping.getSubNodeMappings().add(itemMapping);
 
@@ -197,25 +197,25 @@ public class MappingConverterTests {
     @Test
     public void testNodeStylePropertiesFromConditionalStyle() {
         NodeMapping nodeMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
-        String mappingName = "TestMapping"; //$NON-NLS-1$
+        String mappingName = "TestMapping";
         nodeMapping.setName(mappingName);
 
         // @formatter:off
         NodeStyleDescription defaultStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(defaultStyle)
-                .labelExpression("aql:'defaultStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'defaultStyle'")
                 .labelSize(10)
                 .labelColor(this.getColor(1, 1, 1));
 
         NodeStyleDescription firstConditionalStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(firstConditionalStyle)
-                .labelExpression("aql:'firstConditionalStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'firstConditionalStyle'")
                 .labelSize(4)
                 .labelColor(this.getColor(3, 3, 3));
 
         NodeStyleDescription secondConditionalStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(secondConditionalStyle)
-                .labelExpression("aql:'secondConditionalStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'secondConditionalStyle'")
                 .labelSize(6)
                 .bold()
                 .italic()
@@ -226,7 +226,7 @@ public class MappingConverterTests {
 
         NodeStyleDescription thirdConditionalStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(thirdConditionalStyle)
-                .labelExpression("aql:'thirdConditionalStyle'") //$NON-NLS-1$
+                .labelExpression("aql:'thirdConditionalStyle'")
                 .labelSize(8)
                 .labelColor(this.getColor(4, 4, 4));
         // @formatter:on
@@ -263,13 +263,13 @@ public class MappingConverterTests {
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
-        assertThat(text).isEqualTo("secondConditionalStyle"); //$NON-NLS-1$
+        assertThat(text).isEqualTo("secondConditionalStyle");
         assertThat(fontSize).isEqualTo(6);
         assertThat(isBold).isTrue();
         assertThat(isItalic).isTrue();
         assertThat(isUnderline).isTrue();
         assertThat(isStrikeThrough).isTrue();
-        assertThat(color).isEqualTo("#020202"); //$NON-NLS-1$
+        assertThat(color).isEqualTo("#020202");
         assertThat(iconURL).isEqualTo(ICON_PATH);
     }
 

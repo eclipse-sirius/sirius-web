@@ -55,8 +55,8 @@ public class ChangeContextOperationHandlerTests {
     @Test
     public void changeContextHandlerNominalCaseTest() {
         // check the nominal case
-        String newName = "newName"; //$NON-NLS-1$
-        this.changeContext.setBrowseExpression("aql:self.renameENamedElementService('" + newName + "')"); //$NON-NLS-1$//$NON-NLS-2$
+        String newName = "newName";
+        this.changeContext.setBrowseExpression("aql:self.renameENamedElementService('" + newName + "')");
 
         IStatus handleResult = this.changeContextOperationHandler.handle(this.operationTestContext.getVariables());
 
@@ -68,7 +68,7 @@ public class ChangeContextOperationHandlerTests {
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
         this.changeContext.getSubModelOperations().add(subChangeContext);
 
-        this.handleAndCheckExecution("aql:self.eClassifiers->first()", this.operationTestContext.getClass1()); //$NON-NLS-1$
+        this.handleAndCheckExecution("aql:self.eClassifiers->first()", this.operationTestContext.getClass1());
     }
 
     /**
@@ -85,7 +85,7 @@ public class ChangeContextOperationHandlerTests {
         this.handleAndCheckExecution(null, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", this.operationTestContext.getRootPackage()); //$NON-NLS-1$
+        this.handleAndCheckExecution("", this.operationTestContext.getRootPackage());
 
         // Check expression with exception case
         this.handleAndCheckExecution(ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());

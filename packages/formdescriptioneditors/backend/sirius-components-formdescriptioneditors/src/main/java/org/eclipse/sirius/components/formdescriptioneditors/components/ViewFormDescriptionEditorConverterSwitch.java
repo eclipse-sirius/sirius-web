@@ -73,7 +73,7 @@ import org.eclipse.sirius.components.view.util.ViewSwitch;
  */
 public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<AbstractWidgetDescription> {
 
-    private static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
+    private static final String AQL_PREFIX = "aql:";
 
     private final FormDescriptionEditorDescription formDescriptionEditorDescription;
 
@@ -101,12 +101,12 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return TextfieldDescription.newTextfieldDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewTextfieldDescription, "Textfield")) //$NON-NLS-1$
-                .valueProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewTextfieldDescription, "Textfield"))
+                .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -129,12 +129,12 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return CheckboxDescription.newCheckboxDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewCheckboxDescription, "Checkbox")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewCheckboxDescription, "Checkbox"))
                 .valueProvider(vm -> true)
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -157,15 +157,15 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return SelectDescription.newSelectDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewSelectDescription, "Select")) //$NON-NLS-1$
-                .valueProvider(vm -> "") //$NON-NLS-1$
-                .optionIdProvider(vm -> "") //$NON-NLS-1$
-                .optionLabelProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewSelectDescription, "Select"))
+                .valueProvider(vm -> "")
+                .optionIdProvider(vm -> "")
+                .optionLabelProvider(vm -> "")
                 .optionsProvider(vm -> List.of())
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -188,12 +188,12 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return TextareaDescription.newTextareaDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewTextareaDescription, "Textarea")) //$NON-NLS-1$
-                .valueProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewTextareaDescription, "Textarea"))
+                .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -216,15 +216,15 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return MultiSelectDescription.newMultiSelectDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewMultiSelectDescription, "MultiSelect")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewMultiSelectDescription, "MultiSelect"))
                 .valuesProvider(vm -> List.of())
-                .optionIdProvider(vm -> "") //$NON-NLS-1$
-                .optionLabelProvider(vm -> "") //$NON-NLS-1$
+                .optionIdProvider(vm -> "")
+                .optionLabelProvider(vm -> "")
                 .optionsProvider(vm -> List.of())
                 .newValuesHandler((vm, values) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -247,15 +247,15 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return RadioDescription.newRadioDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewRadioDescription, "Radio")) //$NON-NLS-1$
-                .optionIdProvider(vm -> "") //$NON-NLS-1$
-                .optionLabelProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewRadioDescription, "Radio"))
+                .optionIdProvider(vm -> "")
+                .optionLabelProvider(vm -> "")
                 .optionSelectedProvider(vm -> true)
                 .optionsProvider(vm -> List.of())
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -278,12 +278,12 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return FlexboxContainerDescription.newFlexboxContainerDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewFlexboxContainerDescription, "FlexboxContainer")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewFlexboxContainerDescription, "FlexboxContainer"))
                 .flexDirection(flexDirection)
                 .children(children)
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }
@@ -305,13 +305,13 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return ButtonDescription.newButtonDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewButtonDescription, "Button")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewButtonDescription, "Button"))
                 .buttonLabelProvider(vm -> viewButtonDescription.getButtonLabelExpression())
                 .imageURLProvider(vm -> viewButtonDescription.getImageExpression())
                 .pushButtonHandler(vm -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -334,11 +334,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return LabelDescription.newLabelDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewLabelDescription, "Label")) //$NON-NLS-1$
-                .valueProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewLabelDescription, "Label"))
+                .valueProvider(vm -> "")
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -361,11 +361,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return LinkDescription.newLinkDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewLinkDescription, "Link")) //$NON-NLS-1$
-                .urlProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewLinkDescription, "Link"))
+                .urlProvider(vm -> "")
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider)
                 .build();
         // @formatter:on
@@ -388,18 +388,18 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         ListDescription.Builder builder = ListDescription.newListDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "List")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "List"))
                 .itemsProvider(vm -> List.of())
-                .itemKindProvider(vm -> "") //$NON-NLS-1$
+                .itemKindProvider(vm -> "")
                 .itemDeleteHandlerProvider(vm -> new Success())
-                .itemImageURLProvider(vm -> "") //$NON-NLS-1$
-                .itemIdProvider(vm -> "") //$NON-NLS-1$
-                .itemLabelProvider(vm -> "") //$NON-NLS-1$
+                .itemImageURLProvider(vm -> "")
+                .itemIdProvider(vm -> "")
+                .itemLabelProvider(vm -> "")
                 .itemDeletableProvider(vm -> false)
                 .itemClickHandlerProvider(vm -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .styleProvider(styleProvider);
         // @formatter:on
 
@@ -415,11 +415,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return ImageDescription.newImageDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewImageDescription, "Image")) //$NON-NLS-1$
-                .urlProvider(vm -> Optional.ofNullable(viewImageDescription.getUrlExpression()).orElse("")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewImageDescription, "Image"))
+                .urlProvider(vm -> Optional.ofNullable(viewImageDescription.getUrlExpression()).orElse(""))
                 .maxWidthProvider(vm -> viewImageDescription.getMaxWidthExpression())
-                .diagnosticsProvider(vm -> List.of()).kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .diagnosticsProvider(vm -> List.of()).kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }
@@ -433,12 +433,12 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return RichTextDescription.newRichTextDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(viewRichTextDescription, "RichText")) //$NON-NLS-1$
-                .valueProvider(vm -> "") //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(viewRichTextDescription, "RichText"))
+                .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }
@@ -455,8 +455,8 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
 
         // @formatter:off
         IChartDescription chartDescription = BarChartDescription.newBarChartDescription(UUID.randomUUID().toString())
-                .label(Optional.ofNullable(viewBarChartDescription.getName()).orElse("")) //$NON-NLS-1$
-                .labelProvider(vm -> this.getWidgetLabel(viewBarChartDescription, "BarChart")) //$NON-NLS-1$
+                .label(Optional.ofNullable(viewBarChartDescription.getName()).orElse(""))
+                .labelProvider(vm -> this.getWidgetLabel(viewBarChartDescription, "BarChart"))
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
@@ -479,7 +479,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
 
         // @formatter:off
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(UUID.randomUUID().toString())
-                .label(this.getWidgetLabel(viewPieChartDescription, "PieChart")) //$NON-NLS-1$
+                .label(this.getWidgetLabel(viewPieChartDescription, "PieChart"))
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
@@ -496,11 +496,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         // @formatter:off
         return ChartWidgetDescription.newChartWidgetDescription(chartDescription.getId())
                 .idProvider(vm -> id)
-                .labelProvider(vm -> this.getWidgetLabel(widgetDescription, "Chart")) //$NON-NLS-1$
+                .labelProvider(vm -> this.getWidgetLabel(widgetDescription, "Chart"))
                 .chartDescription(chartDescription)
                 .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "") //$NON-NLS-1$
-                .messageProvider(object -> "") //$NON-NLS-1$
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
                 .build();
         // @formatter:on
     }

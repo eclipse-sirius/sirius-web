@@ -230,11 +230,11 @@ public class NodePositionProvider {
         IContainerLayoutData parent = node.getParent();
         double defaultYPosition = LayoutOptionValues.DEFAULT_ELK_PADDING;
         double labelPaddings = 0;
-        if (this.isLabelOfType(parent, "inside")) { //$NON-NLS-1$
+        if (this.isLabelOfType(parent, "inside")) {
             double parentLabelHeight = ((NodeLayoutData) parent).getLabel().getTextBounds().getSize().getHeight();
             labelPaddings += parentLabelHeight + DEFAULT_NODE_LABELS_PADDING;
         }
-        if (this.isLabelOfType(node, "outside")) { //$NON-NLS-1$
+        if (this.isLabelOfType(node, "outside")) {
             double nodeLabelHeight = node.getLabel().getTextBounds().getSize().getHeight();
             labelPaddings += nodeLabelHeight + DEFAULT_NODE_LABELS_PADDING;
         }

@@ -64,7 +64,7 @@ public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderA
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FreeFormLayoutStrategyDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FreeFormLayoutStrategyDescription.svg"));
     }
 
     /**
@@ -84,7 +84,7 @@ public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderA
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_FreeFormLayoutStrategyDescription_type"); //$NON-NLS-1$
+        return this.getString("_UI_FreeFormLayoutStrategyDescription_type");
     }
 
     /**

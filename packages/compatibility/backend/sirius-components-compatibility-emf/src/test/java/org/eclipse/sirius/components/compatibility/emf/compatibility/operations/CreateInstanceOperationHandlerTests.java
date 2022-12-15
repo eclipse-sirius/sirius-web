@@ -41,11 +41,11 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class CreateInstanceOperationHandlerTests {
-    private static final String VARIABLE_NAME = "myVariableName"; //$NON-NLS-1$
+    private static final String VARIABLE_NAME = "myVariableName";
 
-    private static final String REFERENCE_NAME = "eClassifiers"; //$NON-NLS-1$
+    private static final String REFERENCE_NAME = "eClassifiers";
 
-    private static final String TYPE_NAME = "ecore::EClass"; //$NON-NLS-1$
+    private static final String TYPE_NAME = "ecore::EClass";
 
     private CreateInstanceOperationHandler createInstanceOperationHandler;
 
@@ -71,9 +71,9 @@ public class CreateInstanceOperationHandlerTests {
     @Test
     public void createInstanceOperationHandlerNominalCaseTest() {
         // used to check that the variable name is added in variable scope
-        String className = "newClass"; //$NON-NLS-1$
+        String className = "newClass";
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression("aql:" + VARIABLE_NAME + ".renameENamedElementService('" + className + "'))"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        subChangeContext.setBrowseExpression("aql:" + VARIABLE_NAME + ".renameENamedElementService('" + className + "'))");
         this.createInstanceOperation.getSubModelOperations().add(subChangeContext);
 
         // check the nominal case
@@ -88,7 +88,7 @@ public class CreateInstanceOperationHandlerTests {
         assertEquals(className, this.operationTestContext.getRootPackage().getEClassifiers().get(1).getName());
 
         // check that an empty variable name is a valid case
-        this.createInstanceOperation.setVariableName(""); //$NON-NLS-1$
+        this.createInstanceOperation.setVariableName("");
 
         handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
@@ -100,9 +100,9 @@ public class CreateInstanceOperationHandlerTests {
     @Test
     public void createInstanceOperationHandlerChangeSelfCaseTest() {
         // used to check that the variable name is added in variable scope
-        String className = "newClass"; //$NON-NLS-1$
+        String className = "newClass";
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression("aql:self.renameENamedElementService('" + className + "'))"); //$NON-NLS-1$//$NON-NLS-2$
+        subChangeContext.setBrowseExpression("aql:self.renameENamedElementService('" + className + "'))");
         this.createInstanceOperation.getSubModelOperations().add(subChangeContext);
 
         // check the nominal case
@@ -117,7 +117,7 @@ public class CreateInstanceOperationHandlerTests {
         assertEquals(className, this.operationTestContext.getRootPackage().getEClassifiers().get(1).getName());
 
         // check that an empty variable name is a valid case
-        this.createInstanceOperation.setVariableName(""); //$NON-NLS-1$
+        this.createInstanceOperation.setVariableName("");
 
         handleResult = this.createInstanceOperationHandler.handle(this.operationTestContext.getVariables());
 
@@ -139,9 +139,9 @@ public class CreateInstanceOperationHandlerTests {
         this.handleAndCheckExecution(null, null, null, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", "", "", this.operationTestContext.getRootPackage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        this.handleAndCheckExecution("", "", "", this.operationTestContext.getRootPackage());
 
-        this.handleAndCheckExecution(REFERENCE_NAME, "UnknownClass", VARIABLE_NAME, this.operationTestContext.getRootPackage()); //$NON-NLS-1$
+        this.handleAndCheckExecution(REFERENCE_NAME, "UnknownClass", VARIABLE_NAME, this.operationTestContext.getRootPackage());
     }
 
     /**

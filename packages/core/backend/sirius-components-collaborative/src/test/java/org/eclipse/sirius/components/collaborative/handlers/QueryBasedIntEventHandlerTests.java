@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ public class QueryBasedIntEventHandlerTests {
         IQueryService queryService = new IQueryService.NoOp() {
             @Override
             public IPayload execute(IEditingContext editingContext, QueryBasedIntInput input) {
-                return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
+                return new ErrorPayload(UUID.randomUUID(), "An error occured");
             }
         };
 
@@ -89,7 +89,7 @@ public class QueryBasedIntEventHandlerTests {
 
     private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedIntEventHandler queryBasedIntEventHandler = new QueryBasedIntEventHandler(new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry(), queryService);
-        IInput input = new QueryBasedIntInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
+        IInput input = new QueryBasedIntInput(UUID.randomUUID(), "", Map.of());
         assertThat(queryBasedIntEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();

@@ -102,7 +102,7 @@ public class NodeExportService {
         imageExport.append(this.elementExport.exportLabel(label, nodeOpacity));
         imageExport.append(this.exportChildren(node, id2NodeHierarchy));
 
-        return imageExport.append("</g>"); //$NON-NLS-1$
+        return imageExport.append("</g>");
     }
 
     private StringBuilder exportHeaderSeparator(Node node, Label label, RectangularNodeStyle nodeStyle, float opacity) {
@@ -111,18 +111,18 @@ public class NodeExportService {
         double headerLabelPadding = label.getPosition().getY();
         double y = label.getSize().getHeight() + 2 * headerLabelPadding;
 
-        headerExport.append("<line "); //$NON-NLS-1$
-        headerExport.append("x1=\"0\" "); //$NON-NLS-1$
-        headerExport.append("y1=\"" + y + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-        headerExport.append("x2=\"" + node.getSize().getWidth() + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-        headerExport.append("y2=\"" + y + "\" "); //$NON-NLS-1$ //$NON-NLS-2$
-        headerExport.append("style=\""); //$NON-NLS-1$
-        headerExport.append("stroke: " + nodeStyle.getBorderColor() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
-        headerExport.append("stroke-width: " + nodeStyle.getBorderSize() + "; "); //$NON-NLS-1$ //$NON-NLS-2$
-        headerExport.append("opacity: " + opacity + "; "); //$NON-NLS-1$ //$NON-NLS-2$
-        headerExport.append("\" "); //$NON-NLS-1$
+        headerExport.append("<line ");
+        headerExport.append("x1=\"0\" ");
+        headerExport.append("y1=\"" + y + "\" ");
+        headerExport.append("x2=\"" + node.getSize().getWidth() + "\" ");
+        headerExport.append("y2=\"" + y + "\" ");
+        headerExport.append("style=\"");
+        headerExport.append("stroke: " + nodeStyle.getBorderColor() + "; ");
+        headerExport.append("stroke-width: " + nodeStyle.getBorderSize() + "; ");
+        headerExport.append("opacity: " + opacity + "; ");
+        headerExport.append("\" ");
 
-        return headerExport.append("/>"); //$NON-NLS-1$
+        return headerExport.append("/>");
     }
 
     private StringBuilder exportIconLabel(Node node, IconLabelNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy, float nodeOpacity) {
@@ -140,7 +140,7 @@ public class NodeExportService {
         rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity));
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
-        return rectangleExport.append("</g>"); //$NON-NLS-1$
+        return rectangleExport.append("</g>");
     }
 
     private StringBuilder exportRectangle(Node node, RectangularNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy, float nodeOpacity) {
@@ -165,6 +165,6 @@ public class NodeExportService {
         }
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
-        return rectangleExport.append("</g>"); //$NON-NLS-1$
+        return rectangleExport.append("</g>");
     }
 }

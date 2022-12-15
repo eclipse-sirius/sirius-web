@@ -49,9 +49,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObjectService implements IObjectService {
 
-    private static final String DEFAULT_LABEL_FEATURE = "name"; //$NON-NLS-1$
+    private static final String DEFAULT_LABEL_FEATURE = "name";
 
-    private static final String ID_SEPARATOR = "#"; //$NON-NLS-1$
+    private static final String ID_SEPARATOR = "#";
 
     private final IEMFKindService emfKindService;
 
@@ -91,7 +91,7 @@ public class ObjectService implements IObjectService {
             EObject eObject = (EObject) object;
             return this.emfKindService.getKind(eObject.eClass());
         }
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     private String getIdFromIDAdapter(EObject eObject) {
@@ -129,7 +129,7 @@ public class ObjectService implements IObjectService {
                 .map(EObject.class::cast)
                 .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eObject::eGet))
                 .map(Object::toString)
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     }
 
@@ -140,7 +140,7 @@ public class ObjectService implements IObjectService {
             fullLabel = ((EObject) object).eClass().getName();
             String label = this.getLabel(object);
             if (label != null && !label.isEmpty()) {
-                fullLabel += " " + label; //$NON-NLS-1$
+                fullLabel += " " + label;
             }
         } else {
             fullLabel = this.getLabel(object);
@@ -163,7 +163,7 @@ public class ObjectService implements IObjectService {
                         return this.getImageRelativePath(imageFullPath);
                     }
                 } catch (MissingResourceException exception) {
-                    this.logger.warn("Missing icon for {}", eObject); //$NON-NLS-1$
+                    this.logger.warn("Missing icon for {}", eObject);
                 }
             }
         }
@@ -172,12 +172,12 @@ public class ObjectService implements IObjectService {
 
     private String getImageRelativePath(String imageFullPath) {
         String imageRelativePath = null;
-        String[] uriSplit = imageFullPath.split("!"); //$NON-NLS-1$
+        String[] uriSplit = imageFullPath.split("!");
         if (uriSplit.length > 1) {
             imageRelativePath = uriSplit[uriSplit.length - 1];
         } else {
             // in development mode, when the image is not contained in a jar
-            uriSplit = imageFullPath.split("target/classes"); //$NON-NLS-1$
+            uriSplit = imageFullPath.split("target/classes");
             if (uriSplit.length > 1) {
                 imageRelativePath = uriSplit[uriSplit.length - 1];
             }

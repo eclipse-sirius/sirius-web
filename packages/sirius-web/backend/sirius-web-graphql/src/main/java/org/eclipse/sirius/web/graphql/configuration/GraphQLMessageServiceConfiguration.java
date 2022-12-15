@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class GraphQLMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-web-graphql"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-web-graphql";
 
     @Bean
     public MessageSourceAccessor graphQLMessageSourceAccessor() {

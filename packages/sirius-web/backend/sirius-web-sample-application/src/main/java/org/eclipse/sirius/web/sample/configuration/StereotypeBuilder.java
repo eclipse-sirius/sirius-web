@@ -53,12 +53,12 @@ public class StereotypeBuilder {
     }
 
     public String getStereotypeBody(EObject rootEObject) {
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory"); //$NON-NLS-1$
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory");
         if (rootEObject != null) {
             resource.getContents().add(rootEObject);
         }
 
-        String content = ""; //$NON-NLS-1$
+        String content = "";
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             Map<String, Object> options = new HashMap<>();
             options.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
@@ -76,7 +76,7 @@ public class StereotypeBuilder {
     public String getStereotypeBody(ClassPathResource classPathResource) {
         long start = System.currentTimeMillis();
 
-        String content = ""; //$NON-NLS-1$
+        String content = "";
         try (var inputStream = classPathResource.getInputStream()) {
             URI uri = new JSONResourceFactory().createResourceURI(classPathResource.getFilename());
             Resource inputResource = this.loadFromXMI(uri, inputStream);

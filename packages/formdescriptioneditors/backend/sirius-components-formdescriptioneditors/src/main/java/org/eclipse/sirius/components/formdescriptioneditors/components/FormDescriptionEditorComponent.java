@@ -50,7 +50,7 @@ public class FormDescriptionEditorComponent implements IComponent {
         // @formatter:off
         String label = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getLabel)
                 .orElseGet(() -> variableManager.get(FormDescriptionEditor.LABEL, String.class)
-                .orElse("Form Description Editor")); //$NON-NLS-1$
+                .orElse("Form Description Editor"));
         // @formatter:on
         Function<VariableManager, String> targetObjectIdProvider = formDescriptionEditorDescription.getTargetObjectIdProvider();
         String targetObjectId = targetObjectIdProvider.apply(variableManager);

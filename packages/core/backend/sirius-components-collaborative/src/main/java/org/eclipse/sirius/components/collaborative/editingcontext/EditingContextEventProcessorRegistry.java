@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
                         if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
                             this.disposeEditingContextEventProcessor(editingContextId);
                         } else {
-                            this.logger.trace("Stopping the disposal of the editing context"); //$NON-NLS-1$
+                            this.logger.trace("Stopping the disposal of the editing context");
                         }
                     });
 
@@ -113,12 +113,12 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     public void disposeEditingContextEventProcessor(String editingContextId) {
         Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId)).ifPresent(EditingContextEventProcessorEntry::dispose);
 
-        this.logger.trace("Editing context event processors count: {}", this.editingContextEventProcessors.size()); //$NON-NLS-1$
+        this.logger.trace("Editing context event processors count: {}", this.editingContextEventProcessors.size());
     }
 
     @PreDestroy
     public void dispose() {
-        this.logger.debug("Shutting down all the editing context event processors"); //$NON-NLS-1$
+        this.logger.debug("Shutting down all the editing context event processors");
 
         this.editingContextEventProcessors.values().forEach(EditingContextEventProcessorEntry::dispose);
         this.editingContextEventProcessors.clear();

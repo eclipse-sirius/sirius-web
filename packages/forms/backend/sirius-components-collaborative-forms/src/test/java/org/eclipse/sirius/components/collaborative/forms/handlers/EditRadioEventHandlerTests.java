@@ -53,9 +53,9 @@ public class EditRadioEventHandlerTests {
 
     @Test
     public void testRadioEdition() {
-        String id = "Radio id"; //$NON-NLS-1$
+        String id = "Radio id";
 
-        var input = new EditRadioInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "optionId"); //$NON-NLS-1$
+        var input = new EditRadioInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "optionId");
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Function<String, IStatus> newValueHandler = newValue -> {
@@ -64,32 +64,32 @@ public class EditRadioEventHandlerTests {
         };
 
         // @formatter:off
-        RadioOption option = RadioOption.newRadioOption("optionId") //$NON-NLS-1$
-                .label("Option label") //$NON-NLS-1$
+        RadioOption option = RadioOption.newRadioOption("optionId")
+                .label("Option label")
                 .selected(false)
                 .build();
 
         Radio radio = Radio.newRadio(id)
-                .label("label") //$NON-NLS-1$
+                .label("label")
                 .newValueHandler(newValueHandler)
                 .options(List.of(option))
                 .diagnostics(List.of())
                 .build();
 
-        Group group = Group.newGroup("groupId") //$NON-NLS-1$
-                .label("group label") //$NON-NLS-1$
+        Group group = Group.newGroup("groupId")
+                .label("group label")
                 .widgets(List.of(radio))
                 .build();
 
-        Page page = Page.newPage("pageId") //$NON-NLS-1$
-                .label("page label") //$NON-NLS-1$
+        Page page = Page.newPage("pageId")
+                .label("page label")
                 .groups(List.of(group))
                 .build();
 
         Form form = Form.newForm(FORM_ID)
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label") //$NON-NLS-1$
+                .label("form label")
                 .pages(List.of(page))
                 .build();
         // @formatter:on

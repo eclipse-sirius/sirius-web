@@ -85,7 +85,7 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
         });
 
         if (optionalParentElementId.isEmpty()) {
-            return new Failure(""); //$NON-NLS-1$
+            return new Failure("");
         }
 
         DiagramElementMapping diagramElementMapping = this.createView.getMapping();

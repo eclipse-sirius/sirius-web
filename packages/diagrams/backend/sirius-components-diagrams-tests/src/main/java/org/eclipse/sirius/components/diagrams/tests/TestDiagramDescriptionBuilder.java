@@ -45,15 +45,15 @@ public class TestDiagramDescriptionBuilder {
     public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions, List<ToolSection> toolSections) {
         // @formatter:off
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
-            .label("") //$NON-NLS-1$
+            .label("")
             .canCreatePredicate(variableManager -> Boolean.TRUE)
-            .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
-            .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
+            .targetObjectIdProvider(variableManager -> "targetObjectId")
+            .labelProvider(variableManager -> "Diagram")
             .nodeDescriptions(nodeDescriptions)
             .edgeDescriptions(edgeDescriptions)
             .toolSections(toolSections)
             .tools(List.of())
-            .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+            .dropHandler(variableManager -> new Failure(""))
             .build();
         // @formatter:on
     }
@@ -69,7 +69,7 @@ public class TestDiagramDescriptionBuilder {
                     .lineStyle(LineStyle.Dash_Dot)
                     .sourceArrow(ArrowStyle.InputArrowWithDiamond)
                     .targetArrow(ArrowStyle.None)
-                    .color("rgb(1, 2, 3)") //$NON-NLS-1$
+                    .color("rgb(1, 2, 3)")
                     .build();
         };
 
@@ -84,10 +84,10 @@ public class TestDiagramDescriptionBuilder {
                 .sourceNodeDescriptions(List.of(nodeDescription))
                 .targetNodeDescriptions(List.of(nodeDescription))
                 .targetObjectIdProvider(idProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .styleProvider(edgeStyleProvider)
-                .labelEditHandler((variableManager, newValue) -> new Failure("")) //$NON-NLS-1$
+                .labelEditHandler((variableManager, newValue) -> new Failure(""))
                 .deleteHandler(variableManager -> new Success())
                 .build();
         // @formatter:on
@@ -96,25 +96,25 @@ public class TestDiagramDescriptionBuilder {
     public NodeDescription getNodeDescription(UUID nodeDescriptionId, Function<VariableManager, List<?>> semanticElementsProvider) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
+                .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
                 .boldProvider(variableManager -> false)
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(variableManager -> "")
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
-                .idProvider(variableManager -> "labelId") //$NON-NLS-1$
-                .textProvider(variableManager -> "Node") //$NON-NLS-1$
+        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
+                .idProvider(variableManager -> "labelId")
+                .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -129,11 +129,11 @@ public class TestDiagramDescriptionBuilder {
         };
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
-                .typeProvider(variableManager -> "") //$NON-NLS-1$
+                .typeProvider(variableManager -> "")
                 .semanticElementsProvider(semanticElementsProvider)
                 .targetObjectIdProvider(idProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(nodeStyleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
@@ -147,6 +147,6 @@ public class TestDiagramDescriptionBuilder {
     }
 
     private String getNodeId(UUID nodeDescriptionId, String objectId) {
-        return nodeDescriptionId + "_" + objectId; //$NON-NLS-1$
+        return nodeDescriptionId + "_" + objectId;
     }
 }

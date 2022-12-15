@@ -46,7 +46,7 @@ public class ImagesControllerTests {
     @Test
     public void testInvalidFolder() {
         ImagesController imagesController = new ImagesController(new ArrayList<>(), new ICustomImageContentService.NoOp(), new SimpleMeterRegistry());
-        HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/invalidFolder/doesNotExist.png"); //$NON-NLS-1$
+        HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/invalidFolder/doesNotExist.png");
         ResponseEntity<Resource> responseEntity = imagesController.getImage(request);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -56,11 +56,11 @@ public class ImagesControllerTests {
         IImagePathService imagePathService = new IImagePathService() {
             @Override
             public List<String> getPaths() {
-                return List.of("/validFolder"); //$NON-NLS-1$
+                return List.of("/validFolder");
             }
         };
         ImagesController imagesController = new ImagesController(List.of(imagePathService), new ICustomImageContentService.NoOp(), new SimpleMeterRegistry());
-        HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/validFolder/doesNotExist.png"); //$NON-NLS-1$
+        HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/validFolder/doesNotExist.png");
         ResponseEntity<Resource> responseEntity = imagesController.getImage(request);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -70,18 +70,18 @@ public class ImagesControllerTests {
         IImagePathService imagePathService = new IImagePathService() {
             @Override
             public List<String> getPaths() {
-                return List.of("/icons"); //$NON-NLS-1$
+                return List.of("/icons");
             }
         };
         ImagesController imagesController = new ImagesController(List.of(imagePathService), new ICustomImageContentService.NoOp(), new SimpleMeterRegistry());
-        HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/icons/full/obj16/EClass.gif"); //$NON-NLS-1$
+        HttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/api/images/icons/full/obj16/EClass.gif");
 
         // We need to replace the current class loader to trick Spring into thinking that the resource exists
         ClassLoader testClassLoader = new URLClassLoader(new URL[] {}) {
             @Override
             public URL getResource(String name) {
                 try {
-                    return new URL("jar:file:somejar!/icons/full/obj16/EClass.gif"); //$NON-NLS-1$
+                    return new URL("jar:file:somejar!/icons/full/obj16/EClass.gif");
                 } catch (MalformedURLException exception) {
                     fail(exception.getMessage(), exception);
                 }

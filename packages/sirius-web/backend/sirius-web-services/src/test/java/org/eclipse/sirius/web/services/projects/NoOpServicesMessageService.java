@@ -25,32 +25,32 @@ public class NoOpServicesMessageService implements IServicesMessageService {
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String invalidProjectName() {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String projectNotFound() {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String unexpectedError() {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String invalidDocumentName(String name) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
 }

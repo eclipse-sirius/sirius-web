@@ -73,7 +73,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
             IDiagramCreationService diagramCreationService) {
-        this.logger.trace("Creating the diagram event processor {}", diagramContext.getDiagram().getId()); //$NON-NLS-1$
+        this.logger.trace("Creating the diagram event processor {}", diagramContext.getDiagram().getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.diagramContext = Objects.requireNonNull(diagramContext);
@@ -90,7 +90,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
         if (diagram != null) {
-            this.logger.trace("Diagram refreshed: {})", diagram.getId()); //$NON-NLS-1$
+            this.logger.trace("Diagram refreshed: {})", diagram.getId());
         }
     }
 
@@ -121,7 +121,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
             } else {
-                this.logger.warn("No handler found for event: {}", diagramInput); //$NON-NLS-1$
+                this.logger.warn("No handler found for event: {}", diagramInput);
             }
         }
     }
@@ -131,7 +131,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             if (refreshedDiagram != null) {
-                this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId()); //$NON-NLS-1$
+                this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
             }
 
             this.diagramContext.reset();
@@ -186,7 +186,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the diagram event processor {}", this.diagramContext.getDiagram().getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the diagram event processor {}", this.diagramContext.getDiagram().getId());
 
         this.subscriptionManager.dispose();
         this.diagramEventFlux.dispose();

@@ -163,7 +163,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      * @ordered
      */
-    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3"; //$NON-NLS-1$
+    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3";
 
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -243,7 +243,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      * @ordered
      */
-    protected static final String LABEL_COLOR_EDEFAULT = "black"; //$NON-NLS-1$
+    protected static final String LABEL_COLOR_EDEFAULT = "black";
 
     /**
      * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -263,7 +263,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      * @ordered
      */
-    protected static final String SIZE_COMPUTATION_EXPRESSION_EDEFAULT = "1"; //$NON-NLS-1$
+    protected static final String SIZE_COMPUTATION_EXPRESSION_EDEFAULT = "1";
 
     /**
      * The cached value of the '{@link #getSizeComputationExpression() <em>Size Computation Expression</em>}' attribute.
@@ -850,29 +850,29 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(" (fontSize: ");
         result.append(this.fontSize);
-        result.append(", italic: "); //$NON-NLS-1$
+        result.append(", italic: ");
         result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
+        result.append(", bold: ");
         result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
+        result.append(", underline: ");
         result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", borderColor: "); //$NON-NLS-1$
+        result.append(", borderColor: ");
         result.append(this.borderColor);
-        result.append(", borderRadius: "); //$NON-NLS-1$
+        result.append(", borderRadius: ");
         result.append(this.borderRadius);
-        result.append(", borderSize: "); //$NON-NLS-1$
+        result.append(", borderSize: ");
         result.append(this.borderSize);
-        result.append(", borderLineStyle: "); //$NON-NLS-1$
+        result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
-        result.append(", labelColor: "); //$NON-NLS-1$
+        result.append(", labelColor: ");
         result.append(this.labelColor);
-        result.append(", sizeComputationExpression: "); //$NON-NLS-1$
+        result.append(", sizeComputationExpression: ");
         result.append(this.sizeComputationExpression);
-        result.append(", showIcon: "); //$NON-NLS-1$
+        result.append(", showIcon: ");
         result.append(this.showIcon);
         result.append(')');
         return result.toString();

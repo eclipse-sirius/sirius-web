@@ -101,7 +101,7 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
             Object container = optionalSelf.get();
             if (container instanceof GroupDescription) {
                 var toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
-                toolbarActionDescription.setName("ToolbarAction"); //$NON-NLS-1$
+                toolbarActionDescription.setName("ToolbarAction");
                 var toolbarActionDescriptionStyle = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
                 toolbarActionDescription.setStyle(toolbarActionDescriptionStyle);
                 ((GroupDescription) container).getToolbarActions().add(toolbarActionDescription);

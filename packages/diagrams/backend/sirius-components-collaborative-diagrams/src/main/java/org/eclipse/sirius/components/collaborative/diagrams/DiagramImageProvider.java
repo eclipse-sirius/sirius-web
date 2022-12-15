@@ -29,7 +29,7 @@ public class DiagramImageProvider implements IRepresentationImageProvider {
     @Override
     public Optional<String> getImageURL(String kind) {
         if (Diagram.KIND.equals(kind)) {
-            return Optional.of("/diagram-images/diagram.svg"); //$NON-NLS-1$
+            return Optional.of("/diagram-images/diagram.svg");
         }
         return Optional.empty();
     }

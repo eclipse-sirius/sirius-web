@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,8 +62,8 @@ public class ChangeContextItemProvider extends OperationItemProvider {
      */
     protected void addExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_ChangeContext_expression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_ChangeContext_expression_feature", "_UI_ChangeContext_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_ChangeContext_expression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ChangeContext_expression_feature", "_UI_ChangeContext_type"),
                 ViewPackage.Literals.CHANGE_CONTEXT__EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -74,7 +74,7 @@ public class ChangeContextItemProvider extends OperationItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ChangeContext.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ChangeContext.svg"));
     }
 
     /**
@@ -95,8 +95,8 @@ public class ChangeContextItemProvider extends OperationItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((ChangeContext) object).getExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_ChangeContext_type") : //$NON-NLS-1$
-                this.getString("_UI_ChangeContext_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_ChangeContext_type") :
+                this.getString("_UI_ChangeContext_type") + " " + label;
     }
 
     /**

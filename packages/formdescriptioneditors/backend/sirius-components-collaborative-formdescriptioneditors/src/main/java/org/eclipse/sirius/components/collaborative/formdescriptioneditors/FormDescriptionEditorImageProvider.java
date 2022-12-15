@@ -29,7 +29,7 @@ public class FormDescriptionEditorImageProvider implements IRepresentationImageP
     @Override
     public Optional<String> getImageURL(String kind) {
         if (FormDescriptionEditor.KIND.equals(kind)) {
-            return Optional.of("/formdescriptioneditor-images/formDescriptionEditor.svg"); //$NON-NLS-1$
+            return Optional.of("/formdescriptioneditor-images/formDescriptionEditor.svg");
         }
         return Optional.empty();
     }

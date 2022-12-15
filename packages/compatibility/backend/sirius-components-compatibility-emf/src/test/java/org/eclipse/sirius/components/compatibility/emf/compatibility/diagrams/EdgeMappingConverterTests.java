@@ -57,9 +57,9 @@ public class EdgeMappingConverterTests {
     public void testEdgeFromNodeToContainer() {
         EdgeMapping edgeMapping = DescriptionFactory.eINSTANCE.createEdgeMapping();
         NodeMapping nodeMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
-        nodeMapping.setName("nodeMapping"); //$NON-NLS-1$
+        nodeMapping.setName("nodeMapping");
         ContainerMapping containerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
-        containerMapping.setName("containerMapping"); //$NON-NLS-1$
+        containerMapping.setName("containerMapping");
         edgeMapping.getSourceMapping().add(nodeMapping);
         edgeMapping.getTargetMapping().add(containerMapping);
 
@@ -93,26 +93,26 @@ public class EdgeMappingConverterTests {
     private NodeDescription createNodeDescription(UUID id) {
         // @formatter:off
         LabelStyleDescription styleDescription = LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "") //$NON-NLS-1$
+                .colorProvider(variableManager -> "")
                 .fontSizeProvider(variableManager -> 0)
                 .boldProvider(variableManager -> false)
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(variableManager -> "")
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription(id.toString())
-                .idProvider(variableManager -> "") //$NON-NLS-1$
-                .textProvider(variableManager -> "") //$NON-NLS-1$
+                .idProvider(variableManager -> "")
+                .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
                 .build();
 
         return NodeDescription.newNodeDescription(id)
-                .typeProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectIdProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .typeProvider(variableManager -> "")
+                .targetObjectIdProvider(variableManager -> "")
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of())
                 .labelDescription(labelDescription)
                 .styleProvider(variableManager -> null)
@@ -134,9 +134,9 @@ public class EdgeMappingConverterTests {
     public void testEdgeFromContainerToNode() {
         EdgeMapping edgeMapping = DescriptionFactory.eINSTANCE.createEdgeMapping();
         NodeMapping nodeMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
-        nodeMapping.setName("nodeMapping"); //$NON-NLS-1$
+        nodeMapping.setName("nodeMapping");
         ContainerMapping containerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
-        containerMapping.setName("containerMapping"); //$NON-NLS-1$
+        containerMapping.setName("containerMapping");
         edgeMapping.getSourceMapping().add(containerMapping);
         edgeMapping.getTargetMapping().add(nodeMapping);
 
@@ -175,9 +175,9 @@ public class EdgeMappingConverterTests {
     public void testEdgeFromContainerToContainer() {
         EdgeMapping edgeMapping = DescriptionFactory.eINSTANCE.createEdgeMapping();
         ContainerMapping sourceContainerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
-        sourceContainerMapping.setName("sourceContainerMapping"); //$NON-NLS-1$
+        sourceContainerMapping.setName("sourceContainerMapping");
         ContainerMapping targetContainerMapping = DescriptionFactory.eINSTANCE.createContainerMapping();
-        targetContainerMapping.setName("targetContainerMapping"); //$NON-NLS-1$
+        targetContainerMapping.setName("targetContainerMapping");
         edgeMapping.getSourceMapping().add(sourceContainerMapping);
         edgeMapping.getTargetMapping().add(targetContainerMapping);
 

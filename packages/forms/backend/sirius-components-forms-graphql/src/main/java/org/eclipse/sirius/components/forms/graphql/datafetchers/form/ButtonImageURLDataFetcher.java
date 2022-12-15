@@ -35,7 +35,7 @@ public class ButtonImageURLDataFetcher implements IDataFetcherWithFieldCoordinat
         Button button = environment.getSource();
         String buttonImageURL = button.getImageURL();
         if (buttonImageURL != null && !buttonImageURL.isBlank()) {
-            if (buttonImageURL.startsWith("http://") || buttonImageURL.startsWith("https://")) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (buttonImageURL.startsWith("http://") || buttonImageURL.startsWith("https://")) {
                 imageURL = buttonImageURL;
             } else {
                 imageURL = URLConstants.IMAGE_BASE_PATH + buttonImageURL;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,7 +63,7 @@ public class EMFQueryServiceTests {
         };
         IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
-        QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.allContents()->size()", Map.of()); //$NON-NLS-1$
+        QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.allContents()->size()", Map.of());
         IPayload payload = queryService.execute(editingContext, input);
         assertTrue(payload instanceof QueryBasedIntSuccessPayload);
         assertEquals(8, ((QueryBasedIntSuccessPayload) payload).getResult());
@@ -82,7 +82,7 @@ public class EMFQueryServiceTests {
         };
         IQueryService queryService = new EMFQueryService(editingContextEPackageService, List.of());
 
-        QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.contents()->size()", Map.of()); //$NON-NLS-1$
+        QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.contents()->size()", Map.of());
         IPayload payload = queryService.execute(editingContext, input);
         assertTrue(payload instanceof QueryBasedIntSuccessPayload);
         assertEquals(2, ((QueryBasedIntSuccessPayload) payload).getResult());
@@ -111,16 +111,16 @@ public class EMFQueryServiceTests {
                 .map(IDAdapter.class::cast)
                 .findFirst();
 
-        String id = optionalIDAdapter.map(IDAdapter::getId).map(Object::toString).orElse(""); //$NON-NLS-1$
+        String id = optionalIDAdapter.map(IDAdapter::getId).map(Object::toString).orElse("");
         // @formatter:on
 
-        QueryBasedObjectInput input = new QueryBasedObjectInput(UUID.randomUUID(), "aql:editingContext.getObjectById('" + id + "')", Map.of()); //$NON-NLS-1$ //$NON-NLS-2$
+        QueryBasedObjectInput input = new QueryBasedObjectInput(UUID.randomUUID(), "aql:editingContext.getObjectById('" + id + "')", Map.of());
         IPayload payload = queryService.execute(editingContext, input);
 
         assertTrue(payload instanceof QueryBasedObjectSuccessPayload);
         assertEquals(eObjectToRetrieve, ((QueryBasedObjectSuccessPayload) payload).getResult());
 
-        input = new QueryBasedObjectInput(UUID.randomUUID(), "aql:editingContext.getObjectById('" + id + "wrong')", Map.of()); //$NON-NLS-1$ //$NON-NLS-2$
+        input = new QueryBasedObjectInput(UUID.randomUUID(), "aql:editingContext.getObjectById('" + id + "wrong')", Map.of());
         payload = queryService.execute(editingContext, input);
         assertTrue(payload instanceof ErrorPayload);
     }
@@ -136,22 +136,22 @@ public class EMFQueryServiceTests {
         Map<String, EObject> cache = new HashMap<>();
 
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
-        UUID ePackageUUID = UUID.nameUUIDFromBytes("ePackage".getBytes()); //$NON-NLS-1$
+        UUID ePackageUUID = UUID.nameUUIDFromBytes("ePackage".getBytes());
         ePackage.eAdapters().add(new IDAdapter(ePackageUUID));
         cache.put(ePackageUUID.toString(), ePackage);
 
         EClass class1 = EcoreFactory.eINSTANCE.createEClass();
-        UUID class1UUID = UUID.nameUUIDFromBytes("class1".getBytes()); //$NON-NLS-1$
+        UUID class1UUID = UUID.nameUUIDFromBytes("class1".getBytes());
         class1.eAdapters().add(new IDAdapter(class1UUID));
         cache.put(class1UUID.toString(), ePackage);
 
         EClass class2 = EcoreFactory.eINSTANCE.createEClass();
-        UUID class2UUID = UUID.nameUUIDFromBytes("class2".getBytes()); //$NON-NLS-1$
+        UUID class2UUID = UUID.nameUUIDFromBytes("class2".getBytes());
         class2.eAdapters().add(new IDAdapter(class2UUID));
         cache.put(class2UUID.toString(), ePackage);
 
         EClass class3 = EcoreFactory.eINSTANCE.createEClass();
-        UUID class3UUID = UUID.nameUUIDFromBytes("class3".getBytes()); //$NON-NLS-1$
+        UUID class3UUID = UUID.nameUUIDFromBytes("class3".getBytes());
         class3.eAdapters().add(new IDAdapter(class3UUID));
         cache.put(class3UUID.toString(), ePackage);
 

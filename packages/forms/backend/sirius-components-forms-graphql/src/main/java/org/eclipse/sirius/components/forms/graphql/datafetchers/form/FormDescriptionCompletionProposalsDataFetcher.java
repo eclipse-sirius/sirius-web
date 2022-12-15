@@ -46,11 +46,11 @@ import reactor.core.publisher.Mono;
  */
 @QueryDataFetcher(type = "FormDescription", field = "completionProposals")
 public class FormDescriptionCompletionProposalsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<CompletionProposal>>> {
-    private static final String WIDGET_ID_ARGUMENT = "widgetId"; //$NON-NLS-1$
+    private static final String WIDGET_ID_ARGUMENT = "widgetId";
 
-    private static final String CURRENT_TEXT_ARGUMENT = "currentText"; //$NON-NLS-1$
+    private static final String CURRENT_TEXT_ARGUMENT = "currentText";
 
-    private static final String CURSOR_POSITION_ARGUMENT = "cursorPosition"; //$NON-NLS-1$
+    private static final String CURSOR_POSITION_ARGUMENT = "cursorPosition";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
@@ -64,7 +64,7 @@ public class FormDescriptionCompletionProposalsDataFetcher implements IDataFetch
         var editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString);
         var representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString);
         var widgetId = Optional.ofNullable(environment.getArgument(WIDGET_ID_ARGUMENT)).map(Object::toString);
-        String currentText = Optional.ofNullable(environment.getArgument(CURRENT_TEXT_ARGUMENT)).map(Object::toString).orElse(""); //$NON-NLS-1$
+        String currentText = Optional.ofNullable(environment.getArgument(CURRENT_TEXT_ARGUMENT)).map(Object::toString).orElse("");
         int cursorPosition = Optional.ofNullable(environment.getArgument(CURSOR_POSITION_ARGUMENT)).filter(Integer.class::isInstance).map(Integer.class::cast).orElse(0);
 
         if (editingContextId.isPresent() && representationId.isPresent() && widgetId.isPresent()) {

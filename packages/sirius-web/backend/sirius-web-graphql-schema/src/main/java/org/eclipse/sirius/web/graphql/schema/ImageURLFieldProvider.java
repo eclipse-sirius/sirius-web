@@ -30,7 +30,7 @@ import graphql.schema.GraphQLNonNull;
  */
 public class ImageURLFieldProvider {
 
-    public static final String IMAGE_URL_FIELD = "imageURL"; //$NON-NLS-1$
+    public static final String IMAGE_URL_FIELD = "imageURL";
 
     public GraphQLFieldDefinition getField() {
         // @formatter:off

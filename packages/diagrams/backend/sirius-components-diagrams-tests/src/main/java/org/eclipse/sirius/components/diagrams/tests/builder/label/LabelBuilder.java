@@ -31,13 +31,13 @@ public final class LabelBuilder {
     public Label basicLabel(String text, LabelType labelType) {
         // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
-                .color("black") //$NON-NLS-1$
+                .color("black")
                 .fontSize(14)
                 .bold(false)
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("") //$NON-NLS-1$
+                .iconURL("")
                 .build();
         // @formatter:on
 

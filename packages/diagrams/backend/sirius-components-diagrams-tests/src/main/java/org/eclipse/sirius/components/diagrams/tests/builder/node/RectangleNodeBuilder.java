@@ -113,8 +113,8 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
         // @formatter:off
         INodeStyle style = RectangularNodeStyle.newRectangularNodeStyle()
-                .color("#E5F5F8") //$NON-NLS-1$
-                .borderColor("#33B0C3") //$NON-NLS-1$
+                .color("#E5F5F8")
+                .borderColor("#33B0C3")
                 .borderSize(1)
                 .borderRadius(3)
                 .borderStyle(LineStyle.Solid)
@@ -143,7 +143,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .customizedProperties(this.customizedProperties)
                .descriptionId(descriptionId)
                .targetObjectId(labeltext)
-               .targetObjectKind("") //$NON-NLS-1$
+               .targetObjectKind("")
                .targetObjectLabel(this.label.getText())
                .style(Objects.requireNonNull(style))
                .modifiers(Set.of())

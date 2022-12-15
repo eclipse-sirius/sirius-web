@@ -36,15 +36,15 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ContextConfiguration(classes = PersistenceTestConfiguration.class)
 public class ProjectRepositoryIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String FIRST_OWNER_NAME = "Jyn Erso"; //$NON-NLS-1$
+    private static final String FIRST_OWNER_NAME = "Jyn Erso";
 
-    private static final String SECOND_OWNER_NAME = "Orson Krennic"; //$NON-NLS-1$
+    private static final String SECOND_OWNER_NAME = "Orson Krennic";
 
-    private static final String PASSWORD = "password"; //$NON-NLS-1$
+    private static final String PASSWORD = "password";
 
-    private static final String ROLE_USER = "user"; //$NON-NLS-1$
+    private static final String ROLE_USER = "user";
 
-    private static final String FIRST_PROJECT_NAME = "Star Durst"; //$NON-NLS-1$
+    private static final String FIRST_PROJECT_NAME = "Star Durst";
 
     @Autowired
     private IAccountRepository accountRepository;
@@ -54,9 +54,9 @@ public class ProjectRepositoryIntegrationTests extends AbstractIntegrationTests 
 
     @DynamicPropertySource
     public static void postgresqlProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl); //$NON-NLS-1$
-        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword); //$NON-NLS-1$
-        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername); //$NON-NLS-1$
+        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
+        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
     }
 
     @Test

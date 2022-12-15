@@ -46,7 +46,7 @@ public class HierarchyComponent implements IComponent {
 
         String id = optionalPreviousHierarchy.map(Hierarchy::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = hierarchyDescription.getTargetObjectIdProvider().apply(variableManager);
-        String label = variableManager.get(HierarchyDescription.LABEL, String.class).orElse(""); //$NON-NLS-1$
+        String label = variableManager.get(HierarchyDescription.LABEL, String.class).orElse("");
         String kind = hierarchyDescription.getKind();
 
         List<HierarchyNode> previousNodes = optionalPreviousHierarchy.map(Hierarchy::getChildren).orElse(List.of());

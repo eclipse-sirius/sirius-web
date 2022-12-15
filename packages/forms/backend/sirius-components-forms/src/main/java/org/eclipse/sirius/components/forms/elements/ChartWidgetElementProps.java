@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class ChartWidgetElementProps implements IProps {
-    public static final String TYPE = "ChartWidget"; //$NON-NLS-1$
+    public static final String TYPE = "ChartWidget";
 
     private String id;
 
@@ -64,7 +64,7 @@ public final class ChartWidgetElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
     }
 

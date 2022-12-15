@@ -68,7 +68,7 @@ import reactor.core.publisher.Flux;
 // @formatter:on
 public class SiriusWebStarterConfiguration {
 
-    private static final String PATH = "messages/sirius-components-starter"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-components-starter";
 
     @Bean
     public MessageSourceAccessor siriusComponentsStarterMessageSourceAccessor() {
@@ -95,7 +95,7 @@ public class SiriusWebStarterConfiguration {
         return editingContext -> {
             var executorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
                 Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-                thread.setName("Editing context " + editingContext.getId()); //$NON-NLS-1$
+                thread.setName("Editing context " + editingContext.getId());
                 return thread;
             });
             return new DelegatingRequestContextExecutorService(executorService);

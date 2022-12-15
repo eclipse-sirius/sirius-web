@@ -71,9 +71,9 @@ import reactor.core.scheduler.Schedulers;
  */
 public class EditingContextEventProcessor implements IEditingContextEventProcessor {
 
-    public static final String REPRESENTATION_ID = "representationId"; //$NON-NLS-1$
+    public static final String REPRESENTATION_ID = "representationId";
 
-    public static final String REPRESENTATION_LABEL = "representationLabel"; //$NON-NLS-1$
+    public static final String REPRESENTATION_LABEL = "representationLabel";
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
@@ -190,7 +190,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(correlationId, representationId, newLabel));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}"; //$NON-NLS-1$
+                String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
             }
         }
@@ -204,7 +204,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     @Override
     public Mono<IPayload> handle(IInput input) {
         if (this.executorService.isShutdown()) {
-            this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId()); //$NON-NLS-1$
+            this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId());
             return Mono.empty();
         }
 
@@ -221,7 +221,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         // @formatter:off
         var timeoutFallback = Mono.just(new ErrorPayload(input.getId(), this.messageService.timeout()))
-                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input)); //$NON-NLS-1$
+                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input));
         return payloadSink.asMono()
                 .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
                 .timeout(Duration.ofSeconds(5), timeoutFallback)
@@ -239,7 +239,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * @return The response computed by the event handler
      */
     private void doHandle(One<IPayload> payloadSink, IInput input) {
-        this.logger.trace("Input received: {}", input); //$NON-NLS-1$
+        this.logger.trace("Input received: {}", input);
 
         if (input instanceof IRepresentationInput) {
             IRepresentationInput representationInput = (IRepresentationInput) input;
@@ -314,7 +314,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             IEditingContextEventHandler editingContextEventHandler = optionalEditingContextEventHandler.get();
             editingContextEventHandler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, input);
         } else {
-            this.logger.warn("No handler found for event: {}", input); //$NON-NLS-1$
+            this.logger.warn("No handler found for event: {}", input);
         }
     }
 
@@ -326,7 +326,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
             representationEventProcessor.handle(payloadSink, this.changeDescriptionSink, representationInput);
         } else {
-            this.logger.warn("No representation event processor found for event: {}", representationInput); //$NON-NLS-1$
+            this.logger.warn("No representation event processor found for event: {}", representationInput);
         }
     }
 
@@ -354,7 +354,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                             if (canBeDisposed.booleanValue() && representationEventProcessor.getSubscriptionManager().isEmpty()) {
                                 this.disposeRepresentation(configuration.getId());
                             } else {
-                                this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId()); //$NON-NLS-1$
+                                this.logger.trace("Stopping the disposal of the representation event processor {}", configuration.getId());
                             }
                         }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
                 // @formatter:on
@@ -362,11 +362,11 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
                 this.representationEventProcessors.put(configuration.getId(), representationEventProcessorEntry);
             } else {
-                this.logger.warn("The representation with the id {} does not exist", configuration.getId()); //$NON-NLS-1$
+                this.logger.warn("The representation with the id {} does not exist", configuration.getId());
             }
         }
 
-        this.logger.trace("Representation event processors count: {}", this.representationEventProcessors.size()); //$NON-NLS-1$
+        this.logger.trace("Representation event processors count: {}", this.representationEventProcessors.size());
 
         return optionalRepresentationEventProcessor;
     }
@@ -386,7 +386,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (this.representationEventProcessors.isEmpty()) {
             EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting that the processor can be disposed: {}"; //$NON-NLS-1$
+                String pattern = "An error has occurred while emitting that the processor can be disposed: {}";
                 this.logger.warn(pattern, emitResult);
             }
         }
@@ -404,11 +404,11 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the editing context event processor {}", this.editingContext.getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the editing context event processor {}", this.editingContext.getId());
 
         EmitResult changeDescriptionEmitResult = this.changeDescriptionSink.tryEmitComplete();
         if (changeDescriptionEmitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, changeDescriptionEmitResult);
         }
         this.changeDescriptionDisposable.dispose();
@@ -422,7 +422,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
 

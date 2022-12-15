@@ -62,7 +62,7 @@ public class ProjectService implements IProjectService {
 
     private String getCurrentUserName() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-        return Optional.ofNullable(principal).map(Principal::getName).orElse(""); //$NON-NLS-1$
+        return Optional.ofNullable(principal).map(Principal::getName).orElse("");
     }
 
     @Override

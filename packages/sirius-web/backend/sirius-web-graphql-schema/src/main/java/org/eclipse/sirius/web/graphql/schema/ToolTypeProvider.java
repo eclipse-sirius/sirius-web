@@ -29,6 +29,6 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author hmarchadour
  */
 public class ToolTypeProvider {
-    public static final String TYPE = "Tool"; //$NON-NLS-1$
+    public static final String TYPE = "Tool";
 
 }

@@ -64,8 +64,8 @@ public class LinkDescriptionItemProvider extends WidgetDescriptionItemProvider {
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LinkDescription_valueExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LinkDescription_valueExpression_feature", "_UI_LinkDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_LinkDescription_valueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LinkDescription_valueExpression_feature", "_UI_LinkDescription_type"),
                 ViewPackage.Literals.LINK_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -107,7 +107,7 @@ public class LinkDescriptionItemProvider extends WidgetDescriptionItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LinkDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LinkDescription.svg"));
     }
 
     /**
@@ -128,8 +128,8 @@ public class LinkDescriptionItemProvider extends WidgetDescriptionItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((LinkDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_LinkDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_LinkDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_LinkDescription_type") :
+                this.getString("_UI_LinkDescription_type") + " " + label;
     }
 
     /**
@@ -184,7 +184,7 @@ public class LinkDescriptionItemProvider extends WidgetDescriptionItemProvider {
         boolean qualify = childFeature == ViewPackage.Literals.LINK_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.LINK_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+            return this.getString("_UI_CreateChild_text2",
                     new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);

@@ -704,25 +704,25 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(" (fontSize: ");
         result.append(this.fontSize);
-        result.append(", italic: "); //$NON-NLS-1$
+        result.append(", italic: ");
         result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
+        result.append(", bold: ");
         result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
+        result.append(", underline: ");
         result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", lineStyle: "); //$NON-NLS-1$
+        result.append(", lineStyle: ");
         result.append(this.lineStyle);
-        result.append(", sourceArrowStyle: "); //$NON-NLS-1$
+        result.append(", sourceArrowStyle: ");
         result.append(this.sourceArrowStyle);
-        result.append(", targetArrowStyle: "); //$NON-NLS-1$
+        result.append(", targetArrowStyle: ");
         result.append(this.targetArrowStyle);
-        result.append(", edgeWidth: "); //$NON-NLS-1$
+        result.append(", edgeWidth: ");
         result.append(this.edgeWidth);
-        result.append(", showIcon: "); //$NON-NLS-1$
+        result.append(", showIcon: ");
         result.append(this.showIcon);
         result.append(')');
         return result.toString();

@@ -35,7 +35,7 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @MutationDataFetcher(type = "Mutation", field = "invokeEditingContextAction")
 public class MutationInvokeEditingContextActionDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
-    public static final String ARRANGE_ALL_FIELD = "arrangeAll"; //$NON-NLS-1$
+    public static final String ARRANGE_ALL_FIELD = "arrangeAll";
 
     private final ObjectMapper objectMapper;
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
         case DomainPackage.RELATION:
             return this.createRelation();
         default:
-            throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
     }
 
@@ -90,7 +90,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
         case DomainPackage.DATA_TYPE:
             return this.createDataTypeFromString(eDataType, initialValue);
         default:
-            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -105,7 +105,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
         case DomainPackage.DATA_TYPE:
             return this.convertDataTypeToString(eDataType, instanceValue);
         default:
-            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -128,7 +128,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public Entity createEntity() {
         EntityImpl entity = new EntityImpl();
-        entity.setName("NewEntity"); //$NON-NLS-1$
+        entity.setName("NewEntity");
         return entity;
     }
 
@@ -140,7 +140,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public Attribute createAttribute() {
         AttributeImpl attribute = new AttributeImpl();
-        attribute.setName("newAttribute"); //$NON-NLS-1$
+        attribute.setName("newAttribute");
         return attribute;
     }
 
@@ -152,7 +152,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     @Override
     public Relation createRelation() {
         RelationImpl relation = new RelationImpl();
-        relation.setName("newRelation"); //$NON-NLS-1$
+        relation.setName("newRelation");
         return relation;
     }
 
@@ -164,7 +164,7 @@ public class DomainFactoryImpl extends EFactoryImpl implements DomainFactory {
     public DataType createDataTypeFromString(EDataType eDataType, String initialValue) {
         DataType result = DataType.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 

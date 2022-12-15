@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,16 +22,16 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class ModelOperationServices {
 
-    public static final String AQL_RENAME_EXPRESSION = "aql:self.renameENamedElementService(''{0}'')"; //$NON-NLS-1$
+    public static final String AQL_RENAME_EXPRESSION = "aql:self.renameENamedElementService(''{0}'')";
 
-    public static final String AQL_THROW_ERROR_EXPRESSION = "aql:self.throwErrorService()"; //$NON-NLS-1$
+    public static final String AQL_THROW_ERROR_EXPRESSION = "aql:self.throwErrorService()";
 
     public void renameENamedElementService(ENamedElement eNamedElement, String newName) {
         eNamedElement.setName(newName);
     }
 
     public void throwErrorService(EObject eObject) {
-        String[] anyString = { "oneString" }; //$NON-NLS-1$
+        String[] anyString = { "oneString" };
         String value = anyString[10]; // raise an exception
         value.length();
     }

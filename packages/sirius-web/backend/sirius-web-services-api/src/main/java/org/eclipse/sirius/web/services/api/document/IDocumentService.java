@@ -23,9 +23,9 @@ import java.util.UUID;
  */
 public interface IDocumentService {
 
-    String RESOURCE_KIND_JSON = "json"; //$NON-NLS-1$
+    String RESOURCE_KIND_JSON = "json";
 
-    String RESOURCE_KIND_XMI = "xmi"; //$NON-NLS-1$
+    String RESOURCE_KIND_XMI = "xmi";
 
     Optional<Document> createDocument(String projectId, String name, String content);
 

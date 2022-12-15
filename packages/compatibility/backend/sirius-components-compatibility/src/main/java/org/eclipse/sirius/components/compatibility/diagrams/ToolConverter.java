@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,9 +46,9 @@ import org.eclipse.sirius.viewpoint.description.tool.InitialOperation;
  */
 public class ToolConverter {
 
-    public static final String ELEMENT_VIEW = "elementView"; //$NON-NLS-1$
+    public static final String ELEMENT_VIEW = "elementView";
 
-    public static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
+    public static final String CONTAINER_VIEW = "containerView";
 
     private final AQLInterpreter interpreter;
 
@@ -68,11 +68,11 @@ public class ToolConverter {
             InitialOperation initialOperation = optionalInitialOperation.get();
             return (variableManager, newText) -> {
                 Map<String, Object> variables = variableManager.getVariables();
-                variables.put("arg0", newText); //$NON-NLS-1$
+                variables.put("arg0", newText);
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             // If no direct edit tool is defined, nothing to do but consider this OK.
@@ -88,7 +88,7 @@ public class ToolConverter {
                 Map<String, Object> variables = variableManager.getVariables();
                 // Sirius Desktop Delete Tools expect an "element" variable to be available with the value
                 // of the initial invocation context (self).
-                variables.put("element", variables.get(VariableManager.SELF)); //$NON-NLS-1$
+                variables.put("element", variables.get(VariableManager.SELF));
                 var selectedNode = variableManager.get(Node.SELECTED_NODE, Node.class);
                 if (selectedNode.isPresent()) {
                     variables.put(ELEMENT_VIEW, selectedNode.get());
@@ -100,7 +100,7 @@ public class ToolConverter {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variables);
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         } else {
             // If no delete tool is defined, execute the default behavior: delete the underlying semantic element.
@@ -129,7 +129,7 @@ public class ToolConverter {
                     return new Success();
                 }
 
-                return new Failure(""); //$NON-NLS-1$
+                return new Failure("");
             };
         }
     }
@@ -142,11 +142,11 @@ public class ToolConverter {
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
                     return handler.handle(variableManager.getVariables());
-                }).orElse(new Failure("")); //$NON-NLS-1$
+                }).orElse(new Failure(""));
             };
         }
 
-        return variableManager -> new Failure(""); //$NON-NLS-1$
+        return variableManager -> new Failure("");
     }
 
     private Object getParentNode(Node node, Diagram diagram) {

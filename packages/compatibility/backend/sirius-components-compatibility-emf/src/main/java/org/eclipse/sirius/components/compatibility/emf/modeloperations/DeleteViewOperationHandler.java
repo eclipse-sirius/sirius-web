@@ -81,7 +81,7 @@ public class DeleteViewOperationHandler implements IModelOperationHandler {
             List<ModelOperation> subModelOperations = this.deleteView.getSubModelOperations();
             return this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 
 }

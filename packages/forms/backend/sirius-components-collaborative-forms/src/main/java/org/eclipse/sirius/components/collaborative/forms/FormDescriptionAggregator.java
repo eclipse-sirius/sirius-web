@@ -57,7 +57,7 @@ public class FormDescriptionAggregator {
                 .map(self -> (List<?>) self)
                 .flatMap(self -> self.stream().findFirst())
                 .map(objectService::getFullLabel)
-                .orElse("Properties"); //$NON-NLS-1$
+                .orElse("Properties");
         // @formatter:on
 
         // @formatter:off
@@ -69,7 +69,7 @@ public class FormDescriptionAggregator {
                 .orElse(null);
 
         return Optional.of(FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
-                .label("Aggregated form description") //$NON-NLS-1$
+                .label("Aggregated form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)

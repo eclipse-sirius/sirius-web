@@ -81,11 +81,11 @@ public class DiagramELKLayoutTest {
 
     @Test
     public void testNodeLayoutWithMultilineLabel() throws IOException {
-        String nodeLabelWithMultiple = "First LineAAAAAAAA\nSecond LineBBBBBBBBB"; //$NON-NLS-1$
-        String firstChildTargetObjectId = "First child"; //$NON-NLS-1$
+        String nodeLabelWithMultiple = "First LineAAAAAAAA\nSecond LineBBBBBBBBB";
+        String firstChildTargetObjectId = "First child";
 
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root")
             .nodes()
                 .rectangleNode(nodeLabelWithMultiple).at(10, 10).of(10, 10)
                     .childNodes(new FreeFormLayoutStrategy())
@@ -96,7 +96,7 @@ public class DiagramELKLayoutTest {
         .build();
         // @formatter:on
 
-        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testNodeLayoutWithMultilineLabel"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testNodeLayoutWithMultilineLabel");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);

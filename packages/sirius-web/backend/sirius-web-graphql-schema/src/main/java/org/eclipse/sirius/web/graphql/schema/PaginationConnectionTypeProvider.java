@@ -34,9 +34,9 @@ import graphql.schema.GraphQLTypeReference;
  * @author sbegaudeau
  */
 public class PaginationConnectionTypeProvider {
-    public static final String EDGES_FIELD = "edges"; //$NON-NLS-1$
+    public static final String EDGES_FIELD = "edges";
 
-    public static final String PAGE_INFO_FIELD = "pageInfo"; //$NON-NLS-1$
+    public static final String PAGE_INFO_FIELD = "pageInfo";
 
     private String name;
 

@@ -62,7 +62,7 @@ public class LayoutEngineHandlerSwitch implements Function<String, Optional<INod
         }
 
         if (optionalLayoutEngine.isEmpty()) {
-            String pattern = "The node type {} is not currently supported."; //$NON-NLS-1$
+            String pattern = "The node type {} is not currently supported.";
             this.logger.warn(pattern, nodeType);
         }
 

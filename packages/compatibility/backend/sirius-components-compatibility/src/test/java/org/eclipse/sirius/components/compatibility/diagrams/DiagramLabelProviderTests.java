@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ public class DiagramLabelProviderTests {
         DiagramLabelProvider labelProvider = new DiagramLabelProvider(interpreter, diagramDescription);
 
         VariableManager variableManager = new VariableManager();
-        String userProvidedDiagramName = "diagram name from the user"; //$NON-NLS-1$
+        String userProvidedDiagramName = "diagram name from the user";
         variableManager.put(DiagramDescription.LABEL, userProvidedDiagramName);
         String result = labelProvider.apply(variableManager);
 
@@ -47,39 +47,39 @@ public class DiagramLabelProviderTests {
     public void testFallbackToTitleExpression() {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription = DescriptionFactory.eINSTANCE.createDiagramDescription();
-        diagramDescription.setTitleExpression("aql:'NewLabel'"); //$NON-NLS-1$
+        diagramDescription.setTitleExpression("aql:'NewLabel'");
 
         DiagramLabelProvider labelProvider = new DiagramLabelProvider(interpreter, diagramDescription);
 
         VariableManager variableManager = new VariableManager();
         String result = labelProvider.apply(variableManager);
 
-        assertThat(result).isEqualTo("NewLabel"); //$NON-NLS-1$
+        assertThat(result).isEqualTo("NewLabel");
     }
 
     @Test
     public void testUseDefaultTitleExpressionWithLabel() {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription = DescriptionFactory.eINSTANCE.createDiagramDescription();
-        diagramDescription.setLabel("DefaultLabel"); //$NON-NLS-1$
+        diagramDescription.setLabel("DefaultLabel");
         DiagramLabelProvider labelProvider = new DiagramLabelProvider(interpreter, diagramDescription);
 
         VariableManager variableManager = new VariableManager();
         String result = labelProvider.apply(variableManager);
 
-        assertThat(result).isEqualTo("new DefaultLabel"); //$NON-NLS-1$
+        assertThat(result).isEqualTo("new DefaultLabel");
     }
 
     @Test
     public void testUseDefaultTitleExpressionWithName() {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         org.eclipse.sirius.diagram.description.DiagramDescription diagramDescription = DescriptionFactory.eINSTANCE.createDiagramDescription();
-        diagramDescription.setName("DefaultName"); //$NON-NLS-1$
+        diagramDescription.setName("DefaultName");
         DiagramLabelProvider labelProvider = new DiagramLabelProvider(interpreter, diagramDescription);
 
         VariableManager variableManager = new VariableManager();
         String result = labelProvider.apply(variableManager);
 
-        assertThat(result).isEqualTo("new DefaultName"); //$NON-NLS-1$
+        assertThat(result).isEqualTo("new DefaultName");
     }
 }

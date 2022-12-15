@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
      * @generated
      * @ordered
      */
-    protected static final String PARENT_VIEW_EXPRESSION_EDEFAULT = "aql:selectedNode"; //$NON-NLS-1$
+    protected static final String PARENT_VIEW_EXPRESSION_EDEFAULT = "aql:selectedNode";
 
     /**
      * The cached value of the '{@link #getParentViewExpression() <em>Parent View Expression</em>}' attribute. <!--
@@ -76,7 +76,7 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
      * @generated
      * @ordered
      */
-    protected static final String SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT = "aql:self"; //$NON-NLS-1$
+    protected static final String SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT = "aql:self";
 
     /**
      * The cached value of the '{@link #getSemanticElementExpression() <em>Semantic Element Expression</em>}' attribute.
@@ -337,11 +337,11 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (parentViewExpression: "); //$NON-NLS-1$
+        result.append(" (parentViewExpression: ");
         result.append(this.parentViewExpression);
-        result.append(", semanticElementExpression: "); //$NON-NLS-1$
+        result.append(", semanticElementExpression: ");
         result.append(this.semanticElementExpression);
-        result.append(", variableName: "); //$NON-NLS-1$
+        result.append(", variableName: ");
         result.append(this.variableName);
         result.append(')');
         return result.toString();

@@ -19,46 +19,46 @@ package org.eclipse.sirius.web.spring.configuration;
  */
 public final class SpringWebMvcConfigurerConstants {
     /** Pattern used to match CSS resources from the front-end. */
-    public static final String CSS_PATTERN = "/**/*.css"; //$NON-NLS-1$
+    public static final String CSS_PATTERN = "/**/*.css";
 
     /** Pattern used to match HTML resources from the front-end. */
-    public static final String HTML_PATTERN = "/**/*.html"; //$NON-NLS-1$
+    public static final String HTML_PATTERN = "/**/*.html";
 
     /** Pattern used to match JS resources from the front-end. */
-    public static final String JS_PATTERN = "/**/*.js"; //$NON-NLS-1$
+    public static final String JS_PATTERN = "/**/*.js";
 
     /** Pattern used to match JS source maps resources from the front-end. */
-    public static final String JS_MAP_PATTERN = "/**/*.js.map"; //$NON-NLS-1$
+    public static final String JS_MAP_PATTERN = "/**/*.js.map";
 
     /** Pattern used to match JS chunk resources from the front-end. */
-    public static final String JS_CHUNK_PATTERN = "/**/*.chunk.js"; //$NON-NLS-1$
+    public static final String JS_CHUNK_PATTERN = "/**/*.chunk.js";
 
     /** Pattern used to match JSON resources from the front-end. */
-    public static final String JSON_PATTERN = "/**/*.json"; //$NON-NLS-1$
+    public static final String JSON_PATTERN = "/**/*.json";
 
     /** Pattern used to match ICO resources from the front-end. */
-    public static final String ICO_PATTERN = "/**/*.ico"; //$NON-NLS-1$
+    public static final String ICO_PATTERN = "/**/*.ico";
 
     /** Pattern used to match TTF resources from the front-end. */
-    public static final String TTF_PATTERN = "/**/*.ttf"; //$NON-NLS-1$
+    public static final String TTF_PATTERN = "/**/*.ttf";
 
     /** Pattern used to match media resources from the front-end. */
-    public static final String MEDIA_PATTERN = "/**/media/**"; //$NON-NLS-1$
+    public static final String MEDIA_PATTERN = "/**/media/**";
 
     /** Pattern used to match the raw hostname with any specific path. */
-    public static final String EMPTY_PATTERN = ""; //$NON-NLS-1$
+    public static final String EMPTY_PATTERN = "";
 
     /** Pattern used to match the path of the homepage. */
-    public static final String HOMEPAGE_PATTERN = "/"; //$NON-NLS-1$
+    public static final String HOMEPAGE_PATTERN = "/";
 
     /** Pattern used to match any path. */
-    public static final String ANY_PATTERN = "/**"; //$NON-NLS-1$
+    public static final String ANY_PATTERN = "/**";
 
     /** Path of the folder containing the static resources. */
-    public static final String STATIC_ASSETS_PATH = "classpath:/static/"; //$NON-NLS-1$
+    public static final String STATIC_ASSETS_PATH = "classpath:/static/";
 
     /** Path of the index.html file. */
-    public static final String INDEX_HTML_PATH = "classpath:/static/index.html"; //$NON-NLS-1$
+    public static final String INDEX_HTML_PATH = "classpath:/static/index.html";
 
     private SpringWebMvcConfigurerConstants() {
         // Prevent instantiation

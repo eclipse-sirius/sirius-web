@@ -41,7 +41,7 @@ public final class IconLabelNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'backgroundColor: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'backgroundColor: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.backgroundColor);
     }
 

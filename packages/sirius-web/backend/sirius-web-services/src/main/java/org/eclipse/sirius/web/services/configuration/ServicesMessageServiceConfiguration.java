@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class ServicesMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-web-services"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-web-services";
 
     @Bean
     public MessageSourceAccessor servicesMessageSourceAccessor() {

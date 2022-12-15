@@ -275,47 +275,47 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             // Edit Tool (the handler is never called)
-            SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit") //$NON-NLS-1$
-                    .label("Edit") //$NON-NLS-1$
+            SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
+                    .label("Edit")
                     .imageURL(DiagramImageConstants.EDIT_SVG)
                     .targetDescriptions(targetDescriptions)
                     .handler(fakeHandler)
                     .appliesToDiagramRoot(false)
                     .build();
-            var editToolSection = ToolSection.newToolSection("edit-section") //$NON-NLS-1$
-                    .label("") //$NON-NLS-1$
-                    .imageURL("") //$NON-NLS-1$
+            var editToolSection = ToolSection.newToolSection("edit-section")
+                    .label("")
+                    .imageURL("")
                     .tools(List.of(editTool))
                     .build();
             extraToolSections.add(editToolSection);
 
             if (unsynchronizedMapping) {
-                SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete") //$NON-NLS-1$
-                        .label("Delete from diagram") //$NON-NLS-1$
+                SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
+                        .label("Delete from diagram")
                         .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
                         .targetDescriptions(targetDescriptions)
                         .handler(fakeHandler)
                         .appliesToDiagramRoot(false)
                         .build();
-                var graphicalDeleteToolSection = ToolSection.newToolSection("graphical-delete-section") //$NON-NLS-1$
-                        .label("") //$NON-NLS-1$
-                        .imageURL("") //$NON-NLS-1$
+                var graphicalDeleteToolSection = ToolSection.newToolSection("graphical-delete-section")
+                        .label("")
+                        .imageURL("")
                         .tools(List.of(graphicalDeleteTool))
                         .build();
                 extraToolSections.add(graphicalDeleteToolSection);
             }
 
             // Semantic Delete Tool (the handler is never called)
-            SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete") //$NON-NLS-1$
-                    .label("Delete from model") //$NON-NLS-1$
+            SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
+                    .label("Delete from model")
                     .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
                     .targetDescriptions(targetDescriptions)
                     .handler(fakeHandler)
                     .appliesToDiagramRoot(false)
                     .build();
-            var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section") //$NON-NLS-1$
-                    .label("") //$NON-NLS-1$
-                    .imageURL("") //$NON-NLS-1$
+            var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section")
+                    .label("")
+                    .imageURL("")
                     .tools(List.of(semanticDeleteTool))
                     .build();
             extraToolSections.add(semanticDeleteToolSection);

@@ -61,11 +61,11 @@ import org.junit.jupiter.api.Test;
  * @author arichard
  */
 public class DeleteViewOperationHandlerTests {
-    private static final String AQL = "aql:"; //$NON-NLS-1$
+    private static final String AQL = "aql:";
 
-    private static final String VARIABLE_NAME = "myVariableName"; //$NON-NLS-1$
+    private static final String VARIABLE_NAME = "myVariableName";
 
-    private static final String CONTAINER_VIEW = "containerView"; //$NON-NLS-1$
+    private static final String CONTAINER_VIEW = "containerView";
 
     private DeleteViewOperationHandler deleteViewOperationHandler;
 
@@ -79,32 +79,32 @@ public class DeleteViewOperationHandlerTests {
 
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
-                .label("DiagramDescriptionTest") //$NON-NLS-1$
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
+                .label("DiagramDescriptionTest")
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
                 .canCreatePredicate(variableManager -> true)
-                .labelProvider(variableManager -> "Diagram") //$NON-NLS-1$
+                .labelProvider(variableManager -> "Diagram")
                 .toolSections(List.of())
                 .tools(List.of())
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
                 .edgeDescriptions(List.of())
-                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .dropHandler(variableManager -> new Failure(""))
                 .build();
 
         Node node = Node.newNode(UUID.randomUUID().toString())
                 .descriptionId(UUID.randomUUID())
-                .type("Node") //$NON-NLS-1$
+                .type("Node")
                 .targetObjectId(UUID.randomUUID().toString())
-                .targetObjectKind("ecore::EPackage") //$NON-NLS-1$
+                .targetObjectKind("ecore::EPackage")
                 .targetObjectLabel(OperationTestContext.ROOT_PACKAGE_NAME)
                 .label(Label.newLabel(UUID.randomUUID().toString())
-                        .type("Label") //$NON-NLS-1$
+                        .type("Label")
                         .text(OperationTestContext.ROOT_PACKAGE_NAME)
                         .position(Position.at(0, 0))
                         .size(Size.of(10, 10))
                         .alignment(Position.at(0, 0))
-                        .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL("").build()) //$NON-NLS-1$ //$NON-NLS-2$
+                        .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL("").build())
                         .build())
-                .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build()) //$NON-NLS-1$
+                .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build())
                 .position(Position.at(0, 0))
                 .size(Size.of(10, 10))
                 .borderNodes(List.of())
@@ -116,7 +116,7 @@ public class DeleteViewOperationHandlerTests {
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
                 .descriptionId(diagramDescription.getId())
                 .targetObjectId(UUID.randomUUID().toString())
-                .label("DiagramTest") //$NON-NLS-1$
+                .label("DiagramTest")
                 .position(Position.at(0, 0))
                 .size(Size.of(100, 100))
                 .nodes(List.of(node))
@@ -145,9 +145,9 @@ public class DeleteViewOperationHandlerTests {
     @Test
     public void deleteViewOperationHandlerNominalCaseTest() {
         // used to check that the variable name is added in variable scope
-        String className = "newClass"; //$NON-NLS-1$
+        String className = "newClass";
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression(AQL + VARIABLE_NAME + ".renameENamedElementService('" + className + "'))"); //$NON-NLS-1$ //$NON-NLS-2$
+        subChangeContext.setBrowseExpression(AQL + VARIABLE_NAME + ".renameENamedElementService('" + className + "'))");
         this.deleteViewOperation.getSubModelOperations().add(subChangeContext);
 
         // check the nominal case
@@ -159,25 +159,25 @@ public class DeleteViewOperationHandlerTests {
     private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> "#000000") //$NON-NLS-1$
+                .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
                 .boldProvider(variableManager -> false)
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(variableManager -> "")
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
-                .idProvider(variableManager -> "labelId") //$NON-NLS-1$
-                .textProvider(variableManager -> "Node") //$NON-NLS-1$
+        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
+                .idProvider(variableManager -> "labelId")
+                .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -186,18 +186,18 @@ public class DeleteViewOperationHandlerTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object; //$NON-NLS-1$
+                return nodeDescriptionId + "__" +  object;
             }
             return null;
         };
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .typeProvider(variableManager -> "") //$NON-NLS-1$
+                .typeProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of())
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(nodeStyleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())

@@ -36,7 +36,7 @@ import graphql.schema.GraphQLTypeReference;
  * @author sbegaudeau
  */
 public class PaginationEdgeTypeProvider {
-    public static final String NODE_FIELD = "node"; //$NON-NLS-1$
+    public static final String NODE_FIELD = "node";
 
     private String name;
 

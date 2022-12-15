@@ -29,15 +29,15 @@ import org.eclipse.sirius.components.annotations.Immutable;
 @Immutable
 public final class Edge {
 
-    public static final String SELECTED_EDGE = "selectedEdge"; //$NON-NLS-1$
+    public static final String SELECTED_EDGE = "selectedEdge";
 
-    public static final String PRE_SOURCE = "preSource"; //$NON-NLS-1$
+    public static final String PRE_SOURCE = "preSource";
 
-    public static final String PRE_TARGET = "preTarget"; //$NON-NLS-1$
+    public static final String PRE_TARGET = "preTarget";
 
-    public static final String PRE_SOURCE_VIEW = "preSourceView"; //$NON-NLS-1$
+    public static final String PRE_SOURCE_VIEW = "preSourceView";
 
-    public static final String PRE_TARGET_VIEW = "preTargetView"; //$NON-NLS-1$
+    public static final String PRE_TARGET_VIEW = "preTargetView";
 
     private String id;
 
@@ -155,7 +155,7 @@ public final class Edge {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, sourceId: {6}, targetId: {7}, state: {8}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, sourceId: {6}, targetId: {7}, state: {8}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.sourceId,
                 this.targetId, this.state.name());
     }

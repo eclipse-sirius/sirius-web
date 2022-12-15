@@ -34,7 +34,7 @@ public class GraphQLMessageService implements IGraphQLMessageService {
 
     @Override
     public String unexpectedError() {
-        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR");
     }
 
 }

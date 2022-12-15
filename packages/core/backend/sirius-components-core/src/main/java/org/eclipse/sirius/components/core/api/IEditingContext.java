@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ public interface IEditingContext {
     /**
      * The name of the variable used to store and retrieve the editing context from a variable manager.
      */
-    String EDITING_CONTEXT = "editingContext"; //$NON-NLS-1$
+    String EDITING_CONTEXT = "editingContext";
 
     String getId();
 

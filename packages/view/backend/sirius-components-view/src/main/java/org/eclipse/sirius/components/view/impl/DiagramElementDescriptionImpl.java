@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String NAME_EDEFAULT = "NewRepresentationDescription"; //$NON-NLS-1$
+    protected static final String NAME_EDEFAULT = "NewRepresentationDescription";
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -97,7 +97,7 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()"; //$NON-NLS-1$
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()";
 
     /**
      * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
@@ -117,7 +117,7 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      * @ordered
      */
-    protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name"; //$NON-NLS-1$
+    protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
 
     /**
      * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
@@ -545,15 +545,15 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
+        result.append(" (name: ");
         result.append(this.name);
-        result.append(", domainType: "); //$NON-NLS-1$
+        result.append(", domainType: ");
         result.append(this.domainType);
-        result.append(", semanticCandidatesExpression: "); //$NON-NLS-1$
+        result.append(", semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
-        result.append(", labelExpression: "); //$NON-NLS-1$
+        result.append(", labelExpression: ");
         result.append(this.labelExpression);
-        result.append(", synchronizationPolicy: "); //$NON-NLS-1$
+        result.append(", synchronizationPolicy: ");
         result.append(this.synchronizationPolicy);
         result.append(')');
         return result.toString();

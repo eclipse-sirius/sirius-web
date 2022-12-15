@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,12 +43,12 @@ public interface IPropertiesValidationProvider {
 
         @Override
         public Function<Object, String> getKindProvider() {
-            return object -> ""; //$NON-NLS-1$
+            return object -> "";
         }
 
         @Override
         public Function<Object, String> getMessageProvider() {
-            return object -> ""; //$NON-NLS-1$
+            return object -> "";
         }
 
     }

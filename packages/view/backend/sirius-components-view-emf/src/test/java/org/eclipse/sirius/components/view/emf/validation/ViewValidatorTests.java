@@ -46,11 +46,11 @@ import org.junit.jupiter.api.Test;
  */
 public class ViewValidatorTests {
 
-    private static final String SAMPLE_DOMAIN_NAME = "sample"; //$NON-NLS-1$
+    private static final String SAMPLE_DOMAIN_NAME = "sample";
 
-    private static final String SAMPLE_ENTITY_NAME = "SampleEntity"; //$NON-NLS-1$
+    private static final String SAMPLE_ENTITY_NAME = "SampleEntity";
 
-    private static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf"; //$NON-NLS-1$
+    private static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf";
 
     @Test
     public void testNodeStyleDefaultValuesAreValid() {
@@ -68,7 +68,7 @@ public class ViewValidatorTests {
     public void testConditionalConditionIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
-        conditionalNodeStyle.setCondition(""); //$NON-NLS-1$
+        conditionalNodeStyle.setCondition("");
         conditionalNodeStyle.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
@@ -76,7 +76,7 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                "The condition should not be empty", //$NON-NLS-1$
+                "The condition should not be empty",
                 new Object [] {
                         conditionalNodeStyle,
                         ViewPackage.Literals.CONDITIONAL__CONDITION,
@@ -100,7 +100,7 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                "The style should not be empty", //$NON-NLS-1$
+                "The style should not be empty",
                 new Object [] {
                         conditionalNodeStyle,
                         ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
@@ -118,14 +118,14 @@ public class ViewValidatorTests {
     public void testNodeStyleColorIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         RectangularNodeStyleDescription conditionalNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        conditionalNodeStyle.setColor(""); //$NON-NLS-1$
+        conditionalNodeStyle.setColor("");
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
         // @formatter:off
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                "The color should not be empty", //$NON-NLS-1$
+                "The color should not be empty",
                 new Object [] {
                         conditionalNodeStyle,
                         ViewPackage.Literals.STYLE__COLOR,
@@ -154,7 +154,7 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                String.format(DiagramDescriptionValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")), //$NON-NLS-1$
+                String.format(DiagramDescriptionValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")),
                 new Object [] {
                         nodeDescription,
                         ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
@@ -199,7 +199,7 @@ public class ViewValidatorTests {
     public void testNodeStyleDescriptionValidQualifiedDomainInResourceSet() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME); //$NON-NLS-1$
+        nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME);
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         XMIResourceImpl viewResource = new XMIResourceImpl();
@@ -236,7 +236,7 @@ public class ViewValidatorTests {
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName(SAMPLE_DOMAIN_NAME);
         ePackage.setNsPrefix(SAMPLE_DOMAIN_NAME);
-        ePackage.setNsURI("domain://sample"); //$NON-NLS-1$
+        ePackage.setNsURI("domain://sample");
 
         EClass sampleClass = EcoreFactory.eINSTANCE.createEClass();
         sampleClass.setName(SAMPLE_ENTITY_NAME);
@@ -255,7 +255,7 @@ public class ViewValidatorTests {
     public void testNodeStyleDescriptionValidQualifiedDomainInPackageRegistry() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME); //$NON-NLS-1$
+        nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME);
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         XMIResourceImpl viewResource = new XMIResourceImpl();
@@ -266,7 +266,7 @@ public class ViewValidatorTests {
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName(SAMPLE_DOMAIN_NAME);
         ePackage.setNsPrefix(SAMPLE_DOMAIN_NAME);
-        ePackage.setNsURI("domain://sample"); //$NON-NLS-1$
+        ePackage.setNsURI("domain://sample");
 
         EClass sampleClass = EcoreFactory.eINSTANCE.createEClass();
         sampleClass.setName(SAMPLE_ENTITY_NAME);

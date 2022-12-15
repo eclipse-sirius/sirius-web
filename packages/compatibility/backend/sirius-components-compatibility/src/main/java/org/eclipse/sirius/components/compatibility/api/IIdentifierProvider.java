@@ -33,7 +33,7 @@ public interface IIdentifierProvider {
 
         @Override
         public String getIdentifier(Object element) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override

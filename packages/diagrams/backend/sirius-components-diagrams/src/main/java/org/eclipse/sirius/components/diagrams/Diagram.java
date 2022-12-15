@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  */
 @Immutable
 public final class Diagram implements IRepresentation, ISemanticRepresentation {
-    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram";
 
     private String id;
 
@@ -102,7 +102,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, label: {4}, nodeCount: {5}, edgeCount: {6}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, label: {4}, nodeCount: {5}, edgeCount: {6}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.label, this.nodes.size(), this.edges.size());
     }
 

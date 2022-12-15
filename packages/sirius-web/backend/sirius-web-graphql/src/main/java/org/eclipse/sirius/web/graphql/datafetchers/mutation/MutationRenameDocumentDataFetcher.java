@@ -50,7 +50,7 @@ import reactor.core.publisher.Mono;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationRenameDocumentDataFetcher.RENAME_DOCUMENT_FIELD)
 public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String RENAME_DOCUMENT_FIELD = "renameDocument"; //$NON-NLS-1$
+    public static final String RENAME_DOCUMENT_FIELD = "renameDocument";
 
     private final ObjectMapper objectMapper;
 

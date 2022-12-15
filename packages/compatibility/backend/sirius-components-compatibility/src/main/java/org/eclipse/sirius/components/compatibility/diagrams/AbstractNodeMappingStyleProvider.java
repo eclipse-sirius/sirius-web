@@ -82,8 +82,8 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
 
             // @formatter:off
             style = RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("rgb(200, 200, 200)") //$NON-NLS-1$
-                    .borderColor("rgb(0, 0, 0)") //$NON-NLS-1$
+                    .color("rgb(200, 200, 200)")
+                    .borderColor("rgb(0, 0, 0)")
                     .borderSize(1)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -114,7 +114,7 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
     private INodeStyle createListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
         // @formatter:off
         return IconLabelNodeStyle.newIconLabelNodeStyle()
-                .backgroundColor("transparent") //$NON-NLS-1$
+                .backgroundColor("transparent")
                 .build();
         // @formatter:on
     }

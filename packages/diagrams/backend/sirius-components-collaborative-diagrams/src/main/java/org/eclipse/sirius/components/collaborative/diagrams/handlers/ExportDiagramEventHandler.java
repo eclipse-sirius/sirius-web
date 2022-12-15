@@ -49,7 +49,7 @@ public class ExportDiagramEventHandler implements IDiagramEventHandler {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         String svgExport = this.exportService.export(diagramContext.getDiagram());
-        IPayload payload = new ExportRepresentationPayload(diagramInput.getId(), diagramContext.getDiagram().getLabel() + ".svg", svgExport); //$NON-NLS-1$
+        IPayload payload = new ExportRepresentationPayload(diagramInput.getId(), diagramContext.getDiagram().getLabel() + ".svg", svgExport);
         payloadSink.tryEmitValue(payload);
     }
 }

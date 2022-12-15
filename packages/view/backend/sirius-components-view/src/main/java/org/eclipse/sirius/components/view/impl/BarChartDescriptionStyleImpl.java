@@ -487,17 +487,17 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: "); //$NON-NLS-1$
+        result.append(" (fontSize: ");
         result.append(this.fontSize);
-        result.append(", italic: "); //$NON-NLS-1$
+        result.append(", italic: ");
         result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
+        result.append(", bold: ");
         result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
+        result.append(", underline: ");
         result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", barsColor: "); //$NON-NLS-1$
+        result.append(", barsColor: ");
         result.append(this.barsColor);
         result.append(')');
         return result.toString();

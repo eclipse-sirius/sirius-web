@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.representations.IProps;
 @Immutable
 public final class PieChartElementProps implements IProps {
 
-    public static final String TYPE = "PieChart"; //$NON-NLS-1$
+    public static final String TYPE = "PieChart";
 
     private String id;
 

@@ -46,9 +46,9 @@ public class DomainBasedSourceNodesProviderTests {
     @Test
     public void testComputeSourceNodes() {
         EdgeMapping edgeMapping = DescriptionFactory.eINSTANCE.createEdgeMapping();
-        edgeMapping.setSourceFinderExpression("aql:self"); //$NON-NLS-1$
+        edgeMapping.setSourceFinderExpression("aql:self");
         NodeMapping nodeMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
-        nodeMapping.setName("3b0c8a37-b19c-4978-8a85-ba283d45d22d"); //$NON-NLS-1$
+        nodeMapping.setName("3b0c8a37-b19c-4978-8a85-ba283d45d22d");
         edgeMapping.getSourceMapping().add(nodeMapping);
 
         Object object = new Object();
@@ -77,15 +77,15 @@ public class DomainBasedSourceNodesProviderTests {
     private Element createNodeElement(UUID descriptionId) {
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
-                .imageURL("") //$NON-NLS-1$
+                .imageURL("")
                 .scalingFactor(42)
                 .build();
 
         NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(UUID.randomUUID().toString())
-                .type("type") //$NON-NLS-1$
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
-                .targetObjectKind("targetObjectKind") //$NON-NLS-1$
-                .targetObjectLabel("targetObjectLabel") //$NON-NLS-1$
+                .type("type")
+                .targetObjectId("targetObjectId")
+                .targetObjectKind("targetObjectKind")
+                .targetObjectLabel("targetObjectLabel")
                 .descriptionId(descriptionId)
                 .style(style)
                 .position(Position.UNDEFINED)

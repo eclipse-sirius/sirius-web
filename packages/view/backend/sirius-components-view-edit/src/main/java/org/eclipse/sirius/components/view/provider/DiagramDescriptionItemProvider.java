@@ -69,8 +69,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     protected void addAutoLayoutPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramDescription_autoLayout_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramDescription_autoLayout_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"),
                 ViewPackage.Literals.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -81,8 +81,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     protected void addOnDropPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramDescription_onDrop_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_onDrop_feature", "_UI_DiagramDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_DiagramDescription_onDrop_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_onDrop_feature", "_UI_DiagramDescription_type"),
                 ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, true, false, true, null, null, null));
     }
 
@@ -124,7 +124,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramDescription.svg"));
     }
 
     /**
@@ -145,8 +145,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     @Override
     public String getText(Object object) {
         String label = ((DiagramDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_DiagramDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_DiagramDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_DiagramDescription_type") :
+                this.getString("_UI_DiagramDescription_type") + " " + label;
     }
 
     /**
@@ -183,20 +183,20 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeChild.setName("Node"); //$NON-NLS-1$
+        nodeChild.setName("Node");
         nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();
-        edgeChild.setName("Edge"); //$NON-NLS-1$
+        edgeChild.setName("Edge");
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        newEdgeStyle.setColor("#002639"); //$NON-NLS-1$
+        newEdgeStyle.setColor("#002639");
         edgeChild.setStyle(newEdgeStyle);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
 
         DropTool dropTool = ViewFactory.eINSTANCE.createDropTool();
-        dropTool.setName("On Drop"); //$NON-NLS-1$
+        dropTool.setName("On Drop");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, dropTool));
     }
 

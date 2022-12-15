@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class ToolbarActionElementProps implements IProps {
-    public static final String TYPE = "ToolbarAction"; //$NON-NLS-1$
+    public static final String TYPE = "ToolbarAction";
 
     private String id;
 
@@ -91,7 +91,7 @@ public final class ToolbarActionElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, toolbarActionLabel: {3}, imageURL: {4},'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, toolbarActionLabel: {3}, imageURL: {4},'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.toolbarActionLabel, this.imageURL);
     }
 

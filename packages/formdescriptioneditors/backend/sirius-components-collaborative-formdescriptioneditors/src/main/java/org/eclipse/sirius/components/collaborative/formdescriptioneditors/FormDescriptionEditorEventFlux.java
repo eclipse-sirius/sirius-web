@@ -49,7 +49,7 @@ public class FormDescriptionEditorEventFlux {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new FormDescriptionEditorRefreshedEventPayload(input.getId(), this.currentFormDescriptionEditor));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a FormDescriptionEditorRefreshedEventPayload: {}"; //$NON-NLS-1$
+                String pattern = "An error has occurred while emitting a FormDescriptionEditorRefreshedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
             }
         }
@@ -63,7 +63,7 @@ public class FormDescriptionEditorEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
     }

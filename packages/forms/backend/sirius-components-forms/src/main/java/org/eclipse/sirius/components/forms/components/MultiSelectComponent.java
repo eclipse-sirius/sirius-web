@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class MultiSelectComponent implements IComponent {
 
-    public static final String CANDIDATE_VARIABLE = "candidate"; //$NON-NLS-1$
+    public static final String CANDIDATE_VARIABLE = "candidate";
 
     private MultiSelectComponentProps props;
 

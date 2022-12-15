@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
  * @author sbegaudeau
  */
 public final class ArchitectureConstants {
-    public static final String SIRIUS_WEB_SPRING_ROOT_PACKAGE = "org.eclipse.sirius.web.spring.."; //$NON-NLS-1$
+    public static final String SIRIUS_WEB_SPRING_ROOT_PACKAGE = "org.eclipse.sirius.web.spring..";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()

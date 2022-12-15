@@ -43,17 +43,17 @@ import org.junit.jupiter.api.Test;
  */
 public class NavigationOperationHandlerTests {
 
-    private static final String FIRST_DIAGRAM_ID = "First id"; //$NON-NLS-1$
+    private static final String FIRST_DIAGRAM_ID = "First id";
 
-    private static final String FIRST_DIAGRAM_LABEL = "First label"; //$NON-NLS-1$
+    private static final String FIRST_DIAGRAM_LABEL = "First label";
 
-    private static final String SECOND_DIAGRAM_ID = "Second id"; //$NON-NLS-1$
+    private static final String SECOND_DIAGRAM_ID = "Second id";
 
-    private static final String SECOND_DIAGRAM_LABEL = "Second label"; //$NON-NLS-1$
+    private static final String SECOND_DIAGRAM_LABEL = "Second label";
 
-    private static final String THIRD_DIAGRAM_ID = "Third id"; //$NON-NLS-1$
+    private static final String THIRD_DIAGRAM_ID = "Third id";
 
-    private static final String THIRD_DIAGRAM_LABEL = "Third label"; //$NON-NLS-1$
+    private static final String THIRD_DIAGRAM_LABEL = "Third label";
 
     private static final String FIRST_DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 

@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
  */
 public class FormDescriptionAggregatorTests {
 
-    private static final String LABEL = "Label"; //$NON-NLS-1$
+    private static final String LABEL = "Label";
 
     @Test
     public void testAggregatorWithMatchingPages() {
@@ -86,7 +86,7 @@ public class FormDescriptionAggregatorTests {
 
         // @formatter:off
         return FormDescription.newFormDescription(UUID.randomUUID().toString())
-                .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId") //$NON-NLS-1$
+                .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId")
                 .canCreatePredicate(variableManager -> true)
                 .groupDescriptions(groupDescriptions)
                 .pageDescriptions(pageDescriptions)
@@ -99,10 +99,10 @@ public class FormDescriptionAggregatorTests {
 
     private PageDescription createPage(Object object, GroupDescription groupDescription, boolean canCreate) {
         // @formatter:off
-        return PageDescription.newPageDescription("test") //$NON-NLS-1$
-                .idProvider(variableManager -> "id") //$NON-NLS-1$
+        return PageDescription.newPageDescription("test")
+                .idProvider(variableManager -> "id")
                 .canCreatePredicate(variableManager -> canCreate)
-                .labelProvider(variableManager ->  "label") //$NON-NLS-1$
+                .labelProvider(variableManager ->  "label")
                 .semanticElementsProvider(variableManager ->  Collections.singletonList(object))
                 .groupDescriptions(Collections.singletonList(groupDescription))
                 .build();
@@ -111,8 +111,8 @@ public class FormDescriptionAggregatorTests {
 
     private GroupDescription createGroup() {
         // @formatter:off
-        return GroupDescription.newGroupDescription("Group") //$NON-NLS-1$
-                .idProvider(variableManager -> "id") //$NON-NLS-1$
+        return GroupDescription.newGroupDescription("Group")
+                .idProvider(variableManager -> "id")
                 .controlDescriptions(Collections.emptyList())
                 .labelProvider(variableManager -> LABEL)
                 .semanticElementsProvider(variableManager -> Collections.emptyList())

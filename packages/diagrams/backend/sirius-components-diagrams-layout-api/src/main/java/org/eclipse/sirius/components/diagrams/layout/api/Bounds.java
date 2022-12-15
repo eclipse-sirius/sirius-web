@@ -49,7 +49,7 @@ public final class Bounds {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'size: {1}, position: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'size: {1}, position: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.size, this.position);
     }
 

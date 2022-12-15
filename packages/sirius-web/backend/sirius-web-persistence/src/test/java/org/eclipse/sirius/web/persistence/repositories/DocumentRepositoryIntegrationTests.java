@@ -38,26 +38,26 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ContextConfiguration(classes = PersistenceTestConfiguration.class)
 public class DocumentRepositoryIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String OWNER_NAME = "Jyn Erso"; //$NON-NLS-1$
+    private static final String OWNER_NAME = "Jyn Erso";
 
-    private static final String ROLE_USER = "user"; //$NON-NLS-1$
+    private static final String ROLE_USER = "user";
 
-    private static final String PROJECT_NAME = "Cluster Prism"; //$NON-NLS-1$
+    private static final String PROJECT_NAME = "Cluster Prism";
 
-    private static final String FIRST_DOCUMENT_NAME = "Concordia"; //$NON-NLS-1$
+    private static final String FIRST_DOCUMENT_NAME = "Concordia";
 
-    private static final String SECOND_DOCUMENT_NAME = "Mandalore"; //$NON-NLS-1$
+    private static final String SECOND_DOCUMENT_NAME = "Mandalore";
 
-    private static final String THIRD_DOCUMENT_NAME = "Kalevala"; //$NON-NLS-1$
+    private static final String THIRD_DOCUMENT_NAME = "Kalevala";
 
     // @formatter:off
-    private static final String DOCUMENT_CONTENT = "{" + System.lineSeparator() //$NON-NLS-1$
-    + "    \"json\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "      \"version\": \"1.0\"," + System.lineSeparator() //$NON-NLS-1$
-    + "    \"encoding\": \"utf-8\"" + System.lineSeparator() //$NON-NLS-1$
-    + "  }," + System.lineSeparator() //$NON-NLS-1$
-    + "  \"content\": []" + System.lineSeparator() //$NON-NLS-1$
-    + "}" + System.lineSeparator(); //$NON-NLS-1$
+    private static final String DOCUMENT_CONTENT = "{" + System.lineSeparator()
+    + "    \"json\": {" + System.lineSeparator()
+    + "      \"version\": \"1.0\"," + System.lineSeparator()
+    + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
+    + "  }," + System.lineSeparator()
+    + "  \"content\": []" + System.lineSeparator()
+    + "}" + System.lineSeparator();
     // @formatter:on
 
     @Autowired
@@ -71,9 +71,9 @@ public class DocumentRepositoryIntegrationTests extends AbstractIntegrationTests
 
     @DynamicPropertySource
     public static void postgresqlProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl); //$NON-NLS-1$
-        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword); //$NON-NLS-1$
-        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername); //$NON-NLS-1$
+        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
+        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
     }
 
     @Test

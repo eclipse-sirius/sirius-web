@@ -29,5 +29,5 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class RepresentationTypeProvider {
-    public static final String TYPE = "Representation"; //$NON-NLS-1$
+    public static final String TYPE = "Representation";
 }

@@ -18,7 +18,7 @@ package org.eclipse.sirius.components.representations;
  * @author sbegaudeau
  */
 public interface IRepresentation {
-    String KIND_PREFIX = "siriusComponents://representation"; //$NON-NLS-1$
+    String KIND_PREFIX = "siriusComponents://representation";
 
     String getId();
 

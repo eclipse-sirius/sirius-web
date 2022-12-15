@@ -34,9 +34,9 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "EditingContext", field = "treePath")
 public class EditingContextTreePathDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<TreePath>> {
 
-    private static final String TREE_ID = "treeId"; //$NON-NLS-1$
+    private static final String TREE_ID = "treeId";
 
-    private static final String SELECTION_ENTRY_IDS = "selectionEntryIds"; //$NON-NLS-1$
+    private static final String SELECTION_ENTRY_IDS = "selectionEntryIds";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 

@@ -69,9 +69,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
-    private static final String EMPTY = ""; //$NON-NLS-1$
+    private static final String EMPTY = "";
 
-    private static final String UNNAMED = "<unnamed>"; //$NON-NLS-1$
+    private static final String UNNAMED = "<unnamed>";
 
     private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
 
@@ -99,7 +99,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private FormDescription getImageNodeStyleProperties() {
-        String formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString(); //$NON-NLS-1$
+        String formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString();
 
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.createShapeSelectionField(ViewPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
@@ -117,7 +117,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                     .isPresent();
 
         return FormDescription.newFormDescription(formDescriptionId)
-                .label("Image Node Style") //$NON-NLS-1$
+                .label("Image Node Style")
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(UNNAMED))
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -129,7 +129,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private FormDescription getIconLabelNodeStyleProperties() {
-        String formDescriptionId = UUID.nameUUIDFromBytes("iconlabelnodestyle".getBytes()).toString(); //$NON-NLS-1$
+        String formDescriptionId = UUID.nameUUIDFromBytes("iconlabelnodestyle".getBytes()).toString();
 
         // @formatter:off
         List<AbstractControlDescription> controls = this.getGeneralControlDescription();
@@ -144,7 +144,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .isPresent();
 
         return FormDescription.newFormDescription(formDescriptionId)
-                .label("IconLabel Node Style") //$NON-NLS-1$
+                .label("IconLabel Node Style")
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getColor).orElse(UNNAMED))
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -156,11 +156,11 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private FormDescription getRectangularNodeStyleProperties() {
-        String formDescriptionId = UUID.nameUUIDFromBytes("rectangularnodestyle".getBytes()).toString(); //$NON-NLS-1$
+        String formDescriptionId = UUID.nameUUIDFromBytes("rectangularnodestyle".getBytes()).toString();
 
         // @formatter:off
         List<AbstractControlDescription> controls = new ArrayList<>();
-        controls.add(this.createCheckbox("nodestyle.isWithHeader", "With Header", //$NON-NLS-1$ //$NON-NLS-2$
+        controls.add(this.createCheckbox("nodestyle.isWithHeader", "With Header",
                 style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
                 (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
                 ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
@@ -176,7 +176,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .isPresent();
 
         return FormDescription.newFormDescription(formDescriptionId)
-                .label("Rectangular Node Style") //$NON-NLS-1$
+                .label("Rectangular Node Style")
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getColor).orElse(UNNAMED))
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -190,27 +190,27 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private List<AbstractControlDescription> getGeneralControlDescription() {
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
-                this.createExpressionField("nodestyle.sizeExpression", "Size Expression", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createExpressionField("nodestyle.sizeExpression", "Size Expression",
                         style -> ((NodeStyleDescription) style).getSizeComputationExpression(),
                         (style, newSizeExpression) -> ((NodeStyleDescription) style).setSizeComputationExpression(newSizeExpression),
                         ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION),
-                this.createCheckbox("nodestyle.showIcon", "Show Icon", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createCheckbox("nodestyle.showIcon", "Show Icon",
                         style -> ((NodeStyleDescription) style).isShowIcon(),
                         (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
                         ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
-                this.createTextField("nodestyle.labelColor", "Label Color", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createTextField("nodestyle.labelColor", "Label Color",
                         style -> ((NodeStyleDescription) style).getLabelColor(),
                         (style, newLabelColor) -> ((NodeStyleDescription) style).setLabelColor(newLabelColor),
                         ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
-                this.createTextField("nodestyle.color", "Color", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createTextField("nodestyle.color", "Color",
                                      style -> ((NodeStyleDescription) style).getColor(),
                                      (style, newColor) -> ((NodeStyleDescription) style).setColor(newColor),
                                      ViewPackage.Literals.STYLE__COLOR),
-                this.createTextField("nodestyle.borderColor", "Border Color", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createTextField("nodestyle.borderColor", "Border Color",
                         style -> ((NodeStyleDescription) style).getBorderColor(),
                         (style, newColor) -> ((NodeStyleDescription) style).setBorderColor(newColor),
                         ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
-                this.createTextField("nodestyle.borderRadius", "Border Radius", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createTextField("nodestyle.borderRadius", "Border Radius",
                         style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
                         (style, newBorderRadius) -> {
                             try {
@@ -220,7 +220,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                             }
                         },
                         ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
-                this.createTextField("nodestyle.borderSize", "Border Size", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createTextField("nodestyle.borderSize", "Border Size",
                         style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
                         (style, newBorderSize) -> {
                             try {
@@ -230,8 +230,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                             }
                         },
                         ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
-                this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE), //$NON-NLS-1$
-                this.createTextField("nodestyle.fontSize", "Font Size", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE),
+                this.createTextField("nodestyle.fontSize", "Font Size",
                         style -> String.valueOf(((LabelStyle) style).getFontSize()),
                         (style, newColor) -> {
                             try {
@@ -241,19 +241,19 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                             }
                         },
                         ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
-                this.createCheckbox("nodestyle.italic", "Italic", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createCheckbox("nodestyle.italic", "Italic",
                         style -> ((LabelStyle) style).isItalic(),
                         (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
                         ViewPackage.Literals.LABEL_STYLE__ITALIC),
-                this.createCheckbox("nodestyle.bold", "Bold", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createCheckbox("nodestyle.bold", "Bold",
                         style -> ((LabelStyle) style).isBold(),
                         (style, newBold) -> ((LabelStyle) style).setBold(newBold),
                         ViewPackage.Literals.LABEL_STYLE__BOLD),
-                this.createCheckbox("nodestyle.underline", "Underline", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createCheckbox("nodestyle.underline", "Underline",
                         style -> ((LabelStyle) style).isUnderline(),
                         (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
                         ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
-                this.createCheckbox("nodestyle.strikeThrough", "Strike Through", //$NON-NLS-1$ //$NON-NLS-2$
+                this.createCheckbox("nodestyle.strikeThrough", "Strike Through",
                         style -> ((LabelStyle) style).isStrikeThrough(),
                         (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
                         ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
@@ -276,9 +276,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private PageDescription createSimplePageDescription(GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
         // @formatter:off
-        return PageDescription.newPageDescription("page") //$NON-NLS-1$
-                .idProvider(variableManager -> "page") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Properties") //$NON-NLS-1$
+        return PageDescription.newPageDescription("page")
+                .idProvider(variableManager -> "page")
+                .labelProvider(variableManager -> "Properties")
                 .semanticElementsProvider(this.semanticElementsProvider)
                 .canCreatePredicate(canCreatePredicate)
                 .groupDescriptions(List.of(groupDescription))
@@ -288,9 +288,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private GroupDescription createSimpleGroupDescription(List<AbstractControlDescription> controls) {
         // @formatter:off
-        return GroupDescription.newGroupDescription("group") //$NON-NLS-1$
-                .idProvider(variableManager -> "group") //$NON-NLS-1$
-                .labelProvider(variableManager -> "General") //$NON-NLS-1$
+        return GroupDescription.newGroupDescription("group")
+                .idProvider(variableManager -> "group")
+                .labelProvider(variableManager -> "General")
                 .semanticElementsProvider(this.semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();
@@ -305,7 +305,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 writer.accept(optionalDiagramMapping.get(), newValue);
                 return new Success();
             } else {
-                return new Failure(""); //$NON-NLS-1$
+                return new Failure("");
             }
         };
 
@@ -330,7 +330,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 writer.accept(optionalDiagramMapping.get(), newValue);
                 return new Success();
             } else {
-                return new Failure(""); //$NON-NLS-1$
+                return new Failure("");
             }
         };
 
@@ -357,7 +357,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 writer.accept(optionalDiagramMapping.get(), newValue);
                 return new Success();
             } else {
-                return new Failure(""); //$NON-NLS-1$
+                return new Failure("");
             }
         };
         // @formatter:off
@@ -377,7 +377,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         return SelectDescription.newSelectDescription(id)
                                 .idProvider(variableManager -> id)
-                                .labelProvider(variableManager -> "Border Line Style") //$NON-NLS-1$
+                                .labelProvider(variableManager -> "Border Line Style")
                                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString).orElse(EMPTY))
                                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().collect(Collectors.toList()))
                                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
@@ -392,7 +392,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                             }
                                             return new Success();
                                         }
-                                        return new Failure(""); //$NON-NLS-1$
+                                        return new Failure("");
                                 })
                                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
                                 .kindProvider(this::kindProvider)
@@ -403,16 +403,16 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private SelectDescription createShapeSelectionField(Object feature) {
         // @formatter:off
-        return SelectDescription.newSelectDescription("nodestyle.shapeSelector") //$NON-NLS-1$
-                .idProvider(variableManager -> "nodestyle.shapeSelector") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Shape") //$NON-NLS-1$
+        return SelectDescription.newSelectDescription("nodestyle.shapeSelector")
+                .idProvider(variableManager -> "nodestyle.shapeSelector")
+                .labelProvider(variableManager -> "Shape")
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(EMPTY))
                 .optionsProvider(variableManager -> {
                     Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
 
                     Stream<CustomImageMetadata> parametricSVGs = this.parametricSVGImageRegistries.stream()
                         .flatMap(service-> service.getImages().stream())
-                        .map(image -> new CustomImageMetadata(image.getId(), optionalEditingContextId, image.getLabel(), "image/svg+xml")); //$NON-NLS-1$
+                        .map(image -> new CustomImageMetadata(image.getId(), optionalEditingContextId, image.getLabel(), "image/svg+xml"));
 
                     List<CustomImageMetadata> customImages = optionalEditingContextId.map(this.customImageSearchService::getAvailableImages).orElse(List.of());
 
@@ -437,17 +437,17 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private ImageDescription createShapePreviewField() {
         // @formatter:off
-        return ImageDescription.newImageDescription("nodestyle.shapePreview") //$NON-NLS-1$
-                .idProvider(variableManager -> "nodestyle.shapePreview") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Shape Preview") //$NON-NLS-1$
+        return ImageDescription.newImageDescription("nodestyle.shapePreview")
+                .idProvider(variableManager -> "nodestyle.shapePreview")
+                .labelProvider(variableManager -> "Shape Preview")
                 .urlProvider(variableManager -> {
                     var optionalShape = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape);
                     if (optionalShape.isPresent()) {
-                        return String.format("/custom/%s", optionalShape.get()); //$NON-NLS-1$
+                        return String.format("/custom/%s", optionalShape.get());
                     }
-                    return "";   //$NON-NLS-1$
+                    return "";  
                 })
-                .maxWidthProvider(variableManager -> "300px") //$NON-NLS-1$
+                .maxWidthProvider(variableManager -> "300px")
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
@@ -466,7 +466,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 optionalNodeStyle.get().setShape(newShape);
                 return new Success();
             }
-            return new Failure(""); //$NON-NLS-1$
+            return new Failure("");
         };
     }
 
@@ -485,21 +485,21 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private String kindProvider(Object object) {
-        String kind = "Unknown"; //$NON-NLS-1$
+        String kind = "Unknown";
         if (object instanceof Diagnostic) {
             Diagnostic diagnostic = (Diagnostic) object;
             switch (diagnostic.getSeverity()) {
             case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                kind = "Error"; //$NON-NLS-1$
+                kind = "Error";
                 break;
             case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                kind = "Warning"; //$NON-NLS-1$
+                kind = "Warning";
                 break;
             case org.eclipse.emf.common.util.Diagnostic.INFO:
-                kind = "Info"; //$NON-NLS-1$
+                kind = "Info";
                 break;
             default:
-                kind = "Unknown"; //$NON-NLS-1$
+                kind = "Unknown";
                 break;
             }
         }
@@ -511,7 +511,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
             Diagnostic diagnostic = (Diagnostic) object;
             return diagnostic.getMessage();
         }
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
 }

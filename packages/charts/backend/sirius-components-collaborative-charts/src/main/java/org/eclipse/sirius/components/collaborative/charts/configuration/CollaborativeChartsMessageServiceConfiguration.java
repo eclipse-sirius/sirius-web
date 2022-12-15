@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class CollaborativeChartsMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-components-collaborative-charts"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-components-collaborative-charts";
 
     @Bean
     public MessageSourceAccessor collaborativeChartsMessageSourceAccessor() {

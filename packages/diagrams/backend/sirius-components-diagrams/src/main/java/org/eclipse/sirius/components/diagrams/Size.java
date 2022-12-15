@@ -68,7 +68,7 @@ public final class Size {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'width: {1}, height: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'width: {1}, height: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.width, this.height);
     }
 

@@ -20,7 +20,7 @@ import java.util.Objects;
  * @author arichard
  */
 public enum FlexDirection {
-    row("row"), rowReverse("row-reverse"), column("column"), columnReverse("column-reverse"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    row("row"), rowReverse("row-reverse"), column("column"), columnReverse("column-reverse");
 
     private final String flexDirection;
 

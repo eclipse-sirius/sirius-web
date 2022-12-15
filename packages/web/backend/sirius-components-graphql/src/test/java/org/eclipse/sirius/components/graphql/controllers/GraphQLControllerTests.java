@@ -47,56 +47,56 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  * @author sbegaudeau
  */
 public class GraphQLControllerTests {
-    private static final MultipartFile FILE = new MockMultipartFile("file", "<MOCK_CONTENT>".getBytes()); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final MultipartFile FILE = new MockMultipartFile("file", "<MOCK_CONTENT>".getBytes());
 
-    private static final String QUERY = "{ \"query\": \"mutation uploadDocument($input: UploadDocumentInput!){ uploadDocument(input: $input) }\", \"variables\": { \"input\": { \"file\": null }}}"; //$NON-NLS-1$
+    private static final String QUERY = "{ \"query\": \"mutation uploadDocument($input: UploadDocumentInput!){ uploadDocument(input: $input) }\", \"variables\": { \"input\": { \"file\": null }}}";
 
-    private static final String MAPPING = "{\"0\": \"variables.file\"}"; //$NON-NLS-1$
+    private static final String MAPPING = "{\"0\": \"variables.file\"}";
 
     private GraphQL getGraphQL() {
         // @formatter:off
         // The dummy field is needed to pass GraphQL validation, as Query must have at least one field
         GraphQLFieldDefinition dummyField = GraphQLFieldDefinition.newFieldDefinition()
-                .name("dummy") //$NON-NLS-1$
+                .name("dummy")
                 .type(Scalars.GraphQLBoolean)
                 .build();
         GraphQLObjectType queryObjectType = GraphQLObjectType.newObject()
-                .name("Query") //$NON-NLS-1$
+                .name("Query")
                 .field(dummyField)
                 .build();
 
         GraphQLInputObjectField fileField = GraphQLInputObjectField.newInputObjectField()
-                .name("file") //$NON-NLS-1$
+                .name("file")
                 .type(UploadScalarType.INSTANCE)
                 .build();
         GraphQLInputObjectType inputObjectType = GraphQLInputObjectType.newInputObject()
-                .name("UploadDocumentInput") //$NON-NLS-1$
+                .name("UploadDocumentInput")
                 .field(fileField)
                 .build();
 
         GraphQLArgument inputArgument = GraphQLArgument.newArgument()
-                .name("input") //$NON-NLS-1$
-                .type(new GraphQLNonNull(new GraphQLTypeReference("UploadDocumentInput"))) //$NON-NLS-1$
+                .name("input")
+                .type(new GraphQLNonNull(new GraphQLTypeReference("UploadDocumentInput")))
                 .build();
         GraphQLFieldDefinition uploadDocumentField = GraphQLFieldDefinition.newFieldDefinition()
-                .name("uploadDocument") //$NON-NLS-1$
+                .name("uploadDocument")
                 .type(Scalars.GraphQLString)
                 .argument(inputArgument)
                 .build();
 
         GraphQLObjectType mutationObjectType = GraphQLObjectType.newObject()
-                .name("Mutation") //$NON-NLS-1$
+                .name("Mutation")
                 .field(uploadDocumentField)
                 .build();
 
         var dataFetcher = new DataFetcher<String>() {
             @Override
             public String get(DataFetchingEnvironment environment) throws Exception {
-                return "DOCUMENT_CREATED"; //$NON-NLS-1$
+                return "DOCUMENT_CREATED";
             }
         };
         GraphQLCodeRegistry codeRegistry = GraphQLCodeRegistry.newCodeRegistry()
-                .dataFetcher(FieldCoordinates.coordinates("Mutation", "uploadDocument"), dataFetcher) //$NON-NLS-1$ //$NON-NLS-2$
+                .dataFetcher(FieldCoordinates.coordinates("Mutation", "uploadDocument"), dataFetcher)
                 .build();
 
         GraphQLSchema graphQLSchema = GraphQLSchema.newSchema()
@@ -138,6 +138,6 @@ public class GraphQLControllerTests {
         GraphQLController graphQLController = new GraphQLController(new ObjectMapper(), this.getGraphQL(), new SimpleMeterRegistry());
         ResponseEntity<Map<String, Object>> responseEntity = graphQLController.uploadDocument(QUERY, MAPPING, FILE);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(responseEntity.getBody().toString()).isEqualTo("{data={uploadDocument=DOCUMENT_CREATED}}"); //$NON-NLS-1$
+        assertThat(responseEntity.getBody().toString()).isEqualTo("{data={uploadDocument=DOCUMENT_CREATED}}");
     }
 }

@@ -57,19 +57,19 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 public class DynamicDiagramsTests {
 
-    private static final String NAME_EXPRESSION = "aql:self.name"; //$NON-NLS-1$
+    private static final String NAME_EXPRESSION = "aql:self.name";
 
     private EPackage fixture;
 
     @BeforeEach
     void buildFixture() {
         this.fixture = EcoreFactory.eINSTANCE.createEPackage();
-        this.fixture.setName("fixture"); //$NON-NLS-1$
+        this.fixture.setName("fixture");
         EClass klass1 = EcoreFactory.eINSTANCE.createEClass();
-        klass1.setName("Class1"); //$NON-NLS-1$
+        klass1.setName("Class1");
         this.fixture.getEClassifiers().add(klass1);
         EClass klass2 = EcoreFactory.eINSTANCE.createEClass();
-        klass2.setName("Class2"); //$NON-NLS-1$
+        klass2.setName("Class2");
         this.fixture.getEClassifiers().add(klass2);
     }
 
@@ -82,18 +82,18 @@ public class DynamicDiagramsTests {
     @Test
     void testRenderSynchronizedEcoreDiagram() throws Exception {
         DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        diagramDescription.setName("Simple Ecore Diagram"); //$NON-NLS-1$
+        diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
         diagramDescription.setAutoLayout(false);
-        diagramDescription.setDomainType("ecore::EPackage"); //$NON-NLS-1$
+        diagramDescription.setDomainType("ecore::EPackage");
 
         NodeDescription eClassNode = ViewFactory.eINSTANCE.createNodeDescription();
-        eClassNode.setName("EClass Node"); //$NON-NLS-1$
-        eClassNode.setDomainType("ecore::EClass"); //$NON-NLS-1$
+        eClassNode.setName("EClass Node");
+        eClassNode.setDomainType("ecore::EClass");
         eClassNode.setLabelExpression(NAME_EXPRESSION);
-        eClassNode.setSemanticCandidatesExpression("aql:self.eClassifiers"); //$NON-NLS-1$
+        eClassNode.setSemanticCandidatesExpression("aql:self.eClassifiers");
         eClassNode.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
-        this.setBasicNodeStyle(eClassNode, "red"); //$NON-NLS-1$
+        this.setBasicNodeStyle(eClassNode, "red");
 
         diagramDescription.getNodeDescriptions().add(eClassNode);
 
@@ -102,24 +102,24 @@ public class DynamicDiagramsTests {
         assertThat(result).isNotNull();
         assertThat(result.getEdges()).isEmpty();
         assertThat(result.getNodes()).hasSize(2);
-        assertThat(result.getNodes()).extracting(node -> node.getLabel().getText()).containsExactlyInAnyOrder("Class1", "Class2"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertThat(result.getNodes()).extracting(node -> node.getLabel().getText()).containsExactlyInAnyOrder("Class1", "Class2");
     }
 
     @Test
     void testRenderUnsynchronizedEcoreDiagram() throws Exception {
         DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        diagramDescription.setName("Simple Ecore Diagram"); //$NON-NLS-1$
+        diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
         diagramDescription.setAutoLayout(false);
-        diagramDescription.setDomainType("ecore::EPackage"); //$NON-NLS-1$
+        diagramDescription.setDomainType("ecore::EPackage");
 
         NodeDescription eClassNode = ViewFactory.eINSTANCE.createNodeDescription();
-        eClassNode.setName("EClass Node"); //$NON-NLS-1$
-        eClassNode.setDomainType("ecore::EClass"); //$NON-NLS-1$
+        eClassNode.setName("EClass Node");
+        eClassNode.setDomainType("ecore::EClass");
         eClassNode.setLabelExpression(NAME_EXPRESSION);
-        eClassNode.setSemanticCandidatesExpression("aql:self.eClassifiers"); //$NON-NLS-1$
+        eClassNode.setSemanticCandidatesExpression("aql:self.eClassifiers");
         eClassNode.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
-        this.setBasicNodeStyle(eClassNode, "red"); //$NON-NLS-1$
+        this.setBasicNodeStyle(eClassNode, "red");
 
         diagramDescription.getNodeDescriptions().add(eClassNode);
 
@@ -134,7 +134,7 @@ public class DynamicDiagramsTests {
         // Wrap into a View and put it inside a proper Resource(Set), as expected by ViewConverter
         View view = ViewFactory.eINSTANCE.createView();
         view.getDescriptions().add(diagramDescription);
-        Resource res = new JSONResourceFactory().createResource(URI.createURI(EditingContext.RESOURCE_SCHEME + ":///fixture")); //$NON-NLS-1$
+        Resource res = new JSONResourceFactory().createResource(URI.createURI(EditingContext.RESOURCE_SCHEME + ":///fixture"));
         res.getContents().add(view);
         new ResourceSetImpl().getResources().add(res);
 
@@ -159,6 +159,6 @@ public class DynamicDiagramsTests {
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 
-        return diagramCreationService.create("Test Diagram", target, convertedDiagramDescription, editinContext); //$NON-NLS-1$
+        return diagramCreationService.create("Test Diagram", target, convertedDiagramDescription, editinContext);
     }
 }

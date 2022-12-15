@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
 
 public final class Tree implements IRepresentation {
 
-    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Tree"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Tree";
 
     private String id;
 
@@ -74,7 +74,7 @@ public final class Tree implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, childCount: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, childCount: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.children.size());
     }
 

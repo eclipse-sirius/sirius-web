@@ -18,11 +18,11 @@ package org.eclipse.sirius.components.diagrams;
  * @author sbegaudeau
  */
 public final class NodeType {
-    public static final String NODE_RECTANGLE = "node:rectangle"; //$NON-NLS-1$
+    public static final String NODE_RECTANGLE = "node:rectangle";
 
-    public static final String NODE_IMAGE = "node:image"; //$NON-NLS-1$
+    public static final String NODE_IMAGE = "node:image";
 
-    public static final String NODE_ICON_LABEL = "node:icon-label"; //$NON-NLS-1$
+    public static final String NODE_ICON_LABEL = "node:icon-label";
 
     private NodeType() {
         // Prevent instantiation

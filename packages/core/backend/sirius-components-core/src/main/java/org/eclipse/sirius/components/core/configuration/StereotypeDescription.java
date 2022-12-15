@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,7 @@ public class StereotypeDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, documentName: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, documentName: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.documentName);
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,8 +66,8 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     protected void addParentViewExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_parentViewExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_parentViewExpression_feature", "_UI_CreateView_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_CreateView_parentViewExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_parentViewExpression_feature", "_UI_CreateView_type"),
                 ViewPackage.Literals.CREATE_VIEW__PARENT_VIEW_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -79,8 +79,8 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     protected void addElementDescriptionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_elementDescription_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_elementDescription_feature", "_UI_CreateView_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_CreateView_elementDescription_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_elementDescription_feature", "_UI_CreateView_type"),
                 ViewPackage.Literals.CREATE_VIEW__ELEMENT_DESCRIPTION, true, false, true, null, null, null));
     }
 
@@ -92,8 +92,8 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     protected void addSemanticElementExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_semanticElementExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_semanticElementExpression_feature", "_UI_CreateView_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_CreateView_semanticElementExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_semanticElementExpression_feature", "_UI_CreateView_type"),
                 ViewPackage.Literals.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -104,8 +104,8 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     protected void addVariableNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_variableName_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_variableName_feature", "_UI_CreateView_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_CreateView_variableName_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_variableName_feature", "_UI_CreateView_type"),
                 ViewPackage.Literals.CREATE_VIEW__VARIABLE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -116,7 +116,7 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CreateView.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CreateView.svg"));
     }
 
     /**
@@ -137,8 +137,8 @@ public class CreateViewItemProvider extends OperationItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((CreateView) object).getVariableName();
-        return label == null || label.length() == 0 ? this.getString("_UI_CreateView_type") : //$NON-NLS-1$
-                this.getString("_UI_CreateView_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_CreateView_type") :
+                this.getString("_UI_CreateView_type") + " " + label;
     }
 
     /**

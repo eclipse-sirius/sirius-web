@@ -49,7 +49,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultDescriptionProvider {
 
-    public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature"; //$NON-NLS-1$
+    public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
     private final IObjectService objectService;
 
@@ -79,7 +79,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         pageDescriptions.add(firstPageDescription);
 
         // @formatter:off
-        Function<VariableManager, String> labelProvider = variableManager -> "Properties"; //$NON-NLS-1$
+        Function<VariableManager, String> labelProvider = variableManager -> "Properties";
         // @formatter:on
 
         // @formatter:off
@@ -91,7 +91,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .orElse(null);
 
         return FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
-                .label("Default form description") //$NON-NLS-1$
+                .label("Default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
@@ -122,7 +122,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         };
 
         // @formatter:off
-        return PageDescription.newPageDescription("firstPageId") //$NON-NLS-1$
+        return PageDescription.newPageDescription("firstPageId")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
@@ -186,7 +186,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         }
 
         // @formatter:off
-        ForDescription forDescription = ForDescription.newForDescription("forId") //$NON-NLS-1$
+        ForDescription forDescription = ForDescription.newForDescription("forId")
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .ifDescriptions(ifDescriptions)
@@ -196,9 +196,9 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         controlDescriptions.add(forDescription);
 
         // @formatter:off
-        return GroupDescription.newGroupDescription("groupId") //$NON-NLS-1$
-                .idProvider(variableManager -> "Core Properties") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Core Properties") //$NON-NLS-1$
+        return GroupDescription.newGroupDescription("groupId")
+                .idProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> "Core Properties")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();

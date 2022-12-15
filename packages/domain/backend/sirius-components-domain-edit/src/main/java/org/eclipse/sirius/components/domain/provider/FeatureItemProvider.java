@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,8 +63,8 @@ public class FeatureItemProvider extends NamedElementItemProvider {
      */
     protected void addOptionalPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Feature_optional_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_optional_feature", "_UI_Feature_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Feature_optional_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_optional_feature", "_UI_Feature_type"),
                         DomainPackage.Literals.FEATURE__OPTIONAL, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -75,8 +75,8 @@ public class FeatureItemProvider extends NamedElementItemProvider {
      */
     protected void addManyPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Feature_many_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_many_feature", "_UI_Feature_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Feature_many_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_many_feature", "_UI_Feature_type"),
                         DomainPackage.Literals.FEATURE__MANY, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -87,7 +87,7 @@ public class FeatureItemProvider extends NamedElementItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Feature")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Feature"));
     }
 
     /**
@@ -108,8 +108,8 @@ public class FeatureItemProvider extends NamedElementItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((Feature) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Feature_type") : //$NON-NLS-1$
-                this.getString("_UI_Feature_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Feature_type") :
+                this.getString("_UI_Feature_type") + " " + label;
     }
 
     /**

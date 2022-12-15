@@ -62,7 +62,7 @@ public class RenameObjectTreeItemEventHandler implements IRenameTreeItemHandler 
             }
         }
 
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 
 }

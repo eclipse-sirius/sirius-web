@@ -61,7 +61,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected static final String BEGIN_LABEL_EXPRESSION_EDEFAULT = ""; //$NON-NLS-1$
+    protected static final String BEGIN_LABEL_EXPRESSION_EDEFAULT = "";
 
     /**
      * The cached value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
@@ -81,7 +81,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected static final String END_LABEL_EXPRESSION_EDEFAULT = ""; //$NON-NLS-1$
+    protected static final String END_LABEL_EXPRESSION_EDEFAULT = "";
 
     /**
      * The cached value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
@@ -141,7 +141,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null; // $NON-NLS-1$
+    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
@@ -161,7 +161,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()"; //$NON-NLS-1$
+    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()";
 
     /**
      * The cached value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
@@ -655,15 +655,15 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (beginLabelExpression: "); //$NON-NLS-1$
+        result.append(" (beginLabelExpression: ");
         result.append(this.beginLabelExpression);
-        result.append(", endLabelExpression: "); //$NON-NLS-1$
+        result.append(", endLabelExpression: ");
         result.append(this.endLabelExpression);
-        result.append(", isDomainBasedEdge: "); //$NON-NLS-1$
+        result.append(", isDomainBasedEdge: ");
         result.append(this.isDomainBasedEdge);
-        result.append(", sourceNodesExpression: "); //$NON-NLS-1$
+        result.append(", sourceNodesExpression: ");
         result.append(this.sourceNodesExpression);
-        result.append(", targetNodesExpression: "); //$NON-NLS-1$
+        result.append(", targetNodesExpression: ");
         result.append(this.targetNodesExpression);
         result.append(')');
         return result.toString();

@@ -215,9 +215,9 @@ public class ImageDescriptionImpl extends WidgetDescriptionImpl implements Image
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (urlExpression: "); //$NON-NLS-1$
+        result.append(" (urlExpression: ");
         result.append(this.urlExpression);
-        result.append(", maxWidthExpression: "); //$NON-NLS-1$
+        result.append(", maxWidthExpression: ");
         result.append(this.maxWidthExpression);
         result.append(')');
         return result.toString();

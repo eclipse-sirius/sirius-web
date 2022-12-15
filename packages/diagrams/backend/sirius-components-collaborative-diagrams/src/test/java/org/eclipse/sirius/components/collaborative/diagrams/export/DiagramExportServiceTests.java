@@ -44,16 +44,16 @@ public class DiagramExportServiceTests {
 
     @Test
     public void testExportDiagramWithEdge() throws URISyntaxException {
-        String firstTargetObjectId = "First"; //$NON-NLS-1$
-        String secondTargetObjectId = "Second"; //$NON-NLS-1$
+        String firstTargetObjectId = "First";
+        String secondTargetObjectId = "Second";
 
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("root")
             .nodes()
                 .rectangleNode(firstTargetObjectId).at(10, 10).of(20, 20).and()
                 .rectangleNode(secondTargetObjectId).at(50, 10).of(20, 20).and()
                 .and()
-            .edge("one") //$NON-NLS-1$
+            .edge("one")
                 .from(firstTargetObjectId).at(0.75, 0.5)
                 .to(secondTargetObjectId).at(0.25, 0.5)
                 .and()
@@ -62,12 +62,12 @@ public class DiagramExportServiceTests {
 
         DiagramExportService diagramExportService = this.getDiagramExportService();
         String export = diagramExportService.export(diagram);
-        assertThat(export).contains("<path d=\""); //$NON-NLS-1$
+        assertThat(export).contains("<path d=\"");
     }
 
     @Test
     public void testExportEmptyDiagram() throws URISyntaxException {
-        Diagram emptyDiagram = TestLayoutDiagramBuilder.diagram("Root").nodes().and().build(); //$NON-NLS-1$
+        Diagram emptyDiagram = TestLayoutDiagramBuilder.diagram("Root").nodes().and().build();
         DiagramExportService diagramExportService = this.getDiagramExportService();
         String export = diagramExportService.export(emptyDiagram);
         assertThat(export).isNotBlank();

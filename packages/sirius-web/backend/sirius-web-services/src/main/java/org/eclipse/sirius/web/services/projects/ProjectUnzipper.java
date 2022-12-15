@@ -44,13 +44,13 @@ import org.slf4j.LoggerFactory;
  */
 public class ProjectUnzipper {
 
-    private static final String ZIP_FOLDER_SEPARATOR = "/"; //$NON-NLS-1$
+    private static final String ZIP_FOLDER_SEPARATOR = "/";
 
-    private static final String MANIFEST_JSON_FILE = "manifest.json"; //$NON-NLS-1$
+    private static final String MANIFEST_JSON_FILE = "manifest.json";
 
-    private static final String REPRESENTATIONS_FOLDER = "representations"; //$NON-NLS-1$
+    private static final String REPRESENTATIONS_FOLDER = "representations";
 
-    private static final String DOCUMENTS_FOLDER = "documents"; //$NON-NLS-1$
+    private static final String DOCUMENTS_FOLDER = "documents";
 
     private final Logger logger = LoggerFactory.getLogger(ProjectUnzipper.class);
 

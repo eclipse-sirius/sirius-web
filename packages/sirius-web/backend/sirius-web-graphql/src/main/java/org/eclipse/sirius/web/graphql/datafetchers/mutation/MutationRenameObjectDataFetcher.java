@@ -45,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationRenameObjectDataFetcher.RENAME_OBJECT_FIELD)
 public class MutationRenameObjectDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String RENAME_OBJECT_FIELD = "renameObject"; //$NON-NLS-1$
+    public static final String RENAME_OBJECT_FIELD = "renameObject";
 
     private final ObjectMapper objectMapper;
 

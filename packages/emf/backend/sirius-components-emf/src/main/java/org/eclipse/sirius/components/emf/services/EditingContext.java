@@ -28,7 +28,7 @@ public class EditingContext implements IEditingContext {
      * This scheme should be used to create an URI of a resource that corresponds to a document added in the
      * EditingContext ResourceSet.
      */
-    public static final String RESOURCE_SCHEME = "sirius"; //$NON-NLS-1$
+    public static final String RESOURCE_SCHEME = "sirius";
 
     private final String id;
 

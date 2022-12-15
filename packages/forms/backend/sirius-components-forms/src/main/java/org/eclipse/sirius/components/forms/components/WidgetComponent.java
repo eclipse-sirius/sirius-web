@@ -104,7 +104,7 @@ public class WidgetComponent implements IComponent {
             RichTextComponentProps richTextComponentProps = new RichTextComponentProps(variableManager, (RichTextDescription) widgetDescription);
             element = new Element(RichTextComponent.class, richTextComponentProps);
         } else {
-            String pattern = "Unsupported widget description: {}"; //$NON-NLS-1$
+            String pattern = "Unsupported widget description: {}";
             this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
         }
         return element;

@@ -38,9 +38,9 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = "DiagramDescription", field = "connectorTools")
 public class DiagramDescriptionConnectorToolsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ITool>>> {
 
-    private static final String SOURCE_DIAGRAM_ELEMENT_ID = "sourceDiagramElementId"; //$NON-NLS-1$
+    private static final String SOURCE_DIAGRAM_ELEMENT_ID = "sourceDiagramElementId";
 
-    private static final String TARGET_DIAGRAM_ELEMENT_ID = "targetDiagramElementId"; //$NON-NLS-1$
+    private static final String TARGET_DIAGRAM_ELEMENT_ID = "targetDiagramElementId";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 

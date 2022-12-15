@@ -62,7 +62,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
-                .tag(Monitoring.NAME, "formdescriptioneditor") //$NON-NLS-1$
+                .tag(Monitoring.NAME, "formdescriptioneditor")
                 .register(meterRegistry);
         // @formatter:on
     }

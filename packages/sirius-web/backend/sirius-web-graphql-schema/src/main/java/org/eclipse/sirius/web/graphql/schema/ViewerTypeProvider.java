@@ -49,21 +49,21 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class ViewerTypeProvider {
-    public static final String TYPE = "Viewer"; //$NON-NLS-1$
+    public static final String TYPE = "Viewer";
 
-    public static final String USER_TYPE = "User"; //$NON-NLS-1$
+    public static final String USER_TYPE = "User";
 
-    public static final String USERNAME_FIELD = "username"; //$NON-NLS-1$
+    public static final String USERNAME_FIELD = "username";
 
-    public static final String PROJECTS_FIELD = "projects"; //$NON-NLS-1$
+    public static final String PROJECTS_FIELD = "projects";
 
-    public static final String PROJECT_FIELD = "project"; //$NON-NLS-1$
+    public static final String PROJECT_FIELD = "project";
 
-    public static final String SCHEMA_ID_ARGUMENT = "schemaId"; //$NON-NLS-1$
+    public static final String SCHEMA_ID_ARGUMENT = "schemaId";
 
-    public static final String PROJECT_ID_ARGUMENT = "projectId"; //$NON-NLS-1$
+    public static final String PROJECT_ID_ARGUMENT = "projectId";
 
-    public static final String EDITING_CONTEXT_FIELD = "editingContext"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_FIELD = "editingContext";
 
-    public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
 }

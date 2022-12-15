@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,9 +36,9 @@ public class KindParser implements IKindParser {
     public Map<String, List<String>> getParameterValues(String kind) {
         Map<String, List<String>> parameterValues = new HashMap<>();
 
-        List<String> queryParameters = Arrays.asList(URI.create(kind).getQuery().split("&")); //$NON-NLS-1$
+        List<String> queryParameters = Arrays.asList(URI.create(kind).getQuery().split("&"));
         for (String queryParameter : queryParameters) {
-            String[] data = queryParameter.split("="); //$NON-NLS-1$
+            String[] data = queryParameter.split("=");
             if (data.length == 2 && !data[0].isBlank() && !data[1].isBlank()) {
                 var key = URLDecoder.decode(data[0], StandardCharsets.UTF_8);
                 var value = URLDecoder.decode(data[1], StandardCharsets.UTF_8);

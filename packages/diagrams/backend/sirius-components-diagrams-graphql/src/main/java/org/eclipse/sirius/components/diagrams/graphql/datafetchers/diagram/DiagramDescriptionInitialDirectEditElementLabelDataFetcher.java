@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = "DiagramDescription", field = "initialDirectEditElementLabel")
 public class DiagramDescriptionInitialDirectEditElementLabelDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<String>> {
 
-    private static final String LABEL_ID = "labelId"; //$NON-NLS-1$
+    private static final String LABEL_ID = "labelId";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 

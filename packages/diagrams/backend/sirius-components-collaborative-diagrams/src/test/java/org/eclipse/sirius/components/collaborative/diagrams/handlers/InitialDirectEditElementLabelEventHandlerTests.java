@@ -49,7 +49,7 @@ import reactor.core.publisher.Sinks.One;
  */
 public class InitialDirectEditElementLabelEventHandlerTests {
 
-    private static final String INIT_LABEL = "initLabel"; //$NON-NLS-1$
+    private static final String INIT_LABEL = "initLabel";
 
     @Test
     public void testInitialDirectEditElementLabelEventHandler() {

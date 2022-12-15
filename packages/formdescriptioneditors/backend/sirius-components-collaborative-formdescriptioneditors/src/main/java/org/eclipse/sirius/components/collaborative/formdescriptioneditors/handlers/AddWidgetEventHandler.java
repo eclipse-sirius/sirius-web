@@ -103,7 +103,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         var optionalSelf = this.objectService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
-            EClassifier eClassifier = ViewPackage.eINSTANCE.getEClassifier(kind + "Description"); //$NON-NLS-1$
+            EClassifier eClassifier = ViewPackage.eINSTANCE.getEClassifier(kind + "Description");
             if (eClassifier instanceof EClass) {
                 var widgetDescription = ViewFactory.eINSTANCE.create((EClass) eClassifier);
                 if (widgetDescription instanceof FlexboxContainerDescription) {
@@ -125,7 +125,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
     }
 
     private void createStyle(WidgetDescription widgetDescription) {
-        EStructuralFeature styleFeature = widgetDescription.eClass().getEStructuralFeature("style"); //$NON-NLS-1$
+        EStructuralFeature styleFeature = widgetDescription.eClass().getEStructuralFeature("style");
         if (styleFeature instanceof EReference) {
             EClassifier eClassifier = styleFeature.getEType();
             if (eClassifier instanceof EClass) {

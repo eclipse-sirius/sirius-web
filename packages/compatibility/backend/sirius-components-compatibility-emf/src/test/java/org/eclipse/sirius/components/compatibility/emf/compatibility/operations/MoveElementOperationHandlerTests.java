@@ -39,11 +39,11 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class MoveElementOperationHandlerTests {
-    private static final String SUBPACKAGE1_VARIABLE_NAME = "subPackage1"; //$NON-NLS-1$
+    private static final String SUBPACKAGE1_VARIABLE_NAME = "subPackage1";
 
-    private static final String AQL_NEWCONTAINER_EXPRESSION = "aql:" + SUBPACKAGE1_VARIABLE_NAME; //$NON-NLS-1$
+    private static final String AQL_NEWCONTAINER_EXPRESSION = "aql:" + SUBPACKAGE1_VARIABLE_NAME;
 
-    private static final String NAME_FEATURE = "eClassifiers"; //$NON-NLS-1$
+    private static final String NAME_FEATURE = "eClassifiers";
 
     private MoveElementOperationHandler moveElementOperationHandler;
 
@@ -96,12 +96,12 @@ public class MoveElementOperationHandlerTests {
         this.handleAndCheckExecution(null, null, this.operationTestContext.getClass1());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", "", this.operationTestContext.getClass1()); //$NON-NLS-1$ //$NON-NLS-2$
+        this.handleAndCheckExecution("", "", this.operationTestContext.getClass1());
 
-        this.handleAndCheckExecution(NAME_FEATURE, "UnknownExpression", this.operationTestContext.getClass1()); //$NON-NLS-1$
+        this.handleAndCheckExecution(NAME_FEATURE, "UnknownExpression", this.operationTestContext.getClass1());
         this.handleAndCheckExecution(NAME_FEATURE, ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getClass1());
         this.handleAndCheckExecution(NAME_FEATURE, null, this.operationTestContext.getClass1());
-        this.handleAndCheckExecution("unknownFeature", AQL_NEWCONTAINER_EXPRESSION, this.operationTestContext.getClass1()); //$NON-NLS-1$
+        this.handleAndCheckExecution("unknownFeature", AQL_NEWCONTAINER_EXPRESSION, this.operationTestContext.getClass1());
         this.handleAndCheckExecution(null, AQL_NEWCONTAINER_EXPRESSION, this.operationTestContext.getClass1());
     }
 

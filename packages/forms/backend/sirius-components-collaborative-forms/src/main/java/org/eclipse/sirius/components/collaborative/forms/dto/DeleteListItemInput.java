@@ -70,7 +70,7 @@ public final class DeleteListItemInput implements IFormInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, representationId: {2}, editingContextId: {3}, listId: {5}, listItemId: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, representationId: {2}, editingContextId: {3}, listId: {5}, listItemId: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representationId, this.editingContextId, this.listId, this.listItemId);
     }
 

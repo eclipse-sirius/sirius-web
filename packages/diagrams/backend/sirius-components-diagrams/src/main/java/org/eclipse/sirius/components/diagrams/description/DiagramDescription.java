@@ -36,11 +36,11 @@ public final class DiagramDescription implements IRepresentationDescription {
     /**
      * The name of the variable used to store and retrieve the node or edge description id from a variable manager.
      */
-    public static final String DESCRIPTION_ID = "descriptionId"; //$NON-NLS-1$
+    public static final String DESCRIPTION_ID = "descriptionId";
 
-    public static final String CACHE = "cache"; //$NON-NLS-1$
+    public static final String CACHE = "cache";
 
-    public static final String LABEL = "label"; //$NON-NLS-1$
+    public static final String LABEL = "label";
 
     private String id;
 
@@ -121,7 +121,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, nodeDescriptionCount: {3}, edgeDescriptionCount: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, nodeDescriptionCount: {3}, edgeDescriptionCount: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.nodeDescriptions.size(), this.edgeDescriptions.size());
     }
 

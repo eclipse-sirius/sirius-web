@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,9 +69,9 @@ public class WebSocketHandlerTests {
         NoOpWebSocketSession session = new NoOpWebSocketSession();
         // @formatter:off
         GraphQLObjectType queryType = GraphQLObjectType.newObject()
-                .name("Query") //$NON-NLS-1$
+                .name("Query")
                 .field(newFieldDefinition()
-                        .name("field") //$NON-NLS-1$
+                        .name("field")
                         .type(Scalars.GraphQLString))
                 .build();
         GraphQLSchema graphQLSchema = GraphQLSchema.newSchema()
@@ -86,40 +86,40 @@ public class WebSocketHandlerTests {
 
         // @formatter:off
         GraphQLPayload payload = GraphQLPayload.newGraphQLPayload()
-                .query("query { field }") //$NON-NLS-1$
+                .query("query { field }")
                 .build();
         // @formatter:on
 
-        StartMessage startMessage = new StartMessage("operationId", payload); //$NON-NLS-1$
+        StartMessage startMessage = new StartMessage("operationId", payload);
         new StartMessageHandler(session, graphQL, objectMapper, sessions2entries, new SimpleMeterRegistry()).handle(startMessage);
 
         assertThat(session.getMessages()).hasSize(1);
         WebSocketMessage<?> webSocketMessage = session.getMessages().get(0);
         assertThat(webSocketMessage).isInstanceOf(TextMessage.class);
         TextMessage textMessage = (TextMessage) webSocketMessage;
-        assertThat(textMessage.getPayload()).isEqualTo("{\"id\":\"operationId\",\"payload\":{\"data\":{\"field\":null}},\"type\":\"data\"}"); //$NON-NLS-1$
+        assertThat(textMessage.getPayload()).isEqualTo("{\"id\":\"operationId\",\"payload\":{\"data\":{\"field\":null}},\"type\":\"data\"}");
     }
 
     @Test
     public void testStartMessageHandlerWithSubscription() {
         NoOpWebSocketSession session = new NoOpWebSocketSession();
         // @formatter:off
-        DataFetcher<Flux<String>> dataFetcher = environment -> Flux.just("OneEvent"); //$NON-NLS-1$
+        DataFetcher<Flux<String>> dataFetcher = environment -> Flux.just("OneEvent");
 
         GraphQLCodeRegistry codeRegistry = GraphQLCodeRegistry.newCodeRegistry()
-                .dataFetcher(FieldCoordinates.coordinates("Subscription", "eventReceived"), dataFetcher) //$NON-NLS-1$ //$NON-NLS-2$
+                .dataFetcher(FieldCoordinates.coordinates("Subscription", "eventReceived"), dataFetcher)
                 .build();
 
         GraphQLObjectType queryType = GraphQLObjectType.newObject()
-                .name("Query") //$NON-NLS-1$
+                .name("Query")
                 .field(newFieldDefinition()
-                        .name("field") //$NON-NLS-1$
+                        .name("field")
                         .type(Scalars.GraphQLString))
                 .build();
         GraphQLObjectType subscriptionType = GraphQLObjectType.newObject()
-                .name("Subscription") //$NON-NLS-1$
+                .name("Subscription")
                 .field(newFieldDefinition()
-                        .name("eventReceived") //$NON-NLS-1$
+                        .name("eventReceived")
                         .type(Scalars.GraphQLString))
                 .build();
         GraphQLSchema graphQLSchema = GraphQLSchema.newSchema()
@@ -136,13 +136,13 @@ public class WebSocketHandlerTests {
 
         // @formatter:off
         GraphQLPayload payload = GraphQLPayload.newGraphQLPayload()
-                .query("subscription { eventReceived }") //$NON-NLS-1$
+                .query("subscription { eventReceived }")
                 .build();
         // @formatter:on
 
         assertThat(session.getMessages()).hasSize(0);
 
-        StartMessage startMessage = new StartMessage("subscriptionOperationId", payload); //$NON-NLS-1$
+        StartMessage startMessage = new StartMessage("subscriptionOperationId", payload);
         new StartMessageHandler(session, graphQL, objectMapper, sessions2entries, new SimpleMeterRegistry()).handle(startMessage);
 
         assertThat(session.getMessages()).hasSize(2);
@@ -150,12 +150,12 @@ public class WebSocketHandlerTests {
         WebSocketMessage<?> webSocketMessage = session.getMessages().get(0);
         assertThat(webSocketMessage).isInstanceOf(TextMessage.class);
         TextMessage textMessage = (TextMessage) webSocketMessage;
-        assertThat(textMessage.getPayload()).isEqualTo("{\"id\":\"subscriptionOperationId\",\"payload\":{\"data\":{\"eventReceived\":\"OneEvent\"}},\"type\":\"data\"}"); //$NON-NLS-1$
+        assertThat(textMessage.getPayload()).isEqualTo("{\"id\":\"subscriptionOperationId\",\"payload\":{\"data\":{\"eventReceived\":\"OneEvent\"}},\"type\":\"data\"}");
 
         webSocketMessage = session.getMessages().get(1);
         assertThat(webSocketMessage).isInstanceOf(TextMessage.class);
         textMessage = (TextMessage) webSocketMessage;
-        assertThat(textMessage.getPayload()).isEqualTo("{\"id\":\"subscriptionOperationId\",\"type\":\"complete\"}"); //$NON-NLS-1$
+        assertThat(textMessage.getPayload()).isEqualTo("{\"id\":\"subscriptionOperationId\",\"type\":\"complete\"}");
     }
 
     @Test
@@ -168,10 +168,10 @@ public class WebSocketHandlerTests {
             }
         };
         List<SubscriptionEntry> subscriptionEntries = new ArrayList<>();
-        subscriptionEntries.add(new SubscriptionEntry("subscriptionId", subscription)); //$NON-NLS-1$
+        subscriptionEntries.add(new SubscriptionEntry("subscriptionId", subscription));
         sessions2entries.put(session, subscriptionEntries);
 
-        StopMessage stopMessage = new StopMessage("subscriptionId"); //$NON-NLS-1$
+        StopMessage stopMessage = new StopMessage("subscriptionId");
 
         assertThat(sessions2entries.get(session).size()).isEqualTo(1);
 
@@ -189,7 +189,7 @@ public class WebSocketHandlerTests {
             public void dispose() {
             }
         };
-        sessions2entries.put(session, List.of(new SubscriptionEntry("id", subscription))); //$NON-NLS-1$
+        sessions2entries.put(session, List.of(new SubscriptionEntry("id", subscription)));
 
         assertThat(sessions2entries.size()).isEqualTo(1);
 

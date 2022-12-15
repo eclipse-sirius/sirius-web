@@ -92,7 +92,7 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
                             return handlerFunction;
                         })
                     .map(handler -> handler.apply(input.getNewValue()))
-                    .orElse(new Failure("")); //$NON-NLS-1$
+                    .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {

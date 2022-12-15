@@ -89,8 +89,8 @@ public class CustomImageEntity {
 
     @Override
     public String toString() {
-        String projectId = Optional.ofNullable(this.project).map(ProjectEntity::getId).map(UUID::toString).orElse("null"); //$NON-NLS-1$
-        String pattern = "{0} '{' id: {1}, projectId: {2}, label: {3}, contentType: {4} '}'"; //$NON-NLS-1$
+        String projectId = Optional.ofNullable(this.project).map(ProjectEntity::getId).map(UUID::toString).orElse("null");
+        String pattern = "{0} '{' id: {1}, projectId: {2}, label: {3}, contentType: {4} '}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, projectId, this.label, this.contentType);
     }
 }

@@ -57,7 +57,7 @@ public class CustomImagesLoader implements CommandLineRunner {
             Resource[] resources = this.patternResolver.getResources(this.imagesPathPattern);
             for (Resource resource : resources) {
                 Optional<String> contentType = this.getContentType(resource);
-                if (contentType.isPresent() && contentType.get().startsWith("image/")) { //$NON-NLS-1$
+                if (contentType.isPresent() && contentType.get().startsWith("image/")) {
                     this.importImageFromResource(resource, contentType.get());
                 }
             }
@@ -68,7 +68,7 @@ public class CustomImagesLoader implements CommandLineRunner {
         try {
             CustomImageEntity customImageEntity = new CustomImageEntity();
             // No project set: these are global images
-            customImageEntity.setLabel(Optional.ofNullable(resource.getFilename()).map(this::trimFileExtension).orElse("")); //$NON-NLS-1$
+            customImageEntity.setLabel(Optional.ofNullable(resource.getFilename()).map(this::trimFileExtension).orElse(""));
             customImageEntity.setContentType(contentType);
             try (BufferedInputStream stream = new BufferedInputStream(resource.getInputStream())) {
                 customImageEntity.setContent(stream.readAllBytes());
@@ -76,7 +76,7 @@ public class CustomImagesLoader implements CommandLineRunner {
             customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
             this.customImageRepository.save(customImageEntity);
         } catch (IOException e) {
-            this.logger.warn("Error loading resource {}: {}", resource, e.getMessage()); //$NON-NLS-1$
+            this.logger.warn("Error loading resource {}: {}", resource, e.getMessage());
         }
     }
 

@@ -34,9 +34,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class OperationTestContext {
 
-    public static final String CLASS1_NAME = "class1Name"; //$NON-NLS-1$
+    public static final String CLASS1_NAME = "class1Name";
 
-    public static final String ROOT_PACKAGE_NAME = "rootPackageName"; //$NON-NLS-1$
+    public static final String ROOT_PACKAGE_NAME = "rootPackageName";
 
     private EPackage rootPackage;
 
