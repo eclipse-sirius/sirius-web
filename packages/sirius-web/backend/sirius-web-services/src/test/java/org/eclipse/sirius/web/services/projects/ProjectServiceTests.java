@@ -41,9 +41,9 @@ import org.springframework.security.core.userdetails.User;
  */
 public class ProjectServiceTests {
 
-    private static final String NEW_PROJECT = "New Project"; //$NON-NLS-1$
+    private static final String NEW_PROJECT = "New Project";
 
-    private static final String OWNER_NAME = "jdoe"; //$NON-NLS-1$
+    private static final String OWNER_NAME = "jdoe";
 
     private IServicesMessageService noOpMessageService = new NoOpServicesMessageService();
 
@@ -73,10 +73,10 @@ public class ProjectServiceTests {
 
     @Test
     public void testProjectCreationWithInvalidName() {
-        Object principal = new User(OWNER_NAME, "", List.of()); //$NON-NLS-1$
+        Object principal = new User(OWNER_NAME, "", List.of());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, new Object()));
 
-        CreateProjectInput input = new CreateProjectInput(UUID.randomUUID(), "", Visibility.PRIVATE); //$NON-NLS-1$
+        CreateProjectInput input = new CreateProjectInput(UUID.randomUUID(), "", Visibility.PRIVATE);
         IPayload payload = this.projectService.createProject(input);
         assertThat(payload).isInstanceOf(ErrorPayload.class);
 
@@ -85,7 +85,7 @@ public class ProjectServiceTests {
 
     @Test
     public void testProjectCreationSuccess() {
-        Object principal = new User(OWNER_NAME, "", List.of()); //$NON-NLS-1$
+        Object principal = new User(OWNER_NAME, "", List.of());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, new Object()));
 
         CreateProjectInput input = new CreateProjectInput(UUID.randomUUID(), NEW_PROJECT, Visibility.PRIVATE);
@@ -97,7 +97,7 @@ public class ProjectServiceTests {
 
     @Test
     public void testCreateProjectsWithSameName() {
-        Object principal = new User(OWNER_NAME, "", List.of()); //$NON-NLS-1$
+        Object principal = new User(OWNER_NAME, "", List.of());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, new Object()));
 
         CreateProjectInput firstInput = new CreateProjectInput(UUID.randomUUID(), NEW_PROJECT, Visibility.PRIVATE);

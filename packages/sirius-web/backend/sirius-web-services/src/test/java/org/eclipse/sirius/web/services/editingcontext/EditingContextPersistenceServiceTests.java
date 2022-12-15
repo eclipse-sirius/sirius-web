@@ -47,13 +47,13 @@ public class EditingContextPersistenceServiceTests {
     public void testDocumentPersistence() {
         UUID projectId = UUID.randomUUID();
 
-        String name = "New Document"; //$NON-NLS-1$
+        String name = "New Document";
         UUID id = UUID.randomUUID();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(id.toString());
         resource.eAdapters().add(new DocumentMetadataAdapter(name));
 
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        eClass.setName("Concept"); //$NON-NLS-1$
+        eClass.setName("Concept");
         resource.getContents().add(eClass);
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
@@ -61,17 +61,17 @@ public class EditingContextPersistenceServiceTests {
 
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setId(projectId);
-        projectEntity.setName(""); //$NON-NLS-1$
+        projectEntity.setName("");
         AccountEntity owner = new AccountEntity();
         owner.setId(UUID.randomUUID());
-        owner.setUsername("jdoe"); //$NON-NLS-1$
+        owner.setUsername("jdoe");
         projectEntity.setOwner(owner);
 
         DocumentEntity existingEntity = new DocumentEntity();
         existingEntity.setId(id);
         existingEntity.setProject(projectEntity);
         existingEntity.setName(name);
-        existingEntity.setContent(""); //$NON-NLS-1$
+        existingEntity.setContent("");
 
         List<DocumentEntity> entities = new ArrayList<>();
         IDocumentRepository documentRepository = new NoOpDocumentRepository() {

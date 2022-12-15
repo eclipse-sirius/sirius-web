@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Tool.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Tool.svg"));
     }
 
     /**
@@ -78,8 +78,8 @@ public class EdgeToolItemProvider extends ToolItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((EdgeTool) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_EdgeTool_type") : //$NON-NLS-1$
-                this.getString("_UI_EdgeTool_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_EdgeTool_type") :
+                this.getString("_UI_EdgeTool_type") + " " + label;
     }
 
     /**

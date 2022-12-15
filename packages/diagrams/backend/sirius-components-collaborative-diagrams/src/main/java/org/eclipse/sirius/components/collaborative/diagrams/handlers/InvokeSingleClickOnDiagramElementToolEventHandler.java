@@ -133,7 +133,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
     private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, double startingPositionX,
             double startingPositionY, String selectedObjectId) {
-        IStatus result = new Failure(""); //$NON-NLS-1$
+        IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
         Optional<Object> self = Optional.empty();
@@ -142,7 +142,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         } else if (Objects.equals(diagram.getId(), diagramElementId)) {
             self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
         } else {
-            this.logger.warn("The node creation tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId()); //$NON-NLS-1$
+            this.logger.warn("The node creation tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId());
         }
 
         // Else, cannot find the node with the given optionalDiagramElementId

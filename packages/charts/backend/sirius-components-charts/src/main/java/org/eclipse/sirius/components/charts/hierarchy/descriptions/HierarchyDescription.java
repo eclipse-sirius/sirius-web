@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public class HierarchyDescription implements IRepresentationDescription {
-    public static final String LABEL = "label"; //$NON-NLS-1$
+    public static final String LABEL = "label";
 
     private String id;
 

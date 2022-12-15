@@ -96,7 +96,7 @@ public class ViewDetailsRenderingIntegrationTests {
         this.editingDomain.getResourceSet().getPackageRegistry().put(FlowPackage.eNS_URI, FlowPackage.eINSTANCE);
         this.editingContext = new EditingContext(UUID.randomUUID().toString(), this.editingDomain);
 
-        this.view = this.loadFixture("ViewCompletionFixture.xmi"); //$NON-NLS-1$
+        this.view = this.loadFixture("ViewCompletionFixture.xmi");
 
         IObjectService objectService = new ObjectService(new EMFKindService(new KindParser()), composedAdapterFactory, new LabelFeatureProviderRegistry());
 
@@ -124,8 +124,8 @@ public class ViewDetailsRenderingIntegrationTests {
         Form propertiesForm = this.renderForm(diagramDescription, this.viewPropertiesFormDescription);
         assertThat(propertiesForm).isNotNull();
 
-        this.checkDomainTypeField(propertiesForm, "Domain Type"); //$NON-NLS-1$
-        this.checkExpressionField(propertiesForm, "Title Expression"); //$NON-NLS-1$
+        this.checkDomainTypeField(propertiesForm, "Domain Type");
+        this.checkExpressionField(propertiesForm, "Title Expression");
     }
 
     @Test
@@ -134,8 +134,8 @@ public class ViewDetailsRenderingIntegrationTests {
         Form propertiesForm = this.renderForm(formDescription, this.viewPropertiesFormDescription);
         assertThat(propertiesForm).isNotNull();
 
-        this.checkDomainTypeField(propertiesForm, "Domain Type"); //$NON-NLS-1$
-        this.checkExpressionField(propertiesForm, "Title Expression"); //$NON-NLS-1$
+        this.checkDomainTypeField(propertiesForm, "Domain Type");
+        this.checkExpressionField(propertiesForm, "Title Expression");
     }
 
     private void checkDomainTypeField(Form form, String fieldName) {
@@ -143,12 +143,12 @@ public class ViewDetailsRenderingIntegrationTests {
         assertThat(field.isSupportsCompletion()).isTrue();
         assertThat(field.getCompletionProposalsProvider()).isNotNull();
         assertThat(field.getStyle()).isNotNull();
-        assertThat(field.getStyle().getBackgroundColor()).isEqualTo("#e6f4ee"); //$NON-NLS-1$
+        assertThat(field.getStyle().getBackgroundColor()).isEqualTo("#e6f4ee");
 
-        var proposals = this.requestCompletion(field, "flow:", 5); //$NON-NLS-1$
+        var proposals = this.requestCompletion(field, "flow:", 5);
         assertThat(proposals).hasSize(16);
 
-        proposals = this.requestCompletion(field, "flow::PowerLink", "flow::Power".length()); //$NON-NLS-1$ //$NON-NLS-2$
+        proposals = this.requestCompletion(field, "flow::PowerLink", "flow::Power".length());
         List<EClass> candidates = List.of(FlowPackage.Literals.POWER_INPUT, FlowPackage.Literals.POWER_LINK, FlowPackage.Literals.POWER_OUTPUT, FlowPackage.Literals.POWERED);
         this.checkProposalsText(proposals, candidates.stream().map(this::domainTypeName).collect(Collectors.toList()));
     }
@@ -158,12 +158,12 @@ public class ViewDetailsRenderingIntegrationTests {
         assertThat(field.isSupportsCompletion()).isTrue();
         assertThat(field.getCompletionProposalsProvider()).isNotNull();
         assertThat(field.getStyle()).isNotNull();
-        assertThat(field.getStyle().getBackgroundColor()).isEqualTo("#fff8e5"); //$NON-NLS-1$
+        assertThat(field.getStyle().getBackgroundColor()).isEqualTo("#fff8e5");
     }
 
     private View loadFixture(String viewResourcePath) {
         ResourceSet resourceSet = this.editingDomain.getResourceSet();
-        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl()); //$NON-NLS-1$
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 
         Resource resource = null;
         ClassPathResource classPathResource = new ClassPathResource(viewResourcePath);
@@ -220,6 +220,6 @@ public class ViewDetailsRenderingIntegrationTests {
     }
 
     private String domainTypeName(EClass klass) {
-        return String.format("%s::%s", klass.getEPackage().getName(), klass.getName()); //$NON-NLS-1$
+        return String.format("%s::%s", klass.getEPackage().getName(), klass.getName());
     }
 }

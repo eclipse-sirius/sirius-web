@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,17 +41,17 @@ public interface IEMFKindService {
 
         @Override
         public String getKind(EClass eClass) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String getEPackageName(String kind) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String getEClassName(String kind) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override

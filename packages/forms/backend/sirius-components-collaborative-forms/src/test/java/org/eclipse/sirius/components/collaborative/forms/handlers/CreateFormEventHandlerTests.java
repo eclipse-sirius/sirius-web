@@ -48,14 +48,14 @@ public class CreateFormEventHandlerTests {
     @Test
     public void testFormCreation() {
         // @formatter:off
-        var formDescription = FormDescription.newFormDescription("representationDescriptionId") //$NON-NLS-1$
-                .label("label") //$NON-NLS-1$
+        var formDescription = FormDescription.newFormDescription("representationDescriptionId")
+                .label("label")
                 .canCreatePredicate(variableManager -> true)
                 .pageDescriptions(List.of())
                 .groupDescriptions(List.of())
-                .idProvider(variableManager -> "id") //$NON-NLS-1$
-                .labelProvider(variableManager -> "label") //$NON-NLS-1$
-                .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
+                .idProvider(variableManager -> "id")
+                .labelProvider(variableManager -> "label")
+                .targetObjectIdProvider(variableManager -> "targetObjectId")
                 .build();
         // @formatter:on
 
@@ -83,8 +83,8 @@ public class CreateFormEventHandlerTests {
 
         var handler = new CreateFormEventHandler(representationDescriptionSearchService, representationPersistenceService, objectService, new ICollaborativeFormMessageService.NoOp(),
                 new SimpleMeterRegistry());
-        var input = new CreateRepresentationInput(UUID.randomUUID(), "editingContextId", "representationDescriptionId", "objectId", "representationName"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        IEditingContext editingContext = () -> "editingContextId"; //$NON-NLS-1$
+        var input = new CreateRepresentationInput(UUID.randomUUID(), "editingContextId", "representationDescriptionId", "objectId", "representationName");
+        IEditingContext editingContext = () -> "editingContextId";
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
 

@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationConfigurat
  */
 public class RelatedElementsConfiguration implements IRepresentationConfiguration {
 
-    private static final String RELATED_PREFIX = "related:"; //$NON-NLS-1$
+    private static final String RELATED_PREFIX = "related:";
 
     private final String formId;
 

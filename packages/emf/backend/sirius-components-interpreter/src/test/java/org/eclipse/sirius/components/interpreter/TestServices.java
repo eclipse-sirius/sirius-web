@@ -23,7 +23,7 @@ public class TestServices {
     private final String creationMessage;
 
     public TestServices() {
-        this.creationMessage = "none"; //$NON-NLS-1$
+        this.creationMessage = "none";
     }
 
     public TestServices(String creationMessage) {

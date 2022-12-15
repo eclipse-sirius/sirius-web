@@ -43,11 +43,11 @@ public class FormEventProcessorTests {
     private FormDescription getFormDescription() {
         // @formatter:off
         return FormDescription.newFormDescription(UUID.randomUUID().toString())
-                .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId") //$NON-NLS-1$
+                .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId")
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(variableManager -> UUID.randomUUID().toString())
-                .label("formLabel") //$NON-NLS-1$
-                .labelProvider(variableManager -> "label") //$NON-NLS-1$
+                .label("formLabel")
+                .labelProvider(variableManager -> "label")
                 .groupDescriptions(List.of())
                 .pageDescriptions(List.of())
                 .build();

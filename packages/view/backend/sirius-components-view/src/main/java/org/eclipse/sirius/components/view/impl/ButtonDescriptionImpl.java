@@ -387,9 +387,9 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (buttonLabelExpression: "); //$NON-NLS-1$
+        result.append(" (buttonLabelExpression: ");
         result.append(this.buttonLabelExpression);
-        result.append(", imageExpression: "); //$NON-NLS-1$
+        result.append(", imageExpression: ");
         result.append(this.imageExpression);
         result.append(')');
         return result.toString();

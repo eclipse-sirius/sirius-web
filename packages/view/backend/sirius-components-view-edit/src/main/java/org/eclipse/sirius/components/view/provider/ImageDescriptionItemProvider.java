@@ -63,8 +63,8 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
      */
     protected void addUrlExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_ImageDescription_urlExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageDescription_urlExpression_feature", "_UI_ImageDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_ImageDescription_urlExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageDescription_urlExpression_feature", "_UI_ImageDescription_type"),
                 ViewPackage.Literals.IMAGE_DESCRIPTION__URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -76,8 +76,8 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
      */
     protected void addMaxWidthExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_ImageDescription_maxWidthExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageDescription_maxWidthExpression_feature", "_UI_ImageDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_ImageDescription_maxWidthExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageDescription_maxWidthExpression_feature", "_UI_ImageDescription_type"),
                 ViewPackage.Literals.IMAGE_DESCRIPTION__MAX_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -88,7 +88,7 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ImageDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ImageDescription.svg"));
     }
 
     /**
@@ -109,8 +109,8 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
     @Override
     public String getText(Object object) {
         String label = ((ImageDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_ImageDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_ImageDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_ImageDescription_type") :
+                this.getString("_UI_ImageDescription_type") + " " + label;
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      * @ordered
      */
-    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
+    protected static final String COLOR_EDEFAULT = "#E5F5F8";
 
     /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -162,7 +162,7 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: "); //$NON-NLS-1$
+        result.append(" (color: ");
         result.append(this.color);
         result.append(')');
         return result.toString();

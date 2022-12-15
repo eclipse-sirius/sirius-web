@@ -48,7 +48,7 @@ public class FormDescriptionEditorEventProcessorTests {
     private static final FormDescriptionEditor INITIAL_TEST_FORMDESCRIPTIONEDITOR = FormDescriptionEditor.newFormDescriptionEditor(FORMDESCRIPTIONEDITOR_ID)
             .descriptionId(FORMDESCRIPTIONEDITOR_DESCRIPTION_ID)
             .label(String.valueOf(0))
-            .targetObjectId("targetObjectId") //$NON-NLS-1$
+            .targetObjectId("targetObjectId")
             .groups(List.of())
             .build();
     // @formatter:on

@@ -37,11 +37,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImageNodeStyleProvider implements INodeStyleProvider {
 
-    private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
+    private static final String DEFAULT_COLOR = "black";
 
-    private static final String DEFAULT_BACKGROUND_COLOR = "white"; //$NON-NLS-1$
+    private static final String DEFAULT_BACKGROUND_COLOR = "white";
 
-    private static final String DEFAULT_BORDER_COLOR = "black"; //$NON-NLS-1$
+    private static final String DEFAULT_BORDER_COLOR = "black";
 
     private final List<IParametricSVGImageRegistry> parametricSVGImageServices;
 
@@ -83,14 +83,14 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                     .borderSize(nodeStyle.getBorderSize())
                     .borderRadius(nodeStyle.getBorderRadius())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                    .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$
+                    .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
                     .build());
             // @formatter:on
         } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE))) {
             // @formatter:off
             iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
                                .scalingFactor(1)
-                               .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape()) //$NON-NLS-1$
+                               .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
                                .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
                                .borderSize(nodeStyle.getBorderSize())
                                .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))

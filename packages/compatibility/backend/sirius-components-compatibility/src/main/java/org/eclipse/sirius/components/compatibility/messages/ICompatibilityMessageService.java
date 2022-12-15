@@ -34,17 +34,17 @@ public interface ICompatibilityMessageService {
 
         @Override
         public String noReconnectionToolDefined() {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String toolExecutionError() {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String reconnectionToolCannotBeHandled() {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
     }

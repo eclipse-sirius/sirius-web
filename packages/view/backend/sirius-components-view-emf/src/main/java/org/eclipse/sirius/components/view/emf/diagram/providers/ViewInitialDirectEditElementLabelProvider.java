@@ -92,7 +92,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     @Override
     public String getInitialDirectEditElementLabel(Object graphicalElement, Diagram diagram, IEditingContext editingContext) {
-        String initialDirectEditElementLabel = ""; //$NON-NLS-1$
+        String initialDirectEditElementLabel = "";
         String diagramDescriptionId = diagram.getDescriptionId();
         var optionalDiagramDescription = this.viewService.getRepresentationDescription(diagramDescriptionId).filter(DiagramDescription.class::isInstance).map(DiagramDescription.class::cast);
 
@@ -121,8 +121,8 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                     AQLInterpreter interpreter = this.createInterpreter((View) diagramDescription.eContainer(), editingContext);
                     VariableManager variableManager = new VariableManager();
                     variableManager.put(VariableManager.SELF, semanticElement.get());
-                    variableManager.put("view", graphicalElement); //$NON-NLS-1$
-                    variableManager.put("diagram", diagram); //$NON-NLS-1$
+                    variableManager.put("view", graphicalElement);
+                    variableManager.put("diagram", diagram);
                     Result result = interpreter.evaluateExpression(variableManager.getVariables(), labelEditTool.getInitialDirectEditLabelExpression());
                     if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asString().isPresent()) {
                         initialDirectEditElementLabel = result.asString().get();
@@ -180,7 +180,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                     try {
                         return beanFactory.createBean(serviceClass);
                     } catch (BeansException beansException) {
-                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException); //$NON-NLS-1$
+                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
                         return null;
                     }
                 })

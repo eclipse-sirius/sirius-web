@@ -131,7 +131,7 @@ public class CompatibilityReconnectionToolsExecutor implements IReconnectionTool
                 .map(handler -> {
                     return handler.handle(variableManager.getVariables());
                 })
-                .orElse(new Failure("")); //$NON-NLS-1$
+                .orElse(new Failure(""));
         // @formatter:on
     }
 
@@ -192,9 +192,9 @@ public class CompatibilityReconnectionToolsExecutor implements IReconnectionTool
         variableManager.put(IInterpreterSiriusVariables.TARGET, toolInterpreterData.getSemanticReconnectionTarget());
         variableManager.put(IInterpreterSiriusVariables.TARGET_VIEW, toolInterpreterData.getReconnectionTargetView());
         variableManager.put(IInterpreterSiriusVariables.ELEMENT, toolInterpreterData.getSemanticElement());
-        variableManager.put("semanticOtherEnd", toolInterpreterData.getOtherEdgeEnd()); //$NON-NLS-1$
-        variableManager.put("otherEnd", toolInterpreterData.getSemanticOtherEdgeEnd()); //$NON-NLS-1$
-        variableManager.put("edgeView", toolInterpreterData.getEdgeView()); //$NON-NLS-1$
+        variableManager.put("semanticOtherEnd", toolInterpreterData.getOtherEdgeEnd());
+        variableManager.put("otherEnd", toolInterpreterData.getSemanticOtherEdgeEnd());
+        variableManager.put("edgeView", toolInterpreterData.getEdgeView());
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         return variableManager;

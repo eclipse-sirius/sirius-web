@@ -27,7 +27,7 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class QueryTypeProvider {
-    public static final String TYPE = "Query"; //$NON-NLS-1$
+    public static final String TYPE = "Query";
 
-    public static final String VIEWER_FIELD = "viewer"; //$NON-NLS-1$
+    public static final String VIEWER_FIELD = "viewer";
 }

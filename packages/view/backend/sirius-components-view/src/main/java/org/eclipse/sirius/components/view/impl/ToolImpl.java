@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
      * @generated
      * @ordered
      */
-    protected static final String NAME_EDEFAULT = "Tool"; //$NON-NLS-1$
+    protected static final String NAME_EDEFAULT = "Tool";
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -220,7 +220,7 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
+        result.append(" (name: ");
         result.append(this.name);
         result.append(')');
         return result.toString();

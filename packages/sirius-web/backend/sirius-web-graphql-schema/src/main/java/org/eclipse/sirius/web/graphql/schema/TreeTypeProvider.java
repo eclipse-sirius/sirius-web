@@ -18,9 +18,9 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class TreeTypeProvider {
-    public static final String TREE_TYPE = "Tree"; //$NON-NLS-1$
+    public static final String TREE_TYPE = "Tree";
 
-    public static final String TREE_ITEM_TYPE = "TreeItem"; //$NON-NLS-1$
+    public static final String TREE_ITEM_TYPE = "TreeItem";
 
-    public static final String TARGET_FIELD = "target"; //$NON-NLS-1$
+    public static final String TARGET_FIELD = "target";
 }

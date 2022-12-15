@@ -30,16 +30,16 @@ public class DomainServices {
     }
 
     public Attribute editAttribute(Attribute attr, String newLabel) {
-        if ("0".equals(newLabel.trim())) { //$NON-NLS-1$
+        if ("0".equals(newLabel.trim())) {
             attr.setOptional(true);
-        } else if ("1".equals(newLabel.trim())) { //$NON-NLS-1$
+        } else if ("1".equals(newLabel.trim())) {
             attr.setOptional(false);
-        } else if ("11".equals(newLabel.trim())) { //$NON-NLS-1$
+        } else if ("11".equals(newLabel.trim())) {
             attr.setOptional(false);
             attr.setMany(false);
-        } else if ("*".equals(newLabel.trim())) { //$NON-NLS-1$
+        } else if ("*".equals(newLabel.trim())) {
             attr.setMany(true);
-        } else if ("-1".equals(newLabel.trim())) { //$NON-NLS-1$
+        } else if ("-1".equals(newLabel.trim())) {
             attr.setMany(true);
         } else {
             int typeStart = newLabel.indexOf(':');
@@ -56,7 +56,7 @@ public class DomainServices {
             }
 
             if (setType) {
-                String typePart = newLabel.substring(typeStart + ":".length(), newLabel.length()).trim(); //$NON-NLS-1$
+                String typePart = newLabel.substring(typeStart + ":".length(), newLabel.length()).trim();
                 if (typePart != null) {
                     DataType newType = DataType.getByName(typePart.toUpperCase());
                     if (newType != null) {
@@ -76,19 +76,19 @@ public class DomainServices {
 
     private void appendCardinality(Feature feature, StringBuilder sb) {
         if (feature.isOptional() || feature.isMany()) {
-            sb.append(" ["); //$NON-NLS-1$
+            sb.append(" [");
             if (feature.isOptional()) {
-                sb.append("0"); //$NON-NLS-1$
+                sb.append("0");
             } else {
-                sb.append("1"); //$NON-NLS-1$
+                sb.append("1");
             }
-            sb.append(".."); //$NON-NLS-1$
+            sb.append("..");
             if (feature.isMany()) {
-                sb.append("*"); //$NON-NLS-1$
+                sb.append("*");
             } else {
-                sb.append("1"); //$NON-NLS-1$
+                sb.append("1");
             }
-            sb.append("]"); //$NON-NLS-1$
+            sb.append("]");
         }
     }
 

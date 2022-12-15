@@ -18,11 +18,11 @@ package org.eclipse.sirius.components.core.api;
  * @author sbegaudeau
  */
 public final class SemanticKindConstants {
-    public static final String PREFIX = "siriusComponents://semantic"; //$NON-NLS-1$
+    public static final String PREFIX = "siriusComponents://semantic";
 
-    public static final String DOMAIN_ARGUMENT = "domain"; //$NON-NLS-1$
+    public static final String DOMAIN_ARGUMENT = "domain";
 
-    public static final String ENTITY_ARGUMENT = "entity"; //$NON-NLS-1$
+    public static final String ENTITY_ARGUMENT = "entity";
 
     private SemanticKindConstants() {
         // Prevent instantiation

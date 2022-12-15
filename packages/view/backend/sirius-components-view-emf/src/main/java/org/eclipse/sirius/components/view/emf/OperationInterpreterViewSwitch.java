@@ -190,7 +190,7 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
     }
 
     private Optional<EClass> resolveType(EditingDomain editingDomain, String domainType) {
-        String[] parts = domainType.split("(::?|\\.)"); //$NON-NLS-1$
+        String[] parts = domainType.split("(::?|\\.)");
         if (parts.length == 2) {
             // @formatter:off
             return editingDomain.getResourceSet().getPackageRegistry().values().stream()

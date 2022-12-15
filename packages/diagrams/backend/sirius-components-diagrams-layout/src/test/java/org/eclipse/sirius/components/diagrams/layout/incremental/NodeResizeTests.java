@@ -170,7 +170,7 @@ public class NodeResizeTests {
     }
 
     private void testResizeNode(Position positionDelta, Position expectedPosition, Size newSize) {
-        String firstParentTargetObjectId = "First Parent"; //$NON-NLS-1$
+        String firstParentTargetObjectId = "First Parent";
 
         Diagram diagram = this.createDiagramWithOneNode(firstParentTargetObjectId);
 
@@ -184,7 +184,7 @@ public class NodeResizeTests {
 
     private Diagram createDiagramWithOneNode(String firstParentTargetObjectId) {
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root")
                 .nodes()
                     .rectangleNode(firstParentTargetObjectId).at(100, 100).of(200, 300)
                     .and()
@@ -195,7 +195,7 @@ public class NodeResizeTests {
     }
 
     private Optional<Node> resizeNode(String objectId, Diagram diagram, Position positionDelta, Size newSize) {
-        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testResizeWithNoPositionDelta"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
+        Path path = Paths.get("src", "test", "resources", "editing-contexts", "testResizeWithNoPositionDelta");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);

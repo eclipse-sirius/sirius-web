@@ -45,15 +45,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class IncomingTreeProvider {
 
-    private static final String WIDGET_ID = "related/incoming"; //$NON-NLS-1$
+    private static final String WIDGET_ID = "related/incoming";
 
-    private static final String TITLE = "Incoming"; //$NON-NLS-1$
+    private static final String TITLE = "Incoming";
 
-    private static final String WIDGET_ICON_URL = "/images/west_black_24dp.svg"; //$NON-NLS-1$
+    private static final String WIDGET_ICON_URL = "/images/west_black_24dp.svg";
 
-    private static final String INCOMING_REFERENCE_ICON_URL = "/images/west_black_24dp.svg"; //$NON-NLS-1$
+    private static final String INCOMING_REFERENCE_ICON_URL = "/images/west_black_24dp.svg";
 
-    private static final String INCOMING_REFERENCES_KIND = "siriusWeb://category/incoming-references"; //$NON-NLS-1$
+    private static final String INCOMING_REFERENCES_KIND = "siriusWeb://category/incoming-references";
 
     private final IObjectService objectService;
 
@@ -122,7 +122,7 @@ public class IncomingTreeProvider {
         String result = null;
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof IncomingReferences) {
-            result = "reference/" + ((IncomingReferences) self).getReference().getName(); //$NON-NLS-1$
+            result = "reference/" + ((IncomingReferences) self).getReference().getName();
         } else if (self != null) {
             result = this.objectService.getId(self);
         }
@@ -137,11 +137,11 @@ public class IncomingTreeProvider {
             EObject eObject = ((IncomingReferences) self).getSources().get(0);
             result = eReference.getName();
             if (eReference.isContainment()) {
-                result = "owned " + result; //$NON-NLS-1$
+                result = "owned " + result;
                 Adapter adapter = this.adapterFactory.adapt(eObject, IItemLabelProvider.class);
                 if (adapter instanceof ItemProviderAdapter) {
                     ItemProviderAdapter editingDomainItemProvider = (ItemProviderAdapter) adapter;
-                    String key = String.format("_UI_%s_%s_feature", eReference.getEContainingClass().getName(), eReference.getName()); //$NON-NLS-1$
+                    String key = String.format("_UI_%s_%s_feature", eReference.getEContainingClass().getName(), eReference.getName());
                     result = editingDomainItemProvider.getString(key);
                 }
             } else {

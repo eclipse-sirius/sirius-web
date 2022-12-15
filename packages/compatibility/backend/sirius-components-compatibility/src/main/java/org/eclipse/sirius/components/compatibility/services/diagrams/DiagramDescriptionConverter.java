@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramDescriptionConverter implements IDiagramDescriptionConverter {
 
-    private static final String FORCE_AUTO_LAYOUT = "FORCE_AUTO_LAYOUT"; //$NON-NLS-1$
+    private static final String FORCE_AUTO_LAYOUT = "FORCE_AUTO_LAYOUT";
 
     private final List<IDiagramDescriptionPopulator> diagramDescriptionPopulators;
 

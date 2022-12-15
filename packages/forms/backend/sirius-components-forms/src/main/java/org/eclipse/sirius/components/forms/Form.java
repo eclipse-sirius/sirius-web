@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 @Immutable
 public final class Form implements IRepresentation, ISemanticRepresentation {
 
-    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Form"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Form";
 
     private String id;
 
@@ -87,7 +87,7 @@ public final class Form implements IRepresentation, ISemanticRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4} pageCount: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4} pageCount: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.targetObjectId, this.descriptionId, this.pages.size());
     }
 

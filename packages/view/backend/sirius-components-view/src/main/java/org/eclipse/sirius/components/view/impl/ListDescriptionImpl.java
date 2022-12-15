@@ -442,11 +442,11 @@ public class ListDescriptionImpl extends WidgetDescriptionImpl implements ListDe
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valueExpression: "); //$NON-NLS-1$
+        result.append(" (valueExpression: ");
         result.append(this.valueExpression);
-        result.append(", displayExpression: "); //$NON-NLS-1$
+        result.append(", displayExpression: ");
         result.append(this.displayExpression);
-        result.append(", isDeletableExpression: "); //$NON-NLS-1$
+        result.append(", isDeletableExpression: ");
         result.append(this.isDeletableExpression);
         result.append(')');
         return result.toString();

@@ -60,7 +60,7 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
     public IStatus executeTool(Tool tool, VariableManager variableManager) {
         Optional<VariableManager> optionalVariableManager = this.executeOperations(tool.getBody(), variableManager);
         if (optionalVariableManager.isEmpty()) {
-            return new Failure(String.format("Something went wrong while executing the tool '%s'", tool.getName())); //$NON-NLS-1$
+            return new Failure(String.format("Something went wrong while executing the tool '%s'", tool.getName()));
         }
         return new Success();
     }

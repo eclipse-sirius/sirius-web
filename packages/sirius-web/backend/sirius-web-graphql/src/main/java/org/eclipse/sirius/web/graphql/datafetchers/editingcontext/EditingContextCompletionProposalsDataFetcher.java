@@ -44,7 +44,7 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = "completionProposals")
 public class EditingContextCompletionProposalsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
-    private static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 

@@ -59,7 +59,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class EdgeComponent implements IComponent {
 
-    private static final String INVALID_NODE_ID = "INVALID_NODE_ID"; //$NON-NLS-1$
+    private static final String INVALID_NODE_ID = "INVALID_NODE_ID";
 
     private final EdgeComponentProps props;
 
@@ -165,7 +165,7 @@ public class EdgeComponent implements IComponent {
                         // @formatter:off
                         String edgeType = optionalPreviousEdge
                                 .map(Edge::getType)
-                                .orElse("edge:straight"); //$NON-NLS-1$
+                                .orElse("edge:straight");
 
                         List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
                         List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeInstanceVariableManager, optionalPreviousEdge, id, routingPoints);
@@ -449,7 +449,7 @@ public class EdgeComponent implements IComponent {
     }
 
     private String computeEdgeId(String edgeDescriptionId, String sourceId, String targetId, int count) {
-        String rawIdentifier = edgeDescriptionId + ": " + sourceId + " --> " + targetId + " - " + count; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String rawIdentifier = edgeDescriptionId + ": " + sourceId + " --> " + targetId + " - " + count;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 

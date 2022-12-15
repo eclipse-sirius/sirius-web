@@ -87,7 +87,7 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
                     String oldDocumentId = proxyURI.path().substring(1);
                     String newDocumentId = oldDocumentIdToNewDocumentId.get(oldDocumentId);
                     if (newDocumentId != null) {
-                        String prefix = EditingContext.RESOURCE_SCHEME + ":///"; //$NON-NLS-1$
+                        String prefix = EditingContext.RESOURCE_SCHEME + ":///";
                         URI newProxyURI = URI.createURI(proxyURI.toString().replace(prefix + oldDocumentId, prefix + newDocumentId));
                         internalEObject.eSetProxyURI(newProxyURI);
                         rewrittenCount.incrementAndGet();

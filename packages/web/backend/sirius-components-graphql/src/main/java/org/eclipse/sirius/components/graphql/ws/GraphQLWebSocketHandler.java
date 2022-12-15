@@ -171,15 +171,15 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
     private static final Duration GRAPHQL_KEEP_ALIVE_INTERVAL = Duration.ofSeconds(28);
 
-    private static final String COUNTER_METRIC_NAME = "siriusweb_graphql_ws_messages"; //$NON-NLS-1$
+    private static final String COUNTER_METRIC_NAME = "siriusweb_graphql_ws_messages";
 
-    private static final String TIMER_METRIC_NAME = "siriusweb_graphql_ws_sessions"; //$NON-NLS-1$
+    private static final String TIMER_METRIC_NAME = "siriusweb_graphql_ws_sessions";
 
-    private static final String MESSAGE = "message"; //$NON-NLS-1$
+    private static final String MESSAGE = "message";
 
-    private static final String GRAPHQL_WS = "graphql-ws"; //$NON-NLS-1$
+    private static final String GRAPHQL_WS = "graphql-ws";
 
-    private static final String TYPE = "type"; //$NON-NLS-1$
+    private static final String TYPE = "type";
 
     private final Logger logger = LoggerFactory.getLogger(GraphQLWebSocketHandler.class);
 
@@ -213,19 +213,19 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
         // @formatter:off
         this.startMessageCounter = Counter.builder(COUNTER_METRIC_NAME)
-                .tag(MESSAGE, "Start") //$NON-NLS-1$
+                .tag(MESSAGE, "Start")
                 .register(meterRegistry);
         this.stopMessageCounter = Counter.builder(COUNTER_METRIC_NAME)
-                .tag(MESSAGE, "Stop") //$NON-NLS-1$
+                .tag(MESSAGE, "Stop")
                 .register(meterRegistry);
         this.connectionInitCounter = Counter.builder(COUNTER_METRIC_NAME)
-                .tag(MESSAGE, "Connection Init") //$NON-NLS-1$
+                .tag(MESSAGE, "Connection Init")
                 .register(meterRegistry);
         this.connectionErrorCounter = Counter.builder(COUNTER_METRIC_NAME)
-                .tag(MESSAGE, "Connection Error") //$NON-NLS-1$
+                .tag(MESSAGE, "Connection Error")
                 .register(meterRegistry);
         this.connectionTerminateCounter = Counter.builder(COUNTER_METRIC_NAME)
-                .tag(MESSAGE, "Connection Terminate") //$NON-NLS-1$
+                .tag(MESSAGE, "Connection Terminate")
                 .register(meterRegistry);
         Gauge.builder(TIMER_METRIC_NAME, this.sessions2keepAliveSubscriptions.keySet()::size)
                 .register(meterRegistry);
@@ -246,7 +246,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
         if (optionalOperationMessage.isPresent()) {
             IOperationMessage operationMessage = optionalOperationMessage.get();
 
-            this.logger.trace("Message received: {}", operationMessage); //$NON-NLS-1$
+            this.logger.trace("Message received: {}", operationMessage);
 
             if (operationMessage instanceof ConnectionInitMessage) {
                 new ConnectionInitMessageHandler(session, this.objectMapper).handle();
@@ -278,7 +278,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             String responsePayload = this.objectMapper.writeValueAsString(message);
             TextMessage textMessage = new TextMessage(responsePayload);
 
-            this.logger.trace("Message sent: {}", message); //$NON-NLS-1$
+            this.logger.trace("Message sent: {}", message);
 
             session.sendMessage(textMessage);
         } catch (IOException exception) {

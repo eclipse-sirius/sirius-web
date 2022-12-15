@@ -92,7 +92,7 @@ public class ViewConverter implements IViewConverter {
                     try {
                         return beanFactory.createBean(serviceClass);
                     } catch (BeansException beansException) {
-                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException); //$NON-NLS-1$
+                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
                         return null;
                     }
                 })

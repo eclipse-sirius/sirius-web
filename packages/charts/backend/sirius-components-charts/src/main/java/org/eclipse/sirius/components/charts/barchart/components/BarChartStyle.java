@@ -71,7 +71,7 @@ public final class BarChartStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'barsColor: {1}, fontSize: {2}, italic: {3}, bold: {4}, underline: {5}, strikeThrough: {6}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'barsColor: {1}, fontSize: {2}, italic: {3}, bold: {4}, underline: {5}, strikeThrough: {6}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.barsColor, this.fontSize, this.italic, this.bold, this.underline, this.strikeThrough);
     }
 

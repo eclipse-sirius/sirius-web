@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ public enum DataType implements Enumerator {
      * @generated
      * @ordered
      */
-    STRING(0, "STRING", "STRING"), //$NON-NLS-1$ //$NON-NLS-2$
+    STRING(0, "STRING", "STRING"),
 
     /**
      * The '<em><b>BOOLEAN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +43,7 @@ public enum DataType implements Enumerator {
      * @generated
      * @ordered
      */
-    BOOLEAN(1, "BOOLEAN", "BOOLEAN"), //$NON-NLS-1$ //$NON-NLS-2$
+    BOOLEAN(1, "BOOLEAN", "BOOLEAN"),
 
     /**
      * The '<em><b>NUMBER</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -52,7 +52,7 @@ public enum DataType implements Enumerator {
      * @generated
      * @ordered
      */
-    NUMBER(2, "NUMBER", "NUMBER"); //$NON-NLS-1$ //$NON-NLS-2$
+    NUMBER(2, "NUMBER", "NUMBER");
 
     /**
      * The '<em><b>STRING</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

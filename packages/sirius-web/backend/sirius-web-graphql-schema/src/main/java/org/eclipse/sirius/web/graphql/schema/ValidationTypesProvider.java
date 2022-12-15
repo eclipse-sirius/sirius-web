@@ -18,8 +18,8 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author gcoutable
  */
 public class ValidationTypesProvider {
-    public static final String VALIDATION_TYPE = "Validation"; //$NON-NLS-1$
+    public static final String VALIDATION_TYPE = "Validation";
 
-    public static final String DIAGNOSTIC_TYPE = "Diagnostic"; //$NON-NLS-1$
+    public static final String DIAGNOSTIC_TYPE = "Diagnostic";
 
 }

@@ -61,7 +61,7 @@ public class RepresentationMetadata {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, descriptionId: {4}, targetObjectId: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, descriptionId: {4}, targetObjectId: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.descriptionId, this.targetObjectId);
     }
 }

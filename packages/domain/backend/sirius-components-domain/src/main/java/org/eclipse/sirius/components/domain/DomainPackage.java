@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,21 +39,21 @@ public interface DomainPackage extends EPackage {
      *
      * @generated
      */
-    String eNAME = "domain"; //$NON-NLS-1$
+    String eNAME = "domain";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    String eNS_URI = "http://www.eclipse.org/sirius-web/domain"; //$NON-NLS-1$
+    String eNS_URI = "http://www.eclipse.org/sirius-web/domain";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    String eNS_PREFIX = "domain"; //$NON-NLS-1$
+    String eNS_PREFIX = "domain";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->

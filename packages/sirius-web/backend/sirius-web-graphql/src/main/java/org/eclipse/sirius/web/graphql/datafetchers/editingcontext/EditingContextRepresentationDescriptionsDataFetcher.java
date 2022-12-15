@@ -48,7 +48,7 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_DESCRIPTIONS_FIELD)
 public class EditingContextRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<RepresentationDescriptionMetadata>>> {
 
-    private static final String OBJECT_ID_ARGUMENT = "objectId"; //$NON-NLS-1$
+    private static final String OBJECT_ID_ARGUMENT = "objectId";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 

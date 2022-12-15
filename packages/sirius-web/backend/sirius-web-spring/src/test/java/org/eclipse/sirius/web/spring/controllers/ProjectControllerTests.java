@@ -42,19 +42,19 @@ public class ProjectControllerTests {
         IProjectExportService projectExportService = new IProjectExportService.NoOp();
 
         ProjectController projectController = new ProjectController(projectService, projectExportService);
-        String projectId = "631fcb2d-3463-4084-b5da-fd8022ebae53"; //$NON-NLS-1$
+        String projectId = "631fcb2d-3463-4084-b5da-fd8022ebae53";
         ResponseEntity<Resource> responseEntity = projectController.getProject(UUID.fromString(projectId));
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     public void testProjectExists() {
-        String projectFoundId = "631fcb2d-3463-4084-b5da-fd8022ebae53"; //$NON-NLS-1$
+        String projectFoundId = "631fcb2d-3463-4084-b5da-fd8022ebae53";
 
         IProjectService projectService = new IProjectService.NoOp() {
             @Override
             public Optional<Project> getProject(UUID projectId) {
-                return Optional.of(new Project(UUID.fromString(projectFoundId), projectFoundId, new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC)); //$NON-NLS-1$
+                return Optional.of(new Project(UUID.fromString(projectFoundId), projectFoundId, new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC));
             }
         };
         IProjectExportService projectExportService = new IProjectExportService.NoOp();
@@ -64,9 +64,9 @@ public class ProjectControllerTests {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         HttpHeaders headers = responseEntity.getHeaders();
-        assertThat(headers.getContentType()).isEqualTo(MediaType.parseMediaType("application/zip")); //$NON-NLS-1$
+        assertThat(headers.getContentType()).isEqualTo(MediaType.parseMediaType("application/zip"));
         assertThat(headers.getContentLength()).isEqualTo(0);
-        assertThat(headers.getContentDisposition().getFilename()).isEqualTo(projectFoundId + ".zip"); //$NON-NLS-1$
+        assertThat(headers.getContentDisposition().getFilename()).isEqualTo(projectFoundId + ".zip");
     }
 
 }

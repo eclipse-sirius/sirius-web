@@ -69,11 +69,11 @@ public class MoveToolbarActionEventHandlerTests {
                 Optional<Object> result = Optional.empty();
                 if (formDescriptionEditor.getDescriptionId().equals(objectId)) {
                     result = Optional.of(formDescription);
-                } else if ("button1".equals(objectId)) { //$NON-NLS-1$
+                } else if ("button1".equals(objectId)) {
                     result = Optional.of(toolbarButton1);
-                } else if ("button2".equals(objectId)) { //$NON-NLS-1$
+                } else if ("button2".equals(objectId)) {
                     result = Optional.of(toolbarButton2);
-                } else if ("button3".equals(objectId)) { //$NON-NLS-1$
+                } else if ("button3".equals(objectId)) {
                     result = Optional.of(toolbarButton3);
                 } else if (formDescriptionEditor.getGroups().get(0).getId().equals(objectId)) {
                     result = Optional.of(groupDescription);
@@ -82,15 +82,15 @@ public class MoveToolbarActionEventHandlerTests {
             }
         };
 
-        this.invokMove(formDescriptionEditor, objectService, "button2", 0); //$NON-NLS-1$
+        this.invokMove(formDescriptionEditor, objectService, "button2", 0);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1, toolbarButton3));
-        this.invokMove(formDescriptionEditor, objectService, "button1", 2); //$NON-NLS-1$
+        this.invokMove(formDescriptionEditor, objectService, "button1", 2);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton3, toolbarButton1));
     }
 
     private void invokMove(FormDescriptionEditor formDescriptionEditor, NoOp objectService, String toolbarActionId, int index) {
         var handler = new MoveToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getGroups().get(0).getId(), toolbarActionId, index); //$NON-NLS-1$
+        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getGroups().get(0).getId(), toolbarActionId, index);
 
         assertThat(handler.canHandle(input)).isTrue();
 

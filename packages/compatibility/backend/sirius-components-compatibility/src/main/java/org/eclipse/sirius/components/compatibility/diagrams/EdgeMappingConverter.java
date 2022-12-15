@@ -102,15 +102,15 @@ public class EdgeMappingConverter {
 
         Optional<LabelDescription> optionalBeginLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getBeginLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_beginlabel", edgeMapping)); //$NON-NLS-1$
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_beginlabel", edgeMapping));
 
         Optional<LabelDescription> optionalCenterLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getCenterLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_centerlabel", edgeMapping)); //$NON-NLS-1$
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_centerlabel", edgeMapping));
 
         Optional<LabelDescription> optionalEndLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getEndLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping)); //$NON-NLS-1$
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping));
 
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
@@ -185,7 +185,7 @@ public class EdgeMappingConverter {
         if (edgeMapping.isUseDomainElement()) {
             String semanticCandidatesExpression = edgeMapping.getSemanticCandidatesExpression();
             String preconditionExpression = edgeMapping.getPreconditionExpression();
-            String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse(""); //$NON-NLS-1$
+            String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse("");
             semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
             // @formatter:off

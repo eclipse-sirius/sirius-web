@@ -36,15 +36,15 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class SwitchOperationHandlerTests {
-    private static final String NAME_CASE1 = "nameCase1"; //$NON-NLS-1$
+    private static final String NAME_CASE1 = "nameCase1";
 
-    private static final String NAME_CASE2 = "nameCase2"; //$NON-NLS-1$
+    private static final String NAME_CASE2 = "nameCase2";
 
-    private static final String NAME_DEFAULT = "nameDefault"; //$NON-NLS-1$
+    private static final String NAME_DEFAULT = "nameDefault";
 
-    private static final String AQL_TRUE = "aql:true"; //$NON-NLS-1$
+    private static final String AQL_TRUE = "aql:true";
 
-    private static final String AQL_FALSE = "aql:false"; //$NON-NLS-1$
+    private static final String AQL_FALSE = "aql:false";
 
     private SwitchOperationHandler switchOperationHandler;
 
@@ -105,9 +105,9 @@ public class SwitchOperationHandlerTests {
     public void switchOperationHandlerErrorCasesTest() {
         // The behavior of the two following cases is strange because "" and "UnknownExpression" are considered as
         // true but it is the behavior in Sirius
-        this.testSwitchCase("", AQL_TRUE, NAME_CASE1); //$NON-NLS-1$
-        this.testSwitchCase("UnknownExpression", AQL_TRUE, NAME_CASE1); //$NON-NLS-1$
-        this.testSwitchCase("aql:UnknownExpression", AQL_TRUE, NAME_CASE2); //$NON-NLS-1$
+        this.testSwitchCase("", AQL_TRUE, NAME_CASE1);
+        this.testSwitchCase("UnknownExpression", AQL_TRUE, NAME_CASE1);
+        this.testSwitchCase("aql:UnknownExpression", AQL_TRUE, NAME_CASE2);
         this.testSwitchCase(null, AQL_TRUE, NAME_CASE2);
         this.testSwitchCase(ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, AQL_FALSE, NAME_DEFAULT);
     }

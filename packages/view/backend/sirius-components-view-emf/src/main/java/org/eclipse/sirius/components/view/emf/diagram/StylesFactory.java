@@ -40,7 +40,7 @@ import org.eclipse.sirius.components.view.emf.ViewConverter;
  */
 public final class StylesFactory {
 
-    private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
+    private static final String DEFAULT_COLOR = "black";
 
     private List<INodeStyleProvider> iNodeStyleProviders = new ArrayList<>();
 
@@ -61,9 +61,9 @@ public final class StylesFactory {
                                     .underlineProvider(variableManager -> nodeStyle.isUnderline())
                                     .strikeThroughProvider(variableManager -> nodeStyle.isStrikeThrough())
                                     .iconURLProvider(variableManager -> {
-                                        String iconURL = ""; //$NON-NLS-1$
+                                        String iconURL = "";
                                         if (nodeStyle.isShowIcon()) {
-                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(""); //$NON-NLS-1$
+                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse("");
                                         }
                                         return iconURL;
                                     })
@@ -81,9 +81,9 @@ public final class StylesFactory {
                                     .underlineProvider(variableManager -> edgeStyle.isUnderline())
                                     .strikeThroughProvider(variableManager -> edgeStyle.isStrikeThrough())
                                     .iconURLProvider(variableManager -> {
-                                        String iconURL = ""; //$NON-NLS-1$
+                                        String iconURL = "";
                                         if (edgeStyle.isShowIcon()) {
-                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(""); //$NON-NLS-1$
+                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse("");
                                         }
                                         return iconURL;
                                     })
@@ -125,7 +125,7 @@ public final class StylesFactory {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
         case NodeType.NODE_ICON_LABEL:
-            result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build(); //$NON-NLS-1$
+            result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build();
             break;
         case NodeType.NODE_RECTANGLE:
             // @formatter:off

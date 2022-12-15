@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,31 +26,31 @@ import org.junit.jupiter.api.Test;
 public class DomainClassPredicateTests {
     @Test
     public void testValidDomainClass() {
-        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::EClass"); //$NON-NLS-1$
+        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::EClass");
         assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 
     @Test
     public void testInvalidDomainClass() {
-        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("foo::Bar"); //$NON-NLS-1$
+        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("foo::Bar");
         assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isFalse();
     }
 
     @Test
     public void testSuperClass() {
-        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::EClassifier"); //$NON-NLS-1$
+        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::EClassifier");
         assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 
     @Test
     public void testSuperSuperClass() {
-        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::ENamedElement"); //$NON-NLS-1$
+        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("ecore::ENamedElement");
         assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 
     @Test
     public void testBlankDomainClass() {
-        DomainClassPredicate domainClassPredicate = new DomainClassPredicate(""); //$NON-NLS-1$
+        DomainClassPredicate domainClassPredicate = new DomainClassPredicate("");
         assertThat(domainClassPredicate.test(EcorePackage.Literals.ECLASS)).isTrue();
     }
 }

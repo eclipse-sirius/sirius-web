@@ -45,7 +45,7 @@ public final class TreeRefreshedEventPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, tree: '{'id: {2}, label: {3}'}''}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, tree: '{'id: {2}, label: {3}'}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.tree.getId(), this.tree.getLabel());
     }
 }

@@ -38,7 +38,7 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
             .map(URI::scheme)
             .filter(Objects::nonNull)
             .filter(Predicate.not(String::isEmpty))
-            .orElseThrow(() -> new IllegalArgumentException(String.format("Missing scheme for URI %s", uri))); //$NON-NLS-1$
+            .orElseThrow(() -> new IllegalArgumentException(String.format("Missing scheme for URI %s", uri)));
         // @formatter:on
 
         Map<String, Object> options = new HashMap<>();
@@ -69,6 +69,6 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
      */
     public URI createResourceURI(String resourceId) {
         // There are three slashes because the URI authority is empty
-        return URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + resourceId); //$NON-NLS-1$
+        return URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + resourceId);
     }
 }

@@ -52,35 +52,35 @@ public class CompletionProposalEventHandlerTests {
 
     @Test
     public void testRequestCompletion() {
-        String id = "Textfield id"; //$NON-NLS-1$
+        String id = "Textfield id";
 
         Function<String, IStatus> newValueHandler = newValue -> {
             return new Success();
         };
-        List<CompletionProposal> proposals = List.of(new CompletionProposal("Proposal", "textToInsert", 0)); //$NON-NLS-1$ //$NON-NLS-2$
+        List<CompletionProposal> proposals = List.of(new CompletionProposal("Proposal", "textToInsert", 0));
         // @formatter:off
         Textfield textfield = Textfield.newTextfield(id)
-                .label("label") //$NON-NLS-1$
-                .value("Previous value") //$NON-NLS-1$
+                .label("label")
+                .value("Previous value")
                 .newValueHandler(newValueHandler)
                 .completionProposalsProvider(request -> proposals)
                 .diagnostics(List.of())
                 .build();
 
-        Group group = Group.newGroup("groupId") //$NON-NLS-1$
-                .label("group label") //$NON-NLS-1$
+        Group group = Group.newGroup("groupId")
+                .label("group label")
                 .widgets(List.of(textfield))
                 .build();
 
-        Page page = Page.newPage("pageId") //$NON-NLS-1$
-                .label("page label") //$NON-NLS-1$
+        Page page = Page.newPage("pageId")
+                .label("page label")
                 .groups(List.of(group))
                 .build();
 
         Form form = Form.newForm(FORM_ID)
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
+                .targetObjectId("targetObjectId")
                 .descriptionId(UUID.randomUUID().toString())
-                .label("form label") //$NON-NLS-1$
+                .label("form label")
                 .pages(List.of(page))
                 .build();
         // @formatter:on
@@ -93,7 +93,7 @@ public class CompletionProposalEventHandlerTests {
         };
         CompletionProposalEventHandler handler = new CompletionProposalEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new CompletionRequestInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "text", 2); //$NON-NLS-1$
+        var input = new CompletionRequestInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "text", 2);
 
         assertThat(handler.canHandle(input)).isTrue();
 

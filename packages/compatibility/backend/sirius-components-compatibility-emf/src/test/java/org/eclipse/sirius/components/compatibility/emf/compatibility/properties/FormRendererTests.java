@@ -57,9 +57,9 @@ import org.junit.jupiter.api.Test;
  */
 public class FormRendererTests {
 
-    private static final String AQL_TRUE = "aql:true"; //$NON-NLS-1$
+    private static final String AQL_TRUE = "aql:true";
 
-    private static final String AQL_SELF_EPACKAGE_ECLASSIFIERS = "aql:self.ePackage.eClassifiers"; //$NON-NLS-1$
+    private static final String AQL_SELF_EPACKAGE_ECLASSIFIERS = "aql:self.ePackage.eClassifiers";
 
     @Test
     public void testEcoreModel() {
@@ -133,7 +133,7 @@ public class FormRendererTests {
 
     private org.eclipse.sirius.properties.DynamicMappingIfDescription createIfDescription(org.eclipse.sirius.properties.CheckboxDescription checkboxDescription) {
         org.eclipse.sirius.properties.DynamicMappingIfDescription ifDescription = PropertiesFactory.eINSTANCE.createDynamicMappingIfDescription();
-        ifDescription.setName("myIf"); //$NON-NLS-1$
+        ifDescription.setName("myIf");
         ifDescription.setPredicateExpression(AQL_TRUE);
         ifDescription.setWidget(checkboxDescription);
         return ifDescription;
@@ -141,26 +141,26 @@ public class FormRendererTests {
 
     private org.eclipse.sirius.properties.DynamicMappingForDescription createForDescription() {
         org.eclipse.sirius.properties.DynamicMappingForDescription forDescription = PropertiesFactory.eINSTANCE.createDynamicMappingForDescription();
-        forDescription.setName("myFor"); //$NON-NLS-1$
-        forDescription.setIterator("element"); //$NON-NLS-1$
+        forDescription.setName("myFor");
+        forDescription.setIterator("element");
         forDescription.setIterableExpression(AQL_SELF_EPACKAGE_ECLASSIFIERS);
         return forDescription;
     }
 
     private org.eclipse.sirius.properties.SelectDescription createSelect() {
         org.eclipse.sirius.properties.SelectDescription selectDescription = PropertiesFactory.eINSTANCE.createSelectDescription();
-        selectDescription.setName("myRadio"); //$NON-NLS-1$
-        selectDescription.setLabelExpression("my select"); //$NON-NLS-1$
-        selectDescription.setValueExpression("EClassifier"); //$NON-NLS-1$
+        selectDescription.setName("myRadio");
+        selectDescription.setLabelExpression("my select");
+        selectDescription.setValueExpression("EClassifier");
         selectDescription.setCandidatesExpression(AQL_SELF_EPACKAGE_ECLASSIFIERS);
         return selectDescription;
     }
 
     private org.eclipse.sirius.properties.RadioDescription createRadio() {
         org.eclipse.sirius.properties.RadioDescription radioDescription = PropertiesFactory.eINSTANCE.createRadioDescription();
-        radioDescription.setName("myRadio"); //$NON-NLS-1$
-        radioDescription.setLabelExpression("my radio"); //$NON-NLS-1$
-        radioDescription.setValueExpression("EClass"); //$NON-NLS-1$
+        radioDescription.setName("myRadio");
+        radioDescription.setLabelExpression("my radio");
+        radioDescription.setValueExpression("EClass");
         radioDescription.setCandidatesExpression(AQL_SELF_EPACKAGE_ECLASSIFIERS);
         radioDescription.setValueExpression(AQL_TRUE);
         return radioDescription;
@@ -168,43 +168,43 @@ public class FormRendererTests {
 
     private org.eclipse.sirius.properties.CheckboxDescription createCheckbox() {
         org.eclipse.sirius.properties.CheckboxDescription checkboxDescription = PropertiesFactory.eINSTANCE.createCheckboxDescription();
-        checkboxDescription.setName("myCheckbox"); //$NON-NLS-1$
-        checkboxDescription.setLabelExpression("my checkbox"); //$NON-NLS-1$
+        checkboxDescription.setName("myCheckbox");
+        checkboxDescription.setLabelExpression("my checkbox");
         checkboxDescription.setValueExpression(AQL_TRUE);
         return checkboxDescription;
     }
 
     private org.eclipse.sirius.properties.TextAreaDescription createTextArea() {
         org.eclipse.sirius.properties.TextAreaDescription textAreaDescription = PropertiesFactory.eINSTANCE.createTextAreaDescription();
-        textAreaDescription.setName("myTextArea"); //$NON-NLS-1$
-        textAreaDescription.setLabelExpression("my TextField"); //$NON-NLS-1$
-        textAreaDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
+        textAreaDescription.setName("myTextArea");
+        textAreaDescription.setLabelExpression("my TextField");
+        textAreaDescription.setValueExpression("aql:self.name");
         return textAreaDescription;
     }
 
     private org.eclipse.sirius.properties.TextDescription createTextfield() {
         org.eclipse.sirius.properties.TextDescription textDescription = PropertiesFactory.eINSTANCE.createTextDescription();
-        textDescription.setName("myTextfield"); //$NON-NLS-1$
-        textDescription.setLabelExpression("my TextField"); //$NON-NLS-1$
-        textDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
+        textDescription.setName("myTextfield");
+        textDescription.setLabelExpression("my TextField");
+        textDescription.setValueExpression("aql:self.name");
         return textDescription;
     }
 
     private org.eclipse.sirius.properties.PageDescription createPageDescription(org.eclipse.sirius.properties.GroupDescription groupDescription) {
         org.eclipse.sirius.properties.PageDescription pageDescription = PropertiesFactory.eINSTANCE.createPageDescription();
         pageDescription.getGroups().add(groupDescription);
-        pageDescription.setName("myPage"); //$NON-NLS-1$
-        pageDescription.setSemanticCandidateExpression("var:self"); //$NON-NLS-1$
-        pageDescription.setLabelExpression("Page"); //$NON-NLS-1$
+        pageDescription.setName("myPage");
+        pageDescription.setSemanticCandidateExpression("var:self");
+        pageDescription.setLabelExpression("Page");
         return pageDescription;
     }
 
     private org.eclipse.sirius.properties.GroupDescription createGroupDescription() {
         org.eclipse.sirius.properties.GroupDescription groupDescription = PropertiesFactory.eINSTANCE.createGroupDescription();
-        groupDescription.setName("myGroup"); //$NON-NLS-1$
-        groupDescription.setLabelExpression("Group"); //$NON-NLS-1$
-        groupDescription.setSemanticCandidateExpression("var:self"); //$NON-NLS-1$
-        groupDescription.setDomainClass("EPackage"); //$NON-NLS-1$
+        groupDescription.setName("myGroup");
+        groupDescription.setLabelExpression("Group");
+        groupDescription.setSemanticCandidateExpression("var:self");
+        groupDescription.setDomainClass("EPackage");
         return groupDescription;
     }
 
@@ -256,7 +256,7 @@ public class FormRendererTests {
             List<AbstractWidget> widgets = group.getWidgets();
             for (int i = 0; i < widgets.size(); i++) {
                 AbstractWidget abstractWidget = widgets.get(i);
-                assertThat(abstractWidget.getId()).endsWith("#" + i); //$NON-NLS-1$
+                assertThat(abstractWidget.getId()).endsWith("#" + i);
             }
         }
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.sirius.viewpoint.description.FixedColor;
  */
 public class ColorDescriptionConverter {
 
-    private static final String DEFAULT_COLOR = "#000000"; //$NON-NLS-1$
+    private static final String DEFAULT_COLOR = "#000000";
 
     private final AQLInterpreter interpreter;
 
@@ -55,6 +55,6 @@ public class ColorDescriptionConverter {
     }
 
     private String toHex(int r, int g, int b) {
-        return String.format("#%02x%02x%02x", r, g, b); //$NON-NLS-1$
+        return String.format("#%02x%02x%02x", r, g, b);
     }
 }

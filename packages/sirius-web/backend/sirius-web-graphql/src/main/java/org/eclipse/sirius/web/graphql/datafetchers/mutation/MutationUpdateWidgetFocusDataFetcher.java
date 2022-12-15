@@ -45,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUpdateWidgetFocusDataFetcher.UPDATE_WIDGET_FOCUS_FIELD)
 public class MutationUpdateWidgetFocusDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String UPDATE_WIDGET_FOCUS_FIELD = "updateWidgetFocus"; //$NON-NLS-1$
+    public static final String UPDATE_WIDGET_FOCUS_FIELD = "updateWidgetFocus";
 
     private final ObjectMapper objectMapper;
 

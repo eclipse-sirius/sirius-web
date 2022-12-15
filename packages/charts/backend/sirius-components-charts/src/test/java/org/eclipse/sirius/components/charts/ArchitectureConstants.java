@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
  * @author sbegaudeau
  */
 public final class ArchitectureConstants {
-    public static final String SIRIUS_COMPONENTS_CHARTS_ROOT_PACKAGE = "org.eclipse.sirius.components.charts.."; //$NON-NLS-1$
+    public static final String SIRIUS_COMPONENTS_CHARTS_ROOT_PACKAGE = "org.eclipse.sirius.components.charts..";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()

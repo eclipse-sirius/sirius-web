@@ -74,7 +74,7 @@ public class WidgetDescriptionStyleItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_WidgetDescriptionStyle_type"); //$NON-NLS-1$
+        return this.getString("_UI_WidgetDescriptionStyle_type");
     }
 
     /**

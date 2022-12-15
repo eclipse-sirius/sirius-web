@@ -29,7 +29,7 @@ public class FormImageProvider implements IRepresentationImageProvider {
     @Override
     public Optional<String> getImageURL(String kind) {
         if (Form.KIND.equals(kind)) {
-            return Optional.of("/form-images/form.svg"); //$NON-NLS-1$
+            return Optional.of("/form-images/form.svg");
         }
         return Optional.empty();
     }

@@ -24,11 +24,11 @@ import org.springframework.data.repository.Repository;
  * @author sbegaudeau
  */
 public class RepositoryTests {
-    private static final String REPOSITORY_SUFFIX = "Repository"; //$NON-NLS-1$
+    private static final String REPOSITORY_SUFFIX = "Repository";
 
-    private static final String REPOSITORIES_PACKAGE = "..repositories.."; //$NON-NLS-1$
+    private static final String REPOSITORIES_PACKAGE = "..repositories..";
 
-    private static final String TEST = "Test"; //$NON-NLS-1$
+    private static final String TEST = "Test";
 
     @Test
     public void onlyRepositoriesShouldBeInARepositoryPackage() {

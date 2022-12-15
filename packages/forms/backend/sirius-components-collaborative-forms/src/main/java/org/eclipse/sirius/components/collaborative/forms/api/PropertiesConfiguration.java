@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationConfigurat
  */
 public class PropertiesConfiguration implements IRepresentationConfiguration {
 
-    private static final String PROPERTIES_PREFIX = "properties:"; //$NON-NLS-1$
+    private static final String PROPERTIES_PREFIX = "properties:";
 
     private final String formId;
 

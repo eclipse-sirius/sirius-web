@@ -64,7 +64,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                 .messageProvider(variableManager -> {
                     String message = selectModelElementVariable.getMessage();
                     if (message == null) {
-                        message = ""; //$NON-NLS-1$
+                        message = "";
                     }
                     return message;
                 })
@@ -73,7 +73,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                 .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(null))
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .selectionObjectsIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .label("Selection Description") //$NON-NLS-1$
+                .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
                 .build();
         // @formatter:on

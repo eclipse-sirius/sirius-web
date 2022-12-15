@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,15 +40,15 @@ import org.eclipse.sirius.components.domain.Relation;
  */
 public class DomainConverter {
 
-    public static final String DOMAIN_SCHEME = "domain"; //$NON-NLS-1$
+    public static final String DOMAIN_SCHEME = "domain";
 
     public Optional<EPackage> convert(Domain domain) {
         Optional<EPackage> result = Optional.empty();
 
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName(domain.getName());
-        ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase()); //$NON-NLS-1$
-        ePackage.setNsURI(DOMAIN_SCHEME + "://" + domain.getName()); //$NON-NLS-1$
+        ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase());
+        ePackage.setNsURI(DOMAIN_SCHEME + "://" + domain.getName());
 
         Map<Entity, EClass> convertedTypes = new HashMap<>();
         // First pass to create the EClasses and EAttributes

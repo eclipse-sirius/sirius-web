@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 @Immutable
 public final class Selection implements IRepresentation, ISemanticRepresentation {
 
-    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Selection"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Selection";
 
     private String id;
 
@@ -87,7 +87,7 @@ public final class Selection implements IRepresentation, ISemanticRepresentation
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, targetObjectId: {3}, label: {4}, message: {5}, objectsCount: {6}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, targetObjectId: {3}, label: {4}, message: {5}, objectsCount: {6}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.targetObjectId, this.label, this.message, this.objects.size());
     }
 

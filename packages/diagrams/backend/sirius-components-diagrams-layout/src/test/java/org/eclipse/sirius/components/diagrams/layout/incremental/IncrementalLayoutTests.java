@@ -71,25 +71,25 @@ public class IncrementalLayoutTests {
         ListLayoutStrategy columnListLayoutStrategy = new ListLayoutStrategy();
 
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Class") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Class")
             .nodes()
-                .rectangleNode("Engine").at(100, 100).of(200, 300) //$NON-NLS-1$
+                .rectangleNode("Engine").at(100, 100).of(200, 300)
                     .childNodes(columnListLayoutStrategy)
-                        .iconLabelNode("rpm: Integer").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .iconLabelNode("start(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .iconLabelNode("accelerate(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .iconLabelNode("deccelerate(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("rpm: Integer").at(0, 0).of(0, 0).and()
+                        .iconLabelNode("start(): void").at(0, 0).of(0, 0).and()
+                        .iconLabelNode("accelerate(): void").at(0, 0).of(0, 0).and()
+                        .iconLabelNode("deccelerate(): void").at(0, 0).of(0, 0).and()
                     .and()
                 .and()
-                .rectangleNode("Display").at(500, 500).of(200, 300) //$NON-NLS-1$
+                .rectangleNode("Display").at(500, 500).of(200, 300)
                     .childNodes(columnListLayoutStrategy)
-                        .iconLabelNode("show(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
-                        .iconLabelNode("update(): void").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("show(): void").at(0, 0).of(0, 0).and()
+                        .iconLabelNode("update(): void").at(0, 0).of(0, 0).and()
                     .and()
                 .and()
-                .rectangleNode("Temperature Sensor").at(500, 500).of(400, 300) //$NON-NLS-1$
+                .rectangleNode("Temperature Sensor").at(500, 500).of(400, 300)
                     .childNodes(columnListLayoutStrategy)
-                        .iconLabelNode("read(): Integer").at(0, 0).of(0, 0).and() //$NON-NLS-1$
+                        .iconLabelNode("read(): Integer").at(0, 0).of(0, 0).and()
                     .and()
                 .and()
             .and()
@@ -105,52 +105,52 @@ public class IncrementalLayoutTests {
     @Disabled
     public void testComponentDiagramIncrementalLayout() {
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Component") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Component")
             .nodes()
-                .rectangleNode("Server").at(100, 100).of(400, 200) //$NON-NLS-1$
+                .rectangleNode("Server").at(100, 100).of(400, 200)
                     .borderNodes()
-                        .rectangleNode("ServerOutput1").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("ServerOutput1").at(-1, -1).of(20, 20)
                         .and()
-                        .rectangleNode("ServerInput1").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("ServerInput1").at(-1, -1).of(20, 20)
                         .and()
                     .and()
                 .and()
-                .rectangleNode("Gateway").at(100, 500).of(400, 200) //$NON-NLS-1$
+                .rectangleNode("Gateway").at(100, 500).of(400, 200)
                     .borderNodes()
-                        .rectangleNode("GatewayInput1").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("GatewayInput1").at(-1, -1).of(20, 20)
                         .and()
-                        .rectangleNode("GatewayInput2").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("GatewayInput2").at(-1, -1).of(20, 20)
                         .and()
-                        .rectangleNode("GatewayOutput1").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("GatewayOutput1").at(-1, -1).of(20, 20)
                         .and()
-                        .rectangleNode("GatewayOutput2").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("GatewayOutput2").at(-1, -1).of(20, 20)
                         .and()
                     .and()
                 .and()
-                .rectangleNode("Client").at(100, 1000).of(400, 200) //$NON-NLS-1$
+                .rectangleNode("Client").at(100, 1000).of(400, 200)
                     .borderNodes()
-                        .rectangleNode("ClientInput1").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("ClientInput1").at(-1, -1).of(20, 20)
                         .and()
-                        .rectangleNode("ClientOutput1").at(-1, -1).of(20, 20) //$NON-NLS-1$
+                        .rectangleNode("ClientOutput1").at(-1, -1).of(20, 20)
                         .and()
                     .and()
                 .and()
             .and()
-            .edge("ClientOutput1 to GatewayInput1") //$NON-NLS-1$
-                .from("ClientOutput1").at(0.5, 0.5) //$NON-NLS-1$
-                .to("GatewayInput1").at(0.5, 0.5) //$NON-NLS-1$
+            .edge("ClientOutput1 to GatewayInput1")
+                .from("ClientOutput1").at(0.5, 0.5)
+                .to("GatewayInput1").at(0.5, 0.5)
             .and()
-                .edge("GatewayOutput1 to ServerInput1") //$NON-NLS-1$
-                .from("GatewayOutput1").at(0.5, 0.5) //$NON-NLS-1$
-                .to("ServerInput1").at(0.5, 0.5) //$NON-NLS-1$
+                .edge("GatewayOutput1 to ServerInput1")
+                .from("GatewayOutput1").at(0.5, 0.5)
+                .to("ServerInput1").at(0.5, 0.5)
             .and()
-                .edge("ServerOutput1 to GatewayInput2") //$NON-NLS-1$
-                .from("ServerOutput1").at(0.5, 0.5) //$NON-NLS-1$
-                .to("GatewayInput2").at(0.5, 0.5) //$NON-NLS-1$
+                .edge("ServerOutput1 to GatewayInput2")
+                .from("ServerOutput1").at(0.5, 0.5)
+                .to("GatewayInput2").at(0.5, 0.5)
             .and()
-                .edge("GatewayOutput2 to ClientInput1") //$NON-NLS-1$
-                .from("GatewayOutput2").at(0.5, 0.5) //$NON-NLS-1$
-                .to("ClientInput1").at(0.5, 0.5) //$NON-NLS-1$
+                .edge("GatewayOutput2 to ClientInput1")
+                .from("GatewayOutput2").at(0.5, 0.5)
+                .to("ClientInput1").at(0.5, 0.5)
             .and()
         .build();
         // @formatter:on

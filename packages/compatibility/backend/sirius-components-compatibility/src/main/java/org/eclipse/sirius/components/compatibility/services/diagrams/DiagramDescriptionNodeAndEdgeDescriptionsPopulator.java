@@ -59,9 +59,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiagramDescriptionPopulator {
 
-    private static final String NEW_VIEW_CONTAINER = "newViewContainer"; //$NON-NLS-1$
+    private static final String NEW_VIEW_CONTAINER = "newViewContainer";
 
-    private static final String NEW_CONTAINER = "newContainer"; //$NON-NLS-1$
+    private static final String NEW_CONTAINER = "newContainer";
 
     private final IToolProvider toolProvider;
 
@@ -186,7 +186,7 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
                     }
                 }
             }
-            return new Failure(""); //$NON-NLS-1$
+            return new Failure("");
         };
     }
 

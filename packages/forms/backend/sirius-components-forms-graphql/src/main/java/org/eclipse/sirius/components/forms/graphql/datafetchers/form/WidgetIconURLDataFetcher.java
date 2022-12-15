@@ -32,23 +32,23 @@ import graphql.schema.FieldCoordinates;
 @QueryDataFetcher(type = "Widget", field = "iconURL")
 public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
 
-    private static final String ICON_URL_FIELD = "iconURL"; //$NON-NLS-1$
+    private static final String ICON_URL_FIELD = "iconURL";
 
     @Override
     public List<FieldCoordinates> getFieldCoordinates() {
         // @formatter:off
         var widgetTypes = List.of(
-                "ChartWidget", //$NON-NLS-1$
-                "Checkbox", //$NON-NLS-1$
-                "FlexboxContainer", //$NON-NLS-1$
-                "Link", //$NON-NLS-1$
-                "List", //$NON-NLS-1$
-                "MultiSelect", //$NON-NLS-1$
-                "Radio", //$NON-NLS-1$
-                "Select", //$NON-NLS-1$
-                "Textarea", //$NON-NLS-1$
-                "Textfield", //$NON-NLS-1$
-                "TreeWidget" //$NON-NLS-1$
+                "ChartWidget",
+                "Checkbox",
+                "FlexboxContainer",
+                "Link",
+                "List",
+                "MultiSelect",
+                "Radio",
+                "Select",
+                "Textarea",
+                "Textfield",
+                "TreeWidget"
         );
         return widgetTypes.stream().map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD)).collect(Collectors.toList());
         // @formatter:on

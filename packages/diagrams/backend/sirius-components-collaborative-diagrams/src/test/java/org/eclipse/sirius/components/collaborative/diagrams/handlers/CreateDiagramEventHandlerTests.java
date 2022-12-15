@@ -56,15 +56,15 @@ public class CreateDiagramEventHandlerTests {
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
                 // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
-                        .label("label") //$NON-NLS-1$
+                        .label("label")
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .edgeDescriptions(new ArrayList<>())
-                        .labelProvider(variableManager -> "label") //$NON-NLS-1$
+                        .labelProvider(variableManager -> "label")
                         .toolSections(List.of())
                         .tools(List.of())
                         .nodeDescriptions(new ArrayList<>())
-                        .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
-                        .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                        .targetObjectIdProvider(variableManager -> "targetObjectId")
+                        .dropHandler(variableManager -> new Failure(""))
                         .build();
                 // @formatter:on
 
@@ -92,7 +92,7 @@ public class CreateDiagramEventHandlerTests {
         CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), diagramCreationService, objectService,
                 new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName");
         assertThat(handler.canHandle(null, input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

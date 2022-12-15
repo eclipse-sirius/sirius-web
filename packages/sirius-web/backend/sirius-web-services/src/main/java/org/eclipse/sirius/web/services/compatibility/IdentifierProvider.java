@@ -62,7 +62,7 @@ public class IdentifierProvider implements IIdentifierProvider {
                 .map(EObject.class::cast)
                 .map(EcoreUtil::getURI)
                 .map(Object::toString)
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
 
         Optional<IdMappingEntity> optional = this.getOrFetchByExternalId(vsmElementId);
         return optional.orElseGet(() -> this.newIdMapping(vsmElementId))

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
      * @generated
      * @ordered
      */
-    protected static final String EXPRESSION_EDEFAULT = "aql:self"; //$NON-NLS-1$
+    protected static final String EXPRESSION_EDEFAULT = "aql:self";
 
     /**
      * The cached value of the '{@link #getExpression() <em>Expression</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -161,7 +161,7 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (expression: "); //$NON-NLS-1$
+        result.append(" (expression: ");
         result.append(this.expression);
         result.append(')');
         return result.toString();

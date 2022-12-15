@@ -70,7 +70,7 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'backgroundcolor: {1}', border: '{' size: {2}, radius: {3}, color: {4}, style: {5} '}', svg: {6}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'backgroundcolor: {1}', border: '{' size: {2}, radius: {3}, color: {4}, style: {5} '}', svg: {6}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.backgroundColor, this.borderSize, this.borderRadius, this.borderColor, this.borderStyle, this.svgURL);
     }
 
@@ -83,9 +83,9 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
     public static final class Builder {
         private String svgURL;
 
-        private String backgroundColor = "white"; //$NON-NLS-1$
+        private String backgroundColor = "white";
 
-        private String borderColor = "black"; //$NON-NLS-1$
+        private String borderColor = "black";
 
         private int borderSize;
 

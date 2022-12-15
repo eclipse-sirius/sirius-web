@@ -49,7 +49,7 @@ import org.junit.jupiter.api.Test;
  * @author gcoutable
  */
 public class EdgeLayoutTests {
-    private static final Path PATH_TO_EDITING_CONTEXTS = Paths.get("src", "test", "resources", "editing-contexts"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+    private static final Path PATH_TO_EDITING_CONTEXTS = Paths.get("src", "test", "resources", "editing-contexts");
 
     private TestLayoutObjectService objectService = new TestLayoutObjectService();
 
@@ -77,51 +77,49 @@ public class EdgeLayoutTests {
 
     @Test
     public void testRemoveEdgesBetweenTwoSameElements() {
-        String firstNode = "First"; //$NON-NLS-1$
-        String secondNode = "Second"; //$NON-NLS-1$
+        String firstNode = "First";
+        String secondNode = "Second";
 
         // @formatter:off
-        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root") //$NON-NLS-1$
+        Diagram diagram = TestLayoutDiagramBuilder.diagram("Root")
                 .nodes()
                     .rectangleNode(firstNode).at(10, 10).of(40, 210).and()
                     .rectangleNode(secondNode).at(100, 10).of(40, 210).and()
                     .and()
-                .edge("E1 - removed") //$NON-NLS-1$
+                .edge("E1 - removed")
                     .from(firstNode).at(0.75, 1.0 / 7.0)
                     .to(secondNode).at(0.25, 1.0 / 7.0)
                     .and()
-                .edge("E2") //$NON-NLS-1$
+                .edge("E2")
                     .from(firstNode).at(0.75, 2.0 / 7.0)
                     .to(secondNode).at(0.25, 2.0 / 7.0)
                     .and()
-                .edge("E3 - removed") //$NON-NLS-1$
+                .edge("E3 - removed")
                     .from(firstNode).at(0.75, 3.0 / 7.0)
                     .to(secondNode).at(0.25, 3.0 / 7.0)
                     .and()
-                .edge("E4") //$NON-NLS-1$
+                .edge("E4")
                     .from(firstNode).at(0.75, 4.0 / 7.0)
                     .to(secondNode).at(0.25, 4.0 / 7.0)
                     .and()
-                .edge("E5 - removed") //$NON-NLS-1$
+                .edge("E5 - removed")
                     .from(firstNode).at(0.75, 5.0 / 7.0)
                     .to(secondNode).at(0.25, 5.0 / 7.0)
                     .and()
-                .edge("E6") //$NON-NLS-1$
+                .edge("E6")
                     .from(firstNode).at(0.75, 6.0 / 7.0)
                     .to(secondNode).at(0.25, 6.0 / 7.0)
                     .and()
                 .build();
         // @formatter:on
 
-        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testRemoveEdgeWithMultipleEdgeBetweenSameElement"); //$NON-NLS-1$
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testRemoveEdgeWithMultipleEdgeBetweenSameElement");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         List<String> removedEdgeIds = new ArrayList<>();
         // @formatter:off
         diagram.getEdges().stream()
-                .filter(edge -> {
-                    return edge.getCenterLabel().getText().contains(" - removed"); //$NON-NLS-1$
-                })
+                .filter(edge -> edge.getCenterLabel().getText().contains(" - removed"))
                 .map(Edge::getId)
                 .forEach(removedEdgeIds::add);
         // @formatter:on

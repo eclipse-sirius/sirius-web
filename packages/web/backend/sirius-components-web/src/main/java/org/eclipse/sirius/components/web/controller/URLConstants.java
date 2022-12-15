@@ -18,9 +18,9 @@ package org.eclipse.sirius.components.web.controller;
  * @author lfasani
  */
 public final class URLConstants {
-    public static final String API_BASE_PATH = "/api"; //$NON-NLS-1$
+    public static final String API_BASE_PATH = "/api";
 
-    public static final String PARAMETRIC_IMAGE_BASE_PATH = API_BASE_PATH + "/parametricsvgs"; //$NON-NLS-1$
+    public static final String PARAMETRIC_IMAGE_BASE_PATH = API_BASE_PATH + "/parametricsvgs";
 
     private URLConstants() {
         // Prevent instantiation

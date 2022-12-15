@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
  * @author sbegaudeau
  */
 public final class ArchitectureConstants {
-    public static final String SIRIUS_WEB_GRAPHQL_ROOT_PACKAGE = "org.eclipse.sirius.web.graphql.."; //$NON-NLS-1$
+    public static final String SIRIUS_WEB_GRAPHQL_ROOT_PACKAGE = "org.eclipse.sirius.web.graphql..";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()

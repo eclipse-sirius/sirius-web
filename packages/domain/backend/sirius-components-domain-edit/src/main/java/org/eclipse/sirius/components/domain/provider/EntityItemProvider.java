@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,8 +68,8 @@ public class EntityItemProvider extends NamedElementItemProvider {
      */
     protected void addSuperTypesPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_superTypes_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_superTypes_feature", "_UI_Entity_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_superTypes_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_superTypes_feature", "_UI_Entity_type"),
                         DomainPackage.Literals.ENTITY__SUPER_TYPES, true, false, true, null, null, null));
     }
 
@@ -80,8 +80,8 @@ public class EntityItemProvider extends NamedElementItemProvider {
      */
     protected void addAbstractPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_abstract_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_abstract_feature", "_UI_Entity_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_abstract_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_abstract_feature", "_UI_Entity_type"),
                         DomainPackage.Literals.ENTITY__ABSTRACT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -123,7 +123,7 @@ public class EntityItemProvider extends NamedElementItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity.svg"));
     }
 
     /**
@@ -144,8 +144,8 @@ public class EntityItemProvider extends NamedElementItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((Entity) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Entity_type") : //$NON-NLS-1$
-                this.getString("_UI_Entity_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Entity_type") :
+                this.getString("_UI_Entity_type") + " " + label;
     }
 
     /**
@@ -182,12 +182,12 @@ public class EntityItemProvider extends NamedElementItemProvider {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         Attribute newAttribute = DomainFactory.eINSTANCE.createAttribute();
-        newAttribute.setName("newString"); //$NON-NLS-1$
+        newAttribute.setName("newString");
         newAttribute.setType(DataType.STRING);
         newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__ATTRIBUTES, newAttribute));
 
         Relation newRelation = DomainFactory.eINSTANCE.createRelation();
-        newRelation.setName("relation"); //$NON-NLS-1$
+        newRelation.setName("relation");
         newRelation.setMany(true);
         if (object instanceof Entity) {
             Entity owner = (Entity) object;

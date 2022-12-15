@@ -63,7 +63,7 @@ public final class MultiSelect extends AbstractWidget {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, values: {3}, options: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, values: {3}, options: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.label, this.values, this.options);
     }
 

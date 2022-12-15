@@ -92,7 +92,7 @@ public class ClickListItemEventHandler implements IFormEventHandler {
 
             var status = optionalListItem.map(ListItem::getClickHandler)
                     .map(handler -> handler.apply(input.getClickEventKind()))
-                    .orElse(new Failure("")); //$NON-NLS-1$
+                    .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {

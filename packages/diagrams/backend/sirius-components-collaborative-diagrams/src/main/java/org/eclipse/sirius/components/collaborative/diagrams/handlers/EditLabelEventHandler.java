@@ -139,7 +139,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(VariableManager.SELF, self);
                 nodeDescription.getLabelEditHandler().apply(variableManager, newText);
-                this.logger.debug("Edited label of diagram element {} to {}", node.getId(), newText); //$NON-NLS-1$
+                this.logger.debug("Edited label of diagram element {} to {}", node.getId(), newText);
             }
         }
     }
@@ -157,7 +157,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(VariableManager.SELF, self);
                 edgeDescription.getLabelEditHandler().apply(variableManager, newText);
-                this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText); //$NON-NLS-1$
+                this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText);
             }
         }
     }

@@ -34,7 +34,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    NONE(0, "None", "None"), //$NON-NLS-1$ //$NON-NLS-2$
+    NONE(0, "None", "None"),
 
     /**
      * The '<em><b>Output Arrow</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +43,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    OUTPUT_ARROW(1, "OutputArrow", "OutputArrow"), //$NON-NLS-1$ //$NON-NLS-2$
+    OUTPUT_ARROW(1, "OutputArrow", "OutputArrow"),
 
     /**
      * The '<em><b>Input Arrow</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -52,7 +52,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    INPUT_ARROW(2, "InputArrow", "InputArrow"), //$NON-NLS-1$ //$NON-NLS-2$
+    INPUT_ARROW(2, "InputArrow", "InputArrow"),
 
     /**
      * The '<em><b>Output Closed Arrow</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -61,7 +61,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    OUTPUT_CLOSED_ARROW(3, "OutputClosedArrow", "OutputClosedArrow"), //$NON-NLS-1$ //$NON-NLS-2$
+    OUTPUT_CLOSED_ARROW(3, "OutputClosedArrow", "OutputClosedArrow"),
 
     /**
      * The '<em><b>Input Closed Arrow</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -70,7 +70,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    INPUT_CLOSED_ARROW(4, "InputClosedArrow", "InputClosedArrow"), //$NON-NLS-1$ //$NON-NLS-2$
+    INPUT_CLOSED_ARROW(4, "InputClosedArrow", "InputClosedArrow"),
 
     /**
      * The '<em><b>Output Fill Closed Arrow</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -79,7 +79,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    OUTPUT_FILL_CLOSED_ARROW(5, "OutputFillClosedArrow", "OutputFillClosedArrow"), //$NON-NLS-1$ //$NON-NLS-2$
+    OUTPUT_FILL_CLOSED_ARROW(5, "OutputFillClosedArrow", "OutputFillClosedArrow"),
 
     /**
      * The '<em><b>Input Fill Closed Arrow</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -88,7 +88,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    INPUT_FILL_CLOSED_ARROW(6, "InputFillClosedArrow", "InputFillClosedArrow"), //$NON-NLS-1$ //$NON-NLS-2$
+    INPUT_FILL_CLOSED_ARROW(6, "InputFillClosedArrow", "InputFillClosedArrow"),
 
     /**
      * The '<em><b>Diamond</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -97,7 +97,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    DIAMOND(7, "Diamond", "Diamond"), //$NON-NLS-1$ //$NON-NLS-2$
+    DIAMOND(7, "Diamond", "Diamond"),
 
     /**
      * The '<em><b>Fill Diamond</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -106,7 +106,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    FILL_DIAMOND(8, "FillDiamond", "FillDiamond"), //$NON-NLS-1$ //$NON-NLS-2$
+    FILL_DIAMOND(8, "FillDiamond", "FillDiamond"),
 
     /**
      * The '<em><b>Input Arrow With Diamond</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -115,7 +115,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    INPUT_ARROW_WITH_DIAMOND(9, "InputArrowWithDiamond", "InputArrowWithDiamond"), //$NON-NLS-1$ //$NON-NLS-2$
+    INPUT_ARROW_WITH_DIAMOND(9, "InputArrowWithDiamond", "InputArrowWithDiamond"),
 
     /**
      * The '<em><b>Input Arrow With Fill Diamond</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -124,7 +124,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    INPUT_ARROW_WITH_FILL_DIAMOND(10, "InputArrowWithFillDiamond", "InputArrowWithFillDiamond"), //$NON-NLS-1$ //$NON-NLS-2$
+    INPUT_ARROW_WITH_FILL_DIAMOND(10, "InputArrowWithFillDiamond", "InputArrowWithFillDiamond"),
     /**
      * The '<em><b>Circle</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -132,7 +132,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    CIRCLE(11, "Circle", "Circle"), //$NON-NLS-1$ //$NON-NLS-2$
+    CIRCLE(11, "Circle", "Circle"),
     /**
      * The '<em><b>Fill Circle</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -140,7 +140,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    FILL_CIRCLE(12, "FillCircle", "FillCircle"), //$NON-NLS-1$ //$NON-NLS-2$
+    FILL_CIRCLE(12, "FillCircle", "FillCircle"),
     /**
      * The '<em><b>Crossed Circle</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -148,7 +148,7 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    CROSSED_CIRCLE(13, "CrossedCircle", "CrossedCircle"); //$NON-NLS-1$ //$NON-NLS-2$
+    CROSSED_CIRCLE(13, "CrossedCircle", "CrossedCircle");
 
     /**
      * The '<em><b>None</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

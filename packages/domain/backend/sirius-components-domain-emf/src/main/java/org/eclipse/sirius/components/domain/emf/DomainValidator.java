@@ -38,13 +38,13 @@ import org.eclipse.sirius.components.domain.NamedElement;
  */
 public class DomainValidator implements EValidator {
 
-    public static final String INVALID_NAME_ERROR_MESSAGE = "The name %1$s is not well-formed."; //$NON-NLS-1$
+    public static final String INVALID_NAME_ERROR_MESSAGE = "The name %1$s is not well-formed.";
 
-    public static final String ENTITY_DISTINCT_NAME_ERROR_MESSAGE = "Two entities cannot have the same name in the same domain"; //$NON-NLS-1$
+    public static final String ENTITY_DISTINCT_NAME_ERROR_MESSAGE = "Two entities cannot have the same name in the same domain";
 
-    public static final String FEATURE_DISTINCT_NAME_ERROR_MESSAGE = "Two features cannot have the same name in the same entity"; //$NON-NLS-1$
+    public static final String FEATURE_DISTINCT_NAME_ERROR_MESSAGE = "Two features cannot have the same name in the same entity";
 
-    public static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf"; //$NON-NLS-1$
+    public static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf";
 
     @Override
     public boolean validate(EDataType eDataType, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {

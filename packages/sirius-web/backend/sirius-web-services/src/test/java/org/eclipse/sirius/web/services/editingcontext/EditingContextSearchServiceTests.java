@@ -46,33 +46,33 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 public class EditingContextSearchServiceTests {
     // @formatter:off
-    private static final String CONTENT = "{" + System.lineSeparator() //$NON-NLS-1$
-    + "    \"json\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "      \"version\": \"1.0\"," + System.lineSeparator() //$NON-NLS-1$
-    + "    \"encoding\": \"utf-8\"" + System.lineSeparator() //$NON-NLS-1$
-    + "  }," + System.lineSeparator() //$NON-NLS-1$
-    + "  \"ns\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator() //$NON-NLS-1$
-    + "  }," + System.lineSeparator() //$NON-NLS-1$
-    + "  \"content\": [" + System.lineSeparator() //$NON-NLS-1$
-    + "      {" + System.lineSeparator() //$NON-NLS-1$
-    + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator() //$NON-NLS-1$
-    + "      \"data\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "          \"name\": \"ecore\"," + System.lineSeparator() //$NON-NLS-1$
-    + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator() //$NON-NLS-1$
-    + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator() //$NON-NLS-1$
-    + "        \"eClassifiers\": [" + System.lineSeparator() //$NON-NLS-1$
-    + "            {" + System.lineSeparator() //$NON-NLS-1$
-    + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator() //$NON-NLS-1$
-    + "            \"data\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "                \"name\": \"AClass\"" + System.lineSeparator() //$NON-NLS-1$
-    + "            }" + System.lineSeparator() //$NON-NLS-1$
-    + "          }" + System.lineSeparator() //$NON-NLS-1$
-    + "        ]" + System.lineSeparator() //$NON-NLS-1$
-    + "      }" + System.lineSeparator() //$NON-NLS-1$
-    + "    }" + System.lineSeparator() //$NON-NLS-1$
-    + "  ]" + System.lineSeparator() //$NON-NLS-1$
-    + "}" + System.lineSeparator(); //$NON-NLS-1$
+    private static final String CONTENT = "{" + System.lineSeparator()
+    + "    \"json\": {" + System.lineSeparator()
+    + "      \"version\": \"1.0\"," + System.lineSeparator()
+    + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
+    + "  }," + System.lineSeparator()
+    + "  \"ns\": {" + System.lineSeparator()
+    + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
+    + "  }," + System.lineSeparator()
+    + "  \"content\": [" + System.lineSeparator()
+    + "      {" + System.lineSeparator()
+    + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
+    + "      \"data\": {" + System.lineSeparator()
+    + "          \"name\": \"ecore\"," + System.lineSeparator()
+    + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
+    + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
+    + "        \"eClassifiers\": [" + System.lineSeparator()
+    + "            {" + System.lineSeparator()
+    + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
+    + "            \"data\": {" + System.lineSeparator()
+    + "                \"name\": \"AClass\"" + System.lineSeparator()
+    + "            }" + System.lineSeparator()
+    + "          }" + System.lineSeparator()
+    + "        ]" + System.lineSeparator()
+    + "      }" + System.lineSeparator()
+    + "    }" + System.lineSeparator()
+    + "  ]" + System.lineSeparator()
+    + "}" + System.lineSeparator();
     // @formatter:on
 
     @Test
@@ -102,17 +102,17 @@ public class EditingContextSearchServiceTests {
 
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setId(projectId);
-        projectEntity.setName(""); //$NON-NLS-1$
+        projectEntity.setName("");
 
         DocumentEntity firstDocumentEntity = new DocumentEntity();
         firstDocumentEntity.setId(UUID.randomUUID());
-        firstDocumentEntity.setName("First Document"); //$NON-NLS-1$
+        firstDocumentEntity.setName("First Document");
         firstDocumentEntity.setProject(projectEntity);
         firstDocumentEntity.setContent(CONTENT);
 
         DocumentEntity secondDocumentEntity = new DocumentEntity();
         secondDocumentEntity.setId(UUID.randomUUID());
-        secondDocumentEntity.setName("Second Document"); //$NON-NLS-1$
+        secondDocumentEntity.setName("Second Document");
         secondDocumentEntity.setProject(projectEntity);
         secondDocumentEntity.setContent(CONTENT);
 

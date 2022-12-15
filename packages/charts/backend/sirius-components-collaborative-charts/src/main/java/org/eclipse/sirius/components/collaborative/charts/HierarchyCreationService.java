@@ -56,7 +56,7 @@ public class HierarchyCreationService {
         this.objectService = Objects.requireNonNull(objectService);
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
-                .tag(Monitoring.NAME, "hierarchy") //$NON-NLS-1$
+                .tag(Monitoring.NAME, "hierarchy")
                 .register(meterRegistry);
         // @formatter:on
     }

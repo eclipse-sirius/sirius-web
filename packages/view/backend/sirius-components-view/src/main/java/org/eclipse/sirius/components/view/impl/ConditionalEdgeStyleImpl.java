@@ -57,7 +57,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected static final String COLOR_EDEFAULT = "#E5F5F8"; //$NON-NLS-1$
+    protected static final String COLOR_EDEFAULT = "#E5F5F8";
 
     /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -810,27 +810,27 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: "); //$NON-NLS-1$
+        result.append(" (color: ");
         result.append(this.color);
-        result.append(", fontSize: "); //$NON-NLS-1$
+        result.append(", fontSize: ");
         result.append(this.fontSize);
-        result.append(", italic: "); //$NON-NLS-1$
+        result.append(", italic: ");
         result.append(this.italic);
-        result.append(", bold: "); //$NON-NLS-1$
+        result.append(", bold: ");
         result.append(this.bold);
-        result.append(", underline: "); //$NON-NLS-1$
+        result.append(", underline: ");
         result.append(this.underline);
-        result.append(", strikeThrough: "); //$NON-NLS-1$
+        result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", lineStyle: "); //$NON-NLS-1$
+        result.append(", lineStyle: ");
         result.append(this.lineStyle);
-        result.append(", sourceArrowStyle: "); //$NON-NLS-1$
+        result.append(", sourceArrowStyle: ");
         result.append(this.sourceArrowStyle);
-        result.append(", targetArrowStyle: "); //$NON-NLS-1$
+        result.append(", targetArrowStyle: ");
         result.append(this.targetArrowStyle);
-        result.append(", edgeWidth: "); //$NON-NLS-1$
+        result.append(", edgeWidth: ");
         result.append(this.edgeWidth);
-        result.append(", showIcon: "); //$NON-NLS-1$
+        result.append(", showIcon: ");
         result.append(this.showIcon);
         result.append(')');
         return result.toString();

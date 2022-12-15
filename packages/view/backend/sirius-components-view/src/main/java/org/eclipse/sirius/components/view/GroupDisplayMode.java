@@ -34,7 +34,7 @@ public enum GroupDisplayMode implements Enumerator {
      * @generated
      * @ordered
      */
-    LIST(0, "LIST", "LIST"), //$NON-NLS-1$ //$NON-NLS-2$
+    LIST(0, "LIST", "LIST"),
 
     /**
      * The '<em><b>TOGGLEABLE AREAS</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -43,7 +43,7 @@ public enum GroupDisplayMode implements Enumerator {
      * @generated
      * @ordered
      */
-    TOGGLEABLE_AREAS(1, "TOGGLEABLE_AREAS", "TOGGLEABLE_AREAS"); //$NON-NLS-1$ //$NON-NLS-2$
+    TOGGLEABLE_AREAS(1, "TOGGLEABLE_AREAS", "TOGGLEABLE_AREAS");
 
     /**
      * The '<em><b>LIST</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

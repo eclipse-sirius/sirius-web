@@ -68,8 +68,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addValuesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_valuesExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_valuesExpression_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_BarChartDescription_valuesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_valuesExpression_feature", "_UI_BarChartDescription_type"),
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -80,8 +80,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addKeysExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_keysExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_keysExpression_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_BarChartDescription_keysExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_keysExpression_feature", "_UI_BarChartDescription_type"),
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -93,8 +93,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addYAxisLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_yAxisLabelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_yAxisLabelExpression_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_BarChartDescription_yAxisLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_yAxisLabelExpression_feature", "_UI_BarChartDescription_type"),
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -105,8 +105,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addWidthPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_width_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_BarChartDescription_width_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"),
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -117,8 +117,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addHeightPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_height_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_BarChartDescription_height_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"),
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__HEIGHT, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -160,7 +160,7 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/BarChartDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/BarChartDescription.svg"));
     }
 
     /**
@@ -181,8 +181,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
     @Override
     public String getText(Object object) {
         String label = ((BarChartDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_BarChartDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_BarChartDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_BarChartDescription_type") :
+                this.getString("_UI_BarChartDescription_type") + " " + label;
     }
 
     /**
@@ -241,7 +241,7 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
         boolean qualify = childFeature == ViewPackage.Literals.BAR_CHART_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+            return this.getString("_UI_CreateChild_text2",
                     new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);

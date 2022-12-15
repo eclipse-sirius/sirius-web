@@ -162,7 +162,7 @@ public class CheckboxDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: "); //$NON-NLS-1$
+        result.append(" (color: ");
         result.append(this.color);
         result.append(')');
         return result.toString();

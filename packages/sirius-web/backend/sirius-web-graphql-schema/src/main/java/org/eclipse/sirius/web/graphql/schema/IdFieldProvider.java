@@ -30,7 +30,7 @@ import graphql.schema.GraphQLNonNull;
  */
 public class IdFieldProvider {
 
-    public static final String ID_FIELD = "id"; //$NON-NLS-1$
+    public static final String ID_FIELD = "id";
 
     public GraphQLFieldDefinition getField() {
         // @formatter:off

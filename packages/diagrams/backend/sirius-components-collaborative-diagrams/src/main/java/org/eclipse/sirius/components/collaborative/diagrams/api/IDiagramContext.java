@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo and others.
+ * Copyright (c) 2019, 2022 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ public interface IDiagramContext {
     /**
      * The name of the variable used to store and retrieve the diagram context from a variable manager.
      */
-    String DIAGRAM_CONTEXT = "diagramContext"; //$NON-NLS-1$
+    String DIAGRAM_CONTEXT = "diagramContext";
 
     Diagram getDiagram();
 

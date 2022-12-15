@@ -44,7 +44,7 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
     public Mono<IPayload> dispatchQuery(String editingContextId, IInput input) {
         // @formatter:off
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"))); //$NON-NLS-1$
+                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR")));
         // @formatter:on
     }
 
@@ -52,7 +52,7 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
     public Mono<IPayload> dispatchMutation(String editingContextId, IInput input) {
         // @formatter:off
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"))); //$NON-NLS-1$
+                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR")));
         // @formatter:on
     }
 

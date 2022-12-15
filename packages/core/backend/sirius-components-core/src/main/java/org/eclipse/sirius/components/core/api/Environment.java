@@ -21,9 +21,9 @@ import java.util.Objects;
  */
 public class Environment {
 
-    public static final String ENVIRONMENT = "environment"; //$NON-NLS-1$
+    public static final String ENVIRONMENT = "environment";
 
-    public static final String SIRIUS_COMPONENTS = "siriusComponents"; //$NON-NLS-1$
+    public static final String SIRIUS_COMPONENTS = "siriusComponents";
 
     private final String name;
 

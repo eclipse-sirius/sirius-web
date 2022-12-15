@@ -68,8 +68,8 @@ public class EdgeReconnectionToolItemProvider extends ToolItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((EdgeReconnectionTool) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_EdgeReconnectionTool_type") : //$NON-NLS-1$
-                this.getString("_UI_EdgeReconnectionTool_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_EdgeReconnectionTool_type") :
+                this.getString("_UI_EdgeReconnectionTool_type") + " " + label;
     }
 
     /**

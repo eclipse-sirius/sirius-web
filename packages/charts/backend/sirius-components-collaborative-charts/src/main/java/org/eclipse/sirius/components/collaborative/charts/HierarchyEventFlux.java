@@ -49,7 +49,7 @@ public class HierarchyEventFlux {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new HierarchyRefreshedEventPayload(input.getId(), this.currentHierarchy));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a HierarchyRefreshedEventPayload: {}"; //$NON-NLS-1$
+                String pattern = "An error has occurred while emitting a HierarchyRefreshedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
             }
         }
@@ -63,7 +63,7 @@ public class HierarchyEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
     }

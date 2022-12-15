@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.representations.IProps;
 @Immutable
 public final class NodeElementProps implements IProps {
 
-    public static final String TYPE = "Node"; //$NON-NLS-1$
+    public static final String TYPE = "Node";
 
     private String id;
 
@@ -139,7 +139,7 @@ public final class NodeElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId);
     }
 

@@ -221,9 +221,9 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: "); //$NON-NLS-1$
+        result.append(" (name: ");
         result.append(this.name);
-        result.append(", labelExpression: "); //$NON-NLS-1$
+        result.append(", labelExpression: ");
         result.append(this.labelExpression);
         result.append(')');
         return result.toString();

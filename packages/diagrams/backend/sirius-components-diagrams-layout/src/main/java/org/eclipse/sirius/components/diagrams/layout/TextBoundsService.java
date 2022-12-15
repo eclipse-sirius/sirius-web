@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,22 +51,22 @@ public class TextBoundsService {
 
     @PostConstruct
     public void initialize() {
-        this.logger.debug("AWT initialization starting"); //$NON-NLS-1$
+        this.logger.debug("AWT initialization starting");
 
         Runnable computeBounds = () -> {
 
             // @formatter:off
             LabelStyle labelStyle = LabelStyle.newLabelStyle()
                     .fontSize(16)
-                    .color("#000000") //$NON-NLS-1$
-                    .iconURL("") //$NON-NLS-1$
+                    .color("#000000")
+                    .iconURL("")
                     .build();
             Label label = Label.newLabel(UUID.randomUUID().toString())
-                    .type("labelType") //$NON-NLS-1$
+                    .type("labelType")
                     .position(Position.UNDEFINED)
                     .size(Size.UNDEFINED)
                     .alignment(Position.UNDEFINED)
-                    .text("ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") //$NON-NLS-1$
+                    .text("ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
                     .style(labelStyle)
                     .build();
             this.getBounds(label);
@@ -76,7 +76,7 @@ public class TextBoundsService {
         this.executorService.execute(computeBounds);
         this.executorService.shutdown();
 
-        this.logger.debug("AWT initialization done"); //$NON-NLS-1$
+        this.logger.debug("AWT initialization done");
     }
 
     @PreDestroy

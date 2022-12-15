@@ -55,7 +55,7 @@ public final class RenameProjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, projectId: {2}, newName: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, projectId: {2}, newName: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.projectId, this.newName);
     }
 }

@@ -65,7 +65,7 @@ public class DiagramElementFactory implements IElementFactory {
             } else if (child instanceof Edge) {
                 edges.add((Edge) child);
             } else {
-                this.logger.warn("Unsupported child {}", child); //$NON-NLS-1$
+                this.logger.warn("Unsupported child {}", child);
             }
         });
 

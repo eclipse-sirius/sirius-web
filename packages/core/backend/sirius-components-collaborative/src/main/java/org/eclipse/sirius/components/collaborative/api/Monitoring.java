@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,11 @@ package org.eclipse.sirius.components.collaborative.api;
  */
 public final class Monitoring {
 
-    public static final String EVENT_HANDLER = "siriusweb_eventhandlers"; //$NON-NLS-1$
+    public static final String EVENT_HANDLER = "siriusweb_eventhandlers";
 
-    public static final String REPRESENTATION_EVENT_PROCESSOR_REFRESH = "siriusweb_representationeventprocessor_refresh"; //$NON-NLS-1$
+    public static final String REPRESENTATION_EVENT_PROCESSOR_REFRESH = "siriusweb_representationeventprocessor_refresh";
 
-    public static final String NAME = "name"; //$NON-NLS-1$
+    public static final String NAME = "name";
 
     private Monitoring() {
         // Prevent instantiation

@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class SelectComponent implements IComponent {
 
-    public static final String CANDIDATE_VARIABLE = "candidate"; //$NON-NLS-1$
+    public static final String CANDIDATE_VARIABLE = "candidate";
 
     private SelectComponentProps props;
 

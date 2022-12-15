@@ -40,13 +40,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultRelatedElementsDescriptionProvider implements IRelatedElementsDescriptionProvider {
 
-    public static final UUID FORM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("defaultRelatedElementsForm".getBytes()); //$NON-NLS-1$
+    public static final UUID FORM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("defaultRelatedElementsForm".getBytes());
 
-    private static final String GROUP_DESCRIPTION_ID = "defaultRelatedElementsGroup"; //$NON-NLS-1$
+    private static final String GROUP_DESCRIPTION_ID = "defaultRelatedElementsGroup";
 
-    private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage"; //$NON-NLS-1$
+    private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage";
 
-    private static final String FORM_TITLE = "Related Elements"; //$NON-NLS-1$
+    private static final String FORM_TITLE = "Related Elements";
 
     private final IObjectService objectService;
 
@@ -106,7 +106,7 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                                                               .orElseGet(() -> UUID.randomUUID().toString()))
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                                                                  .map(this.objectService::getLabel)
-                                                                 .orElse("")) //$NON-NLS-1$
+                                                                 .orElse(""))
                 .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList()))
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)

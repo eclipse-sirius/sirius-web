@@ -63,7 +63,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
-    public static final String DELETION_POLICY = "deletionPolicy"; //$NON-NLS-1$
+    public static final String DELETION_POLICY = "deletionPolicy";
 
     private final IObjectService objectService;
 
@@ -178,7 +178,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     private IStatus invokeDeleteNodeTool(Node node, IEditingContext editingContext, IDiagramContext diagramContext, DeletionPolicy deletionPolicy) {
-        IStatus result = new Failure(""); //$NON-NLS-1$
+        IStatus result = new Failure("");
         var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram(), editingContext);
 
         if (optionalNodeDescription.isPresent()) {
@@ -192,7 +192,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
 
                 NodeDescription nodeDescription = optionalNodeDescription.get();
-                this.logger.debug("Deleted diagram element {}", node.getId()); //$NON-NLS-1$
+                this.logger.debug("Deleted diagram element {}", node.getId());
                 result = nodeDescription.getDeleteHandler().apply(variableManager);
             } else {
                 String message = this.messageService.semanticObjectNotFound(node.getTargetObjectId());
@@ -208,7 +208,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     private IStatus invokeDeleteEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext, DeletionPolicy deletionPolicy) {
-        IStatus result = new Failure(""); //$NON-NLS-1$
+        IStatus result = new Failure("");
         var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram(), editingContext);
         if (optionalEdgeDescription.isPresent()) {
             var optionalSelf = this.objectService.getObject(editingContext, edge.getTargetObjectId());
@@ -230,7 +230,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 // @formatter:on
 
                 EdgeDescription edgeDescription = optionalEdgeDescription.get();
-                this.logger.debug("Deleted diagram edge {}", edge.getId()); //$NON-NLS-1$
+                this.logger.debug("Deleted diagram edge {}", edge.getId());
                 result = edgeDescription.getDeleteHandler().apply(variableManager);
             } else {
                 String message = this.messageService.semanticObjectNotFound(edge.getTargetObjectId());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class ImageSizeProviderTests {
 
-    private static final List<String> FOLDERS = List.of("svg", "png", "jpg"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final List<String> FOLDERS = List.of("svg", "png", "jpg");
 
     private final ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
 
@@ -63,8 +63,8 @@ public class ImageSizeProviderTests {
                 String fileName = file.getName();
                 String baseName = FilenameUtils.getBaseName(fileName);
 
-                String[] splitBaseName = baseName.split("-"); //$NON-NLS-1$
-                String[] expectedSize = splitBaseName[splitBaseName.length - 1].split("_"); //$NON-NLS-1$
+                String[] splitBaseName = baseName.split("-");
+                String[] expectedSize = splitBaseName[splitBaseName.length - 1].split("_");
                 String imagePath = folder + File.separator + fileName;
                 Double width = Double.parseDouble(expectedSize[0]);
                 Double height = Double.parseDouble(expectedSize[1]);

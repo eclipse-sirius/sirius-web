@@ -72,7 +72,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
             List<IFormDescriptionEditorEventHandler> formDescriptionEditorEventHandlers, ISubscriptionManager subscriptionManager,
             IFormDescriptionEditorCreationService formDescriptionEditorCreationService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.logger.trace("Creating the form description editor event processor {}", formDescriptionEditorContext.getFormDescriptionEditor().getId()); //$NON-NLS-1$
+        this.logger.trace("Creating the form description editor event processor {}", formDescriptionEditorContext.getFormDescriptionEditor().getId());
         this.editingContext = Objects.requireNonNull(editingContext);
         this.formDescriptionEditorContext = Objects.requireNonNull(formDescriptionEditorContext);
         this.formDescriptionEditorEventHandlers = Objects.requireNonNull(formDescriptionEditorEventHandlers);
@@ -88,7 +88,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
         this.formDescriptionEditorEventFlux = new FormDescriptionEditorEventFlux(formDescriptionEditor);
 
         if (formDescriptionEditor != null) {
-            this.logger.trace("FormDescriptionEditor refreshed: {})", formDescriptionEditor.getId()); //$NON-NLS-1$
+            this.logger.trace("FormDescriptionEditor refreshed: {})", formDescriptionEditor.getId());
         }
     }
 
@@ -115,7 +115,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
                 IFormDescriptionEditorEventHandler formDescriptionEditorEventHandler = optionalFormEventHandler.get();
                 formDescriptionEditorEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.formDescriptionEditorContext, formDescriptionEditorInput);
             } else {
-                this.logger.warn("No handler found for event: {}", formDescriptionEditorInput); //$NON-NLS-1$
+                this.logger.warn("No handler found for event: {}", formDescriptionEditorInput);
             }
         }
     }
@@ -125,7 +125,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
         if (this.shouldRefresh(changeDescription)) {
             FormDescriptionEditor refreshedFormDescriptionEditor = this.formDescriptionEditorCreationService.refresh(this.editingContext, this.formDescriptionEditorContext);
             if (refreshedFormDescriptionEditor != null) {
-                this.logger.trace("FormDescriptionEditor refreshed: {}", refreshedFormDescriptionEditor.getId()); //$NON-NLS-1$
+                this.logger.trace("FormDescriptionEditor refreshed: {}", refreshedFormDescriptionEditor.getId());
                 this.formDescriptionEditorContext.update(refreshedFormDescriptionEditor);
                 this.formDescriptionEditorEventFlux.formDescriptionEditorRefreshed(changeDescription.getInput(), refreshedFormDescriptionEditor);
             }
@@ -169,7 +169,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the form description editor event processor {}", this.formDescriptionEditorContext.getFormDescriptionEditor().getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the form description editor event processor {}", this.formDescriptionEditorContext.getFormDescriptionEditor().getId());
 
         this.subscriptionManager.dispose();
 

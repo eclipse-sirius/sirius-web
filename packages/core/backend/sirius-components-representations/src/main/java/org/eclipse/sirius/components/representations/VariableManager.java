@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public class VariableManager {
 
-    public static final String SELF = "self"; //$NON-NLS-1$
+    public static final String SELF = "self";
 
     /**
      * The parent variable manager.
@@ -93,9 +93,9 @@ public class VariableManager {
             String name = var.getKey();
             Object value = var.getValue();
             boolean local = this.variables.containsKey(name);
-            stringBuilder.append(name).append(" = ").append(value); //$NON-NLS-1$
+            stringBuilder.append(name).append(" = ").append(value);
             if (!local) {
-                stringBuilder.append(" [inherited]"); //$NON-NLS-1$
+                stringBuilder.append(" [inherited]");
             }
             stringBuilder.append(System.lineSeparator());
         }

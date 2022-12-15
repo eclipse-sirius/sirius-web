@@ -42,7 +42,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateProjectDataFetcher.CREATE_PROJECT_FIELD)
 public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String CREATE_PROJECT_FIELD = "createProject"; //$NON-NLS-1$
+    public static final String CREATE_PROJECT_FIELD = "createProject";
 
     private final ObjectMapper objectMapper;
 

@@ -98,7 +98,7 @@ public class BorderNodePositionTests {
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         // add a border node with an non positioned label
-        LabelLayoutData labelLayoutData = this.createLabelLayoutData(Position.at(-1, -1), "any", BORDER_NODE_LABEL_TEXT_BOUNDS); //$NON-NLS-1$
+        LabelLayoutData labelLayoutData = this.createLabelLayoutData(Position.at(-1, -1), "any", BORDER_NODE_LABEL_TEXT_BOUNDS);
         borderNodes.add(this.createBorderNodeLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, DEFAULT_BORDER_NODE_SIZE, initializeDiagram, NodeType.NODE_RECTANGLE, labelLayoutData));
 
         NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
@@ -331,7 +331,7 @@ public class BorderNodePositionTests {
 
     private NodeLayoutData createBorderNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
         NodeLayoutData nodeLayoutData = this.createBorderNodeLayoutData(position, size, parent, nodeType,
-                this.createLabelLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, "any", BORDER_NODE_LABEL_TEXT_BOUNDS)); //$NON-NLS-1$
+                this.createLabelLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, "any", BORDER_NODE_LABEL_TEXT_BOUNDS));
         return nodeLayoutData;
     }
 
@@ -343,7 +343,7 @@ public class BorderNodePositionTests {
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(nodeType);
         nodeLayoutData.setChildrenNodes(new ArrayList<>());
-        nodeLayoutData.setLabel(this.createLabelLayoutData(Position.at(0, 0), "inside", new TextBounds(Size.of(0, 0), Position.at(0, 0)))); //$NON-NLS-1$
+        nodeLayoutData.setLabel(this.createLabelLayoutData(Position.at(0, 0), "inside", new TextBounds(Size.of(0, 0), Position.at(0, 0))));
         return nodeLayoutData;
     }
 

@@ -78,8 +78,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addBeginLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_beginLabelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_beginLabelExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_beginLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_beginLabelExpression_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -91,8 +91,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addEndLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_endLabelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_endLabelExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_endLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_endLabelExpression_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -104,8 +104,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addIsDomainBasedEdgePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_isDomainBasedEdge_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_isDomainBasedEdge_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_isDomainBasedEdge_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_isDomainBasedEdge_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -117,8 +117,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addSourceNodeDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_sourceNodeDescriptions_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodeDescriptions_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_sourceNodeDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodeDescriptions_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
@@ -130,8 +130,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addTargetNodeDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_targetNodeDescriptions_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodeDescriptions_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_targetNodeDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodeDescriptions_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
@@ -143,8 +143,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addSourceNodesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_sourceNodesExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodesExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_sourceNodesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodesExpression_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -156,8 +156,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     protected void addTargetNodesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_targetNodesExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodesExpression_feature", "_UI_EdgeDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_EdgeDescription_targetNodesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodesExpression_feature", "_UI_EdgeDescription_type"),
                 ViewPackage.Literals.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -201,7 +201,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgeDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgeDescription.svg"));
     }
 
     /**
@@ -222,8 +222,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     public String getText(Object object) {
         String label = ((EdgeDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_EdgeDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_EdgeDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_EdgeDescription_type") :
+                this.getString("_UI_EdgeDescription_type") + " " + label;
     }
 
     /**
@@ -266,36 +266,36 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         EdgeTool newEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        newEdgeTool.setName("Create Edge"); //$NON-NLS-1$
+        newEdgeTool.setName("Create Edge");
         ChangeContext initialOperation = ViewFactory.eINSTANCE.createChangeContext();
-        initialOperation.setExpression("aql:semanticEdgeSource"); //$NON-NLS-1$
+        initialOperation.setExpression("aql:semanticEdgeSource");
         newEdgeTool.getBody().add(initialOperation);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, newEdgeTool));
 
         SourceEdgeEndReconnectionTool sourceReconnectionTool = ViewFactory.eINSTANCE.createSourceEdgeEndReconnectionTool();
-        sourceReconnectionTool.setName("Reconnect Edge Source"); //$NON-NLS-1$
+        sourceReconnectionTool.setName("Reconnect Edge Source");
         ChangeContext reconnectSourceInitialOperation = ViewFactory.eINSTANCE.createChangeContext();
-        reconnectSourceInitialOperation.setExpression("aql:edgeSemanticElement"); //$NON-NLS-1$
+        reconnectSourceInitialOperation.setExpression("aql:edgeSemanticElement");
         SetValue reconnectSourceSetValue = ViewFactory.eINSTANCE.createSetValue();
         reconnectSourceInitialOperation.getChildren().add(reconnectSourceSetValue);
         sourceReconnectionTool.getBody().add(reconnectSourceInitialOperation);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, sourceReconnectionTool));
 
         TargetEdgeEndReconnectionTool targetReconnectionTool = ViewFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
-        targetReconnectionTool.setName("Reconnect Edge Target"); //$NON-NLS-1$
+        targetReconnectionTool.setName("Reconnect Edge Target");
         ChangeContext reconnectTargetInitialOperation = ViewFactory.eINSTANCE.createChangeContext();
-        reconnectTargetInitialOperation.setExpression("aql:edgeSemanticElement"); //$NON-NLS-1$
+        reconnectTargetInitialOperation.setExpression("aql:edgeSemanticElement");
         SetValue reconnectTargetSetValue = ViewFactory.eINSTANCE.createSetValue();
         reconnectTargetInitialOperation.getChildren().add(reconnectTargetSetValue);
         targetReconnectionTool.getBody().add(reconnectTargetInitialOperation);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, targetReconnectionTool));
 
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        newEdgeStyle.setColor("#002639"); //$NON-NLS-1$
+        newEdgeStyle.setColor("#002639");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
 
         ConditionalEdgeStyle conditionalEdgeStyle = ViewFactory.eINSTANCE.createConditionalEdgeStyle();
-        conditionalEdgeStyle.setColor("#002639"); //$NON-NLS-1$
+        conditionalEdgeStyle.setColor("#002639");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES, conditionalEdgeStyle));
     }
 
@@ -313,7 +313,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         boolean qualify = childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+            return this.getString("_UI_CreateChild_text2",
                     new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);

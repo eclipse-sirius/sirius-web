@@ -40,8 +40,8 @@ public class GetEditingContextActionsEventHandlerTests {
     @Test
     public void testGetEditingContextActions() {
         var eventHandler = new GetEditingContextActionsEventHandler(new ICollaborativeMessageService.NoOp(), List.of(), new SimpleMeterRegistry());
-        var input = new GetEditingContextActionsInput(UUID.randomUUID(), "editingContextId"); //$NON-NLS-1$
-        IEditingContext editingContext = () -> "editingContextId"; //$NON-NLS-1$
+        var input = new GetEditingContextActionsInput(UUID.randomUUID(), "editingContextId");
+        IEditingContext editingContext = () -> "editingContextId";
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

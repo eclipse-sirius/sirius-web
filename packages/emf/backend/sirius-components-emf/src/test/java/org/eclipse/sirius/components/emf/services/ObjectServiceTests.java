@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class ObjectServiceTests {
         // @formatter:off
         assertThat(imagePath)
             .isNotNull()
-            .endsWith("/icons/full/obj16/EAttribute.gif"); //$NON-NLS-1$
+            .endsWith("/icons/full/obj16/EAttribute.gif");
         // @formatter:on
     }
 
@@ -58,7 +58,7 @@ public class ObjectServiceTests {
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
         ObjectService objectService = new ObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
         Resource resource = new XMIResourceImpl();
-        resource.setURI(URI.createURI("test.xmi")); //$NON-NLS-1$
+        resource.setURI(URI.createURI("test.xmi"));
         EObject eObject = EcoreFactory.eINSTANCE.createEClass();
         resource.getContents().add(eObject);
         resource.unload();

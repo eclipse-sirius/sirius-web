@@ -91,7 +91,7 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .map(self -> (List<?>) self)
                 .flatMap(self -> self.stream().findFirst())
                 .map(this.objectService::getFullLabel)
-                .orElse("Properties"); //$NON-NLS-1$
+                .orElse("Properties");
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .filter(self -> self instanceof List<?>)

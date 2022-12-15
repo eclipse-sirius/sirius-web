@@ -34,17 +34,17 @@ package org.eclipse.sirius.web.graphql.schema;
  * @author sbegaudeau
  */
 public class ObjectTypeProvider {
-    public static final String TYPE = "Object"; //$NON-NLS-1$
+    public static final String TYPE = "Object";
 
-    public static final String EXPRESSION_BASED_OBJECTS_FIELD = "expressionBasedObjects"; //$NON-NLS-1$
+    public static final String EXPRESSION_BASED_OBJECTS_FIELD = "expressionBasedObjects";
 
-    public static final String EXPRESSION_BASED_OBJECT_FIELD = "expressionBasedObject"; //$NON-NLS-1$
+    public static final String EXPRESSION_BASED_OBJECT_FIELD = "expressionBasedObject";
 
-    public static final String EXPRESSION_BASED_STRING_FIELD = "expressionBasedString"; //$NON-NLS-1$
+    public static final String EXPRESSION_BASED_STRING_FIELD = "expressionBasedString";
 
-    public static final String EXPRESSION_BASED_INT_FIELD = "expressionBasedInt"; //$NON-NLS-1$
+    public static final String EXPRESSION_BASED_INT_FIELD = "expressionBasedInt";
 
-    public static final String EXPRESSION_BASED_BOOLEAN_FIELD = "expressionBasedBoolean"; //$NON-NLS-1$
+    public static final String EXPRESSION_BASED_BOOLEAN_FIELD = "expressionBasedBoolean";
 
-    public static final String EXPRESSION_ARGUMENT = "expression"; //$NON-NLS-1$
+    public static final String EXPRESSION_ARGUMENT = "expression";
 }

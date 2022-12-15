@@ -53,9 +53,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider {
 
-    public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString(); //$NON-NLS-1$
+    public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
-    public static final String DOCUMENT_KIND = "siriusWeb://document"; //$NON-NLS-1$
+    public static final String DOCUMENT_KIND = "siriusWeb://document";
 
     private final IObjectService objectService;
 
@@ -87,7 +87,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
 
         // @formatter:off
         return TreeDescription.newTreeDescription(DESCRIPTION_ID)
-                .label("Explorer") //$NON-NLS-1$
+                .label("Explorer")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
@@ -121,7 +121,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     }
 
     private String getKind(VariableManager variableManager) {
-        String kind = ""; //$NON-NLS-1$
+        String kind = "";
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         if (self instanceof RepresentationMetadata) {
             RepresentationMetadata representationMetadata = (RepresentationMetadata) self;
@@ -137,7 +137,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     private String getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
-        String label = ""; //$NON-NLS-1$
+        String label = "";
         if (self instanceof RepresentationMetadata) {
             label = ((RepresentationMetadata) self).getLabel();
         } else if (self instanceof Resource) {
@@ -296,7 +296,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 return deleteTreeItemHandler.handle(editingContext, treeItem);
             }
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 
     private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
@@ -316,6 +316,6 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 return renameTreeItemHandler.handle(editingContext, treeItem, newLabel);
             }
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class ListElementProps implements IProps {
-    public static final String TYPE = "List"; //$NON-NLS-1$
+    public static final String TYPE = "List";
 
     private String id;
 
@@ -78,7 +78,7 @@ public final class ListElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, items: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, items: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.items);
     }
 

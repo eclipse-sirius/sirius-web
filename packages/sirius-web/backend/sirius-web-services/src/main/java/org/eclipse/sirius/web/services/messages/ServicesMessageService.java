@@ -35,31 +35,31 @@ public class ServicesMessageService implements IServicesMessageService {
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
     }
 
     @Override
     public String invalidProjectName() {
-        return this.messageSourceAccessor.getMessage("INVALID_PROJECT_NAME"); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("INVALID_PROJECT_NAME");
     }
 
     @Override
     public String projectNotFound() {
-        return this.messageSourceAccessor.getMessage("PROJECT_NOT_FOUND"); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("PROJECT_NOT_FOUND");
     }
 
     @Override
     public String unexpectedError() {
-        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR");
     }
 
     @Override
     public String invalidDocumentName(String name) {
-        return this.messageSourceAccessor.getMessage("INVALID_DOCUMENT_NAME", new Object[] { name }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("INVALID_DOCUMENT_NAME", new Object[] { name });
     }
 
     @Override
     public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
-        return this.messageSourceAccessor.getMessage("STEREOTYPE_DESCRIPTION_NOT_FOUND", new Object[] { stereotypeDescriptionId }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("STEREOTYPE_DESCRIPTION_NOT_FOUND", new Object[] { stereotypeDescriptionId });
     }
 }

@@ -29,7 +29,7 @@ public interface ICollaborativeFormDescriptionEditorMessageService {
 
         @Override
         public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
     }

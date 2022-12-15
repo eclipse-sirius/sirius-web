@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,9 +34,9 @@ import org.junit.jupiter.api.Test;
  */
 public class ContainerMappingSizeProviderTests {
 
-    private static final String AQL_20 = "aql:20"; //$NON-NLS-1$
+    private static final String AQL_20 = "aql:20";
 
-    private static final String AQL_10 = "aql:10"; //$NON-NLS-1$
+    private static final String AQL_10 = "aql:10";
 
     @Test
     public void testSizeProviderWithNoProvidedSizeFromVSM() {

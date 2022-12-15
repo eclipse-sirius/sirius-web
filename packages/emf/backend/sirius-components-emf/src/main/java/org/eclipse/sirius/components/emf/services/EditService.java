@@ -108,7 +108,7 @@ public class EditService implements IEditService {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
         resourceSet.setPackageRegistry(ePackageRegistry);
-        Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of()); //$NON-NLS-1$
+        Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of());
         resourceSet.getResources().add(resource);
 
         // @formatter:off

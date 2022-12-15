@@ -48,7 +48,7 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
     @Override
     public boolean canHandle(ObjectNode root) {
         // @formatter:off
-        return Optional.ofNullable(root.get("kind")) //$NON-NLS-1$
+        return Optional.ofNullable(root.get("kind"))
                 .map(JsonNode::asText)
                 .filter(this::isHierarchyRepresentation)
                 .isPresent();
@@ -56,8 +56,8 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
     }
 
     private boolean isHierarchyRepresentation(String kind) {
-        String type = this.kindParser.getParameterValues(kind).get("type").get(0); //$NON-NLS-1$
-        return type.equals("ForceDirectedTree") || type.equals("TreeMap") || type.equals("ZoomableCirclePacking"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String type = this.kindParser.getParameterValues(kind).get("type").get(0);
+        return type.equals("ForceDirectedTree") || type.equals("TreeMap") || type.equals("ZoomableCirclePacking");
     }
 
     @Override

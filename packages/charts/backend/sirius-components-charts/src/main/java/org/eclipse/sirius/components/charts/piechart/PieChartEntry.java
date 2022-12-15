@@ -41,7 +41,7 @@ public class PieChartEntry {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'key: {1}, value: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'key: {1}, value: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.key, this.value);
     }
 

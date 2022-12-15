@@ -57,9 +57,9 @@ import reactor.core.publisher.Sinks.One;
  */
 public class DeleteFromDiagramEventHandlerTests {
 
-    private static final String NODE_ID = "nodeId"; //$NON-NLS-1$
+    private static final String NODE_ID = "nodeId";
 
-    private static final String EDGE_ID = "edgeId"; //$NON-NLS-1$
+    private static final String EDGE_ID = "edgeId";
 
     private final IObjectService objectService = new IObjectService.NoOp() {
         @Override
@@ -106,7 +106,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
         var nodeIds = List.of(NODE_ID);
         var edgeIds = List.<String> of();
-        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC); //$NON-NLS-1$ //$NON-NLS-2$
+        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC);
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -130,7 +130,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
         var nodeIds = List.<String> of();
         var edgeIds = List.<String> of(EDGE_ID);
-        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC); //$NON-NLS-1$ //$NON-NLS-2$
+        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC);
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

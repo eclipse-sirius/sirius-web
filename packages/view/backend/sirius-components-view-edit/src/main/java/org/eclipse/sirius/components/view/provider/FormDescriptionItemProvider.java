@@ -91,7 +91,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FormDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FormDescription.svg"));
     }
 
     /**
@@ -112,8 +112,8 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     @Override
     public String getText(Object object) {
         String label = ((FormDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FormDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_FormDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_FormDescription_type") :
+                this.getString("_UI_FormDescription_type") + " " + label;
     }
 
     /**

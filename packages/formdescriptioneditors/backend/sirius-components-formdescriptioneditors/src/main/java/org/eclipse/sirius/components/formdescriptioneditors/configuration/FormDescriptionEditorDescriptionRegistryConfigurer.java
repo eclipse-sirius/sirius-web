@@ -42,8 +42,8 @@ public class FormDescriptionEditorDescriptionRegistryConfigurer implements IRepr
 
     @Override
     public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        UUID id = UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()); //$NON-NLS-1$
-        String label = "FormDescriptionEditor"; //$NON-NLS-1$
+        UUID id = UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes());
+        String label = "FormDescriptionEditor";
 
         //@// @formatter:off
         Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get(IRepresentationDescription.CLASS, Object.class)

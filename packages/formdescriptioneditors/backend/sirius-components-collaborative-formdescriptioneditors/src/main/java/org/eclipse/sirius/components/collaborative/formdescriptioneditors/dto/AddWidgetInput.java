@@ -78,7 +78,7 @@ public class AddWidgetInput implements IFormDescriptionEditorInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, containerId: {4}, kind: {5}, index: {6}}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, containerId: {4}, kind: {5}, index: {6}}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.containerId, this.kind, this.index);
     }
 

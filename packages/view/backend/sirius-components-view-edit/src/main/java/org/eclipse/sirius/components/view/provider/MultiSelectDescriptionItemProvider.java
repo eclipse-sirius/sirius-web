@@ -66,8 +66,8 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_MultiSelectDescription_valueExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescription_valueExpression_feature", "_UI_MultiSelectDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_MultiSelectDescription_valueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescription_valueExpression_feature", "_UI_MultiSelectDescription_type"),
                 ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -79,8 +79,8 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
      */
     protected void addCandidatesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_MultiSelectDescription_candidatesExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescription_candidatesExpression_feature", "_UI_MultiSelectDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_MultiSelectDescription_candidatesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescription_candidatesExpression_feature", "_UI_MultiSelectDescription_type"),
                 ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -92,8 +92,8 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
      */
     protected void addCandidateLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_MultiSelectDescription_candidateLabelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescription_candidateLabelExpression_feature", "_UI_MultiSelectDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_MultiSelectDescription_candidateLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescription_candidateLabelExpression_feature", "_UI_MultiSelectDescription_type"),
                 ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -136,7 +136,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiSelectDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiSelectDescription.svg"));
     }
 
     /**
@@ -157,8 +157,8 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
     @Override
     public String getText(Object object) {
         String label = ((MultiSelectDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_MultiSelectDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_MultiSelectDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_MultiSelectDescription_type") :
+                this.getString("_UI_MultiSelectDescription_type") + " " + label;
     }
 
     /**
@@ -230,7 +230,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
         boolean qualify = childFeature == ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+            return this.getString("_UI_CreateChild_text2",
                     new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);

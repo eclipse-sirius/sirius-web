@@ -19,9 +19,9 @@ package org.eclipse.sirius.components.collaborative.diagrams;
  */
 public final class DiagramChangeKind {
 
-    public static final String DIAGRAM_LAYOUT_CHANGE = "DIAGRAM_LAYOUT_CHANGE"; //$NON-NLS-1$
+    public static final String DIAGRAM_LAYOUT_CHANGE = "DIAGRAM_LAYOUT_CHANGE";
 
-    public static final String DIAGRAM_ELEMENT_VISIBILITY_CHANGE = "DIAGRAM_ELEMENT_VISIBILITY_CHANGE"; //$NON-NLS-1$
+    public static final String DIAGRAM_ELEMENT_VISIBILITY_CHANGE = "DIAGRAM_ELEMENT_VISIBILITY_CHANGE";
 
     private DiagramChangeKind() {
         // Prevent instantiation

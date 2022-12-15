@@ -19,18 +19,18 @@ package org.eclipse.sirius.web.graphql.schema;
  */
 public class DiagramTypesProvider {
 
-    public static final String DIAGRAM_TYPE = "Diagram"; //$NON-NLS-1$
+    public static final String DIAGRAM_TYPE = "Diagram";
 
-    public static final String SINGLE_CLICK_ON_TWO_DIAGRAM_ELEMENTS_TOOL_TYPE = "SingleClickOnTwoDiagramElementsTool"; //$NON-NLS-1$
+    public static final String SINGLE_CLICK_ON_TWO_DIAGRAM_ELEMENTS_TOOL_TYPE = "SingleClickOnTwoDiagramElementsTool";
 
-    public static final String SINGLE_CLICK_ON_DIAGRAM_ELEMENT_TOOL_TYPE = "SingleClickOnDiagramElementTool"; //$NON-NLS-1$
+    public static final String SINGLE_CLICK_ON_DIAGRAM_ELEMENT_TOOL_TYPE = "SingleClickOnDiagramElementTool";
 
-    public static final String DELETE_TOOL_TYPE = "DeleteTool"; //$NON-NLS-1$
+    public static final String DELETE_TOOL_TYPE = "DeleteTool";
 
-    public static final String TOOL_SECTION_TYPE = "ToolSection"; //$NON-NLS-1$
+    public static final String TOOL_SECTION_TYPE = "ToolSection";
 
-    public static final String TOOL_SECTIONS_FIELD = "toolSections"; //$NON-NLS-1$
+    public static final String TOOL_SECTIONS_FIELD = "toolSections";
 
-    public static final String AUTO_LAYOUT_FIELD = "autoLayout"; //$NON-NLS-1$
+    public static final String AUTO_LAYOUT_FIELD = "autoLayout";
 
 }

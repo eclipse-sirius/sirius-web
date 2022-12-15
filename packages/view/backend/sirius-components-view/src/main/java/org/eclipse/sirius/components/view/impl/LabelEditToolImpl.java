@@ -158,7 +158,7 @@ public class LabelEditToolImpl extends ToolImpl implements LabelEditTool {
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (initialDirectEditLabelExpression: "); //$NON-NLS-1$
+        result.append(" (initialDirectEditLabelExpression: ");
         result.append(this.initialDirectEditLabelExpression);
         result.append(')');
         return result.toString();

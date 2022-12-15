@@ -18,9 +18,9 @@ package org.eclipse.sirius.components.graphql.api;
  * @author sbegaudeau
  */
 public final class LocalContextConstants {
-    public static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
+    public static final String EDITING_CONTEXT_ID = "editingContextId";
 
-    public static final String REPRESENTATION_ID = "representationId"; //$NON-NLS-1$
+    public static final String REPRESENTATION_ID = "representationId";
 
     private LocalContextConstants() {
         // Prevent instantiation

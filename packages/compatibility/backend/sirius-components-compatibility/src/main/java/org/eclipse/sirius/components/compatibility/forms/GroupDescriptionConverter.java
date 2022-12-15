@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class GroupDescriptionConverter {
                 this.modelOperationHandlerSwitchProvider);
 
         Function<VariableManager, String> idProvider = variableManager -> String.valueOf(siriusGroup2SiriusWebGroup.size());
-        StringValueProvider labelProvider = new StringValueProvider(this.interpreter, Optional.ofNullable(siriusGroupDescription.getLabelExpression()).orElse("")); //$NON-NLS-1$
+        StringValueProvider labelProvider = new StringValueProvider(this.interpreter, Optional.ofNullable(siriusGroupDescription.getLabelExpression()).orElse(""));
 
         // @formatter:off
         List<AbstractControlDescription> controlDescriptions = siriusGroupDescription.getControls().stream()

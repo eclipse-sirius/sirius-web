@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,12 +30,12 @@ public final class LabelDescription {
      * The name of the variable passed to a label id provider so that the label's own id can include the id of it's
      * owner/parent diagram element.
      */
-    public static final String OWNER_ID = "ownerId"; //$NON-NLS-1$
+    public static final String OWNER_ID = "ownerId";
 
     /**
      * The suffix used to build a label's id given its owner's.
      */
-    public static final String LABEL_SUFFIX = "_label"; //$NON-NLS-1$
+    public static final String LABEL_SUFFIX = "_label";
 
     private String id;
 
@@ -71,7 +71,7 @@ public final class LabelDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 

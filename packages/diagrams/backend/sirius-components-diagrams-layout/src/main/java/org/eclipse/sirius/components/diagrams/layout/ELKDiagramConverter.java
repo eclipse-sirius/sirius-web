@@ -65,13 +65,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ELKDiagramConverter implements IELKDiagramConverter {
 
-    public static final IProperty<String> PROPERTY_TYPE = new Property<>("org.eclipse.sirius.components.layout.type"); //$NON-NLS-1$
+    public static final IProperty<String> PROPERTY_TYPE = new Property<>("org.eclipse.sirius.components.layout.type");
 
-    public static final IProperty<Class<? extends ILayoutStrategy>> PROPERTY_CHILDREN_LAYOUT_STRATEGY = new Property<>("org.eclipse.sirius.components.layout.children.layout.strategy"); //$NON-NLS-1$
+    public static final IProperty<Class<? extends ILayoutStrategy>> PROPERTY_CHILDREN_LAYOUT_STRATEGY = new Property<>("org.eclipse.sirius.components.layout.children.layout.strategy");
 
-    public static final String DEFAULT_DIAGRAM_TYPE = "graph"; //$NON-NLS-1$
+    public static final String DEFAULT_DIAGRAM_TYPE = "graph";
 
-    public static final String DEFAULT_IMAGE_TYPE = "image:inside-center"; //$NON-NLS-1$
+    public static final String DEFAULT_IMAGE_TYPE = "image:inside-center";
 
     private final TextBoundsService textBoundsService;
 
@@ -413,7 +413,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             ImageNodeStyle imageNodeStyle = (ImageNodeStyle) node.getStyle();
 
             ElkNode elkImage = ElkGraphFactory.eINSTANCE.createElkNode();
-            elkImage.setIdentifier(node.getId() + "_image"); //$NON-NLS-1$
+            elkImage.setIdentifier(node.getId() + "_image");
             elkImage.setProperty(PROPERTY_TYPE, DEFAULT_IMAGE_TYPE);
 
             Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
@@ -485,7 +485,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         }
 
         if (label.getText().isEmpty() && !label.getStyle().getIconURL().isEmpty() || isInsideHeader) {
-            elkLabel.setText(" "); //$NON-NLS-1$
+            elkLabel.setText(" ");
         } else {
             elkLabel.setText(label.getText());
         }
@@ -515,14 +515,14 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         if (source != null) {
             elkEdge.getSources().add(source);
         } else {
-            String pattern = "The source with the id {} has not been found"; //$NON-NLS-1$
+            String pattern = "The source with the id {} has not been found";
             this.logger.warn(pattern, edge.getSourceId());
         }
 
         if (target != null) {
             elkEdge.getTargets().add(target);
         } else {
-            String pattern = "The target with the id {} has not been found"; //$NON-NLS-1$
+            String pattern = "The target with the id {} has not been found";
             this.logger.warn(pattern, edge.getTargetId());
         }
 

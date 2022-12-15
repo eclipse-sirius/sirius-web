@@ -92,7 +92,7 @@ public class PushButtonEventHandler implements IFormEventHandler {
                                         .map(ToolbarAction.class::cast)
                                         .map(ToolbarAction::getPushButtonHandler);
             }
-            IStatus status = handler.map(Supplier::get).orElse(new Failure("")); //$NON-NLS-1$
+            IStatus status = handler.map(Supplier::get).orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {

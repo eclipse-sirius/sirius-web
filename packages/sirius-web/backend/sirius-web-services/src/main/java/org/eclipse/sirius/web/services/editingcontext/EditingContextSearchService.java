@@ -48,7 +48,7 @@ import io.micrometer.core.instrument.Timer;
 @Service
 public class EditingContextSearchService implements IEditingContextSearchService {
 
-    private static final String TIMER_NAME = "siriusweb_editingcontext_load"; //$NON-NLS-1$
+    private static final String TIMER_NAME = "siriusweb_editingcontext_load";
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextSearchService.class);
 
@@ -79,7 +79,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
     public Optional<IEditingContext> findById(String editingContextId) {
         long start = System.currentTimeMillis();
 
-        this.logger.debug("Loading the editing context {}", editingContextId); //$NON-NLS-1$
+        this.logger.debug("Loading the editing context {}", editingContextId);
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactoryService.createEditingDomain(editingContextId);
         ResourceSet resourceSet = editingDomain.getResourceSet();
@@ -94,7 +94,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
                 resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
             } catch (IOException | IllegalArgumentException exception) {
-                this.logger.warn("An error occured while loading document {}: {}.", documentEntity.getId(), exception.getMessage()); //$NON-NLS-1$
+                this.logger.warn("An error occured while loading document {}: {}.", documentEntity.getId(), exception.getMessage());
                 resourceSet.getResources().remove(resource);
             }
         }
@@ -103,7 +103,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         // of inter-resources references
         resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
-        this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId); //$NON-NLS-1$
+        this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

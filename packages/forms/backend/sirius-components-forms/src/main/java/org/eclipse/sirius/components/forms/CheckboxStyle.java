@@ -41,7 +41,7 @@ public final class CheckboxStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'color: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'color: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color);
     }
 

@@ -59,7 +59,7 @@ public class UpdateEdgeRoutingPointsEventHandlerTests {
         };
 
         var handler = new UpdateEdgeRoutingPointsEventHandler(new ICollaborativeDiagramMessageService.NoOp(), diagramQueryService, new SimpleMeterRegistry());
-        var input = new UpdateEdgeRoutingPointsInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, List.of()); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new UpdateEdgeRoutingPointsInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, List.of());
 
         assertThat(handler.canHandle(input)).isTrue();
 

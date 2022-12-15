@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class CollaborativeDiagramMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-web-spring-collaborative-diagrams"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-web-spring-collaborative-diagrams";
 
     @Bean
     public MessageSourceAccessor collaborativeDiagramMessageSourceAccessor() {

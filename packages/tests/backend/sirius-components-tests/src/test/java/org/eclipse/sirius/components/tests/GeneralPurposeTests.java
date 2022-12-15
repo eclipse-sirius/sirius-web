@@ -37,72 +37,72 @@ import org.junit.jupiter.api.Test;
  */
 public class GeneralPurposeTests {
 
-    private static final String UNIX_PATH_SEPARATOR = "/"; //$NON-NLS-1$
+    private static final String UNIX_PATH_SEPARATOR = "/";
 
-    private static final String WINDOWS_PATH_SEPARATOR = "\\"; //$NON-NLS-1$
+    private static final String WINDOWS_PATH_SEPARATOR = "\\";
 
-    private static final String GIT_FOLDER_NAME = ".git"; //$NON-NLS-1$
+    private static final String GIT_FOLDER_NAME = ".git";
 
-    private static final String BACKEND_FOLDER_PATH = "packages"; //$NON-NLS-1$
+    private static final String BACKEND_FOLDER_PATH = "packages";
 
-    private static final String FRONTEND_SRC_FOLDER_PATH = "packages"; //$NON-NLS-1$
+    private static final String FRONTEND_SRC_FOLDER_PATH = "packages";
 
-    private static final String TYPESCRIPT_FILE_EXTENSION = ".ts"; //$NON-NLS-1$
+    private static final String TYPESCRIPT_FILE_EXTENSION = ".ts";
 
-    private static final String TYPESCRIPT_JSX_FILE_EXTENSION = ".tsx"; //$NON-NLS-1$
+    private static final String TYPESCRIPT_JSX_FILE_EXTENSION = ".tsx";
 
-    private static final String CSS_FILE_EXTENSION = ".css"; //$NON-NLS-1$
+    private static final String CSS_FILE_EXTENSION = ".css";
 
-    private static final String JAVA_FILE_EXTENSION = "java"; //$NON-NLS-1$
+    private static final String JAVA_FILE_EXTENSION = "java";
 
-    private static final String SUPPRESS_WARNINGS = "@SuppressWarnings"; //$NON-NLS-1$
+    private static final String SUPPRESS_WARNINGS = "@SuppressWarnings";
 
-    private static final String CHECKSTYLE_HIDDEN_FIELD = "@SuppressWarnings(\"checkstyle:HiddenField\")"; //$NON-NLS-1$
+    private static final String CHECKSTYLE_HIDDEN_FIELD = "@SuppressWarnings(\"checkstyle:HiddenField\")";
 
-    private static final String CHECKSTYLE_ILLEGAL_CATCH = "@SuppressWarnings(\"checkstyle:IllegalCatch\")"; //$NON-NLS-1$
+    private static final String CHECKSTYLE_ILLEGAL_CATCH = "@SuppressWarnings(\"checkstyle:IllegalCatch\")";
 
-    private static final String CHECKSTYLE_MULTIPLE_STRING_LITERALS = "@SuppressWarnings(\"checkstyle:MultipleStringLiterals\")"; //$NON-NLS-1$
+    private static final String CHECKSTYLE_MULTIPLE_STRING_LITERALS = "@SuppressWarnings(\"checkstyle:MultipleStringLiterals\")";
 
-    private static final String CHECKSTYLE_NCSS = "@SuppressWarnings(\"checkstyle:JavaNCSS\")"; //$NON-NLS-1$
+    private static final String CHECKSTYLE_NCSS = "@SuppressWarnings(\"checkstyle:JavaNCSS\")";
 
-    private static final String BUILDER = "Builder"; //$NON-NLS-1$
+    private static final String BUILDER = "Builder";
 
-    private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF"; //$NON-NLS-1$
+    private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF";
 
-    private static final String ESLINT_DISABLE = "eslint-disable"; //$NON-NLS-1$
+    private static final String ESLINT_DISABLE = "eslint-disable";
 
-    private static final String THROW_NEW = "throw new"; //$NON-NLS-1$
+    private static final String THROW_NEW = "throw new";
 
-    private static final String DEBUGGER = "debugger"; //$NON-NLS-1$
+    private static final String DEBUGGER = "debugger";
 
-    private static final String CONSOLE_LOG = "console.log"; //$NON-NLS-1$
+    private static final String CONSOLE_LOG = "console.log";
 
-    private static final String ALERT = "alert("; //$NON-NLS-1$
+    private static final String ALERT = "alert(";
 
-    private static final String CONFIRM = "confirm("; //$NON-NLS-1$
+    private static final String CONFIRM = "confirm(";
 
-    private static final String PROMPT = "prompt("; //$NON-NLS-1$
+    private static final String PROMPT = "prompt(";
 
-    private static final String WIDTH_100 = "width: 100%;"; //$NON-NLS-1$
+    private static final String WIDTH_100 = "width: 100%;";
 
-    private static final String HEIGHT_100 = "height: 100%;"; //$NON-NLS-1$
+    private static final String HEIGHT_100 = "height: 100%;";
 
-    private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';"; //$NON-NLS-1$
+    private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';";
 
     //// @formatter:off
     private static final List<Pattern> COPYRIGHT_HEADER = List.of(
-            Pattern.compile(Pattern.quote("/*******************************************************************************")), //$NON-NLS-1$
-            Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" * This program and the accompanying materials")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" * are made available under the terms of the Eclipse Public License v2.0")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" * which accompanies this distribution, and is available at")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" * https://www.eclipse.org/legal/epl-2.0/")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" *")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" * SPDX-License-Identifier: EPL-2.0")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" *")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" * Contributors:")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" *     Obeo - initial API and implementation")), //$NON-NLS-1$
-            Pattern.compile(Pattern.quote(" *******************************************************************************/"))); //$NON-NLS-1$
+            Pattern.compile(Pattern.quote("/*******************************************************************************")),
+            Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"),
+            Pattern.compile(Pattern.quote(" * This program and the accompanying materials")),
+            Pattern.compile(Pattern.quote(" * are made available under the terms of the Eclipse Public License v2.0")),
+            Pattern.compile(Pattern.quote(" * which accompanies this distribution, and is available at")),
+            Pattern.compile(Pattern.quote(" * https://www.eclipse.org/legal/epl-2.0/")),
+            Pattern.compile(Pattern.quote(" *")),
+            Pattern.compile(Pattern.quote(" * SPDX-License-Identifier: EPL-2.0")),
+            Pattern.compile(Pattern.quote(" *")),
+            Pattern.compile(Pattern.quote(" * Contributors:")),
+            Pattern.compile(Pattern.quote(" *     Obeo - initial API and implementation")),
+            Pattern.compile(Pattern.quote(" *******************************************************************************/")));
     // @formatter:on
 
     /**
@@ -111,7 +111,7 @@ public class GeneralPurposeTests {
      * @return The root folder
      */
     private File getRootFolder() {
-        String path = System.getProperty("user.dir"); //$NON-NLS-1$
+        String path = System.getProperty("user.dir");
         File classpathRoot = new File(path);
 
         File repositoryRootFolder = classpathRoot;
@@ -136,21 +136,21 @@ public class GeneralPurposeTests {
             // @formatter:off
             List<Path> filePaths = paths.filter(Files::isRegularFile)
                     .filter(filePath -> filePath.toFile().getName().endsWith(extension))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/node_modules/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/coverage/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/dist/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.turbo/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/bin/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/__mocks__/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/static/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/target/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphiql")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphql-voyager")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.vscode/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(".d.ts")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.mvn/wrapper/")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain")) //$NON-NLS-1$
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view")) //$NON-NLS-1$
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/node_modules/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/coverage/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/dist/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.turbo/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/bin/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/__mocks__/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/static/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/target/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphiql"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("graphql-voyager"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.vscode/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(".d.ts"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.mvn/wrapper/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view"))
                     .collect(Collectors.toList());
             // @formatter:on
 
@@ -168,7 +168,7 @@ public class GeneralPurposeTests {
         Path backendFolderPath = Paths.get(rootFolder.getAbsolutePath(), BACKEND_FOLDER_PATH);
         List<Path> javaFilePaths = this.findFilePaths(backendFolderPath, JAVA_FILE_EXTENSION);
         for (Path javaFilePath : javaFilePaths) {
-            if (!javaFilePath.endsWith(GeneralPurposeTests.class.getSimpleName() + "." + JAVA_FILE_EXTENSION)) { //$NON-NLS-1$
+            if (!javaFilePath.endsWith(GeneralPurposeTests.class.getSimpleName() + "." + JAVA_FILE_EXTENSION)) {
                 try {
                     List<String> lines = Files.readAllLines(javaFilePath);
                     for (int index = 0; index < lines.size(); index++) {
@@ -188,7 +188,7 @@ public class GeneralPurposeTests {
     private void testCopyrightHeader(Path filePath, List<String> lines) {
         if (!this.isWhiteListed(filePath)) {
             for (int i = 0; i < COPYRIGHT_HEADER.size(); i++) {
-                assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i))); //$NON-NLS-1$
+                assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i)));
             }
             assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
         }
@@ -196,8 +196,8 @@ public class GeneralPurposeTests {
 
     private boolean isWhiteListed(Path filePath) {
         // @formatter:off
-        return filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("src/icons") //$NON-NLS-1$
-                || filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("GenericTool.tsx"); //$NON-NLS-1$
+        return filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("src/icons")
+                || filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("GenericTool.tsx");
         // @formatter:on
     }
 
@@ -216,20 +216,20 @@ public class GeneralPurposeTests {
                 isValidUsage = true;
             }
             if (!isValidUsage) {
-                fail(this.createErrorMessage("@SuppressWarnings", javaFilePath, index)); //$NON-NLS-1$
+                fail(this.createErrorMessage("@SuppressWarnings", javaFilePath, index));
             }
         }
     }
 
     private void testNoCheckstyleOff(int index, String line, Path javaFilePath) {
         if (line.contains(CHECKSTYLE_OFF)) {
-            fail(this.createErrorMessage("CHECKSTYLE:OFF", javaFilePath, index)); //$NON-NLS-1$
+            fail(this.createErrorMessage("CHECKSTYLE:OFF", javaFilePath, index));
         }
     }
 
     private void testNoThrowNewException(int index, String line, Path javaFilePath) {
         if (line.contains(THROW_NEW)) {
-            fail(this.createErrorMessage("throw new XXXException", javaFilePath, index)); //$NON-NLS-1$
+            fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
         }
     }
 
@@ -349,9 +349,9 @@ public class GeneralPurposeTests {
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
         var whitelist = Stream.of(
-                Path.of("Sprotty.css"), //$NON-NLS-1$
-                Path.of("Modal.module.css"), //$NON-NLS-1$
-                Path.of("ToolSection.module.css") //$NON-NLS-1$
+                Path.of("Sprotty.css"),
+                Path.of("Modal.module.css"),
+                Path.of("ToolSection.module.css")
         );
         // @formatter:on
         if (whitelist.filter(cssFilePath::endsWith).findFirst().isEmpty()) {
@@ -383,9 +383,9 @@ public class GeneralPurposeTests {
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
         var whitelist = Stream.of(
-                Path.of("Sprotty.css"), //$NON-NLS-1$
-                Path.of("Modal.module.css"), //$NON-NLS-1$
-                Path.of("ToolSection.module.css") //$NON-NLS-1$
+                Path.of("Sprotty.css"),
+                Path.of("Modal.module.css"),
+                Path.of("ToolSection.module.css")
         );
         // @formatter:on
         if (whitelist.filter(cssFilePath::endsWith).findFirst().isEmpty()) {
@@ -396,6 +396,6 @@ public class GeneralPurposeTests {
     }
 
     private String createErrorMessage(String pattern, Path path, int lineNumber) {
-        return "Invalid use of " + pattern + " in " + path.toString() + " line " + lineNumber; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return "Invalid use of " + pattern + " in " + path.toString() + " line " + lineNumber;
     }
 }

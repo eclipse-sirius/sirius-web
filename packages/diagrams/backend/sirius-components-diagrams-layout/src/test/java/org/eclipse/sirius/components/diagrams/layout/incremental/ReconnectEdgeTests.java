@@ -54,17 +54,17 @@ import org.junit.jupiter.api.Test;
  */
 public class ReconnectEdgeTests {
 
-    private static final String EDGE_TO_RECONNECT_LABEL = "Edge to reconnect"; //$NON-NLS-1$
+    private static final String EDGE_TO_RECONNECT_LABEL = "Edge to reconnect";
 
-    private static final String DIAGRAM_ROOT = "Root"; //$NON-NLS-1$
+    private static final String DIAGRAM_ROOT = "Root";
 
-    private static final String THIRD_NODE = "Third"; //$NON-NLS-1$
+    private static final String THIRD_NODE = "Third";
 
-    private static final String SECOND_NODE = "Second"; //$NON-NLS-1$
+    private static final String SECOND_NODE = "Second";
 
-    private static final String FIRST_NODE = "First"; //$NON-NLS-1$
+    private static final String FIRST_NODE = "First";
 
-    private static final Path PATH_TO_EDITING_CONTEXTS = Paths.get("src", "test", "resources", "editing-contexts"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+    private static final Path PATH_TO_EDITING_CONTEXTS = Paths.get("src", "test", "resources", "editing-contexts");
 
     private TestLayoutObjectService objectService = new TestLayoutObjectService();
 
@@ -127,7 +127,7 @@ public class ReconnectEdgeTests {
             .build();
         // @formatter:on
 
-        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testReconnectTargetEdgeEnd"); //$NON-NLS-1$
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testReconnectTargetEdgeEnd");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         Optional<Node> thirdNode = this.getNode(diagram.getNodes(), THIRD_NODE);
@@ -178,7 +178,7 @@ public class ReconnectEdgeTests {
             .build();
         // @formatter:on
 
-        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testReconnectSourceEdgeEnd"); //$NON-NLS-1$
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testReconnectSourceEdgeEnd");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         Optional<Node> thirdNode = this.getNode(diagram.getNodes(), THIRD_NODE);
@@ -225,7 +225,7 @@ public class ReconnectEdgeTests {
                 .rectangleNode(SECOND_NODE).at(150, 10).of(100, 100).and()
                 .rectangleNode(THIRD_NODE).at(150, 150).of(100, 100).and()
                 .and()
-            .edge("f -> s 0") //$NON-NLS-1$
+            .edge("f -> s 0")
                 .from(FIRST_NODE).at(0.75, 0.2)
                 .to(SECOND_NODE).at(0.25, 0.2)
                 .and()
@@ -233,15 +233,15 @@ public class ReconnectEdgeTests {
                 .from(FIRST_NODE).at(0.75, 0.4)
                 .to(SECOND_NODE).at(0.25, 0.4)
                 .and()
-            .edge("f -> s 2") //$NON-NLS-1$
+            .edge("f -> s 2")
                 .from(FIRST_NODE).at(0.75, 0.6)
                 .to(SECOND_NODE).at(0.25, 0.6)
                 .and()
-            .edge("f -> s 3") //$NON-NLS-1$
+            .edge("f -> s 3")
                 .from(FIRST_NODE).at(0.75, 0.8)
                 .to(SECOND_NODE).at(0.25, 0.8)
                 .and()
-            .edge("f -> t 0") //$NON-NLS-1$
+            .edge("f -> t 0")
                 .from(FIRST_NODE).at(0.5, 0.75)
                 .to(THIRD_NODE).at(0.25, 0.5)
                 .goingThrough(60, 200)
@@ -249,7 +249,7 @@ public class ReconnectEdgeTests {
             .build();
         // @formatter:on
 
-        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testReconnectOneTargetWithMultipleEdgeBetweenSameElements"); //$NON-NLS-1$
+        Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testReconnectOneTargetWithMultipleEdgeBetweenSameElements");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         Optional<Node> secondNode = this.getNode(diagram.getNodes(), SECOND_NODE);

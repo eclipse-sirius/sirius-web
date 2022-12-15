@@ -45,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteObjectDataFetcher.DELETE_OBJECT_FIELD)
 public class MutationDeleteObjectDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_OBJECT_FIELD = "deleteObject"; //$NON-NLS-1$
+    public static final String DELETE_OBJECT_FIELD = "deleteObject";
 
     private final ObjectMapper objectMapper;
 

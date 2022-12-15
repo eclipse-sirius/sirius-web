@@ -69,7 +69,7 @@ public final class CreateRootObjectInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, documentId: {3}, domainId: {4}, rootObjectCreationDescriptionId: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, documentId: {3}, domainId: {4}, rootObjectCreationDescriptionId: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.documentId, this.domainId, this.rootObjectCreationDescriptionId);
     }
 }

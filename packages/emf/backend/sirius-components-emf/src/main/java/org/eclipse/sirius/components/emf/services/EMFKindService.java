@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public class EMFKindService implements IEMFKindService {
 
     @Override
     public String getKind(EClass eClass) {
-        return URI.create(SemanticKindConstants.PREFIX + "?" + SemanticKindConstants.DOMAIN_ARGUMENT + "=" + eClass.getEPackage().getName() + "&" + SemanticKindConstants.ENTITY_ARGUMENT + "=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return URI.create(SemanticKindConstants.PREFIX + "?" + SemanticKindConstants.DOMAIN_ARGUMENT + "=" + eClass.getEPackage().getName() + "&" + SemanticKindConstants.ENTITY_ARGUMENT + "="
                 + eClass.getName()).toString();
     }
 

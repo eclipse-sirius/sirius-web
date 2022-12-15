@@ -97,11 +97,11 @@ public class GraphQLConfiguration {
             SchemaParser schemaParser = new SchemaParser();
             SchemaGenerator schemaGenerator = new SchemaGenerator();
 
-            Resource[] resources = resourcePatternResolver.getResources("classpath*:/schema/**/*.graphqls"); //$NON-NLS-1$
-            this.logger.info("{} GraphQL schemas found", resources.length); //$NON-NLS-1$
+            Resource[] resources = resourcePatternResolver.getResources("classpath*:/schema/**/*.graphqls");
+            this.logger.info("{} GraphQL schemas found", resources.length);
             for (Resource resource : resources) {
                 if (this.logger.isInfoEnabled()) {
-                    this.logger.info("Processing the GraphQL schema: {}", resource.getURL()); //$NON-NLS-1$
+                    this.logger.info("Processing the GraphQL schema: {}", resource.getURL());
                 }
                 TypeDefinitionRegistry childTypeDefinitionRegistry = schemaParser.parse(resource.getInputStream());
                 typeRegistry.merge(childTypeDefinitionRegistry);

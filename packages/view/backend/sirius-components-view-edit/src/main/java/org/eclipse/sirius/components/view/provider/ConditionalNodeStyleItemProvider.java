@@ -91,7 +91,7 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalNodeStyle.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalNodeStyle.svg"));
     }
 
     /**
@@ -112,8 +112,8 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((ConditionalNodeStyle) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalNodeStyle_type") : //$NON-NLS-1$
-                this.getString("_UI_ConditionalNodeStyle_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalNodeStyle_type") :
+                this.getString("_UI_ConditionalNodeStyle_type") + " " + label;
     }
 
     /**

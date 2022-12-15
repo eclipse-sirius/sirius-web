@@ -141,7 +141,7 @@ public class ContainmentUpdater {
     private boolean isLabelContained(IContainerLayoutData container) {
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
-            return nodeLayoutData.getLabel().getLabelType().contains("inside"); //$NON-NLS-1$
+            return nodeLayoutData.getLabel().getLabelType().contains("inside");
         }
 
         return false;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,7 +109,7 @@ public class OperationItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_Operation_type"); //$NON-NLS-1$
+        return this.getString("_UI_Operation_type");
     }
 
     /**

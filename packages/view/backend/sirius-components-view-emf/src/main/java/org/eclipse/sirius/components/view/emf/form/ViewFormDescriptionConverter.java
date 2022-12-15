@@ -48,11 +48,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewFormDescriptionConverter implements IRepresentationDescriptionConverter {
 
-    public static final String NEW_VALUE = "newValue"; //$NON-NLS-1$
+    public static final String NEW_VALUE = "newValue";
 
-    private static final String DEFAULT_FORM_LABEL = "Form"; //$NON-NLS-1$
+    private static final String DEFAULT_FORM_LABEL = "Form";
 
-    private static final String DEFAULT_GROUP_LABEL = ""; //$NON-NLS-1$
+    private static final String DEFAULT_GROUP_LABEL = "";
 
     private final IObjectService objectService;
 
@@ -82,7 +82,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .collect(Collectors.toList());
 
         String descriptionId = this.getDescriptionId(viewFormDescription);
-        PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page") //$NON-NLS-1$
+        PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
                 .semanticElementsProvider(semanticElementsProvider)
@@ -173,7 +173,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private String evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
-        return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse(""); //$NON-NLS-1$
+        return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse("");
     }
 
     private boolean canCreatForm(org.eclipse.sirius.components.view.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {

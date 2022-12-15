@@ -51,7 +51,7 @@ import io.micrometer.core.instrument.Timer;
 @Service
 public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IDanglingRepresentationDeletionService {
 
-    private static final String TIMER_NAME = "siriusweb_representation_save"; //$NON-NLS-1$
+    private static final String TIMER_NAME = "siriusweb_representation_save";
 
     private final IObjectService objectService;
 

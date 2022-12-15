@@ -47,7 +47,7 @@ public class GetConnectorToolsSuccessPayload implements IPayload {
     @Override
     public String toString() {
         String tools = Arrays.toString(this.connectorTools.toArray());
-        String pattern = "{0} '{'id: {1}, tools: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, tools: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, tools);
     }
 

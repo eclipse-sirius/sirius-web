@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
  */
 @Immutable
 public final class PieChart implements IChart {
-    public static final String KIND = "PieChart"; //$NON-NLS-1$
+    public static final String KIND = "PieChart";
 
     private String id;
 
@@ -80,7 +80,7 @@ public final class PieChart implements IChart {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}, kind: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label, this.kind);
     }
 

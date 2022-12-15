@@ -50,7 +50,7 @@ public class Domain implements Comparable<Domain> {
 
     @Override
     public int compareTo(Domain other) {
-        String customDomainPrefix = "domain://"; //$NON-NLS-1$
+        String customDomainPrefix = "domain://";
         // Make sure custom-defined domains are before non-custom ones
         if (this.id.startsWith(customDomainPrefix) && !other.id.startsWith(customDomainPrefix)) {
             return -1;
@@ -61,7 +61,7 @@ public class Domain implements Comparable<Domain> {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
     }
 

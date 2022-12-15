@@ -45,9 +45,9 @@ public class EdgeLabelPositionProviderTests {
 
     private static final int FONT_SIZE = 16;
 
-    private static final String LABEL_COLOR = "#000000"; //$NON-NLS-1$
+    private static final String LABEL_COLOR = "#000000";
 
-    private static final String ICON_URL = ""; //$NON-NLS-1$
+    private static final String ICON_URL = "";
 
     @BeforeAll
     public static void beforeAll() {
@@ -83,7 +83,7 @@ public class EdgeLabelPositionProviderTests {
                 .iconURL(ICON_URL)
                 .build();
         //@formatter:on
-        TextBounds textBounds = new TextBoundsProvider().computeBounds(labelStyle, "labelText"); //$NON-NLS-1$
+        TextBounds textBounds = new TextBoundsProvider().computeBounds(labelStyle, "labelText");
         labelLayoutData.setTextBounds(textBounds);
         return labelLayoutData;
     }

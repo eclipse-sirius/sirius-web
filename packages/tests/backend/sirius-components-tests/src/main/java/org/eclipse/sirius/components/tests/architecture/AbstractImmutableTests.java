@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,15 +88,15 @@ public abstract class AbstractImmutableTests {
     }
 
     private ArchCondition<JavaField> haveAPublicGetter() {
-        return new ArchCondition<>("have a public getter") { //$NON-NLS-1$
+        return new ArchCondition<>("have a public getter") {
             @Override
             public void check(JavaField javaField, ConditionEvents events) {
                 if (!javaField.getModifiers().contains(STATIC)) {
                     JavaClass javaClass = javaField.getOwner();
 
-                    String getterName = "get" + javaField.getName().substring(0, 1).toUpperCase() + javaField.getName().substring(1); //$NON-NLS-1$
-                    if (javaField.getRawType().getFullName().equals("java.lang.Boolean") || javaField.getRawType().getFullName().equals("boolean")) { //$NON-NLS-1$ //$NON-NLS-2$
-                        getterName = "is" + javaField.getName().substring(0, 1).toUpperCase() + javaField.getName().substring(1); //$NON-NLS-1$
+                    String getterName = "get" + javaField.getName().substring(0, 1).toUpperCase() + javaField.getName().substring(1);
+                    if (javaField.getRawType().getFullName().equals("java.lang.Boolean") || javaField.getRawType().getFullName().equals("boolean")) {
+                        getterName = "is" + javaField.getName().substring(0, 1).toUpperCase() + javaField.getName().substring(1);
                     }
 
                     boolean isConditionSatisfied = false;
@@ -108,9 +108,9 @@ public abstract class AbstractImmutableTests {
                         isConditionSatisfied = false;
                     }
 
-                    String message = "The field has a getter"; //$NON-NLS-1$
+                    String message = "The field has a getter";
                     if (!isConditionSatisfied) {
-                        message = "The field " + javaField.getFullName() + " does not have a getter"; //$NON-NLS-1$ //$NON-NLS-2$
+                        message = "The field " + javaField.getFullName() + " does not have a getter";
                     }
                     events.add(new SimpleConditionEvent(javaField, isConditionSatisfied, message));
                 }
@@ -133,19 +133,19 @@ public abstract class AbstractImmutableTests {
     }
 
     private ArchCondition<JavaClass> notHaveSetters() {
-        return new ArchCondition<>("not have setters") { //$NON-NLS-1$
+        return new ArchCondition<>("not have setters") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
                 // @formatter:off
                 long settersCount = javaClass.getMethods().stream()
-                        .filter(javaMethod -> javaMethod.getName().startsWith("set")) //$NON-NLS-1$
+                        .filter(javaMethod -> javaMethod.getName().startsWith("set"))
                         .count();
                 // @formatter:on
 
                 boolean isConditionSatisfied = settersCount == 0;
-                String message = "The class does not have any setters"; //$NON-NLS-1$
+                String message = "The class does not have any setters";
                 if (!isConditionSatisfied) {
-                    message = "The class " + javaClass.getName() + " does have setters"; //$NON-NLS-1$//$NON-NLS-2$
+                    message = "The class " + javaClass.getName() + " does have setters";
                 }
                 events.add(new SimpleConditionEvent(javaClass, isConditionSatisfied, message));
             }
@@ -167,20 +167,20 @@ public abstract class AbstractImmutableTests {
     }
 
     private ArchCondition<JavaClass> haveABuilderMethod() {
-        return new ArchCondition<>("have a builder method") { //$NON-NLS-1$
+        return new ArchCondition<>("have a builder method") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
                 // @formatter:off
                 long count = javaClass.getMethods().stream()
-                        .filter(method -> method.getName().equals("new" + javaClass.getSimpleName())) //$NON-NLS-1$
-                        .filter(method -> "Builder".equals(method.getRawReturnType().getSimpleName())) //$NON-NLS-1$
+                        .filter(method -> method.getName().equals("new" + javaClass.getSimpleName()))
+                        .filter(method -> "Builder".equals(method.getRawReturnType().getSimpleName()))
                         .count();
                 // @formatter:on
 
                 boolean isConditionSatisfied = count > 0;
-                String message = "The class has a builder method"; //$NON-NLS-1$
+                String message = "The class has a builder method";
                 if (!isConditionSatisfied) {
-                    message = MessageFormat.format("The class {0} does not have a builder method", javaClass.getSimpleName()); //$NON-NLS-1$
+                    message = MessageFormat.format("The class {0} does not have a builder method", javaClass.getSimpleName());
                 }
                 events.add(new SimpleConditionEvent(javaClass, isConditionSatisfied, message));
             }

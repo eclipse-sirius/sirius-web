@@ -48,7 +48,7 @@ public class CompatibilityInitialDirectEditElementLabelProvider implements IInit
 
         // @formatter:off
         return this.mapDiagramElementToLabel(graphicalElement)
-            .orElse(""); //$NON-NLS-1$
+            .orElse("");
         // @formatter:on
     }
 

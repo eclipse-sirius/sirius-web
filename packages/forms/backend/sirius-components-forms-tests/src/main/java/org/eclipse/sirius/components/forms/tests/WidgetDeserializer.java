@@ -58,7 +58,7 @@ public class WidgetDeserializer extends StdDeserializer<AbstractWidget> {
             ObjectMapper mapper = (ObjectMapper) objectCodec;
             ObjectNode root = mapper.readTree(jsonParser);
 
-            JsonNode typeName = root.get("__typename"); //$NON-NLS-1$
+            JsonNode typeName = root.get("__typename");
             if (Radio.class.getSimpleName().equals(typeName.asText())) {
                 nodeStyle = mapper.readValue(root.toString(), Radio.class);
             } else if (Select.class.getSimpleName().equals(typeName.asText())) {

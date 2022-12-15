@@ -350,9 +350,9 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valuesExpression: "); //$NON-NLS-1$
+        result.append(" (valuesExpression: ");
         result.append(this.valuesExpression);
-        result.append(", keysExpression: "); //$NON-NLS-1$
+        result.append(", keysExpression: ");
         result.append(this.keysExpression);
         result.append(')');
         return result.toString();

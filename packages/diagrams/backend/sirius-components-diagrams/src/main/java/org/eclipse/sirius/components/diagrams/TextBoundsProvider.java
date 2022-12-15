@@ -28,9 +28,9 @@ public class TextBoundsProvider {
     /**
      * Font used in backend & frontend to compute and draw diagram labels.
      */
-    private static final String DEFAULT_LABEL_FONT_NAME = "Arial"; //$NON-NLS-1$
+    private static final String DEFAULT_LABEL_FONT_NAME = "Arial";
 
-    private static final String FALLBACK_LABEL_FONT_NAME = "Liberation Sans"; //$NON-NLS-1$
+    private static final String FALLBACK_LABEL_FONT_NAME = "Liberation Sans";
 
     private static final AffineTransform AFFINE_TRANSFORM = new AffineTransform();
 
@@ -53,10 +53,10 @@ public class TextBoundsProvider {
     public TextBounds computeBounds(LabelStyle labelStyle, String text) {
         Font font = this.getFont(labelStyle);
 
-        String[] lines = text.split("\\n", -1); //$NON-NLS-1$
+        String[] lines = text.split("\\n", -1);
         Rectangle2D labelBounds = null;
         if (lines.length == 0) {
-            labelBounds = font.getStringBounds("", FONT_RENDER_CONTEXT); //$NON-NLS-1$
+            labelBounds = font.getStringBounds("", FONT_RENDER_CONTEXT);
         } else {
             labelBounds = font.getStringBounds(lines[0], FONT_RENDER_CONTEXT);
             if (lines.length > 1) {

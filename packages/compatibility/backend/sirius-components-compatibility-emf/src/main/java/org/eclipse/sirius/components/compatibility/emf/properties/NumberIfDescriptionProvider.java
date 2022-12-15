@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class NumberIfDescriptionProvider {
 
-    private static final String TEXTFIELD_DESCRIPTION_ID = "Textfield"; //$NON-NLS-1$
+    private static final String TEXTFIELD_DESCRIPTION_ID = "Textfield";
 
     private final EDataType eDataType;
 
@@ -98,7 +98,7 @@ public class NumberIfDescriptionProvider {
         // @formatter:off
         return potentialEObject.map(EcoreUtil::getURI)
                 .map(Object::toString)
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     }
 
@@ -118,7 +118,7 @@ public class NumberIfDescriptionProvider {
                 return EcoreUtil.convertToString(this.eDataType, value);
             }
 
-            return ""; //$NON-NLS-1$
+            return "";
         };
     }
 
@@ -127,7 +127,7 @@ public class NumberIfDescriptionProvider {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             var optionalEAttribute = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
 
-            IStatus result = new Failure(""); //$NON-NLS-1$
+            IStatus result = new Failure("");
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EAttribute eAttribute = optionalEAttribute.get();

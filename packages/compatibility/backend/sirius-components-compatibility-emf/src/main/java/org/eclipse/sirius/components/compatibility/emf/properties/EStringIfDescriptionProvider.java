@@ -37,9 +37,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public class EStringIfDescriptionProvider {
-    private static final String IF_DESCRIPTION_ID = "EString"; //$NON-NLS-1$
+    private static final String IF_DESCRIPTION_ID = "EString";
 
-    private static final String TEXTAREA_DESCRIPTION_ID = "Textarea"; //$NON-NLS-1$
+    private static final String TEXTAREA_DESCRIPTION_ID = "Textarea";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -102,7 +102,7 @@ public class EStringIfDescriptionProvider {
                 }
             }
 
-            return ""; //$NON-NLS-1$
+            return "";
         };
     }
 
@@ -119,7 +119,7 @@ public class EStringIfDescriptionProvider {
 
                 return new Success();
             }
-            return new Failure(""); //$NON-NLS-1$
+            return new Failure("");
         };
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class StringValueProvider implements Function<VariableManager, String> {
 
-    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+    private static final String EMPTY_STRING = "";
 
     private AQLInterpreter interpreter;
 

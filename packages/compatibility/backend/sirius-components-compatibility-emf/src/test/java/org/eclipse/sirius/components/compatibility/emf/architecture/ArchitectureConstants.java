@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
  * @author sbegaudeau
  */
 public final class ArchitectureConstants {
-    public static final String SIRIUS_COMPONENTS_COMPATIBILITY_EMF_ROOT_PACKAGE = "org.eclipse.sirius.components.compatibility.emf.."; //$NON-NLS-1$
+    public static final String SIRIUS_COMPONENTS_COMPATIBILITY_EMF_ROOT_PACKAGE = "org.eclipse.sirius.components.compatibility.emf..";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()

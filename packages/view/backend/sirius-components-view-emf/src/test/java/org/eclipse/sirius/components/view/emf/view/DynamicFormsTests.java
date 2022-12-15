@@ -272,15 +272,15 @@ public class DynamicFormsTests {
         Form form = this.render(eClassFormDescription, this.eClasses[0]);
         Group group = form.getPages().get(0).getGroups().get(0);
         Select select = (Select) group.getWidgets().get(4);
-        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
+        assertThat(select.getValue()).isEqualTo("Class2");
         assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isFalse();
         select.getNewValueHandler().apply(null);
         assertThat(this.eClasses[0].getESuperTypes().isEmpty()).isTrue();
     }
 
     private void checkTextfield(Textfield textfield, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(textfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        assertThat(textfield.getValue()).isEqualTo("Class1");
+        assertThat(textfield.getLabel()).isEqualTo("EClass name");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(textfield);
         } else if (checkStyle) {
@@ -291,8 +291,8 @@ public class DynamicFormsTests {
     }
 
     private void checkTextarea(Textarea textarea, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
-        assertThat(textarea.getLabel()).isEqualTo("Instance Class Name"); //$NON-NLS-1$
+        assertThat(textarea.getValue()).isEqualTo("Class1Instance");
+        assertThat(textarea.getLabel()).isEqualTo("Instance Class Name");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(textarea);
         } else if (checkStyle) {
@@ -305,8 +305,8 @@ public class DynamicFormsTests {
     private void checkMultiSelect(MultiSelect multiSelect, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(multiSelect.getOptions()).hasSize(3);
         assertThat(multiSelect.getValues()).hasSize(2);
-        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3");
+        assertThat(multiSelect.getLabel()).isEqualTo("ESuperTypes");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(multiSelect);
         } else if (checkStyle) {
@@ -318,7 +318,7 @@ public class DynamicFormsTests {
 
     private void checkCheckbox(Checkbox checkBox, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(checkBox.isValue()).isTrue();
-        assertThat(checkBox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        assertThat(checkBox.getLabel()).isEqualTo("is Abstract");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(checkBox);
         } else if (checkStyle) {
@@ -330,8 +330,8 @@ public class DynamicFormsTests {
 
     private void checkSelect(Select select, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(select.getOptions()).hasSize(3);
-        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
-        assertThat(select.getLabel()).isEqualTo("eSuper Types"); //$NON-NLS-1$
+        assertThat(select.getValue()).isEqualTo("Class2");
+        assertThat(select.getLabel()).isEqualTo("eSuper Types");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(select);
         } else if (checkStyle) {
@@ -344,13 +344,13 @@ public class DynamicFormsTests {
     private void checkRadio(Radio radio, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(radio.getOptions()).hasSize(3);
         assertThat(radio.getOptions()).allSatisfy(option -> {
-            if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
+            if (option.getLabel().equals("Class2")) {
                 assertThat(option.isSelected()).isTrue();
             } else {
                 assertThat(option.isSelected()).isFalse();
             }
         });
-        assertThat(radio.getLabel()).isEqualTo("ESuperTypes"); //$NON-NLS-1$
+        assertThat(radio.getLabel()).isEqualTo("ESuperTypes");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(radio);
         } else if (checkStyle) {
@@ -361,8 +361,8 @@ public class DynamicFormsTests {
     }
 
     private void checkButton(Button button, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(button.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        assertThat(button.getButtonLabel()).isEqualTo("Class1");
+        assertThat(button.getLabel()).isEqualTo("EClass name");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(button);
         } else if (checkStyle) {
@@ -373,8 +373,8 @@ public class DynamicFormsTests {
     }
 
     private void checkLabel(LabelWidget labelWidget, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(labelWidget.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name"); //$NON-NLS-1$
+        assertThat(labelWidget.getValue()).isEqualTo("Class1");
+        assertThat(labelWidget.getLabel()).isEqualTo("Label EClass name");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(labelWidget);
         } else if (checkStyle) {
@@ -385,8 +385,8 @@ public class DynamicFormsTests {
     }
 
     private void checkLink(Link link, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(link.getLabel()).isEqualTo("Label EClass link"); //$NON-NLS-1$
-        assertThat(link.getUrl()).isEqualTo("myHyperLink"); //$NON-NLS-1$
+        assertThat(link.getLabel()).isEqualTo("Label EClass link");
+        assertThat(link.getUrl()).isEqualTo("myHyperLink");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(link);
         } else if (checkStyle) {
@@ -397,17 +397,17 @@ public class DynamicFormsTests {
     }
 
     private void checkList(org.eclipse.sirius.components.forms.List list, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(list.getLabel()).isEqualTo("Label EClass List"); //$NON-NLS-1$
+        assertThat(list.getLabel()).isEqualTo("Label EClass List");
         List<ListItem> items = list.getItems();
         assertThat(items).hasSize(3);
         for (int i = 0; i < 3; i++) {
-            assertThat(items.get(i).getLabel()).isEqualTo("Class" + (i + 1)); //$NON-NLS-1$ ;
+            assertThat(items.get(i).getLabel()).isEqualTo("Class" + (i + 1));
             assertThat(items.get(i).isDeletable()).isTrue();
             items.get(i).getClickHandler().apply(ClickEventKind.DOUBLE_CLICK);
-            assertThat(this.eClasses[i].getName()).isEqualTo("Class" + (i + 1) + " click event kind: DOUBLE_CLICK"); //$NON-NLS-1$ //$NON-NLS-2$
+            assertThat(this.eClasses[i].getName()).isEqualTo("Class" + (i + 1) + " click event kind: DOUBLE_CLICK");
             items.get(i).getClickHandler().apply(ClickEventKind.SINGLE_CLICK);
-            assertThat(this.eClasses[i].getName()).isEqualTo("Class" + (i + 1) + " click event kind: DOUBLE_CLICK click event kind: SINGLE_CLICK"); //$NON-NLS-1$ //$NON-NLS-2$
-            this.eClasses[i].setName("Class" + (i + 1)); //$NON-NLS-1$
+            assertThat(this.eClasses[i].getName()).isEqualTo("Class" + (i + 1) + " click event kind: DOUBLE_CLICK click event kind: SINGLE_CLICK");
+            this.eClasses[i].setName("Class" + (i + 1));
         }
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(list);
@@ -419,20 +419,20 @@ public class DynamicFormsTests {
     }
 
     private void checkPieChart(ChartWidget chartWidgetWithPieChart, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(chartWidgetWithPieChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
+        assertThat(chartWidgetWithPieChart.getLabel()).isEqualTo("The Chart Widget label");
         IChart chart = chartWidgetWithPieChart.getChart();
         assertThat(chart).isInstanceOf(PieChart.class);
         PieChart pieChart = (PieChart) chart;
         List<PieChartEntry> pieChartEntries = pieChart.getEntries();
-        this.checkPieChartEntry(pieChartEntries, 0, "a", 1); //$NON-NLS-1$
-        this.checkPieChartEntry(pieChartEntries, 1, "b", 3); //$NON-NLS-1$
-        this.checkPieChartEntry(pieChartEntries, 2, "c", 5); //$NON-NLS-1$
-        this.checkPieChartEntry(pieChartEntries, 3, "d", 7); //$NON-NLS-1$
+        this.checkPieChartEntry(pieChartEntries, 0, "a", 1);
+        this.checkPieChartEntry(pieChartEntries, 1, "b", 3);
+        this.checkPieChartEntry(pieChartEntries, 2, "c", 5);
+        this.checkPieChartEntry(pieChartEntries, 3, "d", 7);
         PieChartStyle style = pieChart.getStyle();
         if (checkStyle) {
             assertThat(style).isNotNull();
-            assertThat(style.getColors()).isEqualTo(List.of("AliceBlue", "AntiqueWhite", "DarkMagenta", "DarkGreen")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-            assertThat(style.getStrokeColor()).isEqualTo("Orchid"); //$NON-NLS-1$
+            assertThat(style.getColors()).isEqualTo(List.of("AliceBlue", "AntiqueWhite", "DarkMagenta", "DarkGreen"));
+            assertThat(style.getStrokeColor()).isEqualTo("Orchid");
             assertThat(style.getStrokeWidth()).isEqualTo(3);
             assertThat(style.getFontSize()).isEqualTo(20);
             assertThat(style.isItalic()).isTrue();
@@ -441,8 +441,8 @@ public class DynamicFormsTests {
             assertThat(style.isStrikeThrough()).isTrue();
         } else if (checkConditionalStyle) {
             assertThat(style).isNotNull();
-            assertThat(style.getColors()).isEqualTo(List.of("CadetBlue", "AntiqueWhite", "DarkMagenta", "Coral")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-            assertThat(style.getStrokeColor()).isEqualTo("PaleGoldenRod"); //$NON-NLS-1$
+            assertThat(style.getColors()).isEqualTo(List.of("CadetBlue", "AntiqueWhite", "DarkMagenta", "Coral"));
+            assertThat(style.getStrokeColor()).isEqualTo("PaleGoldenRod");
             assertThat(style.getStrokeWidth()).isEqualTo(2);
             assertThat(style.getFontSize()).isEqualTo(30);
             assertThat(style.isItalic()).isTrue();
@@ -453,20 +453,20 @@ public class DynamicFormsTests {
     }
 
     private void checkBarChart(ChartWidget chartWidgetWithBarChart, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(chartWidgetWithBarChart.getLabel()).isEqualTo("The Chart Widget label"); //$NON-NLS-1$
+        assertThat(chartWidgetWithBarChart.getLabel()).isEqualTo("The Chart Widget label");
         IChart chart = chartWidgetWithBarChart.getChart();
         assertThat(chart).isInstanceOf(BarChart.class);
         BarChart barChart = (BarChart) chart;
-        assertThat(barChart.getLabel()).isEqualTo("the values"); //$NON-NLS-1$
+        assertThat(barChart.getLabel()).isEqualTo("the values");
         List<BarChartEntry> barChartEntries = barChart.getEntries();
-        this.checkBarChartEntry(barChartEntries, 0, "a", 1); //$NON-NLS-1$
-        this.checkBarChartEntry(barChartEntries, 1, "b", 3); //$NON-NLS-1$
-        this.checkBarChartEntry(barChartEntries, 2, "c", 5); //$NON-NLS-1$
-        this.checkBarChartEntry(barChartEntries, 3, "d", 7); //$NON-NLS-1$
+        this.checkBarChartEntry(barChartEntries, 0, "a", 1);
+        this.checkBarChartEntry(barChartEntries, 1, "b", 3);
+        this.checkBarChartEntry(barChartEntries, 2, "c", 5);
+        this.checkBarChartEntry(barChartEntries, 3, "d", 7);
         BarChartStyle style = barChart.getStyle();
         if (checkStyle) {
             assertThat(style).isNotNull();
-            assertThat(style.getBarsColor()).isEqualTo("Orchid"); //$NON-NLS-1$
+            assertThat(style.getBarsColor()).isEqualTo("Orchid");
             assertThat(style.getFontSize()).isEqualTo(20);
             assertThat(style.isItalic()).isTrue();
             assertThat(style.isBold()).isTrue();
@@ -474,7 +474,7 @@ public class DynamicFormsTests {
             assertThat(style.isStrikeThrough()).isTrue();
         } else if (checkConditionalStyle) {
             assertThat(style).isNotNull();
-            assertThat(style.getBarsColor()).isEqualTo("PaleGoldenRod"); //$NON-NLS-1$
+            assertThat(style.getBarsColor()).isEqualTo("PaleGoldenRod");
             assertThat(style.getFontSize()).isEqualTo(30);
             assertThat(style.isItalic()).isTrue();
             assertThat(style.isBold()).isFalse();
@@ -494,21 +494,21 @@ public class DynamicFormsTests {
     }
 
     private void checkImage(Image image) {
-        assertThat(image.getLabel()).isEqualTo("Icon for EClass Class1"); //$NON-NLS-1$
-        assertThat(image.getUrl()).isEqualTo("icons/Class1.svg"); //$NON-NLS-1$
-        assertThat(image.getMaxWidth()).isEqualTo("30%"); //$NON-NLS-1$
+        assertThat(image.getLabel()).isEqualTo("Icon for EClass Class1");
+        assertThat(image.getUrl()).isEqualTo("icons/Class1.svg");
+        assertThat(image.getMaxWidth()).isEqualTo("30%");
     }
 
     private void checkFlexboxContainer(FlexboxContainer flexboxContainer, boolean checkStyle, boolean checkConditionalStyle) {
-        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container"); //$NON-NLS-1$
+        assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container");
         List<AbstractWidget> children = flexboxContainer.getChildren();
         assertThat(children).hasSize(2);
         assertThat(children.get(0)).isInstanceOf(Textfield.class);
         assertThat(children.get(1)).isInstanceOf(Checkbox.class);
 
         Textfield childrenTextfield = (Textfield) children.get(0);
-        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name"); //$NON-NLS-1$
+        assertThat(childrenTextfield.getValue()).isEqualTo("Class1");
+        assertThat(childrenTextfield.getLabel()).isEqualTo("EClass name");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(childrenTextfield);
         } else if (checkStyle) {
@@ -519,7 +519,7 @@ public class DynamicFormsTests {
 
         Checkbox childrenCheckbox = (Checkbox) children.get(1);
         assertThat(childrenCheckbox.isValue()).isTrue();
-        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract"); //$NON-NLS-1$
+        assertThat(childrenCheckbox.getLabel()).isEqualTo("is Abstract");
         if (!(checkStyle || checkConditionalStyle)) {
             this.testNoStyle(childrenCheckbox);
         } else if (checkStyle) {
@@ -534,21 +534,21 @@ public class DynamicFormsTests {
         assertThat(group.getWidgets()).hasSize(14);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
-        assertThat(textfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(eClass.getName()).isEqualTo("Class1"); //$NON-NLS-1$
-        textfield.getNewValueHandler().apply("my New Value"); //$NON-NLS-1$
-        assertThat(eClass.getName()).isEqualTo("my New Value"); //$NON-NLS-1$
+        assertThat(textfield.getValue()).isEqualTo("Class1");
+        assertThat(eClass.getName()).isEqualTo("Class1");
+        textfield.getNewValueHandler().apply("my New Value");
+        assertThat(eClass.getName()).isEqualTo("my New Value");
 
         Textarea textarea = (Textarea) group.getWidgets().get(1);
-        assertThat(textarea.getValue()).isEqualTo("Class1Instance"); //$NON-NLS-1$
-        assertThat(eClass.getInstanceClassName()).isEqualTo("Class1Instance"); //$NON-NLS-1$
-        textarea.getNewValueHandler().apply("newInstanceName"); //$NON-NLS-1$
-        assertThat(eClass.getInstanceClassName()).isEqualTo("newInstanceName"); //$NON-NLS-1$
+        assertThat(textarea.getValue()).isEqualTo("Class1Instance");
+        assertThat(eClass.getInstanceClassName()).isEqualTo("Class1Instance");
+        textarea.getNewValueHandler().apply("newInstanceName");
+        assertThat(eClass.getInstanceClassName()).isEqualTo("newInstanceName");
 
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
         assertThat(multiSelect.getValues()).hasSize(2);
-        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3"); //$NON-NLS-1$//$NON-NLS-2$
-        multiSelect.getNewValuesHandler().apply(List.of("Class2")); //$NON-NLS-1$
+        assertThat(multiSelect.getValues()).containsExactlyInAnyOrder("Class2", "Class3");
+        multiSelect.getNewValuesHandler().apply(List.of("Class2"));
         assertThat(eClass.getESuperTypes()).containsExactlyInAnyOrder(this.eClasses[1]);
 
         Checkbox checkBox = (Checkbox) group.getWidgets().get(3);
@@ -559,14 +559,14 @@ public class DynamicFormsTests {
 
         Select select = (Select) group.getWidgets().get(4);
         assertThat(select.getOptions()).hasSize(3);
-        assertThat(select.getValue()).isEqualTo("Class2"); //$NON-NLS-1$
-        select.getNewValueHandler().apply("Class3"); //$NON-NLS-1$
+        assertThat(select.getValue()).isEqualTo("Class2");
+        select.getNewValueHandler().apply("Class3");
         assertThat(this.eClasses[0].getESuperTypes()).containsExactlyInAnyOrder(this.eClasses[2]);
 
         Radio radio = (Radio) group.getWidgets().get(5);
         assertThat(radio.getOptions()).hasSize(3);
         radio.getOptions().forEach(option -> {
-            if (option.getLabel().equals("Class2")) { //$NON-NLS-1$
+            if (option.getLabel().equals("Class2")) {
                 assertThat(option.isSelected()).isTrue();
             } else {
                 assertThat(option.isSelected()).isFalse();
@@ -576,7 +576,7 @@ public class DynamicFormsTests {
         this.renderOnEcoreFormWithStyleOnWidgetContainer(eClass, group);
 
         Button button = (Button) group.getWidgets().get(9);
-        assertThat(button.getButtonLabel()).isEqualTo("Class1"); //$NON-NLS-1$
+        assertThat(button.getButtonLabel()).isEqualTo("Class1");
     }
 
     private void renderOnEcoreFormWithStyleOnWidgetContainer(EClass eClass, Group group) {
@@ -586,10 +586,10 @@ public class DynamicFormsTests {
         assertThat(flexboxContainer.getChildren().get(1)).isInstanceOf(Checkbox.class);
 
         Textfield childrenTextfield = (Textfield) flexboxContainer.getChildren().get(0);
-        assertThat(childrenTextfield.getValue()).isEqualTo("Class1"); //$NON-NLS-1$
-        assertThat(eClass.getName()).isEqualTo("my New Value"); //$NON-NLS-1$
-        childrenTextfield.getNewValueHandler().apply("my New Value 2"); //$NON-NLS-1$
-        assertThat(eClass.getName()).isEqualTo("my New Value 2"); //$NON-NLS-1$
+        assertThat(childrenTextfield.getValue()).isEqualTo("Class1");
+        assertThat(eClass.getName()).isEqualTo("my New Value");
+        childrenTextfield.getNewValueHandler().apply("my New Value 2");
+        assertThat(eClass.getName()).isEqualTo("my New Value 2");
 
         Checkbox childrenCheckbox = (Checkbox) flexboxContainer.getChildren().get(1);
         assertThat(childrenCheckbox.isValue()).isTrue();
@@ -600,11 +600,11 @@ public class DynamicFormsTests {
 
     private FormDescription createClassFormDescription(boolean withStyle, boolean withConditionalStyle) {
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        formDescription.setName("Simple Ecore Form"); //$NON-NLS-1$
-        formDescription.setTitleExpression("aql:self.name"); //$NON-NLS-1$
-        formDescription.setDomainType("ecore::EClass"); //$NON-NLS-1$
+        formDescription.setName("Simple Ecore Form");
+        formDescription.setTitleExpression("aql:self.name");
+        formDescription.setDomainType("ecore::EClass");
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        groupDescription.setLabelExpression("aql:self.name"); //$NON-NLS-1$
+        groupDescription.setLabelExpression("aql:self.name");
         formDescription.getGroups().add(groupDescription);
         TextfieldDescription textfieldDescription = this.createTextfield(withStyle, withConditionalStyle);
         groupDescription.getWidgets().add(textfieldDescription);
@@ -639,21 +639,21 @@ public class DynamicFormsTests {
 
     private BarChartDescription createBarChart(boolean withStyle, boolean withConditionalStyle) {
         BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
-        barChartDescription.setName("barChart"); //$NON-NLS-1$
-        barChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
-        barChartDescription.setYAxisLabelExpression("aql:'the values'"); //$NON-NLS-1$
-        barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
-        barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
+        barChartDescription.setName("barChart");
+        barChartDescription.setLabelExpression("aql:'The Chart Widget label'");
+        barChartDescription.setYAxisLabelExpression("aql:'the values'");
+        barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}");
+        barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}");
         if (withStyle) {
             BarChartDescriptionStyle style = ViewFactory.eINSTANCE.createBarChartDescriptionStyle();
-            style.setBarsColor("Orchid"); //$NON-NLS-1$
+            style.setBarsColor("Orchid");
             this.setFontStyle(style);
             barChartDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalBarChartDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalBarChartDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setBarsColor("PaleGoldenRod"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setBarsColor("PaleGoldenRod");
             this.setConditionalFontStyle(conditionalStyle);
             barChartDescription.getConditionalStyles().add(conditionalStyle);
         }
@@ -663,26 +663,26 @@ public class DynamicFormsTests {
 
     private PieChartDescription createPieChart(boolean withStyle, boolean withConditionalStyle) {
         PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
-        pieChartDescription.setName("chartWidget"); //$NON-NLS-1$
-        pieChartDescription.setLabelExpression("aql:'The Chart Widget label'"); //$NON-NLS-1$
-        pieChartDescription.setName("pieChart"); //$NON-NLS-1$
-        pieChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}"); //$NON-NLS-1$
-        pieChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}"); //$NON-NLS-1$
+        pieChartDescription.setName("chartWidget");
+        pieChartDescription.setLabelExpression("aql:'The Chart Widget label'");
+        pieChartDescription.setName("pieChart");
+        pieChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}");
+        pieChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}");
 
         if (withStyle) {
             PieChartDescriptionStyle style = ViewFactory.eINSTANCE.createPieChartDescriptionStyle();
-            style.setColors("aql:Sequence{'AliceBlue','AntiqueWhite','DarkMagenta','DarkGreen'}"); //$NON-NLS-1$
-            style.setStrokeColor("Orchid"); //$NON-NLS-1$
-            style.setStrokeWidth("3"); //$NON-NLS-1$
+            style.setColors("aql:Sequence{'AliceBlue','AntiqueWhite','DarkMagenta','DarkGreen'}");
+            style.setStrokeColor("Orchid");
+            style.setStrokeWidth("3");
             this.setFontStyle(style);
             pieChartDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalPieChartDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalPieChartDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setColors("aql:Sequence{'CadetBlue','AntiqueWhite','DarkMagenta','Coral'}"); //$NON-NLS-1$
-            conditionalStyle.setStrokeColor("PaleGoldenRod"); //$NON-NLS-1$
-            conditionalStyle.setStrokeWidth("2"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setColors("aql:Sequence{'CadetBlue','AntiqueWhite','DarkMagenta','Coral'}");
+            conditionalStyle.setStrokeColor("PaleGoldenRod");
+            conditionalStyle.setStrokeWidth("2");
             this.setConditionalFontStyle(conditionalStyle);
             pieChartDescription.getConditionalStyles().add(conditionalStyle);
         }
@@ -691,7 +691,7 @@ public class DynamicFormsTests {
 
     private FlexboxContainerDescription createFlexboxContainer(boolean withStyle, boolean withConditionalStyle) {
         FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
-        flexboxContainerDescription.setLabelExpression("aql:'A Widget Container'"); //$NON-NLS-1$
+        flexboxContainerDescription.setLabelExpression("aql:'A Widget Container'");
         TextfieldDescription textfieldDescription = this.createTextfield(withStyle, withConditionalStyle);
         flexboxContainerDescription.getChildren().add(textfieldDescription);
         CheckboxDescription checkboxDescription = this.createCheckbox(withStyle, withConditionalStyle);
@@ -701,220 +701,220 @@ public class DynamicFormsTests {
 
     private RadioDescription createRadio(boolean withStyle, boolean withConditionalStyle) {
         RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
-        radioDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
-        radioDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
-        radioDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
-        radioDescription.setCandidateLabelExpression("aql:candidate.name"); //$NON-NLS-1$
+        radioDescription.setLabelExpression("aql:'ESuperTypes'");
+        radioDescription.setValueExpression("aql:self.eSuperTypes->first()");
+        radioDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
+        radioDescription.setCandidateLabelExpression("aql:candidate.name");
         if (withStyle) {
             RadioDescriptionStyle style = ViewFactory.eINSTANCE.createRadioDescriptionStyle();
-            style.setColor("#de1000"); //$NON-NLS-1$
+            style.setColor("#de1000");
             this.setFontStyle(style);
             radioDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalRadioDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalRadioDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setColor("#fbb800");
             this.setConditionalFontStyle(conditionalStyle);
             radioDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         SetValue radioSetValue = ViewFactory.eINSTANCE.createSetValue();
-        radioSetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
-        radioSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        radioSetValue.setFeatureName("eSuperTypes");
+        radioSetValue.setValueExpression("aql:newValue");
         radioDescription.getBody().add(radioSetValue);
         return radioDescription;
     }
 
     private SelectDescription createSelect(boolean withStyle, boolean withConditionalStyle) {
         SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
-        selectDescription.setLabelExpression("aql:'eSuper Types'"); //$NON-NLS-1$
-        selectDescription.setValueExpression("aql:self.eSuperTypes->first()"); //$NON-NLS-1$
-        selectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
-        selectDescription.setCandidateLabelExpression("aql:candidate.name"); //$NON-NLS-1$
+        selectDescription.setLabelExpression("aql:'eSuper Types'");
+        selectDescription.setValueExpression("aql:self.eSuperTypes->first()");
+        selectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
+        selectDescription.setCandidateLabelExpression("aql:candidate.name");
         if (withStyle) {
             SelectDescriptionStyle style = ViewFactory.eINSTANCE.createSelectDescriptionStyle();
-            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
-            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setBackgroundColor("#de1000");
+            style.setForegroundColor("#777777");
             this.setFontStyle(style);
             selectDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalSelectDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalSelectDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
-            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setBackgroundColor("#fbb800");
+            conditionalStyle.setForegroundColor("#134cba");
             this.setConditionalFontStyle(conditionalStyle);
             selectDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         UnsetValue selectUnsetValue = ViewFactory.eINSTANCE.createUnsetValue();
-        selectUnsetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
-        selectUnsetValue.setElementExpression("aql:self.eSuperTypes"); //$NON-NLS-1$
+        selectUnsetValue.setFeatureName("eSuperTypes");
+        selectUnsetValue.setElementExpression("aql:self.eSuperTypes");
         selectDescription.getBody().add(selectUnsetValue);
 
         SetValue selectSetValue = ViewFactory.eINSTANCE.createSetValue();
-        selectSetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
-        selectSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        selectSetValue.setFeatureName("eSuperTypes");
+        selectSetValue.setValueExpression("aql:newValue");
         selectUnsetValue.getChildren().add(selectSetValue);
         return selectDescription;
     }
 
     private CheckboxDescription createCheckbox(boolean withStyle, boolean withConditionalStyle) {
         CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
-        checkboxDescription.setLabelExpression("is Abstract"); //$NON-NLS-1$
-        checkboxDescription.setValueExpression("aql:self.abstract"); //$NON-NLS-1$
+        checkboxDescription.setLabelExpression("is Abstract");
+        checkboxDescription.setValueExpression("aql:self.abstract");
         if (withStyle) {
             CheckboxDescriptionStyle style = ViewFactory.eINSTANCE.createCheckboxDescriptionStyle();
-            style.setColor("#de1000"); //$NON-NLS-1$
+            style.setColor("#de1000");
             checkboxDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalCheckboxDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setColor("#fbb800");
             checkboxDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         SetValue checkboxSetValue = ViewFactory.eINSTANCE.createSetValue();
-        checkboxSetValue.setFeatureName("abstract"); //$NON-NLS-1$
-        checkboxSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        checkboxSetValue.setFeatureName("abstract");
+        checkboxSetValue.setValueExpression("aql:newValue");
         checkboxDescription.getBody().add(checkboxSetValue);
         return checkboxDescription;
     }
 
     private MultiSelectDescription createMultiSelect(boolean withStyle, boolean withConditionalStyle) {
         MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
-        multiSelectDescription.setLabelExpression("aql:'ESuperTypes'"); //$NON-NLS-1$
-        multiSelectDescription.setValueExpression("aql:self.eSuperTypes"); //$NON-NLS-1$
-        multiSelectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
-        multiSelectDescription.setCandidateLabelExpression("aql:candidate.name"); //$NON-NLS-1$
+        multiSelectDescription.setLabelExpression("aql:'ESuperTypes'");
+        multiSelectDescription.setValueExpression("aql:self.eSuperTypes");
+        multiSelectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
+        multiSelectDescription.setCandidateLabelExpression("aql:candidate.name");
         if (withStyle) {
             MultiSelectDescriptionStyle style = ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle();
-            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
-            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setBackgroundColor("#de1000");
+            style.setForegroundColor("#777777");
             this.setFontStyle(style);
             multiSelectDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalMultiSelectDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalMultiSelectDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
-            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setBackgroundColor("#fbb800");
+            conditionalStyle.setForegroundColor("#134cba");
             this.setConditionalFontStyle(conditionalStyle);
             multiSelectDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         UnsetValue multiSelectUnsetValue = ViewFactory.eINSTANCE.createUnsetValue();
-        multiSelectUnsetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
-        multiSelectUnsetValue.setElementExpression("aql:self.eSuperTypes"); //$NON-NLS-1$
+        multiSelectUnsetValue.setFeatureName("eSuperTypes");
+        multiSelectUnsetValue.setElementExpression("aql:self.eSuperTypes");
         multiSelectDescription.getBody().add(multiSelectUnsetValue);
 
         SetValue multiSelectSetValue = ViewFactory.eINSTANCE.createSetValue();
-        multiSelectSetValue.setFeatureName("eSuperTypes"); //$NON-NLS-1$
-        multiSelectSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        multiSelectSetValue.setFeatureName("eSuperTypes");
+        multiSelectSetValue.setValueExpression("aql:newValue");
         multiSelectUnsetValue.getChildren().add(multiSelectSetValue);
         return multiSelectDescription;
     }
 
     private TextAreaDescription createTextArea(boolean withStyle, boolean withConditionalStyle) {
         TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
-        textareaDescription.setLabelExpression("aql:'Instance Class Name'"); //$NON-NLS-1$
-        textareaDescription.setValueExpression("aql:self.instanceClassName"); //$NON-NLS-1$
+        textareaDescription.setLabelExpression("aql:'Instance Class Name'");
+        textareaDescription.setValueExpression("aql:self.instanceClassName");
         if (withStyle) {
             TextareaDescriptionStyle style = ViewFactory.eINSTANCE.createTextareaDescriptionStyle();
-            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
-            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setBackgroundColor("#de1000");
+            style.setForegroundColor("#777777");
             this.setFontStyle(style);
             textareaDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalTextareaDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
-            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setBackgroundColor("#fbb800");
+            conditionalStyle.setForegroundColor("#134cba");
             this.setConditionalFontStyle(conditionalStyle);
             textareaDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         SetValue textareaSetValue = ViewFactory.eINSTANCE.createSetValue();
-        textareaSetValue.setFeatureName("instanceClassName"); //$NON-NLS-1$
-        textareaSetValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        textareaSetValue.setFeatureName("instanceClassName");
+        textareaSetValue.setValueExpression("aql:newValue");
         textareaDescription.getBody().add(textareaSetValue);
         return textareaDescription;
     }
 
     private TextfieldDescription createTextfield(boolean withStyle, boolean withConditionalStyle) {
         TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
-        textfieldDescription.setLabelExpression("aql:'EClass name'"); //$NON-NLS-1$
-        textfieldDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
-        textfieldDescription.setName("Class Name"); //$NON-NLS-1$
+        textfieldDescription.setLabelExpression("aql:'EClass name'");
+        textfieldDescription.setValueExpression("aql:self.name");
+        textfieldDescription.setName("Class Name");
         if (withStyle) {
             TextfieldDescriptionStyle style = ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
-            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
-            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setBackgroundColor("#de1000");
+            style.setForegroundColor("#777777");
             this.setFontStyle(style);
             textfieldDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalTextfieldDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
-            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setBackgroundColor("#fbb800");
+            conditionalStyle.setForegroundColor("#134cba");
             this.setConditionalFontStyle(conditionalStyle);
             textfieldDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
-        setValue.setFeatureName("name"); //$NON-NLS-1$
-        setValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:newValue");
         textfieldDescription.getBody().add(setValue);
         return textfieldDescription;
     }
 
     private ButtonDescription createButton(boolean withStyle, boolean withConditionalStyle) {
         ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
-        buttonDescription.setLabelExpression("aql:'EClass name'"); //$NON-NLS-1$
-        buttonDescription.setButtonLabelExpression("aql:self.name"); //$NON-NLS-1$
-        buttonDescription.setName("Class Name"); //$NON-NLS-1$
+        buttonDescription.setLabelExpression("aql:'EClass name'");
+        buttonDescription.setButtonLabelExpression("aql:self.name");
+        buttonDescription.setName("Class Name");
         if (withStyle) {
             ButtonDescriptionStyle style = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
-            style.setBackgroundColor("#de1000"); //$NON-NLS-1$
-            style.setForegroundColor("#777777"); //$NON-NLS-1$
+            style.setBackgroundColor("#de1000");
+            style.setForegroundColor("#777777");
             this.setFontStyle(style);
             buttonDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalButtonDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalButtonDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setBackgroundColor("#fbb800"); //$NON-NLS-1$
-            conditionalStyle.setForegroundColor("#134cba"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setBackgroundColor("#fbb800");
+            conditionalStyle.setForegroundColor("#134cba");
             this.setConditionalFontStyle(conditionalStyle);
             buttonDescription.getConditionalStyles().add(conditionalStyle);
         }
 
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
-        setValue.setFeatureName("name"); //$NON-NLS-1$
-        setValue.setValueExpression("aql:newValue"); //$NON-NLS-1$
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:newValue");
         buttonDescription.getBody().add(setValue);
         return buttonDescription;
     }
 
     private LabelDescription createLabel(boolean withStyle, boolean withConditionalStyle) {
         LabelDescription labelDescription = ViewFactory.eINSTANCE.createLabelDescription();
-        labelDescription.setLabelExpression("aql:'Label EClass name'"); //$NON-NLS-1$
-        labelDescription.setValueExpression("aql:self.name"); //$NON-NLS-1$
-        labelDescription.setName("Class Name"); //$NON-NLS-1$
+        labelDescription.setLabelExpression("aql:'Label EClass name'");
+        labelDescription.setValueExpression("aql:self.name");
+        labelDescription.setName("Class Name");
         if (withStyle) {
             LabelDescriptionStyle style = ViewFactory.eINSTANCE.createLabelDescriptionStyle();
-            style.setColor("#de1000"); //$NON-NLS-1$
+            style.setColor("#de1000");
             this.setFontStyle(style);
             labelDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalLabelDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalLabelDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setColor("#fbb800");
             this.setConditionalFontStyle(conditionalStyle);
             labelDescription.getConditionalStyles().add(conditionalStyle);
         }
@@ -924,19 +924,19 @@ public class DynamicFormsTests {
 
     private LinkDescription createLink(boolean withStyle, boolean withConditionalStyle) {
         LinkDescription linkDescription = ViewFactory.eINSTANCE.createLinkDescription();
-        linkDescription.setLabelExpression("aql:'Label EClass link'"); //$NON-NLS-1$
-        linkDescription.setValueExpression("myHyperLink"); //$NON-NLS-1$
-        linkDescription.setName("Class Name"); //$NON-NLS-1$
+        linkDescription.setLabelExpression("aql:'Label EClass link'");
+        linkDescription.setValueExpression("myHyperLink");
+        linkDescription.setName("Class Name");
         if (withStyle) {
             LinkDescriptionStyle style = ViewFactory.eINSTANCE.createLinkDescriptionStyle();
-            style.setColor("#de1000"); //$NON-NLS-1$
+            style.setColor("#de1000");
             this.setFontStyle(style);
             linkDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalLinkDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalLinkDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setColor("#fbb800"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setColor("#fbb800");
             this.setConditionalFontStyle(conditionalStyle);
             linkDescription.getConditionalStyles().add(conditionalStyle);
         }
@@ -946,30 +946,30 @@ public class DynamicFormsTests {
 
     private ListDescription createList(boolean withStyle, boolean withConditionalStyle) {
         ListDescription listDescription = ViewFactory.eINSTANCE.createListDescription();
-        listDescription.setLabelExpression("aql:'Label EClass List'"); //$NON-NLS-1$
-        listDescription.setName("Classes list"); //$NON-NLS-1$
-        listDescription.setValueExpression("aql:self.eContainer().eAllContents(ecore::EClass)"); //$NON-NLS-1$
-        listDescription.setDisplayExpression("aql:candidate.name"); //$NON-NLS-1$
-        listDescription.setIsDeletableExpression("aql:true"); //$NON-NLS-1$
+        listDescription.setLabelExpression("aql:'Label EClass List'");
+        listDescription.setName("Classes list");
+        listDescription.setValueExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
+        listDescription.setDisplayExpression("aql:candidate.name");
+        listDescription.setIsDeletableExpression("aql:true");
 
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:candidate"); //$NON-NLS-1$
+        changeContext.setExpression("aql:candidate");
         SetValue setValue = ViewFactory.eINSTANCE.createSetValue();
-        setValue.setFeatureName("name"); //$NON-NLS-1$
-        setValue.setValueExpression("aql:self.name + ' click event kind: ' + onClickEventKind"); //$NON-NLS-1$
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:self.name + ' click event kind: ' + onClickEventKind");
         changeContext.getChildren().add(setValue);
         listDescription.getBody().add(changeContext);
 
         if (withStyle) {
             ListDescriptionStyle style = ViewFactory.eINSTANCE.createListDescriptionStyle();
-            style.setColor("lightBlue"); //$NON-NLS-1$
+            style.setColor("lightBlue");
             this.setFontStyle(style);
             listDescription.setStyle(style);
         }
         if (withConditionalStyle) {
             ConditionalListDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalListDescriptionStyle();
-            conditionalStyle.setCondition("aql:true"); //$NON-NLS-1$
-            conditionalStyle.setColor("orange"); //$NON-NLS-1$
+            conditionalStyle.setCondition("aql:true");
+            conditionalStyle.setColor("orange");
             this.setConditionalFontStyle(conditionalStyle);
             listDescription.getConditionalStyles().add(conditionalStyle);
         }
@@ -979,10 +979,10 @@ public class DynamicFormsTests {
 
     private ImageDescription createImage() {
         ImageDescription imageDescription = ViewFactory.eINSTANCE.createImageDescription();
-        imageDescription.setName("EClass Icon"); //$NON-NLS-1$
-        imageDescription.setLabelExpression("aql:'Icon for EClass ' + self.name"); //$NON-NLS-1$
-        imageDescription.setUrlExpression("aql:'icons/' + self.name + '.svg'"); //$NON-NLS-1$
-        imageDescription.setMaxWidthExpression("30%"); //$NON-NLS-1$
+        imageDescription.setName("EClass Icon");
+        imageDescription.setLabelExpression("aql:'Icon for EClass ' + self.name");
+        imageDescription.setUrlExpression("aql:'icons/' + self.name + '.svg'");
+        imageDescription.setMaxWidthExpression("30%");
         return imageDescription;
     }
 
@@ -1005,16 +1005,16 @@ public class DynamicFormsTests {
     private void testStyle(Textfield textfield) {
         TextfieldStyle textfieldStyle = textfield.getStyle();
         assertThat(textfieldStyle).isNotNull();
-        assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
-        assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#de1000");
+        assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#777777");
         this.testFontStyle(textfieldStyle);
     }
 
     private void testConditionalStyle(Textfield textfield) {
         TextfieldStyle textfieldStyle = textfield.getStyle();
         assertThat(textfieldStyle).isNotNull();
-        assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
-        assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        assertThat(textfieldStyle.getBackgroundColor()).isEqualTo("#fbb800");
+        assertThat(textfieldStyle.getForegroundColor()).isEqualTo("#134cba");
         this.testConditionalFontStyle(textfieldStyle);
     }
 
@@ -1026,16 +1026,16 @@ public class DynamicFormsTests {
     private void testStyle(Textarea textarea) {
         TextareaStyle textareaStyle = textarea.getStyle();
         assertThat(textareaStyle).isNotNull();
-        assertThat(textareaStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
-        assertThat(textareaStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        assertThat(textareaStyle.getBackgroundColor()).isEqualTo("#de1000");
+        assertThat(textareaStyle.getForegroundColor()).isEqualTo("#777777");
         this.testFontStyle(textareaStyle);
     }
 
     private void testConditionalStyle(Textarea textarea) {
         TextareaStyle textareaStyle = textarea.getStyle();
         assertThat(textareaStyle).isNotNull();
-        assertThat(textareaStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
-        assertThat(textareaStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        assertThat(textareaStyle.getBackgroundColor()).isEqualTo("#fbb800");
+        assertThat(textareaStyle.getForegroundColor()).isEqualTo("#134cba");
         this.testConditionalFontStyle(textareaStyle);
     }
 
@@ -1052,14 +1052,14 @@ public class DynamicFormsTests {
     private void testStyle(LabelWidget labelWidget) {
         LabelWidgetStyle labelWidgetStyle = labelWidget.getStyle();
         assertThat(labelWidgetStyle).isNotNull();
-        assertThat(labelWidgetStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(labelWidgetStyle.getColor()).isEqualTo("#de1000");
         this.testFontStyle(labelWidgetStyle);
     }
 
     private void testConditionalStyle(LabelWidget labelWidget) {
         LabelWidgetStyle labelWidgetStyle = labelWidget.getStyle();
         assertThat(labelWidgetStyle).isNotNull();
-        assertThat(labelWidgetStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(labelWidgetStyle.getColor()).isEqualTo("#fbb800");
         this.testConditionalFontStyle(labelWidgetStyle);
     }
 
@@ -1071,28 +1071,28 @@ public class DynamicFormsTests {
     private void testStyle(Link link) {
         LinkStyle linkStyle = link.getStyle();
         assertThat(linkStyle).isNotNull();
-        assertThat(linkStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(linkStyle.getColor()).isEqualTo("#de1000");
         this.testFontStyle(linkStyle);
     }
 
     private void testConditionalStyle(Link link) {
         LinkStyle linkStyle = link.getStyle();
         assertThat(linkStyle).isNotNull();
-        assertThat(linkStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(linkStyle.getColor()).isEqualTo("#fbb800");
         this.testConditionalFontStyle(linkStyle);
     }
 
     private void testStyle(Radio radio) {
         RadioStyle radioStyle = radio.getStyle();
         assertThat(radioStyle).isNotNull();
-        assertThat(radioStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(radioStyle.getColor()).isEqualTo("#de1000");
         this.testFontStyle(radioStyle);
     }
 
     private void testConditionalStyle(Radio radio) {
         RadioStyle radioStyle = radio.getStyle();
         assertThat(radioStyle).isNotNull();
-        assertThat(radioStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(radioStyle.getColor()).isEqualTo("#fbb800");
         this.testConditionalFontStyle(radioStyle);
     }
 
@@ -1104,16 +1104,16 @@ public class DynamicFormsTests {
     private void testStyle(Select select) {
         SelectStyle selectStyle = select.getStyle();
         assertThat(selectStyle).isNotNull();
-        assertThat(selectStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
-        assertThat(selectStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        assertThat(selectStyle.getBackgroundColor()).isEqualTo("#de1000");
+        assertThat(selectStyle.getForegroundColor()).isEqualTo("#777777");
         this.testFontStyle(selectStyle);
     }
 
     private void testConditionalStyle(Select select) {
         SelectStyle selectStyle = select.getStyle();
         assertThat(selectStyle).isNotNull();
-        assertThat(selectStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
-        assertThat(selectStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        assertThat(selectStyle.getBackgroundColor()).isEqualTo("#fbb800");
+        assertThat(selectStyle.getForegroundColor()).isEqualTo("#134cba");
         this.testConditionalFontStyle(selectStyle);
     }
 
@@ -1125,13 +1125,13 @@ public class DynamicFormsTests {
     private void testStyle(Checkbox checkBox) {
         CheckboxStyle checkBoxStyle = checkBox.getStyle();
         assertThat(checkBoxStyle).isNotNull();
-        assertThat(checkBoxStyle.getColor()).isEqualTo("#de1000"); //$NON-NLS-1$
+        assertThat(checkBoxStyle.getColor()).isEqualTo("#de1000");
     }
 
     private void testConditionalStyle(Checkbox checkBox) {
         CheckboxStyle checkBoxStyle = checkBox.getStyle();
         assertThat(checkBoxStyle).isNotNull();
-        assertThat(checkBoxStyle.getColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
+        assertThat(checkBoxStyle.getColor()).isEqualTo("#fbb800");
     }
 
     private void testNoStyle(Checkbox checkBox) {
@@ -1142,8 +1142,8 @@ public class DynamicFormsTests {
     private void testStyle(MultiSelect multiSelect) {
         MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
         assertThat(multiSelectStyle).isNotNull();
-        assertThat(multiSelectStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
-        assertThat(multiSelectStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        assertThat(multiSelectStyle.getBackgroundColor()).isEqualTo("#de1000");
+        assertThat(multiSelectStyle.getForegroundColor()).isEqualTo("#777777");
         this.testFontStyle(multiSelectStyle);
     }
 
@@ -1155,22 +1155,22 @@ public class DynamicFormsTests {
     private void testStyle(org.eclipse.sirius.components.forms.List list) {
         ListStyle listStyle = list.getStyle();
         assertThat(listStyle).isNotNull();
-        assertThat(listStyle.getColor()).isEqualTo("lightBlue"); //$NON-NLS-1$
+        assertThat(listStyle.getColor()).isEqualTo("lightBlue");
         this.testFontStyle(listStyle);
     }
 
     private void testConditionalStyle(org.eclipse.sirius.components.forms.List list) {
         ListStyle listStyle = list.getStyle();
         assertThat(listStyle).isNotNull();
-        assertThat(listStyle.getColor()).isEqualTo("orange"); //$NON-NLS-1$
+        assertThat(listStyle.getColor()).isEqualTo("orange");
         this.testConditionalFontStyle(listStyle);
     }
 
     private void testConditionalStyle(MultiSelect multiSelect) {
         MultiSelectStyle multiSelectStyle = multiSelect.getStyle();
         assertThat(multiSelectStyle).isNotNull();
-        assertThat(multiSelectStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
-        assertThat(multiSelectStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        assertThat(multiSelectStyle.getBackgroundColor()).isEqualTo("#fbb800");
+        assertThat(multiSelectStyle.getForegroundColor()).isEqualTo("#134cba");
         this.testConditionalFontStyle(multiSelectStyle);
     }
 
@@ -1182,16 +1182,16 @@ public class DynamicFormsTests {
     private void testStyle(Button button) {
         ButtonStyle buttonStyle = button.getStyle();
         assertThat(buttonStyle).isNotNull();
-        assertThat(buttonStyle.getBackgroundColor()).isEqualTo("#de1000"); //$NON-NLS-1$
-        assertThat(buttonStyle.getForegroundColor()).isEqualTo("#777777"); //$NON-NLS-1$
+        assertThat(buttonStyle.getBackgroundColor()).isEqualTo("#de1000");
+        assertThat(buttonStyle.getForegroundColor()).isEqualTo("#777777");
         this.testFontStyle(buttonStyle);
     }
 
     private void testConditionalStyle(Button button) {
         ButtonStyle buttonStyle = button.getStyle();
         assertThat(buttonStyle).isNotNull();
-        assertThat(buttonStyle.getBackgroundColor()).isEqualTo("#fbb800"); //$NON-NLS-1$
-        assertThat(buttonStyle.getForegroundColor()).isEqualTo("#134cba"); //$NON-NLS-1$
+        assertThat(buttonStyle.getBackgroundColor()).isEqualTo("#fbb800");
+        assertThat(buttonStyle.getForegroundColor()).isEqualTo("#134cba");
         this.testConditionalFontStyle(buttonStyle);
     }
 
@@ -1218,20 +1218,20 @@ public class DynamicFormsTests {
 
     private EPackage buildFixture() {
         EPackage fixture = EcoreFactory.eINSTANCE.createEPackage();
-        fixture.setName("fixture"); //$NON-NLS-1$
+        fixture.setName("fixture");
         EClass eClass1 = EcoreFactory.eINSTANCE.createEClass();
-        eClass1.setName("Class1"); //$NON-NLS-1$
+        eClass1.setName("Class1");
         eClass1.setAbstract(true);
-        eClass1.setInstanceClassName("Class1Instance"); //$NON-NLS-1$
+        eClass1.setInstanceClassName("Class1Instance");
         this.eClasses[0] = eClass1;
 
         fixture.getEClassifiers().add(eClass1);
         EClass eClass2 = EcoreFactory.eINSTANCE.createEClass();
-        eClass2.setName("Class2"); //$NON-NLS-1$
+        eClass2.setName("Class2");
         this.eClasses[1] = eClass2;
         fixture.getEClassifiers().add(eClass2);
         EClass eClass3 = EcoreFactory.eINSTANCE.createEClass();
-        eClass3.setName("Class3"); //$NON-NLS-1$
+        eClass3.setName("Class3");
         this.eClasses[2] = eClass3;
         fixture.getEClassifiers().add(eClass3);
 
@@ -1258,13 +1258,13 @@ public class DynamicFormsTests {
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 Optional<Object> optional = Optional.empty();
                 switch (objectId) {
-                case "Class1": //$NON-NLS-1$
+                case "Class1":
                     optional = Optional.of(DynamicFormsTests.this.eClasses[0]);
                     break;
-                case "Class2": //$NON-NLS-1$
+                case "Class2":
                     optional = Optional.of(DynamicFormsTests.this.eClasses[1]);
                     break;
-                case "Class3": //$NON-NLS-1$
+                case "Class3":
                     optional = Optional.of(DynamicFormsTests.this.eClasses[2]);
                     break;
                 default:

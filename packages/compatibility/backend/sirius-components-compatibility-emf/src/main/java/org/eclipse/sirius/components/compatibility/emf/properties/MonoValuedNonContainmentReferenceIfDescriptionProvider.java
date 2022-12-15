@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,9 +41,9 @@ import org.slf4j.LoggerFactory;
  */
 public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
 
-    private static final String ID_DESCRIPTION_ID = "MonoValued NonContainment Reference"; //$NON-NLS-1$
+    private static final String ID_DESCRIPTION_ID = "MonoValued NonContainment Reference";
 
-    private static final String SELECT_DESCRIPTION_ID = "Select"; //$NON-NLS-1$
+    private static final String SELECT_DESCRIPTION_ID = "Select";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -104,7 +104,7 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
             var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
 
-            IStatus result = new Failure(""); //$NON-NLS-1$
+            IStatus result = new Failure("");
             if (optionalEObject.isPresent() && optionalEReference.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EReference eReference = optionalEReference.get();

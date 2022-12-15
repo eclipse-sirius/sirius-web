@@ -48,11 +48,11 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUploadProjectDataFetcher.UPLOAD_PROJECT_FIELD)
 public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String UPLOAD_PROJECT_FIELD = "uploadProject"; //$NON-NLS-1$
+    public static final String UPLOAD_PROJECT_FIELD = "uploadProject";
 
-    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String ID = "id";
 
-    private static final String FILE = "file"; //$NON-NLS-1$
+    private static final String FILE = "file";
 
     private final IGraphQLMessageService messageService;
 

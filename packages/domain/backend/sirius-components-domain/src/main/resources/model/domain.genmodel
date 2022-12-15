@@ -4,7 +4,7 @@
     copyrightText="Copyright (c) 2021 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;     Obeo - initial API and implementation"
     modelDirectory="/sirius-components-domain/src/main/java" creationIcons="false" editDirectory="/sirius-components-domain-edit/src/main/java"
     editorDirectory="/sirius-components-domain-editor/src-gen" modelPluginID="sirius-components-domain"
-    modelName="Domain" updateClasspath="false" nonNLSMarkers="true" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    modelName="Domain" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" bundleManifest="false"
     complianceLevel="11.0" suppressGenModelAnnotations="false" copyrightFields="false"
     editPluginID="sirius-components-domain-edit" editorPluginID="sirius-components-domain-editor"

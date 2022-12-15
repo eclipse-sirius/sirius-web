@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ public class DeleteElementItemProvider extends OperationItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DeleteElement.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DeleteElement.svg"));
     }
 
     /**
@@ -76,7 +76,7 @@ public class DeleteElementItemProvider extends OperationItemProvider {
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_DeleteElement_type"); //$NON-NLS-1$
+        return this.getString("_UI_DeleteElement_type");
     }
 
     /**

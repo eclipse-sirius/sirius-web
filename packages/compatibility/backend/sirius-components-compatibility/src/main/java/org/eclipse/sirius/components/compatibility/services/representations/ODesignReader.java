@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,9 +45,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ODesignReader {
 
-    private static final String ENVIRONMENT_ODESIGN_PATH = "model/Environment.odesign"; //$NON-NLS-1$
+    private static final String ENVIRONMENT_ODESIGN_PATH = "model/Environment.odesign";
 
-    private static final String ENVIRONMENT_ODESIGN_URI = "environment:/viewpoint"; //$NON-NLS-1$
+    private static final String ENVIRONMENT_ODESIGN_URI = "environment:/viewpoint";
 
     private final Logger logger = LoggerFactory.getLogger(ODesignReader.class);
 
@@ -78,7 +78,7 @@ public class ODesignReader {
         resourceSet.getPackageRegistry().put(PropertiesPackage.eNS_URI, PropertiesPackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(PropertiesExtWidgetsReferencePackage.eNS_URI, PropertiesExtWidgetsReferencePackage.eINSTANCE);
 
-        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("odesign", new XMIResourceFactoryImpl()); //$NON-NLS-1$
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("odesign", new XMIResourceFactoryImpl());
 
         ClassPathResource environmentClassPathResource = new ClassPathResource(ENVIRONMENT_ODESIGN_PATH);
         Resource environmentResource = new XMIResourceFactoryImpl().createResource(URI.createURI(ENVIRONMENT_ODESIGN_URI));

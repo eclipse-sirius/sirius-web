@@ -85,7 +85,7 @@ public final class PieChartStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'colors: {1}, strokeWidth: {2}, strokeColor: {3}, fontSize: {4}, italic: {5}, bold: {6}, underline: {7}, strikeThrough: {8}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'colors: {1}, strokeWidth: {2}, strokeColor: {3}, fontSize: {4}, italic: {5}, bold: {6}, underline: {7}, strikeThrough: {8}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.colors, this.strokeWidth, this.strokeColor, this.fontSize, this.italic, this.bold, this.underline,
                 this.strikeThrough);
     }

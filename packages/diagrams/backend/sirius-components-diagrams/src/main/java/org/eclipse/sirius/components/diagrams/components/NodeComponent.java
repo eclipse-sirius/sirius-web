@@ -53,7 +53,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class NodeComponent implements IComponent {
 
-    public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds"; //$NON-NLS-1$
+    public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds";
 
     private NodeComponentProps props;
 

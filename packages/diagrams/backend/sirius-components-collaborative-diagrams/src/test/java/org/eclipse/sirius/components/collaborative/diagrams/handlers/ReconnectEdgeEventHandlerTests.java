@@ -131,7 +131,7 @@ public class ReconnectEdgeEventHandlerTests {
 
         var handler = new ReconnectEdgeEventHandler(diagramQueryService, diagramDescriptionService, representationDescriptionSearchService, objectService, List.of(reconnectionToolExecutor),
                 messageService, new SimpleMeterRegistry());
-        var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET, Position.UNDEFINED); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET, Position.UNDEFINED);
 
         assertThat(handler.canHandle(input)).isTrue();
 

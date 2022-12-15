@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,8 +71,8 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
      */
     protected void addNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Tool_name_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Tool_name_feature", "_UI_Tool_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Tool_name_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Tool_name_feature", "_UI_Tool_type"),
                         ViewPackage.Literals.TOOL__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -124,8 +124,8 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
     @Override
     public String getText(Object object) {
         String label = ((Tool) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Tool_type") : //$NON-NLS-1$
-                this.getString("_UI_Tool_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Tool_type") :
+                this.getString("_UI_Tool_type") + " " + label;
     }
 
     /**

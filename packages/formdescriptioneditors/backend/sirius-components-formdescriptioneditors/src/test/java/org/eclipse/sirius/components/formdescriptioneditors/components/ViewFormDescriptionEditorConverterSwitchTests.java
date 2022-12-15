@@ -29,28 +29,28 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class ViewFormDescriptionEditorConverterSwitchTests {
 
-    private static final String NAME = "Name"; //$NON-NLS-1$
+    private static final String NAME = "Name";
 
-    private static final String LABEL_EXPRESSION = "Label"; //$NON-NLS-1$
+    private static final String LABEL_EXPRESSION = "Label";
 
-    private static final String AQL_EXPRESSION = "aql:"; //$NON-NLS-1$
+    private static final String AQL_EXPRESSION = "aql:";
 
-    private static final String BLANK_STRING = "  "; //$NON-NLS-1$
+    private static final String BLANK_STRING = "  ";
 
-    private static final String DEFAULT_LABEL = "defaultLabel"; //$NON-NLS-1$
+    private static final String DEFAULT_LABEL = "defaultLabel";
 
     private static Stream<Arguments> notValidValues() {
         // @formatter:off
         return Stream.of(
                 Arguments.of(null, null),
-                Arguments.of(null, ""), //$NON-NLS-1$
-                Arguments.of("", null), //$NON-NLS-1$
+                Arguments.of(null, ""),
+                Arguments.of("", null),
                 Arguments.of(null, BLANK_STRING),
                 Arguments.of(BLANK_STRING, null),
-                Arguments.of("", ""), //$NON-NLS-1$ //$NON-NLS-2$
+                Arguments.of("", ""),
                 Arguments.of(BLANK_STRING, BLANK_STRING),
                 Arguments.of(null, AQL_EXPRESSION),
-                Arguments.of("", AQL_EXPRESSION), //$NON-NLS-1$
+                Arguments.of("", AQL_EXPRESSION),
                 Arguments.of(BLANK_STRING, AQL_EXPRESSION));
         // @formatter:on
     }
@@ -59,7 +59,7 @@ public class ViewFormDescriptionEditorConverterSwitchTests {
         // @formatter:off
         return Stream.of(
                 Arguments.of(null, LABEL_EXPRESSION),
-                Arguments.of("", LABEL_EXPRESSION), //$NON-NLS-1$
+                Arguments.of("", LABEL_EXPRESSION),
                 Arguments.of(BLANK_STRING, LABEL_EXPRESSION),
                 Arguments.of(NAME, LABEL_EXPRESSION));
         // @formatter:on
@@ -69,7 +69,7 @@ public class ViewFormDescriptionEditorConverterSwitchTests {
         // @formatter:off
         return Stream.of(
                 Arguments.of(NAME, null),
-                Arguments.of(NAME, ""), //$NON-NLS-1$
+                Arguments.of(NAME, ""),
                 Arguments.of(NAME, BLANK_STRING),
                 Arguments.of(NAME, AQL_EXPRESSION));
         // @formatter:on

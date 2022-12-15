@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class TextfieldElementProps implements IProps {
-    public static final String TYPE = "Textfield"; //$NON-NLS-1$
+    public static final String TYPE = "Textfield";
 
     private String id;
 
@@ -93,7 +93,7 @@ public final class TextfieldElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, supportsCompletion: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, supportsCompletion: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.value, this.completionProposalsProvider != null);
     }
 

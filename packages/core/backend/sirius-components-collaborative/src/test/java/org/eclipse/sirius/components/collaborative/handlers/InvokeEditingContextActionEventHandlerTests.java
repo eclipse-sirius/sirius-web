@@ -64,8 +64,8 @@ public class InvokeEditingContextActionEventHandlerTests {
 
         var eventHandler = new InvokeEditingContextActionEventHandler(List.of(handler), new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeEditingContextActionInput(UUID.randomUUID(), "editingContextId", "actionId"); //$NON-NLS-1$//$NON-NLS-2$
-        IEditingContext editingContext = () -> "editingContextId"; //$NON-NLS-1$
+        var input = new InvokeEditingContextActionInput(UUID.randomUUID(), "editingContextId", "actionId");
+        IEditingContext editingContext = () -> "editingContextId";
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
@@ -85,8 +85,8 @@ public class InvokeEditingContextActionEventHandlerTests {
     public void testErrorNoHandlerFound() {
         var eventHandler = new InvokeEditingContextActionEventHandler(List.of(), new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new InvokeEditingContextActionInput(UUID.randomUUID(), "editingContextId", "actionId"); //$NON-NLS-1$//$NON-NLS-2$
-        IEditingContext editingContext = () -> "editingContextId"; //$NON-NLS-1$
+        var input = new InvokeEditingContextActionInput(UUID.randomUUID(), "editingContextId", "actionId");
+        IEditingContext editingContext = () -> "editingContextId";
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
@@ -101,6 +101,6 @@ public class InvokeEditingContextActionEventHandlerTests {
         assertThat(payload).isInstanceOf(ErrorPayload.class);
 
         ErrorPayload errorPayload = (ErrorPayload) payload;
-        assertThat(errorPayload.getMessage()).isEqualTo("No handler could be found for action with id actionId"); //$NON-NLS-1$
+        assertThat(errorPayload.getMessage()).isEqualTo("No handler could be found for action with id actionId");
     }
 }

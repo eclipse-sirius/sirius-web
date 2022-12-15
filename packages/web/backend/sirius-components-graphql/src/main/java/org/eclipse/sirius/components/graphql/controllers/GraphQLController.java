@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,21 +97,21 @@ import io.micrometer.core.instrument.Timer;
 @RequestMapping(GraphQLConstants.GRAPHQL_BASE_PATH)
 public class GraphQLController {
 
-    private static final String METRIC_NAME = "siriusweb_graphql_http"; //$NON-NLS-1$
+    private static final String METRIC_NAME = "siriusweb_graphql_http";
 
-    private static final String KIND = "kind"; //$NON-NLS-1$
+    private static final String KIND = "kind";
 
-    private static final String OPERATIONS = "operations"; //$NON-NLS-1$
+    private static final String OPERATIONS = "operations";
 
-    private static final String MAP = "map"; //$NON-NLS-1$
+    private static final String MAP = "map";
 
-    private static final String FIRST_UPLOADED_FILE = "0"; //$NON-NLS-1$
+    private static final String FIRST_UPLOADED_FILE = "0";
 
-    private static final String MULTIPART_VARIABLES_FILE = "variables.file"; //$NON-NLS-1$
+    private static final String MULTIPART_VARIABLES_FILE = "variables.file";
 
-    private static final String VARIABLE_FILE = "file"; //$NON-NLS-1$
+    private static final String VARIABLE_FILE = "file";
 
-    private static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
     private final Logger logger = LoggerFactory.getLogger(GraphQLController.class);
 
@@ -129,10 +129,10 @@ public class GraphQLController {
 
         // @formatter:off
         this.graphQLRequestTimer = Timer.builder(METRIC_NAME)
-                .tag(KIND, "request") //$NON-NLS-1$
+                .tag(KIND, "request")
                 .register(meterRegistry);
         this.graphQLUploadTimer = Timer.builder(METRIC_NAME)
-                .tag(KIND, "upload") //$NON-NLS-1$
+                .tag(KIND, "upload")
                 .register(meterRegistry);
         // @formatter:on
     }
@@ -230,7 +230,7 @@ public class GraphQLController {
                 this.logger.warn(exception.getMessage(), exception);
             }
         } else {
-            this.logger.warn("Missing operations parameter"); //$NON-NLS-1$
+            this.logger.warn("Missing operations parameter");
         }
         return optionalGraphQLPayload;
     }
@@ -244,7 +244,7 @@ public class GraphQLController {
                 this.logger.warn(exception.getMessage(), exception);
             }
         } else {
-            this.logger.warn("Missing map parameter"); //$NON-NLS-1$
+            this.logger.warn("Missing map parameter");
         }
 
         return optionalJsonNode;
@@ -286,7 +286,7 @@ public class GraphQLController {
                     this.logger.warn(exception.getMessage(), exception);
                 }
             } else {
-                this.logger.warn("Missing multipart file"); //$NON-NLS-1$
+                this.logger.warn("Missing multipart file");
             }
         }
         return optionalVariables;

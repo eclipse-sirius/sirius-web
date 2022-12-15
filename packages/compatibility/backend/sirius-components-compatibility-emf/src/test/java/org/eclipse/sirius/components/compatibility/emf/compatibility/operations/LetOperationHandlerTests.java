@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class LetOperationHandlerTests {
-    private static final String VARIABLE_NAME = "myVariableName"; //$NON-NLS-1$
+    private static final String VARIABLE_NAME = "myVariableName";
 
     private LetOperationHandler letOperationHandler;
 
@@ -56,14 +56,14 @@ public class LetOperationHandlerTests {
     @Test
     public void letOperationHandlerNominalCaseTest() {
         // used to check that the let operation succeeded
-        String newName = "newClass"; //$NON-NLS-1$
+        String newName = "newClass";
         ChangeContext subChangeContext = ToolFactory.eINSTANCE.createChangeContext();
-        subChangeContext.setBrowseExpression("aql:" + VARIABLE_NAME + ".renameENamedElementService('" + newName + "'))"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        subChangeContext.setBrowseExpression("aql:" + VARIABLE_NAME + ".renameENamedElementService('" + newName + "'))");
         this.letOperation.getSubModelOperations().add(subChangeContext);
 
         // check the nominal case
         this.letOperation.setVariableName(VARIABLE_NAME);
-        this.letOperation.setValueExpression("aql:self"); //$NON-NLS-1$
+        this.letOperation.setValueExpression("aql:self");
 
         IStatus handleResult = this.letOperationHandler.handle(this.operationTestContext.getVariables());
 
@@ -86,7 +86,7 @@ public class LetOperationHandlerTests {
         this.handleAndCheckExecution(null, null, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", "", this.operationTestContext.getRootPackage()); //$NON-NLS-1$ //$NON-NLS-2$
+        this.handleAndCheckExecution("", "", this.operationTestContext.getRootPackage());
 
         // Check expression with exception case
         this.handleAndCheckExecution(VARIABLE_NAME, ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());

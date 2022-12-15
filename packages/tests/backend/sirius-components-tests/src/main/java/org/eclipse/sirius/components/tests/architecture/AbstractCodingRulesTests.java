@@ -40,51 +40,51 @@ import org.junit.jupiter.api.Test;
  * @author sbegaudeau
  */
 public abstract class AbstractCodingRulesTests {
-    private static final String GUAVA_ANNOTATIONS = "com.google.common.annotations.."; //$NON-NLS-1$
+    private static final String GUAVA_ANNOTATIONS = "com.google.common.annotations..";
 
-    private static final String GUAVA_BASE = "com.google.common.base.."; //$NON-NLS-1$
+    private static final String GUAVA_BASE = "com.google.common.base..";
 
-    private static final String GUAVA_COLLECT = "com.google.common.collect.."; //$NON-NLS-1$
+    private static final String GUAVA_COLLECT = "com.google.common.collect..";
 
-    private static final String GUAVA_ESCAPE = "com.google.common.escape.."; //$NON-NLS-1$
+    private static final String GUAVA_ESCAPE = "com.google.common.escape..";
 
-    private static final String GUAVA_EVENTBUS = "com.google.common.eventbus.."; //$NON-NLS-1$
+    private static final String GUAVA_EVENTBUS = "com.google.common.eventbus..";
 
-    private static final String GUAVA_HASH = "com.google.common.hash.."; //$NON-NLS-1$
+    private static final String GUAVA_HASH = "com.google.common.hash..";
 
-    private static final String GUAVA_HTML = "com.google.common.html.."; //$NON-NLS-1$
+    private static final String GUAVA_HTML = "com.google.common.html..";
 
-    private static final String GUAVA_IO = "com.google.common.io.."; //$NON-NLS-1$
+    private static final String GUAVA_IO = "com.google.common.io..";
 
-    private static final String GUAVA_MATH = "com.google.common.math.."; //$NON-NLS-1$
+    private static final String GUAVA_MATH = "com.google.common.math..";
 
-    private static final String GUAVA_NET = "com.google.common.net.."; //$NON-NLS-1$
+    private static final String GUAVA_NET = "com.google.common.net..";
 
-    private static final String GUAVA_PRIMITIVES = "com.google.common.primitives.."; //$NON-NLS-1$
+    private static final String GUAVA_PRIMITIVES = "com.google.common.primitives..";
 
-    private static final String GUAVA_REFLECT = "com.google.common.reflect.."; //$NON-NLS-1$
+    private static final String GUAVA_REFLECT = "com.google.common.reflect..";
 
-    private static final String GUAVA_UTIL = "com.google.common.util.."; //$NON-NLS-1$
+    private static final String GUAVA_UTIL = "com.google.common.util..";
 
-    private static final String GUAVA_XML = "com.google.common.xml.."; //$NON-NLS-1$
+    private static final String GUAVA_XML = "com.google.common.xml..";
 
-    private static final String GUAVA_THIRDPARTY = "com.google.thirdparty.."; //$NON-NLS-1$
+    private static final String GUAVA_THIRDPARTY = "com.google.thirdparty..";
 
-    private static final String SPRING_STRINGUTILS = "org.springframework.util.StringUtils"; //$NON-NLS-1$
+    private static final String SPRING_STRINGUTILS = "org.springframework.util.StringUtils";
 
-    private static final String TESTCASE_SUFFIX = "TestCases"; //$NON-NLS-1$
+    private static final String TESTCASE_SUFFIX = "TestCases";
 
-    private static final String EMF = "org.eclipse.emf.."; //$NON-NLS-1$
+    private static final String EMF = "org.eclipse.emf..";
 
-    private static final String EMFJSON = "org.eclipse.sirius.emfjson.."; //$NON-NLS-1$
+    private static final String EMFJSON = "org.eclipse.sirius.emfjson..";
 
-    private static final String APACHE_COMMONS = "org.apache.commons.."; //$NON-NLS-1$
+    private static final String APACHE_COMMONS = "org.apache.commons..";
 
-    private static final String JACKSON_ANNOTATION = "com.fasterxml.jackson.annotation.."; //$NON-NLS-1$
+    private static final String JACKSON_ANNOTATION = "com.fasterxml.jackson.annotation..";
 
-    private static final String IS = "is"; //$NON-NLS-1$
+    private static final String IS = "is";
 
-    private static final String GET = "get"; //$NON-NLS-1$
+    private static final String GET = "get";
 
     protected abstract String getProjectRootPackage();
 
@@ -238,7 +238,7 @@ public abstract class AbstractCodingRulesTests {
     }
 
     private ArchCondition<JavaClass> haveProtectedOrPackageConstructor() {
-        return new ArchCondition<>("have a package private constructor") { //$NON-NLS-1$
+        return new ArchCondition<>("have a package private constructor") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
                 // @formatter:off
@@ -258,7 +258,7 @@ public abstract class AbstractCodingRulesTests {
 
                 boolean conditionSatisfied = hasProtectedOrPackageConstructor && !isAnonymousClass && !isEnum;
 
-                String pattern = "The class {0} has a constructor with a protected or package visibility"; //$NON-NLS-1$
+                String pattern = "The class {0} has a constructor with a protected or package visibility";
                 String message = MessageFormat.format(pattern, javaClass.getSimpleName());
                 events.add(new SimpleConditionEvent(javaClass, conditionSatisfied, message));
             }
@@ -276,7 +276,7 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .areNotAnnotatedWith(Target.class)
                 .should()
-                .haveSimpleNameStartingWith("I"); //$NON-NLS-1$
+                .haveSimpleNameStartingWith("I");
         // @formatter:on
 
         rule.check(this.getClasses());
@@ -293,7 +293,7 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .haveModifier(ABSTRACT)
                 .should()
-                .haveSimpleNameStartingWith("Abstract"); //$NON-NLS-1$
+                .haveSimpleNameStartingWith("Abstract");
         // @formatter:on
 
         rule.check(this.getClasses());
@@ -332,7 +332,7 @@ public abstract class AbstractCodingRulesTests {
      * @return A predicate which can be used to identify business code in a class
      */
     private ArchCondition<JavaClass> notContainBusinessCode() {
-        return new ArchCondition<>("not contain business code") { //$NON-NLS-1$
+        return new ArchCondition<>("not contain business code") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
                 boolean isConditionSatisfied = true;
@@ -356,9 +356,9 @@ public abstract class AbstractCodingRulesTests {
                     }
                 }
 
-                String message = "The abstract class does not have any business code"; //$NON-NLS-1$
+                String message = "The abstract class does not have any business code";
                 if (!isConditionSatisfied) {
-                    String pattern = "The abstract class {0} does contain business code, please favor composition over inheritance to share business code"; //$NON-NLS-1$
+                    String pattern = "The abstract class {0} does contain business code, please favor composition over inheritance to share business code";
                     message = MessageFormat.format(pattern, javaClass.getSimpleName());
                 }
                 events.add(new SimpleConditionEvent(javaClass, isConditionSatisfied, message));
@@ -413,7 +413,7 @@ public abstract class AbstractCodingRulesTests {
     }
 
     private DescribedPredicate<JavaClass> isNotTestCase() {
-        return new DescribedPredicate<>("is not a test case") { //$NON-NLS-1$
+        return new DescribedPredicate<>("is not a test case") {
             @Override
             public boolean apply(JavaClass javaClass) {
                 return !javaClass.getName().endsWith(TESTCASE_SUFFIX);
@@ -427,10 +427,10 @@ public abstract class AbstractCodingRulesTests {
      * @return A predicate which will help us ignore lambda methods
      */
     private DescribedPredicate<JavaMethod> isNotLambda() {
-        return new DescribedPredicate<>("is not a lambda") { //$NON-NLS-1$
+        return new DescribedPredicate<>("is not a lambda") {
             @Override
             public boolean apply(JavaMethod javaMethod) {
-                return !javaMethod.getName().startsWith("lambda$"); //$NON-NLS-1$
+                return !javaMethod.getName().startsWith("lambda$");
             }
         };
     }
@@ -442,10 +442,10 @@ public abstract class AbstractCodingRulesTests {
      * @return A predicate which help us ignore switch expressions
      */
     private DescribedPredicate<JavaMethod> isNotSwitchTable() {
-        return new DescribedPredicate<>("is not a switch table (whatever that is...)") { //$NON-NLS-1$
+        return new DescribedPredicate<>("is not a switch table (whatever that is...)") {
             @Override
             public boolean apply(JavaMethod javaMethod) {
-                return !javaMethod.getFullName().contains("$SWITCH_TABLE$"); //$NON-NLS-1$
+                return !javaMethod.getFullName().contains("$SWITCH_TABLE$");
             }
         };
     }

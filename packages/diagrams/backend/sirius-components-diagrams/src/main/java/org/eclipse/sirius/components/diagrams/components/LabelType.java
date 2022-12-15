@@ -19,12 +19,12 @@ package org.eclipse.sirius.components.diagrams.components;
  */
 public enum LabelType {
 
-    OUTSIDE("label:outside"), //$NON-NLS-1$
-    INSIDE_CENTER("label:inside-center"), //$NON-NLS-1$
-    OUTSIDE_CENTER("label:outside-center"), //$NON-NLS-1$
-    EDGE_BEGIN("label:edge-begin"), //$NON-NLS-1$
-    EDGE_CENTER("label:edge-center"), //$NON-NLS-1$
-    EDGE_END("label:edge-end"); //$NON-NLS-1$
+    OUTSIDE("label:outside"),
+    INSIDE_CENTER("label:inside-center"),
+    OUTSIDE_CENTER("label:outside-center"),
+    EDGE_BEGIN("label:edge-begin"),
+    EDGE_CENTER("label:edge-center"),
+    EDGE_END("label:edge-end");
 
     private final String value;
 

@@ -45,13 +45,13 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = MutationTypeProvider.TYPE, field = "uploadImage")
 public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    private static final String FILE = "file"; //$NON-NLS-1$
+    private static final String FILE = "file";
 
-    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String ID = "id";
 
-    private static final String LABEL = "label"; //$NON-NLS-1$
+    private static final String LABEL = "label";
 
-    private static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
+    private static final String EDITING_CONTEXT_ID = "editingContextId";
 
     private final ICustomImageImportService customImageImportService;
 

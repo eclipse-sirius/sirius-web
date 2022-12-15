@@ -63,9 +63,9 @@ import io.micrometer.core.instrument.Timer;
 @RequestMapping(URLConstants.PARAMETRIC_IMAGE_BASE_PATH + "/*")
 public class ParametricSVGImageController {
 
-    private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml"); //$NON-NLS-1$
+    private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml");
 
-    private static final String TIMER = "sirius-components_parametricsvg"; //$NON-NLS-1$
+    private static final String TIMER = "sirius-components_parametricsvg";
 
     private final List<IParametricSVGImageFactory> svgImageFactories;
 

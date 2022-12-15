@@ -42,11 +42,11 @@ import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
  */
 public class ToolImageProvider implements Supplier<String> {
 
-    private static final String ICON_PATH = "iconPath"; //$NON-NLS-1$
+    private static final String ICON_PATH = "iconPath";
 
-    private static final String ICON = "icon"; //$NON-NLS-1$
+    private static final String ICON = "icon";
 
-    private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)"); //$NON-NLS-1$
+    private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)");
 
     private final IObjectService objectService;
 
@@ -65,7 +65,7 @@ public class ToolImageProvider implements Supplier<String> {
         // @formatter:off
         return this.getImagePathFromIconPath()
                 .or(this::getImagePathFromDomainClass)
-                .orElse(""); //$NON-NLS-1$
+                .orElse("");
         // @formatter:on
     }
 
@@ -86,8 +86,8 @@ public class ToolImageProvider implements Supplier<String> {
 
     private String normalize(String iconPath) {
         String path = iconPath;
-        if (!iconPath.startsWith("/")) { //$NON-NLS-1$
-            path = "/" + iconPath; //$NON-NLS-1$
+        if (!iconPath.startsWith("/")) {
+            path = "/" + iconPath;
         }
 
         int index = path.indexOf('/', 1);

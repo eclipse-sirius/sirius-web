@@ -69,7 +69,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         this.layoutService = Objects.requireNonNull(layoutService);
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
-                .tag(Monitoring.NAME, "diagram") //$NON-NLS-1$
+                .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
         // @formatter:on
     }

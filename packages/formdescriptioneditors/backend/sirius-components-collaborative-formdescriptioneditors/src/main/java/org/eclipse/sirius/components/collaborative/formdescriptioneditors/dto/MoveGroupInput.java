@@ -71,7 +71,7 @@ public class MoveGroupInput implements IFormDescriptionEditorInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, groupId: {4}, index: {5}}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, groupId: {4}, index: {5}}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.groupId, this.index);
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,9 +35,9 @@ import org.junit.jupiter.api.Test;
  * @author sbegaudeau
  */
 public class EdgeMappingStyleProviderTests {
-    private static final String EXPRESSION_FALSE = "aql:false"; //$NON-NLS-1$
+    private static final String EXPRESSION_FALSE = "aql:false";
 
-    private static final String EXPRESSION_TRUE = "aql:true"; //$NON-NLS-1$
+    private static final String EXPRESSION_TRUE = "aql:true";
 
     /**
      * Non-regression test for Conditional styles on edges.
@@ -59,7 +59,7 @@ public class EdgeMappingStyleProviderTests {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         EdgeStyle edgeStyle = new EdgeMappingStyleProvider(interpreter, edgeMapping).apply(variableManager);
 
-        assertThat(edgeStyle.getColor()).isEqualTo("#020202"); //$NON-NLS-1$
+        assertThat(edgeStyle.getColor()).isEqualTo("#020202");
     }
 
     private ConditionalEdgeStyleDescription createConditionalStyle(String predicateExpression, EdgeStyleDescription edgeStyleDescription) {

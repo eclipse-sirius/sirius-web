@@ -65,7 +65,7 @@ public final class Group {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, displayMode: {3}, toolbarActionsCount: {4}, widgetCount: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, displayMode: {3}, toolbarActionsCount: {4}, widgetCount: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.displayMode, this.toolbarActions.size(), this.widgets.size());
     }
 

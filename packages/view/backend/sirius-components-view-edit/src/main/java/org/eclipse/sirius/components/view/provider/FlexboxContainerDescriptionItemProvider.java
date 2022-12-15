@@ -79,8 +79,8 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
      */
     protected void addFlexDirectionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_FlexboxContainerDescription_flexDirection_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexDirection_feature", "_UI_FlexboxContainerDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_FlexboxContainerDescription_flexDirection_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexDirection_feature", "_UI_FlexboxContainerDescription_type"),
                 ViewPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -122,9 +122,9 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
     @Override
     public Object getImage(Object object) {
         if (object instanceof FlexboxContainerDescription && FlexDirection.ROW.equals(((FlexboxContainerDescription) object).getFlexDirection())) {
-            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FlexboxContainerDescription_Row.svg")); //$NON-NLS-1$
+            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FlexboxContainerDescription_Row.svg"));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FlexboxContainerDescription_Column.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FlexboxContainerDescription_Column.svg"));
     }
 
     /**
@@ -145,8 +145,8 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
     @Override
     public String getText(Object object) {
         String label = ((FlexboxContainerDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FlexboxContainerDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_FlexboxContainerDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_FlexboxContainerDescription_type") :
+                this.getString("_UI_FlexboxContainerDescription_type") + " " + label;
     }
 
     /**

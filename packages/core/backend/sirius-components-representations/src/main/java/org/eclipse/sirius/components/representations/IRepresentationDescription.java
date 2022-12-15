@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.annotations.PublicApi;
 @PublicApi
 public interface IRepresentationDescription {
 
-    String CLASS = "class"; //$NON-NLS-1$
+    String CLASS = "class";
 
     String getId();
 

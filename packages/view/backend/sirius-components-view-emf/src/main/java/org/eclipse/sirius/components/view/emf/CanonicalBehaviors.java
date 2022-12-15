@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,7 +120,7 @@ public class CanonicalBehaviors {
     private Optional<EObject> createSemanticInstance(EObject self, String domainType) {
         EPackage ePackage = self.eClass().getEPackage();
         final String shortTypeName;
-        String[] segments = domainType.split("::"); //$NON-NLS-1$
+        String[] segments = domainType.split("::");
         if (segments.length == 2) {
             shortTypeName = segments[1];
         } else {
@@ -139,7 +139,7 @@ public class CanonicalBehaviors {
             // @formatter:off
             // Assume the first stringly-typed attribute represents the object's name/label
             klass.getEAllAttributes().stream().filter(attr -> Objects.equals(String.class, attr.getEType().getInstanceClass())).findFirst().ifPresent(labelAttribute -> {
-                instance.eSet(labelAttribute, "New " + klass.getName()); //$NON-NLS-1$
+                instance.eSet(labelAttribute, "New " + klass.getName());
             });
             // @formatter:on
             return Optional.of(instance);

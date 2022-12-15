@@ -71,8 +71,8 @@ public class WidgetDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetDescription_name_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_name_feature", "_UI_WidgetDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_WidgetDescription_name_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_name_feature", "_UI_WidgetDescription_type"),
                 ViewPackage.Literals.WIDGET_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -83,8 +83,8 @@ public class WidgetDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetDescription_labelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_labelExpression_feature", "_UI_WidgetDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_WidgetDescription_labelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_labelExpression_feature", "_UI_WidgetDescription_type"),
                 ViewPackage.Literals.WIDGET_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -106,8 +106,8 @@ public class WidgetDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((WidgetDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_WidgetDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_WidgetDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_WidgetDescription_type") :
+                this.getString("_UI_WidgetDescription_type") + " " + label;
     }
 
     /**

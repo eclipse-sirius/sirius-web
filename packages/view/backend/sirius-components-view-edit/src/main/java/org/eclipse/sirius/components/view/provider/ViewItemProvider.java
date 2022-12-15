@@ -101,7 +101,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/View.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/View.svg"));
     }
 
     /**
@@ -121,7 +121,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_View_type"); //$NON-NLS-1$
+        return this.getString("_UI_View_type");
     }
 
     /**
@@ -154,11 +154,11 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         DiagramDescription newDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        newDiagramDescription.setName("New Diagram Description"); //$NON-NLS-1$
+        newDiagramDescription.setName("New Diagram Description");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
 
         FormDescription newFormDescription = ViewFactory.eINSTANCE.createFormDescription();
-        newFormDescription.setName("New Form Description"); //$NON-NLS-1$
+        newFormDescription.setName("New Form Description");
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
         newFormDescription.getGroups().add(groupDescription);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));

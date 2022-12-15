@@ -24,12 +24,12 @@ public final class CompletionRequest {
     /**
      * The name of the variable used to pass the current text value to the completion provider implementation.
      */
-    public static final String CURRENT_TEXT = "currentText"; //$NON-NLS-1$
+    public static final String CURRENT_TEXT = "currentText";
 
     /**
      * The name of the variable used to pass the cursor position to the completion provider implementation.
      */
-    public static final String CURSOR_POSITION = "cursorPosition"; //$NON-NLS-1$
+    public static final String CURSOR_POSITION = "cursorPosition";
 
     private final String currentText;
 
@@ -50,7 +50,7 @@ public final class CompletionRequest {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'currentText: {1}, cursorPosition: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'currentText: {1}, cursorPosition: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.currentText, this.cursorPosition);
     }
 

@@ -24,7 +24,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class CompatibilityMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-components-compatibility"; //$NON-NLS-1$
+    private static final String PATH = "messages/sirius-components-compatibility";
 
     @Bean
     MessageSourceAccessor compatibilityMessageAccessor() {

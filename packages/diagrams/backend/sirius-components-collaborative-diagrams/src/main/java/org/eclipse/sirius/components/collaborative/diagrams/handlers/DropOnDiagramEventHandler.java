@@ -104,7 +104,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
     }
 
     private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, List<Object> objects, String diagramElementId, double startingPositionX, double startingPositionY) {
-        IStatus result = new Failure(""); //$NON-NLS-1$
+        IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
 

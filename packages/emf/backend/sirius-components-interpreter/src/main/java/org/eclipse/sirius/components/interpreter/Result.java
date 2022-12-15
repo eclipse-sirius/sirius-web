@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -128,9 +128,9 @@ public class Result {
                 result = ((Boolean) value).booleanValue();
             } else {
                 String toString = value.toString();
-                if ("true".equalsIgnoreCase(toString)) { //$NON-NLS-1$
+                if ("true".equalsIgnoreCase(toString)) {
                     result = true;
-                } else if ("false".equalsIgnoreCase(toString)) { //$NON-NLS-1$
+                } else if ("false".equalsIgnoreCase(toString)) {
                     result = false;
                 } else {
                     /*
@@ -147,6 +147,6 @@ public class Result {
 
     @Override
     public String toString() {
-        return MessageFormat.format("Result { status: {0}, rawValue: {1}}", this.status, this.rawValue); //$NON-NLS-1$
+        return MessageFormat.format("Result { status: {0}, rawValue: {1}}", this.status, this.rawValue);
     }
 }

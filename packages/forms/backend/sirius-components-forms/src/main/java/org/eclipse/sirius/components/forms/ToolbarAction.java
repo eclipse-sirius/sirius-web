@@ -69,7 +69,7 @@ public final class ToolbarAction extends AbstractWidget {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, buttonLabel: {3}, imageURL: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, buttonLabel: {3}, imageURL: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.label, this.buttonLabel, this.imageURL);
     }
 

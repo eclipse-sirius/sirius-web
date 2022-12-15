@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +78,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     public TreeEventProcessor(IEditingContext editingContext, ITreeService treeService, TreeCreationParameters treeCreationParameters, List<ITreeEventHandler> treeEventHandlers,
             ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.logger.trace("Creating the tree event processor {}", treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
+        this.logger.trace("Creating the tree event processor {}", treeCreationParameters.getEditingContext().getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.treeService = Objects.requireNonNull(treeService);
@@ -89,7 +89,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
-                .tag(Monitoring.NAME, "tree") //$NON-NLS-1$
+                .tag(Monitoring.NAME, "tree")
                 .register(meterRegistry);
         // @formatter:on
 
@@ -117,7 +117,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
                 treeEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentTree.get(), treeInput);
             } else {
-                this.logger.warn("No handler found for event: {}", treeInput); //$NON-NLS-1$
+                this.logger.warn("No handler found for event: {}", treeInput);
             }
         }
     }
@@ -133,7 +133,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
             if (this.sink.currentSubscriberCount() > 0) {
                 EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(changeDescription.getInput().getId(), tree));
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}"; //$NON-NLS-1$
+                    String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
                 }
             }
@@ -178,7 +178,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     private Tree refreshTree() {
         Tree tree = this.treeService.create(this.treeCreationParameters);
-        this.logger.trace("Tree refreshed: {}", this.treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
+        this.logger.trace("Tree refreshed: {}", this.treeCreationParameters.getEditingContext().getId());
         return tree;
     }
 
@@ -197,13 +197,13 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the tree event processor {}", this.treeCreationParameters.getEditingContext().getId()); //$NON-NLS-1$
+        this.logger.trace("Disposing the tree event processor {}", this.treeCreationParameters.getEditingContext().getId());
 
         this.subscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}"; //$NON-NLS-1$
+            String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
     }

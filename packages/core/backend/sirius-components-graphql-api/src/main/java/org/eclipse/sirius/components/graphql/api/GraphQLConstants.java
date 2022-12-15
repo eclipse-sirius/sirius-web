@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,9 @@ package org.eclipse.sirius.components.graphql.api;
  */
 public final class GraphQLConstants {
 
-    public static final String GRAPHQL_BASE_PATH = "/api/graphql"; //$NON-NLS-1$
+    public static final String GRAPHQL_BASE_PATH = "/api/graphql";
 
-    public static final String SUBSCRIPTION_ID = "userId"; //$NON-NLS-1$
+    public static final String SUBSCRIPTION_ID = "userId";
 
     private GraphQLConstants() {
         // Prevent instantiation

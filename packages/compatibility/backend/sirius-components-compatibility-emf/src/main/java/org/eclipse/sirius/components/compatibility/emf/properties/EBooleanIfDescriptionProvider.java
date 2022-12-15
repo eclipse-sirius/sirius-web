@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,9 +36,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class EBooleanIfDescriptionProvider {
 
-    private static final String IF_DESCRIPTION_ID = "EBoolean"; //$NON-NLS-1$
+    private static final String IF_DESCRIPTION_ID = "EBoolean";
 
-    private static final String CHECKBOX_DESCRIPTION_ID = "Checkbox"; //$NON-NLS-1$
+    private static final String CHECKBOX_DESCRIPTION_ID = "Checkbox";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -109,7 +109,7 @@ public class EBooleanIfDescriptionProvider {
                 eObject.eSet(eAttribute, newValue);
                 return new Success();
             }
-            return new Failure(""); //$NON-NLS-1$
+            return new Failure("");
         };
     }
 

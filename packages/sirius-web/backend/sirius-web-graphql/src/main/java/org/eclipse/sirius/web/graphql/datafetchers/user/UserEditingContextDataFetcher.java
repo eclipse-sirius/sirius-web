@@ -39,7 +39,7 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.EDITING_CONTEXT_FIELD)
 public class UserEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<String>> {
-    private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId"; //$NON-NLS-1$
+    private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
 
     @Override
     public DataFetcherResult<String> get(DataFetchingEnvironment environment) throws Exception {

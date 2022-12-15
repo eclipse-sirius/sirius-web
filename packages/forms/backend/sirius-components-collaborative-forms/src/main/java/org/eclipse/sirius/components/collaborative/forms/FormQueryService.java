@@ -48,7 +48,7 @@ public class FormQueryService implements IFormQueryService {
         // @formatter:on
 
         if (optionalWidget.isEmpty()) {
-            this.logger.warn("The widget with the id {} has not been found", widgetId); //$NON-NLS-1$
+            this.logger.warn("The widget with the id {} has not been found", widgetId);
         }
 
         return optionalWidget;

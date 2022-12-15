@@ -20,8 +20,8 @@ package org.eclipse.sirius.web.graphql.schema;
  */
 public class SubscriptionTypeProvider {
 
-    public static final String TYPE = "Subscription"; //$NON-NLS-1$
+    public static final String TYPE = "Subscription";
 
-    public static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    public static final String INPUT_ARGUMENT = "input";
 
 }

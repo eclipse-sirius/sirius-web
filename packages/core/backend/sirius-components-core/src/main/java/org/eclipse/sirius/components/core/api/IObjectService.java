@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,27 +48,27 @@ public interface IObjectService {
 
         @Override
         public String getId(Object object) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String getLabel(Object object) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String getKind(Object object) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String getFullLabel(Object object) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override
         public String getImagePath(Object object) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         @Override

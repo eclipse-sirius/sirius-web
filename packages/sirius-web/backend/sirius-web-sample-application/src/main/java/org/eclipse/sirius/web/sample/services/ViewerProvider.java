@@ -31,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
 public class ViewerProvider implements IViewerProvider {
     @Override
     public Optional<IViewer> getViewer(DataFetchingEnvironment environment) {
-        return Optional.of(new User(UUID.randomUUID(), "system")); //$NON-NLS-1$
+        return Optional.of(new User(UUID.randomUUID(), "system"));
     }
 
 }

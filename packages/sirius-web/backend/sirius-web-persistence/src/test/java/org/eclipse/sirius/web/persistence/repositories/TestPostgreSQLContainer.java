@@ -24,14 +24,14 @@ import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
  * @author sbegaudeau
  */
 public final class TestPostgreSQLContainer extends PostgreSQLContainer<TestPostgreSQLContainer> {
-    private static final String VERSION = "postgres:latest"; //$NON-NLS-1$
+    private static final String VERSION = "postgres:latest";
 
     public TestPostgreSQLContainer() {
         super(VERSION);
 
         // @formatter:off
         this.waitStrategy = new LogMessageWaitStrategy()
-                .withRegEx(".*database system is ready to accept connections.*\\s") //$NON-NLS-1$
+                .withRegEx(".*database system is ready to accept connections.*\\s")
                 .withTimes(1)
                 .withStartupTimeout(Duration.of(240, ChronoUnit.SECONDS));
         // @formatter:on

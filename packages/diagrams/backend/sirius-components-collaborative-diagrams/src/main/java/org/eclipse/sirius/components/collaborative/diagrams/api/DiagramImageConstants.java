@@ -19,13 +19,13 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
  */
 public final class DiagramImageConstants {
 
-    private static final String IMAGES_ROOT_FOLDER = "/diagram-images"; //$NON-NLS-1$
+    private static final String IMAGES_ROOT_FOLDER = "/diagram-images";
 
-    public static final String EDIT_SVG = IMAGES_ROOT_FOLDER + "/edit.svg"; //$NON-NLS-1$
+    public static final String EDIT_SVG = IMAGES_ROOT_FOLDER + "/edit.svg";
 
-    public static final String SEMANTIC_DELETE_SVG = IMAGES_ROOT_FOLDER + "/semanticDelete.svg"; //$NON-NLS-1$
+    public static final String SEMANTIC_DELETE_SVG = IMAGES_ROOT_FOLDER + "/semanticDelete.svg";
 
-    public static final String GRAPHICAL_DELETE_SVG = IMAGES_ROOT_FOLDER + "/graphicalDelete.svg"; //$NON-NLS-1$
+    public static final String GRAPHICAL_DELETE_SVG = IMAGES_ROOT_FOLDER + "/graphicalDelete.svg";
 
     private DiagramImageConstants() {
         // Prevent instantiation

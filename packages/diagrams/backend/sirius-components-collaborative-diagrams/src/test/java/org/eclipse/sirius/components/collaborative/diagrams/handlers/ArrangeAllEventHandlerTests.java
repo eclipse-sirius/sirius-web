@@ -43,7 +43,7 @@ public class ArrangeAllEventHandlerTests {
     @Test
     public void testArrangeAll() {
         var handler = new ArrangeAllEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new ArrangeAllInput(UUID.randomUUID(), "editingContextId", "representationId"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new ArrangeAllInput(UUID.randomUUID(), "editingContextId", "representationId");
 
         assertThat(handler.canHandle(input)).isTrue();
 

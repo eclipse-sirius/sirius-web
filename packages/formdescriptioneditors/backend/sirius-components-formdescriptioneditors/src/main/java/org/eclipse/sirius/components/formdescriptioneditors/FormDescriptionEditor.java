@@ -29,9 +29,9 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 @Immutable
 public final class FormDescriptionEditor implements IRepresentation, ISemanticRepresentation {
 
-    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=FormDescriptionEditor"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=FormDescriptionEditor";
 
-    public static final String LABEL = "label"; //$NON-NLS-1$
+    public static final String LABEL = "label";
 
     private String id;
 
@@ -88,7 +88,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.targetObjectId, this.descriptionId);
     }
 

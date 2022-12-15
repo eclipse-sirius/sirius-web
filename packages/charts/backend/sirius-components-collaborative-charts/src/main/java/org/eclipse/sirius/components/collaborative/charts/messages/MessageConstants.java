@@ -19,7 +19,7 @@ package org.eclipse.sirius.components.collaborative.charts.messages;
  */
 public final class MessageConstants {
 
-    public static final String INVALID_INPUT = "INVALID_INPUT"; //$NON-NLS-1$
+    public static final String INVALID_INPUT = "INVALID_INPUT";
 
     private MessageConstants() {
         // Prevent instantiation

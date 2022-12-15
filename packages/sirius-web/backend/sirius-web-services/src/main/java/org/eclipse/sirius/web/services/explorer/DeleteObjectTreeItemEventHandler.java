@@ -63,8 +63,8 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
 
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         } else {
-            this.logger.warn("The object with the id {} does not exist", treeItem.getId()); //$NON-NLS-1$
+            this.logger.warn("The object with the id {} does not exist", treeItem.getId());
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

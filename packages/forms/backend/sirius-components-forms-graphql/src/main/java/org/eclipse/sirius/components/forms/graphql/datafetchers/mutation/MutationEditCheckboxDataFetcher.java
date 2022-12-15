@@ -34,7 +34,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = "Mutation", field = "editCheckbox")
 public class MutationEditCheckboxDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    private static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 

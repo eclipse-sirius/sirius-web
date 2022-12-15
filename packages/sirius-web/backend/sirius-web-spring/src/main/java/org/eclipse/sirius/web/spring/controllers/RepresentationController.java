@@ -90,7 +90,7 @@ public class RepresentationController {
 
     private ResponseEntity<Resource> toResponseEntity(String name, byte[] bytes) {
         // @formatter:off
-        ContentDisposition contentDisposition = ContentDisposition.builder("attachment")  //$NON-NLS-1$
+        ContentDisposition contentDisposition = ContentDisposition.builder("attachment") 
                 .filename(name)
                 .build();
         // @formatter:on

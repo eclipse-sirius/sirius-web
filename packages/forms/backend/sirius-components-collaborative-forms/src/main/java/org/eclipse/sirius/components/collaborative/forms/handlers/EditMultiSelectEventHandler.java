@@ -86,7 +86,7 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
 
             IStatus status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
                     .map(handler -> handler.apply(input.getNewValues()))
-                    .orElse(new Failure("")); //$NON-NLS-1$
+                    .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {

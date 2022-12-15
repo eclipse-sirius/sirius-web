@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EMFQueryService implements IQueryService {
 
-    private static final String EVALUATION_ERROR_MESSAGE = "An error occured while evaluating the expression. Status : "; //$NON-NLS-1$
+    private static final String EVALUATION_ERROR_MESSAGE = "An error occured while evaluating the expression. Status : ";
 
     private final IEditingContextEPackageService editingContextEPackageService;
 

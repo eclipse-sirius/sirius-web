@@ -70,7 +70,7 @@ public class WorkbenchSelectionEntry {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.kind);
     }
 }

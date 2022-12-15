@@ -514,7 +514,7 @@ public class FormElementFactory implements IElementFactory {
         return FlexboxContainer.newFlexboxContainer(props.getId())
                  .label(props.getLabel())
                  .flexDirection(props.getFlexDirection().toString())
-                 .flexWrap("wrap") //$NON-NLS-1$
+                 .flexWrap("wrap")
                  .flexGrow(1)
                  .children(widgets)
                  .diagnostics(diagnostics)

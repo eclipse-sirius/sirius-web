@@ -49,51 +49,51 @@ import reactor.core.publisher.Sinks.One;
 public class CreateDocumentEventHandlerTests {
 
     // @formatter:off
-    private static final String CONTENT = "{" + System.lineSeparator() //$NON-NLS-1$
-    + "    \"json\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "      \"version\": \"1.0\"," + System.lineSeparator() //$NON-NLS-1$
-    + "    \"encoding\": \"utf-8\"" + System.lineSeparator() //$NON-NLS-1$
-    + "  }," + System.lineSeparator() //$NON-NLS-1$
-    + "  \"ns\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator() //$NON-NLS-1$
-    + "  }," + System.lineSeparator() //$NON-NLS-1$
-    + "  \"content\": [" + System.lineSeparator() //$NON-NLS-1$
-    + "      {" + System.lineSeparator() //$NON-NLS-1$
-    + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator() //$NON-NLS-1$
-    + "      \"data\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "          \"name\": \"ecore\"," + System.lineSeparator() //$NON-NLS-1$
-    + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator() //$NON-NLS-1$
-    + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator() //$NON-NLS-1$
-    + "        \"eClassifiers\": [" + System.lineSeparator() //$NON-NLS-1$
-    + "            {" + System.lineSeparator() //$NON-NLS-1$
-    + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator() //$NON-NLS-1$
-    + "            \"data\": {" + System.lineSeparator() //$NON-NLS-1$
-    + "                \"name\": \"AClass\"" + System.lineSeparator() //$NON-NLS-1$
-    + "            }" + System.lineSeparator() //$NON-NLS-1$
-    + "          }" + System.lineSeparator() //$NON-NLS-1$
-    + "        ]" + System.lineSeparator() //$NON-NLS-1$
-    + "      }" + System.lineSeparator() //$NON-NLS-1$
-    + "    }" + System.lineSeparator() //$NON-NLS-1$
-    + "  ]" + System.lineSeparator() //$NON-NLS-1$
-    + "}" + System.lineSeparator(); //$NON-NLS-1$
+    private static final String CONTENT = "{" + System.lineSeparator()
+    + "    \"json\": {" + System.lineSeparator()
+    + "      \"version\": \"1.0\"," + System.lineSeparator()
+    + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
+    + "  }," + System.lineSeparator()
+    + "  \"ns\": {" + System.lineSeparator()
+    + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
+    + "  }," + System.lineSeparator()
+    + "  \"content\": [" + System.lineSeparator()
+    + "      {" + System.lineSeparator()
+    + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
+    + "      \"data\": {" + System.lineSeparator()
+    + "          \"name\": \"ecore\"," + System.lineSeparator()
+    + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
+    + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
+    + "        \"eClassifiers\": [" + System.lineSeparator()
+    + "            {" + System.lineSeparator()
+    + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
+    + "            \"data\": {" + System.lineSeparator()
+    + "                \"name\": \"AClass\"" + System.lineSeparator()
+    + "            }" + System.lineSeparator()
+    + "          }" + System.lineSeparator()
+    + "        ]" + System.lineSeparator()
+    + "      }" + System.lineSeparator()
+    + "    }" + System.lineSeparator()
+    + "  ]" + System.lineSeparator()
+    + "}" + System.lineSeparator();
     // @formatter:on
 
-    private static final String DOCUMENT_NAME = "name"; //$NON-NLS-1$
+    private static final String DOCUMENT_NAME = "name";
 
-    private static final UUID STEREOTYPE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("stereotypeDescriptionId".getBytes()); //$NON-NLS-1$
+    private static final UUID STEREOTYPE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("stereotypeDescriptionId".getBytes());
 
     @Test
     public void testCreateDocument() {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
             }
         };
         IStereotypeDescriptionService stereotypeDescriptionService = new IStereotypeDescriptionService.NoOp() {
             @Override
             public Optional<StereotypeDescription> getStereotypeDescriptionById(String editingContextId, UUID stereotypeId) {
-                StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT); //$NON-NLS-1$
+                StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT);
                 return Optional.of(stereotypeDescription);
             }
         };
@@ -118,7 +118,7 @@ public class CreateDocumentEventHandlerTests {
         assertThat(payload).isInstanceOf(CreateDocumentSuccessPayload.class);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
-        Condition<Object> condition = new Condition<>(adapter -> adapter instanceof DocumentMetadataAdapter, "has an DocumentMetadataAdapter"); //$NON-NLS-1$
+        Condition<Object> condition = new Condition<>(adapter -> adapter instanceof DocumentMetadataAdapter, "has an DocumentMetadataAdapter");
         assertThat(editingDomain.getResourceSet().getResources().get(0).eAdapters()).areAtLeastOne(condition);
     }
 
@@ -127,13 +127,13 @@ public class CreateDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content)); //$NON-NLS-1$ //$NON-NLS-2$
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
             }
         };
         IStereotypeDescriptionService stereotypeDescriptionService = new IStereotypeDescriptionService.NoOp() {
             @Override
             public Optional<StereotypeDescription> getStereotypeDescriptionById(String editingContextId, UUID stereotypeId) {
-                StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT); //$NON-NLS-1$
+                StereotypeDescription stereotypeDescription = new StereotypeDescription(stereotypeId, "label", () -> CONTENT);
                 return Optional.of(stereotypeDescription);
             }
         };

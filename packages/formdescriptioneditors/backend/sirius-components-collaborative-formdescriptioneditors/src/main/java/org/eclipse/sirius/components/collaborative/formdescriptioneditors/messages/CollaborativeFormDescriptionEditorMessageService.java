@@ -33,6 +33,6 @@ public class CollaborativeFormDescriptionEditorMessageService implements ICollab
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName }); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
     }
 }

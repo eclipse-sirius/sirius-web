@@ -90,8 +90,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_GroupDescription_name_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_name_feature", "_UI_GroupDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_GroupDescription_name_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_name_feature", "_UI_GroupDescription_type"),
                 ViewPackage.Literals.GROUP_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -102,8 +102,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addLabelExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_GroupDescription_labelExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_labelExpression_feature", "_UI_GroupDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_GroupDescription_labelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_labelExpression_feature", "_UI_GroupDescription_type"),
                 ViewPackage.Literals.GROUP_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -114,8 +114,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addDisplayModePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_GroupDescription_displayMode_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_displayMode_feature", "_UI_GroupDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_GroupDescription_displayMode_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_displayMode_feature", "_UI_GroupDescription_type"),
                 ViewPackage.Literals.GROUP_DESCRIPTION__DISPLAY_MODE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -127,8 +127,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addSemanticCandidatesExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_GroupDescription_semanticCandidatesExpression_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_semanticCandidatesExpression_feature", "_UI_GroupDescription_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_GroupDescription_semanticCandidatesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_semanticCandidatesExpression_feature", "_UI_GroupDescription_type"),
                 ViewPackage.Literals.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -170,7 +170,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GroupDescription.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GroupDescription.svg"));
     }
 
     /**
@@ -191,8 +191,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((GroupDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_GroupDescription_type") : //$NON-NLS-1$
-                this.getString("_UI_GroupDescription_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_GroupDescription_type") :
+                this.getString("_UI_GroupDescription_type") + " " + label;
     }
 
     /**
@@ -290,7 +290,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
 
         ButtonDescription toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
         toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
-        toolbarActionDescription.setName("ToolbarAction"); //$NON-NLS-1$
+        toolbarActionDescription.setName("ToolbarAction");
         toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS, toolbarActionDescription));
 
@@ -310,7 +310,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         boolean qualify = childFeature == ViewPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS || childFeature == ViewPackage.Literals.GROUP_DESCRIPTION__WIDGETS;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", //$NON-NLS-1$
+            return this.getString("_UI_CreateChild_text2",
                     new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);

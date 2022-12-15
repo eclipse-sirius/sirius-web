@@ -79,8 +79,8 @@ public class ExternalJavaActionOperationHandler implements IModelOperationHandle
         // @formatter:on
 
         if (optionalExternalJavaAction.isEmpty()) {
-            this.logger.warn("Unable to find external java action from id:{}", this.externalJavaAction.getId()); //$NON-NLS-1$
-            return new Failure(""); //$NON-NLS-1$
+            this.logger.warn("Unable to find external java action from id:{}", this.externalJavaAction.getId());
+            return new Failure("");
         } else {
             IExternalJavaAction javaAction = optionalExternalJavaAction.get();
 

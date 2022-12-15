@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class ControlDescriptionConverter {
         } else if (controlDescription instanceof DynamicMappingForDescription) {
             optionalControlDescription = this.convertFor((DynamicMappingForDescription) controlDescription);
         } else {
-            this.logger.warn("The provided type {} is not yet handled", controlDescription.getClass().getName()); //$NON-NLS-1$
+            this.logger.warn("The provided type {} is not yet handled", controlDescription.getClass().getName());
         }
         return optionalControlDescription;
     }

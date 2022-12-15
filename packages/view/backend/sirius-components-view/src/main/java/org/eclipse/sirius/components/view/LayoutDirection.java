@@ -34,7 +34,7 @@ public enum LayoutDirection implements Enumerator {
      * @generated
      * @ordered
      */
-    COLUMN(0, "Column", "Column"); //$NON-NLS-1$ //$NON-NLS-2$
+    COLUMN(0, "Column", "Column");
 
     /**
      * The '<em><b>Column</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->

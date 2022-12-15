@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class MultiSelectElementProps implements IProps {
-    public static final String TYPE = "MultiSelect"; //$NON-NLS-1$
+    public static final String TYPE = "MultiSelect";
 
     private String id;
 
@@ -93,7 +93,7 @@ public final class MultiSelectElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, options:{4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, options:{4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.values, this.options);
     }
 

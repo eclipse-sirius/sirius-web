@@ -87,14 +87,14 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
                 .filter(handler -> handler.canHandle(editingContext, invokeEditingContextActionInput.getActionId()))
                 .findFirst()
                 .map(handler -> handler.handle(editingContext, invokeEditingContextActionInput.getActionId()))
-                .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.getActionId())); //$NON-NLS-1$
+                .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.getActionId()));
             // @formatter:on
 
             if (status instanceof Success) {
                 payload = new InvokeEditingContextActionSuccessPayload(invokeEditingContextActionInput.getId());
                 changeDescription = new ChangeDescription(((Success) status).getChangeKind(), editingContext.getId(), input);
             } else if (status instanceof Failure) {
-                this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.getActionId()); //$NON-NLS-1$
+                this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.getActionId());
                 payload = new ErrorPayload(input.getId(), ((Failure) status).getMessage());
             }
         }

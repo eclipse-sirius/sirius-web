@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ToolImageProviderTests {
 
-    private static final String ICON_PATH = "/org.eclipse.sirius.components.diagrams/path"; //$NON-NLS-1$
+    private static final String ICON_PATH = "/org.eclipse.sirius.components.diagrams/path";
 
     @Test
     public void testIconPathNormalization() {

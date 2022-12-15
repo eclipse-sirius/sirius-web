@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,25 +101,25 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
 
         Size size = this.actual.getSize();
         if (size == null) {
-            this.failWithMessage("Expected node's size to be <'{'width: %.2f, height: %.2f'}'> but was null", width, height); //$NON-NLS-1$
+            this.failWithMessage("Expected node's size to be <'{'width: %.2f, height: %.2f'}'> but was null", width, height);
         } else {
             if (width != size.getWidth()) {
-                this.failWithMessage("Expected node's width to be <%.2f> but was <%.2f>", width, size.getWidth()); //$NON-NLS-1$
+                this.failWithMessage("Expected node's width to be <%.2f> but was <%.2f>", width, size.getWidth());
             }
             if (height != size.getHeight()) {
-                this.failWithMessage("Expected node's height to be <%.2f> but was <%.2f>", height, size.getHeight()); //$NON-NLS-1$
+                this.failWithMessage("Expected node's height to be <%.2f> but was <%.2f>", height, size.getHeight());
             }
         }
 
         Position position = this.actual.getPosition();
         if (position == null) {
-            this.failWithMessage("Expected node's position to be <'{'x: %.2f, y: %.2f'}'> but was null", x, y); //$NON-NLS-1$
+            this.failWithMessage("Expected node's position to be <'{'x: %.2f, y: %.2f'}'> but was null", x, y);
         } else {
             if (x != position.getX()) {
-                this.failWithMessage("Expected node's x to be <%.2f> but was <%.2f>", x, position.getX()); //$NON-NLS-1$
+                this.failWithMessage("Expected node's x to be <%.2f> but was <%.2f>", x, position.getX());
             }
             if (y != position.getY()) {
-                this.failWithMessage("Expected node's y to be <%.2f> but was <%.2f>", y, position.getY()); //$NON-NLS-1$
+                this.failWithMessage("Expected node's y to be <%.2f> but was <%.2f>", y, position.getY());
             }
         }
 

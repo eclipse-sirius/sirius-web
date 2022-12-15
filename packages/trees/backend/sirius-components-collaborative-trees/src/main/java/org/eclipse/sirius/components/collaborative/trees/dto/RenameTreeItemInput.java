@@ -70,7 +70,7 @@ public final class RenameTreeItemInput implements ITreeInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, treeItemId: {4}, newLabel: {5}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, treeItemId: {4}, newLabel: {5}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.treeItemId, this.newLabel);
     }
 }

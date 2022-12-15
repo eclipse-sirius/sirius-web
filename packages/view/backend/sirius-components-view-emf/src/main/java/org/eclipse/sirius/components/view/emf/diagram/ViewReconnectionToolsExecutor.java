@@ -89,7 +89,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
     @Override
     public IStatus execute(IEditingContext editingContext, ReconnectionToolInterpreterData toolInterpreterData, Edge edge, EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind,
             DiagramDescription diagramDescription) {
-        IStatus status = new Failure(""); //$NON-NLS-1$
+        IStatus status = new Failure("");
 
         // @formatter:off
         var optionalDiagramDescription = this.viewService.getRepresentationDescription(diagramDescription.getId())
@@ -129,15 +129,15 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private VariableManager createVariableManager(ReconnectionToolInterpreterData toolInterpreterData, IEditingContext editingContext) {
         VariableManager variableManager = new VariableManager();
-        variableManager.put("diagram", toolInterpreterData.getDiagramContext().getDiagram()); //$NON-NLS-1$
-        variableManager.put("semanticReconnectionSource", toolInterpreterData.getSemanticReconnectionSource()); //$NON-NLS-1$
-        variableManager.put("reconnectionSourceView", toolInterpreterData.getReconnectionSourceView()); //$NON-NLS-1$
-        variableManager.put("semanticReconnectionTarget", toolInterpreterData.getSemanticReconnectionTarget()); //$NON-NLS-1$
-        variableManager.put("reconnectionTargetView", toolInterpreterData.getReconnectionTargetView()); //$NON-NLS-1$
-        variableManager.put("edgeSemanticElement", toolInterpreterData.getSemanticElement()); //$NON-NLS-1$
-        variableManager.put("otherEnd", toolInterpreterData.getOtherEdgeEnd()); //$NON-NLS-1$
-        variableManager.put("semanticOtherEnd", toolInterpreterData.getSemanticOtherEdgeEnd()); //$NON-NLS-1$
-        variableManager.put("edgeView", toolInterpreterData.getEdgeView()); //$NON-NLS-1$
+        variableManager.put("diagram", toolInterpreterData.getDiagramContext().getDiagram());
+        variableManager.put("semanticReconnectionSource", toolInterpreterData.getSemanticReconnectionSource());
+        variableManager.put("reconnectionSourceView", toolInterpreterData.getReconnectionSourceView());
+        variableManager.put("semanticReconnectionTarget", toolInterpreterData.getSemanticReconnectionTarget());
+        variableManager.put("reconnectionTargetView", toolInterpreterData.getReconnectionTargetView());
+        variableManager.put("edgeSemanticElement", toolInterpreterData.getSemanticElement());
+        variableManager.put("otherEnd", toolInterpreterData.getOtherEdgeEnd());
+        variableManager.put("semanticOtherEnd", toolInterpreterData.getSemanticOtherEdgeEnd());
+        variableManager.put("edgeView", toolInterpreterData.getEdgeView());
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         return variableManager;
     }
@@ -165,7 +165,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                     try {
                         return beanFactory.createBean(serviceClass);
                     } catch (BeansException beansException) {
-                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException); //$NON-NLS-1$
+                        this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
                         return null;
                     }
                 })

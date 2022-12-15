@@ -63,7 +63,7 @@ public final class SelectionEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, selectionId: {3}, targetObjectId: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, selectionId: {3}, targetObjectId: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.selectionId, this.targetObjectId);
     }
 

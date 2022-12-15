@@ -92,7 +92,7 @@ public class DeleteListItemEventHandler implements IFormEventHandler {
 
             var status = optionalListItem.map(ListItem::getDeleteHandler)
                     .map(handler -> handler.get())
-                    .orElse(new Failure("")); //$NON-NLS-1$
+                    .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {

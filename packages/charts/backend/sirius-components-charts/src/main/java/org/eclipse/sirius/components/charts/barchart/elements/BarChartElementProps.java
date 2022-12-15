@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.representations.IProps;
 @Immutable
 public final class BarChartElementProps implements IProps {
 
-    public static final String TYPE = "BarChart"; //$NON-NLS-1$
+    public static final String TYPE = "BarChart";
 
     private String id;
 

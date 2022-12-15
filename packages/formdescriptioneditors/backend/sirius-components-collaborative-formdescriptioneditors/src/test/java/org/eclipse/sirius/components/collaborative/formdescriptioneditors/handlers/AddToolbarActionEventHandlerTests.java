@@ -56,7 +56,7 @@ public class AddToolbarActionEventHandlerTests {
             }
         };
         var handler = new AddToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId");
 
         assertThat(handler.canHandle(input)).isTrue();
 

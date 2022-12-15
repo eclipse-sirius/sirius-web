@@ -68,7 +68,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
-    public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature"; //$NON-NLS-1$
+    public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
     /**
      * These types have even more specific properties definition, see {@link NodeStylePropertiesConfigurer}.
@@ -115,7 +115,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         pageDescriptions.add(firstPageDescription);
 
         // @formatter:off
-        Function<VariableManager, String> labelProvider = variableManager -> "Properties"; //$NON-NLS-1$
+        Function<VariableManager, String> labelProvider = variableManager -> "Properties";
         // @formatter:on
 
         // @formatter:off
@@ -126,8 +126,8 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("view_properties_description".getBytes()).toString()) //$NON-NLS-1$
-                .label("View properties description") //$NON-NLS-1$
+        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("view_properties_description".getBytes()).toString())
+                .label("View properties description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
@@ -158,7 +158,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         };
 
         // @formatter:off
-        return PageDescription.newPageDescription("firstPageId") //$NON-NLS-1$
+        return PageDescription.newPageDescription("firstPageId")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
@@ -250,7 +250,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         }
 
         // @formatter:off
-        ForDescription forDescription = ForDescription.newForDescription("forId") //$NON-NLS-1$
+        ForDescription forDescription = ForDescription.newForDescription("forId")
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .ifDescriptions(ifDescriptions)
@@ -260,9 +260,9 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         controlDescriptions.add(forDescription);
 
         // @formatter:off
-        return GroupDescription.newGroupDescription("groupId") //$NON-NLS-1$
-                .idProvider(variableManager -> "Core Properties") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Core Properties") //$NON-NLS-1$
+        return GroupDescription.newGroupDescription("groupId")
+                .idProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> "Core Properties")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();

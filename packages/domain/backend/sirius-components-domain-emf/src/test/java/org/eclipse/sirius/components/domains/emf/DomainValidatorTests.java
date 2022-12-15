@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,9 +37,9 @@ import org.junit.jupiter.api.Test;
  */
 public class DomainValidatorTests {
 
-    private static final String FAMILY = "Family"; //$NON-NLS-1$
+    private static final String FAMILY = "Family";
 
-    private static final String PERSON = "Person"; //$NON-NLS-1$
+    private static final String PERSON = "Person";
 
     @Test
     public void testDomainShouldBeValid() {
@@ -52,7 +52,7 @@ public class DomainValidatorTests {
     @Test
     public void testDomainEmptyName() {
         Domain domain = DomainFactory.eINSTANCE.createDomain();
-        domain.setName(""); //$NON-NLS-1$
+        domain.setName("");
 
         this.assertNameIsInvalid(domain);
     }
@@ -60,7 +60,7 @@ public class DomainValidatorTests {
     @Test
     public void testDomainNameWithSpaces() {
         Domain domain = DomainFactory.eINSTANCE.createDomain();
-        domain.setName("Sample Family"); //$NON-NLS-1$
+        domain.setName("Sample Family");
 
         this.assertNameIsInvalid(domain);
     }
@@ -68,7 +68,7 @@ public class DomainValidatorTests {
     @Test
     public void testDomainNameWithInvalidCharacters() {
         Domain domain = DomainFactory.eINSTANCE.createDomain();
-        domain.setName("Domain.Family"); //$NON-NLS-1$
+        domain.setName("Domain.Family");
 
         this.assertNameIsInvalid(domain);
     }
@@ -76,7 +76,7 @@ public class DomainValidatorTests {
     @Test
     public void testDomainNameWithUnderscore() {
         Domain domain = DomainFactory.eINSTANCE.createDomain();
-        domain.setName("Basic_Family"); //$NON-NLS-1$
+        domain.setName("Basic_Family");
 
         this.assertNameIsValid(domain);
     }
@@ -84,7 +84,7 @@ public class DomainValidatorTests {
     @Test
     public void testEntityEmptyName() {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
-        entity.setName(""); //$NON-NLS-1$
+        entity.setName("");
 
         this.assertNameIsInvalid(entity);
     }
@@ -92,7 +92,7 @@ public class DomainValidatorTests {
     @Test
     public void testEntityNameWithSpaces() {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
-        entity.setName("A person"); //$NON-NLS-1$
+        entity.setName("A person");
 
         this.assertNameIsInvalid(entity);
     }
@@ -100,7 +100,7 @@ public class DomainValidatorTests {
     @Test
     public void testEntityNameWithInvalidCharacters() {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
-        entity.setName("Grand-parent"); //$NON-NLS-1$
+        entity.setName("Grand-parent");
 
         this.assertNameIsInvalid(entity);
     }
@@ -108,7 +108,7 @@ public class DomainValidatorTests {
     @Test
     public void testEntityNameWithUnderscore() {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
-        entity.setName("Grand_Parent"); //$NON-NLS-1$
+        entity.setName("Grand_Parent");
 
         this.assertNameIsValid(entity);
     }
@@ -116,7 +116,7 @@ public class DomainValidatorTests {
     @Test
     public void testAttributeEmptyName() {
         Attribute attribute = DomainFactory.eINSTANCE.createAttribute();
-        attribute.setName(""); //$NON-NLS-1$
+        attribute.setName("");
 
         this.assertNameIsInvalid(attribute);
     }
@@ -124,7 +124,7 @@ public class DomainValidatorTests {
     @Test
     public void testAttributeNameWithSpaces() {
         Attribute attribute = DomainFactory.eINSTANCE.createAttribute();
-        attribute.setName("an attribute"); //$NON-NLS-1$
+        attribute.setName("an attribute");
 
         this.assertNameIsInvalid(attribute);
     }
@@ -132,7 +132,7 @@ public class DomainValidatorTests {
     @Test
     public void testAttributeNameWithInvalidCharacters() {
         Attribute attribute = DomainFactory.eINSTANCE.createAttribute();
-        attribute.setName("an-attribute"); //$NON-NLS-1$
+        attribute.setName("an-attribute");
 
         this.assertNameIsInvalid(attribute);
     }
@@ -140,7 +140,7 @@ public class DomainValidatorTests {
     @Test
     public void testAttributeNameWithUnderscore() {
         Attribute attribute = DomainFactory.eINSTANCE.createAttribute();
-        attribute.setName("an_attribute"); //$NON-NLS-1$
+        attribute.setName("an_attribute");
 
         this.assertNameIsValid(attribute);
     }
@@ -148,7 +148,7 @@ public class DomainValidatorTests {
     @Test
     public void testRelationEmptyName() {
         Relation relation = DomainFactory.eINSTANCE.createRelation();
-        relation.setName(""); //$NON-NLS-1$
+        relation.setName("");
 
         this.assertNameIsInvalid(relation);
     }
@@ -156,7 +156,7 @@ public class DomainValidatorTests {
     @Test
     public void testRelationNameWithSpaces() {
         Relation relation = DomainFactory.eINSTANCE.createRelation();
-        relation.setName("a relation"); //$NON-NLS-1$
+        relation.setName("a relation");
 
         this.assertNameIsInvalid(relation);
     }
@@ -164,7 +164,7 @@ public class DomainValidatorTests {
     @Test
     public void testRelationNameWithInvalidCharacters() {
         Relation relation = DomainFactory.eINSTANCE.createRelation();
-        relation.setName("some-relation"); //$NON-NLS-1$
+        relation.setName("some-relation");
 
         this.assertNameIsInvalid(relation);
     }
@@ -172,7 +172,7 @@ public class DomainValidatorTests {
     @Test
     public void testRelationNameWithUnderscore() {
         Relation relation = DomainFactory.eINSTANCE.createRelation();
-        relation.setName("some_relation"); //$NON-NLS-1$
+        relation.setName("some_relation");
 
         this.assertNameIsValid(relation);
     }
@@ -215,7 +215,7 @@ public class DomainValidatorTests {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
         entity.setName(PERSON);
 
-        String sharedName = "name"; //$NON-NLS-1$
+        String sharedName = "name";
         Attribute name1 = DomainFactory.eINSTANCE.createAttribute();
         name1.setName(sharedName);
         entity.getAttributes().add(name1);
@@ -248,7 +248,7 @@ public class DomainValidatorTests {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
         entity.setName(PERSON);
 
-        String sharedName = "reference"; //$NON-NLS-1$
+        String sharedName = "reference";
         Relation rel1 = DomainFactory.eINSTANCE.createRelation();
         rel1.setName(sharedName);
         entity.getRelations().add(rel1);
@@ -281,7 +281,7 @@ public class DomainValidatorTests {
         Entity entity = DomainFactory.eINSTANCE.createEntity();
         entity.setName(PERSON);
 
-        String sharedName = "reference"; //$NON-NLS-1$
+        String sharedName = "reference";
         Relation rel = DomainFactory.eINSTANCE.createRelation();
         rel.setName(sharedName);
         entity.getRelations().add(rel);

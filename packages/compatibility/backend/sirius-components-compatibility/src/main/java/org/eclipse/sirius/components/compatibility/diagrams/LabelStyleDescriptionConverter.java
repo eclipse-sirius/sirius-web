@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ public class LabelStyleDescriptionConverter {
         List<FontFormat> fontFormats = labelStyleDescription.getLabelFormat();
 
         Function<VariableManager, String> iconURLProvider = (variableManager) -> {
-            String iconURL = ""; //$NON-NLS-1$
+            String iconURL = "";
             if (labelStyleDescription.isShowIcon()) {
                 // @formatter:off
                 String iconPath = labelStyleDescription.getIconPath();
@@ -53,7 +53,7 @@ public class LabelStyleDescriptionConverter {
                 } else {
                     iconURL = variableManager.get(VariableManager.SELF, Object.class)
                             .map(this.objectService::getImagePath)
-                            .orElse(""); //$NON-NLS-1$
+                            .orElse("");
                 }
                 // @formatter:on
             }

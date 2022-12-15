@@ -269,7 +269,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
         case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE:
             return this.createConditionalListDescriptionStyle();
         default:
-            throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
     }
 
@@ -298,7 +298,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
         case ViewPackage.DOMAIN_TYPE:
             return this.createDomainTypeFromString(eDataType, initialValue);
         default:
-            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -327,7 +327,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
         case ViewPackage.DOMAIN_TYPE:
             return this.convertDomainTypeToString(eDataType, instanceValue);
         default:
-            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -1021,7 +1021,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public LayoutDirection createLayoutDirectionFromString(EDataType eDataType, String initialValue) {
         LayoutDirection result = LayoutDirection.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -1097,7 +1097,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ArrowStyle createArrowStyleFromString(EDataType eDataType, String initialValue) {
         ArrowStyle result = ArrowStyle.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -1118,7 +1118,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public LineStyle createLineStyleFromString(EDataType eDataType, String initialValue) {
         LineStyle result = LineStyle.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -1139,7 +1139,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public SynchronizationPolicy createSynchronizationPolicyFromString(EDataType eDataType, String initialValue) {
         SynchronizationPolicy result = SynchronizationPolicy.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -1160,7 +1160,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public GroupDisplayMode createGroupDisplayModeFromString(EDataType eDataType, String initialValue) {
         GroupDisplayMode result = GroupDisplayMode.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
@@ -1181,7 +1181,7 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public FlexDirection createFlexDirectionFromString(EDataType eDataType, String initialValue) {
         FlexDirection result = FlexDirection.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 

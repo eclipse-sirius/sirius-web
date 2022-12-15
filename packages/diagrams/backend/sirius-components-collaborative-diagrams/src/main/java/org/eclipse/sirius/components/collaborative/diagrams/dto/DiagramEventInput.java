@@ -55,7 +55,7 @@ public final class DiagramEventInput implements IInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, diagramId: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, diagramId: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.editingContextId, this.diagramId);
     }
 }

@@ -43,9 +43,9 @@ public class SiriusWebAuthenticationFilter extends GenericFilterBean {
     private final String authorizationHeader;
 
     public SiriusWebAuthenticationFilter() {
-        String rawCredentials = "system:012345678910"; //$NON-NLS-1$
+        String rawCredentials = "system:012345678910";
         String credentials = Base64.getEncoder().encodeToString(rawCredentials.getBytes());
-        this.authorizationHeader = "Basic " + credentials; //$NON-NLS-1$
+        this.authorizationHeader = "Basic " + credentials;
     }
 
     @Override

@@ -52,11 +52,11 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
     /**
      * The background color used to visually distinguish AQL expressions.
      */
-    private static final String BACKGROUND_COLOR = "#fff8e5"; //$NON-NLS-1$
+    private static final String BACKGROUND_COLOR = "#fff8e5";
 
     private static final TextareaStyle STYLE = TextareaStyle.newTextareaStyle().backgroundColor(BACKGROUND_COLOR).build();
 
-    private static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
+    private static final String AQL_PREFIX = "aql:";
 
     private final ApplicationContext applicationContext;
 
@@ -80,11 +80,11 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
     @Override
     public Function<VariableManager, List<CompletionProposal>> getCompletionProposalsProvider() {
         return variableManager -> {
-            String currentText = variableManager.get(CompletionRequest.CURRENT_TEXT, String.class).orElse(""); //$NON-NLS-1$
+            String currentText = variableManager.get(CompletionRequest.CURRENT_TEXT, String.class).orElse("");
             int cursorPosition = variableManager.get(CompletionRequest.CURSOR_POSITION, Integer.class).orElse(0);
 
             if (cursorPosition < AQL_PREFIX.length() && currentText.startsWith(AQL_PREFIX.substring(0, cursorPosition))) {
-                return List.of(new CompletionProposal("AQL prefix", AQL_PREFIX, cursorPosition)); //$NON-NLS-1$
+                return List.of(new CompletionProposal("AQL prefix", AQL_PREFIX, cursorPosition));
             }
 
             List<EPackage> visibleEPackages = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(this::getAccessibleEPackages).orElse(List.of());
@@ -144,7 +144,7 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                     try {
                         return beanFactory.createBean(serviceClass);
                     } catch (BeansException beansException) {
-                        //this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException); //$NON-NLS-1$
+                        //this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
                         return null;
                     }
                 })

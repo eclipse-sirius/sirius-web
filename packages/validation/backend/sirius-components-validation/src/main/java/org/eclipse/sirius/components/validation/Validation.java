@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  */
 @Immutable
 public final class Validation implements IRepresentation {
-    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Validation"; //$NON-NLS-1$
+    public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Validation";
 
     private String id;
 
@@ -72,7 +72,7 @@ public final class Validation implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, descriptionId: {3} diagnosticCount: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, descriptionId: {3} diagnosticCount: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.descriptionId, this.diagnostics.size());
     }
 

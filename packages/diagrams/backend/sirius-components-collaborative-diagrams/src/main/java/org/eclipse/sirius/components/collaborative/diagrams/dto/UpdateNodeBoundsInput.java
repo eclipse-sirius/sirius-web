@@ -76,7 +76,7 @@ public final class UpdateNodeBoundsInput implements IDiagramInput {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY,
                 this.newWidth, this.newHeight);
     }

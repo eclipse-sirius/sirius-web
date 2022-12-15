@@ -32,7 +32,7 @@ public class ImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<Str
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         Image image = environment.getSource();
-        if (image.getUrl().startsWith("http://") || image.getUrl().startsWith("https://")) { //$NON-NLS-1$ //$NON-NLS-2$
+        if (image.getUrl().startsWith("http://") || image.getUrl().startsWith("https://")) {
             return image.getUrl();
         } else {
             return URLConstants.IMAGE_BASE_PATH + image.getUrl();

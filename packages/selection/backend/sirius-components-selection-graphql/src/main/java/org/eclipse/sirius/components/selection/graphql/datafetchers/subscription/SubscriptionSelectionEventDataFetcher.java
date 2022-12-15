@@ -37,7 +37,7 @@ import graphql.schema.DataFetchingEnvironment;
 @SubscriptionDataFetcher(type = "Subscription", field = "selectionEvent")
 public class SubscriptionSelectionEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
 
-    private static final String INPUT_ARGUMENT = "input"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 

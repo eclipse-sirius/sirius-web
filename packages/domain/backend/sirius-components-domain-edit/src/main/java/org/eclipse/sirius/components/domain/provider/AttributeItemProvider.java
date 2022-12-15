@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,8 @@ import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DomainPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Attribute} object. <!-- begin-user-doc
- * --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Attribute} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -61,10 +61,9 @@ public class AttributeItemProvider extends FeatureItemProvider {
      * @generated
      */
     protected void addTypePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Attribute_type_feature"), //$NON-NLS-1$
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Attribute_type_feature", "_UI_Attribute_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        DomainPackage.Literals.ATTRIBUTE__TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Attribute_type_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Attribute_type_feature", "_UI_Attribute_type"),
+                DomainPackage.Literals.ATTRIBUTE__TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -79,24 +78,24 @@ public class AttributeItemProvider extends FeatureItemProvider {
             Attribute attr = (Attribute) object;
             switch (attr.getType()) {
             case BOOLEAN:
-                imageName = "Boolean"; //$NON-NLS-1$
+                imageName = "Boolean";
                 break;
             case STRING:
-                imageName = "String"; //$NON-NLS-1$
+                imageName = "String";
                 break;
             case NUMBER:
-                imageName = "Number"; //$NON-NLS-1$
+                imageName = "Number";
                 break;
             default:
-                imageName = "Invalid"; //$NON-NLS-1$
+                imageName = "Invalid";
                 break;
             }
             if (attr.isMany()) {
-                imageName = "Many" + imageName; //$NON-NLS-1$
+                imageName = "Many" + imageName;
             }
-            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/" + imageName + "Attribute.svg")); //$NON-NLS-1$//$NON-NLS-2$
+            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/" + imageName + "Attribute.svg"));
         } else {
-            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Attribute")); //$NON-NLS-1$
+            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Attribute"));
         }
     }
 
@@ -118,8 +117,7 @@ public class AttributeItemProvider extends FeatureItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((Attribute) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Attribute_type") : //$NON-NLS-1$
-                this.getString("_UI_Attribute_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Attribute_type") : this.getString("_UI_Attribute_type") + " " + label;
     }
 
     /**

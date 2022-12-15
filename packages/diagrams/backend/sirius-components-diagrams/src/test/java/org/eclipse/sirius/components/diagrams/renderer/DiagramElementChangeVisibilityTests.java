@@ -58,28 +58,28 @@ import org.junit.jupiter.api.Test;
  */
 public class DiagramElementChangeVisibilityTests {
 
-    private static final String LABEL_TEXT = "Node"; //$NON-NLS-1$
+    private static final String LABEL_TEXT = "Node";
 
-    private static final String LABEL_ID = "labelId"; //$NON-NLS-1$
+    private static final String LABEL_ID = "labelId";
 
     private static final int LABEL_FONT_SIZE = 40;
 
-    private static final String COLOR = "#AFAFAF"; //$NON-NLS-1$
+    private static final String COLOR = "#AFAFAF";
 
-    private static final String NODE_IMAGE = "node:image"; //$NON-NLS-1$
+    private static final String NODE_IMAGE = "node:image";
 
-    private static final String DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
+    private static final String DIAGRAM_LABEL = "Diagram";
 
     private static final Function<VariableManager, String> TYPE_PROVIDER = variableManager -> NODE_IMAGE;
 
     private static final Function<VariableManager, Size> SIZE_PROVIDER = VariableManager -> Size.UNDEFINED;
 
-    private static final List<String> OBJECT_IDS = List.of("First", "Second", "Third", "Fourth"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    private static final List<String> OBJECT_IDS = List.of("First", "Second", "Third", "Fourth");
 
     private static final Function<VariableManager, INodeStyle> STYLE_PROVIDER = variableManager -> {
         // @formatter:off
         return ImageNodeStyle.newImageNodeStyle()
-                .imageURL("test") //$NON-NLS-1$
+                .imageURL("test")
                 .scalingFactor(1)
                 .build();
         // @formatter:on
@@ -102,7 +102,7 @@ public class DiagramElementChangeVisibilityTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return id.toString() + "__" + object; //$NON-NLS-1$
+                return id.toString() + "__" + object;
             }
             return null;
         };
@@ -115,7 +115,7 @@ public class DiagramElementChangeVisibilityTests {
                 .strikeThroughProvider(VariableManager -> true)
                 .colorProvider(VariableManager -> COLOR)
                 .fontSizeProvider(variableManager -> LABEL_FONT_SIZE)
-                .iconURLProvider(VariableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(VariableManager -> "")
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription(UUID.randomUUID().toString())
@@ -128,8 +128,8 @@ public class DiagramElementChangeVisibilityTests {
                 .typeProvider(TYPE_PROVIDER)
                 .semanticElementsProvider(variableManager -> List.of(elementId))
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription).styleProvider(STYLE_PROVIDER)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(SIZE_PROVIDER)
@@ -175,7 +175,7 @@ public class DiagramElementChangeVisibilityTests {
                 .targetObjectKindProvider(TYPE_PROVIDER)
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
-                .targetObjectLabelProvider(variableManager -> "") //$NON-NLS-1$
+                .targetObjectLabelProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
@@ -187,15 +187,15 @@ public class DiagramElementChangeVisibilityTests {
     private Diagram createDiagram(Optional<Diagram> previousDiagram, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
-                .label("") //$NON-NLS-1$
+                .label("")
                 .canCreatePredicate(variableManager -> true)
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .toolSections(List.of())
                 .tools(List.of())
-                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .dropHandler(variableManager -> new Failure(""))
                 .build();
 
         VariableManager variableManager = new VariableManager();

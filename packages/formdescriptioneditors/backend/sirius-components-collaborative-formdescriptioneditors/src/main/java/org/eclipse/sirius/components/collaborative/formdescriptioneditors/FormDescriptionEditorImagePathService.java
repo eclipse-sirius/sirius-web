@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class FormDescriptionEditorImagePathService implements IImagePathService {
     @Override
     public List<String> getPaths() {
-        return List.of("/formdescriptioneditor-images/"); //$NON-NLS-1$
+        return List.of("/formdescriptioneditor-images/");
     }
 
 }

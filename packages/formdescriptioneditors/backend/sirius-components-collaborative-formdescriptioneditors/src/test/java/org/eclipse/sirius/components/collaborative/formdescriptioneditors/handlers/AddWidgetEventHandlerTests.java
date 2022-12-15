@@ -51,7 +51,7 @@ public class AddWidgetEventHandlerTests {
             }
         };
         var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0);
 
         assertThat(handler.canHandle(input)).isTrue();
 

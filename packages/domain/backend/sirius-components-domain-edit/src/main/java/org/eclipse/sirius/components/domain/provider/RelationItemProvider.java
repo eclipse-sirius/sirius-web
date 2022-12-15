@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,8 +63,8 @@ public class RelationItemProvider extends FeatureItemProvider {
      */
     protected void addContainmentPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Relation_containment_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_containment_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_Relation_containment_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_containment_feature", "_UI_Relation_type"),
                 DomainPackage.Literals.RELATION__CONTAINMENT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -75,8 +75,8 @@ public class RelationItemProvider extends FeatureItemProvider {
      */
     protected void addTargetTypePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Relation_targetType_feature"), //$NON-NLS-1$
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_targetType_feature", "_UI_Relation_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                this.getString("_UI_Relation_targetType_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Relation_targetType_feature", "_UI_Relation_type"),
                 DomainPackage.Literals.RELATION__TARGET_TYPE, true, false, true, null, null, null));
     }
 
@@ -87,7 +87,7 @@ public class RelationItemProvider extends FeatureItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Relation.svg")); //$NON-NLS-1$
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Relation.svg"));
     }
 
     /**
@@ -108,8 +108,8 @@ public class RelationItemProvider extends FeatureItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((Relation) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Relation_type") : //$NON-NLS-1$
-                this.getString("_UI_Relation_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+        return label == null || label.length() == 0 ? this.getString("_UI_Relation_type") :
+                this.getString("_UI_Relation_type") + " " + label;
     }
 
     /**

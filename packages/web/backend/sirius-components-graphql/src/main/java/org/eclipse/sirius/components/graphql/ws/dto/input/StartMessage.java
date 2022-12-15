@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.graphql.ws.dto.IOperationMessage;
  */
 public class StartMessage implements IOperationMessage {
 
-    public static final String START = "start"; //$NON-NLS-1$
+    public static final String START = "start";
 
     private String type = START;
 
@@ -57,7 +57,7 @@ public class StartMessage implements IOperationMessage {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, type: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, type: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.getType());
     }
 }

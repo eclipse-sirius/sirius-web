@@ -142,7 +142,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
     private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String sourceNodeId, String targetNodeId, SingleClickOnTwoDiagramElementsTool tool,
             Position sourcePosition, Position targetPosition) {
-        IStatus result = new Failure(""); //$NON-NLS-1$
+        IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
         Optional<Node> targetNode = this.diagramQueryService.findNodeById(diagram, targetNodeId);

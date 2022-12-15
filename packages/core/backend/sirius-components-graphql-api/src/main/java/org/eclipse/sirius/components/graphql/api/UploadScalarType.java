@@ -21,12 +21,12 @@ import graphql.schema.GraphQLScalarType;
  */
 public class UploadScalarType {
 
-    public static final String UPLOAD_TYPE = "Upload"; //$NON-NLS-1$
+    public static final String UPLOAD_TYPE = "Upload";
 
     // @formatter:off
     public static final GraphQLScalarType INSTANCE = GraphQLScalarType.newScalar()
             .name(UPLOAD_TYPE)
-            .description("Upload type used for the file upload") //$NON-NLS-1$
+            .description("Upload type used for the file upload")
             .coercing(new UploadScalarCoercing())
             .build();
     // @formatter:on

@@ -50,7 +50,7 @@ public class DiagramEventProcessorTests {
     private static final Diagram INITIAL_TEST_DIAGRAM = Diagram.newDiagram(DIAGRAM_ID)
             .descriptionId(DIAGRAM_DESCRIPTION_ID)
             .label(String.valueOf(0))
-            .targetObjectId("targetObjectId") //$NON-NLS-1$
+            .targetObjectId("targetObjectId")
             .position(Position.UNDEFINED)
             .size(Size.UNDEFINED)
             .nodes(List.of())

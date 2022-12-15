@@ -23,14 +23,14 @@ import java.util.Objects;
  */
 public class Success implements IStatus {
 
-    public static final String NEW_SELECTION = "newSelection"; //$NON-NLS-1$
+    public static final String NEW_SELECTION = "newSelection";
 
     private final Map<String, Object> parameters;
 
     private final String changeKind;
 
     public Success() {
-        this("", new HashMap<>()); //$NON-NLS-1$
+        this("", new HashMap<>());
     }
 
     public Success(String changeKind, Map<String, Object> parameters) {

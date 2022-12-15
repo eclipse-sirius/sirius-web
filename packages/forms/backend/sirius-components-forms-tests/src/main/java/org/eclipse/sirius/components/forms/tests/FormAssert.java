@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,7 +98,7 @@ public class FormAssert extends AbstractAssert<FormAssert, Form> {
 
     private void visitPageId(List<String> ids, Page page) {
         if (ids.contains(page.getId())) {
-            this.failWithMessage("The id of the page <%s> already exists in the form", page.getId()); //$NON-NLS-1$
+            this.failWithMessage("The id of the page <%s> already exists in the form", page.getId());
         }
         ids.add(page.getId());
 
@@ -107,7 +107,7 @@ public class FormAssert extends AbstractAssert<FormAssert, Form> {
 
     private void visitGroupId(List<String> ids, Group group) {
         if (ids.contains(group.getId())) {
-            this.failWithMessage("The id of the group <%s> already exists in the form", group.getId()); //$NON-NLS-1$
+            this.failWithMessage("The id of the group <%s> already exists in the form", group.getId());
         }
         ids.add(group.getId());
 
@@ -117,7 +117,7 @@ public class FormAssert extends AbstractAssert<FormAssert, Form> {
     private void visitWidgetId(List<String> ids, AbstractWidget widget) {
         if (widget != null) {
             if (ids.contains(widget.getId())) {
-                this.failWithMessage("The id of the widget <%s> already exists in the form", widget.getId()); //$NON-NLS-1$
+                this.failWithMessage("The id of the widget <%s> already exists in the form", widget.getId());
             }
             ids.add(widget.getId());
         }

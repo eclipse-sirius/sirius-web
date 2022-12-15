@@ -44,28 +44,28 @@ public class ChildModelOperationHandlerTests {
     @Test
     public void testChildModelOperationWithoutSelection() {
         CreateView createView = ToolFactory.eINSTANCE.createCreateView();
-        createView.setContainerViewExpression(""); //$NON-NLS-1$
-        createView.setVariableName(""); //$NON-NLS-1$
+        createView.setContainerViewExpression("");
+        createView.setVariableName("");
         createView.setMapping(DescriptionFactory.eINSTANCE.createNodeMapping());
 
         IObjectService objectService = new IObjectService.NoOp() {
             @Override
             public String getId(Object object) {
-                return ""; //$NON-NLS-1$
+                return "";
             }
         };
 
         IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
-                return UUID.nameUUIDFromBytes("node".getBytes()).toString(); //$NON-NLS-1$
+                return UUID.nameUUIDFromBytes("node".getBytes()).toString();
             }
         };
 
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of()) {
             @Override
             public Result evaluateExpression(Map<String, Object> variables, String expressionBody) {
-                Object value = new TestDiagramBuilder().getDiagram("diagramId"); //$NON-NLS-1$
+                Object value = new TestDiagramBuilder().getDiagram("diagramId");
                 return new Result(Optional.of(value), Status.OK);
             }
         };

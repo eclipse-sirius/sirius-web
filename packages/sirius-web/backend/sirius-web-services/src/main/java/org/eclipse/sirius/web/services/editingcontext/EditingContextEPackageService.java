@@ -70,14 +70,14 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
             if (previous != null) {
                 // This should never happen for EPackages coming from the global registry, but
                 // it does not cost much to check it.
-                this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI()); //$NON-NLS-1$
+                this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI());
             }
         });
         if (this.isStudioDefinitionEnabled) {
             this.findDynamicEPackages(new DomainConverter()::convert).forEach(ePackage -> {
                 EPackage previous = allEPackages.put(ePackage.getNsURI(), ePackage);
                 if (previous != null) {
-                    this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI()); //$NON-NLS-1$
+                    this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI());
                 }
             });
         }

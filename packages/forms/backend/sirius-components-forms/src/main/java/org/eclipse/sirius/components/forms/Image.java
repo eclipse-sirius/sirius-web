@@ -49,7 +49,7 @@ public final class Image extends AbstractWidget {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, url: {3}, maxWidth: {4}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, label: {2}, url: {3}, maxWidth: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.label, this.url, this.maxWidth);
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,7 +69,7 @@ public final class ViewCreationRequest {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'parentElementId: {1}, descriptionId: {2}, targetObjectId: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'parentElementId: {1}, descriptionId: {2}, targetObjectId: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.parentElementId, this.descriptionId, this.targetObjectId);
     }
 

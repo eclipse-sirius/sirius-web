@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.sirius.viewpoint.description.EAttributeCustomization;
  */
 public class WorkspaceImageDescriptionConverter {
 
-    private static final String WORKSPACE_PATH = "workspacePath"; //$NON-NLS-1$
+    private static final String WORKSPACE_PATH = "workspacePath";
 
     private static final int DEFAULT_SCALING_FACTOR = 1;
 

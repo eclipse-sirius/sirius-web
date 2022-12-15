@@ -43,7 +43,7 @@ public class WidgetSubscription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'widgetId: {1}, subscribers: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'widgetId: {1}, subscribers: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.widgetId, this.subscribers);
     }
 }

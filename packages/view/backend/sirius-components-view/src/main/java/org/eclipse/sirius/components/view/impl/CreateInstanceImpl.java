@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,7 +81,7 @@ public class CreateInstanceImpl extends OperationImpl implements CreateInstance 
      * @generated
      * @ordered
      */
-    protected static final String VARIABLE_NAME_EDEFAULT = "newInstance"; //$NON-NLS-1$
+    protected static final String VARIABLE_NAME_EDEFAULT = "newInstance";
 
     /**
      * The cached value of the '{@link #getVariableName() <em>Variable Name</em>}' attribute. <!-- begin-user-doc -->
@@ -270,11 +270,11 @@ public class CreateInstanceImpl extends OperationImpl implements CreateInstance 
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (typeName: "); //$NON-NLS-1$
+        result.append(" (typeName: ");
         result.append(this.typeName);
-        result.append(", referenceName: "); //$NON-NLS-1$
+        result.append(", referenceName: ");
         result.append(this.referenceName);
-        result.append(", variableName: "); //$NON-NLS-1$
+        result.append(", variableName: ");
         result.append(this.variableName);
         result.append(')');
         return result.toString();

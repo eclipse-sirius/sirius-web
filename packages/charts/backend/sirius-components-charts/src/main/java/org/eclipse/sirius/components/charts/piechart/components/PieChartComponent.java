@@ -45,7 +45,7 @@ public class PieChartComponent implements IComponent {
         Optional<PieChart> optionalPreviousPieChart = this.props.getPreviousPieChart();
 
         String id = optionalPreviousPieChart.map(PieChart::getId).orElseGet(() -> UUID.randomUUID().toString());
-        String label = Optional.ofNullable(pieChartDescription.getLabel()).orElse(""); //$NON-NLS-1$
+        String label = Optional.ofNullable(pieChartDescription.getLabel()).orElse("");
         List<Number> values = pieChartDescription.getValuesProvider().apply(variableManager);
         List<String> keys = pieChartDescription.getKeysProvider().apply(variableManager);
         PieChartStyle pieChartStyle = pieChartDescription.getStyleProvider().apply(variableManager);

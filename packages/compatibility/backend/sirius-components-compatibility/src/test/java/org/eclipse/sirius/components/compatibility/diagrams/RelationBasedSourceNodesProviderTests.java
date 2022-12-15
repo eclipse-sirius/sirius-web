@@ -45,7 +45,7 @@ public class RelationBasedSourceNodesProviderTests {
     public void testComputeSourceNodes() {
         EdgeMapping edgeMapping = DescriptionFactory.eINSTANCE.createEdgeMapping();
         NodeMapping nodeMapping = DescriptionFactory.eINSTANCE.createNodeMapping();
-        nodeMapping.setName("54af6e49-9792-4fbd-a40e-dfa90055bcc2"); //$NON-NLS-1$
+        nodeMapping.setName("54af6e49-9792-4fbd-a40e-dfa90055bcc2");
         edgeMapping.getSourceMapping().add(nodeMapping);
 
         Object object = new Object();
@@ -71,14 +71,14 @@ public class RelationBasedSourceNodesProviderTests {
     private Element createNodeElement(UUID descriptionId) {
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
-                .imageURL("") //$NON-NLS-1$
+                .imageURL("")
                 .build();
 
         NodeElementProps nodeElementProps = NodeElementProps.newNodeElementProps(UUID.randomUUID().toString())
-                .type("type") //$NON-NLS-1$
-                .targetObjectId("targetObjectId") //$NON-NLS-1$
-                .targetObjectKind("targetObjectKind") //$NON-NLS-1$
-                .targetObjectLabel("targetObjectLabel") //$NON-NLS-1$
+                .type("type")
+                .targetObjectId("targetObjectId")
+                .targetObjectKind("targetObjectKind")
+                .targetObjectLabel("targetObjectLabel")
                 .descriptionId(descriptionId)
                 .style(style)
                 .position(Position.UNDEFINED)

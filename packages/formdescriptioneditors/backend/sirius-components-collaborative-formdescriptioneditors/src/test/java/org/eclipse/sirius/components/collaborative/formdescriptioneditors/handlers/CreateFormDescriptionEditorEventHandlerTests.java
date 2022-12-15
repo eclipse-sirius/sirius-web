@@ -52,9 +52,9 @@ public class CreateFormDescriptionEditorEventHandlerTests {
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
                 // @formatter:off
                 FormDescriptionEditorDescription formDescriptionEditorDescription = FormDescriptionEditorDescription.newFormDescriptionEditorDescription(UUID.randomUUID().toString())
-                        .label("label") //$NON-NLS-1$
+                        .label("label")
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
-                        .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
+                        .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .build();
                 // @formatter:on
 
@@ -82,7 +82,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, objectService,
                 new ICollaborativeFormDescriptionEditorMessageService.NoOp(), formDescriptionEditorCreationService, new SimpleMeterRegistry());
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName"); //$NON-NLS-1$//$NON-NLS-2$
+        var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName");
         assertThat(handler.canHandle(null, input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

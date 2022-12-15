@@ -173,7 +173,7 @@ public class AbstractNodeMappingConverter {
             Function<VariableManager, org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription> abstractNodeMappingDescriptionProvider) {
         return variableManager -> {
             org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription styleDescription = abstractNodeMappingDescriptionProvider.apply(variableManager);
-            String labelExpression = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription::getLabelExpression).orElse(""); //$NON-NLS-1$
+            String labelExpression = Optional.ofNullable(styleDescription).map(BasicLabelStyleDescription::getLabelExpression).orElse("");
             return new StringValueProvider(interpreter, labelExpression).apply(variableManager);
         };
     }
@@ -210,7 +210,7 @@ public class AbstractNodeMappingConverter {
 
     private BasicLabelStyleDescription getDefaultLabelStyle() {
         var labelStyle = StyleFactory.eINSTANCE.createBasicLabelStyleDescription();
-        labelStyle.setLabelExpression(""); //$NON-NLS-1$
+        labelStyle.setLabelExpression("");
         labelStyle.setShowIcon(true);
         labelStyle.setLabelSize(16);
         return labelStyle;

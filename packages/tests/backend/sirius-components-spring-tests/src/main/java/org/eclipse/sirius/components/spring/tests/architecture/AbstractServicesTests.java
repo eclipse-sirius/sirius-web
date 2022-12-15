@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,13 +47,13 @@ public abstract class AbstractServicesTests {
     }
 
     private DescribedPredicate<JavaMethodCall> nonAuditedRepositoryMethod() {
-        return new DescribedPredicate<>("the repository method called has not been audited") { //$NON-NLS-1$
+        return new DescribedPredicate<>("the repository method called has not been audited") {
             @Override
             public boolean apply(JavaMethodCall javaMethodCall) {
                 JavaClass targetJavaClass = javaMethodCall.getTargetOwner();
                 String fullName = targetJavaClass.getFullName();
 
-                boolean isRepository = fullName.endsWith("Repository"); //$NON-NLS-1$
+                boolean isRepository = fullName.endsWith("Repository");
                 boolean hasBeenAudited = javaMethodCall.getTarget().isAnnotatedWith(Audited.class);
 
                 return isRepository && !hasBeenAudited;

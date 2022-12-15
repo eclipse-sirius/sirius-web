@@ -54,7 +54,7 @@ public class ChildModelOperationHandler {
 
             IStatus status = optionalModelOperationHandler.map(handler -> {
                 return handler.handle(variables);
-            }).orElse(new Failure("")); //$NON-NLS-1$
+            }).orElse(new Failure(""));
 
             hasBeenSuccessfullyExecuted = hasBeenSuccessfullyExecuted && status instanceof Success;
 
@@ -84,6 +84,6 @@ public class ChildModelOperationHandler {
         if (hasBeenSuccessfullyExecuted) {
             return success;
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

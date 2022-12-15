@@ -53,19 +53,19 @@ public class DiagramRendererNodeTests {
 
     private static final UUID NODE_DESCRIPTION_ID = UUID.randomUUID();
 
-    private static final String LABEL_TEXT = "Node"; //$NON-NLS-1$
+    private static final String LABEL_TEXT = "Node";
 
-    private static final String LABEL_ID = "labelId"; //$NON-NLS-1$
+    private static final String LABEL_ID = "labelId";
 
     private static final int LABEL_FONT_SIZE = 40;
 
-    private static final String LABEL_COLOR = "#AFAFAF"; //$NON-NLS-1$
+    private static final String LABEL_COLOR = "#AFAFAF";
 
-    private static final String NODE_RECTANGULAR = "node:rectangular"; //$NON-NLS-1$
+    private static final String NODE_RECTANGULAR = "node:rectangular";
 
-    private static final String NODE_IMAGE = "node:image"; //$NON-NLS-1$
+    private static final String NODE_IMAGE = "node:image";
 
-    private static final String DIAGRAM_LABEL = "Diagram"; //$NON-NLS-1$
+    private static final String DIAGRAM_LABEL = "Diagram";
 
     /**
      * Creates a diagram with a single node.
@@ -75,8 +75,8 @@ public class DiagramRendererNodeTests {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             // @formatter:off
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -112,8 +112,8 @@ public class DiagramRendererNodeTests {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             // @formatter:off
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -149,8 +149,8 @@ public class DiagramRendererNodeTests {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             // @formatter:off
             return RectangularNodeStyle.newRectangularNodeStyle()
-                    .color("") //$NON-NLS-1$
-                    .borderColor("") //$NON-NLS-1$
+                    .color("")
+                    .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
@@ -202,7 +202,7 @@ public class DiagramRendererNodeTests {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             // @formatter:off
             return ImageNodeStyle.newImageNodeStyle()
-                    .imageURL("test") //$NON-NLS-1$
+                    .imageURL("test")
                     .scalingFactor(1)
                     .build();
             // @formatter:on
@@ -245,10 +245,10 @@ public class DiagramRendererNodeTests {
                 .strikeThroughProvider(VariableManager -> true)
                 .colorProvider(VariableManager -> LABEL_COLOR)
                 .fontSizeProvider(variableManager -> LABEL_FONT_SIZE)
-                .iconURLProvider(VariableManager -> "") //$NON-NLS-1$
+                .iconURLProvider(VariableManager -> "")
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId") //$NON-NLS-1$
+        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
                 .idProvider(variableManager -> LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
@@ -257,9 +257,9 @@ public class DiagramRendererNodeTests {
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(NODE_DESCRIPTION_ID)
                 .typeProvider(typeProvider)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
-                .targetObjectIdProvider(variableManager -> "targetObjectId") //$NON-NLS-1$
-                .targetObjectKindProvider(variableManager -> "") //$NON-NLS-1$
-                .targetObjectLabelProvider(variableManager -> "")//$NON-NLS-1$
+                .targetObjectIdProvider(variableManager -> "targetObjectId")
+                .targetObjectKindProvider(variableManager -> "")
+                .targetObjectLabelProvider(variableManager -> "")
                 .labelDescription(labelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
@@ -271,15 +271,15 @@ public class DiagramRendererNodeTests {
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
-                .label("") //$NON-NLS-1$
+                .label("")
                 .canCreatePredicate(variableManager -> true)
-                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId") //$NON-NLS-1$
+                .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of())
                 .tools(List.of())
-                .dropHandler(variableManager -> new Failure("")) //$NON-NLS-1$
+                .dropHandler(variableManager -> new Failure(""))
                 .build();
         // @formatter:on
 

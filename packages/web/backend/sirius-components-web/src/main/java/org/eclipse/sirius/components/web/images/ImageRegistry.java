@@ -61,11 +61,11 @@ public class ImageRegistry implements IImageRegistry {
         Objects.requireNonNull(request);
 
         URI uri = URI.create(this.getRequestURL(request, refererEnabled));
-        String imageBasePathString = uri.getScheme() + "://" + uri.getHost(); //$NON-NLS-1$
+        String imageBasePathString = uri.getScheme() + "://" + uri.getHost();
         if (uri.getPort() != -1) {
-            imageBasePathString += ":" + uri.getPort(); //$NON-NLS-1$
+            imageBasePathString += ":" + uri.getPort();
         }
-        imageBasePathString += "/api/images"; //$NON-NLS-1$
+        imageBasePathString += "/api/images";
         this.imageBasePath = new URI(imageBasePathString);
         this.imageFetcher = this.buildImageClient(request);
     }
@@ -109,14 +109,14 @@ public class ImageRegistry implements IImageRegistry {
 
             byte[] byteContent = this.imageFetcher.send(request, BodyHandlers.ofByteArray()).body();
             String content = new String(byteContent);
-            if (content.contains("<svg")) { //$NON-NLS-1$
-                imageType = Optional.of("svg"); //$NON-NLS-1$
+            if (content.contains("<svg")) {
+                imageType = Optional.of("svg");
             } else {
                 imageType = this.getImageType(imageURI);
             }
 
             if (!imageType.isPresent()) {
-                this.logger.warn("The type of the image at URI " + imageURI + " is not valid."); //$NON-NLS-1$ //$NON-NLS-2$
+                this.logger.warn("The type of the image at URI " + imageURI + " is not valid.");
             } else {
                 return this.addSymbolElement(symbolId, imageType.get(), byteContent);
             }
@@ -129,34 +129,34 @@ public class ImageRegistry implements IImageRegistry {
 
     private StringBuilder addSymbolElement(UUID symbolId, String imageType, byte[] content) {
         StringBuilder symbol = new StringBuilder();
-        symbol.append("<symbol id=\"" + symbolId + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        if ("svg".equals(imageType)) { //$NON-NLS-1$
+        symbol.append("<symbol id=\"" + symbolId + "\">");
+        if ("svg".equals(imageType)) {
             symbol.append(this.updateSvgContent(content));
         } else {
-            symbol.append("<image xlink:href=\"data:image/" + imageType + ";charset=utf-8;base64,"); //$NON-NLS-1$ //$NON-NLS-2$
+            symbol.append("<image xlink:href=\"data:image/" + imageType + ";charset=utf-8;base64,");
             String encodedString = Base64.getEncoder().encodeToString(content);
             symbol.append(encodedString);
-            symbol.append("\"/>"); //$NON-NLS-1$
+            symbol.append("\"/>");
         }
-        return symbol.append("</symbol>"); //$NON-NLS-1$
+        return symbol.append("</symbol>");
     }
 
     private String updateSvgContent(byte[] content) {
-        String xmlDeclaration = "<\\?xml.*?\\?>"; //$NON-NLS-1$
+        String xmlDeclaration = "<\\?xml.*?\\?>";
 
-        String cleanSvgString = new String(content).replaceAll(xmlDeclaration, ""); //$NON-NLS-1$
+        String cleanSvgString = new String(content).replaceAll(xmlDeclaration, "");
 
         return cleanSvgString;
     }
 
     private Optional<String> getImageType(URI imageURI) {
         String imagePath = imageURI.getPath();
-        String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1); //$NON-NLS-1$
+        String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
 
         // @formatter:off
         return Optional.ofNullable(fileName)
-                .filter(name -> name.contains(".")) //$NON-NLS-1$
-                .map(name -> name.substring(fileName.lastIndexOf(".") + 1)); //$NON-NLS-1$
+                .filter(name -> name.contains("."))
+                .map(name -> name.substring(fileName.lastIndexOf(".") + 1));
         // @formatter:on
     }
 
@@ -173,7 +173,7 @@ public class ImageRegistry implements IImageRegistry {
             // @formatter:off
             Arrays.stream(cookies).forEach(cookie -> {
                 HttpCookie newCookie = new HttpCookie(cookie.getName(), cookie.getValue());
-                newCookie.setPath("/"); //$NON-NLS-1$
+                newCookie.setPath("/");
                 newCookie.setVersion(0);
                 store.add(this.imageBasePath, newCookie);
             });

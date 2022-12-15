@@ -51,7 +51,7 @@ public class ILayoutStrategyDeserializer extends StdDeserializer<ILayoutStrategy
         if (objectCodec instanceof ObjectMapper) {
             ObjectMapper mapper = (ObjectMapper) objectCodec;
             ObjectNode root = mapper.readTree(jsonParser);
-            switch (root.get("kind").asText()) { //$NON-NLS-1$
+            switch (root.get("kind").asText()) {
             case ListLayoutStrategy.KIND:
                 layoutStrategy = mapper.readValue(root.toString(), ListLayoutStrategy.class);
                 break;

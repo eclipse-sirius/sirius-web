@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ import reactor.core.publisher.Sinks.One;
  * @author fbarbin
  */
 public class QueryBasedStringEventHandlerTests {
-    private static final String EXPECTED_RESULT = "result"; //$NON-NLS-1$
+    private static final String EXPECTED_RESULT = "result";
 
     @Test
     public void testQueryBasedString() {
@@ -69,7 +69,7 @@ public class QueryBasedStringEventHandlerTests {
         IQueryService queryService = new IQueryService.NoOp() {
             @Override
             public IPayload execute(IEditingContext editingContext, QueryBasedStringInput input) {
-                return new ErrorPayload(UUID.randomUUID(), "An error occured"); //$NON-NLS-1$
+                return new ErrorPayload(UUID.randomUUID(), "An error occured");
             }
         };
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -86,7 +86,7 @@ public class QueryBasedStringEventHandlerTests {
 
     private void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IQueryService queryService) {
         QueryBasedStringEventHandler queryBasedStringEventHandler = new QueryBasedStringEventHandler(new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry(), queryService);
-        IInput input = new QueryBasedStringInput(UUID.randomUUID(), "", Map.of()); //$NON-NLS-1$
+        IInput input = new QueryBasedStringInput(UUID.randomUUID(), "", Map.of());
         assertThat(queryBasedStringEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();

@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
  * @author lfasani
  */
 public class SetValueOperationHandlerTests {
-    private static final String NAME_FEATURE = "name"; //$NON-NLS-1$
+    private static final String NAME_FEATURE = "name";
 
     private SetValueOperationHandler setValueOperationHandler;
 
@@ -57,9 +57,9 @@ public class SetValueOperationHandlerTests {
     @Test
     public void setValueOperationHandlerNominalCaseTest() {
         // check the nominal case
-        String newName = "newName"; //$NON-NLS-1$
+        String newName = "newName";
         this.setValue.setFeatureName(NAME_FEATURE);
-        this.setValue.setValueExpression("aql:'" + newName + "'"); //$NON-NLS-1$//$NON-NLS-2$
+        this.setValue.setValueExpression("aql:'" + newName + "'");
 
         IStatus handleResult = this.setValueOperationHandler.handle(this.operationTestContext.getVariables());
 
@@ -81,7 +81,7 @@ public class SetValueOperationHandlerTests {
         this.handleAndCheckExecution(null, null, this.operationTestContext.getRootPackage());
 
         // Check empty expression case
-        this.handleAndCheckExecution("", "", this.operationTestContext.getRootPackage()); //$NON-NLS-1$ //$NON-NLS-2$
+        this.handleAndCheckExecution("", "", this.operationTestContext.getRootPackage());
 
         // Check expression with exception case
         this.handleAndCheckExecution(NAME_FEATURE, ModelOperationServices.AQL_THROW_ERROR_EXPRESSION, this.operationTestContext.getRootPackage());
