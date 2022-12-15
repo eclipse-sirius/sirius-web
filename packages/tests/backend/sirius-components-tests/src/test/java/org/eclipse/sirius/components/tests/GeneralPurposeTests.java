@@ -65,6 +65,8 @@ public class GeneralPurposeTests {
 
     private static final String CHECKSTYLE_NCSS = "@SuppressWarnings(\"checkstyle:JavaNCSS\")";
 
+    private static final String NON_NLS = "$NON-NLS-";
+
     private static final String BUILDER = "Builder";
 
     private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF";
@@ -176,6 +178,7 @@ public class GeneralPurposeTests {
                         this.testNoSuppressWarnings(index, line, javaFilePath, lines);
                         this.testNoCheckstyleOff(index, line, javaFilePath);
                         this.testNoThrowNewException(index, line, javaFilePath);
+                        this.testNoNonNls(index, line, javaFilePath);
                     }
                     this.testCopyrightHeader(javaFilePath, lines);
                 } catch (IOException exception) {
@@ -230,6 +233,12 @@ public class GeneralPurposeTests {
     private void testNoThrowNewException(int index, String line, Path javaFilePath) {
         if (line.contains(THROW_NEW)) {
             fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
+        }
+    }
+
+    private void testNoNonNls(int index, String line, Path javaFilePath) {
+        if (line.contains(NON_NLS)) {
+            fail(this.createErrorMessage("$NON-NLS-", javaFilePath, index));
         }
     }
 
