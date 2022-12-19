@@ -61,9 +61,17 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private static final String EMPTY_DOMAIN_LABEL = "Domain";
 
+    private static final UUID PAPAYA_DOMAIN_ID = UUID.nameUUIDFromBytes("papaya_domain".getBytes());
+
+    private static final String PAPAYA_DOMAIN_LABEL = "Papaya Domain";
+
     private static final UUID EMPTY_VIEW_ID = UUID.nameUUIDFromBytes("empty_view".getBytes());
 
     private static final String EMPTY_VIEW_LABEL = "View";
+
+    private static final UUID PAPAYA_VIEW_ID = UUID.nameUUIDFromBytes("papaya_view".getBytes());
+
+    private static final String PAPAYA_VIEW_LABEL = "Papaya View";
 
     private static final String TIMER_NAME = "siriusweb_stereotype_load";
 
@@ -327,6 +335,8 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         if (this.studiosEnabled) {
             registry.add(new StereotypeDescription(EMPTY_DOMAIN_ID, EMPTY_DOMAIN_LABEL, this::getEmptyDomainContent));
             registry.add(new StereotypeDescription(EMPTY_VIEW_ID, EMPTY_VIEW_LABEL, this::getEmptyViewContent));
+            registry.add(new StereotypeDescription(PAPAYA_DOMAIN_ID, PAPAYA_DOMAIN_LABEL, this::getPapayaDomainContent));
+            registry.add(new StereotypeDescription(PAPAYA_VIEW_ID, PAPAYA_VIEW_LABEL, this::getPapayaViewContent));
         }
         registry.add(new StereotypeDescription(ROBOT_FLOW_ID, ROBOT_FLOW_LABEL, this::getRobotFlowContent));
         registry.add(new StereotypeDescription(BIG_GUY_FLOW_ID, BIG_GUY_FLOW_LABEL, this::getBigGuyFlowContent));
@@ -343,12 +353,20 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         return this.stereotypeBuilder.getStereotypeBody(domain);
     }
 
+    private String getPapayaDomainContent() {
+        return this.stereotypeBuilder.getStereotypeBody(new TestDomainProvider().getDomain());
+    }
+
     private String getEmptyViewContent() {
         View newView = ViewFactory.eINSTANCE.createView();
         DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
         return this.stereotypeBuilder.getStereotypeBody(newView);
+    }
+
+    private String getPapayaViewContent() {
+        return this.stereotypeBuilder.getStereotypeBody(new TestViewProvider().getView());
     }
 
     private String getEmptyContent() {
