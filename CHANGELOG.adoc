@@ -22,6 +22,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1559[#1559] [view] It is now possible to specify the (computed) width and height separately for a _Node Style_ (instead of a single size before, which always resulted in square shapes).
 - https://github.com/eclipse-sirius/sirius-components/issues/1560[#1560] Remove unused `EditingContextCompletionProposalsDataFetcher`
+- https://github.com/eclipse-sirius/sirius-components/issues/1426[#1426] [view] Add missing data type on initialDirectEditLabelExpression
 
 
 == v2023.1.0
