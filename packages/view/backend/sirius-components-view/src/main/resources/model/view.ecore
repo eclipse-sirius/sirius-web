@@ -172,7 +172,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelEditTool" eSuperTypes="#//Tool">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialDirectEditLabelExpression"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool"/>

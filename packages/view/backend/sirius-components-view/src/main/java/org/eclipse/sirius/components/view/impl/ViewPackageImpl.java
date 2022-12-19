@@ -3988,7 +3988,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.labelEditToolEClass, LabelEditTool.class, "LabelEditTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLabelEditTool_InitialDirectEditLabelExpression(), this.ecorePackage.getEString(), "initialDirectEditLabelExpression", null, 0, 1, LabelEditTool.class,
+        this.initEAttribute(this.getLabelEditTool_InitialDirectEditLabelExpression(), this.getInterpretedExpression(), "initialDirectEditLabelExpression", null, 0, 1, LabelEditTool.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.deleteToolEClass, DeleteTool.class, "DeleteTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
