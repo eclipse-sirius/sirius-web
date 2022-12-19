@@ -74,6 +74,9 @@ public class CustomImagesLoader implements CommandLineRunner {
                 customImageEntity.setContent(stream.readAllBytes());
             }
             customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
+
+            this.logger.debug(resource.getFilename() + ": " + customImageEntity.getId().toString());
+
             this.customImageRepository.save(customImageEntity);
         } catch (IOException e) {
             this.logger.warn("Error loading resource {}: {}", resource, e.getMessage());
