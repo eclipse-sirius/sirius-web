@@ -53,11 +53,11 @@ public class SourceEdgeEndReconnectionToolItemProvider extends EdgeReconnectionT
     /**
      * This returns SourceEdgeEndReconnectionTool.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SourceEdgeEndReconnectionTool"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SourceEdgeEndReconnectionTool.svg"));
     }
 
     /**
