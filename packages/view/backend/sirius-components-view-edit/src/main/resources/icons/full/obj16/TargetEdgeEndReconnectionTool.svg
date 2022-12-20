@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 24 24"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg1057"
+   sodipodi:docname="EdgeReconnect.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1061" />
+  <sodipodi:namedview
+     id="namedview1059"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="45.254834"
+     inkscape:cx="0.22097087"
+     inkscape:cy="8.8719804"
+     inkscape:window-width="3840"
+     inkscape:window-height="2091"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1057" />
+  <path
+     d="M 9.6674507,16.999475 H 17 v -3.000002 l 5,4 -5,4 v -3 c 0,0 -6.332832,-0.02379 -7.3325493,0 z"
+     fill="rgba(0,43,60,1)"
+     id="path1738"
+     style="fill:#6f6f6f;fill-opacity:1"
+     sodipodi:nodetypes="cccccccc" />
+  <path
+     fill="none"
+     d="M0 0h24v24H0z"
+     id="path1053" />
+  <path
+     d="M13 8v8a3 3 0 0 1-3 3H7.83a3.001 3.001 0 1 1 0-2H10a1 1 0 0 0 1-1V8a3 3 0 0 1 3-3h3V2l5 4-5 4V7h-3a1 1 0 0 0-1 1zM5 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+     fill="rgba(0,43,60,1)"
+     id="path1055" />
+</svg>
