@@ -126,11 +126,11 @@ public final class RectangleStyle {
         public RectangleStyle build() {
             RectangleStyle style = new RectangleStyle();
 
-            style.borderRadius = Objects.requireNonNull(this.borderRadius);
-            style.color = Objects.requireNonNull(this.color);
-            style.borderColor = Objects.requireNonNull(this.borderColor);
-            style.borderSize = Objects.requireNonNull(this.borderSize);
-            style.borderStyle = Objects.requireNonNull(this.borderStyle);
+            style.borderRadius = this.borderRadius;
+            style.color = this.color;
+            style.borderColor = this.borderColor;
+            style.borderSize = this.borderSize;
+            style.borderStyle = this.borderStyle;
             style.opacity = this.opacity;
 
             return style;
