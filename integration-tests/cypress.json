@@ -1,7 +1,7 @@
 {
   "baseUrl": "http://localhost:8080",
   "screenshotsFolder": "target/screenshots",
-  "videosFolder": "target/videos",
+  "video": false,
   "reporter": "junit",
   "reporterOptions": {
     "mochaFile": "target/result-[hash].xml",
