@@ -933,7 +933,7 @@ export const DiagramRepresentation = ({
   const getAllNodes = (diagram: GQLDiagram): GQLNode[] => {
     const getAllNodesRec = (node: GQLNode) => [
       node,
-      ...[...node.borderNodes, ...node.childNodes].flatMap(getAllNodesRec),
+      ...[...(node.borderNodes || []), ...(node.childNodes || [])].flatMap(getAllNodesRec),
     ];
     return diagram.nodes.flatMap(getAllNodesRec);
   };
