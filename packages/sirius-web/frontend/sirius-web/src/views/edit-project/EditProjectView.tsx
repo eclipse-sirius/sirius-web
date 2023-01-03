@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,13 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import { OnboardArea } from '@eclipse-sirius/sirius-components';
-import { Representation, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
+import {
+  Representation,
+  Selection,
+  SelectionContext,
+  Workbench,
+  WorkbenchViewContribution,
+} from '@eclipse-sirius/sirius-components-core';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
   ExplorerView,
@@ -33,7 +39,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
@@ -193,8 +199,14 @@ export const EditProjectView = () => {
     navbar = <EditProjectNavbar project={project} />;
   }
 
+  const [selection, setSelection] = useState<Selection>({ entries: [] });
+
   return (
-    <>
+    <SelectionContext.Provider
+      value={{
+        selection,
+        setSelection,
+      }}>
       <div className={classes.editProjectView}>
         {navbar}
         {main}
@@ -219,6 +231,6 @@ export const EditProjectView = () => {
         }
         data-testid="error"
       />
-    </>
+    </SelectionContext.Provider>
   );
 };

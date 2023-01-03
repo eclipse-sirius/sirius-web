@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useSelection } from '../useSelection';
 import { Panels } from './Panels';
 import { RepresentationContext } from './RepresentationContext';
 import { RepresentationNavigation } from './RepresentationNavigation';
@@ -24,7 +25,6 @@ import {
   GQLEditingContextEventSubscription,
   Representation,
   RepresentationComponentProps,
-  Selection,
   WorkbenchProps,
 } from './Workbench.types';
 import {
@@ -78,13 +78,12 @@ export const Workbench = ({
   const { registry } = useContext(RepresentationContext);
   const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
-      selection: { entries: initialRepresentationSelected ? [initialRepresentationSelected] : [] },
       displayedRepresentation: initialRepresentationSelected,
       representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     },
   });
   const { toast } = value as SchemaValue;
-  const { id, selection, representations, displayedRepresentation, message } = context;
+  const { id, representations, displayedRepresentation, message } = context;
 
   const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
     variables: {
@@ -115,20 +114,14 @@ export const Workbench = ({
     }
   }, [error, dispatch]);
 
-  const setSelection = useCallback(
-    (selection: Selection) => {
-      const representations: Representation[] = selection.entries.filter((entry) =>
-        entry.kind.startsWith('siriusComponents://representation')
-      );
-      const updateSelectionEvent: UpdateSelectionEvent = {
-        type: 'UPDATE_SELECTION',
-        selection,
-        representations,
-      };
-      dispatch(updateSelectionEvent);
-    },
-    [dispatch]
-  );
+  const [selection, setSelection] = useSelection();
+  useEffect(() => {
+    const updateSelectionEvent: UpdateSelectionEvent = {
+      type: 'UPDATE_SELECTION',
+      selection,
+    };
+    dispatch(updateSelectionEvent);
+  }, [dispatch, selection]);
 
   const onRepresentationClick = (representation: Representation) => {
     setSelection({ entries: [{ id: representation.id, label: representation.label, kind: representation.kind }] });

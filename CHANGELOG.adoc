@@ -1,5 +1,15 @@
 = Changelog
 
+== v2023.3.0 (unreleased)
+
+=== Architectural decision records
+
+- [ADR-085] - Improve frontend selection support
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1545[#1545] [core] The current selection can now be read and set from anywhere inside `EditProjectView` using the new `useSelection()` hook.
+
 == v2023.1.0
 
 === Architectural decision records

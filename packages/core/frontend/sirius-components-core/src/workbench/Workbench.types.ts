@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React, { ReactNode } from 'react';
-
-export interface Selection {
-  entries: SelectionEntry[];
-}
-
-export interface SelectionEntry {
-  id: string;
-  label: string;
-  kind: string;
-}
+import { Selection } from '../contexts/SelectionContext.types';
 
 export interface GQLEditingContextEventPayload {
   __typename: string;

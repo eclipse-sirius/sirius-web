@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,12 @@
 import { SubscriptionResult } from '@apollo/client';
 import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
+import { Selection } from '../contexts/SelectionContext.types';
 import {
   GQLEditingContextEventPayload,
   GQLEditingContextEventSubscription,
   GQLRepresentationRenamedEventPayload,
   Representation,
-  Selection,
 } from './Workbench.types';
 
 export interface WorkbenchStateSchema {
@@ -45,7 +45,6 @@ export type SchemaValue = {
 
 export interface WorkbenchContext {
   id: string;
-  selection: Selection;
   representations: Representation[];
   displayedRepresentation: Representation | null;
   message: string | null;
@@ -55,7 +54,6 @@ export type HideRepresentationEvent = { type: 'HIDE_REPRESENTATION'; representat
 export type UpdateSelectionEvent = {
   type: 'UPDATE_SELECTION';
   selection: Selection;
-  representations: Representation[];
 };
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
@@ -82,7 +80,6 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
     type: 'parallel',
     context: {
       id: uuid(),
-      selection: { entries: [] },
       representations: [],
       displayedRepresentation: null,
       message: null,
@@ -141,7 +138,10 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
   {
     actions: {
       updateSelection: assign((context, event) => {
-        const { selection, representations: selectedRepresentations } = event as UpdateSelectionEvent;
+        const { selection } = event as UpdateSelectionEvent;
+        const selectedRepresentations = selection.entries.filter((entry) =>
+          entry.kind.startsWith('siriusComponents://representation')
+        );
         if (selectedRepresentations.length > 0) {
           const displayedRepresentation = selectedRepresentations[0];
 
@@ -153,9 +153,9 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
 
           const newSelectedRepresentations = [...representations, ...newRepresentations];
 
-          return { selection, displayedRepresentation, representations: newSelectedRepresentations };
+          return { displayedRepresentation, representations: newSelectedRepresentations };
         }
-        return { selection };
+        return {};
       }),
       hideRepresentation: assign((context, event) => {
         const { representation: representationToHide } = event as HideRepresentationEvent;

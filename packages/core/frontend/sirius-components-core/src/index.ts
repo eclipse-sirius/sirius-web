@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo and others.
+ * Copyright (c) 2022, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export * from './contexts/SelectionContext';
+export * from './contexts/SelectionContext.types';
 export * from './contexts/ServerContext';
 export * from './contexts/ServerContext.types';
 export * from './dataTransferTypes';
 export * from './materialui';
 export * from './theme';
+export * from './useSelection';
 export * from './workbench/Panels';
 export * from './workbench/RepresentationContext';
 export * from './workbench/Workbench';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { Selection } from '../contexts/SelectionContext.types';
-import { WorkbenchViewSide } from './Workbench.types';
 
-export interface SiteProps {
-  editingContextId: string;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
-  readOnly: boolean;
-  side: WorkbenchViewSide;
-  expanded: boolean;
-  toggleExpansion: () => void;
-  contributions: Array<React.ReactElement>;
+export interface SelectionEntry {
+  id: string;
+  label: string;
+  kind: string;
 }
+
+export interface Selection {
+  entries: SelectionEntry[];
+}
+
+export type SelectionContextValueType = {
+  selection: Selection;
+  setSelection: (newSelection: Selection) => void;
+};
