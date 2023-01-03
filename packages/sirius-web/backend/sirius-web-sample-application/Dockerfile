@@ -1,5 +1,5 @@
 FROM eclipse-temurin:17-jre
-COPY target/sirius-web-sample-application-2022.11.5.jar ./app.jar
+COPY target/sirius-web-sample-application-2023.1.0.jar ./app.jar
 EXPOSE 8080
 RUN adduser --disabled-password myuser
 USER myuser

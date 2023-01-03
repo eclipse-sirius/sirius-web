@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components-forms",
-  "version": "2022.11.5",
+  "version": "2023.1.0",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
@@ -32,8 +32,8 @@
   },
   "peerDependencies": {
     "@apollo/client": "3.6.9",
-    "@eclipse-sirius/sirius-components-core": "~2022.11.0",
-    "@eclipse-sirius/sirius-components-charts": "~2022.11.0",
+    "@eclipse-sirius/sirius-components-core": "~2023.1.0",
+    "@eclipse-sirius/sirius-components-charts": "~2023.1.0",
     "@lexical/react": "0.6.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
@@ -49,9 +49,9 @@
   },
   "devDependencies": {
     "@apollo/client": "3.6.9",
-    "@eclipse-sirius/sirius-components-core": "~2022.11.0",
-    "@eclipse-sirius/sirius-components-charts": "~2022.11.0",
-    "@eclipse-sirius/sirius-components-tsconfig": "~2022.11.0",
+    "@eclipse-sirius/sirius-components-core": "~2023.1.0",
+    "@eclipse-sirius/sirius-components-charts": "~2023.1.0",
+    "@eclipse-sirius/sirius-components-tsconfig": "~2023.1.0",
     "@lexical/react": "0.6.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
