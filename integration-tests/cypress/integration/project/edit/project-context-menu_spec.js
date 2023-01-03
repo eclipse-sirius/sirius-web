@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,7 @@ describe('/projects/:projectId/edit - Project Context Menu', () => {
 
     cy.get('.MuiDialog-container').should('not.exist');
     cy.getByTestId('explorer').contains('nobel');
+    cy.getByTestId('selected').contains('nobel');
   });
 
   it('can open the upload document modal', () => {

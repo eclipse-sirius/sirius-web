@@ -211,6 +211,7 @@ union CreateDocumentPayload = ErrorPayload | CreateDocumentSuccessPayload
 
 type CreateDocumentSuccessPayload {
   id: ID!
+  documentId: ID!
 }
 
 input CreateRepresentationInput {

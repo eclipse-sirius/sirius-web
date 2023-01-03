@@ -9,6 +9,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1545[#1545] [core] The current selection can now be read and set from anywhere inside `EditProjectView` using the new `useSelection()` hook.
+- https://github.com/eclipse-sirius/sirius-components/issues/1546[#1546] [project] New documents created from the project context menu are now automatically selected and revealed in the explorer.
 
 == v2023.1.0
 

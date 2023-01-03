@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,11 @@ public final class CreateDocumentSuccessPayload implements IPayload {
 
     private final UUID id;
 
-    public CreateDocumentSuccessPayload(UUID id) {
+    private final UUID documentId;
+
+    public CreateDocumentSuccessPayload(UUID id, UUID documentId) {
         this.id = Objects.requireNonNull(id);
+        this.documentId = Objects.requireNonNull(documentId);
     }
 
     @Override
@@ -36,9 +39,13 @@ public final class CreateDocumentSuccessPayload implements IPayload {
         return this.id;
     }
 
+    public UUID getDocumentId() {
+        return this.documentId;
+    }
+
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
+        String pattern = "{0} '{'id: {1}, documentId: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.documentId);
     }
 }

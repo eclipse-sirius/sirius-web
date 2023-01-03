@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ export interface NewDocumentModalProps {
   editingContextId: string;
   item: any;
   setSelection: (selection: Selection) => void;
-  onClose: () => void;
+  onClose: (newDocumentId: string | null) => void;
 }
 
 export interface StereotypeDescription {
@@ -62,6 +62,7 @@ export interface GQLCreateDocumentPayload {
 
 export interface GQLCreateDocumentSuccessPayload extends GQLCreateDocumentPayload {
   id: string;
+  documentId: string;
 }
 
 export interface GQLErrorPayload extends GQLCreateDocumentPayload {

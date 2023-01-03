@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import {
   RenameProjectModal,
   UploadDocumentModal,
 } from '@eclipse-sirius/sirius-components';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, useSelection } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -80,7 +80,13 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
 
   const { viewState, to, modalDisplayed, projectMenuAnchor } = state;
 
-  const onCloseModal = () => dispatch({ type: HANDLE_CLOSE_MODAL__ACTION });
+  const [_, setSelection] = useSelection();
+  const onCloseModal = (newDocumentId: string | null) => {
+    dispatch({ type: HANDLE_CLOSE_MODAL__ACTION });
+    if (newDocumentId) {
+      setSelection({ entries: [{ id: newDocumentId, label: 'New', kind: 'siriusWeb://document' }] });
+    }
+  };
 
   const onProjectDeleted = () => {
     dispatch({

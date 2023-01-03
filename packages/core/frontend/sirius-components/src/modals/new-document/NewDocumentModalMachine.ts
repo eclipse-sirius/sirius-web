@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 import {
   GQLCreateDocumentMutationData,
+  GQLCreateDocumentPayload,
+  GQLCreateDocumentSuccessPayload,
   GQLGetStereotypeDescriptionsQueryData,
   StereotypeDescription,
 } from 'modals/new-document/NewDocumentModal.types';
@@ -49,6 +51,7 @@ export interface NewDocumentModalContext {
   selectedStereotypeDescriptionId: string;
   stereotypeDescriptions: StereotypeDescription[];
   message: string | null;
+  newDocumentId: string | null;
 }
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
@@ -73,6 +76,9 @@ export type NewDocumentModalEvent =
   | ShowToastEvent
   | HideToastEvent;
 
+const isSuccessPayload = (payload: GQLCreateDocumentPayload): payload is GQLCreateDocumentSuccessPayload =>
+  payload.__typename === 'CreateDocumentSuccessPayload';
+
 export const newDocumentModalMachine = Machine<
   NewDocumentModalContext,
   NewDocumentModalStateSchema,
@@ -88,6 +94,7 @@ export const newDocumentModalMachine = Machine<
       selectedStereotypeDescriptionId: '',
       stereotypeDescriptions: [],
       message: null,
+      newDocumentId: null,
     },
     states: {
       toast: {
@@ -174,6 +181,7 @@ export const newDocumentModalMachine = Machine<
               HANDLE_RESPONSE: [
                 {
                   cond: 'isResponseSuccessful',
+                  actions: 'recordNewDocumentId',
                   target: 'success',
                 },
                 {
@@ -218,6 +226,12 @@ export const newDocumentModalMachine = Machine<
       updateStereotypeDescription: assign((_, event) => {
         const { stereotypeDescriptionId } = event as ChangeStereotypeDescriptionEvent;
         return { selectedStereotypeDescriptionId: stereotypeDescriptionId };
+      }),
+      recordNewDocumentId: assign((_, event) => {
+        const { data } = event as HandleResponseEvent;
+        if (isSuccessPayload(data.createDocument)) {
+          return { newDocumentId: data.createDocument.documentId };
+        }
       }),
       setMessage: assign((_, event) => {
         const { message } = event as ShowToastEvent;
