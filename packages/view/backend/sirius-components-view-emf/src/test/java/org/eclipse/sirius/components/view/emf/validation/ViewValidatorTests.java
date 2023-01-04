@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,10 +78,9 @@ public class ViewValidatorTests {
                 0,
                 "The condition should not be empty",
                 new Object [] {
-                        conditionalNodeStyle,
-                        ViewPackage.Literals.CONDITIONAL__CONDITION,
-                })
-            );
+                    conditionalNodeStyle,
+                    ViewPackage.Literals.CONDITIONAL__CONDITION,
+                }));
         // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
@@ -102,10 +101,9 @@ public class ViewValidatorTests {
                 0,
                 "The style should not be empty",
                 new Object [] {
-                        conditionalNodeStyle,
-                        ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
-        })
-                );
+                    conditionalNodeStyle,
+                    ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                }));
         // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
@@ -127,10 +125,9 @@ public class ViewValidatorTests {
                 0,
                 "The color should not be empty",
                 new Object [] {
-                        conditionalNodeStyle,
-                        ViewPackage.Literals.STYLE__COLOR,
-                })
-            );
+                    conditionalNodeStyle,
+                    ViewPackage.Literals.STYLE__COLOR,
+                }));
         // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
@@ -156,10 +153,9 @@ public class ViewValidatorTests {
                 0,
                 String.format(DiagramDescriptionValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")),
                 new Object [] {
-                        nodeDescription,
-                        ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
-                })
-            );
+                    nodeDescription,
+                    ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
+                }));
 
         // @formatter:on
 

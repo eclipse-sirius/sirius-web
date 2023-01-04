@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,17 +48,17 @@ public class LayoutEngineHandlerSwitch implements Function<String, Optional<INod
     public Optional<INodeIncrementalLayoutEngine> apply(String nodeType) {
         Optional<INodeIncrementalLayoutEngine> optionalLayoutEngine = Optional.empty();
         switch (nodeType) {
-        case NodeType.NODE_RECTANGLE:
-            optionalLayoutEngine = this.caseRectangleNodeLayoutEngine();
-            break;
-        case NodeType.NODE_ICON_LABEL:
-            optionalLayoutEngine = this.caseIconLabelNodeLayoutEngine();
-            break;
-        case ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE:
-            optionalLayoutEngine = this.caseParametricSVGLayoutEngine();
-            break;
-        default:
-            break;
+            case NodeType.NODE_RECTANGLE:
+                optionalLayoutEngine = this.caseRectangleNodeLayoutEngine();
+                break;
+            case NodeType.NODE_ICON_LABEL:
+                optionalLayoutEngine = this.caseIconLabelNodeLayoutEngine();
+                break;
+            case ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE:
+                optionalLayoutEngine = this.caseParametricSVGLayoutEngine();
+                break;
+            default:
+                break;
         }
 
         if (optionalLayoutEngine.isEmpty()) {

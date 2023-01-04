@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,18 +99,18 @@ public class DomainConverter {
     private EDataType convertDataType(DataType dataType) {
         final EDataType result;
         switch (dataType) {
-        case BOOLEAN:
-            result = EcorePackage.Literals.EBOOLEAN;
-            break;
-        case NUMBER:
-            result = EcorePackage.Literals.EINT;
-            break;
-        case STRING:
-            result = EcorePackage.Literals.ESTRING;
-            break;
-        default:
-            result = EcorePackage.Literals.ESTRING;
-            break;
+            case BOOLEAN:
+                result = EcorePackage.Literals.EBOOLEAN;
+                break;
+            case NUMBER:
+                result = EcorePackage.Literals.EINT;
+                break;
+            case STRING:
+                result = EcorePackage.Literals.ESTRING;
+                break;
+            default:
+                result = EcorePackage.Literals.ESTRING;
+                break;
         }
         return result;
     }

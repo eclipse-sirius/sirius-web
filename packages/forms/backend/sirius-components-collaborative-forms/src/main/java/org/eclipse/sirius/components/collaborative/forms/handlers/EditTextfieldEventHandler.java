@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,14 +83,14 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
             // @formatter:off
             IStatus status = this.formQueryService.findWidget(form, input.getTextfieldId())
                     .map(widget -> {
-                            Function<String, IStatus> handlerFunction = null;
-                            if (widget instanceof Textfield) {
-                                handlerFunction = ((Textfield) widget).getNewValueHandler();
-                            } else if (widget instanceof Textarea) {
-                                handlerFunction = ((Textarea) widget).getNewValueHandler();
-                            }
-                            return handlerFunction;
-                        })
+                        Function<String, IStatus> handlerFunction = null;
+                        if (widget instanceof Textfield) {
+                            handlerFunction = ((Textfield) widget).getNewValueHandler();
+                        } else if (widget instanceof Textarea) {
+                            handlerFunction = ((Textarea) widget).getNewValueHandler();
+                        }
+                        return handlerFunction;
+                    })
                     .map(handler -> handler.apply(input.getNewValue()))
                     .orElse(new Failure(""));
             // @formatter:on

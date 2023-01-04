@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,10 +60,10 @@ public class PieChartStyleProvider implements Function<VariableManager, PieChart
     private void handleLabelStyle(Builder pieChartStyleBuilder, PieChartDescriptionStyle effectiveStyle) {
         // @formatter:off
         pieChartStyleBuilder.fontSize(effectiveStyle.getFontSize())
-        .bold(effectiveStyle.isBold())
-        .italic(effectiveStyle.isItalic())
-        .strikeThrough(effectiveStyle.isStrikeThrough())
-        .underline(effectiveStyle.isUnderline());
+            .bold(effectiveStyle.isBold())
+            .italic(effectiveStyle.isItalic())
+            .strikeThrough(effectiveStyle.isStrikeThrough())
+            .underline(effectiveStyle.isUnderline());
         // @formatter:on
     }
 

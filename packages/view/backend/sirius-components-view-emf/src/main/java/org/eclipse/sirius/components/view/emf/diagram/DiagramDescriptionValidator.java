@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,8 +109,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     "The condition should not be empty",
                     new Object [] {
-                            conditional,
-                            ViewPackage.Literals.CONDITIONAL__CONDITION,
+                        conditional,
+                        ViewPackage.Literals.CONDITIONAL__CONDITION,
                     });
             // @formatter:on
 
@@ -130,8 +130,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     "The style should not be empty",
                     new Object [] {
-                            conditionalNodeStyle,
-                            ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        conditionalNodeStyle,
+                        ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                     });
             // @formatter:on
 
@@ -151,8 +151,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     "The color should not be empty",
                     new Object [] {
-                            nodeStyle,
-                            ViewPackage.Literals.STYLE__COLOR,
+                        nodeStyle,
+                        ViewPackage.Literals.STYLE__COLOR,
                     });
             // @formatter:on
 
@@ -189,8 +189,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     String.format(DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
-                            diagramDescription,
-                            ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE,
+                        diagramDescription,
+                        ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE,
                     });
             // @formatter:on
 
@@ -227,8 +227,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     String.format(DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
-                            diagramElementDescription,
-                            ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
+                        diagramElementDescription,
+                        ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
                     });
             // @formatter:on
 
@@ -265,8 +265,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     String.format(CREATE_INSTANCE_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
-                            createInstance,
-                            ViewPackage.Literals.CREATE_INSTANCE__TYPE_NAME,
+                        createInstance,
+                        ViewPackage.Literals.CREATE_INSTANCE__TYPE_NAME,
                     });
             // @formatter:on
 

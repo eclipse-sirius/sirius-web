@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -200,17 +200,17 @@ public class DiagramElementExportService {
     private StringBuilder exportBorderStyle(LineStyle borderStyle) {
         StringBuilder style = new StringBuilder();
         switch (borderStyle.toString()) {
-        case "Dash":
-            style.append(" stroke-dasharray: 4, 4;");
-            break;
-        case "Dot":
-            style.append(" stroke-dasharray: 2, 2;");
-            break;
-        case "Dash_Dot":
-            style.append(" stroke-dasharray: 2, 4, 2;");
-            break;
-        default:
-            break;
+            case "Dash":
+                style.append(" stroke-dasharray: 4, 4;");
+                break;
+            case "Dot":
+                style.append(" stroke-dasharray: 2, 2;");
+                break;
+            case "Dash_Dot":
+                style.append(" stroke-dasharray: 2, 4, 2;");
+                break;
+            default:
+                break;
         }
         return style;
     }

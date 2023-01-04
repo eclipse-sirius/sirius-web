@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -93,7 +93,7 @@ public class IncrementalLayoutTests {
                     .and()
                 .and()
             .and()
-        .build();
+            .build();
         // @formatter:on
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
@@ -152,7 +152,7 @@ public class IncrementalLayoutTests {
                 .from("GatewayOutput2").at(0.5, 0.5)
                 .to("ClientInput1").at(0.5, 0.5)
             .and()
-        .build();
+            .build();
         // @formatter:on
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,15 +120,15 @@ public class IncrementalLayoutEngine {
         return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
                 .map(MoveEvent.class::cast)
                 .map(moveEvent -> {
-            ILayoutData iLayoutData = id2LayoutData.get(moveEvent.getNodeId());
-            if (iLayoutData instanceof NodeLayoutData) {
-                NodeLayoutData nodeLayoutData = (NodeLayoutData) iLayoutData;
-                Position fromPosition = nodeLayoutData.getPosition();
-                Position toPosition = moveEvent.getNewPosition();
-                return Position.at(toPosition.getX() - fromPosition.getX(), toPosition.getY() - fromPosition.getY());
-            }
-            return null;
-        });
+                    ILayoutData iLayoutData = id2LayoutData.get(moveEvent.getNodeId());
+                    if (iLayoutData instanceof NodeLayoutData) {
+                        NodeLayoutData nodeLayoutData = (NodeLayoutData) iLayoutData;
+                        Position fromPosition = nodeLayoutData.getPosition();
+                        Position toPosition = moveEvent.getNewPosition();
+                        return Position.at(toPosition.getX() - fromPosition.getX(), toPosition.getY() - fromPosition.getY());
+                    }
+                    return null;
+                });
         // @formatter:on
     }
 

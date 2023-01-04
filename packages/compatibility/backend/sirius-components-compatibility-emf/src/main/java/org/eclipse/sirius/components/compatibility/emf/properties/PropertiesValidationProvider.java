@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,18 +58,18 @@ public class PropertiesValidationProvider implements IPropertiesValidationProvid
             if (object instanceof Diagnostic) {
                 Diagnostic diagnostic = (Diagnostic) object;
                 switch (diagnostic.getSeverity()) {
-                case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                    kind = "Error";
-                    break;
-                case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                    kind = "Warning";
-                    break;
-                case org.eclipse.emf.common.util.Diagnostic.INFO:
-                    kind = "Info";
-                    break;
-                default:
-                    kind = "Unknown";
-                    break;
+                    case org.eclipse.emf.common.util.Diagnostic.ERROR:
+                        kind = "Error";
+                        break;
+                    case org.eclipse.emf.common.util.Diagnostic.WARNING:
+                        kind = "Warning";
+                        break;
+                    case org.eclipse.emf.common.util.Diagnostic.INFO:
+                        kind = "Info";
+                        break;
+                    default:
+                        kind = "Unknown";
+                        break;
                 }
             }
             return kind;

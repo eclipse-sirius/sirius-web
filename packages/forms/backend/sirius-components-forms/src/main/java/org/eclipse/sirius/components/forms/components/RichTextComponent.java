@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public class RichTextComponent implements IComponent {
         if (iconURL != null) {
             richTextElementPropsBuilder.iconURL(iconURL);
         }
-         RichTextElementProps richTextElementProps = richTextElementPropsBuilder.build();
+        RichTextElementProps richTextElementProps = richTextElementPropsBuilder.build();
 
         return new Element(RichTextElementProps.TYPE, richTextElementProps);
         // @formatter:on

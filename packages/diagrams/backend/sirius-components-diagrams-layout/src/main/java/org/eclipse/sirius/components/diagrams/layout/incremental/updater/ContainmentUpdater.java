@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -242,13 +242,13 @@ public class ContainmentUpdater {
         if (container instanceof NodeLayoutData) {
             NodeLayoutData nodeLayoutData = (NodeLayoutData) container;
             switch (nodeLayoutData.getNodeType()) {
-            case NodeType.NODE_ICON_LABEL:
-                nodeLabelPaddingWidth = NODE_LIST_NODE_LABELS_PADDING_WIDTH;
-                break;
-            case NodeType.NODE_RECTANGLE:
-            default:
-                nodeLabelPaddingWidth = DEFAULT_NODE_LABELS_PADDING;
-                break;
+                case NodeType.NODE_ICON_LABEL:
+                    nodeLabelPaddingWidth = NODE_LIST_NODE_LABELS_PADDING_WIDTH;
+                    break;
+                case NodeType.NODE_RECTANGLE:
+                default:
+                    nodeLabelPaddingWidth = DEFAULT_NODE_LABELS_PADDING;
+                    break;
             }
         }
         return nodeLabelPaddingWidth;

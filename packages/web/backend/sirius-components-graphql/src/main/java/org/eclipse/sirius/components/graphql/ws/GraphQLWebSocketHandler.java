@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -312,20 +312,20 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
 
         try {
             switch (type) {
-            case ConnectionInitMessage.CONNECTION_INIT:
-                optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, ConnectionInitMessage.class));
-                break;
-            case ConnectionTerminateMessage.CONNECTION_TERMINATE:
-                optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, ConnectionTerminateMessage.class));
-                break;
-            case StartMessage.START:
-                optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, StartMessage.class));
-                break;
-            case StopMessage.STOP:
-                optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, StopMessage.class));
-                break;
-            default:
-                break;
+                case ConnectionInitMessage.CONNECTION_INIT:
+                    optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, ConnectionInitMessage.class));
+                    break;
+                case ConnectionTerminateMessage.CONNECTION_TERMINATE:
+                    optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, ConnectionTerminateMessage.class));
+                    break;
+                case StartMessage.START:
+                    optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, StartMessage.class));
+                    break;
+                case StopMessage.STOP:
+                    optionalOperationMessage = Optional.of(this.objectMapper.treeToValue(jsonNode, StopMessage.class));
+                    break;
+                default:
+                    break;
             }
         } catch (JsonProcessingException exception) {
             this.logger.warn(exception.getMessage(), exception);

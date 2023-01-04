@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1258,17 +1258,17 @@ public class DynamicFormsTests {
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 Optional<Object> optional = Optional.empty();
                 switch (objectId) {
-                case "Class1":
-                    optional = Optional.of(DynamicFormsTests.this.eClasses[0]);
-                    break;
-                case "Class2":
-                    optional = Optional.of(DynamicFormsTests.this.eClasses[1]);
-                    break;
-                case "Class3":
-                    optional = Optional.of(DynamicFormsTests.this.eClasses[2]);
-                    break;
-                default:
-                    break;
+                    case "Class1":
+                        optional = Optional.of(DynamicFormsTests.this.eClasses[0]);
+                        break;
+                    case "Class2":
+                        optional = Optional.of(DynamicFormsTests.this.eClasses[1]);
+                        break;
+                    case "Class3":
+                        optional = Optional.of(DynamicFormsTests.this.eClasses[2]);
+                        break;
+                    default:
+                        break;
                 }
                 return optional;
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -202,9 +202,9 @@ public class DomainValidatorTests {
                 0,
                 DomainValidator.ENTITY_DISTINCT_NAME_ERROR_MESSAGE,
                 new Object [] {
-                        e2,
-                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
-        });
+                    e2,
+                    DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                });
         // @formatter:on
 
         assertThat(diagnosticChain).contains(expected);
@@ -235,9 +235,9 @@ public class DomainValidatorTests {
                 0,
                 DomainValidator.FEATURE_DISTINCT_NAME_ERROR_MESSAGE,
                 new Object [] {
-                        name1,
-                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
-        });
+                    name1,
+                    DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                });
         // @formatter:on
 
         assertThat(diagnosticChain).contains(expected);
@@ -268,9 +268,9 @@ public class DomainValidatorTests {
                 0,
                 DomainValidator.FEATURE_DISTINCT_NAME_ERROR_MESSAGE,
                 new Object [] {
-                        rel1,
-                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
-        });
+                    rel1,
+                    DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                });
         // @formatter:on
 
         assertThat(diagnosticChain).contains(expected);
@@ -302,9 +302,9 @@ public class DomainValidatorTests {
                 0,
                 DomainValidator.FEATURE_DISTINCT_NAME_ERROR_MESSAGE,
                 new Object [] {
-                        rel,
-                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
-        });
+                    rel,
+                    DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                });
         // @formatter:on
 
         assertThat(diagnosticChain).contains(expected);
@@ -324,9 +324,9 @@ public class DomainValidatorTests {
                 0,
                 String.format(DomainValidator.INVALID_NAME_ERROR_MESSAGE, namedElement.getName()),
                 new Object [] {
-                        namedElement,
-                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
-        }));
+                    namedElement,
+                    DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                }));
         // @formatter:on
 
         assertThat(diagnosticChain).isEqualTo(expected);

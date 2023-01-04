@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,14 +52,14 @@ public class ILayoutStrategyDeserializer extends StdDeserializer<ILayoutStrategy
             ObjectMapper mapper = (ObjectMapper) objectCodec;
             ObjectNode root = mapper.readTree(jsonParser);
             switch (root.get("kind").asText()) {
-            case ListLayoutStrategy.KIND:
-                layoutStrategy = mapper.readValue(root.toString(), ListLayoutStrategy.class);
-                break;
-            case FreeFormLayoutStrategy.KIND:
-                layoutStrategy = mapper.readValue(root.toString(), FreeFormLayoutStrategy.class);
-                break;
-            default:
-                break;
+                case ListLayoutStrategy.KIND:
+                    layoutStrategy = mapper.readValue(root.toString(), ListLayoutStrategy.class);
+                    break;
+                case FreeFormLayoutStrategy.KIND:
+                    layoutStrategy = mapper.readValue(root.toString(), FreeFormLayoutStrategy.class);
+                    break;
+                default:
+                    break;
             }
         }
         return layoutStrategy;
