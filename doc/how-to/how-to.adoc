@@ -62,3 +62,66 @@ changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHAN
 
 Then the `IEditingContextEventProcessor` will detect this semantic change in order to request a refresh of all the representations currently used and to ask for the modified `IEditingContext` to be saved.
 As a result, the operation triggered by your `IInput` can both refresh all the representations and update your database with the new version of the `IEditingContext`.
+
+== Add support for a new kind of widget in Forms
+
+=== On the backend (`packages/forms/backend`)
+
+In `sirius-components-forms`:
+
+1. POJO (with builder) in `org.eclipse.sirius.components.forms`, extend `AbstractWidget`.
+2. Description (with builder) in `org.eclipse.sirius.components.forms.description`
+3. Props POJO (with builder) in `org.eclipse.sirius.components.forms.elements`
+4. Component and its props in `org.eclipse.sirius.components.forms.components`
+5. In `org.eclipse.sirius.components.forms.renderer`, add the branches needed for the new widget in `FormComponentPropsValidator`,
+`FormElementFactory` and `FormInstancePropsValidator`.
+6. Add the corresponding branch in `WidgetComponent.render()`
+
+In `sirius-components-collaborative-forms`, add support for the new widget in `form.graphqls`.
+
+- `type XXX implements Widget { ... }`
+- `extend type Mutation { editXXX(input: EditXXXInput!): EditXXXPayload! }` and the corresponding input/payload types if the widget supports edition operations.
+
+In `sirius-components-collaborative-forms`, add the DTOs corresponding the the widget edition's mutation in `org.eclipse.sirius.components.collaborative.forms.dto` and the handler in `org.eclipse.sirius.components.collaborative.forms.handlers`.
+
+Add the data fetcher to invoke the mutation in `org.eclipse.sirius.components.forms.graphql.datafetchers.mutation`
+
+If the widget shall be used with Sirius Desktop/EEF-based properties/forms, update `WidgetDescriptionConverter` accordingly in `sirius-components-compatibility`.
+
+If the widget shall be used by the default properties definition, update `PropertiesDefaultDescriptionProvider` accordingly in `sirius-components-compatibility-emf`.
+It can be useful to make some hard-coded changes here to trigger the usage of the new widget in specific cases for initial manual testing.
+
+=== On the frontend (`packages/forms/frontend/sirius-components-forms`)
+
+Add the new widget and its fields in the `src/form/FormEventFragments.ts`, and the equivalent TypeScript types in `src/form/FormEventFragments.types.ts` and in `src/form/Form.types.ts`
+
+In `src/properties/PropertySection.tsx`, add the type predicate and the corresponding branch to render the new component.
+
+In `src/properties/propertysections` add the actual frontend component which implements the widget.
+
+=== Form Description Editor support
+
+On the backend (`sirius-components-formdescriptioneditors`):
+
+- Add a `case` method for the new widget kind in `ViewFormDescriptionEditorConverterSwitch`
+- If the widget has style attributes that can be computed statically for "live preview", add a corresponding `*StyleProvider` in `org.eclipse.sirius.components.formdescriptioneditors.components` and use that in the switch above.
+
+On the frontend (`packages/formdescriptioneditors/frontend/sirius-components-formdescriptioneditors`):
+
+- Implement the React component for the widget preview. See `ButtonWidget.tsx` and `ButtonWidget.types.tsx` for an example to follow.
+- Register the new widget type in `FormDescriptionEditorRepresentation.types.ts` and update `isKind` in `WidgetOperations.tsx`.
+- Add support for the new widget type in `WidgetEntry.tsx` and `WidgetEntry.types.ts`.
+
+=== View DSL Support
+
+- Add the new `WidgetDescription` sub-class in `sirius-components-view/src/main/resources/model/view.ecore` and regenerate.
+- Update `collcollectNewChildDescriptors` in `FormDescriptionItemProvider` to make sure the new widgets are proposed, and created with useful defaults.
+- Provide a nice SVG icon for the new widget in `sirius-components-view-edit` and the widget's item provider `getImage` use that:
+```java
+    /** @generated NOT */
+    @Override
+    public Object getImage(Object object) {
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RichTextDescription.svg"));
+    }
+```
+- In `ViewFormDescriptionConverterSwitch`, add the new `caseMyNewWidgetDesciption` to convert the View model element into the actual WidgetDescription.
