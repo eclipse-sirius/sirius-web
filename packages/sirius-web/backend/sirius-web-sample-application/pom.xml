@@ -28,7 +28,7 @@
 	<description>Sirius Web Sample Application</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<flow.version>1.0.11-SNAPSHOT</flow.version>
 		<bpmn.version>4.0.3-SNAPSHOT</bpmn.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>

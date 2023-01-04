@@ -28,7 +28,7 @@
 	<description>Sirius Components Compatibility</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<sirius.version>7.0.0-SNAPSHOT</sirius.version>
 	</properties>
 

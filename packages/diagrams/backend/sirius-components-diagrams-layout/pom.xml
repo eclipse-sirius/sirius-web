@@ -28,7 +28,7 @@
 	<description>Sirius Components Diagrams layout</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<elk.version>0.7.1</elk.version>
 	</properties>
 
