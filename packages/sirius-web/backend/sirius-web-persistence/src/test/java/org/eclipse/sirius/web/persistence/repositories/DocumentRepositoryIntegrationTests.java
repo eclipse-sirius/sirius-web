@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,12 +52,12 @@ public class DocumentRepositoryIntegrationTests extends AbstractIntegrationTests
 
     // @formatter:off
     private static final String DOCUMENT_CONTENT = "{" + System.lineSeparator()
-    + "    \"json\": {" + System.lineSeparator()
-    + "      \"version\": \"1.0\"," + System.lineSeparator()
-    + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
-    + "  }," + System.lineSeparator()
-    + "  \"content\": []" + System.lineSeparator()
-    + "}" + System.lineSeparator();
+        + "    \"json\": {" + System.lineSeparator()
+        + "      \"version\": \"1.0\"," + System.lineSeparator()
+        + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
+        + "  }," + System.lineSeparator()
+        + "  \"content\": []" + System.lineSeparator()
+        + "}" + System.lineSeparator();
     // @formatter:on
 
     @Autowired
