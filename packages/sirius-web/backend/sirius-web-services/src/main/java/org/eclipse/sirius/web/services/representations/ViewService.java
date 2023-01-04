@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,11 +64,11 @@ public class ViewService implements IViewService {
         for (DocumentEntity documentEntity : allDocuments) {
             Resource resource = this.loadDocumentAsEMF(documentEntity);
             // @formatter:off
-                var searchedView = this.getViewDefinitions(resource)
-                        .flatMap(view -> view.getDescriptions().stream())
-                        .filter(desc -> representationDescriptionId.equals(this.getDescriptionId(desc)))
-                        .findFirst();
-                // @formatter:on
+            var searchedView = this.getViewDefinitions(resource)
+                    .flatMap(view -> view.getDescriptions().stream())
+                    .filter(desc -> representationDescriptionId.equals(this.getDescriptionId(desc)))
+                    .findFirst();
+            // @formatter:on
             if (searchedView.isPresent()) {
                 return searchedView;
             }

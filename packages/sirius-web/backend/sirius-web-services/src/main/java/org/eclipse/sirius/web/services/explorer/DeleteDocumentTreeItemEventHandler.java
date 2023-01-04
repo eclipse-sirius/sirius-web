@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,11 +73,11 @@ public class DeleteDocumentTreeItemEventHandler implements IDeleteTreeItemHandle
             URI uri = new JSONResourceFactory().createResourceURI(documentEntity.getId().toString());
 
             // @formatter:off
-                List<Resource> resourcesToDelete = resourceSet.getResources().stream()
-                        .filter(resource -> resource.getURI().equals(uri))
-                        .collect(Collectors.toUnmodifiableList());
-                resourcesToDelete.stream().forEach(resourceSet.getResources()::remove);
-                // @formatter:on
+            List<Resource> resourcesToDelete = resourceSet.getResources().stream()
+                    .filter(resource -> resource.getURI().equals(uri))
+                    .collect(Collectors.toUnmodifiableList());
+            resourcesToDelete.stream().forEach(resourceSet.getResources()::remove);
+            // @formatter:on
 
             this.documentRepository.delete(documentEntity);
 

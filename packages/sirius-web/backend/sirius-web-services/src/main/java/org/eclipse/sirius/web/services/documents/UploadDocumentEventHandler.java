@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,12 +109,12 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             String projectId = uploadDocumentInput.getEditingContextId();
             UploadFile file = uploadDocumentInput.getFile();
 
-        // @formatter:off
-        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
-        // @formatter:on
+            // @formatter:off
+            Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
+                    .filter(EditingContext.class::isInstance)
+                    .map(EditingContext.class::cast)
+                    .map(EditingContext::getDomain);
+            // @formatter:on
 
             String name = file.getName().trim();
             if (optionalEditingDomain.isPresent()) {

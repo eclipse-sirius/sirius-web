@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,20 +44,20 @@ public class RepresentationsRepresentationRefreshPolicyProvider implements IRepr
             boolean shouldRefresh = false;
 
             switch (changeDescription.getKind()) {
-            case ChangeKind.REPRESENTATION_CREATION:
-                shouldRefresh = true;
-                break;
-            case ChangeKind.REPRESENTATION_DELETION:
-                shouldRefresh = true;
-                break;
-            case ChangeKind.REPRESENTATION_RENAMING:
-                shouldRefresh = true;
-                break;
-            case ChangeKind.REPRESENTATION_TO_DELETE:
-                shouldRefresh = true;
-                break;
-            default:
-                shouldRefresh = false;
+                case ChangeKind.REPRESENTATION_CREATION:
+                    shouldRefresh = true;
+                    break;
+                case ChangeKind.REPRESENTATION_DELETION:
+                    shouldRefresh = true;
+                    break;
+                case ChangeKind.REPRESENTATION_RENAMING:
+                    shouldRefresh = true;
+                    break;
+                case ChangeKind.REPRESENTATION_TO_DELETE:
+                    shouldRefresh = true;
+                    break;
+                default:
+                    shouldRefresh = false;
             }
             return shouldRefresh;
         };

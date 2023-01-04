@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,32 +47,32 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 public class EditingContextSearchServiceTests {
     // @formatter:off
     private static final String CONTENT = "{" + System.lineSeparator()
-    + "    \"json\": {" + System.lineSeparator()
-    + "      \"version\": \"1.0\"," + System.lineSeparator()
-    + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
-    + "  }," + System.lineSeparator()
-    + "  \"ns\": {" + System.lineSeparator()
-    + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
-    + "  }," + System.lineSeparator()
-    + "  \"content\": [" + System.lineSeparator()
-    + "      {" + System.lineSeparator()
-    + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
-    + "      \"data\": {" + System.lineSeparator()
-    + "          \"name\": \"ecore\"," + System.lineSeparator()
-    + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
-    + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
-    + "        \"eClassifiers\": [" + System.lineSeparator()
-    + "            {" + System.lineSeparator()
-    + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
-    + "            \"data\": {" + System.lineSeparator()
-    + "                \"name\": \"AClass\"" + System.lineSeparator()
-    + "            }" + System.lineSeparator()
-    + "          }" + System.lineSeparator()
-    + "        ]" + System.lineSeparator()
-    + "      }" + System.lineSeparator()
-    + "    }" + System.lineSeparator()
-    + "  ]" + System.lineSeparator()
-    + "}" + System.lineSeparator();
+        + "    \"json\": {" + System.lineSeparator()
+        + "      \"version\": \"1.0\"," + System.lineSeparator()
+        + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
+        + "  }," + System.lineSeparator()
+        + "  \"ns\": {" + System.lineSeparator()
+        + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
+        + "  }," + System.lineSeparator()
+        + "  \"content\": [" + System.lineSeparator()
+        + "      {" + System.lineSeparator()
+        + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
+        + "      \"data\": {" + System.lineSeparator()
+        + "          \"name\": \"ecore\"," + System.lineSeparator()
+        + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
+        + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
+        + "        \"eClassifiers\": [" + System.lineSeparator()
+        + "            {" + System.lineSeparator()
+        + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
+        + "            \"data\": {" + System.lineSeparator()
+        + "                \"name\": \"AClass\"" + System.lineSeparator()
+        + "            }" + System.lineSeparator()
+        + "          }" + System.lineSeparator()
+        + "        ]" + System.lineSeparator()
+        + "      }" + System.lineSeparator()
+        + "    }" + System.lineSeparator()
+        + "  ]" + System.lineSeparator()
+        + "}" + System.lineSeparator();
     // @formatter:on
 
     @Test

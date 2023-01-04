@@ -85,6 +85,27 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<configLocation>../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<encoding>UTF-8</encoding>
+					<failsOnError>true</failsOnError>
+					<consoleOutput>true</consoleOutput>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.8</version>
