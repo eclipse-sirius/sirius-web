@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -161,9 +161,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.createCheckbox("nodestyle.isWithHeader", "With Header",
-                style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
-                (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
-                ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
+            style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
+            (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
+            ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
         controls.addAll(this.getGeneralControlDescription());
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
@@ -191,72 +191,72 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         List<AbstractControlDescription> controls = List.of(
                 this.createExpressionField("nodestyle.sizeExpression", "Size Expression",
-                        style -> ((NodeStyleDescription) style).getSizeComputationExpression(),
-                        (style, newSizeExpression) -> ((NodeStyleDescription) style).setSizeComputationExpression(newSizeExpression),
-                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION),
+                    style -> ((NodeStyleDescription) style).getSizeComputationExpression(),
+                    (style, newSizeExpression) -> ((NodeStyleDescription) style).setSizeComputationExpression(newSizeExpression),
+                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION),
                 this.createCheckbox("nodestyle.showIcon", "Show Icon",
-                        style -> ((NodeStyleDescription) style).isShowIcon(),
-                        (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
-                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
+                    style -> ((NodeStyleDescription) style).isShowIcon(),
+                    (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
+                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
                 this.createTextField("nodestyle.labelColor", "Label Color",
-                        style -> ((NodeStyleDescription) style).getLabelColor(),
-                        (style, newLabelColor) -> ((NodeStyleDescription) style).setLabelColor(newLabelColor),
-                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
+                    style -> ((NodeStyleDescription) style).getLabelColor(),
+                    (style, newLabelColor) -> ((NodeStyleDescription) style).setLabelColor(newLabelColor),
+                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
                 this.createTextField("nodestyle.color", "Color",
-                                     style -> ((NodeStyleDescription) style).getColor(),
-                                     (style, newColor) -> ((NodeStyleDescription) style).setColor(newColor),
-                                     ViewPackage.Literals.STYLE__COLOR),
+                    style -> ((NodeStyleDescription) style).getColor(),
+                    (style, newColor) -> ((NodeStyleDescription) style).setColor(newColor),
+                    ViewPackage.Literals.STYLE__COLOR),
                 this.createTextField("nodestyle.borderColor", "Border Color",
-                        style -> ((NodeStyleDescription) style).getBorderColor(),
-                        (style, newColor) -> ((NodeStyleDescription) style).setBorderColor(newColor),
-                        ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
+                    style -> ((NodeStyleDescription) style).getBorderColor(),
+                    (style, newColor) -> ((NodeStyleDescription) style).setBorderColor(newColor),
+                    ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
                 this.createTextField("nodestyle.borderRadius", "Border Radius",
-                        style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
-                        (style, newBorderRadius) -> {
-                            try {
-                                ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
-                            } catch (NumberFormatException nfe) {
-                                // Ignore.
-                            }
-                        },
-                        ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
+                    style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
+                    (style, newBorderRadius) -> {
+                        try {
+                            ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                        } catch (NumberFormatException nfe) {
+                            // Ignore.
+                        }
+                    },
+                    ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("nodestyle.borderSize", "Border Size",
-                        style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
-                        (style, newBorderSize) -> {
-                            try {
-                                ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
-                            } catch (NumberFormatException nfe) {
-                                // Ignore.
-                            }
-                        },
-                        ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
+                    style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
+                    (style, newBorderSize) -> {
+                        try {
+                            ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
+                        } catch (NumberFormatException nfe) {
+                            // Ignore.
+                        }
+                    },
+                    ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
                 this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE),
                 this.createTextField("nodestyle.fontSize", "Font Size",
-                        style -> String.valueOf(((LabelStyle) style).getFontSize()),
-                        (style, newColor) -> {
-                            try {
-                                ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
-                            } catch (NumberFormatException nfe) {
-                                // Ignore.
-                            }
-                        },
-                        ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
+                    style -> String.valueOf(((LabelStyle) style).getFontSize()),
+                    (style, newColor) -> {
+                        try {
+                            ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
+                        } catch (NumberFormatException nfe) {
+                            // Ignore.
+                        }
+                    },
+                    ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
                 this.createCheckbox("nodestyle.italic", "Italic",
-                        style -> ((LabelStyle) style).isItalic(),
-                        (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
-                        ViewPackage.Literals.LABEL_STYLE__ITALIC),
+                    style -> ((LabelStyle) style).isItalic(),
+                    (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
+                    ViewPackage.Literals.LABEL_STYLE__ITALIC),
                 this.createCheckbox("nodestyle.bold", "Bold",
-                        style -> ((LabelStyle) style).isBold(),
-                        (style, newBold) -> ((LabelStyle) style).setBold(newBold),
-                        ViewPackage.Literals.LABEL_STYLE__BOLD),
+                    style -> ((LabelStyle) style).isBold(),
+                    (style, newBold) -> ((LabelStyle) style).setBold(newBold),
+                    ViewPackage.Literals.LABEL_STYLE__BOLD),
                 this.createCheckbox("nodestyle.underline", "Underline",
-                        style -> ((LabelStyle) style).isUnderline(),
-                        (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
-                        ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
+                    style -> ((LabelStyle) style).isUnderline(),
+                    (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
+                    ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
                 this.createCheckbox("nodestyle.strikeThrough", "Strike Through",
-                        style -> ((LabelStyle) style).isStrikeThrough(),
-                        (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
-                        ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
+                    style -> ((LabelStyle) style).isStrikeThrough(),
+                    (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
+                    ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
         // @formatter:on
         return controls;
     }
@@ -383,16 +383,16 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
                                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
                                 .newValueHandler((variableManager, newValue) -> {
-                                        var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
-                                        if (optionalBorderStyle.isPresent()) {
-                                            if (newValue != null && LineStyle.get(newValue) != null) {
-                                                optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
-                                            } else {
-                                                optionalBorderStyle.get().setBorderLineStyle(LineStyle.SOLID);
-                                            }
-                                            return new Success();
+                                    var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
+                                    if (optionalBorderStyle.isPresent()) {
+                                        if (newValue != null && LineStyle.get(newValue) != null) {
+                                            optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
+                                        } else {
+                                            optionalBorderStyle.get().setBorderLineStyle(LineStyle.SOLID);
                                         }
-                                        return new Failure("");
+                                        return new Success();
+                                    }
+                                    return new Failure("");
                                 })
                                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
                                 .kindProvider(this::kindProvider)
@@ -445,7 +445,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                     if (optionalShape.isPresent()) {
                         return String.format("/custom/%s", optionalShape.get());
                     }
-                    return "";  
+                    return "";
                 })
                 .maxWidthProvider(variableManager -> "300px")
                 .diagnosticsProvider(variableManager -> List.of())
@@ -489,18 +489,18 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         if (object instanceof Diagnostic) {
             Diagnostic diagnostic = (Diagnostic) object;
             switch (diagnostic.getSeverity()) {
-            case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                kind = "Error";
-                break;
-            case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                kind = "Warning";
-                break;
-            case org.eclipse.emf.common.util.Diagnostic.INFO:
-                kind = "Info";
-                break;
-            default:
-                kind = "Unknown";
-                break;
+                case org.eclipse.emf.common.util.Diagnostic.ERROR:
+                    kind = "Error";
+                    break;
+                case org.eclipse.emf.common.util.Diagnostic.WARNING:
+                    kind = "Warning";
+                    break;
+                case org.eclipse.emf.common.util.Diagnostic.INFO:
+                    kind = "Info";
+                    break;
+                default:
+                    kind = "Unknown";
+                    break;
             }
         }
         return kind;

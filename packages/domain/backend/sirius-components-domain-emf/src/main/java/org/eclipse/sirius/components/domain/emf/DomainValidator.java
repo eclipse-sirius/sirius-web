@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,8 +78,8 @@ public class DomainValidator implements EValidator {
                     0,
                     String.format(INVALID_NAME_ERROR_MESSAGE, namedElement.getName()),
                     new Object [] {
-                            namedElement,
-                            DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                        namedElement,
+                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
                     });
             // @formatter:on
 
@@ -109,8 +109,8 @@ public class DomainValidator implements EValidator {
                     0,
                     ENTITY_DISTINCT_NAME_ERROR_MESSAGE,
                     new Object [] {
-                            entity,
-                            DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                        entity,
+                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
                     });
             // @formatter:on
 
@@ -137,8 +137,8 @@ public class DomainValidator implements EValidator {
                     0,
                     FEATURE_DISTINCT_NAME_ERROR_MESSAGE,
                     new Object [] {
-                            feature,
-                            DomainPackage.Literals.NAMED_ELEMENT__NAME,
+                        feature,
+                        DomainPackage.Literals.NAMED_ELEMENT__NAME,
                     });
             // @formatter:on
 

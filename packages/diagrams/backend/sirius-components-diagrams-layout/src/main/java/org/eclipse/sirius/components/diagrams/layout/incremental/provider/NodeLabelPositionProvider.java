@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,39 +62,39 @@ public class NodeLabelPositionProvider {
         rightPadding = nodeLabelsPadding.getRight();
         for (NodeLabelPlacement nodeLabelPlacement : nodeLabelPlacementSet) {
             switch (nodeLabelPlacement) {
-            case H_LEFT:
-                if (outside) {
-                    x = -label.getTextBounds().getSize().getWidth() - spacingLabelNode;
-                } else {
-                    x = leftPadding;
-                }
-                break;
-            case H_CENTER:
-                // The label is positioned at the center of the node and the front-end will apply a "'text-anchor':
-                // 'middle'" property.
-                int shiftToEast = 0;
-                int shiftToWest = 0;
-                for (BorderNodesOnSide borderNodesOnSide : borderNodesOnSides) {
-                    if (RectangleSide.WEST.equals(borderNodesOnSide.getSide())) {
-                        shiftToEast = 1;
-                    } else if (RectangleSide.EAST.equals(borderNodesOnSide.getSide())) {
-                        shiftToWest = 1;
+                case H_LEFT:
+                    if (outside) {
+                        x = -label.getTextBounds().getSize().getWidth() - spacingLabelNode;
+                    } else {
+                        x = leftPadding;
                     }
-                }
-                double portOffset = Optional.ofNullable(this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET)).orElse(0.);
-                double offSetAccordingToBorderNodes = -portOffset / 2 * (shiftToEast - shiftToWest);
+                    break;
+                case H_CENTER:
+                    // The label is positioned at the center of the node and the front-end will apply a "'text-anchor':
+                    // 'middle'" property.
+                    int shiftToEast = 0;
+                    int shiftToWest = 0;
+                    for (BorderNodesOnSide borderNodesOnSide : borderNodesOnSides) {
+                        if (RectangleSide.WEST.equals(borderNodesOnSide.getSide())) {
+                            shiftToEast = 1;
+                        } else if (RectangleSide.EAST.equals(borderNodesOnSide.getSide())) {
+                            shiftToWest = 1;
+                        }
+                    }
+                    double portOffset = Optional.ofNullable(this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.PORT_BORDER_OFFSET)).orElse(0.);
+                    double offSetAccordingToBorderNodes = -portOffset / 2 * (shiftToEast - shiftToWest);
 
-                x = (node.getSize().getWidth() - label.getTextBounds().getSize().getWidth()) / 2 + offSetAccordingToBorderNodes;
-                break;
-            case H_RIGHT:
-                if (outside) {
-                    x = node.getSize().getWidth() + spacingLabelNode;
-                } else {
-                    x = node.getSize().getWidth() - label.getTextBounds().getSize().getWidth() - rightPadding;
-                }
-                break;
-            default:
-                break;
+                    x = (node.getSize().getWidth() - label.getTextBounds().getSize().getWidth()) / 2 + offSetAccordingToBorderNodes;
+                    break;
+                case H_RIGHT:
+                    if (outside) {
+                        x = node.getSize().getWidth() + spacingLabelNode;
+                    } else {
+                        x = node.getSize().getWidth() - label.getTextBounds().getSize().getWidth() - rightPadding;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         return x;
@@ -112,25 +112,25 @@ public class NodeLabelPositionProvider {
         bottomPadding = nodeLabelsPadding.getBottom();
         for (NodeLabelPlacement nodeLabelPlacement : nodeLabelPlacementSet) {
             switch (nodeLabelPlacement) {
-            case V_TOP:
-                if (outside) {
-                    y = -label.getTextBounds().getSize().getHeight() - spacingLabelNode;
-                } else {
-                    y = topPadding;
-                }
-                break;
-            case V_CENTER:
-                y = (node.getSize().getHeight() - label.getTextBounds().getSize().getHeight()) / 2;
-                break;
-            case V_BOTTOM:
-                if (outside) {
-                    y = node.getSize().getHeight() + label.getTextBounds().getSize().getHeight() + spacingLabelNode;
-                } else {
-                    y = node.getSize().getHeight() - label.getTextBounds().getSize().getHeight() - bottomPadding;
-                }
-                break;
-            default:
-                break;
+                case V_TOP:
+                    if (outside) {
+                        y = -label.getTextBounds().getSize().getHeight() - spacingLabelNode;
+                    } else {
+                        y = topPadding;
+                    }
+                    break;
+                case V_CENTER:
+                    y = (node.getSize().getHeight() - label.getTextBounds().getSize().getHeight()) / 2;
+                    break;
+                case V_BOTTOM:
+                    if (outside) {
+                        y = node.getSize().getHeight() + label.getTextBounds().getSize().getHeight() + spacingLabelNode;
+                    } else {
+                        y = node.getSize().getHeight() - label.getTextBounds().getSize().getHeight() - bottomPadding;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         return y;

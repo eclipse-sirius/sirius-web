@@ -11,6 +11,9 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
+    <module name="Indentation">
+      <property name="severity" value="error"/>
+    </module>
     <module name="SuppressionCommentFilter"/>
     <module name="SuppressWarningsHolder"/>
     <module name="JavadocMethod">

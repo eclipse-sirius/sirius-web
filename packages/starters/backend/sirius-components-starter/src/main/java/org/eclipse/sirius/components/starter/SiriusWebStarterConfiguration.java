@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,16 +55,15 @@ import reactor.core.publisher.Flux;
 @ConditionalOnWebApplication
 // @formatter:off
 @ComponentScan(basePackages = {
-        "org.eclipse.sirius.components.diagrams.layout",
-        "org.eclipse.sirius.components.graphql",
-        "org.eclipse.sirius.components.collaborative",
-        "org.eclipse.sirius.components.collaborative.diagrams",
-        "org.eclipse.sirius.components.collaborative.forms",
-        "org.eclipse.sirius.components.collaborative.selection",
-        "org.eclipse.sirius.components.collaborative.trees",
-        "org.eclipse.sirius.components.collaborative.validation",
-    }
-)
+    "org.eclipse.sirius.components.diagrams.layout",
+    "org.eclipse.sirius.components.graphql",
+    "org.eclipse.sirius.components.collaborative",
+    "org.eclipse.sirius.components.collaborative.diagrams",
+    "org.eclipse.sirius.components.collaborative.forms",
+    "org.eclipse.sirius.components.collaborative.selection",
+    "org.eclipse.sirius.components.collaborative.trees",
+    "org.eclipse.sirius.components.collaborative.validation",
+})
 // @formatter:on
 public class SiriusWebStarterConfiguration {
 

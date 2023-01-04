@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,29 +124,29 @@ public final class StylesFactory {
     public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
-        case NodeType.NODE_ICON_LABEL:
-            result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build();
-            break;
-        case NodeType.NODE_RECTANGLE:
-            // @formatter:off
-            result = RectangularNodeStyle.newRectangularNodeStyle()
-                .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
-                .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
-                .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
-                .borderSize(nodeStyle.getBorderSize())
-                .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                .borderRadius(nodeStyle.getBorderRadius())
-                .build();
-            break;
-            // @formatter:on
-        default:
-            for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
-                Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId);
-                if (nodeStyleOpt.isPresent()) {
-                    result = nodeStyleOpt.get();
-                    break;
+            case NodeType.NODE_ICON_LABEL:
+                result = IconLabelNodeStyle.newIconLabelNodeStyle().backgroundColor("transparent").build();
+                break;
+            case NodeType.NODE_RECTANGLE:
+                // @formatter:off
+                result = RectangularNodeStyle.newRectangularNodeStyle()
+                    .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
+                    .color(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_COLOR))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .borderRadius(nodeStyle.getBorderRadius())
+                    .build();
+                break;
+                // @formatter:on
+            default:
+                for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
+                    Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId);
+                    if (nodeStyleOpt.isPresent()) {
+                        result = nodeStyleOpt.get();
+                        break;
+                    }
                 }
-            }
         }
         if (result == null) {
             // @formatter:off

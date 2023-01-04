@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -193,7 +193,7 @@ public class DiagramLayoutTests {
                 .from(secondParentTargetObjectId).at(0.2, 0.7)
                 .to(firstParentTargetObjectId).at(0.1, 0.9)
             .and()
-        .build();
+            .build();
         // @formatter:on
 
         Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testSimpleDiagramLayout");

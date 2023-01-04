@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,26 +89,26 @@ public class CanonicalBehaviors {
                 .orElse(DeletionPolicy.SEMANTIC);
         // @formatter:on
         switch (deletionPolicy) {
-        case SEMANTIC:
-            this.self(variableManager).ifPresent(this.editService::delete);
-            break;
-        case GRAPHICAL:
-            var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
-            if (optionalDiagramContext.isPresent()) {
-                String elementId = null;
-                if (variableManager.get(Node.SELECTED_NODE, Node.class).isPresent()) {
-                    elementId = variableManager.get(Node.SELECTED_NODE, Node.class).get().getId();
-                } else if (variableManager.get(Edge.SELECTED_EDGE, Edge.class).isPresent()) {
-                    elementId = variableManager.get(Edge.SELECTED_EDGE, Edge.class).get().getId();
+            case SEMANTIC:
+                this.self(variableManager).ifPresent(this.editService::delete);
+                break;
+            case GRAPHICAL:
+                var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
+                if (optionalDiagramContext.isPresent()) {
+                    String elementId = null;
+                    if (variableManager.get(Node.SELECTED_NODE, Node.class).isPresent()) {
+                        elementId = variableManager.get(Node.SELECTED_NODE, Node.class).get().getId();
+                    } else if (variableManager.get(Edge.SELECTED_EDGE, Edge.class).isPresent()) {
+                        elementId = variableManager.get(Edge.SELECTED_EDGE, Edge.class).get().getId();
+                    }
+                    if (elementId != null) {
+                        ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
+                        optionalDiagramContext.get().getViewDeletionRequests().add(viewDeletionRequest);
+                    }
                 }
-                if (elementId != null) {
-                    ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
-                    optionalDiagramContext.get().getViewDeletionRequests().add(viewDeletionRequest);
-                }
-            }
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
         return new Success();
     }

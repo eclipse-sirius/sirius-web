@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,47 +89,47 @@ public class DefaultTestDiagramDescriptionProvider {
 
         INodeStyle nodeStyle = null;
         switch (prefix) {
-        case NODE_RECT_PREFIX:
-            // @formatter:off
-            nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                    .withHeader(false)
-                    .borderSize(1)
-                    .borderRadius(3)
-                    .borderStyle(LineStyle.Solid)
-                    .color("#E5F5F8")
-                    .borderColor("#33B0C3")
-                    .build();
-            // @formatter:on
-            break;
-        case NODE_IMG_PREFIX:
-            // @formatter:off
-            nodeStyle = ImageNodeStyle.newImageNodeStyle()
-                    .imageURL("")
-                    .scalingFactor(1)
-                    .build();
-            // @formatter:on
-            break;
-        case NODE_LIST_PREFIX:
-            // @formatter:off
-            nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                    .withHeader(true)
-                    .borderColor("black")
-                    .borderRadius(0)
-                    .borderSize(1)
-                    .borderStyle(LineStyle.Solid)
-                    .color("white")
-                    .build();
-            // @formatter:on
-            break;
-        case NODE_LIST_ITEM_PREFIX:
-            // @formatter:off
-            nodeStyle = IconLabelNodeStyle.newIconLabelNodeStyle()
-                    .backgroundColor("white")
-                    .build();
-            // @formatter:on
-            break;
-        default:
-            break;
+            case NODE_RECT_PREFIX:
+                // @formatter:off
+                nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                        .withHeader(false)
+                        .borderSize(1)
+                        .borderRadius(3)
+                        .borderStyle(LineStyle.Solid)
+                        .color("#E5F5F8")
+                        .borderColor("#33B0C3")
+                        .build();
+                // @formatter:on
+                break;
+            case NODE_IMG_PREFIX:
+                // @formatter:off
+                nodeStyle = ImageNodeStyle.newImageNodeStyle()
+                        .imageURL("")
+                        .scalingFactor(1)
+                        .build();
+                // @formatter:on
+                break;
+            case NODE_LIST_PREFIX:
+                // @formatter:off
+                nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                        .withHeader(true)
+                        .borderColor("black")
+                        .borderRadius(0)
+                        .borderSize(1)
+                        .borderStyle(LineStyle.Solid)
+                        .color("white")
+                        .build();
+                // @formatter:on
+                break;
+            case NODE_LIST_ITEM_PREFIX:
+                // @formatter:off
+                nodeStyle = IconLabelNodeStyle.newIconLabelNodeStyle()
+                        .backgroundColor("white")
+                        .build();
+                // @formatter:on
+                break;
+            default:
+                break;
         }
 
         return nodeStyle;
@@ -145,21 +145,21 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(prefix -> {
                     String type = "";
                     switch (prefix) {
-                    case NODE_RECT_PREFIX:
-                        type = NodeType.NODE_RECTANGLE;
-                        break;
-                    case NODE_IMG_PREFIX:
-                        type = NodeType.NODE_IMAGE;
-                        break;
-                    case NODE_LIST_PREFIX:
-                        type = NodeType.NODE_RECTANGLE;
-                        break;
-                    case NODE_LIST_ITEM_PREFIX:
-                        type = NodeType.NODE_ICON_LABEL;
-                        break;
-                    default:
-                        type = "";
-                        break;
+                        case NODE_RECT_PREFIX:
+                            type = NodeType.NODE_RECTANGLE;
+                            break;
+                        case NODE_IMG_PREFIX:
+                            type = NodeType.NODE_IMAGE;
+                            break;
+                        case NODE_LIST_PREFIX:
+                            type = NodeType.NODE_RECTANGLE;
+                            break;
+                        case NODE_LIST_ITEM_PREFIX:
+                            type = NodeType.NODE_ICON_LABEL;
+                            break;
+                        default:
+                            type = "";
+                            break;
                     }
                     return type;
                 })
@@ -177,18 +177,18 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(prefix -> {
                     ILayoutStrategy childrenLayoutStrategy = null;
                     switch (prefix) {
-                    case NODE_RECT_PREFIX:
-                        childrenLayoutStrategy = new FreeFormLayoutStrategy();
-                        break;
-                    case NODE_IMG_PREFIX:
-                        break;
-                    case NODE_LIST_PREFIX:
-                        childrenLayoutStrategy = new ListLayoutStrategy();
-                        break;
-                    case NODE_LIST_ITEM_PREFIX:
-                        break;
-                    default:
-                        break;
+                        case NODE_RECT_PREFIX:
+                            childrenLayoutStrategy = new FreeFormLayoutStrategy();
+                            break;
+                        case NODE_IMG_PREFIX:
+                            break;
+                        case NODE_LIST_PREFIX:
+                            childrenLayoutStrategy = new ListLayoutStrategy();
+                            break;
+                        case NODE_LIST_ITEM_PREFIX:
+                            break;
+                        default:
+                            break;
                     }
                     return childrenLayoutStrategy;
                 })
@@ -299,7 +299,7 @@ public class DefaultTestDiagramDescriptionProvider {
                  .autoLayout(false)
                  .targetObjectIdProvider(this.targetObjectIdProvider)
                  .canCreatePredicate(variableManager -> false)
-                 .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse("")) 
+                 .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse(""))
                  .toolSections(List.of())
                  .tools(List.of())
                  .nodeDescriptions(List.of(nodeDescription))

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ public class EMFKindService implements IEMFKindService {
                 .map(object -> {
                     if (object instanceof EPackage.Descriptor) {
                         return ((EPackage.Descriptor) object).getEPackage();
-                        }
+                    }
                     return object;
                 })
                 .filter(EPackage.class::isInstance)
