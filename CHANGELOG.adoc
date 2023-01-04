@@ -1,5 +1,12 @@
 = Changelog
 
+== v2023.3.0 (unreleased)
+
+=== Dependency update
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17
+
+
 == v2023.1.0
 
 === Architectural decision records

@@ -15,7 +15,7 @@ To build the components in this repository on your own, you will need the follow
 
 * Git, and a GitHub account
 * To build the backend components:
-** Java 11 (Java 12 or later are currently not supported)
+** Java 17
 ** https://maven.apache.org[Apache Maven 3.6.3]
 * To build the frontend components:
 ** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
