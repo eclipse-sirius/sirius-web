@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
-
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDeserializer;
 import org.eclipse.sirius.components.core.api.IKindParser;
 import org.eclipse.sirius.components.representations.IRepresentation;

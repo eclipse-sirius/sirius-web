@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -185,7 +184,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
             //@formatter:off
             List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
                     .filter(provider -> provider.canHandle(diagramDescription.get()))
-                    .collect(Collectors.toList());
+                    .toList();
             //@formatter:on
             if (!compatibleConnectorToolsProviders.isEmpty()) {
                 var diagramSourceElement = this.diagramQueryService.findNodeById(diagram, diagramSourceElementId);

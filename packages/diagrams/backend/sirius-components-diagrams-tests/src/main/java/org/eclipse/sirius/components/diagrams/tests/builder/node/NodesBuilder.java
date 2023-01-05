@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.Node;
 
@@ -66,7 +65,7 @@ public final class NodesBuilder<T> {
         // @formatter:off
         return this.nodeBuilders.stream()
                 .map(nodeBuilder -> nodeBuilder.build(targetObjectIdToNodeId))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

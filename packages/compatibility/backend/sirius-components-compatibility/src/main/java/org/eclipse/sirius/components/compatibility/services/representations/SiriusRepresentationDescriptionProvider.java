@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,7 @@ public class SiriusRepresentationDescriptionProvider {
         List<RepresentationDescription> siriusRepresentationDescriptions = viewpoints.stream()
                 .map(Viewpoint::getOwnedRepresentations)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         List<IRepresentationDescription> representationDescriptions = new ArrayList<>();
@@ -84,20 +84,20 @@ public class SiriusRepresentationDescriptionProvider {
         List<ContainerCreationDescription> containerCreationDescriptions = new DiagramDescriptionQuery(diagramDescription).getAllTools().stream()
                 .filter(ContainerCreationDescription.class::isInstance)
                 .map(ContainerCreationDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         List<NodeCreationDescription> nodeCreationDescriptions = new DiagramDescriptionQuery(diagramDescription).getAllTools().stream()
                 .filter(NodeCreationDescription.class::isInstance)
                 .map(NodeCreationDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         List<SelectModelElementVariable> smeVariablesFromContainers = containerCreationDescriptions.stream()
                 .flatMap(containerCreationDescription ->  new SelectModelElementVariableProvider().getSelectModelElementVariable(containerCreationDescription.getVariable()).stream())
-                .collect(Collectors.toList());
+                .toList();
 
         List<SelectModelElementVariable> smeVariablesFromNodes = nodeCreationDescriptions.stream()
                 .flatMap(nodeCreationDescription ->  new SelectModelElementVariableProvider().getSelectModelElementVariable(nodeCreationDescription.getVariable()).stream())
-                .collect(Collectors.toList());
+                .toList();
 
         return Stream.concat(smeVariablesFromContainers.stream(), smeVariablesFromNodes.stream())
                 .map(selectModelElementVariable -> this.selectModelElementVariableConverter.convert(selectModelElementVariable, diagramDescription))
@@ -110,7 +110,7 @@ public class SiriusRepresentationDescriptionProvider {
         List<ViewExtensionDescription> viewExtensionDescriptions = group.getExtensions().stream()
                 .filter(ViewExtensionDescription.class::isInstance)
                 .map(ViewExtensionDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         return viewExtensionDescriptions.stream()
                 .map(this.viewExtensionDescriptionConverter::convert)

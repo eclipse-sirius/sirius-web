@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.view.emf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
@@ -73,7 +72,7 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
             return packageRegistry.values().stream()
                                   .filter(EPackage.class::isInstance)
                                   .map(EPackage.class::cast)
-                                  .collect(Collectors.toList());
+                                  .toList();
             // @formatter:on
         } else {
             return List.of();
@@ -96,7 +95,7 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
         // @formatter:off
         List<Class<?>> serviceClasses = this.javaServiceProviders.stream()
                                             .flatMap(provider -> provider.getServiceClasses(view).stream())
-                                            .collect(Collectors.toList());
+                                            .toList();
         // @formatter:on
         return new AQLInterpreter(serviceClasses, visibleEPackages);
     }

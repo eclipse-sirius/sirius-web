@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -150,7 +149,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
         proposals = this.requestCompletion(field, "flow::PowerLink", "flow::Power".length());
         List<EClass> candidates = List.of(FlowPackage.Literals.POWER_INPUT, FlowPackage.Literals.POWER_LINK, FlowPackage.Literals.POWER_OUTPUT, FlowPackage.Literals.POWERED);
-        this.checkProposalsText(proposals, candidates.stream().map(this::domainTypeName).collect(Collectors.toList()));
+        this.checkProposalsText(proposals, candidates.stream().map(this::domainTypeName).toList());
     }
 
     private void checkExpressionField(Form form, String fieldName) {
@@ -202,7 +201,7 @@ public class ViewDetailsRenderingIntegrationTests {
                 .filter(Textarea.class::isInstance)
                 .map(Textarea.class::cast)
                 .filter(textarea -> Objects.equals(label, textarea.getLabel()))
-                .collect(Collectors.toList());
+                .toList();
         assertThat(textareas).hasSize(1);
         return textareas.get(0);
     }

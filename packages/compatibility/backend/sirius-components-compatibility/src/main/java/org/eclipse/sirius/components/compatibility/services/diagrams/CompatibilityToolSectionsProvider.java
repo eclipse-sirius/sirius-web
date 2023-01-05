@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -96,6 +95,8 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
                 .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
                 .findFirst();
         // @formatter:on
+
+        List<ToolSection> toolSections = new ArrayList<>();
         if (optionalSiriusDiagramDescription.isPresent()) {
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription = optionalSiriusDiagramDescription.get();
 
@@ -103,14 +104,13 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
             List<ToolSection> filteredToolSections = diagramDescription.getToolSections().stream()
                     .map(toolSection -> this.filteredTools(targetElement, diagramElement, toolSection, siriusDiagramDescription, diagramElementDescription))
                     .filter(toolSection -> !toolSection.getTools().isEmpty())
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
 
-            filteredToolSections.addAll(this.createExtraToolSections(diagramElementDescription));
-
-            return filteredToolSections;
+            toolSections.addAll(filteredToolSections);
+            toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
         }
-        return List.of();
+        return toolSections;
     }
 
     private ToolSection filteredTools(Object targetElement, Object diagramElement, ToolSection toolSection, org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription,
@@ -142,7 +142,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
                     }
                     return keepTool;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         return ToolSection.newToolSection(toolSection).tools(tools).build();
@@ -188,7 +188,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
             mappings.addAll(nodeMappings);
         } else if (siriusTool instanceof EdgeCreationDescription) {
             EList<EdgeMapping> edgeMappings = ((EdgeCreationDescription) siriusTool).getEdgeMappings();
-            mappings.addAll(edgeMappings.stream().map(EdgeMapping::getSourceMapping).flatMap(Collection::stream).collect(Collectors.toList()));
+            mappings.addAll(edgeMappings.stream().map(EdgeMapping::getSourceMapping).flatMap(Collection::stream).toList());
         } else if (siriusTool instanceof DirectEditLabel) {
             EList<DiagramElementMapping> eltMappings = ((DirectEditLabel) siriusTool).getMapping();
             mappings.addAll(eltMappings);
@@ -205,7 +205,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
                 .map(DiagramElementMapping::eContainer)
                 .filter(DiagramElementMapping.class::isInstance)
                 .map(DiagramElementMapping.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         //@formatter:on
     }
 

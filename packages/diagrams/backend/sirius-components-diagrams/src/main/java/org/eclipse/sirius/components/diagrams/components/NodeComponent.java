@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
@@ -77,7 +76,7 @@ public class NodeComponent implements IComponent {
                     .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescription.getId()))
                     .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), this.props.getParentElementId()))
                     .map(ViewCreationRequest::getTargetObjectId)
-                    .collect(Collectors.toList());
+                    .toList();
             //@formatter:on
             List<String> previousNodeIds = this.props.getPreviousTargetObjectIds();
             List<String> semanticElementIds = new ArrayList<>(creationRequestsIds);
@@ -315,7 +314,7 @@ public class NodeComponent implements IComponent {
 
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
-            List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
+            List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(node -> node.getTargetObjectId()).toList();
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(nodeVariableManager)
@@ -332,7 +331,7 @@ public class NodeComponent implements IComponent {
                     .parentElementState(state)
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
-        }).collect(Collectors.toList());
+        }).toList();
         //@formatter:on
     }
 
@@ -350,7 +349,7 @@ public class NodeComponent implements IComponent {
 
         return childNodeDescriptions.stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());
-            List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
+            List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(node -> node.getTargetObjectId()).toList();
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(nodeVariableManager)
@@ -368,7 +367,7 @@ public class NodeComponent implements IComponent {
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);
-        }).collect(Collectors.toList());
+        }).toList();
         // @formatter:on
     }
 

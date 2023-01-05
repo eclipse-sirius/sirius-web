@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -322,7 +321,7 @@ public class ProjectExportService implements IProjectExportService {
         // @formatter:off
         List<String> metamodels = this.editingContextEPackageService.getEPackages(projectId).stream()
                 .map(EPackage::getNsURI)
-                .collect(Collectors.toList());
+                .toList();
 
         ProjectManifest projectManifest = ProjectManifest.newProjectManifest(CURRENT_MANIFEST_VERSION, this.buildProperties.getVersion())
                 .metamodels(metamodels)

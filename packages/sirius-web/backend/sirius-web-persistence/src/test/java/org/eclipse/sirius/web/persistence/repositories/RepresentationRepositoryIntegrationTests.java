@@ -326,7 +326,7 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
         // @formatter:off
         return this.representationRepository.findAllByProjectId(projectId).stream()
                 .map(RepresentationEntity::getId)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EPackage;
@@ -91,7 +90,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
             List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);
             for (DocumentEntity documentEntity : this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI)) {
                 Resource resource = this.loadDocumentAsEMF(documentEntity);
-                for (View view : this.getViewDefinitions(resource).collect(Collectors.toList())) {
+                for (View view : this.getViewDefinitions(resource).toList()) {
                     // @formatter:off
                     var candidate = this.viewConverter.convert(view, accessibleEPackages).stream()
                                         .filter(Objects::nonNull)
@@ -114,7 +113,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
             return packageRegistry.values().stream()
                                   .filter(EPackage.class::isInstance)
                                   .map(EPackage.class::cast)
-                                  .collect(Collectors.toList());
+                                  .toList();
             // @formatter:on
         } else {
             return List.of();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -104,13 +103,13 @@ public class IncomingTreeProvider {
                 // @formatter:off
                 var settings = xref.getInverseReferences(root).stream()
                                    .sorted(Comparator.comparing(setting -> setting.getEStructuralFeature().getName()))
-                                   .collect(Collectors.toList());
+                                   .toList();
                 Map<EReference, List<EObject>> sourceByReference = new LinkedHashMap<>();
                 for (Setting setting : settings) {
                     sourceByReference.computeIfAbsent((EReference) setting.getEStructuralFeature(), ref -> new ArrayList<>()).add(setting.getEObject());
                 }
                 // @formatter:on
-                result = sourceByReference.entrySet().stream().map(entry -> new IncomingReferences(entry.getKey(), entry.getValue())).collect(Collectors.toList());
+                result = sourceByReference.entrySet().stream().map(entry -> new IncomingReferences(entry.getKey(), entry.getValue())).toList();
             }
         } else if (self instanceof IncomingReferences) {
             result = ((IncomingReferences) self).getSources();

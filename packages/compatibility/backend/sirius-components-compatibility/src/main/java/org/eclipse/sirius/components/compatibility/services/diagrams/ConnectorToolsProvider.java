@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -130,7 +129,8 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
                             .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                             .filter(tool -> tool.getCandidates().stream().anyMatch(candidate -> candidate.getSources().contains(sourceDiagramElementDescription) && candidate.getTargets().contains(targetDiagramElementDescription)))
                             .filter(tool -> this.filterTool(tool, optSourceSemanticElement.get(), optTargetSemanticElement.get(), sourceDiagramElement, targetDiagramElement, siriusDiagramDescription))
-                            .collect(Collectors.toList());
+                            .map(ITool.class::cast)
+                            .toList();
                     //@formatter:on
 
                 }

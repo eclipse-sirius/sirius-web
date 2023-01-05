@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -106,7 +105,7 @@ public class OutgoingTreeProvider {
             var nonContainmentReferences = root.eClass().getEAllReferences().stream()
                     .filter(ref -> !ref.isContainment())
                     .sorted(Comparator.comparing(EStructuralFeature::getName))
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
             result = nonContainmentReferences.stream().filter(ref -> {
                 if (ref.isMany()) {
@@ -114,7 +113,7 @@ public class OutgoingTreeProvider {
                 } else {
                     return root.eGet(ref) != null;
                 }
-            }).collect(Collectors.toList());
+            }).toList();
         } else if (self instanceof EReference) {
             result = this.readReference(root, (EReference) self);
         }
@@ -126,7 +125,7 @@ public class OutgoingTreeProvider {
         if (ref.isMany()) {
             result = (EList<?>) self.eGet(ref);
         } else {
-            result = Optional.ofNullable(self.eGet(ref)).stream().collect(Collectors.toList());
+            result = Optional.ofNullable(self.eGet(ref)).stream().toList();
         }
         return result;
     }

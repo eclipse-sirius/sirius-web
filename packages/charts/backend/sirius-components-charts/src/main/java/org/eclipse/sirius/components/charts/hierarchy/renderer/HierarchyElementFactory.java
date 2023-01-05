@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.charts.hierarchy.renderer;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.charts.hierarchy.HierarchyNode;
@@ -45,7 +44,7 @@ public class HierarchyElementFactory implements IElementFactory {
         List<HierarchyNode> nodes = children.stream()
                 .filter(HierarchyNode.class::isInstance)
                 .map(HierarchyNode.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         return new Hierarchy(props.getId(), props.getDescriptionId(), props.getTargetObjectId(), props.getLabel(), props.getKind(), nodes);
@@ -56,7 +55,7 @@ public class HierarchyElementFactory implements IElementFactory {
         List<HierarchyNode> nodes = children.stream()
                 .filter(HierarchyNode.class::isInstance)
                 .map(HierarchyNode.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         return new HierarchyNode(props.getId(), props.getTargetObjectId(), props.getLabel(), nodes);

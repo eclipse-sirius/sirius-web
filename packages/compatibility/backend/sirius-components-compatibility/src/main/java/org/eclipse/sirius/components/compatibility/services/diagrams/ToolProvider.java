@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.business.api.query.IdentifiedElementQuery;
@@ -132,7 +131,7 @@ public class ToolProvider implements IToolProvider {
             .flatMap(layer -> layer.getToolSections().stream())
             .filter(org.eclipse.sirius.diagram.description.tool.ToolSection.class::isInstance)
             .map(org.eclipse.sirius.diagram.description.tool.ToolSection.class::cast)
-            .collect(Collectors.toList());
+            .toList();
         // @formatter:on
         AQLInterpreter interpreter = this.interpreterFactory.create(siriusDiagramDescription);
         for (var siriusToolSection : siriusToolSections) {
@@ -141,7 +140,7 @@ public class ToolProvider implements IToolProvider {
                     .filter(this::isSupported)
                     .map(toolDescription -> this.convertTool(id2NodeDescriptions, siriusDiagramDescription, toolDescription, interpreter))
                     .flatMap(Optional::stream)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
             if (!tools.isEmpty()) {
                 ToolSection toolSection = this.convertToolSection(siriusToolSection, tools);
@@ -186,7 +185,7 @@ public class ToolProvider implements IToolProvider {
                 })
                 .filter(AbstractToolDescription.class::isInstance)
                 .map(AbstractToolDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         //@formatter:on
     }
@@ -200,7 +199,7 @@ public class ToolProvider implements IToolProvider {
                 .map(this.identifierProvider::getIdentifier)
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
-                .collect(Collectors.toList());
+                .toList();
         //@formatter:on
     }
 
@@ -294,11 +293,11 @@ public class ToolProvider implements IToolProvider {
         // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
-                .collect(Collectors.toList());
+                .toList();
         List<NodeDescription> targetDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
-                .collect(Collectors.toList());
+                .toList();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
@@ -320,11 +319,11 @@ public class ToolProvider implements IToolProvider {
         // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
-                .collect(Collectors.toList());
+                .toList();
         List<NodeDescription> targetDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
-                .collect(Collectors.toList());
+                .toList();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)
@@ -371,13 +370,13 @@ public class ToolProvider implements IToolProvider {
                     .map(this.identifierProvider::getIdentifier)
                     .map(UUID::fromString)
                     .map(id2NodeDescriptions::get)
-                    .collect(Collectors.toList());
+                    .toList();
             List<NodeDescription> targets = edgeMapping.getTargetMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
                     .map(this.identifierProvider::getIdentifier)
                     .map(UUID::fromString)
                     .map(id2NodeDescriptions::get)
-                    .collect(Collectors.toList());
+                    .toList();
             SingleClickOnTwoDiagramElementsCandidate edgeCandidate = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                 .sources(sources)
                 .targets(targets)
@@ -404,12 +403,12 @@ public class ToolProvider implements IToolProvider {
         // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
-                .collect(Collectors.toList());
+                .toList();
         List<NodeDescription> targetDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
                 .imageURL(imagePath)

@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -84,7 +83,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof DropOnDiagramInput) {
             DropOnDiagramInput input = (DropOnDiagramInput) diagramInput;
 
-            List<Object> objects = input.objectIds().stream().map(objectId -> this.objectService.getObject(editingContext, objectId)).flatMap(Optional::stream).collect(Collectors.toList());
+            List<Object> objects = input.objectIds().stream().map(objectId -> this.objectService.getObject(editingContext, objectId)).flatMap(Optional::stream).toList();
             Diagram diagram = diagramContext.getDiagram();
 
             payload = new ErrorPayload(diagramInput.id(), this.messageService.invalidDrop());

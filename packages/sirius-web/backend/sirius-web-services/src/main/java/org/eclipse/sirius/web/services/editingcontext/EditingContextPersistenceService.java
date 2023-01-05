@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -75,7 +74,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         if (editingContext instanceof EditingContext) {
             EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
             List<DocumentEntity> documentEntities = this.persist(editingDomain);
-            List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).collect(Collectors.toList());
+            List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).toList();
             // @formatter:off
             new IDParser().parse(editingContext.getId())
                 .map(editingContextId -> new DocumentsModifiedEvent(editingContextId, documents))
@@ -98,7 +97,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                 }
                 return false;
             })
-            .collect(Collectors.toList());
+            .toList();
         // @formatter:on
 
         for (Resource resource : resources) {

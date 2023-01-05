@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.forms.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -35,7 +34,7 @@ public class PropertiesDescriptionRegistry implements IPropertiesDescriptionRegi
     }
 
     public List<FormDescription> getPropertiesDescriptions() {
-        return this.id2propertiesDescriptions.values().stream().collect(Collectors.toList());
+        return this.id2propertiesDescriptions.values().stream().toList();
     }
 
 }

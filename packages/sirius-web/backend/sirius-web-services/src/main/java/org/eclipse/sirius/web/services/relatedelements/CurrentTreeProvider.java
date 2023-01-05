@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -136,7 +135,7 @@ public class CurrentTreeProvider {
                        }
                    })
                    .sorted(Comparator.comparing(EStructuralFeature::getName))
-                   .collect(Collectors.toList());
+                   .toList();
         // @formatter:on
     }
 
@@ -145,7 +144,7 @@ public class CurrentTreeProvider {
         if (eReference.isMany()) {
             result = (EList<?>) self.eGet(eReference);
         } else {
-            result = Optional.ofNullable(self.eGet(eReference)).stream().collect(Collectors.toList());
+            result = Optional.ofNullable(self.eGet(eReference)).stream().toList();
         }
         return result;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,7 +138,7 @@ public class ProjectUnzipper {
         List<ByteArrayOutputStream> outputStreamOfRepresentationDescritors = zipEntryNameToContent.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(representationsFolderInZip))
                 .map(Entry::getValue)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
         return outputStreamOfRepresentationDescritors;
     }

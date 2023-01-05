@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -171,7 +170,7 @@ public class ImagesController {
         List<String> accessibleImagePaths = this.pathResourcesServices.stream()
                 .map(IImagePathService::getPaths)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         return accessibleImagePaths.stream().anyMatch(imagePath::startsWith);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.forms.components;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -68,7 +67,7 @@ public class FormComponent implements IComponent {
         }).flatMap(childVariableManager -> pageDescriptions.stream().map(pageDescription -> {
             PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription);
             return new Element(PageComponent.class, pageComponentProps);
-        })).collect(Collectors.toList());
+        })).toList();
 
         FormElementProps formElementProps = FormElementProps.newFormElementProps(id)
                 .label(label)

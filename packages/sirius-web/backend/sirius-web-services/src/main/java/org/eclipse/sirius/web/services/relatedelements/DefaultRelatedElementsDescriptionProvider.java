@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -92,7 +91,7 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                 .idProvider(variableManager -> FORM_TITLE)
                 .labelProvider(variableManager -> FORM_TITLE)
                 .displayModeProvider(variableManager -> GroupDisplayMode.TOGGLEABLE_AREAS)
-                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList()))
+                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList())
                 .controlDescriptions(controlDescriptions)
                 .build();
         // @formatter:on
@@ -107,7 +106,7 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                                                                  .map(this.objectService::getLabel)
                                                                  .orElse(""))
-                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList()))
+                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList())
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
                 .build();

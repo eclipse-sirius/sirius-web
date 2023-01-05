@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.compatibility.emf.modeloperations;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
@@ -76,7 +75,7 @@ public class NavigationOperationHandler implements IModelOperationHandler {
                         String label = representationMetadata.getLabel();
                         String kind = representationMetadata.getKind();
                         return new WorkbenchSelectionEntry(id, label, kind);
-                    }).collect(Collectors.toList());
+                    }).toList();
             // @formatter:on
             if (!entries.isEmpty()) {
                 WorkbenchSelection newSelection = new WorkbenchSelection(entries);

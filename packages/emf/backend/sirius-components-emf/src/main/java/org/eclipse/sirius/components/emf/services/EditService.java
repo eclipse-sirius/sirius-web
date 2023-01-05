@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
@@ -127,7 +126,7 @@ public class EditService implements IEditService {
             List<CommandParameter> commandParameters = newChildDescriptors.stream()
                     .filter(CommandParameter.class::isInstance)
                     .map(CommandParameter.class::cast)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
 
             Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
@@ -171,7 +170,7 @@ public class EditService implements IEditService {
             List<CommandParameter> commandParameters = newChildDescriptors.stream()
                     .filter(CommandParameter.class::isInstance)
                     .map(CommandParameter.class::cast)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
 
             Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
@@ -230,7 +229,7 @@ public class EditService implements IEditService {
         return nsURI2EPackages.values().stream()
                 .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 
@@ -264,7 +263,7 @@ public class EditService implements IEditService {
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
                 .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface())
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import static org.eclipse.sirius.components.forms.tests.FormAssertions.assertTha
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -158,7 +157,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
 
             // @formatter:off
             assertThat(actualTree.getExpandedNodesIds())
-                 .containsAll(expectedTree.getExpandedNodesIds().stream().map(expectedToActualIds::get).collect(Collectors.toList()));
+                 .containsAll(expectedTree.getExpandedNodesIds().stream().map(expectedToActualIds::get).toList());
             // @formatter:on
 
             for (int i = 0; i < size; i++) {

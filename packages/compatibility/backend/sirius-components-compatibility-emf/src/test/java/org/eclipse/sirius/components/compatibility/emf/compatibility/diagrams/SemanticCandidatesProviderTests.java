@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -94,7 +93,7 @@ public class SemanticCandidatesProviderTests {
         List<EClass> eClasses = semanticCandidates.stream()
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         assertThat(semanticCandidates).hasSize(2);

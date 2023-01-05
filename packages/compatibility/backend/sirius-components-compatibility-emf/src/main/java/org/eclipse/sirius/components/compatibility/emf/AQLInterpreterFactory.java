@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,7 +81,7 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
         // @formatter:off
         List<String> qualifiedNames = viewpoint.getOwnedJavaExtensions().stream()
                 .map(JavaExtension::getQualifiedClassName)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         for (String qualifiedName : qualifiedNames) {
@@ -95,8 +95,7 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
             } catch (ClassNotFoundException exception) {
                 this.logger.warn("Could not load class '{}'", qualifiedName);
             } catch (NoClassDefFoundError exception) {
-                this.logger.error("Could not load class '{}'; not all dependencies could be "
-                        + "instantiated by the JVM: {}", qualifiedName, exception.getMessage());
+                this.logger.error("Could not load class '{}'; not all dependencies could be " + "instantiated by the JVM: {}", qualifiedName, exception.getMessage());
             }
         }
 

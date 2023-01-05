@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -241,7 +240,7 @@ public class FormRendererTests {
         assertThat(form.getPages().stream().flatMap(p -> p.getGroups().stream())).hasSize(1);
         assertThat(form.getPages().stream().flatMap(p -> p.getGroups().stream()).flatMap(g -> g.getWidgets().stream())).hasSize(5);
 
-        List<Group> groups = form.getPages().stream().flatMap(p -> p.getGroups().stream()).collect(Collectors.toList());
+        List<Group> groups = form.getPages().stream().flatMap(p -> p.getGroups().stream()).toList();
         this.checkIdsInGroups(groups);
     }
 

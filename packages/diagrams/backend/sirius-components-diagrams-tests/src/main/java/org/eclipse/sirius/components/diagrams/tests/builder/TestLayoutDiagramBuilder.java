@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -77,7 +76,7 @@ public final class TestLayoutDiagramBuilder {
     public Diagram build() {
         Map<String, String> targetObjectIdToNodeId = new HashMap<>();
         List<Node> nodes = this.nodesBuilder.build(targetObjectIdToNodeId);
-        List<Edge> edges = this.edgeBuilders.stream().map(edgeBuilder -> edgeBuilder.build(targetObjectIdToNodeId)).collect(Collectors.toList());
+        List<Edge> edges = this.edgeBuilders.stream().map(edgeBuilder -> edgeBuilder.build(targetObjectIdToNodeId)).toList();
 
         // @formatter:off
         return Diagram.newDiagram(Objects.requireNonNull(this.diagramId))

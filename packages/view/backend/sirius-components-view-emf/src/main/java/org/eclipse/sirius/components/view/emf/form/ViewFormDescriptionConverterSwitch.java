@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -635,7 +634,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
         return variableManager -> {
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).collect(Collectors.toList());
+            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).toList();
         };
     }
 
@@ -673,7 +672,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 List<Object> newValuesObjects = newValue.stream()
                         .map(currentValue -> this.objectService.getObject(editingContext, currentValue))
                         .flatMap(Optional::stream)
-                        .collect(Collectors.toList());
+                        .toList();
                 // @formatter:on
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
@@ -696,7 +695,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             if (!safeValueExpression.isBlank()) {
                 Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
                 if (optionalResult.isPresent()) {
-                    values = optionalResult.get().stream().map(this.objectService::getId).collect(Collectors.toList());
+                    values = optionalResult.get().stream().map(this.objectService::getId).toList();
                 }
             }
             return values;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -69,12 +68,14 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
                 ResourceSet resourceSet = optionalEditingContext.get().getDomain().getResourceSet();
                 List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
                 // @formatter:off
-                choices = ePackages.stream().flatMap(ePackage -> {
-                    return ePackage.getEClassifiers().stream()
-                            .filter(EClass.class::isInstance)
-                            .map(eClassifier -> String.format("%s::%s", ePackage.getName(), eClassifier.getName()))
-                            .distinct();
-                }).distinct().sorted().collect(Collectors.toList());
+                choices = ePackages.stream()
+                        .flatMap(ePackage -> ePackage.getEClassifiers().stream()
+                                .filter(EClass.class::isInstance)
+                                .map(eClassifier -> String.format("%s::%s", ePackage.getName(), eClassifier.getName()))
+                                .distinct()
+                        )
+                        .distinct()
+                        .sorted().toList();
                 // @formatter:on
             }
             String prefix = currentText.substring(0, cursorPosition);
@@ -82,7 +83,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
             return choices.stream()
                     .filter(choice -> choice.startsWith(prefix))
                     .map(choice -> new CompletionProposal("Choice " + choice, choice, prefix.length()))
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
         };
     }
@@ -95,7 +96,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
                 .map(Entry::getValue)
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         allEPackage.addAll(ePackages);
 
         ePackages.stream()

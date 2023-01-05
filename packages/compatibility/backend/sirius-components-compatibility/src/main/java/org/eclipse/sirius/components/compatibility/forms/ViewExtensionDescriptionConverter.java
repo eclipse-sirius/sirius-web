@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -79,12 +78,12 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .flatMap(category -> category.getPages().stream())
                 .flatMap(page -> page.getGroups().stream())
                 .map(groupDescription -> groupDescriptionConverter.convert(groupDescription, siriusGroup2SiriusWebGroup))
-                .collect(Collectors.toList());
+                .toList();
 
         List<PageDescription> pageDescriptions = viewExtensionDescription.getCategories().stream()
                 .flatMap(category -> category.getPages().stream())
                 .map(pageDescription -> pageDescriptionConverter.convert(pageDescription, siriusGroup2SiriusWebGroup))
-                .collect(Collectors.toList());
+                .toList();
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .filter(self -> self instanceof List<?>)

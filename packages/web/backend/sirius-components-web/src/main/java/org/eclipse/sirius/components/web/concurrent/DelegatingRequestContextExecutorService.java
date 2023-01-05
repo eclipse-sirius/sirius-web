@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 import org.springframework.web.context.request.RequestAttributes;
 
@@ -103,7 +102,7 @@ public class DelegatingRequestContextExecutorService implements ExecutorService 
     }
 
     private <T> Collection<Callable<T>> wrap(Collection<? extends Callable<T>> tasks) {
-        return tasks.stream().map(task -> this.wrap(task)).collect(Collectors.toList());
+        return tasks.stream().map(task -> this.wrap(task)).toList();
     }
 
     private Runnable wrap(Runnable task) {

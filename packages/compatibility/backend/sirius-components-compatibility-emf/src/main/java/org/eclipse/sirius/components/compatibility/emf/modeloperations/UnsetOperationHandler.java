@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -102,7 +101,7 @@ public class UnsetOperationHandler implements IModelOperationHandler {
                 elementsToUnset = optionalObjectsToUnset.get().stream()
                                       .filter(EObject.class::isInstance)
                                       .map(EObject.class::cast)
-                                      .collect(Collectors.toList());
+                                      .toList();
                 // @formatter:on
             }
         }

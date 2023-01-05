@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -66,7 +65,7 @@ public class ExplorerTreePathProvider implements ITreePathProvider {
             allAncestors.addAll(itemAncestors);
             maxDepth = Math.max(maxDepth, itemAncestors.size());
         }
-        return new TreePathSuccessPayload(input.id(), new TreePath(allAncestors.stream().collect(Collectors.toList()), maxDepth));
+        return new TreePathSuccessPayload(input.id(), new TreePath(allAncestors.stream().toList(), maxDepth));
     }
 
     private List<String> getAncestors(IEditingContext editingContext, String selectionEntryId) {

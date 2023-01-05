@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.view.emf.form;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle.Builder;
@@ -92,7 +91,7 @@ public class PieChartStyleProvider implements Function<VariableManager, PieChart
             List<String> colorsValues = colorsObjects.stream()
                     .filter(String.class::isInstance)
                     .map(String.class::cast)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
             pieChartStyleBuilder.colors(colorsValues);
         }

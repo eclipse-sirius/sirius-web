@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.forms;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
@@ -79,7 +78,7 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
             var objects = relatedElementsConfiguration.getObjectIds().stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
                     .flatMap(Optional::stream)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
             if (!objects.isEmpty()) {
                 FormDescription formDescription = this.relatedElementsDescriptionProvider.getFormDescription();

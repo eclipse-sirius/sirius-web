@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.api.IQueryService;
@@ -116,7 +116,14 @@ public class EMFQueryService implements IQueryService {
     }
 
     private Result executeQuery(IEditingContext editingContext, String query, Map<String, Object> providedVariables) {
-        List<Class<?>> classes = this.queryJavaServiceProviders.stream().flatMap(provider -> provider.getClasses(editingContext).stream()).collect(Collectors.toList());
+        List<Class<?>> classes = new ArrayList<>();
+        // @formatter:off
+        List<Class<?>> providedClasses = this.queryJavaServiceProviders.stream()
+                .flatMap(provider -> provider.getClasses(editingContext).stream())
+                .toList();
+        // @formatter:on
+
+        classes.addAll(providedClasses);
         classes.add(EditingContextServices.class);
         List<EPackage> ePackages = this.editingContextEPackageService.getEPackages(editingContext.getId());
 

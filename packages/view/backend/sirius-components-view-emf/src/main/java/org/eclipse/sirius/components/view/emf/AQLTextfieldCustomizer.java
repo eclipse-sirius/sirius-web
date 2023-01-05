@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -103,7 +103,7 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
 
             ICompletionResult completionResult = interpreter.getProposals(currentText.substring(AQL_PREFIX.length()), cursorPosition - AQL_PREFIX.length());
             Set<ICompletionProposal> aqlProposals = new LinkedHashSet<>(completionResult.getProposals(QueryCompletion.createBasicFilter(completionResult)));
-            List<ICompletionProposal> proposals = aqlProposals.stream().collect(Collectors.toList());
+            List<ICompletionProposal> proposals = aqlProposals.stream().toList();
 
             // @formatter:off
             List<CompletionProposal> allProposals = proposals.stream()
@@ -112,11 +112,11 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                     .map(proposal -> {
                         return new CompletionProposal(proposal.getDescription(), proposal.getProposal(), completionResult.getReplacementLength());
                     })
-                    .collect(Collectors.toList());
+                    .toList();
             return allProposals.stream()
                     // Only keep the first proposal for a given textToInsert
                     .collect(Collectors.toMap(CompletionProposal::getTextToInsert, Function.identity(), (p1, p2) -> p1, LinkedHashMap::new)).values().stream()
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
         };
     }
@@ -128,7 +128,7 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
             return packageRegistry.values().stream()
                                   .filter(EPackage.class::isInstance)
                                   .map(EPackage.class::cast)
-                                  .collect(Collectors.toList());
+                                  .toList();
             // @formatter:on
         } else {
             return List.of();
@@ -149,7 +149,8 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .map(Object.class::cast)
+                .toList();
         // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }

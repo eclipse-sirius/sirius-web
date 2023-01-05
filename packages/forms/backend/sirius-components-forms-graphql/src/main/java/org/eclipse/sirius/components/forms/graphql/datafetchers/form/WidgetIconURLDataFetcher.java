@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -50,7 +49,7 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
                 "Textfield",
                 "TreeWidget"
         );
-        return widgetTypes.stream().map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD)).collect(Collectors.toList());
+        return widgetTypes.stream().map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD)).toList();
         // @formatter:on
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.renderer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -150,7 +151,7 @@ public class DiagramElementChangeVisibilityTests {
             List<Element> sourceNodes = objectToNodes.get(sourceObjectId).stream()
                     .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(sourceDescription.getId()))
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .toList();
 
             return sourceNodes;
         };
@@ -162,7 +163,7 @@ public class DiagramElementChangeVisibilityTests {
             List<Element> targetNodes = objectToNodes.get(targetObjectId).stream()
                     .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(targetDescription.getId()))
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .toList();
 
             return targetNodes;
         };
@@ -239,7 +240,8 @@ public class DiagramElementChangeVisibilityTests {
 
         List<Node> nodes = diagram.getNodes().stream()
                 .filter(n -> !n.getId().equals(modifiedNodeId))
-                .collect(Collectors.toList());
+                .toList();
+        nodes = new ArrayList<>(nodes);
         nodes.add(0, node);
 
         Diagram diagramTemp = Diagram.newDiagram(diagram)
@@ -277,7 +279,8 @@ public class DiagramElementChangeVisibilityTests {
 
         String modifiedNodeId = node.getId();
 
-        List<Node> nodes = diagram.getNodes().stream().filter(n -> !n.getId().equals(modifiedNodeId)).collect(Collectors.toList());
+        List<Node> nodes = diagram.getNodes().stream().filter(n -> !n.getId().equals(modifiedNodeId)).toList();
+        nodes = new ArrayList<>(nodes);
         nodes.add(2, node);
 
         Diagram diagramTemp = Diagram.newDiagram(diagram)
@@ -297,7 +300,8 @@ public class DiagramElementChangeVisibilityTests {
 
         var modifiedNodeIds = List.of(modifiedNodeId, node2.getId());
 
-        nodes = newDiagram.getNodes().stream().filter(n -> !modifiedNodeIds.contains(n.getId())).collect(Collectors.toList());
+        nodes = newDiagram.getNodes().stream().filter(n -> !modifiedNodeIds.contains(n.getId())).toList();
+        nodes = new ArrayList<>(nodes);
         nodes.add(0, node);
         nodes.add(1, node2);
 
