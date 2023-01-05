@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,13 +72,13 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameObjectInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof RenameObjectInput) {
             RenameObjectInput renameObjectInput = (RenameObjectInput) input;
-            String objectId = renameObjectInput.getObjectId();
-            String newName = renameObjectInput.getNewName();
+            String objectId = renameObjectInput.objectId();
+            String newName = renameObjectInput.newName();
             var optionalObject = this.objectService.getObject(editingContext, objectId);
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
@@ -86,7 +86,7 @@ public class RenameObjectEventHandler implements IEditingContextEventHandler {
                 if (optionalLabelField.isPresent()) {
                     String labelField = optionalLabelField.get();
                     this.editService.editLabel(object, labelField, newName);
-                    payload = new RenameObjectSuccessPayload(input.getId(), objectId, newName);
+                    payload = new RenameObjectSuccessPayload(input.id(), objectId, newName);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
             }

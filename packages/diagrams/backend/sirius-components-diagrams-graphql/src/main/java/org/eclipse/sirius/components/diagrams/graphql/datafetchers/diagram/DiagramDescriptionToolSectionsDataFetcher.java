@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public class DiagramDescriptionToolSectionsDataFetcher implements IDataFetcherWi
             GetToolSectionsInput input = new GetToolSectionsInput(UUID.randomUUID(), editingContextId, representationId, diagramElementId);
 
             // @formatter:off
-            return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+            return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                     .filter(GetToolSectionSuccessPayload.class::isInstance)
                     .map(GetToolSectionSuccessPayload.class::cast)
                     .map(GetToolSectionSuccessPayload::getToolSections)

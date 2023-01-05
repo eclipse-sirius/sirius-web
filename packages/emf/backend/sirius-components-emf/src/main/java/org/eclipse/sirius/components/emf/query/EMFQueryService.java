@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,56 +62,56 @@ public class EMFQueryService implements IQueryService {
 
     @Override
     public IPayload execute(IEditingContext editingContext, QueryBasedStringInput input) {
-        Result result = this.executeQuery(editingContext, input.getQuery(), input.getVariables());
+        Result result = this.executeQuery(editingContext, input.query(), input.variables());
         Optional<String> optionalString = result.asString();
         if (optionalString.isPresent()) {
-            return new QueryBasedStringSuccessPayload(input.getId(), optionalString.get());
+            return new QueryBasedStringSuccessPayload(input.id(), optionalString.get());
         } else {
-            return new ErrorPayload(input.getId(), EVALUATION_ERROR_MESSAGE + result.getStatus());
+            return new ErrorPayload(input.id(), EVALUATION_ERROR_MESSAGE + result.getStatus());
         }
     }
 
     @Override
     public IPayload execute(IEditingContext editingContext, QueryBasedBooleanInput input) {
-        Result result = this.executeQuery(editingContext, input.getQuery(), input.getVariables());
+        Result result = this.executeQuery(editingContext, input.query(), input.variables());
         Optional<Boolean> optionalBoolean = result.asBoolean();
         if (optionalBoolean.isPresent()) {
-            return new QueryBasedBooleanSuccessPayload(input.getId(), optionalBoolean.get().booleanValue());
+            return new QueryBasedBooleanSuccessPayload(input.id(), optionalBoolean.get().booleanValue());
         } else {
-            return new ErrorPayload(input.getId(), EVALUATION_ERROR_MESSAGE + result.getStatus());
+            return new ErrorPayload(input.id(), EVALUATION_ERROR_MESSAGE + result.getStatus());
         }
     }
 
     @Override
     public IPayload execute(IEditingContext editingContext, QueryBasedIntInput input) {
-        Result result = this.executeQuery(editingContext, input.getQuery(), input.getVariables());
+        Result result = this.executeQuery(editingContext, input.query(), input.variables());
         OptionalInt optionalInt = result.asInt();
         if (optionalInt.isPresent()) {
-            return new QueryBasedIntSuccessPayload(input.getId(), optionalInt.getAsInt());
+            return new QueryBasedIntSuccessPayload(input.id(), optionalInt.getAsInt());
         } else {
-            return new ErrorPayload(input.getId(), EVALUATION_ERROR_MESSAGE + result.getStatus());
+            return new ErrorPayload(input.id(), EVALUATION_ERROR_MESSAGE + result.getStatus());
         }
     }
 
     @Override
     public IPayload execute(IEditingContext editingContext, QueryBasedObjectInput input) {
-        Result result = this.executeQuery(editingContext, input.getQuery(), input.getVariables());
+        Result result = this.executeQuery(editingContext, input.query(), input.variables());
         Optional<Object> optionalObject = result.asObject();
         if (optionalObject.isPresent()) {
-            return new QueryBasedObjectSuccessPayload(input.getId(), optionalObject.get());
+            return new QueryBasedObjectSuccessPayload(input.id(), optionalObject.get());
         } else {
-            return new ErrorPayload(input.getId(), EVALUATION_ERROR_MESSAGE + result.getStatus());
+            return new ErrorPayload(input.id(), EVALUATION_ERROR_MESSAGE + result.getStatus());
         }
     }
 
     @Override
     public IPayload execute(IEditingContext editingContext, QueryBasedObjectsInput input) {
-        Result result = this.executeQuery(editingContext, input.getQuery(), input.getVariables());
+        Result result = this.executeQuery(editingContext, input.query(), input.variables());
         Optional<List<Object>> optionalObjects = result.asObjects();
         if (optionalObjects.isPresent()) {
-            return new QueryBasedObjectsSuccessPayload(input.getId(), optionalObjects.get());
+            return new QueryBasedObjectsSuccessPayload(input.id(), optionalObjects.get());
         } else {
-            return new ErrorPayload(input.getId(), EVALUATION_ERROR_MESSAGE + result.getStatus());
+            return new ErrorPayload(input.id(), EVALUATION_ERROR_MESSAGE + result.getStatus());
         }
     }
 

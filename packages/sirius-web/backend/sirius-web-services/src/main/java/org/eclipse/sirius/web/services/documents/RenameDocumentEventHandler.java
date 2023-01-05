@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameDocumentInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         // @formatter:off
@@ -86,8 +86,8 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
 
         if (input instanceof RenameDocumentInput) {
             RenameDocumentInput renameDocumentInput = (RenameDocumentInput) input;
-            UUID documentId = renameDocumentInput.getDocumentId();
-            String newName = renameDocumentInput.getNewName();
+            UUID documentId = renameDocumentInput.documentId();
+            String newName = renameDocumentInput.newName();
 
             Optional<Document> optionalDocument = this.documentService.rename(documentId, newName);
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
@@ -108,7 +108,7 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
                         });
                 // @formatter:on
 
-                payload = new RenameDocumentSuccessPayload(input.getId());
+                payload = new RenameDocumentSuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
         }

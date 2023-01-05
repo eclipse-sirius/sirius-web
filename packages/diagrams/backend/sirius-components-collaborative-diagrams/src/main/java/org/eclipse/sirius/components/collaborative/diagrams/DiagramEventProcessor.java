@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,8 +109,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         IRepresentationInput effectiveInput = representationInput;
         if (representationInput instanceof RenameRepresentationInput) {
             RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
-            effectiveInput = new RenameDiagramInput(renameRepresentationInput.getId(), renameRepresentationInput.getEditingContextId(), renameRepresentationInput.getRepresentationId(),
-                    renameRepresentationInput.getNewLabel());
+            effectiveInput = new RenameDiagramInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
+                    renameRepresentationInput.newLabel());
         }
         if (effectiveInput instanceof IDiagramInput) {
             IDiagramInput diagramInput = (IDiagramInput) effectiveInput;

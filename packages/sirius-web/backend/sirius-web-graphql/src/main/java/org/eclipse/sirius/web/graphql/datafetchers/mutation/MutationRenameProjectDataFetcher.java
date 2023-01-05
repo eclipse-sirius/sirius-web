@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,8 +65,8 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
         var input = this.objectMapper.convertValue(argument, RenameProjectInput.class);
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getProjectId().toString(), input)
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError()))
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.projectId().toString(), input)
+                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
         // @formatter:on
     }

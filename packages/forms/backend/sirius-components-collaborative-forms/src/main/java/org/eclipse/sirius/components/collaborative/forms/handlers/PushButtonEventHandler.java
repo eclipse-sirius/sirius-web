@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,14 +76,14 @@ public class PushButtonEventHandler implements IFormEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), PushButtonInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof PushButtonInput) {
             PushButtonInput input = (PushButtonInput) formInput;
 
             // @formatter:off
-            Optional<AbstractWidget> optionalWidget = this.formQueryService.findWidget(form, input.getButtonId());
+            Optional<AbstractWidget> optionalWidget = this.formQueryService.findWidget(form, input.buttonId());
             var handler = optionalWidget.filter(Button.class::isInstance)
                                         .map(Button.class::cast)
                                         .map(Button::getPushButtonHandler);
@@ -96,10 +96,10 @@ public class PushButtonEventHandler implements IFormEventHandler {
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new PushButtonSuccessPayload(formInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+                payload = new PushButtonSuccessPayload(formInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }
         }
 

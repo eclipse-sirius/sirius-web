@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,9 +54,9 @@ public class SubscriptionRelatedElementsEventDataFetcher implements IDataFetcher
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
-        var propertiesConfiguration = new RelatedElementsConfiguration(input.getObjectIds());
+        var propertiesConfiguration = new RelatedElementsConfiguration(input.objectIds());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.getEditingContextId(), IFormEventProcessor.class, propertiesConfiguration, input),
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input),
                 input);
     }
 

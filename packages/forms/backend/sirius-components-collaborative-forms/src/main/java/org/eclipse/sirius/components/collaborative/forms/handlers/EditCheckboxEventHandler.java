@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,27 +72,27 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditCheckboxInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof EditCheckboxInput) {
             EditCheckboxInput input = (EditCheckboxInput) formInput;
 
             // @formatter:off
-            var optionalCheckbox = this.formQueryService.findWidget(form, input.getCheckboxId())
+            var optionalCheckbox = this.formQueryService.findWidget(form, input.checkboxId())
                     .filter(Checkbox.class::isInstance)
                     .map(Checkbox.class::cast);
 
             IStatus status = optionalCheckbox.map(Checkbox::getNewValueHandler)
-                    .map(handler -> handler.apply(input.getNewValue()))
+                    .map(handler -> handler.apply(input.newValue()))
                     .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new EditCheckboxSuccessPayload(formInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+                payload = new EditCheckboxSuccessPayload(formInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }
         }
 

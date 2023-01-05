@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -22,62 +21,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author fbarbin
  */
-public final class UpdateNodeBoundsInput implements IDiagramInput {
-
-    private UUID id;
-
-    private String editingContextId;
-
-    private String representationId;
-
-    private String diagramElementId;
-
-    private double newPositionX;
-
-    private double newPositionY;
-
-    private double newWidth;
-
-    private double newHeight;
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public String getEditingContextId() {
-        return this.editingContextId;
-    }
-
-    @Override
-    public String getRepresentationId() {
-        return this.representationId;
-    }
-
-    public String getDiagramElementId() {
-        return this.diagramElementId;
-    }
-
-    public double getNewPositionX() {
-        return this.newPositionX;
-    }
-
-    public double getNewPositionY() {
-        return this.newPositionY;
-    }
-
-    public double getNewWidth() {
-        return this.newWidth;
-    }
-
-    public double getNewHeight() {
-        return this.newHeight;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, diagramElementId: {4}, newPositionX: {5}, newPositionY: {6}, newWidth: {7}, newHeight: {8}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.diagramElementId, this.newPositionX, this.newPositionY,
-                this.newWidth, this.newHeight);
-    }
+public record UpdateNodeBoundsInput(UUID id, String editingContextId, String representationId, String diagramElementId, double newPositionX, double newPositionY, double newWidth, double newHeight)
+        implements IDiagramInput {
 }

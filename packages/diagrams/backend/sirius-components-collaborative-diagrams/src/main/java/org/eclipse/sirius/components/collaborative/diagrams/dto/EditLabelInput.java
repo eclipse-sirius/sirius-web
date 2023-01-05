@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -22,42 +21,5 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author pcdavid
  */
-public final class EditLabelInput implements IDiagramInput {
-    private UUID id;
-
-    private String editingContextId;
-
-    private String representationId;
-
-    private String labelId;
-
-    private String newText;
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public String getEditingContextId() {
-        return this.editingContextId;
-    }
-
-    @Override
-    public String getRepresentationId() {
-        return this.representationId;
-    }
-
-    public String getLabelId() {
-        return this.labelId;
-    }
-
-    public String getNewText() {
-        return this.newText;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, representationId: {3}, labelId: {4}, newText:{5}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.representationId, this.labelId, this.newText);
-    }
+public record EditLabelInput(UUID id, String editingContextId, String representationId, String labelId, String newText) implements IDiagramInput {
 }

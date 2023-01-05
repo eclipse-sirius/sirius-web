@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,15 +74,15 @@ public class DeleteToolbarActionEventHandler implements IFormDescriptionEditorEv
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), DeleteToolbarActionInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+        IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof DeleteToolbarActionInput) {
-            String toolbarActionId = ((DeleteToolbarActionInput) formDescriptionEditorInput).getToolbarActionId();
+            String toolbarActionId = ((DeleteToolbarActionInput) formDescriptionEditorInput).toolbarActionId();
             boolean deleteToolbarAction = this.deleteToolbarAction(editingContext, formDescriptionEditorContext, toolbarActionId);
             if (deleteToolbarAction) {
-                payload = new DeleteToolbarActionSuccessPayload(formDescriptionEditorInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+                payload = new DeleteToolbarActionSuccessPayload(formDescriptionEditorInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }
 

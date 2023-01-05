@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,7 +106,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
             this.currentSelection.set(selection);
             if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(changeDescription.getInput().getId(), selection));
+                EmitResult emitResult = this.sink.tryEmitNext(new SelectionRefreshedEventPayload(changeDescription.getInput().id(), selection));
                 if (emitResult.isFailure()) {
                     String pattern = "An error has occurred while emitting a SelectionRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
@@ -142,7 +142,7 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new SelectionRefreshedEventPayload(input.getId(), this.currentSelection.get()));
+        var initialRefresh = Mono.fromCallable(() -> new SelectionRefreshedEventPayload(input.id(), this.currentSelection.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off

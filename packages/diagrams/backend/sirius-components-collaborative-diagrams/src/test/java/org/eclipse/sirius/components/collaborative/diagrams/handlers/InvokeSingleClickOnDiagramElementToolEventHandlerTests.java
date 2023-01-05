@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,17 +83,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(),
                 representationDescriptionSearchService);
 
-        // @formatter:off
-        var input = InvokeSingleClickOnDiagramElementToolInput.newInvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID())
-                .editingContextId("editingContextId")
-                .representationId("representationId")
-                .diagramElementId("diagramId")
-                .toolId("toolId")
-                .startingPositionX(5.0)
-                .startingPositionY(8.0)
-                .selectedObjectId("selectedObjectId")
-                .build();
-        // @formatter:on
+        var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "editingContextId", "representationId", "diagramId", "toolId", 5.0, 8.0, "selectedObjectId");
 
         IEditingContext editingContext = () -> "editingContextId";
 

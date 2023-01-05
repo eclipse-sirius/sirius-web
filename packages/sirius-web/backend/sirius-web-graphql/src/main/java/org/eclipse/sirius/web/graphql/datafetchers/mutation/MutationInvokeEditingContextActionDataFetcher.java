@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,8 +55,8 @@ public class MutationInvokeEditingContextActionDataFetcher implements IDataFetch
         var input = this.objectMapper.convertValue(argument, InvokeEditingContextActionInput.class);
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError()))
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
         // @formatter:on
     }

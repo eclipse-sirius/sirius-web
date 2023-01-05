@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,13 +74,13 @@ public class MutationDeleteDocumentDataFetcher implements IDataFetcherWithFieldC
         var input = this.objectMapper.convertValue(argument, DeleteDocumentInput.class);
 
      // @formatter:off
-        return this.documentService.getDocument(input.getDocumentId())
+        return this.documentService.getDocument(input.documentId())
                 .map(Document::getProject)
                 .map(Project::getId)
                 .map(UUID::toString)
                 .map(projectId -> this.editingContextEventProcessorRegistry.dispatchEvent(projectId, input))
                 .orElse(Mono.empty())
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError()))
+                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
         // @formatter:on
 

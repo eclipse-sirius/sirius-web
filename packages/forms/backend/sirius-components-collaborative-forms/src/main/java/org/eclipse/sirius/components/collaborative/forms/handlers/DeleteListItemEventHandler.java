@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,20 +74,20 @@ public class DeleteListItemEventHandler implements IFormEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), DeleteListItemInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof DeleteListItemInput) {
             DeleteListItemInput input = (DeleteListItemInput) formInput;
 
             // @formatter:off
-            var optionalListItem = this.formQueryService.findWidget(form, input.getListId())
+            var optionalListItem = this.formQueryService.findWidget(form, input.listId())
                     .filter(List.class::isInstance)
                     .map(List.class::cast)
                     .stream()
                     .map(List::getItems)
                     .flatMap(Collection::stream)
-                    .filter(item -> item.getId().toString().equals(input.getListItemId()))
+                    .filter(item -> item.getId().toString().equals(input.listItemId()))
                     .findFirst();
 
             var status = optionalListItem.map(ListItem::getDeleteHandler)
@@ -97,10 +97,10 @@ public class DeleteListItemEventHandler implements IFormEventHandler {
 
             if (status instanceof Success) {
                 Success success = (Success) status;
-                changeDescription = new ChangeDescription(success.getChangeKind(), formInput.getRepresentationId(), formInput, success.getParameters());
-                payload = new DeleteListItemSuccessPayload(formInput.getId());
+                changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
+                payload = new DeleteListItemSuccessPayload(formInput.id());
             } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }
         }
 

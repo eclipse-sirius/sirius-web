@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,15 +73,15 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), AddToolbarActionInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+        IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof AddToolbarActionInput) {
-            String containerId = ((AddToolbarActionInput) formDescriptionEditorInput).getContainerId();
+            String containerId = ((AddToolbarActionInput) formDescriptionEditorInput).containerId();
             boolean addToolbarAction = this.addToolbarAction(editingContext, formDescriptionEditorContext, containerId);
             if (addToolbarAction) {
-                payload = new AddToolbarActionSuccessPayload(formDescriptionEditorInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+                payload = new AddToolbarActionSuccessPayload(formDescriptionEditorInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }
 

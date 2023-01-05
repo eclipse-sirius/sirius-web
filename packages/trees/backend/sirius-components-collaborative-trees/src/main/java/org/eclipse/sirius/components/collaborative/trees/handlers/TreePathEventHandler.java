@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,8 +59,8 @@ public class TreePathEventHandler implements ITreeEventHandler {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Tree tree, ITreeInput treeInput) {
-        IPayload payload = new TreePathSuccessPayload(treeInput.getId(), new TreePath(List.of(), 0));
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.getRepresentationId(), treeInput);
+        IPayload payload = new TreePathSuccessPayload(treeInput.id(), new TreePath(List.of(), 0));
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
         if (treeInput instanceof TreePathInput) {
             TreePathInput input = (TreePathInput) treeInput;

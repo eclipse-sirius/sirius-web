@@ -73,14 +73,14 @@ public class EditRichTextEventHandler implements IFormEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditRichTextInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof EditRichTextInput) {
             EditRichTextInput input = (EditRichTextInput) formInput;
 
             // @formatter:off
-            IStatus status = this.formQueryService.findWidget(form, input.getRichTextId())
+            IStatus status = this.formQueryService.findWidget(form, input.richTextId())
                     .map(widget -> {
                         Function<String, IStatus> handlerFunction = null;
                         if (widget instanceof RichText) {
@@ -88,15 +88,15 @@ public class EditRichTextEventHandler implements IFormEventHandler {
                         }
                         return handlerFunction;
                     })
-                    .map(handler -> handler.apply(input.getNewValue()))
+                    .map(handler -> handler.apply(input.newValue()))
                     .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new EditRichTextSuccessPayload(formInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+                payload = new EditRichTextSuccessPayload(formInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }
         }
 

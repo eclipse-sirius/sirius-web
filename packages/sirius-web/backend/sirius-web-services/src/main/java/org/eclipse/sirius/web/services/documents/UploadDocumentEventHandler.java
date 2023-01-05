@@ -100,14 +100,14 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof UploadDocumentInput) {
 
             UploadDocumentInput uploadDocumentInput = (UploadDocumentInput) input;
-            String projectId = uploadDocumentInput.getEditingContextId();
-            UploadFile file = uploadDocumentInput.getFile();
+            String projectId = uploadDocumentInput.editingContextId();
+            UploadFile file = uploadDocumentInput.file();
 
             // @formatter:off
             Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
@@ -120,7 +120,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             if (optionalEditingDomain.isPresent()) {
                 AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
 
-                Optional<String> contentOpt = this.getContent(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file, uploadDocumentInput.isCheckProxies());
+                Optional<String> contentOpt = this.getContent(adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file, uploadDocumentInput.checkProxies());
                 var optionalDocument = contentOpt.flatMap(content -> this.documentService.createDocument(projectId, name, content));
 
                 if (optionalDocument.isPresent()) {
@@ -144,7 +144,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                         resource.eAdapters().add(new DocumentMetadataAdapter(name));
                         resourceSet.getResources().add(resource);
 
-                        payload = new UploadDocumentSuccessPayload(input.getId(), document);
+                        payload = new UploadDocumentSuccessPayload(input.id(), document);
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                     }
                 }

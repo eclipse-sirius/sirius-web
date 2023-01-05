@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,7 +97,7 @@ public class DiagramEventProcessorTests {
         DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(new IEditingContext.NoOp(), this.diagramContext, List.of(), new SubscriptionManager(),
                 new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp(), this.diagramCreationService);
 
-        Runnable performRefresh = () -> diagramEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.getDiagramId(), input));
+        Runnable performRefresh = () -> diagramEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.diagramId(), input));
 
         // @formatter:off
         StepVerifier.create(diagramEventProcessor.getOutputEvents(input))
@@ -115,7 +115,7 @@ public class DiagramEventProcessorTests {
         DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(new IEditingContext.NoOp(), this.diagramContext, List.of(), new SubscriptionManager(),
                 new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp(), this.diagramCreationService);
 
-        Runnable performRefresh = () -> diagramEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.getDiagramId(), input));
+        Runnable performRefresh = () -> diagramEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.diagramId(), input));
 
         // @formatter:off
         StepVerifier.create(diagramEventProcessor.getOutputEvents(input))

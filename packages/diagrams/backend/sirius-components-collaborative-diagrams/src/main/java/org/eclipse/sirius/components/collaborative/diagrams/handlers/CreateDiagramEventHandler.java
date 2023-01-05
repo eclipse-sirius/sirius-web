@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -93,28 +93,28 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
             // @formatter:off
-            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
             // @formatter:on
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalDiagramDescription.isPresent() && optionalObject.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 Object object = optionalObject.get();
 
-                Diagram diagram = this.diagramCreationService.create(createRepresentationInput.getRepresentationName(), object, diagramDescription, editingContext);
+                Diagram diagram = this.diagramCreationService.create(createRepresentationInput.representationName(), object, diagramDescription, editingContext);
 
                 this.representationPersistenceService.save(editingContext, diagram);
 
-                payload = new CreateRepresentationSuccessPayload(input.getId(), diagram);
+                payload = new CreateRepresentationSuccessPayload(input.id(), diagram);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }

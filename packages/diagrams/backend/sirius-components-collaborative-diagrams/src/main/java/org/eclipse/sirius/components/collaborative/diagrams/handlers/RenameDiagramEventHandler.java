@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,13 +76,13 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), RenameDiagramInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof RenameDiagramInput) {
             RenameDiagramInput renameRepresentationInput = (RenameDiagramInput) diagramInput;
-            String representationId = renameRepresentationInput.getRepresentationId();
-            String newLabel = renameRepresentationInput.getNewLabel();
+            String representationId = renameRepresentationInput.representationId();
+            String newLabel = renameRepresentationInput.newLabel();
             Optional<Diagram> optionalDiagram = this.representationSearchService.findById(editingContext, representationId, Diagram.class);
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
@@ -91,8 +91,8 @@ public class RenameDiagramEventHandler implements IDiagramEventHandler {
                 this.representationPersistenceService.save(editingContext, renamedDiagram);
                 diagramContext.update(renamedDiagram);
 
-                payload = new RenameRepresentationSuccessPayload(diagramInput.getId(), renamedDiagram);
-                changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId(), diagramInput);
+                payload = new RenameRepresentationSuccessPayload(diagramInput.id(), renamedDiagram);
+                changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), diagramInput);
             }
         }
 

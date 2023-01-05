@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,24 +77,24 @@ public class UpdateNodePositionEventHandler implements IDiagramEventHandler {
             this.handleUpdateNodePosition(payloadSink, changeDescriptionSink, diagramContext, (UpdateNodePositionInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodePositionEventHandler.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 
     private void handleUpdateNodePosition(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IDiagramContext diagramContext, UpdateNodePositionInput diagramInput) {
-        Position newPosition = Position.at(diagramInput.getNewPositionX(), diagramInput.getNewPositionY());
+        Position newPosition = Position.at(diagramInput.newPositionX(), diagramInput.newPositionY());
 
-        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
         if (optionalNode.isPresent()) {
-            diagramContext.setDiagramEvent(new MoveEvent(diagramInput.getDiagramElementId(), newPosition));
-            payloadSink.tryEmitValue(new UpdateNodePositionSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId(), diagramInput));
+            diagramContext.setDiagramEvent(new MoveEvent(diagramInput.diagramElementId(), newPosition));
+            payloadSink.tryEmitValue(new UpdateNodePositionSuccessPayload(diagramInput.id(), diagramContext.getDiagram()));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));
         } else {
-            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.diagramElementId()));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ public class DiagramDescriptionConnectorToolsDataFetcher implements IDataFetcher
             GetConnectorToolsInput input = new GetConnectorToolsInput(UUID.randomUUID(), editingContextId, representationId, sourceDiagramElementId, targetDiagramElementId);
 
             // @formatter:off
-            return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+            return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                     .filter(GetConnectorToolsSuccessPayload.class::isInstance)
                     .map(GetConnectorToolsSuccessPayload.class::cast)
                     .map(GetConnectorToolsSuccessPayload::getConnectorTools)

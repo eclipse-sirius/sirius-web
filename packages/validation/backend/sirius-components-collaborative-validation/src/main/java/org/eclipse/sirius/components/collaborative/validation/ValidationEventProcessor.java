@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,7 +130,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
             this.validationContext.update(validation);
             if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().getId(), validation));
+                EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().id(), validation));
                 if (emitResult.isFailure()) {
                     String pattern = "An error has occurred while emitting a ValidationRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
@@ -172,7 +172,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new ValidationRefreshedEventPayload(input.getId(), this.validationContext.getValidation()));
+        var initialRefresh = Mono.fromCallable(() -> new ValidationRefreshedEventPayload(input.id(), this.validationContext.getValidation()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,7 +82,7 @@ public class InitialDirectEditElementLabelEventHandler implements IDiagramEventH
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InitialDirectEditElementLabelInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
 
         if (diagramInput instanceof InitialDirectEditElementLabelInput) {
@@ -104,11 +104,11 @@ public class InitialDirectEditElementLabelEventHandler implements IDiagramEventH
 
                 if (optionalInitialDirectEditLabelProviderLabel.isPresent()) {
                     var initialDirectEditElementLabelProvider = optionalInitialDirectEditLabelProviderLabel.get();
-                    String labelId = input.getLabelId();
+                    String labelId = input.labelId();
                     var element = this.findGraphicalElement(diagram, labelId);
                     if (element.isPresent()) {
                         String initialDirectEditElementLabel = initialDirectEditElementLabelProvider.getInitialDirectEditElementLabel(element.get(), diagram, editingContext);
-                        payload = new InitialDirectEditElementLabelSuccessPayload(diagramInput.getId(), initialDirectEditElementLabel);
+                        payload = new InitialDirectEditElementLabelSuccessPayload(diagramInput.id(), initialDirectEditElementLabel);
                     }
                 }
             }

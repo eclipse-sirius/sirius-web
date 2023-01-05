@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -104,7 +104,7 @@ public class FormEventProcessorTests {
         FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
-        Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.getFormId(), input));
+        Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
 
         // @formatter:off
         StepVerifier.create(formEventProcessor.getOutputEvents(input))

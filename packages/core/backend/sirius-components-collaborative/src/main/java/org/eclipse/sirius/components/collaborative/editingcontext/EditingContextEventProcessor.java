@@ -164,10 +164,10 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private void publishEvent(ChangeDescription changeDescription) {
         if (this.sink.currentSubscriberCount() > 0) {
             IInput input = changeDescription.getInput();
-            UUID correlationId = input.getId();
+            UUID correlationId = input.id();
             if (input instanceof RenameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
-                String representationId = ((RenameRepresentationInput) input).getRepresentationId();
-                String newLabel = ((RenameRepresentationInput) input).getNewLabel();
+                String representationId = ((RenameRepresentationInput) input).representationId();
+                String newLabel = ((RenameRepresentationInput) input).newLabel();
                 this.tryEmitRepresentationRenamedEvent(correlationId, representationId, newLabel);
             } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
                 Map<String, Object> parameters = changeDescription.getParameters();
@@ -220,7 +220,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         }
 
         // @formatter:off
-        var timeoutFallback = Mono.just(new ErrorPayload(input.getId(), this.messageService.timeout()))
+        var timeoutFallback = Mono.just(new ErrorPayload(input.id(), this.messageService.timeout()))
                 .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input));
         return payloadSink.asMono()
                 .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
@@ -301,7 +301,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private void handleInput(One<IPayload> payloadSink, IInput input) {
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
-            this.disposeRepresentation(deleteRepresentationInput.getRepresentationId());
+            this.disposeRepresentation(deleteRepresentationInput.representationId());
         }
 
         // @formatter:off
@@ -319,7 +319,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private void handleRepresentationInput(One<IPayload> payloadSink, IRepresentationInput representationInput) {
-        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.getRepresentationId()))
+        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationInput.representationId()))
                 .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
         if (optionalRepresentationEventProcessor.isPresent()) {

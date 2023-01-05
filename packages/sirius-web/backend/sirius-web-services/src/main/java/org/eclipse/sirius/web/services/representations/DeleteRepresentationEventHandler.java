@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,17 +69,17 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteRepresentationInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof DeleteRepresentationInput) {
             DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
 
-            var representationId = new IDParser().parse(deleteRepresentationInput.getRepresentationId());
+            var representationId = new IDParser().parse(deleteRepresentationInput.representationId());
             if (representationId.isPresent() && this.representationService.existsById(representationId.get())) {
                 this.representationService.delete(representationId.get());
 
-                payload = new DeleteRepresentationSuccessPayload(input.getId(), deleteRepresentationInput.getRepresentationId());
+                payload = new DeleteRepresentationSuccessPayload(input.id(), deleteRepresentationInput.representationId());
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId(), input);
             }
         }

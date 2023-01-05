@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,17 +80,17 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), AddWidgetInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+        IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof AddWidgetInput) {
-            String containerId = ((AddWidgetInput) formDescriptionEditorInput).getContainerId();
-            String kind = ((AddWidgetInput) formDescriptionEditorInput).getKind();
-            int index = ((AddWidgetInput) formDescriptionEditorInput).getIndex();
+            String containerId = ((AddWidgetInput) formDescriptionEditorInput).containerId();
+            String kind = ((AddWidgetInput) formDescriptionEditorInput).kind();
+            int index = ((AddWidgetInput) formDescriptionEditorInput).index();
             boolean addWidget = this.addWidget(editingContext, formDescriptionEditorContext, containerId, kind, index);
             if (addWidget) {
-                payload = new AddWidgetSuccessPayload(formDescriptionEditorInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+                payload = new AddWidgetSuccessPayload(formDescriptionEditorInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }
 

@@ -2,6 +2,10 @@
 
 == v2023.3.0 (unreleased)
 
+=== Breaking changes
+
+- [core] Records are now used as the implementations of `IInput`
+
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17

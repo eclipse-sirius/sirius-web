@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,13 +74,13 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
         Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteRepresentationInput.class);
         // @formatter:off
-        return new IDParser().parse(input.getRepresentationId())
+        return new IDParser().parse(input.representationId())
                 .flatMap(this.representationService::getRepresentation)
                 .map(RepresentationDescriptor::getProjectId)
                 .map(UUID::toString)
                 .map(projectId -> this.editingContextEventProcessorRegistry.dispatchEvent(projectId, input))
                 .orElse(Mono.empty())
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError()))
+                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
         // @formatter:on
 

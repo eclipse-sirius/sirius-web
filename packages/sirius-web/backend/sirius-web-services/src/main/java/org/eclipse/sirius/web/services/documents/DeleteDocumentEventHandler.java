@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +78,7 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteDocumentInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         // @formatter:off
@@ -90,7 +90,7 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
         if (input instanceof DeleteDocumentInput) {
             DeleteDocumentInput deleteDocumentInput = (DeleteDocumentInput) input;
-            var optionalDocument = this.documentService.getDocument(deleteDocumentInput.getDocumentId());
+            var optionalDocument = this.documentService.getDocument(deleteDocumentInput.documentId());
 
             if (optionalEditingDomain.isPresent() && optionalDocument.isPresent()) {
                 AdapterFactoryEditingDomain editingDomain = optionalEditingDomain.get();
@@ -108,7 +108,7 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
                 this.documentService.delete(document.getId());
 
-                payload = new DeleteDocumentSuccessPayload(input.getId());
+                payload = new DeleteDocumentSuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
         }

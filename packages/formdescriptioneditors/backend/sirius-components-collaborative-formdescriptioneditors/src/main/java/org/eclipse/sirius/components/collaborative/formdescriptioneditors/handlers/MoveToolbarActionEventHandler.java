@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,17 +77,17 @@ public class MoveToolbarActionEventHandler implements IFormDescriptionEditorEven
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), MoveToolbarActionInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+        IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof MoveToolbarActionInput) {
-            String containerId = ((MoveToolbarActionInput) formDescriptionEditorInput).getContainerId();
-            String toolbarActionId = ((MoveToolbarActionInput) formDescriptionEditorInput).getToolbarActionId();
-            int index = ((MoveToolbarActionInput) formDescriptionEditorInput).getIndex();
+            String containerId = ((MoveToolbarActionInput) formDescriptionEditorInput).containerId();
+            String toolbarActionId = ((MoveToolbarActionInput) formDescriptionEditorInput).toolbarActionId();
+            int index = ((MoveToolbarActionInput) formDescriptionEditorInput).index();
             boolean moveToolbarAction = this.moveToolbarAction(editingContext, formDescriptionEditorContext, containerId, toolbarActionId, index);
             if (moveToolbarAction) {
-                payload = new MoveToolbarActionSuccessPayload(formDescriptionEditorInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+                payload = new MoveToolbarActionSuccessPayload(formDescriptionEditorInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }
 

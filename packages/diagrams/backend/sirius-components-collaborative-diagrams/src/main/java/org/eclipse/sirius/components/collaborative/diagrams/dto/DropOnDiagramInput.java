@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,54 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author hmarchadour
  */
-public final class DropOnDiagramInput implements IDiagramInput {
-    private UUID id;
-
-    private String editingContextId;
-
-    private String representationId;
-
-    private String diagramTargetElementId;
-
-    private List<String> objectIds;
-
-    private double startingPositionX;
-
-    private double startingPositionY;
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public String getEditingContextId() {
-        return this.editingContextId;
-    }
-
-    @Override
-    public String getRepresentationId() {
-        return this.representationId;
-    }
-
-    public String getDiagramTargetElementId() {
-        return this.diagramTargetElementId;
-    }
-
-    public List<String> getObjectIds() {
-        return this.objectIds;
-    }
-
-    public double getStartingPositionX() {
-        return this.startingPositionX;
-    }
-
-    public double getStartingPositionY() {
-        return this.startingPositionY;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, editingContextId: {2}, diagramTargetElementId: {3}, representationId: {4}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.editingContextId, this.diagramTargetElementId, this.representationId);
-    }
+public record DropOnDiagramInput(UUID id, String editingContextId, String representationId, String diagramTargetElementId, List<String> objectIds, double startingPositionX, double startingPositionY)
+        implements IDiagramInput {
 }

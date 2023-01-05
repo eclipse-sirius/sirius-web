@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,12 +70,12 @@ public class RenameFormEventHandler implements IFormEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), RenameFormInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof RenameFormInput) {
             RenameFormInput renameRepresentationInput = (RenameFormInput) formInput;
-            String newLabel = renameRepresentationInput.getNewLabel();
+            String newLabel = renameRepresentationInput.newLabel();
 
             // @formatter:off
             Form renamedForm = Form.newForm(form)
@@ -85,8 +85,8 @@ public class RenameFormEventHandler implements IFormEventHandler {
             // @formatter:on
             this.representationPersistenceService.save(editingContext, renamedForm);
 
-            payload = new RenameRepresentationSuccessPayload(formInput.getId(), renamedForm);
-            changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId(), formInput);
+            payload = new RenameRepresentationSuccessPayload(formInput.id(), renamedForm);
+            changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), formInput);
         }
 
         payloadSink.tryEmitValue(payload);

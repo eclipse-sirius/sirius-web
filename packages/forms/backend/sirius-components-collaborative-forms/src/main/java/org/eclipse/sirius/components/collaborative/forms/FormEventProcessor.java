@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,8 +111,8 @@ public class FormEventProcessor implements IFormEventProcessor {
         IRepresentationInput effectiveInput = representationInput;
         if (representationInput instanceof RenameRepresentationInput) {
             RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
-            effectiveInput = new RenameFormInput(renameRepresentationInput.getId(), renameRepresentationInput.getEditingContextId(), renameRepresentationInput.getRepresentationId(),
-                    renameRepresentationInput.getNewLabel());
+            effectiveInput = new RenameFormInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
+                    renameRepresentationInput.newLabel());
         }
         if (effectiveInput instanceof IFormInput) {
             IFormInput formInput = (IFormInput) effectiveInput;
@@ -121,8 +121,8 @@ public class FormEventProcessor implements IFormEventProcessor {
                 UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
                 this.widgetSubscriptionManager.handle(input);
 
-                payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(input.getId(), input.getWidgetId()));
-                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.FOCUS_CHANGE, input.getRepresentationId(), input));
+                payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(input.id(), input.widgetId()));
+                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.FOCUS_CHANGE, input.representationId(), input));
             } else {
                 Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
@@ -144,7 +144,7 @@ public class FormEventProcessor implements IFormEventProcessor {
             this.currentForm.set(form);
 
             if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().getId(), form));
+                EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().id(), form));
                 if (emitResult.isFailure()) {
                     String pattern = "An error has occurred while emitting a FormRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
@@ -183,7 +183,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.getId(), this.currentForm.get()));
+        var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.id(), this.currentForm.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off

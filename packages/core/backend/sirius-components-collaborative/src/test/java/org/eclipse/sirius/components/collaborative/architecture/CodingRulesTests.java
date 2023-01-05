@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,7 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
     }
 
     @Test
-    public void classesImplementingInputShouldBeFinal() {
+    public void classesImplementingInputShouldBeRecords() {
         // @formatter:off
         ArchRule rule = ArchRuleDefinition.classes()
                 .that()
@@ -60,7 +60,7 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
                 .and()
                 .areNotInterfaces()
                 .should()
-                .haveModifier(JavaModifier.FINAL);
+                .beRecords();
         // @formatter:on
 
         rule.check(this.getClasses());

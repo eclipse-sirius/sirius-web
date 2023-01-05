@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,21 +77,21 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), DeleteObjectInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof DeleteObjectInput) {
             DeleteObjectInput deleteObjectInput = (DeleteObjectInput) input;
 
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, deleteObjectInput.getObjectId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, deleteObjectInput.objectId());
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
                 this.editService.delete(object);
 
-                payload = new DeleteObjectSuccessPayload(input.getId());
+                payload = new DeleteObjectSuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
-                this.logger.warn("The object with the id {} does not exist", deleteObjectInput.getObjectId());
+                this.logger.warn("The object with the id {} does not exist", deleteObjectInput.objectId());
             }
         }
 

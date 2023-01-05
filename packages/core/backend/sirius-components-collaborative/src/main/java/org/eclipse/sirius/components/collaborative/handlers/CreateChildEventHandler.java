@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,15 +78,15 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
 
         if (input instanceof CreateChildInput) {
             CreateChildInput createChildInput = (CreateChildInput) input;
-            String parentObjectId = createChildInput.getObjectId();
-            String childCreationDescriptionId = createChildInput.getChildCreationDescriptionId();
+            String parentObjectId = createChildInput.objectId();
+            String childCreationDescriptionId = createChildInput.childCreationDescriptionId();
 
             Optional<Object> createdChildOptional = this.objectService.getObject(editingContext, parentObjectId).flatMap(parent -> {
                 return this.editService.createChild(editingContext, parent, childCreationDescriptionId);
             });
 
             if (createdChildOptional.isPresent()) {
-                payload = new CreateChildSuccessPayload(input.getId(), createdChildOptional.get());
+                payload = new CreateChildSuccessPayload(input.id(), createdChildOptional.get());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
                 message = this.messageService.objectCreationFailed();
@@ -94,7 +94,7 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
         }
 
         if (payload == null) {
-            payload = new ErrorPayload(input.getId(), message);
+            payload = new ErrorPayload(input.id(), message);
         }
 
         payloadSink.tryEmitValue(payload);
