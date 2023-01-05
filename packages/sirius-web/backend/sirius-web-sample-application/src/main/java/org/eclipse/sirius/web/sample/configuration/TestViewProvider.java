@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,7 @@ public class TestViewProvider {
         this.diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
         this.diagramDescription.setDomainType(this.domainType(this.entity("Root")));
         this.diagramDescription.setName("Diagram");
+        this.diagramDescription.setTitleExpression(this.domain.getName() + " Diagram");
         this.diagramDescription.setAutoLayout(false);
         view.getDescriptions().add(this.diagramDescription);
 
