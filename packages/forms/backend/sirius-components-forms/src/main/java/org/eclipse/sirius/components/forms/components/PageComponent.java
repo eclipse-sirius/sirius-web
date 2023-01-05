@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.forms.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.elements.PageElementProps;
@@ -59,7 +58,7 @@ public class PageComponent implements IComponent {
                         GroupComponentProps groupComponentProps = new GroupComponentProps(pageVariableManager, groupDescription);
                         return new Element(GroupComponent.class, groupComponentProps);
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             PageElementProps pageElementProps = PageElementProps.newPageElementProps(id)
                     .label(label)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -74,7 +73,7 @@ public class SemanticCandidatesProvider implements Function<VariableManager, Lis
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .filter(candidate -> domainClassPredicate.test(candidate.eClass()))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         for (EObject eObject : eObjects) {

@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -296,7 +295,7 @@ public class DiagramDescriptionValidator implements EValidator {
                 .map(Domain.class::cast)
                 .map(Domain::getTypes)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 
@@ -308,7 +307,7 @@ public class DiagramDescriptionValidator implements EValidator {
                 .map(Entry::getValue)
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         allEPackage.addAll(ePackages);
 
         ePackages.stream()

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -101,7 +100,7 @@ public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
                 //@formatter:off
                 List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
                         .filter(provider -> provider.canHandle(diagramDescription.get()))
-                        .collect(Collectors.toList());
+                        .toList();
                 //@formatter:on
                 if (!compatibleConnectorToolsProviders.isEmpty()) {
                     String sourceDiagramElementId = connectorToolsInput.sourceDiagramElementId();

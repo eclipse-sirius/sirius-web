@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EPackage;
@@ -141,7 +140,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
         if (optionalNodeDescription.isEmpty()) {
             Stream<NodeDescription> childrenStream = nodeDescriptions.stream().map(NodeDescription::getChildrenDescriptions).flatMap(Collection::stream);
             Stream<NodeDescription> borderNodeStream = nodeDescriptions.stream().map(NodeDescription::getBorderNodesDescriptions).flatMap(Collection::stream);
-            List<NodeDescription> childrenDescription = Stream.concat(childrenStream, borderNodeStream).collect(Collectors.toList());
+            List<NodeDescription> childrenDescription = Stream.concat(childrenStream, borderNodeStream).toList();
             optionalNodeDescription = this.getNodeDescription(childrenDescription, descriptionId);
         }
 
@@ -163,7 +162,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
             return packageRegistry.values().stream()
                                   .filter(EPackage.class::isInstance)
                                   .map(EPackage.class::cast)
-                                  .collect(Collectors.toList());
+                                  .toList();
             // @formatter:on
         } else {
             return List.of();
@@ -185,7 +184,8 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .map(Object.class::cast)
+                .toList();
         // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }

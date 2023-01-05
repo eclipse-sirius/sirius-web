@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.forms.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
@@ -188,7 +187,7 @@ public class FormElementFactory implements IElementFactory {
         List<Page> pages = children.stream()
                 .filter(Page.class::isInstance)
                 .map(Page.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         return Form.newForm(props.getId())
                 .label(props.getLabel())
@@ -204,7 +203,7 @@ public class FormElementFactory implements IElementFactory {
         List<Group> groups = children.stream()
                 .filter(Group.class::isInstance)
                 .map(Group.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         return Page.newPage(props.getId())
                 .label(props.getLabel())
@@ -218,12 +217,12 @@ public class FormElementFactory implements IElementFactory {
         List<ToolbarAction> toolbarActions = children.stream()
                 .filter(ToolbarAction.class::isInstance)
                 .map(ToolbarAction.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         List<AbstractWidget> widgets = children.stream()
                 .filter(c -> c instanceof AbstractWidget && !(c instanceof ToolbarAction))
                 .map(AbstractWidget.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
 
         return Group.newGroup(props.getId())
@@ -509,7 +508,7 @@ public class FormElementFactory implements IElementFactory {
         List<AbstractWidget> widgets = children.stream()
                 .filter(AbstractWidget.class::isInstance)
                 .map(AbstractWidget.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         return FlexboxContainer.newFlexboxContainer(props.getId())
                  .label(props.getLabel())
@@ -576,7 +575,7 @@ public class FormElementFactory implements IElementFactory {
         return children.stream()
                 .filter(Diagnostic.class::isInstance)
                 .map(Diagnostic.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

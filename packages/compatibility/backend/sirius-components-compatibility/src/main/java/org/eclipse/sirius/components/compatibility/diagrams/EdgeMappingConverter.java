@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
@@ -175,7 +174,7 @@ public class EdgeMappingConverter {
                 .map(mapping -> UUID.fromString(this.identifierProvider.getIdentifier(mapping)))
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 
@@ -191,7 +190,7 @@ public class EdgeMappingConverter {
             // @formatter:off
             List<UUID> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
                     .map(NodeDescription::getId)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
 
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptionIds);

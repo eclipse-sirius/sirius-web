@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.EClass;
@@ -141,8 +140,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
         ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
         // Nodes must be fully converted first.
-        List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).collect(Collectors.toList());
-        List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).collect(Collectors.toList());
+        List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).toList();
+        List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).toList();
         // @formatter:off
         String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
         return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString())
@@ -206,11 +205,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // Convert our children first, we need their converted values to build our NodeDescription
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
                 .map(childNodeDescription -> this.convert(childNodeDescription, converterContext))
-                .collect(Collectors.toList());
+                .toList();
 
         var borderNodeDescriptions = viewNodeDescription.getBorderNodesDescriptions().stream()
                 .map(borderNodeDescription -> this.convert(borderNodeDescription, converterContext))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewNodeDescription.getSynchronizationPolicy().getName());
 
@@ -273,10 +272,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // @formatter:off
         List<UUID> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
                 .map(this.idProvider::apply)
-                .collect(Collectors.toList());
+                .toList();
         List<UUID> reusedBorderNodeDescriptionIds = viewNodeDescription.getReusedBorderNodeDescriptions().stream()
                 .map(this.idProvider::apply)
-                .collect(Collectors.toList());
+                .toList();
 
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -383,8 +382,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .label(edgeTool.getName())
                         .imageURL(imageURL)
                         .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
-                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
+                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
                                 .build()))
                         .handler(variableManager -> {
                             VariableManager child = variableManager.createChild();
@@ -402,8 +401,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .label("New " + this.getSimpleTypeName(edgeDescription.getDomainType()))
                         .imageURL(imageURL)
                         .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
-                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
+                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
                                 .build()))
                         .handler(variableManager -> {
                             VariableManager child = variableManager.createChild();
@@ -420,7 +419,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private List<NodeDescription> getAllTargetDescriptions(org.eclipse.sirius.components.view.NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         List<NodeDescription> allTargetDescriptions = new ArrayList<>();
-        var targetDescriptions = Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().collect(Collectors.toList());
+        var targetDescriptions = Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().toList();
         allTargetDescriptions.addAll(targetDescriptions);
 
         // @formatter:off
@@ -548,7 +547,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
                     .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate.eClass()))
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
         };
     }
@@ -562,7 +561,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         } else {
             //
             var sourceNodeDescriptions = viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get);
-            semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).collect(Collectors.toList()));
+            semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).toList());
         }
 
         Function<VariableManager, List<Element>> sourceNodesProvider = null;
@@ -583,7 +582,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 return nodeCandidates
                         .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription)))
                         .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+                        .toList();
                 // @formatter:on
             };
         } else {
@@ -601,7 +600,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 return cache.getElementsRepresenting(object).stream()
                         .filter(this.isFromCompatibleSourceMapping(viewEdgeDescription))
                         .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+                        .toList();
                 // @formatter:on
             };
         }
@@ -626,8 +625,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
-                .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).collect(Collectors.toList()))
+                .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
                 .semanticElementsProvider(semanticElementsProvider)
                 .synchronizationPolicy(synchronizationPolicy)
                 .sourceNodesProvider(sourceNodesProvider)

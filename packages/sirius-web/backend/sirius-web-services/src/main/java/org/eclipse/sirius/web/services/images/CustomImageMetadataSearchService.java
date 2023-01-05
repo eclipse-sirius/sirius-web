@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
@@ -48,7 +47,7 @@ public class CustomImageMetadataSearchService implements ICustomImageMetadataSea
         allImages.addAll(this.customImageMetadataRepository.findAllByProjectId(null));
         // Project-specific images
         allImages.addAll(new IDParser().parse(editingContextId).map(this.customImageMetadataRepository::findAllByProjectId).orElse(List.of()));
-        return allImages.stream().map(this::toDTO).collect(Collectors.toList());
+        return allImages.stream().map(this::toDTO).toList();
     }
 
     private CustomImageMetadata toDTO(CustomImageMetadataEntity customImageMetadataEntity) {

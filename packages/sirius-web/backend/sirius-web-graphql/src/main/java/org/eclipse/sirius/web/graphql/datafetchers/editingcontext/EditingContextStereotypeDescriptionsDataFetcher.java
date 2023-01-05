@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
@@ -66,9 +65,10 @@ public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFet
                 .map(stereotypeDescription -> {
                     String value = Base64.getEncoder().encodeToString(stereotypeDescription.getId().toString().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(stereotypeDescription, cursor);
+                    Edge<StereotypeDescription> edge = new DefaultEdge<>(stereotypeDescription, cursor);
+                    return edge;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = stereotypeDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);

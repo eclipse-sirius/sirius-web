@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
@@ -108,9 +107,9 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
                 List<org.eclipse.sirius.components.view.EdgeReconnectionTool> edgeReconnectionTools = List.of();
                 if (toolInterpreterData.getKind() == ReconnectEdgeKind.SOURCE) {
-                    edgeReconnectionTools = viewEdgeDescription.getReconnectEdgeTools().stream().filter(SourceEdgeEndReconnectionTool.class::isInstance).collect(Collectors.toList());
+                    edgeReconnectionTools = viewEdgeDescription.getReconnectEdgeTools().stream().filter(SourceEdgeEndReconnectionTool.class::isInstance).toList();
                 } else {
-                    edgeReconnectionTools = viewEdgeDescription.getReconnectEdgeTools().stream().filter(TargetEdgeEndReconnectionTool.class::isInstance).collect(Collectors.toList());
+                    edgeReconnectionTools = viewEdgeDescription.getReconnectEdgeTools().stream().filter(TargetEdgeEndReconnectionTool.class::isInstance).toList();
                 }
 
                 for (org.eclipse.sirius.components.view.EdgeReconnectionTool edgeReconnectionTool : edgeReconnectionTools) {
@@ -149,7 +148,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             return packageRegistry.values().stream()
                                   .filter(EPackage.class::isInstance)
                                   .map(EPackage.class::cast)
-                                  .collect(Collectors.toList());
+                                  .toList();
             // @formatter:on
         } else {
             return List.of();
@@ -170,7 +169,8 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .map(Object.class::cast)
+                .toList();
         // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }

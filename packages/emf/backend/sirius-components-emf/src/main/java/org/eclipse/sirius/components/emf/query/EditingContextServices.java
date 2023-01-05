@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -42,7 +41,7 @@ public final class EditingContextServices {
         return this.getResourceset(editingContext)
                 .stream()
                .flatMap(this::collectAllContent)
-               .collect(Collectors.toList());
+               .toList();
         // @formatter:on
     }
 
@@ -54,7 +53,7 @@ public final class EditingContextServices {
                 .flatMap(EList::stream)
                 .map(Resource::getContents)
                 .flatMap(EList::stream)
-                .collect(Collectors.toList());
+                .toList();
         //@formatter:on
     }
 

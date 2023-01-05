@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
@@ -124,7 +123,7 @@ public class AbstractNodeMappingConverter {
         // @formatter:off
         List<NodeDescription> borderNodeDescriptions = abstractNodeMapping.getBorderedNodeMappings().stream()
                 .map(borderNodeMapping -> this.convert(borderNodeMapping, interpreter, id2NodeDescriptions))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
@@ -193,11 +192,11 @@ public class AbstractNodeMappingConverter {
             ContainerMapping containerMapping = (ContainerMapping) abstractNodeMapping;
             List<NodeDescription> childNodeMappingDescriptions = containerMapping.getSubNodeMappings().stream()
                     .map(childNodeMapping -> this.convert(childNodeMapping, interpreter, id2NodeDescriptions))
-                    .collect(Collectors.toList());
+                    .toList();
 
             List<NodeDescription> childContainerMappingDescriptions = containerMapping.getSubContainerMappings().stream()
                     .map(childContainerMapping -> this.convert(childContainerMapping, interpreter, id2NodeDescriptions))
-                    .collect(Collectors.toList());
+                    .toList();
 
             childNodeDescriptions.addAll(childNodeMappingDescriptions);
             childNodeDescriptions.addAll(childContainerMappingDescriptions);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.view.emf;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -64,7 +63,7 @@ public class ViewConverter implements IViewConverter {
             result = view.getDescriptions().stream()
                     .map(representationDescription -> this.convert(representationDescription, interpreter))
                     .flatMap(Optional::stream)
-                    .collect(Collectors.toList());
+                    .toList();
 
             // @formatter:on
         } catch (NullPointerException e) {
@@ -97,7 +96,8 @@ public class ViewConverter implements IViewConverter {
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .map(Object.class::cast)
+                .toList();
         // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }

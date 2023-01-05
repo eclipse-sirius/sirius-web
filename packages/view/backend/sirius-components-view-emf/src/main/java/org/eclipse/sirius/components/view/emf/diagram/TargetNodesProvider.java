@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -69,7 +68,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
                 .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
                 .filter(this::isFromCompatibleTargetMapping)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

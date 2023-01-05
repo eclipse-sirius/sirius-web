@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -40,7 +39,7 @@ public class RepresentationDescriptionRegistry implements IRepresentationDescrip
     }
 
     public List<IRepresentationDescription> getRepresentationDescriptions() {
-        return this.id2representationDescriptions.values().stream().collect(Collectors.toList());
+        return this.id2representationDescriptions.values().stream().toList();
     }
 
 }

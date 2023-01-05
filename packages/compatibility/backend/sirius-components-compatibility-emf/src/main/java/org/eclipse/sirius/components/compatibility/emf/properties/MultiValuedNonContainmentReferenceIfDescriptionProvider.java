@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -158,7 +157,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
 
                 Object value = eObject.eGet(eReference);
                 if (value instanceof EList<?>) {
-                    return ((EList<?>) value).stream().map(this.objectService::getId).collect(Collectors.toList());
+                    return ((EList<?>) value).stream().map(this.objectService::getId).toList();
                 }
             }
             return null;

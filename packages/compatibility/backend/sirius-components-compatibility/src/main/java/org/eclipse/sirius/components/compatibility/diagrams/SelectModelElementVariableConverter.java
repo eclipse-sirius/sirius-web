@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.compatibility.diagrams;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -59,7 +58,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                     Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectModelElementVariable.getCandidatesExpression());
                     return result.asObjects().orElse(List.of()).stream()
                             .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                            .toList();
                 })
                 .messageProvider(variableManager -> {
                     String message = selectModelElementVariable.getMessage();

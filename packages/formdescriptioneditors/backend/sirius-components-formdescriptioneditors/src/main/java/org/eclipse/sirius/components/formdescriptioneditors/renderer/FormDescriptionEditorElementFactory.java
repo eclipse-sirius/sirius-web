@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
@@ -51,7 +50,7 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
         List<Group> groups = children.stream()
                 .filter(Group.class::isInstance)
                 .map(Group.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         return FormDescriptionEditor.newFormDescriptionEditor(props.getId())
                 .label(props.getLabel())

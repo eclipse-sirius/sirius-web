@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.handlers;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -79,10 +78,9 @@ public class GetEditingContextActionsEventHandler implements IEditingContextEven
             // @formatter:off
             List<EditingContextAction> editingContextActions = this.editingContextActionProviders.stream()
                 .flatMap(provider -> provider.getEditingContextAction(editingContext).stream())
-                .collect(Collectors.toList());
+                .sorted((a1, a2) -> a1.getLabel().compareTo(a2.getLabel()))
+                .toList();
             // @formatter:on
-
-            editingContextActions.sort((a1, a2) -> a1.getLabel().compareTo(a2.getLabel()));
 
             payload = new GetEditingContextActionsSuccessPayload(editingContextActionsInput.id(), editingContextActions);
             changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);

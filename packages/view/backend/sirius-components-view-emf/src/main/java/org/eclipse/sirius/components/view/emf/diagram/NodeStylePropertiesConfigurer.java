@@ -22,7 +22,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.Diagnostic;
@@ -73,7 +72,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private static final String UNNAMED = "<unnamed>";
 
-    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
+    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
 
     private final List<IParametricSVGImageRegistry> parametricSVGImageRegistries;
 
@@ -379,7 +378,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .idProvider(variableManager -> id)
                                 .labelProvider(variableManager -> "Border Line Style")
                                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString).orElse(EMPTY))
-                                .optionsProvider(variableManager -> LineStyle.VALUES.stream().collect(Collectors.toList()))
+                                .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
                                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
                                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
                                 .newValueHandler((variableManager, newValue) -> {
@@ -418,7 +417,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
                     return Stream.concat(parametricSVGs, customImages.stream())
                             .sorted(Comparator.comparing(CustomImageMetadata::getLabel))
-                            .collect(Collectors.toList());
+                            .toList();
                 })
                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
                         .map(CustomImageMetadata::getId)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.diagrams.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -61,7 +60,7 @@ public class DiagramComponent implements IComponent {
                 .map(nodeDescription -> {
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
-                    var previousNodesTargetIds = previousNodes.stream().map(node -> node.getTargetObjectId()).collect(Collectors.toList());
+                    var previousNodesTargetIds = previousNodes.stream().map(node -> node.getTargetObjectId()).toList();
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
                     var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                             .variableManager(variableManager)
@@ -78,7 +77,7 @@ public class DiagramComponent implements IComponent {
                             .parentElementState(ViewModifier.Normal)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
-                }).collect(Collectors.toList());
+                }).toList();
 
         var edges = diagramDescription.getEdgeDescriptions().stream()
                 .map(edgeDescription -> {
@@ -88,7 +87,7 @@ public class DiagramComponent implements IComponent {
                     var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getDiagramEvent());
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         List<Element> children = new ArrayList<>();

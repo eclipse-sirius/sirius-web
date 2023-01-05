@@ -19,7 +19,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -186,7 +185,7 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
         // @formatter:off
         return borderNodesPerSide.entrySet().stream()
                 .map(entry -> new BorderNodesOnSide(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

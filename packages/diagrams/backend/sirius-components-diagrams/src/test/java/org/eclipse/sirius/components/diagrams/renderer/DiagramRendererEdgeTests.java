@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -228,7 +227,7 @@ public class DiagramRendererEdgeTests {
             List<Element> sourceNodes = objectToNodes.get(FIRST_OBJECT_ID).stream()
                     .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .toList();
 
             return sourceNodes;
         };
@@ -240,7 +239,7 @@ public class DiagramRendererEdgeTests {
             List<Element> targetNodes = objectToNodes.get(SECOND_OBJECT_ID).stream()
                     .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .toList();
 
             return targetNodes;
         };

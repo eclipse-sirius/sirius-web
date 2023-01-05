@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.graphql.datafetchers.user;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -64,9 +63,10 @@ public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates
                 .map(project -> {
                     String value = new Relay().toGlobalId(ProjectTypeProvider.TYPE, project.getId().toString());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(project, cursor);
+                    Edge<Project> edge = new DefaultEdge<>(project, cursor);
+                    return edge;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = projectEdges.stream().findFirst().map(Edge::getCursor).orElse(null);

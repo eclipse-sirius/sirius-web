@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -92,33 +91,37 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
         // @formatter:off
         List<Layer> layers = LayerModelHelper.getAllLayers(siriusDiagramDescription).stream()
                 .filter(this::isEnabledByDefault)
-                .collect(Collectors.toList());
+                .toList();
+
+        List<NodeDescription> allNodeDescriptions = new ArrayList<>();
 
         List<NodeDescription> containerDescriptions = layers.stream()
                 .flatMap(layer -> layer.getContainerMappings().stream().filter(containerMapping -> !(containerMapping instanceof ContainerMappingImport)))
                 .map(containerMapping -> this.abstractNodeMappingConverter.convert(containerMapping, interpreter, id2NodeDescriptions))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         // @formatter:off
         List<NodeDescription> nodeDescriptions = layers.stream()
                 .flatMap(layer -> layer.getNodeMappings().stream())
                 .map(nodeMapping -> this.abstractNodeMappingConverter.convert(nodeMapping, interpreter, id2NodeDescriptions))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
-        nodeDescriptions.addAll(containerDescriptions);
+
+        allNodeDescriptions.addAll(nodeDescriptions);
+        allNodeDescriptions.addAll(containerDescriptions);
 
         // @formatter:off
         List<EdgeDescription> edgeDescriptions = layers.stream()
                 .flatMap(layer -> layer.getEdgeMappings().stream())
                 .map(edgeMapping -> this.edgeMappingConverter.convert(edgeMapping, interpreter, id2NodeDescriptions))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         Function<VariableManager, IStatus> dropHandler = this.getDropHandler(siriusDiagramDescription, interpreter);
 
         // @formatter:off
-        return builder.nodeDescriptions(nodeDescriptions)
+        return builder.nodeDescriptions(allNodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(dropHandler)
                 .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers))
@@ -141,7 +144,7 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
         List<ContainerDropDescription> diagramDropTools = new DiagramDescriptionQuery(siriusDiagramDescription).getAllTools().stream()
                 .filter(ContainerDropDescription.class::isInstance)
                 .map(ContainerDropDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);

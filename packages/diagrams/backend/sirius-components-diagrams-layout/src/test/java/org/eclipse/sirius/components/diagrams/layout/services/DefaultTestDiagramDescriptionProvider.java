@@ -279,7 +279,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .map(idToElement::get)
                 .map(cache::getElementsRepresenting)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
             // @formatter:on
         };
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.diagrams.components;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -49,7 +48,7 @@ public class DiagramElementRequestor implements IDiagramElementRequestor {
         // @formatter:off
         return nodeSupplier.get().stream()
                 .filter(node -> Objects.equals(node.getDescriptionId(), nodeDescription.getId()))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 
@@ -58,7 +57,7 @@ public class DiagramElementRequestor implements IDiagramElementRequestor {
         // @formatter:off
         return diagram.getEdges().stream()
                 .filter(edge -> Objects.equals(edge.getDescriptionId(), edgeDescription.getId()))
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

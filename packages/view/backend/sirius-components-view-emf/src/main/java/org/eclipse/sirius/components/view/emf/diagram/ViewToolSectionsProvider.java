@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
@@ -92,7 +91,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
     private List<ToolSection> getNodeToolSections(DiagramDescription diagramDescription, NodeDescription nodeDescription) {
         List<ToolSection> toolSections = new ArrayList<>();
         for (ToolSection toolSection : diagramDescription.getToolSections()) {
-            List<ITool> tools = toolSection.getTools().stream().filter(tool -> this.isValidTool(tool, nodeDescription)).collect(Collectors.toList());
+            List<ITool> tools = toolSection.getTools().stream().filter(tool -> this.isValidTool(tool, nodeDescription)).toList();
 
             if (!tools.isEmpty()) {
                 ToolSection filteredToolSection = ToolSection.newToolSection(toolSection).tools(tools).build();

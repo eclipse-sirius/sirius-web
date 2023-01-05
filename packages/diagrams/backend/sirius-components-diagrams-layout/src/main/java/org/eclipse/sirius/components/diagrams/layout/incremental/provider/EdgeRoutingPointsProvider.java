@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.layout.incremental.provider;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
@@ -48,7 +47,7 @@ public class EdgeRoutingPointsProvider {
                 Position delta = optionalDelta.get();
                 positions = positions.stream().map(position -> {
                     return Position.at(position.getX() + delta.getX(), position.getY() + delta.getY());
-                }).collect(Collectors.toList());
+                }).toList();
             }
 
             if (edge.getSource().equals(edge.getTarget()) && (positions.isEmpty() || this.hasBeenMoved(edge.getSource(), optionalDiagramElementEvent))) {

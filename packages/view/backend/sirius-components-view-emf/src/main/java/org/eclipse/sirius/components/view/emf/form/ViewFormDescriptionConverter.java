@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -73,13 +72,13 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
         ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
         // @formatter:off
-        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList());
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
 
         List<GroupDescription> groupDescriptions = viewFormDescription.getGroups().stream()
                 .map(g -> this.instantiateGroup(g, dispatcher, interpreter))
                 .filter(GroupDescription.class::isInstance)
                 .map(GroupDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         String descriptionId = this.getDescriptionId(viewFormDescription);
         PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page")
@@ -116,17 +115,18 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, ViewFormDescriptionConverterSwitch dispatcher, AQLInterpreter interpreter) {
-
         // @formatter:off
         List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getWidgets().stream()
                 .map(dispatcher::doSwitch)
-                .collect(Collectors.toList());
+                .filter(AbstractControlDescription.class::isInstance)
+                .map(AbstractControlDescription.class::cast)
+                .toList();
 
         List<ButtonDescription> toolbarActionDescriptions = viewGroupDescription.getToolbarActions().stream()
                 .map(dispatcher::doSwitch)
                 .filter(ButtonDescription.class::isInstance)
                 .map(ButtonDescription.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         String descriptionId = this.getDescriptionId(viewGroupDescription);
 
@@ -170,7 +170,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
             return candidates.stream()
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
         };
     }
