@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,15 +72,15 @@ public class AddGroupEventHandler implements IFormDescriptionEditorEventHandler 
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), AddGroupInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+        IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof AddGroupInput) {
-            int index = ((AddGroupInput) formDescriptionEditorInput).getIndex();
+            int index = ((AddGroupInput) formDescriptionEditorInput).index();
             boolean addGroup = this.addGroup(editingContext, formDescriptionEditorContext, index);
             if (addGroup) {
-                payload = new AddGroupSuccessPayload(formDescriptionEditorInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+                payload = new AddGroupSuccessPayload(formDescriptionEditorInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }
 

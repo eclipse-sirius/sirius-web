@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,7 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof GetToolSectionsInput) {
             GetToolSectionsInput toolSectionsInput = (GetToolSectionsInput) diagramInput;
-            String diagramElementId = toolSectionsInput.getDiagramElementId();
+            String diagramElementId = toolSectionsInput.diagramElementId();
 
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
@@ -118,11 +118,11 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
                     IToolSectionsProvider toolSectionsProvider = optionalToolSectionsProvider.get();
                     List<ToolSection> toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
                             diagramDescription);
-                    payload = new GetToolSectionSuccessPayload(diagramInput.getId(), toolSections);
+                    payload = new GetToolSectionSuccessPayload(diagramInput.id(), toolSections);
                 }
             } else {
                 String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetToolSectionsInput.class.getSimpleName());
-                payload = new ErrorPayload(diagramInput.getId(), message);
+                payload = new ErrorPayload(diagramInput.id(), message);
             }
 
             payloadSink.tryEmitValue(payload);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class MutationDeleteImageDataFetcher implements IDataFetcherWithFieldCoor
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteImageInput.class);
-        this.customImageEditService.delete(input.getImageId());
-        return CompletableFuture.completedFuture(new DeleteImageSuccessPayload(input.getId()));
+        this.customImageEditService.delete(input.imageId());
+        return CompletableFuture.completedFuture(new DeleteImageSuccessPayload(input.id()));
     }
 }

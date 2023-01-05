@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ public class GetEditingContextActionsEventHandler implements IEditingContextEven
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), GetEditingContextActionsInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof GetEditingContextActionsInput) {
@@ -84,7 +84,7 @@ public class GetEditingContextActionsEventHandler implements IEditingContextEven
 
             editingContextActions.sort((a1, a2) -> a1.getLabel().compareTo(a2.getLabel()));
 
-            payload = new GetEditingContextActionsSuccessPayload(editingContextActionsInput.getId(), editingContextActions);
+            payload = new GetEditingContextActionsSuccessPayload(editingContextActionsInput.id(), editingContextActions);
             changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         }
 

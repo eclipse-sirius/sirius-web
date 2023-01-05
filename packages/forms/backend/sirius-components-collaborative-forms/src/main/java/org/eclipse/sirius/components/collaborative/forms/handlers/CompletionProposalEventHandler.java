@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,19 +75,19 @@ public class CompletionProposalEventHandler implements IFormEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), CompletionRequestInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof CompletionRequestInput) {
             CompletionRequestInput input = (CompletionRequestInput) formInput;
-            CompletionRequest request = new CompletionRequest(input.getCurrentText(), input.getCursorPosition());
+            CompletionRequest request = new CompletionRequest(input.currentText(), input.cursorPosition());
             // @formatter:off
-            List<CompletionProposal> proposals = this.formQueryService.findWidget(form, input.getWidgetId())
+            List<CompletionProposal> proposals = this.formQueryService.findWidget(form, input.widgetId())
                     .flatMap(this::getProposalProvider)
                     .map(proposalsProvider -> proposalsProvider.apply(request))
                     .orElse(List.of());
             // @formatter:on
-            payload = new CompletionRequestSuccessPayload(formInput.getId(), proposals);
+            payload = new CompletionRequestSuccessPayload(formInput.id(), proposals);
         }
 
         changeDescriptionSink.tryEmitNext(changeDescription);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class MutationRenameImageDataFetcher implements IDataFetcherWithFieldCoor
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, RenameImageInput.class);
-        return CompletableFuture.completedFuture(this.customImageEditService.renameImage(input.getId(), input.getImageId(), input.getNewLabel()));
+        return CompletableFuture.completedFuture(this.customImageEditService.renameImage(input.id(), input.imageId(), input.newLabel()));
     }
 
 }

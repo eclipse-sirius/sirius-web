@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -104,32 +104,32 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             this.handleReconnect(payloadSink, changeDescriptionSink, editingContext, diagramContext, (ReconnectEdgeInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ReconnectEdgeInput.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 
     private void handleReconnect(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
             ReconnectEdgeInput reconnectEdgeInput) {
-        String message = this.messageService.edgeNotFound(String.valueOf(reconnectEdgeInput.getEdgeId()));
-        IPayload payload = new ErrorPayload(reconnectEdgeInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, reconnectEdgeInput.getRepresentationId(), reconnectEdgeInput);
+        String message = this.messageService.edgeNotFound(String.valueOf(reconnectEdgeInput.edgeId()));
+        IPayload payload = new ErrorPayload(reconnectEdgeInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, reconnectEdgeInput.representationId(), reconnectEdgeInput);
 
-        Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), reconnectEdgeInput.getEdgeId());
+        Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), reconnectEdgeInput.edgeId());
 
         if (optionalEdge.isPresent()) {
             IStatus status = this.invokeReconnectEdgeTool(optionalEdge.get(), editingContext, diagramContext, reconnectEdgeInput);
             if (status instanceof Success) {
-                diagramContext.setDiagramEvent(new ReconnectEdgeEvent(reconnectEdgeInput.getReconnectEdgeKind(), reconnectEdgeInput.getEdgeId(), reconnectEdgeInput.getNewEdgeEndId(),
-                        reconnectEdgeInput.getNewEdgeEndPosition()));
-                payload = new ReconnectEdgeSuccessPayload(reconnectEdgeInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.getRepresentationId(), reconnectEdgeInput);
+                diagramContext.setDiagramEvent(
+                        new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId(), reconnectEdgeInput.newEdgeEndId(), reconnectEdgeInput.newEdgeEndPosition()));
+                payload = new ReconnectEdgeSuccessPayload(reconnectEdgeInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             } else {
                 String failureMessage = ((Failure) status).getMessage();
-                payload = new ErrorPayload(reconnectEdgeInput.getId(), failureMessage);
+                payload = new ErrorPayload(reconnectEdgeInput.id(), failureMessage);
                 // The frontend action has been send, thus, the edge has been reconnected on he frontend. We need to
                 // force the backend to send the refreshed diagram to "undo" the reconnect.
-                changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, reconnectEdgeInput.getRepresentationId(), reconnectEdgeInput);
+                changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             }
         }
 
@@ -153,7 +153,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             var optionalSemanticTargetElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());
             var optionalEdgeDescription = this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, edge.getDescriptionId());
 
-            ReconnectEdgeKind reconnectEdgeKind = reconnectEdgeInput.getReconnectEdgeKind();
+            ReconnectEdgeKind reconnectEdgeKind = reconnectEdgeInput.reconnectEdgeKind();
             String edgeSourceId = edge.getSourceId();
             String edgeTargetId = edge.getTargetId();
 
@@ -170,7 +170,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
 
             var optionalPreviousSemanticEdgeEnd = optionalPreviousEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectService.getObject(editingContext, targetObjectId));
 
-            var optionalNewEdgeEnd = this.getNode(diagram.getNodes(), reconnectEdgeInput.getNewEdgeEndId());
+            var optionalNewEdgeEnd = this.getNode(diagram.getNodes(), reconnectEdgeInput.newEdgeEndId());
             var optionalNewSemanticEdgeEnd = optionalNewEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectService.getObject(editingContext, targetObjectId));
             var optionalSemanticOtherEdgeEnd = optionalOtherEdgeEnd.map(Node::getTargetObjectId).flatMap(otherEndEdgeId -> this.objectService.getObject(editingContext, otherEndEdgeId));
 
@@ -183,7 +183,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             canExecuteReconnectTool = canExecuteReconnectTool && optionalOtherEdgeEnd.isPresent();
             canExecuteReconnectTool = canExecuteReconnectTool && optionalSemanticOtherEdgeEnd.isPresent();
 
-            if (canExecuteReconnectTool && reconnectEdgeInput.getNewEdgeEndId().equals(optionalPreviousEdgeEnd.get().getId())) {
+            if (canExecuteReconnectTool && reconnectEdgeInput.newEdgeEndId().equals(optionalPreviousEdgeEnd.get().getId())) {
                 canExecuteReconnectTool = false;
                 status = new Failure(this.messageService.reconnectEdgeSameEdgeEnd());
             }

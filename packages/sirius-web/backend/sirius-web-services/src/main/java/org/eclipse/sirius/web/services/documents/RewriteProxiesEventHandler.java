@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof RewriteProxiesInput && editingContext instanceof EditingContext) {
@@ -65,12 +65,12 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = ((EditingContext) editingContext).getDomain();
             int totalRewrittenCount = 0;
             for (Resource resource : adapterFactoryEditingDomain.getResourceSet().getResources()) {
-                totalRewrittenCount += this.rewriteProxyURIs(resource, rewriteInput.getOldDocumentIdToNewDocumentId());
+                totalRewrittenCount += this.rewriteProxyURIs(resource, rewriteInput.oldDocumentIdToNewDocumentId());
             }
             if (totalRewrittenCount > 0) {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
-            payload = new RewriteProxiesSuccessPayload(input.getId());
+            payload = new RewriteProxiesSuccessPayload(input.id());
         }
 
         payloadSink.tryEmitValue(payload);

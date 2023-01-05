@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,27 +95,27 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), EditLabelInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof EditLabelInput) {
             EditLabelInput input = (EditLabelInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
-            var node = this.diagramQueryService.findNodeByLabelId(diagram, input.getLabelId());
+            var node = this.diagramQueryService.findNodeByLabelId(diagram, input.labelId());
             if (node.isPresent()) {
-                this.invokeDirectEditTool(node.get(), editingContext, diagram, input.getNewText());
+                this.invokeDirectEditTool(node.get(), editingContext, diagram, input.newText());
 
-                payload = new EditLabelSuccessPayload(diagramInput.getId(), diagram);
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                payload = new EditLabelSuccessPayload(diagramInput.id(), diagram);
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
             } else {
-                var edge = this.diagramQueryService.findEdgeByLabelId(diagram, input.getLabelId());
+                var edge = this.diagramQueryService.findEdgeByLabelId(diagram, input.labelId());
                 if (edge.isPresent()) {
-                    payload = new EditLabelSuccessPayload(diagramInput.getId(), diagram);
+                    payload = new EditLabelSuccessPayload(diagramInput.id(), diagram);
                     try {
-                        this.invokeDirectEditTool(edge.get(), editingContext, diagram, input.getNewText());
-                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                        this.invokeDirectEditTool(edge.get(), editingContext, diagram, input.newText());
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                     } catch (IllegalArgumentException e) {
-                        payload = new ErrorPayload(diagramInput.getId(), this.messageService.invalidNewValue(input.getNewText()));
+                        payload = new ErrorPayload(diagramInput.id(), this.messageService.invalidNewValue(input.newText()));
                     }
 
                 }

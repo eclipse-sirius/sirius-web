@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.charts;
 
-import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
-
 import java.util.Objects;
 
+import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.slf4j.Logger;
@@ -47,7 +46,7 @@ public class HierarchyEventFlux {
     public void hierarchyRefreshed(IInput input, Hierarchy newHierarchy) {
         this.currentHierarchy = newHierarchy;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new HierarchyRefreshedEventPayload(input.getId(), this.currentHierarchy));
+            EmitResult emitResult = this.sink.tryEmitNext(new HierarchyRefreshedEventPayload(input.id(), this.currentHierarchy));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a HierarchyRefreshedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
@@ -56,7 +55,7 @@ public class HierarchyEventFlux {
     }
 
     public Flux<IPayload> getFlux(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new HierarchyRefreshedEventPayload(input.getId(), this.currentHierarchy));
+        var initialRefresh = Mono.fromCallable(() -> new HierarchyRefreshedEventPayload(input.id(), this.currentHierarchy));
         return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 

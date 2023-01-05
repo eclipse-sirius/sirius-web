@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,8 +107,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             this.handleDelete(payloadSink, changeDescriptionSink, editingContext, diagramContext, (DeleteFromDiagramInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DeleteFromDiagramInput.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 
@@ -118,10 +118,10 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
         List<String> deletedEdgeIds = new ArrayList<>();
-        for (String edgeId : diagramInput.getEdgeIds()) {
+        for (String edgeId : diagramInput.edgeIds()) {
             var optionalElement = this.diagramQueryService.findEdgeById(diagram, edgeId);
             if (optionalElement.isPresent()) {
-                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.getDeletionPolicy());
+                IStatus status = this.invokeDeleteEdgeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.deletionPolicy());
                 if (status instanceof Success) {
                     deletedEdgeIds.add(edgeId);
                     atLeastOneOk = true;
@@ -133,10 +133,10 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 errors.add(message);
             }
         }
-        for (String nodeId : diagramInput.getNodeIds()) {
+        for (String nodeId : diagramInput.nodeIds()) {
             var optionalElement = this.diagramQueryService.findNodeById(diagram, nodeId);
             if (optionalElement.isPresent()) {
-                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.getDeletionPolicy());
+                IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.deletionPolicy());
                 if (status instanceof Success) {
                     atLeastOneOk = true;
                 } else {
@@ -156,8 +156,8 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext,
             DeleteFromDiagramInput diagramInput) {
 
-        var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
-        IPayload payload = new DeleteFromDiagramSuccessPayload(diagramInput.getId(), diagramContext.getDiagram());
+        var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
+        IPayload payload = new DeleteFromDiagramSuccessPayload(diagramInput.id(), diagramContext.getDiagram());
         if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.messageService.deleteFailed());
@@ -165,12 +165,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 stringBuilder.append(error);
             }
 
-            changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+            changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
             if (atLeastOneSuccess) {
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
             }
 
-            payload = new ErrorPayload(diagramInput.getId(), stringBuilder.toString());
+            payload = new ErrorPayload(diagramInput.id(), stringBuilder.toString());
         }
 
         payloadSink.tryEmitValue(payload);

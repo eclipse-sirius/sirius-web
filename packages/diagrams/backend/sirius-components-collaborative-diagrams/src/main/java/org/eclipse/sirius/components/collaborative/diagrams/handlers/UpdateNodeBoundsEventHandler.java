@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,25 +78,25 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
             this.handleUpdateNodeBounds(payloadSink, changeDescriptionSink, diagramContext, (UpdateNodeBoundsInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodeBoundsEventHandler.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 
     private void handleUpdateNodeBounds(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IDiagramContext diagramContext, UpdateNodeBoundsInput diagramInput) {
         // @formatter:off
         Position newPosition = Position.newPosition()
-                .x(diagramInput.getNewPositionX())
-                .y(diagramInput.getNewPositionY())
+                .x(diagramInput.newPositionX())
+                .y(diagramInput.newPositionY())
                 .build();
 
         Size newSize = Size.newSize()
-                .width(diagramInput.getNewWidth())
-                .height(diagramInput.getNewHeight())
+                .width(diagramInput.newWidth())
+                .height(diagramInput.newHeight())
                 .build();
         // @formatter:on
 
-        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
         if (optionalNode.isPresent()) {
             Position oldPosition = optionalNode.get().getPosition();
@@ -106,14 +106,14 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
                     .y(oldPosition.getY() - newPosition.getY())
                     .build();
             //@formatter:on
-            diagramContext.setDiagramEvent(new ResizeEvent(diagramInput.getDiagramElementId(), delta, newSize));
+            diagramContext.setDiagramEvent(new ResizeEvent(diagramInput.diagramElementId(), delta, newSize));
 
-            payloadSink.tryEmitValue(new UpdateNodeBoundsSuccessPayload(diagramInput.getId(), diagramContext.getDiagram()));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId(), diagramInput));
+            payloadSink.tryEmitValue(new UpdateNodeBoundsSuccessPayload(diagramInput.id(), diagramContext.getDiagram()));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));
         } else {
-            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            String message = this.messageService.nodeNotFound(String.valueOf(diagramInput.diagramElementId()));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 

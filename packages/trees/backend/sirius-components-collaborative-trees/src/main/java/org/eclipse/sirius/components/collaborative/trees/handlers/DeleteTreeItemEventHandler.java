@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,13 +79,13 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(treeInput.getClass().getSimpleName(), DeleteTreeItemInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(treeInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.getRepresentationId(), treeInput);
+        IPayload payload = new ErrorPayload(treeInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
         if (treeInput instanceof DeleteTreeItemInput) {
             DeleteTreeItemInput input = (DeleteTreeItemInput) treeInput;
 
-            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.getTreeItemId());
+            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
 
             if (optionalTreeItem.isPresent()) {
                 TreeDescription treeDescription = this.explorerDescriptionProvider.getDescription();
@@ -98,10 +98,10 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
                 var status = treeDescription.getDeleteHandler().apply(variableManager);
                 if (status instanceof Success) {
                     Success success = (Success) status;
-                    changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.getRepresentationId(), treeInput, success.getParameters());
-                    payload = new DeleteTreeItemSuccessPayload(treeInput.getId());
+                    changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
+                    payload = new DeleteTreeItemSuccessPayload(treeInput.id());
                 } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(treeInput.getId(), ((Failure) status).getMessage());
+                    payload = new ErrorPayload(treeInput.id(), ((Failure) status).getMessage());
                 }
             }
         }

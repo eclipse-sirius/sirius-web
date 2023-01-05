@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,22 +76,22 @@ public class UpdateEdgeRoutingPointsEventHandler implements IDiagramEventHandler
             this.handleUpdateEdgeRoutingPoints(payloadSink, changeDescriptionSink, diagramContext, (UpdateEdgeRoutingPointsInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateEdgeRoutingPointsEventHandler.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 
     private void handleUpdateEdgeRoutingPoints(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IDiagramContext diagramContext, UpdateEdgeRoutingPointsInput diagramInput) {
-        Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), diagramInput.getDiagramElementId());
+        Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
         if (optionalEdge.isPresent()) {
-            diagramContext.setDiagramEvent(new UpdateEdgeRoutingPointsEvent(diagramInput.getDiagramElementId(), diagramInput.getRoutingPoints()));
-            payloadSink.tryEmitValue(new UpdateEdgeRoutingPointsSuccessPayload(diagramInput.getId()));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.getRepresentationId(), diagramInput));
+            diagramContext.setDiagramEvent(new UpdateEdgeRoutingPointsEvent(diagramInput.diagramElementId(), diagramInput.routingPoints()));
+            payloadSink.tryEmitValue(new UpdateEdgeRoutingPointsSuccessPayload(diagramInput.id()));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));
         } else {
-            String message = this.messageService.edgeNotFound(String.valueOf(diagramInput.getDiagramElementId()));
-            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.getId(), message));
-            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput));
+            String message = this.messageService.edgeNotFound(String.valueOf(diagramInput.diagramElementId()));
+            payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));
+            changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput));
         }
     }
 }

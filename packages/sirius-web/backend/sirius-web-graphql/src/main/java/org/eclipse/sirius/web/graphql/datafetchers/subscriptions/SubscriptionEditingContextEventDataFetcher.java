@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,7 @@ public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherW
         var input = this.objectMapper.convertValue(argument, EditingContextEventInput.class);
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
+        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.editingContextId())
                 .map(IEditingContextEventProcessor::getOutputEvents)
                 .orElse(Flux.empty());
         // @formatter:on

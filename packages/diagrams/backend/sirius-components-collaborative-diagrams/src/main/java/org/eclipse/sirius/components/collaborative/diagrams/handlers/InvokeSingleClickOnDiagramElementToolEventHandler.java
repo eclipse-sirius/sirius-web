@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,30 +99,30 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeSingleClickOnDiagramElementToolInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput) {
             InvokeSingleClickOnDiagramElementToolInput input = (InvokeSingleClickOnDiagramElementToolInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
+            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
                     .filter(SingleClickOnDiagramElementTool.class::isInstance)
                     .map(SingleClickOnDiagramElementTool.class::cast);
             // @formatter:on
             if (optionalTool.isPresent()) {
-                IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramElementId(), optionalTool.get(), input.getStartingPositionX(), input.getStartingPositionY(),
-                        input.getSelectedObjectId());
+                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.startingPositionX(), input.startingPositionY(),
+                        input.selectedObjectId());
                 if (status instanceof Success) {
                     WorkbenchSelection newSelection = null;
                     Object newSelectionParameter = ((Success) status).getParameters().get(Success.NEW_SELECTION);
                     if (newSelectionParameter instanceof WorkbenchSelection) {
                         newSelection = (WorkbenchSelection) newSelectionParameter;
                     }
-                    payload = new InvokeSingleClickOnDiagramElementToolSuccessPayload(diagramInput.getId(), newSelection);
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                    payload = new InvokeSingleClickOnDiagramElementToolSuccessPayload(diagramInput.id(), newSelection);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                 } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());
+                    payload = new ErrorPayload(diagramInput.id(), ((Failure) status).getMessage());
                 }
             }
         }

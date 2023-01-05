@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -92,7 +92,7 @@ public class FormDescriptionEditorEventProcessorTests {
         FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(new IEditingContext.NoOp(), this.formDescriptionEditorContext, List.of(),
                 new SubscriptionManager(), this.formDescriptionEditorCreationService, new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp());
 
-        Runnable performRefresh = () -> formDescriptionEditorEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.getFormDescriptionEditorId(), input));
+        Runnable performRefresh = () -> formDescriptionEditorEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formDescriptionEditorId(), input));
 
         // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))
@@ -110,7 +110,7 @@ public class FormDescriptionEditorEventProcessorTests {
         FormDescriptionEditorEventProcessor formDescriptionEditorEventProcessor = new FormDescriptionEditorEventProcessor(new IEditingContext.NoOp(), this.formDescriptionEditorContext, List.of(),
                 new SubscriptionManager(), this.formDescriptionEditorCreationService, new IRepresentationDescriptionSearchService.NoOp(), new IRepresentationRefreshPolicyRegistry.NoOp());
 
-        Runnable performRefresh = () -> formDescriptionEditorEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.getFormDescriptionEditorId(), input));
+        Runnable performRefresh = () -> formDescriptionEditorEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formDescriptionEditorId(), input));
 
         // @formatter:off
         StepVerifier.create(formDescriptionEditorEventProcessor.getOutputEvents(input))

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,14 +57,14 @@ public class RenameProjectEventHandler implements IEditingContextEventHandler {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), RenameProjectInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof RenameProjectInput) {
             RenameProjectInput renameProjectInput = (RenameProjectInput) input;
-            Optional<Project> optionalProject = this.projectService.renameProject(renameProjectInput.getProjectId(), renameProjectInput.getNewName());
+            Optional<Project> optionalProject = this.projectService.renameProject(renameProjectInput.projectId(), renameProjectInput.newName());
             if (optionalProject.isPresent()) {
-                payload = new RenameProjectSuccessPayload(input.getId(), optionalProject.get());
+                payload = new RenameProjectSuccessPayload(input.id(), optionalProject.get());
                 changeDescription = new ChangeDescription(ChangeKind.PROJECT_RENAMING, editingContext.getId(), input);
             }
         }

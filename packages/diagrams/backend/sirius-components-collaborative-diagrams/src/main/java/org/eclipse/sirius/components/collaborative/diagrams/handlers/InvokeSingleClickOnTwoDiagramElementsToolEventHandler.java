@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,33 +105,32 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeSingleClickOnTwoDiagramElementsToolInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput) {
             InvokeSingleClickOnTwoDiagramElementsToolInput input = (InvokeSingleClickOnTwoDiagramElementsToolInput) diagramInput;
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.getToolId())
+            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
                     .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                     .map(SingleClickOnTwoDiagramElementsTool.class::cast)
-                    .or(this.findConnectorToolById(input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), editingContext, diagram, input.getToolId()));
+                    .or(this.findConnectorToolById(input.diagramSourceElementId(), input.diagramTargetElementId(), editingContext, diagram, input.toolId()));
             // @formatter:on
             if (optionalTool.isPresent()) {
-                Position sourcePosition = Position.at(input.getSourcePositionX(), input.getSourcePositionY());
-                Position targetPosition = Position.at(input.getTargetPositionX(), input.getTargetPositionY());
-                IStatus status = this.executeTool(editingContext, diagramContext, input.getDiagramSourceElementId(), input.getDiagramTargetElementId(), optionalTool.get(), sourcePosition,
-                        targetPosition);
+                Position sourcePosition = Position.at(input.sourcePositionX(), input.sourcePositionY());
+                Position targetPosition = Position.at(input.targetPositionX(), input.targetPositionY());
+                IStatus status = this.executeTool(editingContext, diagramContext, input.diagramSourceElementId(), input.diagramTargetElementId(), optionalTool.get(), sourcePosition, targetPosition);
                 if (status instanceof Success) {
                     WorkbenchSelection newSelection = null;
                     Object newSelectionParameter = ((Success) status).getParameters().get(Success.NEW_SELECTION);
                     if (newSelectionParameter instanceof WorkbenchSelection) {
                         newSelection = (WorkbenchSelection) newSelectionParameter;
                     }
-                    payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.getId(), newSelection);
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                    payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.id(), newSelection);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                 } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());
+                    payload = new ErrorPayload(diagramInput.id(), ((Failure) status).getMessage());
                 }
             }
         }

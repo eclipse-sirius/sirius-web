@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,10 +60,10 @@ public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataF
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, FormDescriptionEditorEventInput.class);
-        var formDescriptionEditorConfiguration = new FormDescriptionEditorConfiguration(input.getFormDescriptionEditorId());
+        var formDescriptionEditorConfiguration = new FormDescriptionEditorConfiguration(input.formDescriptionEditorId());
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.getEditingContextId())
+        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.editingContextId())
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormDescriptionEditorEventProcessor.class, formDescriptionEditorConfiguration, input))
                 .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
                 .orElse(Flux.empty());

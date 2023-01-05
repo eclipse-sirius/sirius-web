@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,12 +61,12 @@ public class ExplorerTreePathProvider implements ITreePathProvider {
     public IPayload handle(IEditingContext editingContext, Tree tree, TreePathInput input) {
         int maxDepth = 0;
         Set<String> allAncestors = new HashSet<>();
-        for (String selectionEntryId : input.getSelectionEntryIds()) {
+        for (String selectionEntryId : input.selectionEntryIds()) {
             List<String> itemAncestors = this.getAncestors(editingContext, selectionEntryId);
             allAncestors.addAll(itemAncestors);
             maxDepth = Math.max(maxDepth, itemAncestors.size());
         }
-        return new TreePathSuccessPayload(input.getId(), new TreePath(allAncestors.stream().collect(Collectors.toList()), maxDepth));
+        return new TreePathSuccessPayload(input.id(), new TreePath(allAncestors.stream().collect(Collectors.toList()), maxDepth));
     }
 
     private List<String> getAncestors(IEditingContext editingContext, String selectionEntryId) {

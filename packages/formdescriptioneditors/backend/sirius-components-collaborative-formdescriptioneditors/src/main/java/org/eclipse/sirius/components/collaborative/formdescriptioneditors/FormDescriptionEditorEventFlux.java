@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class FormDescriptionEditorEventFlux {
     public void formDescriptionEditorRefreshed(IInput input, FormDescriptionEditor newFormDescriptionEditor) {
         this.currentFormDescriptionEditor = newFormDescriptionEditor;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new FormDescriptionEditorRefreshedEventPayload(input.getId(), this.currentFormDescriptionEditor));
+            EmitResult emitResult = this.sink.tryEmitNext(new FormDescriptionEditorRefreshedEventPayload(input.id(), this.currentFormDescriptionEditor));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a FormDescriptionEditorRefreshedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
@@ -56,7 +56,7 @@ public class FormDescriptionEditorEventFlux {
     }
 
     public Flux<IPayload> getFlux(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new FormDescriptionEditorRefreshedEventPayload(input.getId(), this.currentFormDescriptionEditor));
+        var initialRefresh = Mono.fromCallable(() -> new FormDescriptionEditorRefreshedEventPayload(input.id(), this.currentFormDescriptionEditor));
         return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 

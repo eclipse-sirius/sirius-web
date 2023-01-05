@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,18 +72,18 @@ public class RenameFormDescriptionEditorEventHandler implements IFormDescription
         this.counter.increment();
 
         String message = this.messageService.invalidInput(formDescriptionEditorInput.getClass().getSimpleName(), RenameFormDescriptionEditorInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formDescriptionEditorInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.getRepresentationId(), formDescriptionEditorInput);
+        IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
         if (formDescriptionEditorInput instanceof RenameFormDescriptionEditorInput) {
             RenameFormDescriptionEditorInput renameRepresentationInput = (RenameFormDescriptionEditorInput) formDescriptionEditorInput;
-            String newLabel = renameRepresentationInput.getNewLabel();
+            String newLabel = renameRepresentationInput.newLabel();
 
             FormDescriptionEditor renamedFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(formDescriptionEditorContext.getFormDescriptionEditor()).label(newLabel).build();
             this.representationPersistenceService.save(editingContext, renamedFormDescriptionEditor);
 
-            payload = new RenameRepresentationSuccessPayload(formDescriptionEditorInput.getId(), renamedFormDescriptionEditor);
-            changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.getRepresentationId(), formDescriptionEditorInput);
+            payload = new RenameRepresentationSuccessPayload(formDescriptionEditorInput.id(), renamedFormDescriptionEditor);
+            changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), formDescriptionEditorInput);
         }
 
         payloadSink.tryEmitValue(payload);

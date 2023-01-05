@@ -131,7 +131,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
             this.currentTree.set(tree);
             if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(changeDescription.getInput().getId(), tree));
+                EmitResult emitResult = this.sink.tryEmitNext(new TreeRefreshedEventPayload(changeDescription.getInput().id(), tree));
                 if (emitResult.isFailure()) {
                     String pattern = "An error has occurred while emitting a TreeRefreshedEventPayload: {}";
                     this.logger.warn(pattern, emitResult);
@@ -184,7 +184,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(input.getId(), this.currentTree.get()));
+        var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(input.id(), this.currentTree.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
         // @formatter:off

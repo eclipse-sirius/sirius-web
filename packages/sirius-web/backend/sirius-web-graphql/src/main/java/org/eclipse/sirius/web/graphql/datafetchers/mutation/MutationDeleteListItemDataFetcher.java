@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,8 +65,8 @@ public class MutationDeleteListItemDataFetcher implements IDataFetcherWithFieldC
         var input = this.objectMapper.convertValue(argument, DeleteListItemInput.class);
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
-                .defaultIfEmpty(new ErrorPayload(input.getId(), this.messageService.unexpectedError())).toFuture();
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError())).toFuture();
         // @formatter:on
     }
 

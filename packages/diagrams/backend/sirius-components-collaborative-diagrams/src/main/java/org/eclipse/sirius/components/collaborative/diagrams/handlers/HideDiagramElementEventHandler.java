@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,8 +81,8 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
             this.handleHideDiagramElement(payloadSink, changeDescriptionSink, diagramContext, (HideDiagramElementInput) diagramInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), HideDiagramElementInput.class.getSimpleName());
-            IPayload payload = new ErrorPayload(diagramInput.getId(), message);
-            ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+            IPayload payload = new ErrorPayload(diagramInput.id(), message);
+            ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
             payloadSink.tryEmitValue(payload);
             changeDescriptionSink.tryEmitNext(changeDescription);
@@ -90,10 +90,10 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
     }
 
     private void handleHideDiagramElement(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IDiagramContext diagramContext, HideDiagramElementInput diagramInput) {
-        List<String> errors = new ArrayList<>(diagramInput.getElementIds().size());
+        List<String> errors = new ArrayList<>(diagramInput.elementIds().size());
         Set<String> resolvedIds = new HashSet<>();
 
-        for (String id : diagramInput.getElementIds()) {
+        for (String id : diagramInput.elementIds()) {
             Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), id);
             Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), id);
 
@@ -106,7 +106,7 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
         }
 
         if (resolvedIds.size() > 0) {
-            diagramContext.setDiagramEvent(new HideDiagramElementEvent(resolvedIds, diagramInput.isHide()));
+            diagramContext.setDiagramEvent(new HideDiagramElementEvent(resolvedIds, diagramInput.hide()));
         }
 
         this.sendResponse(payloadSink, changeDescriptionSink, errors, resolvedIds.size() > 0, diagramContext, diagramInput);
@@ -114,8 +114,8 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
 
     private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext,
             HideDiagramElementInput diagramInput) {
-        var changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.getRepresentationId(), diagramInput);
-        IPayload payload = new HideDiagramElementSuccessPayload(diagramInput.getId());
+        var changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.representationId(), diagramInput);
+        IPayload payload = new HideDiagramElementSuccessPayload(diagramInput.id());
         if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.messageService.deleteFailed());
@@ -123,12 +123,12 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
                 stringBuilder.append(error);
             }
 
-            changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
+            changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
             if (atLeastOneSuccess) {
-                changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.getRepresentationId(), diagramInput);
+                changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.representationId(), diagramInput);
             }
 
-            payload = new ErrorPayload(diagramInput.getId(), stringBuilder.toString());
+            payload = new ErrorPayload(diagramInput.id(), stringBuilder.toString());
         }
 
         payloadSink.tryEmitValue(payload);

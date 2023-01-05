@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,24 +87,24 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateDocumentInput) {
             CreateDocumentInput createDocumentInput = (CreateDocumentInput) input;
 
-            String name = createDocumentInput.getName().trim();
-            String editingContextId = createDocumentInput.getEditingContextId();
-            UUID stereotypeDescriptionId = createDocumentInput.getStereotypeDescriptionId();
+            String name = createDocumentInput.name().trim();
+            String editingContextId = createDocumentInput.editingContextId();
+            UUID stereotypeDescriptionId = createDocumentInput.stereotypeDescriptionId();
 
             Optional<StereotypeDescription> optionalStereotypeDescription = this.stereotypeDescriptionService.getStereotypeDescriptionById(editingContextId, stereotypeDescriptionId);
 
             if (name.isBlank()) {
-                payload = new ErrorPayload(input.getId(), this.messageService.invalidDocumentName(name));
+                payload = new ErrorPayload(input.id(), this.messageService.invalidDocumentName(name));
                 payloadSink.tryEmitValue(payload);
                 changeDescriptionSink.tryEmitNext(changeDescription);
             } else if (optionalStereotypeDescription.isEmpty()) {
-                payload = new ErrorPayload(input.getId(), this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
+                payload = new ErrorPayload(input.id(), this.messageService.stereotypeDescriptionNotFound(stereotypeDescriptionId));
                 payloadSink.tryEmitValue(payload);
                 changeDescriptionSink.tryEmitNext(changeDescription);
             } else {
@@ -117,8 +117,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
     private void createDocument(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IInput input, IEditingContext editingContext, String editingContextId, String name,
             StereotypeDescription stereotypeDescription) {
-
-        IPayload payload = new ErrorPayload(input.getId(), this.messageService.unexpectedError());
+        IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         // @formatter:off
@@ -147,7 +146,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
                 resourceSet.getResources().add(resource);
 
-                payload = new CreateDocumentSuccessPayload(input.getId());
+                payload = new CreateDocumentSuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
         }

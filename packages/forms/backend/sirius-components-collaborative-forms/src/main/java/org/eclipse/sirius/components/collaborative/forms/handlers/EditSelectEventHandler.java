@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,27 +73,27 @@ public class EditSelectEventHandler implements IFormEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditSelectInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof EditSelectInput) {
             EditSelectInput input = (EditSelectInput) formInput;
 
             // @formatter:off
-            Optional<Select> optionalSelect = this.formQueryService.findWidget(form, input.getSelectId())
+            Optional<Select> optionalSelect = this.formQueryService.findWidget(form, input.selectId())
                     .filter(Select.class::isInstance)
                     .map(Select.class::cast);
 
             IStatus status = optionalSelect.map(Select::getNewValueHandler)
-                    .map(handler -> handler.apply(input.getNewValue()))
+                    .map(handler -> handler.apply(input.newValue()))
                     .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new EditSelectSuccessPayload(formInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+                payload = new EditSelectSuccessPayload(formInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }
         }
 

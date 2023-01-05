@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,7 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), InvokeEditingContextActionInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof InvokeEditingContextActionInput) {
@@ -84,18 +84,18 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
 
             // @formatter:off
             IStatus status = this.editingContextActionHandlers.stream()
-                .filter(handler -> handler.canHandle(editingContext, invokeEditingContextActionInput.getActionId()))
+                .filter(handler -> handler.canHandle(editingContext, invokeEditingContextActionInput.actionId()))
                 .findFirst()
-                .map(handler -> handler.handle(editingContext, invokeEditingContextActionInput.getActionId()))
-                .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.getActionId()));
+                .map(handler -> handler.handle(editingContext, invokeEditingContextActionInput.actionId()))
+                .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.actionId()));
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new InvokeEditingContextActionSuccessPayload(invokeEditingContextActionInput.getId());
+                payload = new InvokeEditingContextActionSuccessPayload(invokeEditingContextActionInput.id());
                 changeDescription = new ChangeDescription(((Success) status).getChangeKind(), editingContext.getId(), input);
             } else if (status instanceof Failure) {
-                this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.getActionId());
-                payload = new ErrorPayload(input.getId(), ((Failure) status).getMessage());
+                this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.actionId());
+                payload = new ErrorPayload(input.id(), ((Failure) status).getMessage());
             }
         }
 

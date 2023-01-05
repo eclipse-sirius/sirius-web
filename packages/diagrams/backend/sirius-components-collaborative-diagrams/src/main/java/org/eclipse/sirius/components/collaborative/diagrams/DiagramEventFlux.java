@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class DiagramEventFlux {
     public void diagramRefreshed(IInput input, Diagram newDiagram) {
         this.currentDiagram = newDiagram;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
+            EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.id(), this.currentDiagram));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
@@ -56,7 +56,7 @@ public class DiagramEventFlux {
     }
 
     public Flux<IPayload> getFlux(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(input.getId(), this.currentDiagram));
+        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(input.id(), this.currentDiagram));
         return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 

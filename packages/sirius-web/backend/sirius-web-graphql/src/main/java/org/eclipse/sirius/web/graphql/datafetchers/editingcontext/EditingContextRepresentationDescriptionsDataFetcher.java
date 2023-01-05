@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
         EditingContextRepresentationDescriptionsInput input = new EditingContextRepresentationDescriptionsInput(UUID.randomUUID(), editingContextId, objectId);
 
         // @formatter:off
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.getEditingContextId(), input)
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .filter(EditingContextRepresentationDescriptionsPayload.class::isInstance)
                 .map(EditingContextRepresentationDescriptionsPayload.class::cast)
                 .map(this::toConnection)

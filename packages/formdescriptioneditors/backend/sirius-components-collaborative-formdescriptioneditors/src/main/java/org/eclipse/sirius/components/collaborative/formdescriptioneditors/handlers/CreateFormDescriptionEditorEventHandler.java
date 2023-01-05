@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,7 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
             // @formatter:off
-            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            return this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(FormDescriptionEditorDescription.class::isInstance)
                     .isPresent();
             // @formatter:on
@@ -89,27 +89,27 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(input.getId(), message);
+        IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput) {
             CreateRepresentationInput createRepresentationInput = (CreateRepresentationInput) input;
 
             // @formatter:off
-            Optional<FormDescriptionEditorDescription> optionalFormDescriptionEditorDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.getRepresentationDescriptionId())
+            Optional<FormDescriptionEditorDescription> optionalFormDescriptionEditorDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(FormDescriptionEditorDescription.class::isInstance)
                     .map(FormDescriptionEditorDescription.class::cast);
             // @formatter:on
 
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.getObjectId());
+            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalFormDescriptionEditorDescription.isPresent() && optionalObject.isPresent()) {
                 Object object = optionalObject.get();
                 FormDescriptionEditorDescription representationDescription = optionalFormDescriptionEditorDescription.get();
-                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput.getRepresentationName(), object, representationDescription,
+                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput.representationName(), object, representationDescription,
                         editingContext);
 
-                payload = new CreateRepresentationSuccessPayload(input.getId(), formDescriptionEditor);
+                payload = new CreateRepresentationSuccessPayload(input.id(), formDescriptionEditor);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }

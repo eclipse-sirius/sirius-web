@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,15 +82,15 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
         var optionalObject = Optional.empty();
         if (input instanceof EditingContextRepresentationDescriptionsInput) {
             EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput = (EditingContextRepresentationDescriptionsInput) input;
-            String objectId = editingContextRepresentationDescriptionsInput.getObjectId();
+            String objectId = editingContextRepresentationDescriptionsInput.objectId();
             optionalObject = this.objectService.getObject(editingContext, objectId);
         }
         if (optionalObject.isPresent()) {
             List<RepresentationDescriptionMetadata> result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
-            payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.getId(), result));
+            payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.id(), result));
         } else {
             String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
-            payloadSink.tryEmitValue(new ErrorPayload(input.getId(), message));
+            payloadSink.tryEmitValue(new ErrorPayload(input.id(), message));
         }
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input));
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,22 +79,22 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DropOnDiagramInput.class.getSimpleName());
 
-        var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.getRepresentationId(), diagramInput);
-        IPayload payload = new ErrorPayload(diagramInput.getId(), message);
+        var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
         if (diagramInput instanceof DropOnDiagramInput) {
             DropOnDiagramInput input = (DropOnDiagramInput) diagramInput;
 
-            List<Object> objects = input.getObjectIds().stream().map(objectId -> this.objectService.getObject(editingContext, objectId)).flatMap(Optional::stream).collect(Collectors.toList());
+            List<Object> objects = input.objectIds().stream().map(objectId -> this.objectService.getObject(editingContext, objectId)).flatMap(Optional::stream).collect(Collectors.toList());
             Diagram diagram = diagramContext.getDiagram();
 
-            payload = new ErrorPayload(diagramInput.getId(), this.messageService.invalidDrop());
+            payload = new ErrorPayload(diagramInput.id(), this.messageService.invalidDrop());
             if (!objects.isEmpty()) {
-                IStatus status = this.executeTool(editingContext, diagramContext, objects, input.getDiagramTargetElementId(), input.getStartingPositionX(), input.getStartingPositionY());
+                IStatus status = this.executeTool(editingContext, diagramContext, objects, input.diagramTargetElementId(), input.startingPositionX(), input.startingPositionY());
                 if (status instanceof Success) {
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.getRepresentationId(), diagramInput);
-                    payload = new DropOnDiagramSuccessPayload(diagramInput.getId(), diagram);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
+                    payload = new DropOnDiagramSuccessPayload(diagramInput.id(), diagram);
                 } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(diagramInput.getId(), ((Failure) status).getMessage());
+                    payload = new ErrorPayload(diagramInput.id(), ((Failure) status).getMessage());
                 }
             }
         }

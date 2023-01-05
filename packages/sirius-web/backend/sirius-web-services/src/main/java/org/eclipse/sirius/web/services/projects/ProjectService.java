@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,19 +82,19 @@ public class ProjectService implements IProjectService {
     @Override
     public IPayload createProject(CreateProjectInput input) {
         IPayload payload = null;
-        String name = input.getName().trim();
+        String name = input.name().trim();
 
         if (!this.isValidProjectName(name)) {
-            payload = new ErrorPayload(input.getId(), this.messageService.invalidProjectName());
+            payload = new ErrorPayload(input.id(), this.messageService.invalidProjectName());
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             var optionalOwner = this.accountRepository.findByUsername(authentication.getName());
             if (!optionalOwner.isEmpty()) {
-                ProjectEntity projectEntity = this.createProjectEntity(name, optionalOwner.get(), input.getVisibility());
+                ProjectEntity projectEntity = this.createProjectEntity(name, optionalOwner.get(), input.visibility());
                 projectEntity = this.projectRepository.save(projectEntity);
 
                 Project project = this.projectMapper.toDTO(projectEntity);
-                payload = new CreateProjectSuccessPayload(input.getId(), project);
+                payload = new CreateProjectSuccessPayload(input.id(), project);
             }
         }
         return payload;

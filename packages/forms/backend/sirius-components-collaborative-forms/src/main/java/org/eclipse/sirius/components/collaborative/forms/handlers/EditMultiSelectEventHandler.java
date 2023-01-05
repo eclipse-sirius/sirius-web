@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,27 +73,27 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditMultiSelectInput.class.getSimpleName());
-        IPayload payload = new ErrorPayload(formInput.getId(), message);
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.getRepresentationId(), formInput);
+        IPayload payload = new ErrorPayload(formInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof EditMultiSelectInput) {
             EditMultiSelectInput input = (EditMultiSelectInput) formInput;
 
             // @formatter:off
-            Optional<MultiSelect> optionalMultiSelect = this.formQueryService.findWidget(form, input.getSelectId())
+            Optional<MultiSelect> optionalMultiSelect = this.formQueryService.findWidget(form, input.selectId())
                     .filter(MultiSelect.class::isInstance)
                     .map(MultiSelect.class::cast);
 
             IStatus status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
-                    .map(handler -> handler.apply(input.getNewValues()))
+                    .map(handler -> handler.apply(input.newValues()))
                     .orElse(new Failure(""));
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new EditMultiSelectSuccessPayload(formInput.getId());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.getRepresentationId(), formInput);
+                payload = new EditMultiSelectSuccessPayload(formInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.getId(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }
         }
 

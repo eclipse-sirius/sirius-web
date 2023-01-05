@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,9 +54,9 @@ public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithF
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, ValidationEventInput.class);
-        var validationConfiguration = new ValidationConfiguration(input.getEditingContextId());
+        var validationConfiguration = new ValidationConfiguration(input.editingContextId());
 
-        return this.exceptionWrapper
-                .wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.getEditingContextId(), IValidationEventProcessor.class, validationConfiguration, input), input);
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IValidationEventProcessor.class, validationConfiguration, input),
+                input);
     }
 }
