@@ -75,43 +75,45 @@ public class UploadDocumentEventHandlerTests {
     private static final String PATH_TO_XMI_DOCUMENT = "test_import/document.xmi";
 
     // @formatter:off
-    private static final String JSON_CONTENT = "{" + System.lineSeparator()
-        + "    \"json\": {" + System.lineSeparator()
-        + "      \"version\": \"1.0\"," + System.lineSeparator()
-        + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
-        + "  }," + System.lineSeparator()
-        + "  \"ns\": {" + System.lineSeparator()
-        + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
-        + "  }," + System.lineSeparator()
-        + "  \"content\": [" + System.lineSeparator()
-        + "      {" + System.lineSeparator()
-        + "        \"id\": \"c7fb6833-1452-49bb-aa54-5d148925c2cb\"," + System.lineSeparator()
-        + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
-        + "        \"data\": {" + System.lineSeparator()
-        + "          \"name\": \"ecore\"," + System.lineSeparator()
-        + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
-        + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
-        + "        \"eClassifiers\": [" + System.lineSeparator()
-        + "            {" + System.lineSeparator()
-        + "              \"id\": \"031e998a-26b8-4eb0-9f62-d31ad2f96ca3\"," + System.lineSeparator()
-        + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
-        + "            \"data\": {" + System.lineSeparator()
-        + "                \"name\": \"AClass\"" + System.lineSeparator()
-        + "            }" + System.lineSeparator()
-        + "          }" + System.lineSeparator()
-        + "        ]" + System.lineSeparator()
-        + "      }" + System.lineSeparator()
-        + "    }" + System.lineSeparator()
-        + "  ]" + System.lineSeparator()
-        + "}" + System.lineSeparator();
-    // @formatter:on
-    // @formatter:off
+    private static final String JSON_CONTENT = """
+        {
+          "json": {
+            "version": "1.0",
+            "encoding": "utf-8"
+          },
+          "ns": {
+            "ecore": "http://www.eclipse.org/emf/2002/Ecore"
+          },
+          "content": [
+            {
+              "id": "c7fb6833-1452-49bb-aa54-5d148925c2cb",
+              "eClass": "ecore:EPackage",
+              "data": {
+                "name": "ecore",
+                "nsURI": "http://www.eclipse.org/emf/2002/Ecore",
+                "nsPrefix": "ecore",
+                "eClassifiers": [
+                  {
+                    "id": "031e998a-26b8-4eb0-9f62-d31ad2f96ca3",
+                    "eClass": "ecore:EClass",
+                    "data": {
+                      "name": "AClass"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+        """;
 
-    private static final String XMI_CONTENT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + System.lineSeparator()
-        + "<ecore:EPackage xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + System.lineSeparator()
-        + "    xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"ecore\" nsURI=\"http://www.eclipse.org/emf/2002/Ecore\" nsPrefix=\"ecore\">" + System.lineSeparator()
-        + "  <eClassifiers xsi:type=\"ecore:EClass\" name=\"AClass\"/>" + System.lineSeparator()
-        + "</ecore:EPackage>";
+    private static final String XMI_CONTENT = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ecore" nsURI="http://www.eclipse.org/emf/2002/Ecore" nsPrefix="ecore">
+          <eClassifiers xsi:type="ecore:EClass" name="AClass"/>
+        </ecore:EPackage>
+        """;
     // @formatter:on
 
     @Test
