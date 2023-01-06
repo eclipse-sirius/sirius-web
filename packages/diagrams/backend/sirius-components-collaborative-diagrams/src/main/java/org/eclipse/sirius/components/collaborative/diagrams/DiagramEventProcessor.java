@@ -107,14 +107,11 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput) {
-            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
+        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
             effectiveInput = new RenameDiagramInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
                     renameRepresentationInput.newLabel());
         }
-        if (effectiveInput instanceof IDiagramInput) {
-            IDiagramInput diagramInput = (IDiagramInput) effectiveInput;
-
+        if (effectiveInput instanceof IDiagramInput diagramInput) {
             Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
 
             if (optionalDiagramEventHandler.isPresent()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,14 +42,14 @@ public class DiagramElementFactory implements IElementFactory {
     @Override
     public Object instantiateElement(String type, IProps props, List<Object> children) {
         Object object = null;
-        if (DiagramElementProps.TYPE.equals(type) && props instanceof DiagramElementProps) {
-            object = this.instantiateDiagram((DiagramElementProps) props, children);
-        } else if (NodeElementProps.TYPE.equals(type) && props instanceof NodeElementProps) {
-            object = this.instantiateNode((NodeElementProps) props, children);
-        } else if (EdgeElementProps.TYPE.equals(type) && props instanceof EdgeElementProps) {
-            object = this.instantiateEdge((EdgeElementProps) props, children);
-        } else if (LabelElementProps.TYPE.equals(type) && props instanceof LabelElementProps) {
-            object = this.instantiateLabel((LabelElementProps) props);
+        if (DiagramElementProps.TYPE.equals(type) && props instanceof DiagramElementProps diagramElementProps) {
+            object = this.instantiateDiagram(diagramElementProps, children);
+        } else if (NodeElementProps.TYPE.equals(type) && props instanceof NodeElementProps nodeElementProps) {
+            object = this.instantiateNode(nodeElementProps, children);
+        } else if (EdgeElementProps.TYPE.equals(type) && props instanceof EdgeElementProps edgeElementProps) {
+            object = this.instantiateEdge(edgeElementProps, children);
+        } else if (LabelElementProps.TYPE.equals(type) && props instanceof LabelElementProps labelElementProps) {
+            object = this.instantiateLabel(labelElementProps);
         }
         return object;
     }
@@ -60,10 +60,10 @@ public class DiagramElementFactory implements IElementFactory {
 
         // @formatter:off
         children.forEach(child -> {
-            if (child instanceof Node) {
-                nodes.add((Node) child);
-            } else if (child instanceof Edge) {
-                edges.add((Edge) child);
+            if (child instanceof Node node) {
+                nodes.add(node);
+            } else if (child instanceof Edge edge) {
+                edges.add(edge);
             } else {
                 this.logger.warn("Unsupported child {}", child);
             }

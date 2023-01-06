@@ -228,8 +228,7 @@ public class NodeComponent implements IComponent {
      */
     private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Node> optionalPreviousNode, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
-        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent) {
-            HideDiagramElementEvent hideDiagramElementEvent = (HideDiagramElementEvent) optionalDiagramEvent.get();
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent hideDiagramElementEvent) {
             if (hideDiagramElementEvent.getElementIds().contains(id)) {
                 if (hideDiagramElementEvent.hideElement()) {
                     modifiers.add(ViewModifier.Hidden);
@@ -237,8 +236,7 @@ public class NodeComponent implements IComponent {
                     modifiers.remove(ViewModifier.Hidden);
                 }
             }
-        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent) {
-            FadeDiagramElementEvent fadeDiagramElementEvent = (FadeDiagramElementEvent) optionalDiagramEvent.get();
+        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent fadeDiagramElementEvent) {
             if (fadeDiagramElementEvent.getElementIds().contains(id)) {
                 if (fadeDiagramElementEvent.fadeElement()) {
                     modifiers.add(ViewModifier.Faded);

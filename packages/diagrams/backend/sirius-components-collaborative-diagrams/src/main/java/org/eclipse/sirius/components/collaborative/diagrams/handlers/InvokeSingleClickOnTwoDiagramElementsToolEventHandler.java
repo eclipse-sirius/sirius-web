@@ -107,8 +107,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
-        if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput) {
-            InvokeSingleClickOnTwoDiagramElementsToolInput input = (InvokeSingleClickOnTwoDiagramElementsToolInput) diagramInput;
+        if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
@@ -120,16 +119,16 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
                 Position sourcePosition = Position.at(input.sourcePositionX(), input.sourcePositionY());
                 Position targetPosition = Position.at(input.targetPositionX(), input.targetPositionY());
                 IStatus status = this.executeTool(editingContext, diagramContext, input.diagramSourceElementId(), input.diagramTargetElementId(), optionalTool.get(), sourcePosition, targetPosition);
-                if (status instanceof Success) {
+                if (status instanceof Success success) {
                     WorkbenchSelection newSelection = null;
-                    Object newSelectionParameter = ((Success) status).getParameters().get(Success.NEW_SELECTION);
-                    if (newSelectionParameter instanceof WorkbenchSelection) {
-                        newSelection = (WorkbenchSelection) newSelectionParameter;
+                    Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
+                    if (newSelectionParameter instanceof WorkbenchSelection workbenchSelection) {
+                        newSelection = workbenchSelection;
                     }
                     payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.id(), newSelection);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
-                } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(diagramInput.id(), ((Failure) status).getMessage());
+                } else if (status instanceof Failure failure) {
+                    payload = new ErrorPayload(diagramInput.id(), failure.getMessage());
                 }
             }
         }

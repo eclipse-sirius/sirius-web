@@ -98,8 +98,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
-        if (diagramInput instanceof EditLabelInput) {
-            EditLabelInput input = (EditLabelInput) diagramInput;
+        if (diagramInput instanceof EditLabelInput input) {
             Diagram diagram = diagramContext.getDiagram();
             var node = this.diagramQueryService.findNodeByLabelId(diagram, input.labelId());
             if (node.isPresent()) {

@@ -134,15 +134,13 @@ public class EdgeComponent implements IComponent {
                     ViewModifier state = this.computeState(optionalDiagramEvent, sourceNode, sourceId, targetNode, targetId, modifiers);
                     edgeElementPropsBuilder.state(state);
 
-                    if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof RemoveEdgeEvent) {
-                        RemoveEdgeEvent removeEdgeEvent = (RemoveEdgeEvent) optionalDiagramEvent.get();
+                    if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof RemoveEdgeEvent removeEdgeEvent) {
                         optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, removeEdgeEvent, edgeIdProvider, count);
                         Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
                         Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
                         edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
                         edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
-                    } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof ReconnectEdgeEvent) {
-                        ReconnectEdgeEvent reconnectEdgeEvent = (ReconnectEdgeEvent) optionalDiagramEvent.get();
+                    } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof ReconnectEdgeEvent reconnectEdgeEvent) {
                         optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, reconnectEdgeEvent, edgeIdProvider, count, optionalPreviousEdge, edgeElementPropsBuilder);
                     } else {
                         Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
@@ -213,8 +211,7 @@ public class EdgeComponent implements IComponent {
      */
     private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Edge> optionalPreviousEdge, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousEdge.map(Edge::getModifiers).orElse(Set.of()));
-        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent) {
-            HideDiagramElementEvent hideDiagramElementEvent = (HideDiagramElementEvent) optionalDiagramEvent.get();
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent hideDiagramElementEvent) {
             if (hideDiagramElementEvent.getElementIds().contains(id)) {
                 if (hideDiagramElementEvent.hideElement()) {
                     modifiers.add(ViewModifier.Hidden);
@@ -222,8 +219,7 @@ public class EdgeComponent implements IComponent {
                     modifiers.remove(ViewModifier.Hidden);
                 }
             }
-        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent) {
-            FadeDiagramElementEvent fadeDiagramElementEvent = (FadeDiagramElementEvent) optionalDiagramEvent.get();
+        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof FadeDiagramElementEvent fadeDiagramElementEvent) {
             if (fadeDiagramElementEvent.getElementIds().contains(id)) {
                 if (fadeDiagramElementEvent.fadeElement()) {
                     modifiers.add(ViewModifier.Faded);

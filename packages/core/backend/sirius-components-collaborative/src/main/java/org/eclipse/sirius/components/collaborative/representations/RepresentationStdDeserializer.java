@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,8 +50,7 @@ public class RepresentationStdDeserializer extends StdDeserializer<IRepresentati
     public IRepresentation deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
         IRepresentation representation = null;
         ObjectCodec objectCodec = jsonParser.getCodec();
-        if (objectCodec instanceof ObjectMapper) {
-            ObjectMapper mapper = (ObjectMapper) objectCodec;
+        if (objectCodec instanceof ObjectMapper mapper) {
             ObjectNode root = mapper.readTree(jsonParser);
 
             // @formatter:off

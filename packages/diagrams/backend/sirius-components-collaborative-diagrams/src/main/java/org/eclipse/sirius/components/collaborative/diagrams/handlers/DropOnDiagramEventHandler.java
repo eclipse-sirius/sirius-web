@@ -80,9 +80,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
 
         var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
-        if (diagramInput instanceof DropOnDiagramInput) {
-            DropOnDiagramInput input = (DropOnDiagramInput) diagramInput;
-
+        if (diagramInput instanceof DropOnDiagramInput input) {
             List<Object> objects = input.objectIds().stream().map(objectId -> this.objectService.getObject(editingContext, objectId)).flatMap(Optional::stream).toList();
             Diagram diagram = diagramContext.getDiagram();
 
@@ -92,8 +90,8 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
                 if (status instanceof Success) {
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                     payload = new DropOnDiagramSuccessPayload(diagramInput.id(), diagram);
-                } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(diagramInput.id(), ((Failure) status).getMessage());
+                } else if (status instanceof Failure failure) {
+                    payload = new ErrorPayload(diagramInput.id(), failure.getMessage());
                 }
             }
         }

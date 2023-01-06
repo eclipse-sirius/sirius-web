@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,10 +31,10 @@ public class HierarchyElementFactory implements IElementFactory {
     @Override
     public Object instantiateElement(String type, IProps props, List<Object> children) {
         Object object = null;
-        if (HierarchyElementProps.TYPE.equals(type) && props instanceof HierarchyElementProps) {
-            object = this.instantiateHierarchy((HierarchyElementProps) props, children);
-        } else if (HierarchyNodeElementProps.TYPE.equals(type) && props instanceof HierarchyNodeElementProps) {
-            object = this.instantiateNode((HierarchyNodeElementProps) props, children);
+        if (HierarchyElementProps.TYPE.equals(type) && props instanceof HierarchyElementProps hierarchyElementProps) {
+            object = this.instantiateHierarchy(hierarchyElementProps, children);
+        } else if (HierarchyNodeElementProps.TYPE.equals(type) && props instanceof HierarchyNodeElementProps hierarchyNodeElementProps) {
+            object = this.instantiateNode(hierarchyNodeElementProps, children);
         }
         return object;
     }
