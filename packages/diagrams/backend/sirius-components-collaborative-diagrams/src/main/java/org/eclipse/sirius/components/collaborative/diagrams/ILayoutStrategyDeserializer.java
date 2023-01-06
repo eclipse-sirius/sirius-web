@@ -48,8 +48,7 @@ public class ILayoutStrategyDeserializer extends StdDeserializer<ILayoutStrategy
     public ILayoutStrategy deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
         ILayoutStrategy layoutStrategy = null;
         ObjectCodec objectCodec = jsonParser.getCodec();
-        if (objectCodec instanceof ObjectMapper) {
-            ObjectMapper mapper = (ObjectMapper) objectCodec;
+        if (objectCodec instanceof ObjectMapper mapper) {
             ObjectNode root = mapper.readTree(jsonParser);
             switch (root.get("kind").asText()) {
                 case ListLayoutStrategy.KIND:

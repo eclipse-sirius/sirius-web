@@ -60,8 +60,7 @@ public class RenameProjectEventHandler implements IEditingContextEventHandler {
         IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof RenameProjectInput) {
-            RenameProjectInput renameProjectInput = (RenameProjectInput) input;
+        if (input instanceof RenameProjectInput renameProjectInput) {
             Optional<Project> optionalProject = this.projectService.renameProject(renameProjectInput.projectId(), renameProjectInput.newName());
             if (optionalProject.isPresent()) {
                 payload = new RenameProjectSuccessPayload(input.id(), optionalProject.get());

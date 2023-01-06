@@ -50,13 +50,11 @@ public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> {
     public INodeStyle deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JsonProcessingException {
         INodeStyle nodeStyle = null;
         ObjectCodec objectCodec = jsonParser.getCodec();
-        if (objectCodec instanceof ObjectMapper) {
-            ObjectMapper mapper = (ObjectMapper) objectCodec;
+        if (objectCodec instanceof ObjectMapper mapper) {
             ObjectNode root = mapper.readTree(jsonParser);
 
             Object parent = jsonParser.getParsingContext().getCurrentValue();
-            if (parent instanceof Node) {
-                Node parentNode = (Node) parent;
+            if (parent instanceof Node parentNode) {
                 switch (parentNode.getType()) {
                     case NodeType.NODE_RECTANGLE:
                         nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);

@@ -165,9 +165,9 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (this.sink.currentSubscriberCount() > 0) {
             IInput input = changeDescription.getInput();
             UUID correlationId = input.id();
-            if (input instanceof RenameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
-                String representationId = ((RenameRepresentationInput) input).representationId();
-                String newLabel = ((RenameRepresentationInput) input).newLabel();
+            if (input instanceof RenameRepresentationInput renameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
+                String representationId = renameRepresentationInput.representationId();
+                String newLabel = renameRepresentationInput.newLabel();
                 this.tryEmitRepresentationRenamedEvent(correlationId, representationId, newLabel);
             } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
                 Map<String, Object> parameters = changeDescription.getParameters();
@@ -241,8 +241,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private void doHandle(One<IPayload> payloadSink, IInput input) {
         this.logger.trace("Input received: {}", input);
 
-        if (input instanceof IRepresentationInput) {
-            IRepresentationInput representationInput = (IRepresentationInput) input;
+        if (input instanceof IRepresentationInput representationInput) {
             this.handleRepresentationInput(payloadSink, representationInput);
         } else {
             this.handleInput(payloadSink, input);
@@ -299,8 +298,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     }
 
     private void handleInput(One<IPayload> payloadSink, IInput input) {
-        if (input instanceof DeleteRepresentationInput) {
-            DeleteRepresentationInput deleteRepresentationInput = (DeleteRepresentationInput) input;
+        if (input instanceof DeleteRepresentationInput deleteRepresentationInput) {
             this.disposeRepresentation(deleteRepresentationInput.representationId());
         }
 
