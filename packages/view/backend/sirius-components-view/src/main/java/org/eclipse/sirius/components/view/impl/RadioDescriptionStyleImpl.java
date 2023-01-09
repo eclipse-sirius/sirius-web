@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -323,18 +323,18 @@ public class RadioDescriptionStyleImpl extends WidgetDescriptionStyleImpl implem
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
-            return this.getFontSize();
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
-            return this.getColor();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
+                return this.getFontSize();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
+                return this.isItalic();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
+                return this.isBold();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
+                return this.isUnderline();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                return this.isStrikeThrough();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
+                return this.getColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -347,24 +347,24 @@ public class RadioDescriptionStyleImpl extends WidgetDescriptionStyleImpl implem
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
-            this.setColor((String) newValue);
-            return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
+                this.setFontSize((Integer) newValue);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
+                this.setItalic((Boolean) newValue);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
+                this.setBold((Boolean) newValue);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
+                this.setUnderline((Boolean) newValue);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough((Boolean) newValue);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
+                this.setColor((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -377,24 +377,24 @@ public class RadioDescriptionStyleImpl extends WidgetDescriptionStyleImpl implem
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
-            this.setColor(COLOR_EDEFAULT);
-            return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
+                this.setFontSize(FONT_SIZE_EDEFAULT);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
+                this.setItalic(ITALIC_EDEFAULT);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
+                this.setBold(BOLD_EDEFAULT);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
+                this.setUnderline(UNDERLINE_EDEFAULT);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+                return;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
+                this.setColor(COLOR_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -407,18 +407,18 @@ public class RadioDescriptionStyleImpl extends WidgetDescriptionStyleImpl implem
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-        case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
-            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
+                return this.fontSize != FONT_SIZE_EDEFAULT;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
+                return this.italic != ITALIC_EDEFAULT;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
+                return this.bold != BOLD_EDEFAULT;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
+                return this.underline != UNDERLINE_EDEFAULT;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case ViewPackage.RADIO_DESCRIPTION_STYLE__COLOR:
+                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         }
         return super.eIsSet(featureID);
     }
@@ -432,18 +432,18 @@ public class RadioDescriptionStyleImpl extends WidgetDescriptionStyleImpl implem
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
-                return ViewPackage.LABEL_STYLE__FONT_SIZE;
-            case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
-                return ViewPackage.LABEL_STYLE__ITALIC;
-            case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
-                return ViewPackage.LABEL_STYLE__BOLD;
-            case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
-                return ViewPackage.LABEL_STYLE__UNDERLINE;
-            case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE:
+                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
+                case ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC:
+                    return ViewPackage.LABEL_STYLE__ITALIC;
+                case ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD:
+                    return ViewPackage.LABEL_STYLE__BOLD;
+                case ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE:
+                    return ViewPackage.LABEL_STYLE__UNDERLINE;
+                case ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -458,18 +458,18 @@ public class RadioDescriptionStyleImpl extends WidgetDescriptionStyleImpl implem
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                return ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE;
-            case ViewPackage.LABEL_STYLE__ITALIC:
-                return ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC;
-            case ViewPackage.LABEL_STYLE__BOLD:
-                return ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD;
-            case ViewPackage.LABEL_STYLE__UNDERLINE:
-                return ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE;
-            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                return ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                    return ViewPackage.RADIO_DESCRIPTION_STYLE__FONT_SIZE;
+                case ViewPackage.LABEL_STYLE__ITALIC:
+                    return ViewPackage.RADIO_DESCRIPTION_STYLE__ITALIC;
+                case ViewPackage.LABEL_STYLE__BOLD:
+                    return ViewPackage.RADIO_DESCRIPTION_STYLE__BOLD;
+                case ViewPackage.LABEL_STYLE__UNDERLINE:
+                    return ViewPackage.RADIO_DESCRIPTION_STYLE__UNDERLINE;
+                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -128,8 +128,7 @@ public class LabelDescriptionItemProvider extends WidgetDescriptionItemProvider 
     @Override
     public String getText(Object object) {
         String label = ((LabelDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_LabelDescription_type") :
-                this.getString("_UI_LabelDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_LabelDescription_type") : this.getString("_UI_LabelDescription_type") + " " + label;
     }
 
     /**
@@ -144,13 +143,13 @@ public class LabelDescriptionItemProvider extends WidgetDescriptionItemProvider 
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(LabelDescription.class)) {
-        case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.LABEL_DESCRIPTION__STYLE:
-        case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.LABEL_DESCRIPTION__STYLE:
+            case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -184,8 +183,7 @@ public class LabelDescriptionItemProvider extends WidgetDescriptionItemProvider 
         boolean qualify = childFeature == ViewPackage.Literals.LABEL_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.LABEL_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

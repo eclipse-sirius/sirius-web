@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,7 @@ public class ConditionalItemProvider extends ItemProviderAdapter
      */
     protected void addConditionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Conditional_condition_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Conditional_condition_feature", "_UI_Conditional_type"),
+                this.getString("_UI_Conditional_condition_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Conditional_condition_feature", "_UI_Conditional_type"),
                 ViewPackage.Literals.CONDITIONAL__CONDITION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -103,8 +102,7 @@ public class ConditionalItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((Conditional) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_Conditional_type") :
-                this.getString("_UI_Conditional_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_Conditional_type") : this.getString("_UI_Conditional_type") + " " + label;
     }
 
     /**
@@ -119,9 +117,9 @@ public class ConditionalItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Conditional.class)) {
-        case ViewPackage.CONDITIONAL__CONDITION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CONDITIONAL__CONDITION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

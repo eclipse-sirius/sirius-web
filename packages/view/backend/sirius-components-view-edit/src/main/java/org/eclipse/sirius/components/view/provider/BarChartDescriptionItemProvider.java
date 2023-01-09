@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,8 +105,7 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     protected void addWidthPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_width_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"),
+                this.getString("_UI_BarChartDescription_width_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"),
                 ViewPackage.Literals.BAR_CHART_DESCRIPTION__WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -118,8 +117,8 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
     protected void addHeightPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_BarChartDescription_height_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"),
-                ViewPackage.Literals.BAR_CHART_DESCRIPTION__HEIGHT, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"), ViewPackage.Literals.BAR_CHART_DESCRIPTION__HEIGHT,
+                true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -181,8 +180,7 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
     @Override
     public String getText(Object object) {
         String label = ((BarChartDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_BarChartDescription_type") :
-                this.getString("_UI_BarChartDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_BarChartDescription_type") : this.getString("_UI_BarChartDescription_type") + " " + label;
     }
 
     /**
@@ -197,17 +195,17 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(BarChartDescription.class)) {
-        case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
-        case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
-        case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
-        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
-        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
-        case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
+            case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
+            case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+            case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+            case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
+            case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -241,8 +239,7 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
         boolean qualify = childFeature == ViewPackage.Literals.BAR_CHART_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

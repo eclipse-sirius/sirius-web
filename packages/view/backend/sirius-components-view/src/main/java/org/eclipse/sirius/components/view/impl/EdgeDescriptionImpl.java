@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -468,14 +468,14 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-            return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
-        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
-            return ((InternalEList<?>) this.getReconnectEdgeTools()).basicRemove(otherEnd, msgs);
-        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.EDGE_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
+            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+                return ((InternalEList<?>) this.getReconnectEdgeTools()).basicRemove(otherEnd, msgs);
+            case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -488,28 +488,28 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
-            return this.getBeginLabelExpression();
-        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
-            return this.getEndLabelExpression();
-        case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
-            return this.isIsDomainBasedEdge();
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-            return this.getSourceNodeDescriptions();
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-            return this.getTargetNodeDescriptions();
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-            return this.getSourceNodesExpression();
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-            return this.getTargetNodesExpression();
-        case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            return this.getStyle();
-        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-            return this.getEdgeTools();
-        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
-            return this.getReconnectEdgeTools();
-        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.getConditionalStyles();
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+                return this.getBeginLabelExpression();
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+                return this.getEndLabelExpression();
+            case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
+                return this.isIsDomainBasedEdge();
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+                return this.getSourceNodeDescriptions();
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+                return this.getTargetNodeDescriptions();
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
+                return this.getSourceNodesExpression();
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
+                return this.getTargetNodesExpression();
+            case ViewPackage.EDGE_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                return this.getEdgeTools();
+            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+                return this.getReconnectEdgeTools();
+            case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -523,44 +523,44 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
-            this.setBeginLabelExpression((String) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
-            this.setEndLabelExpression((String) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
-            this.setIsDomainBasedEdge((Boolean) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-            this.getSourceNodeDescriptions().clear();
-            this.getSourceNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-            this.getTargetNodeDescriptions().clear();
-            this.getTargetNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-            this.setSourceNodesExpression((String) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-            this.setTargetNodesExpression((String) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            this.setStyle((EdgeStyle) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-            this.getEdgeTools().clear();
-            this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
-            this.getReconnectEdgeTools().clear();
-            this.getReconnectEdgeTools().addAll((Collection<? extends EdgeReconnectionTool>) newValue);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalEdgeStyle>) newValue);
-            return;
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+                this.setBeginLabelExpression((String) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+                this.setEndLabelExpression((String) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
+                this.setIsDomainBasedEdge((Boolean) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+                this.getSourceNodeDescriptions().clear();
+                this.getSourceNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+                this.getTargetNodeDescriptions().clear();
+                this.getTargetNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
+                this.setSourceNodesExpression((String) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
+                this.setTargetNodesExpression((String) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__STYLE:
+                this.setStyle((EdgeStyle) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                this.getEdgeTools().clear();
+                this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+                this.getReconnectEdgeTools().clear();
+                this.getReconnectEdgeTools().addAll((Collection<? extends EdgeReconnectionTool>) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalEdgeStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -573,39 +573,39 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
-            this.setBeginLabelExpression(BEGIN_LABEL_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
-            this.setEndLabelExpression(END_LABEL_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
-            this.setIsDomainBasedEdge(IS_DOMAIN_BASED_EDGE_EDEFAULT);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-            this.getSourceNodeDescriptions().clear();
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-            this.getTargetNodeDescriptions().clear();
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-            this.setSourceNodesExpression(SOURCE_NODES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-            this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            this.setStyle((EdgeStyle) null);
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-            this.getEdgeTools().clear();
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
-            this.getReconnectEdgeTools().clear();
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            return;
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+                this.setBeginLabelExpression(BEGIN_LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+                this.setEndLabelExpression(END_LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
+                this.setIsDomainBasedEdge(IS_DOMAIN_BASED_EDGE_EDEFAULT);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+                this.getSourceNodeDescriptions().clear();
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+                this.getTargetNodeDescriptions().clear();
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
+                this.setSourceNodesExpression(SOURCE_NODES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
+                this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__STYLE:
+                this.setStyle((EdgeStyle) null);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                this.getEdgeTools().clear();
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+                this.getReconnectEdgeTools().clear();
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -618,28 +618,28 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
-            return BEGIN_LABEL_EXPRESSION_EDEFAULT == null ? this.beginLabelExpression != null : !BEGIN_LABEL_EXPRESSION_EDEFAULT.equals(this.beginLabelExpression);
-        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
-            return END_LABEL_EXPRESSION_EDEFAULT == null ? this.endLabelExpression != null : !END_LABEL_EXPRESSION_EDEFAULT.equals(this.endLabelExpression);
-        case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
-            return this.isDomainBasedEdge != IS_DOMAIN_BASED_EDGE_EDEFAULT;
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-            return this.sourceNodeDescriptions != null && !this.sourceNodeDescriptions.isEmpty();
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-            return this.targetNodeDescriptions != null && !this.targetNodeDescriptions.isEmpty();
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-            return SOURCE_NODES_EXPRESSION_EDEFAULT == null ? this.sourceNodesExpression != null : !SOURCE_NODES_EXPRESSION_EDEFAULT.equals(this.sourceNodesExpression);
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-            return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
-        case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            return this.style != null;
-        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-            return this.edgeTools != null && !this.edgeTools.isEmpty();
-        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
-            return this.reconnectEdgeTools != null && !this.reconnectEdgeTools.isEmpty();
-        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+                return BEGIN_LABEL_EXPRESSION_EDEFAULT == null ? this.beginLabelExpression != null : !BEGIN_LABEL_EXPRESSION_EDEFAULT.equals(this.beginLabelExpression);
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+                return END_LABEL_EXPRESSION_EDEFAULT == null ? this.endLabelExpression != null : !END_LABEL_EXPRESSION_EDEFAULT.equals(this.endLabelExpression);
+            case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
+                return this.isDomainBasedEdge != IS_DOMAIN_BASED_EDGE_EDEFAULT;
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
+                return this.sourceNodeDescriptions != null && !this.sourceNodeDescriptions.isEmpty();
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
+                return this.targetNodeDescriptions != null && !this.targetNodeDescriptions.isEmpty();
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
+                return SOURCE_NODES_EXPRESSION_EDEFAULT == null ? this.sourceNodesExpression != null : !SOURCE_NODES_EXPRESSION_EDEFAULT.equals(this.sourceNodesExpression);
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
+                return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
+            case ViewPackage.EDGE_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                return this.edgeTools != null && !this.edgeTools.isEmpty();
+            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+                return this.reconnectEdgeTools != null && !this.reconnectEdgeTools.isEmpty();
+            case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

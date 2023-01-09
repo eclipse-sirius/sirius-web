@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,8 +90,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_GroupDescription_name_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_name_feature", "_UI_GroupDescription_type"),
+                this.getString("_UI_GroupDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_name_feature", "_UI_GroupDescription_type"),
                 ViewPackage.Literals.GROUP_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -115,8 +114,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
     protected void addDisplayModePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_GroupDescription_displayMode_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_displayMode_feature", "_UI_GroupDescription_type"),
-                ViewPackage.Literals.GROUP_DESCRIPTION__DISPLAY_MODE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupDescription_displayMode_feature", "_UI_GroupDescription_type"), ViewPackage.Literals.GROUP_DESCRIPTION__DISPLAY_MODE,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -191,8 +190,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((GroupDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_GroupDescription_type") :
-                this.getString("_UI_GroupDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_GroupDescription_type") : this.getString("_UI_GroupDescription_type") + " " + label;
     }
 
     /**
@@ -207,16 +205,16 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(GroupDescription.class)) {
-        case ViewPackage.GROUP_DESCRIPTION__NAME:
-        case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
-        case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
-        case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-        case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.GROUP_DESCRIPTION__NAME:
+            case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
+            case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
+            case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
+            case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -310,8 +308,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         boolean qualify = childFeature == ViewPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS || childFeature == ViewPackage.Literals.GROUP_DESCRIPTION__WIDGETS;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

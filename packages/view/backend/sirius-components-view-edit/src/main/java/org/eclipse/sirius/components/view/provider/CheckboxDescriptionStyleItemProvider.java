@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,8 +95,7 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
     @Override
     public String getText(Object object) {
         String label = ((CheckboxDescriptionStyle) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_CheckboxDescriptionStyle_type") :
-                this.getString("_UI_CheckboxDescriptionStyle_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_CheckboxDescriptionStyle_type") : this.getString("_UI_CheckboxDescriptionStyle_type") + " " + label;
     }
 
     /**
@@ -111,9 +110,9 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(CheckboxDescriptionStyle.class)) {
-        case ViewPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

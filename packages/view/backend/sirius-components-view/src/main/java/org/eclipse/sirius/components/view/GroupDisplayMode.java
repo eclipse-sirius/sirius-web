@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,10 +130,10 @@ public enum GroupDisplayMode implements Enumerator {
      */
     public static GroupDisplayMode get(int value) {
         switch (value) {
-        case LIST_VALUE:
-            return LIST;
-        case TOGGLEABLE_AREAS_VALUE:
-            return TOGGLEABLE_AREAS;
+            case LIST_VALUE:
+                return LIST;
+            case TOGGLEABLE_AREAS_VALUE:
+                return TOGGLEABLE_AREAS;
         }
         return null;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -311,12 +311,12 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
-            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
-            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -329,18 +329,18 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
-            return this.getValueExpression();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
-            return this.getCandidatesExpression();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
-            return this.getCandidateLabelExpression();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
-            return this.getBody();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
-            return this.getStyle();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.getConditionalStyles();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
+                return this.getValueExpression();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
+                return this.getCandidatesExpression();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
+                return this.getCandidateLabelExpression();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+                return this.getBody();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -354,26 +354,26 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
-            this.setValueExpression((String) newValue);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
-            this.setCandidatesExpression((String) newValue);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
-            this.setCandidateLabelExpression((String) newValue);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
-            this.getBody().clear();
-            this.getBody().addAll((Collection<? extends Operation>) newValue);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
-            this.setStyle((MultiSelectDescriptionStyle) newValue);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalMultiSelectDescriptionStyle>) newValue);
-            return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
+                this.setValueExpression((String) newValue);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
+                this.setCandidatesExpression((String) newValue);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
+                this.setCandidateLabelExpression((String) newValue);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+                this.getBody().clear();
+                this.getBody().addAll((Collection<? extends Operation>) newValue);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
+                this.setStyle((MultiSelectDescriptionStyle) newValue);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalMultiSelectDescriptionStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -386,24 +386,24 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
-            this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
-            this.setCandidatesExpression(CANDIDATES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
-            this.setCandidateLabelExpression(CANDIDATE_LABEL_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
-            this.getBody().clear();
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
-            this.setStyle((MultiSelectDescriptionStyle) null);
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
+                this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
+                this.setCandidatesExpression(CANDIDATES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
+                this.setCandidateLabelExpression(CANDIDATE_LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+                this.getBody().clear();
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
+                this.setStyle((MultiSelectDescriptionStyle) null);
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -416,18 +416,18 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
-            return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
-            return CANDIDATES_EXPRESSION_EDEFAULT == null ? this.candidatesExpression != null : !CANDIDATES_EXPRESSION_EDEFAULT.equals(this.candidatesExpression);
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
-            return CANDIDATE_LABEL_EXPRESSION_EDEFAULT == null ? this.candidateLabelExpression != null : !CANDIDATE_LABEL_EXPRESSION_EDEFAULT.equals(this.candidateLabelExpression);
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
-            return this.body != null && !this.body.isEmpty();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
-            return this.style != null;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
+                return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
+                return CANDIDATES_EXPRESSION_EDEFAULT == null ? this.candidatesExpression != null : !CANDIDATES_EXPRESSION_EDEFAULT.equals(this.candidatesExpression);
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
+                return CANDIDATE_LABEL_EXPRESSION_EDEFAULT == null ? this.candidateLabelExpression != null : !CANDIDATE_LABEL_EXPRESSION_EDEFAULT.equals(this.candidateLabelExpression);
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+                return this.body != null && !this.body.isEmpty();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

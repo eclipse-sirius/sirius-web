@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -241,10 +241,10 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -257,14 +257,14 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            return this.getValuesExpression();
-        case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            return this.getKeysExpression();
-        case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
-            return this.getStyle();
-        case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.getConditionalStyles();
+            case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                return this.getValuesExpression();
+            case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                return this.getKeysExpression();
+            case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -278,19 +278,19 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            this.setValuesExpression((String) newValue);
-            return;
-        case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            this.setKeysExpression((String) newValue);
-            return;
-        case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
-            this.setStyle((PieChartDescriptionStyle) newValue);
-            return;
-        case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalPieChartDescriptionStyle>) newValue);
-            return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                this.setValuesExpression((String) newValue);
+                return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                this.setKeysExpression((String) newValue);
+                return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
+                this.setStyle((PieChartDescriptionStyle) newValue);
+                return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalPieChartDescriptionStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -303,18 +303,18 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            this.setValuesExpression(VALUES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            this.setKeysExpression(KEYS_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
-            this.setStyle((PieChartDescriptionStyle) null);
-            return;
-        case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                this.setValuesExpression(VALUES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                this.setKeysExpression(KEYS_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
+                this.setStyle((PieChartDescriptionStyle) null);
+                return;
+            case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -327,14 +327,14 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            return VALUES_EXPRESSION_EDEFAULT == null ? this.valuesExpression != null : !VALUES_EXPRESSION_EDEFAULT.equals(this.valuesExpression);
-        case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            return KEYS_EXPRESSION_EDEFAULT == null ? this.keysExpression != null : !KEYS_EXPRESSION_EDEFAULT.equals(this.keysExpression);
-        case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
-            return this.style != null;
-        case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ViewPackage.PIE_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                return VALUES_EXPRESSION_EDEFAULT == null ? this.valuesExpression != null : !VALUES_EXPRESSION_EDEFAULT.equals(this.valuesExpression);
+            case ViewPackage.PIE_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                return KEYS_EXPRESSION_EDEFAULT == null ? this.keysExpression != null : !KEYS_EXPRESSION_EDEFAULT.equals(this.keysExpression);
+            case ViewPackage.PIE_CHART_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

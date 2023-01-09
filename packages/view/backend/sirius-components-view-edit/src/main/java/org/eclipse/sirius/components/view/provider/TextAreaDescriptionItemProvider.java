@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -129,8 +129,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
     @Override
     public String getText(Object object) {
         String label = ((TextAreaDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TextAreaDescription_type") :
-                this.getString("_UI_TextAreaDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_TextAreaDescription_type") : this.getString("_UI_TextAreaDescription_type") + " " + label;
     }
 
     /**
@@ -145,14 +144,14 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(TextAreaDescription.class)) {
-        case ViewPackage.TEXT_AREA_DESCRIPTION__VALUE_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
-        case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
-        case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.TEXT_AREA_DESCRIPTION__VALUE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.TEXT_AREA_DESCRIPTION__BODY:
+            case ViewPackage.TEXT_AREA_DESCRIPTION__STYLE:
+            case ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -200,8 +199,7 @@ public class TextAreaDescriptionItemProvider extends WidgetDescriptionItemProvid
         boolean qualify = childFeature == ViewPackage.Literals.TEXT_AREA_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

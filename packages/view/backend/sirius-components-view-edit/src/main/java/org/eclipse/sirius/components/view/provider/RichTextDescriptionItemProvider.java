@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -127,8 +127,7 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
     @Override
     public String getText(Object object) {
         String label = ((RichTextDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RichTextDescription_type") :
-                this.getString("_UI_RichTextDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_RichTextDescription_type") : this.getString("_UI_RichTextDescription_type") + " " + label;
     }
 
     /**
@@ -143,12 +142,12 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(RichTextDescription.class)) {
-        case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

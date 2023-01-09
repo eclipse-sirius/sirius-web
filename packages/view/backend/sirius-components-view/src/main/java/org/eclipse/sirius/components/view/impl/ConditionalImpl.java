@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,8 +101,8 @@ public abstract class ConditionalImpl extends MinimalEObjectImpl.Container imple
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL__CONDITION:
-            return this.getCondition();
+            case ViewPackage.CONDITIONAL__CONDITION:
+                return this.getCondition();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -115,9 +115,9 @@ public abstract class ConditionalImpl extends MinimalEObjectImpl.Container imple
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL__CONDITION:
-            this.setCondition((String) newValue);
-            return;
+            case ViewPackage.CONDITIONAL__CONDITION:
+                this.setCondition((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -130,9 +130,9 @@ public abstract class ConditionalImpl extends MinimalEObjectImpl.Container imple
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL__CONDITION:
-            this.setCondition(CONDITION_EDEFAULT);
-            return;
+            case ViewPackage.CONDITIONAL__CONDITION:
+                this.setCondition(CONDITION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -145,8 +145,8 @@ public abstract class ConditionalImpl extends MinimalEObjectImpl.Container imple
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL__CONDITION:
-            return CONDITION_EDEFAULT == null ? this.condition != null : !CONDITION_EDEFAULT.equals(this.condition);
+            case ViewPackage.CONDITIONAL__CONDITION:
+                return CONDITION_EDEFAULT == null ? this.condition != null : !CONDITION_EDEFAULT.equals(this.condition);
         }
         return super.eIsSet(featureID);
     }

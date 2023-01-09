@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,7 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addFontSizePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -81,10 +80,9 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      * @generated
      */
     protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -93,10 +91,9 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      * @generated
      */
     protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -106,8 +103,7 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -118,8 +114,7 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -187,8 +182,7 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
     @Override
     public String getText(Object object) {
         String label = ((ConditionalPieChartDescriptionStyle) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalPieChartDescriptionStyle_type") :
-                this.getString("_UI_ConditionalPieChartDescriptionStyle_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalPieChartDescriptionStyle_type") : this.getString("_UI_ConditionalPieChartDescriptionStyle_type") + " " + label;
     }
 
     /**
@@ -203,16 +197,16 @@ public class ConditionalPieChartDescriptionStyleItemProvider extends Conditional
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ConditionalPieChartDescriptionStyle.class)) {
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__ITALIC:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__BOLD:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__UNDERLINE:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__COLORS:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__ITALIC:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__BOLD:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__UNDERLINE:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__COLORS:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

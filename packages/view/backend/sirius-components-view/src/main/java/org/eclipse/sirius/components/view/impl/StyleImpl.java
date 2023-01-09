@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,8 +101,8 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.STYLE__COLOR:
-            return this.getColor();
+            case ViewPackage.STYLE__COLOR:
+                return this.getColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -115,9 +115,9 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.STYLE__COLOR:
-            this.setColor((String) newValue);
-            return;
+            case ViewPackage.STYLE__COLOR:
+                this.setColor((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -130,9 +130,9 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.STYLE__COLOR:
-            this.setColor(COLOR_EDEFAULT);
-            return;
+            case ViewPackage.STYLE__COLOR:
+                this.setColor(COLOR_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -145,8 +145,8 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.STYLE__COLOR:
-            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+            case ViewPackage.STYLE__COLOR:
+                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         }
         return super.eIsSet(featureID);
     }

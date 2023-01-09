@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -133,8 +133,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.TOOL__BODY:
-            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            case ViewPackage.TOOL__BODY:
+                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -147,10 +147,10 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.TOOL__NAME:
-            return this.getName();
-        case ViewPackage.TOOL__BODY:
-            return this.getBody();
+            case ViewPackage.TOOL__NAME:
+                return this.getName();
+            case ViewPackage.TOOL__BODY:
+                return this.getBody();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -164,13 +164,13 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.TOOL__NAME:
-            this.setName((String) newValue);
-            return;
-        case ViewPackage.TOOL__BODY:
-            this.getBody().clear();
-            this.getBody().addAll((Collection<? extends Operation>) newValue);
-            return;
+            case ViewPackage.TOOL__NAME:
+                this.setName((String) newValue);
+                return;
+            case ViewPackage.TOOL__BODY:
+                this.getBody().clear();
+                this.getBody().addAll((Collection<? extends Operation>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -183,12 +183,12 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.TOOL__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
-        case ViewPackage.TOOL__BODY:
-            this.getBody().clear();
-            return;
+            case ViewPackage.TOOL__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case ViewPackage.TOOL__BODY:
+                this.getBody().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -201,10 +201,10 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.TOOL__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-        case ViewPackage.TOOL__BODY:
-            return this.body != null && !this.body.isEmpty();
+            case ViewPackage.TOOL__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case ViewPackage.TOOL__BODY:
+                return this.body != null && !this.body.isEmpty();
         }
         return super.eIsSet(featureID);
     }

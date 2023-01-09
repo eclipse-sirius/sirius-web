@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -326,18 +326,18 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-            return ((InternalEList<?>) this.getChildrenDescriptions()).basicRemove(otherEnd, msgs);
-        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            return ((InternalEList<?>) this.getBorderNodesDescriptions()).basicRemove(otherEnd, msgs);
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-            return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
-        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-            return this.basicSetChildrenLayoutStrategy(null, msgs);
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+                return ((InternalEList<?>) this.getChildrenDescriptions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+                return ((InternalEList<?>) this.getBorderNodesDescriptions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+                return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.basicSetChildrenLayoutStrategy(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -350,22 +350,22 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-            return this.getChildrenDescriptions();
-        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            return this.getBorderNodesDescriptions();
-        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
-            return this.getReusedChildNodeDescriptions();
-        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
-            return this.getReusedBorderNodeDescriptions();
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-            return this.getStyle();
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-            return this.getNodeTools();
-        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.getConditionalStyles();
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-            return this.getChildrenLayoutStrategy();
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+                return this.getChildrenDescriptions();
+            case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+                return this.getBorderNodesDescriptions();
+            case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+                return this.getReusedChildNodeDescriptions();
+            case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+                return this.getReusedBorderNodeDescriptions();
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+                return this.getNodeTools();
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.getChildrenLayoutStrategy();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -379,36 +379,36 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-            this.getChildrenDescriptions().clear();
-            this.getChildrenDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            this.getBorderNodesDescriptions().clear();
-            this.getBorderNodesDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
-            this.getReusedChildNodeDescriptions().clear();
-            this.getReusedChildNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
-            this.getReusedBorderNodeDescriptions().clear();
-            this.getReusedBorderNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-            this.setStyle((NodeStyleDescription) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-            this.getNodeTools().clear();
-            this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalNodeStyle>) newValue);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-            this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
-            return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+                this.getChildrenDescriptions().clear();
+                this.getChildrenDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+                this.getBorderNodesDescriptions().clear();
+                this.getBorderNodesDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+                this.getReusedChildNodeDescriptions().clear();
+                this.getReusedChildNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+                this.getReusedBorderNodeDescriptions().clear();
+                this.getReusedBorderNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                this.setStyle((NodeStyleDescription) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+                this.getNodeTools().clear();
+                this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalNodeStyle>) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -421,30 +421,30 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-            this.getChildrenDescriptions().clear();
-            return;
-        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            this.getBorderNodesDescriptions().clear();
-            return;
-        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
-            this.getReusedChildNodeDescriptions().clear();
-            return;
-        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
-            this.getReusedBorderNodeDescriptions().clear();
-            return;
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-            this.setStyle((NodeStyleDescription) null);
-            return;
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-            this.getNodeTools().clear();
-            return;
-        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            return;
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-            this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
-            return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+                this.getChildrenDescriptions().clear();
+                return;
+            case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+                this.getBorderNodesDescriptions().clear();
+                return;
+            case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+                this.getReusedChildNodeDescriptions().clear();
+                return;
+            case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+                this.getReusedBorderNodeDescriptions().clear();
+                return;
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                this.setStyle((NodeStyleDescription) null);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+                this.getNodeTools().clear();
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -457,22 +457,22 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-            return this.childrenDescriptions != null && !this.childrenDescriptions.isEmpty();
-        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            return this.borderNodesDescriptions != null && !this.borderNodesDescriptions.isEmpty();
-        case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
-            return this.reusedChildNodeDescriptions != null && !this.reusedChildNodeDescriptions.isEmpty();
-        case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
-            return this.reusedBorderNodeDescriptions != null && !this.reusedBorderNodeDescriptions.isEmpty();
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-            return this.style != null;
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-            return this.nodeTools != null && !this.nodeTools.isEmpty();
-        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-            return this.childrenLayoutStrategy != null;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+                return this.childrenDescriptions != null && !this.childrenDescriptions.isEmpty();
+            case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+                return this.borderNodesDescriptions != null && !this.borderNodesDescriptions.isEmpty();
+            case ViewPackage.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS:
+                return this.reusedChildNodeDescriptions != null && !this.reusedChildNodeDescriptions.isEmpty();
+            case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
+                return this.reusedBorderNodeDescriptions != null && !this.reusedBorderNodeDescriptions.isEmpty();
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+                return this.nodeTools != null && !this.nodeTools.isEmpty();
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.childrenLayoutStrategy != null;
         }
         return super.eIsSet(featureID);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,10 @@ package org.eclipse.sirius.components.view;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.NodeStyleDescription#getLabelColor <em>Label Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.NodeStyleDescription#getSizeComputationExpression <em>Size Computation
- * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.NodeStyleDescription#getWidthComputationExpression <em>Width
+ * Computation Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.NodeStyleDescription#getHeightComputationExpression <em>Height
+ * Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.NodeStyleDescription#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
@@ -55,28 +57,52 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
     void setLabelColor(String value);
 
     /**
-     * Returns the value of the '<em><b>Size Computation Expression</b></em>' attribute. The default value is
+     * Returns the value of the '<em><b>Width Computation Expression</b></em>' attribute. The default value is
      * <code>"1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Size Computation Expression</em>' attribute.
-     * @see #setSizeComputationExpression(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyleDescription_SizeComputationExpression()
+     * @return the value of the '<em>Width Computation Expression</em>' attribute.
+     * @see #setWidthComputationExpression(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyleDescription_WidthComputationExpression()
      * @model default="1" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
-    String getSizeComputationExpression();
+    String getWidthComputationExpression();
 
     /**
      * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getSizeComputationExpression <em>Size Computation
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getWidthComputationExpression <em>Width
+     * Computation Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Size Computation Expression</em>' attribute.
-     * @see #getSizeComputationExpression()
+     *            the new value of the '<em>Width Computation Expression</em>' attribute.
+     * @see #getWidthComputationExpression()
      * @generated
      */
-    void setSizeComputationExpression(String value);
+    void setWidthComputationExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Height Computation Expression</b></em>' attribute. The default value is
+     * <code>"1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Height Computation Expression</em>' attribute.
+     * @see #setHeightComputationExpression(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyleDescription_HeightComputationExpression()
+     * @model default="1" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getHeightComputationExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getHeightComputationExpression <em>Height
+     * Computation Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Height Computation Expression</em>' attribute.
+     * @see #getHeightComputationExpression()
+     * @generated
+     */
+    void setHeightComputationExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     protected void addAutoLayoutPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_DiagramDescription_autoLayout_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"),
-                ViewPackage.Literals.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"), ViewPackage.Literals.DIAGRAM_DESCRIPTION__AUTO_LAYOUT,
+                true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -81,8 +81,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     protected void addOnDropPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramDescription_onDrop_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_onDrop_feature", "_UI_DiagramDescription_type"),
+                this.getString("_UI_DiagramDescription_onDrop_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_onDrop_feature", "_UI_DiagramDescription_type"),
                 ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, true, false, true, null, null, null));
     }
 
@@ -145,8 +144,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     @Override
     public String getText(Object object) {
         String label = ((DiagramDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_DiagramDescription_type") :
-                this.getString("_UI_DiagramDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_DiagramDescription_type") : this.getString("_UI_DiagramDescription_type") + " " + label;
     }
 
     /**
@@ -161,13 +159,13 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DiagramDescription.class)) {
-        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
-        case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
+            case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

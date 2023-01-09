@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -165,8 +165,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     public String getText(Object object) {
         String label = ((NodeDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") :
-                this.getString("_UI_NodeDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") : this.getString("_UI_NodeDescription_type") + " " + label;
     }
 
     /**
@@ -181,13 +180,13 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeDescription.class)) {
-        case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-        case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-        case ViewPackage.NODE_DESCRIPTION__STYLE:
-        case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-        case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+            case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

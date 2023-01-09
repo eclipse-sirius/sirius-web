@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,8 +62,7 @@ public class ChangeContextItemProvider extends OperationItemProvider {
      */
     protected void addExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_ChangeContext_expression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_ChangeContext_expression_feature", "_UI_ChangeContext_type"),
+                this.getString("_UI_ChangeContext_expression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_ChangeContext_expression_feature", "_UI_ChangeContext_type"),
                 ViewPackage.Literals.CHANGE_CONTEXT__EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -95,8 +94,7 @@ public class ChangeContextItemProvider extends OperationItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((ChangeContext) object).getExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_ChangeContext_type") :
-                this.getString("_UI_ChangeContext_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_ChangeContext_type") : this.getString("_UI_ChangeContext_type") + " " + label;
     }
 
     /**
@@ -111,9 +109,9 @@ public class ChangeContextItemProvider extends OperationItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ChangeContext.class)) {
-        case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

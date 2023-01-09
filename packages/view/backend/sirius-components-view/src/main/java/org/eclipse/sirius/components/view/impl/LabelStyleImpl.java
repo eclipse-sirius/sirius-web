@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -277,16 +277,16 @@ public abstract class LabelStyleImpl extends MinimalEObjectImpl.Container implem
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.LABEL_STYLE__FONT_SIZE:
-            return this.getFontSize();
-        case ViewPackage.LABEL_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.LABEL_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.LABEL_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
+            case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                return this.getFontSize();
+            case ViewPackage.LABEL_STYLE__ITALIC:
+                return this.isItalic();
+            case ViewPackage.LABEL_STYLE__BOLD:
+                return this.isBold();
+            case ViewPackage.LABEL_STYLE__UNDERLINE:
+                return this.isUnderline();
+            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                return this.isStrikeThrough();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -299,21 +299,21 @@ public abstract class LabelStyleImpl extends MinimalEObjectImpl.Container implem
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.LABEL_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
-            return;
-        case ViewPackage.LABEL_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.LABEL_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.LABEL_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
-            return;
+            case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                this.setFontSize((Integer) newValue);
+                return;
+            case ViewPackage.LABEL_STYLE__ITALIC:
+                this.setItalic((Boolean) newValue);
+                return;
+            case ViewPackage.LABEL_STYLE__BOLD:
+                this.setBold((Boolean) newValue);
+                return;
+            case ViewPackage.LABEL_STYLE__UNDERLINE:
+                this.setUnderline((Boolean) newValue);
+                return;
+            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -326,21 +326,21 @@ public abstract class LabelStyleImpl extends MinimalEObjectImpl.Container implem
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.LABEL_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
-            return;
-        case ViewPackage.LABEL_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.LABEL_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.LABEL_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
+            case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                this.setFontSize(FONT_SIZE_EDEFAULT);
+                return;
+            case ViewPackage.LABEL_STYLE__ITALIC:
+                this.setItalic(ITALIC_EDEFAULT);
+                return;
+            case ViewPackage.LABEL_STYLE__BOLD:
+                this.setBold(BOLD_EDEFAULT);
+                return;
+            case ViewPackage.LABEL_STYLE__UNDERLINE:
+                this.setUnderline(UNDERLINE_EDEFAULT);
+                return;
+            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -353,16 +353,16 @@ public abstract class LabelStyleImpl extends MinimalEObjectImpl.Container implem
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.LABEL_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
-        case ViewPackage.LABEL_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.LABEL_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.LABEL_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                return this.fontSize != FONT_SIZE_EDEFAULT;
+            case ViewPackage.LABEL_STYLE__ITALIC:
+                return this.italic != ITALIC_EDEFAULT;
+            case ViewPackage.LABEL_STYLE__BOLD:
+                return this.bold != BOLD_EDEFAULT;
+            case ViewPackage.LABEL_STYLE__UNDERLINE:
+                return this.underline != UNDERLINE_EDEFAULT;
+            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }

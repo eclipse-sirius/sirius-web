@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -355,34 +355,34 @@ public enum ArrowStyle implements Enumerator {
      */
     public static ArrowStyle get(int value) {
         switch (value) {
-        case NONE_VALUE:
-            return NONE;
-        case OUTPUT_ARROW_VALUE:
-            return OUTPUT_ARROW;
-        case INPUT_ARROW_VALUE:
-            return INPUT_ARROW;
-        case OUTPUT_CLOSED_ARROW_VALUE:
-            return OUTPUT_CLOSED_ARROW;
-        case INPUT_CLOSED_ARROW_VALUE:
-            return INPUT_CLOSED_ARROW;
-        case OUTPUT_FILL_CLOSED_ARROW_VALUE:
-            return OUTPUT_FILL_CLOSED_ARROW;
-        case INPUT_FILL_CLOSED_ARROW_VALUE:
-            return INPUT_FILL_CLOSED_ARROW;
-        case DIAMOND_VALUE:
-            return DIAMOND;
-        case FILL_DIAMOND_VALUE:
-            return FILL_DIAMOND;
-        case INPUT_ARROW_WITH_DIAMOND_VALUE:
-            return INPUT_ARROW_WITH_DIAMOND;
-        case INPUT_ARROW_WITH_FILL_DIAMOND_VALUE:
-            return INPUT_ARROW_WITH_FILL_DIAMOND;
-        case CIRCLE_VALUE:
-            return CIRCLE;
-        case FILL_CIRCLE_VALUE:
-            return FILL_CIRCLE;
-        case CROSSED_CIRCLE_VALUE:
-            return CROSSED_CIRCLE;
+            case NONE_VALUE:
+                return NONE;
+            case OUTPUT_ARROW_VALUE:
+                return OUTPUT_ARROW;
+            case INPUT_ARROW_VALUE:
+                return INPUT_ARROW;
+            case OUTPUT_CLOSED_ARROW_VALUE:
+                return OUTPUT_CLOSED_ARROW;
+            case INPUT_CLOSED_ARROW_VALUE:
+                return INPUT_CLOSED_ARROW;
+            case OUTPUT_FILL_CLOSED_ARROW_VALUE:
+                return OUTPUT_FILL_CLOSED_ARROW;
+            case INPUT_FILL_CLOSED_ARROW_VALUE:
+                return INPUT_FILL_CLOSED_ARROW;
+            case DIAMOND_VALUE:
+                return DIAMOND;
+            case FILL_DIAMOND_VALUE:
+                return FILL_DIAMOND;
+            case INPUT_ARROW_WITH_DIAMOND_VALUE:
+                return INPUT_ARROW_WITH_DIAMOND;
+            case INPUT_ARROW_WITH_FILL_DIAMOND_VALUE:
+                return INPUT_ARROW_WITH_FILL_DIAMOND;
+            case CIRCLE_VALUE:
+                return CIRCLE;
+            case FILL_CIRCLE_VALUE:
+                return FILL_CIRCLE;
+            case CROSSED_CIRCLE_VALUE:
+                return CROSSED_CIRCLE;
         }
         return null;
     }

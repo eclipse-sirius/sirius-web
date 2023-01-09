@@ -72,6 +72,7 @@ import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
@@ -215,25 +216,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         AQLInterpreter interpreter = converterContext.getInterpreter();
         Function<VariableManager, String> typeProvider = variableManager -> {
-            // @formatter:off
-            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(ConditionalNodeStyle::getStyle)
-                    .findFirst()
-                    .orElseGet(viewNodeDescription::getStyle);
-            // @formatter:on
+            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
             return this.stylesFactory.getNodeType(effectiveStyle);
         };
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            // @formatter:off
-            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(ConditionalNodeStyle::getStyle)
-                    .findFirst()
-                    .orElseGet(viewNodeDescription::getStyle);
+            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
             Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
-            // @formatter:on
             return this.stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);
         };
 
@@ -241,7 +230,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             ILayoutStrategy childrenLayoutStrategy = null;
 
             LayoutStrategyDescription childrenLayoutStrategyFromViewModel = viewNodeDescription.getChildrenLayoutStrategy();
-
             if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription) {
                 childrenLayoutStrategy = new ListLayoutStrategy();
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
@@ -250,31 +238,14 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return childrenLayoutStrategy;
         };
 
-        Function<VariableManager, Size> sizeProvider = variableManager -> {
-            // @formatter:off
-            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(ConditionalNodeStyle::getStyle)
-                    .findFirst()
-                    .orElseGet(viewNodeDescription::getStyle);
-            // @formatter:on
-            Size size = Size.UNDEFINED;
-            if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION) && !effectiveStyle.getSizeComputationExpression().isBlank()) {
-                Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getSizeComputationExpression());
-                if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
-                    int computedSize = result.asInt().getAsInt();
-                    size = Size.of(computedSize, computedSize);
-                }
-            }
-            return size;
-        };
+        Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
 
         // @formatter:off
         List<UUID> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
-                .map(this.idProvider::apply)
+                .map(this.idProvider)
                 .toList();
         List<UUID> reusedBorderNodeDescriptionIds = viewNodeDescription.getReusedBorderNodeDescriptions().stream()
-                .map(this.idProvider::apply)
+                .map(this.idProvider)
                 .toList();
 
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
@@ -298,6 +269,30 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // @formatter:on
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
+    }
+
+    private NodeStyleDescription findEffectiveStyle(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
+        return viewNodeDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager)).map(ConditionalNodeStyle::getStyle).findFirst()
+                .orElseGet(viewNodeDescription::getStyle);
+    }
+
+    private Size computeSize(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
+        var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
+        double computedWidth = Size.UNDEFINED.getWidth();
+        if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION) && !effectiveStyle.getWidthComputationExpression().isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getWidthComputationExpression());
+            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
+                computedWidth = result.asInt().getAsInt();
+            }
+        }
+        double computedHeight = Size.UNDEFINED.getHeight();
+        if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION) && !effectiveStyle.getHeightComputationExpression().isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getHeightComputationExpression());
+            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
+                computedHeight = result.asInt().getAsInt();
+            }
+        }
+        return Size.of(computedWidth, computedHeight);
     }
 
     private boolean matches(AQLInterpreter interpreter, String condition, VariableManager variableManager) {
@@ -486,14 +481,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
-            // @formatter:off
-            var effectiveStyle = viewNodeDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(ConditionalNodeStyle::getStyle)
-                    .findFirst()
-                    .orElseGet(viewNodeDescription::getStyle);
-            // @formatter:on
-
+            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
             return this.stylesFactory.createLabelStyleDescription(effectiveStyle);
         };
 

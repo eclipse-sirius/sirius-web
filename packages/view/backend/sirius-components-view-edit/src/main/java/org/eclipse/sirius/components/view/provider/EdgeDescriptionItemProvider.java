@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -222,8 +222,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     public String getText(Object object) {
         String label = ((EdgeDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_EdgeDescription_type") :
-                this.getString("_UI_EdgeDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_EdgeDescription_type") : this.getString("_UI_EdgeDescription_type") + " " + label;
     }
 
     /**
@@ -238,19 +237,19 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(EdgeDescription.class)) {
-        case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
-        case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
-        case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
-        case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-        case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.EDGE_DESCRIPTION__STYLE:
-        case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-        case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
-        case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
+            case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
+            case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
+            case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__STYLE:
+            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
+            case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -313,8 +312,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         boolean qualify = childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

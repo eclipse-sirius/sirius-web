@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,8 +100,8 @@ public class DeleteViewImpl extends OperationImpl implements DeleteView {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
-            return this.getViewExpression();
+            case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
+                return this.getViewExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -114,9 +114,9 @@ public class DeleteViewImpl extends OperationImpl implements DeleteView {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
-            this.setViewExpression((String) newValue);
-            return;
+            case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
+                this.setViewExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -129,9 +129,9 @@ public class DeleteViewImpl extends OperationImpl implements DeleteView {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
-            this.setViewExpression(VIEW_EXPRESSION_EDEFAULT);
-            return;
+            case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
+                this.setViewExpression(VIEW_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -144,8 +144,8 @@ public class DeleteViewImpl extends OperationImpl implements DeleteView {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
-            return VIEW_EXPRESSION_EDEFAULT == null ? this.viewExpression != null : !VIEW_EXPRESSION_EDEFAULT.equals(this.viewExpression);
+            case ViewPackage.DELETE_VIEW__VIEW_EXPRESSION:
+                return VIEW_EXPRESSION_EDEFAULT == null ? this.viewExpression != null : !VIEW_EXPRESSION_EDEFAULT.equals(this.viewExpression);
         }
         return super.eIsSet(featureID);
     }

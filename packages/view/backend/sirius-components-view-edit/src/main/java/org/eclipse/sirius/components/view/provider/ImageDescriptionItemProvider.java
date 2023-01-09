@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,8 +64,8 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
     protected void addUrlExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_ImageDescription_urlExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageDescription_urlExpression_feature", "_UI_ImageDescription_type"),
-                ViewPackage.Literals.IMAGE_DESCRIPTION__URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageDescription_urlExpression_feature", "_UI_ImageDescription_type"), ViewPackage.Literals.IMAGE_DESCRIPTION__URL_EXPRESSION,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -109,8 +109,7 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
     @Override
     public String getText(Object object) {
         String label = ((ImageDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_ImageDescription_type") :
-                this.getString("_UI_ImageDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_ImageDescription_type") : this.getString("_UI_ImageDescription_type") + " " + label;
     }
 
     /**
@@ -125,10 +124,10 @@ public class ImageDescriptionItemProvider extends WidgetDescriptionItemProvider 
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ImageDescription.class)) {
-        case ViewPackage.IMAGE_DESCRIPTION__URL_EXPRESSION:
-        case ViewPackage.IMAGE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.IMAGE_DESCRIPTION__URL_EXPRESSION:
+            case ViewPackage.IMAGE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -148,828 +148,828 @@ public class ViewSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
-        case ViewPackage.VIEW: {
-            View view = (View) theEObject;
-            T result = this.caseView(view);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.REPRESENTATION_DESCRIPTION: {
-            RepresentationDescription representationDescription = (RepresentationDescription) theEObject;
-            T result = this.caseRepresentationDescription(representationDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.DIAGRAM_DESCRIPTION: {
-            DiagramDescription diagramDescription = (DiagramDescription) theEObject;
-            T result = this.caseDiagramDescription(diagramDescription);
-            if (result == null)
-                result = this.caseRepresentationDescription(diagramDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION: {
-            DiagramElementDescription diagramElementDescription = (DiagramElementDescription) theEObject;
-            T result = this.caseDiagramElementDescription(diagramElementDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.NODE_DESCRIPTION: {
-            NodeDescription nodeDescription = (NodeDescription) theEObject;
-            T result = this.caseNodeDescription(nodeDescription);
-            if (result == null)
-                result = this.caseDiagramElementDescription(nodeDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.EDGE_DESCRIPTION: {
-            EdgeDescription edgeDescription = (EdgeDescription) theEObject;
-            T result = this.caseEdgeDescription(edgeDescription);
-            if (result == null)
-                result = this.caseDiagramElementDescription(edgeDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LABEL_STYLE: {
-            LabelStyle labelStyle = (LabelStyle) theEObject;
-            T result = this.caseLabelStyle(labelStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.BORDER_STYLE: {
-            BorderStyle borderStyle = (BorderStyle) theEObject;
-            T result = this.caseBorderStyle(borderStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.STYLE: {
-            Style style = (Style) theEObject;
-            T result = this.caseStyle(style);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.NODE_STYLE_DESCRIPTION: {
-            NodeStyleDescription nodeStyleDescription = (NodeStyleDescription) theEObject;
-            T result = this.caseNodeStyleDescription(nodeStyleDescription);
-            if (result == null)
-                result = this.caseStyle(nodeStyleDescription);
-            if (result == null)
-                result = this.caseLabelStyle(nodeStyleDescription);
-            if (result == null)
-                result = this.caseBorderStyle(nodeStyleDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION: {
-            RectangularNodeStyleDescription rectangularNodeStyleDescription = (RectangularNodeStyleDescription) theEObject;
-            T result = this.caseRectangularNodeStyleDescription(rectangularNodeStyleDescription);
-            if (result == null)
-                result = this.caseNodeStyleDescription(rectangularNodeStyleDescription);
-            if (result == null)
-                result = this.caseStyle(rectangularNodeStyleDescription);
-            if (result == null)
-                result = this.caseLabelStyle(rectangularNodeStyleDescription);
-            if (result == null)
-                result = this.caseBorderStyle(rectangularNodeStyleDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.IMAGE_NODE_STYLE_DESCRIPTION: {
-            ImageNodeStyleDescription imageNodeStyleDescription = (ImageNodeStyleDescription) theEObject;
-            T result = this.caseImageNodeStyleDescription(imageNodeStyleDescription);
-            if (result == null)
-                result = this.caseNodeStyleDescription(imageNodeStyleDescription);
-            if (result == null)
-                result = this.caseStyle(imageNodeStyleDescription);
-            if (result == null)
-                result = this.caseLabelStyle(imageNodeStyleDescription);
-            if (result == null)
-                result = this.caseBorderStyle(imageNodeStyleDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION: {
-            IconLabelNodeStyleDescription iconLabelNodeStyleDescription = (IconLabelNodeStyleDescription) theEObject;
-            T result = this.caseIconLabelNodeStyleDescription(iconLabelNodeStyleDescription);
-            if (result == null)
-                result = this.caseNodeStyleDescription(iconLabelNodeStyleDescription);
-            if (result == null)
-                result = this.caseStyle(iconLabelNodeStyleDescription);
-            if (result == null)
-                result = this.caseLabelStyle(iconLabelNodeStyleDescription);
-            if (result == null)
-                result = this.caseBorderStyle(iconLabelNodeStyleDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LAYOUT_STRATEGY_DESCRIPTION: {
-            LayoutStrategyDescription layoutStrategyDescription = (LayoutStrategyDescription) theEObject;
-            T result = this.caseLayoutStrategyDescription(layoutStrategyDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION: {
-            FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = (FreeFormLayoutStrategyDescription) theEObject;
-            T result = this.caseFreeFormLayoutStrategyDescription(freeFormLayoutStrategyDescription);
-            if (result == null)
-                result = this.caseLayoutStrategyDescription(freeFormLayoutStrategyDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION: {
-            ListLayoutStrategyDescription listLayoutStrategyDescription = (ListLayoutStrategyDescription) theEObject;
-            T result = this.caseListLayoutStrategyDescription(listLayoutStrategyDescription);
-            if (result == null)
-                result = this.caseLayoutStrategyDescription(listLayoutStrategyDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.EDGE_STYLE: {
-            EdgeStyle edgeStyle = (EdgeStyle) theEObject;
-            T result = this.caseEdgeStyle(edgeStyle);
-            if (result == null)
-                result = this.caseStyle(edgeStyle);
-            if (result == null)
-                result = this.caseLabelStyle(edgeStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.TOOL: {
-            Tool tool = (Tool) theEObject;
-            T result = this.caseTool(tool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LABEL_EDIT_TOOL: {
-            LabelEditTool labelEditTool = (LabelEditTool) theEObject;
-            T result = this.caseLabelEditTool(labelEditTool);
-            if (result == null)
-                result = this.caseTool(labelEditTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.DELETE_TOOL: {
-            DeleteTool deleteTool = (DeleteTool) theEObject;
-            T result = this.caseDeleteTool(deleteTool);
-            if (result == null)
-                result = this.caseTool(deleteTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.NODE_TOOL: {
-            NodeTool nodeTool = (NodeTool) theEObject;
-            T result = this.caseNodeTool(nodeTool);
-            if (result == null)
-                result = this.caseTool(nodeTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.EDGE_TOOL: {
-            EdgeTool edgeTool = (EdgeTool) theEObject;
-            T result = this.caseEdgeTool(edgeTool);
-            if (result == null)
-                result = this.caseTool(edgeTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.EDGE_RECONNECTION_TOOL: {
-            EdgeReconnectionTool edgeReconnectionTool = (EdgeReconnectionTool) theEObject;
-            T result = this.caseEdgeReconnectionTool(edgeReconnectionTool);
-            if (result == null)
-                result = this.caseTool(edgeReconnectionTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.SOURCE_EDGE_END_RECONNECTION_TOOL: {
-            SourceEdgeEndReconnectionTool sourceEdgeEndReconnectionTool = (SourceEdgeEndReconnectionTool) theEObject;
-            T result = this.caseSourceEdgeEndReconnectionTool(sourceEdgeEndReconnectionTool);
-            if (result == null)
-                result = this.caseEdgeReconnectionTool(sourceEdgeEndReconnectionTool);
-            if (result == null)
-                result = this.caseTool(sourceEdgeEndReconnectionTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.TARGET_EDGE_END_RECONNECTION_TOOL: {
-            TargetEdgeEndReconnectionTool targetEdgeEndReconnectionTool = (TargetEdgeEndReconnectionTool) theEObject;
-            T result = this.caseTargetEdgeEndReconnectionTool(targetEdgeEndReconnectionTool);
-            if (result == null)
-                result = this.caseEdgeReconnectionTool(targetEdgeEndReconnectionTool);
-            if (result == null)
-                result = this.caseTool(targetEdgeEndReconnectionTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.DROP_TOOL: {
-            DropTool dropTool = (DropTool) theEObject;
-            T result = this.caseDropTool(dropTool);
-            if (result == null)
-                result = this.caseTool(dropTool);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.OPERATION: {
-            Operation operation = (Operation) theEObject;
-            T result = this.caseOperation(operation);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CHANGE_CONTEXT: {
-            ChangeContext changeContext = (ChangeContext) theEObject;
-            T result = this.caseChangeContext(changeContext);
-            if (result == null)
-                result = this.caseOperation(changeContext);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CREATE_INSTANCE: {
-            CreateInstance createInstance = (CreateInstance) theEObject;
-            T result = this.caseCreateInstance(createInstance);
-            if (result == null)
-                result = this.caseOperation(createInstance);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.SET_VALUE: {
-            SetValue setValue = (SetValue) theEObject;
-            T result = this.caseSetValue(setValue);
-            if (result == null)
-                result = this.caseOperation(setValue);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.UNSET_VALUE: {
-            UnsetValue unsetValue = (UnsetValue) theEObject;
-            T result = this.caseUnsetValue(unsetValue);
-            if (result == null)
-                result = this.caseOperation(unsetValue);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.DELETE_ELEMENT: {
-            DeleteElement deleteElement = (DeleteElement) theEObject;
-            T result = this.caseDeleteElement(deleteElement);
-            if (result == null)
-                result = this.caseOperation(deleteElement);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CREATE_VIEW: {
-            CreateView createView = (CreateView) theEObject;
-            T result = this.caseCreateView(createView);
-            if (result == null)
-                result = this.caseOperation(createView);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.DELETE_VIEW: {
-            DeleteView deleteView = (DeleteView) theEObject;
-            T result = this.caseDeleteView(deleteView);
-            if (result == null)
-                result = this.caseOperation(deleteView);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL: {
-            Conditional conditional = (Conditional) theEObject;
-            T result = this.caseConditional(conditional);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_NODE_STYLE: {
-            ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) theEObject;
-            T result = this.caseConditionalNodeStyle(conditionalNodeStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalNodeStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_EDGE_STYLE: {
-            ConditionalEdgeStyle conditionalEdgeStyle = (ConditionalEdgeStyle) theEObject;
-            T result = this.caseConditionalEdgeStyle(conditionalEdgeStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalEdgeStyle);
-            if (result == null)
-                result = this.caseEdgeStyle(conditionalEdgeStyle);
-            if (result == null)
-                result = this.caseStyle(conditionalEdgeStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalEdgeStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.FORM_DESCRIPTION: {
-            FormDescription formDescription = (FormDescription) theEObject;
-            T result = this.caseFormDescription(formDescription);
-            if (result == null)
-                result = this.caseRepresentationDescription(formDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.GROUP_DESCRIPTION: {
-            GroupDescription groupDescription = (GroupDescription) theEObject;
-            T result = this.caseGroupDescription(groupDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.WIDGET_DESCRIPTION: {
-            WidgetDescription widgetDescription = (WidgetDescription) theEObject;
-            T result = this.caseWidgetDescription(widgetDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.TEXTFIELD_DESCRIPTION: {
-            TextfieldDescription textfieldDescription = (TextfieldDescription) theEObject;
-            T result = this.caseTextfieldDescription(textfieldDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(textfieldDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CHECKBOX_DESCRIPTION: {
-            CheckboxDescription checkboxDescription = (CheckboxDescription) theEObject;
-            T result = this.caseCheckboxDescription(checkboxDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(checkboxDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.SELECT_DESCRIPTION: {
-            SelectDescription selectDescription = (SelectDescription) theEObject;
-            T result = this.caseSelectDescription(selectDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(selectDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.MULTI_SELECT_DESCRIPTION: {
-            MultiSelectDescription multiSelectDescription = (MultiSelectDescription) theEObject;
-            T result = this.caseMultiSelectDescription(multiSelectDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(multiSelectDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.TEXT_AREA_DESCRIPTION: {
-            TextAreaDescription textAreaDescription = (TextAreaDescription) theEObject;
-            T result = this.caseTextAreaDescription(textAreaDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(textAreaDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.RICH_TEXT_DESCRIPTION: {
-            RichTextDescription richTextDescription = (RichTextDescription) theEObject;
-            T result = this.caseRichTextDescription(richTextDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(richTextDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.RADIO_DESCRIPTION: {
-            RadioDescription radioDescription = (RadioDescription) theEObject;
-            T result = this.caseRadioDescription(radioDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(radioDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.BAR_CHART_DESCRIPTION: {
-            BarChartDescription barChartDescription = (BarChartDescription) theEObject;
-            T result = this.caseBarChartDescription(barChartDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(barChartDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.PIE_CHART_DESCRIPTION: {
-            PieChartDescription pieChartDescription = (PieChartDescription) theEObject;
-            T result = this.casePieChartDescription(pieChartDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(pieChartDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION: {
-            FlexboxContainerDescription flexboxContainerDescription = (FlexboxContainerDescription) theEObject;
-            T result = this.caseFlexboxContainerDescription(flexboxContainerDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(flexboxContainerDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.BUTTON_DESCRIPTION: {
-            ButtonDescription buttonDescription = (ButtonDescription) theEObject;
-            T result = this.caseButtonDescription(buttonDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(buttonDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.IMAGE_DESCRIPTION: {
-            ImageDescription imageDescription = (ImageDescription) theEObject;
-            T result = this.caseImageDescription(imageDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(imageDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.WIDGET_DESCRIPTION_STYLE: {
-            WidgetDescriptionStyle widgetDescriptionStyle = (WidgetDescriptionStyle) theEObject;
-            T result = this.caseWidgetDescriptionStyle(widgetDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE: {
-            TextfieldDescriptionStyle textfieldDescriptionStyle = (TextfieldDescriptionStyle) theEObject;
-            T result = this.caseTextfieldDescriptionStyle(textfieldDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(textfieldDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(textfieldDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE: {
-            ConditionalTextfieldDescriptionStyle conditionalTextfieldDescriptionStyle = (ConditionalTextfieldDescriptionStyle) theEObject;
-            T result = this.caseConditionalTextfieldDescriptionStyle(conditionalTextfieldDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalTextfieldDescriptionStyle);
-            if (result == null)
-                result = this.caseTextfieldDescriptionStyle(conditionalTextfieldDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalTextfieldDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalTextfieldDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CHECKBOX_DESCRIPTION_STYLE: {
-            CheckboxDescriptionStyle checkboxDescriptionStyle = (CheckboxDescriptionStyle) theEObject;
-            T result = this.caseCheckboxDescriptionStyle(checkboxDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(checkboxDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE: {
-            ConditionalCheckboxDescriptionStyle conditionalCheckboxDescriptionStyle = (ConditionalCheckboxDescriptionStyle) theEObject;
-            T result = this.caseConditionalCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalCheckboxDescriptionStyle);
-            if (result == null)
-                result = this.caseCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalCheckboxDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.SELECT_DESCRIPTION_STYLE: {
-            SelectDescriptionStyle selectDescriptionStyle = (SelectDescriptionStyle) theEObject;
-            T result = this.caseSelectDescriptionStyle(selectDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(selectDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(selectDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_SELECT_DESCRIPTION_STYLE: {
-            ConditionalSelectDescriptionStyle conditionalSelectDescriptionStyle = (ConditionalSelectDescriptionStyle) theEObject;
-            T result = this.caseConditionalSelectDescriptionStyle(conditionalSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseSelectDescriptionStyle(conditionalSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalSelectDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE: {
-            MultiSelectDescriptionStyle multiSelectDescriptionStyle = (MultiSelectDescriptionStyle) theEObject;
-            T result = this.caseMultiSelectDescriptionStyle(multiSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(multiSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(multiSelectDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE: {
-            ConditionalMultiSelectDescriptionStyle conditionalMultiSelectDescriptionStyle = (ConditionalMultiSelectDescriptionStyle) theEObject;
-            T result = this.caseConditionalMultiSelectDescriptionStyle(conditionalMultiSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalMultiSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseMultiSelectDescriptionStyle(conditionalMultiSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalMultiSelectDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalMultiSelectDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.TEXTAREA_DESCRIPTION_STYLE: {
-            TextareaDescriptionStyle textareaDescriptionStyle = (TextareaDescriptionStyle) theEObject;
-            T result = this.caseTextareaDescriptionStyle(textareaDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(textareaDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(textareaDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE: {
-            ConditionalTextareaDescriptionStyle conditionalTextareaDescriptionStyle = (ConditionalTextareaDescriptionStyle) theEObject;
-            T result = this.caseConditionalTextareaDescriptionStyle(conditionalTextareaDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalTextareaDescriptionStyle);
-            if (result == null)
-                result = this.caseTextareaDescriptionStyle(conditionalTextareaDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalTextareaDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalTextareaDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.RADIO_DESCRIPTION_STYLE: {
-            RadioDescriptionStyle radioDescriptionStyle = (RadioDescriptionStyle) theEObject;
-            T result = this.caseRadioDescriptionStyle(radioDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(radioDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(radioDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE: {
-            ConditionalRadioDescriptionStyle conditionalRadioDescriptionStyle = (ConditionalRadioDescriptionStyle) theEObject;
-            T result = this.caseConditionalRadioDescriptionStyle(conditionalRadioDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalRadioDescriptionStyle);
-            if (result == null)
-                result = this.caseRadioDescriptionStyle(conditionalRadioDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalRadioDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalRadioDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.BUTTON_DESCRIPTION_STYLE: {
-            ButtonDescriptionStyle buttonDescriptionStyle = (ButtonDescriptionStyle) theEObject;
-            T result = this.caseButtonDescriptionStyle(buttonDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(buttonDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(buttonDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE: {
-            ConditionalButtonDescriptionStyle conditionalButtonDescriptionStyle = (ConditionalButtonDescriptionStyle) theEObject;
-            T result = this.caseConditionalButtonDescriptionStyle(conditionalButtonDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalButtonDescriptionStyle);
-            if (result == null)
-                result = this.caseButtonDescriptionStyle(conditionalButtonDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalButtonDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalButtonDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE: {
-            BarChartDescriptionStyle barChartDescriptionStyle = (BarChartDescriptionStyle) theEObject;
-            T result = this.caseBarChartDescriptionStyle(barChartDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(barChartDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(barChartDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE: {
-            ConditionalBarChartDescriptionStyle conditionalBarChartDescriptionStyle = (ConditionalBarChartDescriptionStyle) theEObject;
-            T result = this.caseConditionalBarChartDescriptionStyle(conditionalBarChartDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalBarChartDescriptionStyle);
-            if (result == null)
-                result = this.caseBarChartDescriptionStyle(conditionalBarChartDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalBarChartDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalBarChartDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.PIE_CHART_DESCRIPTION_STYLE: {
-            PieChartDescriptionStyle pieChartDescriptionStyle = (PieChartDescriptionStyle) theEObject;
-            T result = this.casePieChartDescriptionStyle(pieChartDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(pieChartDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(pieChartDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE: {
-            ConditionalPieChartDescriptionStyle conditionalPieChartDescriptionStyle = (ConditionalPieChartDescriptionStyle) theEObject;
-            T result = this.caseConditionalPieChartDescriptionStyle(conditionalPieChartDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalPieChartDescriptionStyle);
-            if (result == null)
-                result = this.casePieChartDescriptionStyle(conditionalPieChartDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalPieChartDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalPieChartDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LABEL_DESCRIPTION: {
-            LabelDescription labelDescription = (LabelDescription) theEObject;
-            T result = this.caseLabelDescription(labelDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(labelDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LABEL_DESCRIPTION_STYLE: {
-            LabelDescriptionStyle labelDescriptionStyle = (LabelDescriptionStyle) theEObject;
-            T result = this.caseLabelDescriptionStyle(labelDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(labelDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(labelDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE: {
-            ConditionalLabelDescriptionStyle conditionalLabelDescriptionStyle = (ConditionalLabelDescriptionStyle) theEObject;
-            T result = this.caseConditionalLabelDescriptionStyle(conditionalLabelDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalLabelDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelDescriptionStyle(conditionalLabelDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalLabelDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalLabelDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LINK_DESCRIPTION: {
-            LinkDescription linkDescription = (LinkDescription) theEObject;
-            T result = this.caseLinkDescription(linkDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(linkDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LINK_DESCRIPTION_STYLE: {
-            LinkDescriptionStyle linkDescriptionStyle = (LinkDescriptionStyle) theEObject;
-            T result = this.caseLinkDescriptionStyle(linkDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(linkDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(linkDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE: {
-            ConditionalLinkDescriptionStyle conditionalLinkDescriptionStyle = (ConditionalLinkDescriptionStyle) theEObject;
-            T result = this.caseConditionalLinkDescriptionStyle(conditionalLinkDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalLinkDescriptionStyle);
-            if (result == null)
-                result = this.caseLinkDescriptionStyle(conditionalLinkDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalLinkDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalLinkDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LIST_DESCRIPTION: {
-            ListDescription listDescription = (ListDescription) theEObject;
-            T result = this.caseListDescription(listDescription);
-            if (result == null)
-                result = this.caseWidgetDescription(listDescription);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.LIST_DESCRIPTION_STYLE: {
-            ListDescriptionStyle listDescriptionStyle = (ListDescriptionStyle) theEObject;
-            T result = this.caseListDescriptionStyle(listDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(listDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(listDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE: {
-            ConditionalListDescriptionStyle conditionalListDescriptionStyle = (ConditionalListDescriptionStyle) theEObject;
-            T result = this.caseConditionalListDescriptionStyle(conditionalListDescriptionStyle);
-            if (result == null)
-                result = this.caseConditional(conditionalListDescriptionStyle);
-            if (result == null)
-                result = this.caseListDescriptionStyle(conditionalListDescriptionStyle);
-            if (result == null)
-                result = this.caseWidgetDescriptionStyle(conditionalListDescriptionStyle);
-            if (result == null)
-                result = this.caseLabelStyle(conditionalListDescriptionStyle);
-            if (result == null)
-                result = this.defaultCase(theEObject);
-            return result;
-        }
-        default:
-            return this.defaultCase(theEObject);
+            case ViewPackage.VIEW: {
+                View view = (View) theEObject;
+                T result = this.caseView(view);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.REPRESENTATION_DESCRIPTION: {
+                RepresentationDescription representationDescription = (RepresentationDescription) theEObject;
+                T result = this.caseRepresentationDescription(representationDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DIAGRAM_DESCRIPTION: {
+                DiagramDescription diagramDescription = (DiagramDescription) theEObject;
+                T result = this.caseDiagramDescription(diagramDescription);
+                if (result == null)
+                    result = this.caseRepresentationDescription(diagramDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION: {
+                DiagramElementDescription diagramElementDescription = (DiagramElementDescription) theEObject;
+                T result = this.caseDiagramElementDescription(diagramElementDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.NODE_DESCRIPTION: {
+                NodeDescription nodeDescription = (NodeDescription) theEObject;
+                T result = this.caseNodeDescription(nodeDescription);
+                if (result == null)
+                    result = this.caseDiagramElementDescription(nodeDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.EDGE_DESCRIPTION: {
+                EdgeDescription edgeDescription = (EdgeDescription) theEObject;
+                T result = this.caseEdgeDescription(edgeDescription);
+                if (result == null)
+                    result = this.caseDiagramElementDescription(edgeDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LABEL_STYLE: {
+                LabelStyle labelStyle = (LabelStyle) theEObject;
+                T result = this.caseLabelStyle(labelStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.BORDER_STYLE: {
+                BorderStyle borderStyle = (BorderStyle) theEObject;
+                T result = this.caseBorderStyle(borderStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.STYLE: {
+                Style style = (Style) theEObject;
+                T result = this.caseStyle(style);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.NODE_STYLE_DESCRIPTION: {
+                NodeStyleDescription nodeStyleDescription = (NodeStyleDescription) theEObject;
+                T result = this.caseNodeStyleDescription(nodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(nodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(nodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(nodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION: {
+                RectangularNodeStyleDescription rectangularNodeStyleDescription = (RectangularNodeStyleDescription) theEObject;
+                T result = this.caseRectangularNodeStyleDescription(rectangularNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(rectangularNodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(rectangularNodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(rectangularNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(rectangularNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.IMAGE_NODE_STYLE_DESCRIPTION: {
+                ImageNodeStyleDescription imageNodeStyleDescription = (ImageNodeStyleDescription) theEObject;
+                T result = this.caseImageNodeStyleDescription(imageNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(imageNodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(imageNodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(imageNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(imageNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION: {
+                IconLabelNodeStyleDescription iconLabelNodeStyleDescription = (IconLabelNodeStyleDescription) theEObject;
+                T result = this.caseIconLabelNodeStyleDescription(iconLabelNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(iconLabelNodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(iconLabelNodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(iconLabelNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(iconLabelNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LAYOUT_STRATEGY_DESCRIPTION: {
+                LayoutStrategyDescription layoutStrategyDescription = (LayoutStrategyDescription) theEObject;
+                T result = this.caseLayoutStrategyDescription(layoutStrategyDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION: {
+                FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = (FreeFormLayoutStrategyDescription) theEObject;
+                T result = this.caseFreeFormLayoutStrategyDescription(freeFormLayoutStrategyDescription);
+                if (result == null)
+                    result = this.caseLayoutStrategyDescription(freeFormLayoutStrategyDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION: {
+                ListLayoutStrategyDescription listLayoutStrategyDescription = (ListLayoutStrategyDescription) theEObject;
+                T result = this.caseListLayoutStrategyDescription(listLayoutStrategyDescription);
+                if (result == null)
+                    result = this.caseLayoutStrategyDescription(listLayoutStrategyDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.EDGE_STYLE: {
+                EdgeStyle edgeStyle = (EdgeStyle) theEObject;
+                T result = this.caseEdgeStyle(edgeStyle);
+                if (result == null)
+                    result = this.caseStyle(edgeStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(edgeStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TOOL: {
+                Tool tool = (Tool) theEObject;
+                T result = this.caseTool(tool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LABEL_EDIT_TOOL: {
+                LabelEditTool labelEditTool = (LabelEditTool) theEObject;
+                T result = this.caseLabelEditTool(labelEditTool);
+                if (result == null)
+                    result = this.caseTool(labelEditTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DELETE_TOOL: {
+                DeleteTool deleteTool = (DeleteTool) theEObject;
+                T result = this.caseDeleteTool(deleteTool);
+                if (result == null)
+                    result = this.caseTool(deleteTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.NODE_TOOL: {
+                NodeTool nodeTool = (NodeTool) theEObject;
+                T result = this.caseNodeTool(nodeTool);
+                if (result == null)
+                    result = this.caseTool(nodeTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.EDGE_TOOL: {
+                EdgeTool edgeTool = (EdgeTool) theEObject;
+                T result = this.caseEdgeTool(edgeTool);
+                if (result == null)
+                    result = this.caseTool(edgeTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.EDGE_RECONNECTION_TOOL: {
+                EdgeReconnectionTool edgeReconnectionTool = (EdgeReconnectionTool) theEObject;
+                T result = this.caseEdgeReconnectionTool(edgeReconnectionTool);
+                if (result == null)
+                    result = this.caseTool(edgeReconnectionTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.SOURCE_EDGE_END_RECONNECTION_TOOL: {
+                SourceEdgeEndReconnectionTool sourceEdgeEndReconnectionTool = (SourceEdgeEndReconnectionTool) theEObject;
+                T result = this.caseSourceEdgeEndReconnectionTool(sourceEdgeEndReconnectionTool);
+                if (result == null)
+                    result = this.caseEdgeReconnectionTool(sourceEdgeEndReconnectionTool);
+                if (result == null)
+                    result = this.caseTool(sourceEdgeEndReconnectionTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TARGET_EDGE_END_RECONNECTION_TOOL: {
+                TargetEdgeEndReconnectionTool targetEdgeEndReconnectionTool = (TargetEdgeEndReconnectionTool) theEObject;
+                T result = this.caseTargetEdgeEndReconnectionTool(targetEdgeEndReconnectionTool);
+                if (result == null)
+                    result = this.caseEdgeReconnectionTool(targetEdgeEndReconnectionTool);
+                if (result == null)
+                    result = this.caseTool(targetEdgeEndReconnectionTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DROP_TOOL: {
+                DropTool dropTool = (DropTool) theEObject;
+                T result = this.caseDropTool(dropTool);
+                if (result == null)
+                    result = this.caseTool(dropTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.OPERATION: {
+                Operation operation = (Operation) theEObject;
+                T result = this.caseOperation(operation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CHANGE_CONTEXT: {
+                ChangeContext changeContext = (ChangeContext) theEObject;
+                T result = this.caseChangeContext(changeContext);
+                if (result == null)
+                    result = this.caseOperation(changeContext);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CREATE_INSTANCE: {
+                CreateInstance createInstance = (CreateInstance) theEObject;
+                T result = this.caseCreateInstance(createInstance);
+                if (result == null)
+                    result = this.caseOperation(createInstance);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.SET_VALUE: {
+                SetValue setValue = (SetValue) theEObject;
+                T result = this.caseSetValue(setValue);
+                if (result == null)
+                    result = this.caseOperation(setValue);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.UNSET_VALUE: {
+                UnsetValue unsetValue = (UnsetValue) theEObject;
+                T result = this.caseUnsetValue(unsetValue);
+                if (result == null)
+                    result = this.caseOperation(unsetValue);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DELETE_ELEMENT: {
+                DeleteElement deleteElement = (DeleteElement) theEObject;
+                T result = this.caseDeleteElement(deleteElement);
+                if (result == null)
+                    result = this.caseOperation(deleteElement);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CREATE_VIEW: {
+                CreateView createView = (CreateView) theEObject;
+                T result = this.caseCreateView(createView);
+                if (result == null)
+                    result = this.caseOperation(createView);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DELETE_VIEW: {
+                DeleteView deleteView = (DeleteView) theEObject;
+                T result = this.caseDeleteView(deleteView);
+                if (result == null)
+                    result = this.caseOperation(deleteView);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL: {
+                Conditional conditional = (Conditional) theEObject;
+                T result = this.caseConditional(conditional);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_NODE_STYLE: {
+                ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) theEObject;
+                T result = this.caseConditionalNodeStyle(conditionalNodeStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalNodeStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_EDGE_STYLE: {
+                ConditionalEdgeStyle conditionalEdgeStyle = (ConditionalEdgeStyle) theEObject;
+                T result = this.caseConditionalEdgeStyle(conditionalEdgeStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalEdgeStyle);
+                if (result == null)
+                    result = this.caseEdgeStyle(conditionalEdgeStyle);
+                if (result == null)
+                    result = this.caseStyle(conditionalEdgeStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalEdgeStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.FORM_DESCRIPTION: {
+                FormDescription formDescription = (FormDescription) theEObject;
+                T result = this.caseFormDescription(formDescription);
+                if (result == null)
+                    result = this.caseRepresentationDescription(formDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.GROUP_DESCRIPTION: {
+                GroupDescription groupDescription = (GroupDescription) theEObject;
+                T result = this.caseGroupDescription(groupDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.WIDGET_DESCRIPTION: {
+                WidgetDescription widgetDescription = (WidgetDescription) theEObject;
+                T result = this.caseWidgetDescription(widgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TEXTFIELD_DESCRIPTION: {
+                TextfieldDescription textfieldDescription = (TextfieldDescription) theEObject;
+                T result = this.caseTextfieldDescription(textfieldDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(textfieldDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CHECKBOX_DESCRIPTION: {
+                CheckboxDescription checkboxDescription = (CheckboxDescription) theEObject;
+                T result = this.caseCheckboxDescription(checkboxDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(checkboxDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.SELECT_DESCRIPTION: {
+                SelectDescription selectDescription = (SelectDescription) theEObject;
+                T result = this.caseSelectDescription(selectDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(selectDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.MULTI_SELECT_DESCRIPTION: {
+                MultiSelectDescription multiSelectDescription = (MultiSelectDescription) theEObject;
+                T result = this.caseMultiSelectDescription(multiSelectDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(multiSelectDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TEXT_AREA_DESCRIPTION: {
+                TextAreaDescription textAreaDescription = (TextAreaDescription) theEObject;
+                T result = this.caseTextAreaDescription(textAreaDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(textAreaDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.RICH_TEXT_DESCRIPTION: {
+                RichTextDescription richTextDescription = (RichTextDescription) theEObject;
+                T result = this.caseRichTextDescription(richTextDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(richTextDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.RADIO_DESCRIPTION: {
+                RadioDescription radioDescription = (RadioDescription) theEObject;
+                T result = this.caseRadioDescription(radioDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(radioDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.BAR_CHART_DESCRIPTION: {
+                BarChartDescription barChartDescription = (BarChartDescription) theEObject;
+                T result = this.caseBarChartDescription(barChartDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(barChartDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.PIE_CHART_DESCRIPTION: {
+                PieChartDescription pieChartDescription = (PieChartDescription) theEObject;
+                T result = this.casePieChartDescription(pieChartDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(pieChartDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION: {
+                FlexboxContainerDescription flexboxContainerDescription = (FlexboxContainerDescription) theEObject;
+                T result = this.caseFlexboxContainerDescription(flexboxContainerDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(flexboxContainerDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.BUTTON_DESCRIPTION: {
+                ButtonDescription buttonDescription = (ButtonDescription) theEObject;
+                T result = this.caseButtonDescription(buttonDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(buttonDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.IMAGE_DESCRIPTION: {
+                ImageDescription imageDescription = (ImageDescription) theEObject;
+                T result = this.caseImageDescription(imageDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(imageDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.WIDGET_DESCRIPTION_STYLE: {
+                WidgetDescriptionStyle widgetDescriptionStyle = (WidgetDescriptionStyle) theEObject;
+                T result = this.caseWidgetDescriptionStyle(widgetDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE: {
+                TextfieldDescriptionStyle textfieldDescriptionStyle = (TextfieldDescriptionStyle) theEObject;
+                T result = this.caseTextfieldDescriptionStyle(textfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(textfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(textfieldDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE: {
+                ConditionalTextfieldDescriptionStyle conditionalTextfieldDescriptionStyle = (ConditionalTextfieldDescriptionStyle) theEObject;
+                T result = this.caseConditionalTextfieldDescriptionStyle(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseTextfieldDescriptionStyle(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CHECKBOX_DESCRIPTION_STYLE: {
+                CheckboxDescriptionStyle checkboxDescriptionStyle = (CheckboxDescriptionStyle) theEObject;
+                T result = this.caseCheckboxDescriptionStyle(checkboxDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(checkboxDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE: {
+                ConditionalCheckboxDescriptionStyle conditionalCheckboxDescriptionStyle = (ConditionalCheckboxDescriptionStyle) theEObject;
+                T result = this.caseConditionalCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalCheckboxDescriptionStyle);
+                if (result == null)
+                    result = this.caseCheckboxDescriptionStyle(conditionalCheckboxDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalCheckboxDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.SELECT_DESCRIPTION_STYLE: {
+                SelectDescriptionStyle selectDescriptionStyle = (SelectDescriptionStyle) theEObject;
+                T result = this.caseSelectDescriptionStyle(selectDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(selectDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(selectDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_SELECT_DESCRIPTION_STYLE: {
+                ConditionalSelectDescriptionStyle conditionalSelectDescriptionStyle = (ConditionalSelectDescriptionStyle) theEObject;
+                T result = this.caseConditionalSelectDescriptionStyle(conditionalSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseSelectDescriptionStyle(conditionalSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalSelectDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE: {
+                MultiSelectDescriptionStyle multiSelectDescriptionStyle = (MultiSelectDescriptionStyle) theEObject;
+                T result = this.caseMultiSelectDescriptionStyle(multiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(multiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(multiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE: {
+                ConditionalMultiSelectDescriptionStyle conditionalMultiSelectDescriptionStyle = (ConditionalMultiSelectDescriptionStyle) theEObject;
+                T result = this.caseConditionalMultiSelectDescriptionStyle(conditionalMultiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalMultiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseMultiSelectDescriptionStyle(conditionalMultiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalMultiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalMultiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.TEXTAREA_DESCRIPTION_STYLE: {
+                TextareaDescriptionStyle textareaDescriptionStyle = (TextareaDescriptionStyle) theEObject;
+                T result = this.caseTextareaDescriptionStyle(textareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(textareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(textareaDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE: {
+                ConditionalTextareaDescriptionStyle conditionalTextareaDescriptionStyle = (ConditionalTextareaDescriptionStyle) theEObject;
+                T result = this.caseConditionalTextareaDescriptionStyle(conditionalTextareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalTextareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseTextareaDescriptionStyle(conditionalTextareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalTextareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalTextareaDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.RADIO_DESCRIPTION_STYLE: {
+                RadioDescriptionStyle radioDescriptionStyle = (RadioDescriptionStyle) theEObject;
+                T result = this.caseRadioDescriptionStyle(radioDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(radioDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(radioDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE: {
+                ConditionalRadioDescriptionStyle conditionalRadioDescriptionStyle = (ConditionalRadioDescriptionStyle) theEObject;
+                T result = this.caseConditionalRadioDescriptionStyle(conditionalRadioDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalRadioDescriptionStyle);
+                if (result == null)
+                    result = this.caseRadioDescriptionStyle(conditionalRadioDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalRadioDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalRadioDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.BUTTON_DESCRIPTION_STYLE: {
+                ButtonDescriptionStyle buttonDescriptionStyle = (ButtonDescriptionStyle) theEObject;
+                T result = this.caseButtonDescriptionStyle(buttonDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(buttonDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(buttonDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE: {
+                ConditionalButtonDescriptionStyle conditionalButtonDescriptionStyle = (ConditionalButtonDescriptionStyle) theEObject;
+                T result = this.caseConditionalButtonDescriptionStyle(conditionalButtonDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalButtonDescriptionStyle);
+                if (result == null)
+                    result = this.caseButtonDescriptionStyle(conditionalButtonDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalButtonDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalButtonDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE: {
+                BarChartDescriptionStyle barChartDescriptionStyle = (BarChartDescriptionStyle) theEObject;
+                T result = this.caseBarChartDescriptionStyle(barChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(barChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(barChartDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE: {
+                ConditionalBarChartDescriptionStyle conditionalBarChartDescriptionStyle = (ConditionalBarChartDescriptionStyle) theEObject;
+                T result = this.caseConditionalBarChartDescriptionStyle(conditionalBarChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalBarChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseBarChartDescriptionStyle(conditionalBarChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalBarChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalBarChartDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.PIE_CHART_DESCRIPTION_STYLE: {
+                PieChartDescriptionStyle pieChartDescriptionStyle = (PieChartDescriptionStyle) theEObject;
+                T result = this.casePieChartDescriptionStyle(pieChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(pieChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(pieChartDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE: {
+                ConditionalPieChartDescriptionStyle conditionalPieChartDescriptionStyle = (ConditionalPieChartDescriptionStyle) theEObject;
+                T result = this.caseConditionalPieChartDescriptionStyle(conditionalPieChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalPieChartDescriptionStyle);
+                if (result == null)
+                    result = this.casePieChartDescriptionStyle(conditionalPieChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalPieChartDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalPieChartDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LABEL_DESCRIPTION: {
+                LabelDescription labelDescription = (LabelDescription) theEObject;
+                T result = this.caseLabelDescription(labelDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(labelDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LABEL_DESCRIPTION_STYLE: {
+                LabelDescriptionStyle labelDescriptionStyle = (LabelDescriptionStyle) theEObject;
+                T result = this.caseLabelDescriptionStyle(labelDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(labelDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(labelDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE: {
+                ConditionalLabelDescriptionStyle conditionalLabelDescriptionStyle = (ConditionalLabelDescriptionStyle) theEObject;
+                T result = this.caseConditionalLabelDescriptionStyle(conditionalLabelDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalLabelDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelDescriptionStyle(conditionalLabelDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalLabelDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalLabelDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LINK_DESCRIPTION: {
+                LinkDescription linkDescription = (LinkDescription) theEObject;
+                T result = this.caseLinkDescription(linkDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(linkDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LINK_DESCRIPTION_STYLE: {
+                LinkDescriptionStyle linkDescriptionStyle = (LinkDescriptionStyle) theEObject;
+                T result = this.caseLinkDescriptionStyle(linkDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(linkDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(linkDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE: {
+                ConditionalLinkDescriptionStyle conditionalLinkDescriptionStyle = (ConditionalLinkDescriptionStyle) theEObject;
+                T result = this.caseConditionalLinkDescriptionStyle(conditionalLinkDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalLinkDescriptionStyle);
+                if (result == null)
+                    result = this.caseLinkDescriptionStyle(conditionalLinkDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalLinkDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalLinkDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LIST_DESCRIPTION: {
+                ListDescription listDescription = (ListDescription) theEObject;
+                T result = this.caseListDescription(listDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(listDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LIST_DESCRIPTION_STYLE: {
+                ListDescriptionStyle listDescriptionStyle = (ListDescriptionStyle) theEObject;
+                T result = this.caseListDescriptionStyle(listDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(listDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(listDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE: {
+                ConditionalListDescriptionStyle conditionalListDescriptionStyle = (ConditionalListDescriptionStyle) theEObject;
+                T result = this.caseConditionalListDescriptionStyle(conditionalListDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalListDescriptionStyle);
+                if (result == null)
+                    result = this.caseListDescriptionStyle(conditionalListDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetDescriptionStyle(conditionalListDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalListDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            default:
+                return this.defaultCase(theEObject);
         }
     }
 

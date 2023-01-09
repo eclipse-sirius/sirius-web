@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -104,8 +104,8 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-            return this.getColor();
+            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                return this.getColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -118,9 +118,9 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-            this.setColor((String) newValue);
-            return;
+            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                this.setColor((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -133,9 +133,9 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-            this.setColor(COLOR_EDEFAULT);
-            return;
+            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                this.setColor(COLOR_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -148,8 +148,8 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
         }
         return super.eIsSet(featureID);
     }
@@ -163,16 +163,16 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
             switch (derivedFeatureID) {
-            default:
-                return -1;
+                default:
+                    return -1;
             }
         }
         if (baseClass == CheckboxDescriptionStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                return ViewPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR;
-            default:
-                return -1;
+                case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                    return ViewPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -187,16 +187,16 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
             switch (baseFeatureID) {
-            default:
-                return -1;
+                default:
+                    return -1;
             }
         }
         if (baseClass == CheckboxDescriptionStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                return ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR;
-            default:
-                return -1;
+                case ViewPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                    return ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

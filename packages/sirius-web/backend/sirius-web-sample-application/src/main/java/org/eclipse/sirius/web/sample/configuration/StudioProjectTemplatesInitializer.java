@@ -230,6 +230,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         entity.getAttributes().add(attr);
     }
 
+    @SuppressWarnings("checkstyle:MultipleStringLiterals")
     private String getViewContent(String domainName) {
         View view = ViewFactory.eINSTANCE.createView();
 
@@ -248,7 +249,8 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.getNodeDescriptions().add(entity1Node);
 
         RectangularNodeStyleDescription entity1Style = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        entity1Style.setSizeComputationExpression("1");
+        entity1Style.setWidthComputationExpression("1");
+        entity1Style.setHeightComputationExpression("1");
         entity1Style.setColor("#E5F5F8");
         entity1Style.setBorderColor("#33B0C3");
         entity1Style.setBorderRadius(3);
@@ -263,7 +265,8 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.getNodeDescriptions().add(entity2Node);
 
         RectangularNodeStyleDescription entity2Style = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        entity2Style.setSizeComputationExpression("1");
+        entity2Style.setWidthComputationExpression("1");
+        entity2Style.setHeightComputationExpression("1");
         entity2Style.setColor("#B1D8B7");
         entity2Style.setBorderColor("#76B947");
         entity2Style.setBorderRadius(3);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,8 +78,7 @@ public class TargetEdgeEndReconnectionToolItemProvider extends EdgeReconnectionT
     @Override
     public String getText(Object object) {
         String label = ((TargetEdgeEndReconnectionTool) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TargetEdgeEndReconnectionTool_type") :
-                this.getString("_UI_TargetEdgeEndReconnectionTool_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_TargetEdgeEndReconnectionTool_type") : this.getString("_UI_TargetEdgeEndReconnectionTool_type") + " " + label;
     }
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,8 +96,8 @@ public class LabelEditToolImpl extends ToolImpl implements LabelEditTool {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-            return this.getInitialDirectEditLabelExpression();
+            case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+                return this.getInitialDirectEditLabelExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -110,9 +110,9 @@ public class LabelEditToolImpl extends ToolImpl implements LabelEditTool {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-            this.setInitialDirectEditLabelExpression((String) newValue);
-            return;
+            case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+                this.setInitialDirectEditLabelExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -125,9 +125,9 @@ public class LabelEditToolImpl extends ToolImpl implements LabelEditTool {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-            this.setInitialDirectEditLabelExpression(INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT);
-            return;
+            case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+                this.setInitialDirectEditLabelExpression(INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -140,9 +140,9 @@ public class LabelEditToolImpl extends ToolImpl implements LabelEditTool {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-            return INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT == null ? this.initialDirectEditLabelExpression != null
-                    : !INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT.equals(this.initialDirectEditLabelExpression);
+            case ViewPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+                return INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT == null ? this.initialDirectEditLabelExpression != null
+                        : !INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT.equals(this.initialDirectEditLabelExpression);
         }
         return super.eIsSet(featureID);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,8 +86,8 @@ public abstract class OperationImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.OPERATION__CHILDREN:
-            return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
+            case ViewPackage.OPERATION__CHILDREN:
+                return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -100,8 +100,8 @@ public abstract class OperationImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.OPERATION__CHILDREN:
-            return this.getChildren();
+            case ViewPackage.OPERATION__CHILDREN:
+                return this.getChildren();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -115,10 +115,10 @@ public abstract class OperationImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.OPERATION__CHILDREN:
-            this.getChildren().clear();
-            this.getChildren().addAll((Collection<? extends Operation>) newValue);
-            return;
+            case ViewPackage.OPERATION__CHILDREN:
+                this.getChildren().clear();
+                this.getChildren().addAll((Collection<? extends Operation>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -131,9 +131,9 @@ public abstract class OperationImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.OPERATION__CHILDREN:
-            this.getChildren().clear();
-            return;
+            case ViewPackage.OPERATION__CHILDREN:
+                this.getChildren().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -146,8 +146,8 @@ public abstract class OperationImpl extends MinimalEObjectImpl.Container impleme
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.OPERATION__CHILDREN:
-            return this.children != null && !this.children.isEmpty();
+            case ViewPackage.OPERATION__CHILDREN:
+                return this.children != null && !this.children.isEmpty();
         }
         return super.eIsSet(featureID);
     }
