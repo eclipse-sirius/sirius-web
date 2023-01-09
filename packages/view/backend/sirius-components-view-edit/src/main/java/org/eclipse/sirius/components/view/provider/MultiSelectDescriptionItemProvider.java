@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,8 +157,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
     @Override
     public String getText(Object object) {
         String label = ((MultiSelectDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_MultiSelectDescription_type") :
-                this.getString("_UI_MultiSelectDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_MultiSelectDescription_type") : this.getString("_UI_MultiSelectDescription_type") + " " + label;
     }
 
     /**
@@ -173,16 +172,16 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(MultiSelectDescription.class)) {
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
-        case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION:
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATES_EXPRESSION:
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__BODY:
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__STYLE:
+            case ViewPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -230,8 +229,7 @@ public class MultiSelectDescriptionItemProvider extends WidgetDescriptionItemPro
         boolean qualify = childFeature == ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

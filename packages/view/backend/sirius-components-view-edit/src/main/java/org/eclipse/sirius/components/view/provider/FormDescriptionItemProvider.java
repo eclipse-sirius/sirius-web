@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,8 +112,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     @Override
     public String getText(Object object) {
         String label = ((FormDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FormDescription_type") :
-                this.getString("_UI_FormDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_FormDescription_type") : this.getString("_UI_FormDescription_type") + " " + label;
     }
 
     /**
@@ -128,9 +127,9 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(FormDescription.class)) {
-        case ViewPackage.FORM_DESCRIPTION__GROUPS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

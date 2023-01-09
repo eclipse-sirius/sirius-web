@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -220,12 +220,12 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
-            return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
-        case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
-            return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
-        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-            return this.basicSetOnDrop(null, msgs);
+            case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
+                return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+                return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+                return this.basicSetOnDrop(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -238,14 +238,14 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-            return this.isAutoLayout();
-        case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
-            return this.getNodeDescriptions();
-        case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
-            return this.getEdgeDescriptions();
-        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-            return this.getOnDrop();
+            case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+                return this.isAutoLayout();
+            case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
+                return this.getNodeDescriptions();
+            case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+                return this.getEdgeDescriptions();
+            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+                return this.getOnDrop();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -259,20 +259,20 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-            this.setAutoLayout((Boolean) newValue);
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
-            this.getNodeDescriptions().clear();
-            this.getNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
-            this.getEdgeDescriptions().clear();
-            this.getEdgeDescriptions().addAll((Collection<? extends EdgeDescription>) newValue);
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-            this.setOnDrop((DropTool) newValue);
-            return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+                this.setAutoLayout((Boolean) newValue);
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
+                this.getNodeDescriptions().clear();
+                this.getNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+                this.getEdgeDescriptions().clear();
+                this.getEdgeDescriptions().addAll((Collection<? extends EdgeDescription>) newValue);
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+                this.setOnDrop((DropTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -285,18 +285,18 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-            this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
-            this.getNodeDescriptions().clear();
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
-            this.getEdgeDescriptions().clear();
-            return;
-        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-            this.setOnDrop((DropTool) null);
-            return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+                this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
+                this.getNodeDescriptions().clear();
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+                this.getEdgeDescriptions().clear();
+                return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+                this.setOnDrop((DropTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -309,14 +309,14 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-            return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
-        case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
-            return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
-        case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
-            return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
-        case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-            return this.onDrop != null;
+            case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+                return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
+            case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
+                return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
+            case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
+                return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
+            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
+                return this.onDrop != null;
         }
         return super.eIsSet(featureID);
     }

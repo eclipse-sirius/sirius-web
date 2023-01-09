@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,8 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
             this.addBorderSizePropertyDescriptor(object);
             this.addBorderLineStylePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
-            this.addSizeComputationExpressionPropertyDescriptor(object);
+            this.addWidthComputationExpressionPropertyDescriptor(object);
+            this.addHeightComputationExpressionPropertyDescriptor(object);
             this.addShowIconPropertyDescriptor(object);
             this.addWithHeaderPropertyDescriptor(object);
         }
@@ -74,8 +75,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addFontSizePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -85,10 +85,9 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      * @generated
      */
     protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -97,10 +96,9 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      * @generated
      */
     protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -110,8 +108,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -122,8 +119,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -134,8 +130,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addBorderColorPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderColor_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
+                this.getString("_UI_BorderStyle_borderColor_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
                 ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -146,8 +141,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addBorderRadiusPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderRadius_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"),
+                this.getString("_UI_BorderStyle_borderRadius_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"),
                 ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -158,8 +152,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addBorderSizePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderSize_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"),
+                this.getString("_UI_BorderStyle_borderSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"),
                 ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -170,8 +163,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
      */
     protected void addBorderLineStylePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderLineStyle_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
+                this.getString("_UI_BorderStyle_borderLineStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
                 ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -188,16 +180,29 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
     }
 
     /**
-     * This adds a property descriptor for the Size Computation Expression feature. <!-- begin-user-doc --> <!--
+     * This adds a property descriptor for the Width Computation Expression feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    protected void addSizeComputationExpressionPropertyDescriptor(Object object) {
+    protected void addWidthComputationExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyleDescription_sizeComputationExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_sizeComputationExpression_feature", "_UI_NodeStyleDescription_type"),
-                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_NodeStyleDescription_widthComputationExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_widthComputationExpression_feature", "_UI_NodeStyleDescription_type"),
+                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Height Computation Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addHeightComputationExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeStyleDescription_heightComputationExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_heightComputationExpression_feature", "_UI_NodeStyleDescription_type"),
+                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -252,8 +257,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
     @Override
     public String getText(Object object) {
         String label = ((RectangularNodeStyleDescription) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_RectangularNodeStyleDescription_type") :
-                this.getString("_UI_RectangularNodeStyleDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_RectangularNodeStyleDescription_type") : this.getString("_UI_RectangularNodeStyleDescription_type") + " " + label;
     }
 
     /**
@@ -268,21 +272,22 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(RectangularNodeStyleDescription.class)) {
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

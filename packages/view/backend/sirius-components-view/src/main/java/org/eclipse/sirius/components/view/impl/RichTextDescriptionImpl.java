@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -134,8 +134,8 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
-            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
+                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -148,10 +148,10 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-            return this.getValueExpression();
-        case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
-            return this.getBody();
+            case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+                return this.getValueExpression();
+            case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
+                return this.getBody();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -165,13 +165,13 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-            this.setValueExpression((String) newValue);
-            return;
-        case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
-            this.getBody().clear();
-            this.getBody().addAll((Collection<? extends Operation>) newValue);
-            return;
+            case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+                this.setValueExpression((String) newValue);
+                return;
+            case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
+                this.getBody().clear();
+                this.getBody().addAll((Collection<? extends Operation>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -184,12 +184,12 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-            this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
-            this.getBody().clear();
-            return;
+            case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+                this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
+                this.getBody().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -202,10 +202,10 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-            return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
-        case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
-            return this.body != null && !this.body.isEmpty();
+            case ViewPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+                return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
+            case ViewPackage.RICH_TEXT_DESCRIPTION__BODY:
+                return this.body != null && !this.body.isEmpty();
         }
         return super.eIsSet(featureID);
     }

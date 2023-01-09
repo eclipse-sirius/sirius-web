@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -324,18 +324,18 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-            return this.getFontSize();
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-            return this.getBarsColor();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+                return this.getFontSize();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+                return this.isItalic();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+                return this.isBold();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+                return this.isUnderline();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                return this.isStrikeThrough();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+                return this.getBarsColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -348,24 +348,24 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-            this.setBarsColor((String) newValue);
-            return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+                this.setFontSize((Integer) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+                this.setItalic((Boolean) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+                this.setBold((Boolean) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+                this.setUnderline((Boolean) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough((Boolean) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+                this.setBarsColor((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -378,24 +378,24 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-            this.setBarsColor(BARS_COLOR_EDEFAULT);
-            return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+                this.setFontSize(FONT_SIZE_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+                this.setItalic(ITALIC_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+                this.setBold(BOLD_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+                this.setUnderline(UNDERLINE_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+                this.setBarsColor(BARS_COLOR_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -408,18 +408,18 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-            return BARS_COLOR_EDEFAULT == null ? this.barsColor != null : !BARS_COLOR_EDEFAULT.equals(this.barsColor);
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+                return this.fontSize != FONT_SIZE_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+                return this.italic != ITALIC_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+                return this.bold != BOLD_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+                return this.underline != UNDERLINE_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+                return BARS_COLOR_EDEFAULT == null ? this.barsColor != null : !BARS_COLOR_EDEFAULT.equals(this.barsColor);
         }
         return super.eIsSet(featureID);
     }
@@ -433,18 +433,18 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-                return ViewPackage.LABEL_STYLE__FONT_SIZE;
-            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-                return ViewPackage.LABEL_STYLE__ITALIC;
-            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-                return ViewPackage.LABEL_STYLE__BOLD;
-            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-                return ViewPackage.LABEL_STYLE__UNDERLINE;
-            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
+                case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+                    return ViewPackage.LABEL_STYLE__ITALIC;
+                case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+                    return ViewPackage.LABEL_STYLE__BOLD;
+                case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+                    return ViewPackage.LABEL_STYLE__UNDERLINE;
+                case ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -459,18 +459,18 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE;
-            case ViewPackage.LABEL_STYLE__ITALIC:
-                return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC;
-            case ViewPackage.LABEL_STYLE__BOLD:
-                return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD;
-            case ViewPackage.LABEL_STYLE__UNDERLINE:
-                return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE;
-            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                    return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE;
+                case ViewPackage.LABEL_STYLE__ITALIC:
+                    return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC;
+                case ViewPackage.LABEL_STYLE__BOLD:
+                    return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD;
+                case ViewPackage.LABEL_STYLE__UNDERLINE:
+                    return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE;
+                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

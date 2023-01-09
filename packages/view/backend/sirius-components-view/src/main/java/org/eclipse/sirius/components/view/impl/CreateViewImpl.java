@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -244,16 +244,16 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-            return this.getParentViewExpression();
-        case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-            if (resolve)
-                return this.getElementDescription();
-            return this.basicGetElementDescription();
-        case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-            return this.getSemanticElementExpression();
-        case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
-            return this.getVariableName();
+            case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+                return this.getParentViewExpression();
+            case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+                if (resolve)
+                    return this.getElementDescription();
+                return this.basicGetElementDescription();
+            case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+                return this.getSemanticElementExpression();
+            case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
+                return this.getVariableName();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -266,18 +266,18 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-            this.setParentViewExpression((String) newValue);
-            return;
-        case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-            this.setElementDescription((DiagramElementDescription) newValue);
-            return;
-        case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-            this.setSemanticElementExpression((String) newValue);
-            return;
-        case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
-            this.setVariableName((String) newValue);
-            return;
+            case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+                this.setParentViewExpression((String) newValue);
+                return;
+            case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+                this.setElementDescription((DiagramElementDescription) newValue);
+                return;
+            case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+                this.setSemanticElementExpression((String) newValue);
+                return;
+            case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
+                this.setVariableName((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -290,18 +290,18 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-            this.setParentViewExpression(PARENT_VIEW_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-            this.setElementDescription((DiagramElementDescription) null);
-            return;
-        case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-            this.setSemanticElementExpression(SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
-            this.setVariableName(VARIABLE_NAME_EDEFAULT);
-            return;
+            case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+                this.setParentViewExpression(PARENT_VIEW_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+                this.setElementDescription((DiagramElementDescription) null);
+                return;
+            case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+                this.setSemanticElementExpression(SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
+                this.setVariableName(VARIABLE_NAME_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -314,14 +314,14 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-            return PARENT_VIEW_EXPRESSION_EDEFAULT == null ? this.parentViewExpression != null : !PARENT_VIEW_EXPRESSION_EDEFAULT.equals(this.parentViewExpression);
-        case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-            return this.elementDescription != null;
-        case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-            return SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT == null ? this.semanticElementExpression != null : !SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT.equals(this.semanticElementExpression);
-        case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
-            return VARIABLE_NAME_EDEFAULT == null ? this.variableName != null : !VARIABLE_NAME_EDEFAULT.equals(this.variableName);
+            case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+                return PARENT_VIEW_EXPRESSION_EDEFAULT == null ? this.parentViewExpression != null : !PARENT_VIEW_EXPRESSION_EDEFAULT.equals(this.parentViewExpression);
+            case ViewPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+                return this.elementDescription != null;
+            case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+                return SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT == null ? this.semanticElementExpression != null : !SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT.equals(this.semanticElementExpression);
+            case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
+                return VARIABLE_NAME_EDEFAULT == null ? this.variableName != null : !VARIABLE_NAME_EDEFAULT.equals(this.variableName);
         }
         return super.eIsSet(featureID);
     }

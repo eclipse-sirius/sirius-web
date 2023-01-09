@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -145,8 +145,7 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
     @Override
     public String getText(Object object) {
         String label = ((FlexboxContainerDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FlexboxContainerDescription_type") :
-                this.getString("_UI_FlexboxContainerDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_FlexboxContainerDescription_type") : this.getString("_UI_FlexboxContainerDescription_type") + " " + label;
     }
 
     /**
@@ -161,12 +160,12 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(FlexboxContainerDescription.class)) {
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

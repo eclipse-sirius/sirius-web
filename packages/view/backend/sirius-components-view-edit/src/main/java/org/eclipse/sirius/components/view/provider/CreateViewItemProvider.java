@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,8 +67,8 @@ public class CreateViewItemProvider extends OperationItemProvider {
     protected void addParentViewExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_CreateView_parentViewExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_parentViewExpression_feature", "_UI_CreateView_type"),
-                ViewPackage.Literals.CREATE_VIEW__PARENT_VIEW_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_parentViewExpression_feature", "_UI_CreateView_type"), ViewPackage.Literals.CREATE_VIEW__PARENT_VIEW_EXPRESSION,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -79,8 +79,7 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     protected void addElementDescriptionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_elementDescription_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_elementDescription_feature", "_UI_CreateView_type"),
+                this.getString("_UI_CreateView_elementDescription_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_elementDescription_feature", "_UI_CreateView_type"),
                 ViewPackage.Literals.CREATE_VIEW__ELEMENT_DESCRIPTION, true, false, true, null, null, null));
     }
 
@@ -104,8 +103,7 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     protected void addVariableNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_variableName_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_variableName_feature", "_UI_CreateView_type"),
+                this.getString("_UI_CreateView_variableName_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_variableName_feature", "_UI_CreateView_type"),
                 ViewPackage.Literals.CREATE_VIEW__VARIABLE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -137,8 +135,7 @@ public class CreateViewItemProvider extends OperationItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((CreateView) object).getVariableName();
-        return label == null || label.length() == 0 ? this.getString("_UI_CreateView_type") :
-                this.getString("_UI_CreateView_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_CreateView_type") : this.getString("_UI_CreateView_type") + " " + label;
     }
 
     /**
@@ -153,11 +150,11 @@ public class CreateViewItemProvider extends OperationItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(CreateView.class)) {
-        case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-        case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-        case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+            case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+            case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

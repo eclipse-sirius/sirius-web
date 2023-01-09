@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -237,14 +237,14 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-            return this.getName();
-        case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-            return this.getDomainType();
-        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-            return this.getPreconditionExpression();
-        case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-            return this.getTitleExpression();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+                return this.getName();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+                return this.getDomainType();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+                return this.getPreconditionExpression();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+                return this.getTitleExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -257,18 +257,18 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-            this.setName((String) newValue);
-            return;
-        case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-            this.setDomainType((String) newValue);
-            return;
-        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-            this.setPreconditionExpression((String) newValue);
-            return;
-        case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-            this.setTitleExpression((String) newValue);
-            return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType((String) newValue);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression((String) newValue);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+                this.setTitleExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -281,18 +281,18 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
-        case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-            this.setDomainType(DOMAIN_TYPE_EDEFAULT);
-            return;
-        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-            this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-            this.setTitleExpression(TITLE_EXPRESSION_EDEFAULT);
-            return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+                this.setTitleExpression(TITLE_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -305,14 +305,14 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-        case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-            return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
-        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-            return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
-        case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-            return TITLE_EXPRESSION_EDEFAULT == null ? this.titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(this.titleExpression);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+                return TITLE_EXPRESSION_EDEFAULT == null ? this.titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(this.titleExpression);
         }
         return super.eIsSet(featureID);
     }

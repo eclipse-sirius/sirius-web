@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -954,13 +954,22 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__LABEL_COLOR = STYLE_FEATURE_COUNT + 9;
 
     /**
-     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
+    int NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
+
+    /**
+     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -968,7 +977,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 11;
+    int NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 12;
 
     /**
      * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -977,7 +986,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 12;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1088,13 +1097,22 @@ public interface ViewPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
-     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1230,13 +1248,22 @@ public interface ViewPackage extends EPackage {
     int IMAGE_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
-     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int IMAGE_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+    int IMAGE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1372,13 +1399,22 @@ public interface ViewPackage extends EPackage {
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
-     * The feature id for the '<em><b>Size Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6784,15 +6820,27 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getSizeComputationExpression <em>Size Computation
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getWidthComputationExpression <em>Width
+     * Computation Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Size Computation Expression</em>'.
-     * @see org.eclipse.sirius.components.view.NodeStyleDescription#getSizeComputationExpression()
+     * @return the meta object for the attribute '<em>Width Computation Expression</em>'.
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription#getWidthComputationExpression()
      * @see #getNodeStyleDescription()
      * @generated
      */
-    EAttribute getNodeStyleDescription_SizeComputationExpression();
+    EAttribute getNodeStyleDescription_WidthComputationExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getHeightComputationExpression <em>Height
+     * Computation Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Height Computation Expression</em>'.
+     * @see org.eclipse.sirius.components.view.NodeStyleDescription#getHeightComputationExpression()
+     * @see #getNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getNodeStyleDescription_HeightComputationExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -9481,12 +9529,20 @@ public interface ViewPackage extends EPackage {
         EAttribute NODE_STYLE_DESCRIPTION__LABEL_COLOR = eINSTANCE.getNodeStyleDescription_LabelColor();
 
         /**
-         * The meta object literal for the '<em><b>Size Computation Expression</b></em>' attribute feature. <!--
+         * The meta object literal for the '<em><b>Width Computation Expression</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyleDescription_SizeComputationExpression();
+        EAttribute NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyleDescription_WidthComputationExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Height Computation Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyleDescription_HeightComputationExpression();
 
         /**
          * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--

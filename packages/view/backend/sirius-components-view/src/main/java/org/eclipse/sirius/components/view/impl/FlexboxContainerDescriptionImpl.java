@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -136,8 +136,8 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+                return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -150,10 +150,10 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            return this.getChildren();
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
-            return this.getFlexDirection();
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+                return this.getChildren();
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+                return this.getFlexDirection();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -167,13 +167,13 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            this.getChildren().clear();
-            this.getChildren().addAll((Collection<? extends WidgetDescription>) newValue);
-            return;
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
-            this.setFlexDirection((FlexDirection) newValue);
-            return;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+                this.getChildren().clear();
+                this.getChildren().addAll((Collection<? extends WidgetDescription>) newValue);
+                return;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+                this.setFlexDirection((FlexDirection) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -186,12 +186,12 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            this.getChildren().clear();
-            return;
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
-            this.setFlexDirection(FLEX_DIRECTION_EDEFAULT);
-            return;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+                this.getChildren().clear();
+                return;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+                this.setFlexDirection(FLEX_DIRECTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -204,10 +204,10 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            return this.children != null && !this.children.isEmpty();
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
-            return this.flexDirection != FLEX_DIRECTION_EDEFAULT;
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+                return this.children != null && !this.children.isEmpty();
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+                return this.flexDirection != FLEX_DIRECTION_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -374,10 +374,10 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -390,20 +390,20 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            return this.getValuesExpression();
-        case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            return this.getKeysExpression();
-        case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
-            return this.getYAxisLabelExpression();
-        case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
-            return this.getStyle();
-        case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.getConditionalStyles();
-        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
-            return this.getWidth();
-        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
-            return this.getHeight();
+            case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                return this.getValuesExpression();
+            case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                return this.getKeysExpression();
+            case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+                return this.getYAxisLabelExpression();
+            case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
+            case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+                return this.getWidth();
+            case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+                return this.getHeight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -417,28 +417,28 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            this.setValuesExpression((String) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            this.setKeysExpression((String) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
-            this.setYAxisLabelExpression((String) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
-            this.setStyle((BarChartDescriptionStyle) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalBarChartDescriptionStyle>) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
-            this.setWidth((Integer) newValue);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
-            this.setHeight((Integer) newValue);
-            return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                this.setValuesExpression((String) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                this.setKeysExpression((String) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+                this.setYAxisLabelExpression((String) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
+                this.setStyle((BarChartDescriptionStyle) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalBarChartDescriptionStyle>) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+                this.setWidth((Integer) newValue);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+                this.setHeight((Integer) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -451,27 +451,27 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            this.setValuesExpression(VALUES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            this.setKeysExpression(KEYS_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
-            this.setYAxisLabelExpression(YAXIS_LABEL_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
-            this.setStyle((BarChartDescriptionStyle) null);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
-            this.setWidth(WIDTH_EDEFAULT);
-            return;
-        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
-            this.setHeight(HEIGHT_EDEFAULT);
-            return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                this.setValuesExpression(VALUES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                this.setKeysExpression(KEYS_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+                this.setYAxisLabelExpression(YAXIS_LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
+                this.setStyle((BarChartDescriptionStyle) null);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+                this.setWidth(WIDTH_EDEFAULT);
+                return;
+            case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+                this.setHeight(HEIGHT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -484,20 +484,20 @@ public class BarChartDescriptionImpl extends WidgetDescriptionImpl implements Ba
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            return VALUES_EXPRESSION_EDEFAULT == null ? this.valuesExpression != null : !VALUES_EXPRESSION_EDEFAULT.equals(this.valuesExpression);
-        case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            return KEYS_EXPRESSION_EDEFAULT == null ? this.keysExpression != null : !KEYS_EXPRESSION_EDEFAULT.equals(this.keysExpression);
-        case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
-            return YAXIS_LABEL_EXPRESSION_EDEFAULT == null ? this.yAxisLabelExpression != null : !YAXIS_LABEL_EXPRESSION_EDEFAULT.equals(this.yAxisLabelExpression);
-        case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
-            return this.style != null;
-        case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
-        case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
-            return this.width != WIDTH_EDEFAULT;
-        case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
-            return this.height != HEIGHT_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
+                return VALUES_EXPRESSION_EDEFAULT == null ? this.valuesExpression != null : !VALUES_EXPRESSION_EDEFAULT.equals(this.valuesExpression);
+            case ViewPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
+                return KEYS_EXPRESSION_EDEFAULT == null ? this.keysExpression != null : !KEYS_EXPRESSION_EDEFAULT.equals(this.keysExpression);
+            case ViewPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+                return YAXIS_LABEL_EXPRESSION_EDEFAULT == null ? this.yAxisLabelExpression != null : !YAXIS_LABEL_EXPRESSION_EDEFAULT.equals(this.yAxisLabelExpression);
+            case ViewPackage.BAR_CHART_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ViewPackage.BAR_CHART_DESCRIPTION__WIDTH:
+                return this.width != WIDTH_EDEFAULT;
+            case ViewPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+                return this.height != HEIGHT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }

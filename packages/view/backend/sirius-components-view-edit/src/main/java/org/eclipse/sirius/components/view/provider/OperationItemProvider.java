@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,9 +124,9 @@ public class OperationItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Operation.class)) {
-        case ViewPackage.OPERATION__CHILDREN:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.OPERATION__CHILDREN:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

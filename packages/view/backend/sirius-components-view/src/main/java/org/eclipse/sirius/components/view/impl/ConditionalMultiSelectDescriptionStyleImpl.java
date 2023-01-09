@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -375,20 +375,20 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-            return this.getFontSize();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-            return this.getBackgroundColor();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-            return this.getForegroundColor();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+                return this.getFontSize();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+                return this.isItalic();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+                return this.isBold();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+                return this.isUnderline();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                return this.isStrikeThrough();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+                return this.getBackgroundColor();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                return this.getForegroundColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -401,27 +401,27 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-            this.setBackgroundColor((String) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-            this.setForegroundColor((String) newValue);
-            return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+                this.setFontSize((Integer) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+                this.setItalic((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+                this.setBold((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+                this.setUnderline((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+                this.setBackgroundColor((String) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                this.setForegroundColor((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -434,27 +434,27 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-            this.setBackgroundColor(BACKGROUND_COLOR_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-            this.setForegroundColor(FOREGROUND_COLOR_EDEFAULT);
-            return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+                this.setFontSize(FONT_SIZE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+                this.setItalic(ITALIC_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+                this.setBold(BOLD_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+                this.setUnderline(UNDERLINE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+                this.setBackgroundColor(BACKGROUND_COLOR_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                this.setForegroundColor(FOREGROUND_COLOR_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -467,20 +467,20 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-            return BACKGROUND_COLOR_EDEFAULT == null ? this.backgroundColor != null : !BACKGROUND_COLOR_EDEFAULT.equals(this.backgroundColor);
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-            return FOREGROUND_COLOR_EDEFAULT == null ? this.foregroundColor != null : !FOREGROUND_COLOR_EDEFAULT.equals(this.foregroundColor);
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+                return this.fontSize != FONT_SIZE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+                return this.italic != ITALIC_EDEFAULT;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+                return this.bold != BOLD_EDEFAULT;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+                return this.underline != UNDERLINE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+                return BACKGROUND_COLOR_EDEFAULT == null ? this.backgroundColor != null : !BACKGROUND_COLOR_EDEFAULT.equals(this.backgroundColor);
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                return FOREGROUND_COLOR_EDEFAULT == null ? this.foregroundColor != null : !FOREGROUND_COLOR_EDEFAULT.equals(this.foregroundColor);
         }
         return super.eIsSet(featureID);
     }
@@ -494,34 +494,34 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
             switch (derivedFeatureID) {
-            default:
-                return -1;
+                default:
+                    return -1;
             }
         }
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-                return ViewPackage.LABEL_STYLE__FONT_SIZE;
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-                return ViewPackage.LABEL_STYLE__ITALIC;
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-                return ViewPackage.LABEL_STYLE__BOLD;
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-                return ViewPackage.LABEL_STYLE__UNDERLINE;
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+                    return ViewPackage.LABEL_STYLE__ITALIC;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+                    return ViewPackage.LABEL_STYLE__BOLD;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+                    return ViewPackage.LABEL_STYLE__UNDERLINE;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         if (baseClass == MultiSelectDescriptionStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
-            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
-            default:
-                return -1;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+                    return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                    return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -536,34 +536,34 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
             switch (baseFeatureID) {
-            default:
-                return -1;
+                default:
+                    return -1;
             }
         }
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE;
-            case ViewPackage.LABEL_STYLE__ITALIC:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC;
-            case ViewPackage.LABEL_STYLE__BOLD:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD;
-            case ViewPackage.LABEL_STYLE__UNDERLINE:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE;
-            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE;
+                case ViewPackage.LABEL_STYLE__ITALIC:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC;
+                case ViewPackage.LABEL_STYLE__BOLD:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD;
+                case ViewPackage.LABEL_STYLE__UNDERLINE:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE;
+                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         if (baseClass == MultiSelectDescriptionStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
-            case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
-            default:
-                return -1;
+                case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
+                case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

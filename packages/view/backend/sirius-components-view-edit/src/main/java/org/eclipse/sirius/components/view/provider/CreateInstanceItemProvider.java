@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,8 +64,7 @@ public class CreateInstanceItemProvider extends OperationItemProvider {
      */
     protected void addTypeNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateInstance_typeName_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateInstance_typeName_feature", "_UI_CreateInstance_type"),
+                this.getString("_UI_CreateInstance_typeName_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateInstance_typeName_feature", "_UI_CreateInstance_type"),
                 ViewPackage.Literals.CREATE_INSTANCE__TYPE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -76,8 +75,7 @@ public class CreateInstanceItemProvider extends OperationItemProvider {
      */
     protected void addReferenceNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateInstance_referenceName_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateInstance_referenceName_feature", "_UI_CreateInstance_type"),
+                this.getString("_UI_CreateInstance_referenceName_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateInstance_referenceName_feature", "_UI_CreateInstance_type"),
                 ViewPackage.Literals.CREATE_INSTANCE__REFERENCE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -88,8 +86,7 @@ public class CreateInstanceItemProvider extends OperationItemProvider {
      */
     protected void addVariableNamePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateInstance_variableName_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateInstance_variableName_feature", "_UI_CreateInstance_type"),
+                this.getString("_UI_CreateInstance_variableName_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateInstance_variableName_feature", "_UI_CreateInstance_type"),
                 ViewPackage.Literals.CREATE_INSTANCE__VARIABLE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -121,8 +118,7 @@ public class CreateInstanceItemProvider extends OperationItemProvider {
     @Override
     public String getText(Object object) {
         String label = ((CreateInstance) object).getTypeName();
-        return label == null || label.length() == 0 ? this.getString("_UI_CreateInstance_type") :
-                this.getString("_UI_CreateInstance_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_CreateInstance_type") : this.getString("_UI_CreateInstance_type") + " " + label;
     }
 
     /**
@@ -137,11 +133,11 @@ public class CreateInstanceItemProvider extends OperationItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(CreateInstance.class)) {
-        case ViewPackage.CREATE_INSTANCE__TYPE_NAME:
-        case ViewPackage.CREATE_INSTANCE__REFERENCE_NAME:
-        case ViewPackage.CREATE_INSTANCE__VARIABLE_NAME:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CREATE_INSTANCE__TYPE_NAME:
+            case ViewPackage.CREATE_INSTANCE__REFERENCE_NAME:
+            case ViewPackage.CREATE_INSTANCE__VARIABLE_NAME:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

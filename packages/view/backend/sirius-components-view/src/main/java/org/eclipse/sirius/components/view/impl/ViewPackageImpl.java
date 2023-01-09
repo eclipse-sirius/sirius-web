@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1357,7 +1357,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyleDescription_SizeComputationExpression() {
+    public EAttribute getNodeStyleDescription_WidthComputationExpression() {
         return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -1367,8 +1367,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyleDescription_ShowIcon() {
+    public EAttribute getNodeStyleDescription_HeightComputationExpression() {
         return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeStyleDescription_ShowIcon() {
+        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -3425,7 +3435,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_COLOR);
-        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__SIZE_COMPUTATION_EXPRESSION);
+        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION);
+        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__SHOW_ICON);
 
         this.rectangularNodeStyleDescriptionEClass = this.createEClass(RECTANGULAR_NODE_STYLE_DESCRIPTION);
@@ -3934,7 +3945,9 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getNodeStyleDescription_LabelColor(), this.ecorePackage.getEString(), "labelColor", "black", 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyleDescription_SizeComputationExpression(), this.getInterpretedExpression(), "sizeComputationExpression", "1", 0, 1, NodeStyleDescription.class,
+        this.initEAttribute(this.getNodeStyleDescription_WidthComputationExpression(), this.getInterpretedExpression(), "widthComputationExpression", "1", 0, 1, NodeStyleDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeStyleDescription_HeightComputationExpression(), this.getInterpretedExpression(), "heightComputationExpression", "1", 0, 1, NodeStyleDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyleDescription_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

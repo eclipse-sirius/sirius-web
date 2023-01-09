@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -149,10 +149,10 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.WIDGET_DESCRIPTION__NAME:
-            return this.getName();
-        case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
-            return this.getLabelExpression();
+            case ViewPackage.WIDGET_DESCRIPTION__NAME:
+                return this.getName();
+            case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
+                return this.getLabelExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -166,12 +166,12 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.WIDGET_DESCRIPTION__NAME:
-            this.setName((String) newValue);
-            return;
-        case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
-            this.setLabelExpression((String) newValue);
-            return;
+            case ViewPackage.WIDGET_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
+            case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
+                this.setLabelExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -184,12 +184,12 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.WIDGET_DESCRIPTION__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
-        case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
-            this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-            return;
+            case ViewPackage.WIDGET_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
+                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -202,10 +202,10 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.WIDGET_DESCRIPTION__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-        case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
-            return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case ViewPackage.WIDGET_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
         }
         return super.eIsSet(featureID);
     }

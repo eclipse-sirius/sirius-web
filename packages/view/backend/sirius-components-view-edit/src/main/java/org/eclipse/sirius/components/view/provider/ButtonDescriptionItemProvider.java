@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -143,8 +143,7 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
     @Override
     public String getText(Object object) {
         String label = ((ButtonDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_ButtonDescription_type") :
-                this.getString("_UI_ButtonDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_ButtonDescription_type") : this.getString("_UI_ButtonDescription_type") + " " + label;
     }
 
     /**
@@ -159,15 +158,15 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ButtonDescription.class)) {
-        case ViewPackage.BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION:
-        case ViewPackage.BUTTON_DESCRIPTION__IMAGE_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.BUTTON_DESCRIPTION__BODY:
-        case ViewPackage.BUTTON_DESCRIPTION__STYLE:
-        case ViewPackage.BUTTON_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION:
+            case ViewPackage.BUTTON_DESCRIPTION__IMAGE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.BUTTON_DESCRIPTION__BODY:
+            case ViewPackage.BUTTON_DESCRIPTION__STYLE:
+            case ViewPackage.BUTTON_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -215,8 +214,7 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
         boolean qualify = childFeature == ViewPackage.Literals.BUTTON_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.BUTTON_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

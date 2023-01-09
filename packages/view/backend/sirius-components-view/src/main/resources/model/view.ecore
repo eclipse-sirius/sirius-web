@@ -110,7 +110,9 @@
       interface="true" eSuperTypes="#//Style #//LabelStyle #//BorderStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="black"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sizeComputationExpression"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="widthComputationExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="heightComputationExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>

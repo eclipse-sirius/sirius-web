@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -134,142 +134,142 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-        case ViewPackage.VIEW:
-            return this.createView();
-        case ViewPackage.DIAGRAM_DESCRIPTION:
-            return this.createDiagramDescription();
-        case ViewPackage.NODE_DESCRIPTION:
-            return this.createNodeDescription();
-        case ViewPackage.EDGE_DESCRIPTION:
-            return this.createEdgeDescription();
-        case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION:
-            return this.createRectangularNodeStyleDescription();
-        case ViewPackage.IMAGE_NODE_STYLE_DESCRIPTION:
-            return this.createImageNodeStyleDescription();
-        case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION:
-            return this.createIconLabelNodeStyleDescription();
-        case ViewPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION:
-            return this.createFreeFormLayoutStrategyDescription();
-        case ViewPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION:
-            return this.createListLayoutStrategyDescription();
-        case ViewPackage.EDGE_STYLE:
-            return this.createEdgeStyle();
-        case ViewPackage.LABEL_EDIT_TOOL:
-            return this.createLabelEditTool();
-        case ViewPackage.DELETE_TOOL:
-            return this.createDeleteTool();
-        case ViewPackage.NODE_TOOL:
-            return this.createNodeTool();
-        case ViewPackage.EDGE_TOOL:
-            return this.createEdgeTool();
-        case ViewPackage.SOURCE_EDGE_END_RECONNECTION_TOOL:
-            return this.createSourceEdgeEndReconnectionTool();
-        case ViewPackage.TARGET_EDGE_END_RECONNECTION_TOOL:
-            return this.createTargetEdgeEndReconnectionTool();
-        case ViewPackage.DROP_TOOL:
-            return this.createDropTool();
-        case ViewPackage.CHANGE_CONTEXT:
-            return this.createChangeContext();
-        case ViewPackage.CREATE_INSTANCE:
-            return this.createCreateInstance();
-        case ViewPackage.SET_VALUE:
-            return this.createSetValue();
-        case ViewPackage.UNSET_VALUE:
-            return this.createUnsetValue();
-        case ViewPackage.DELETE_ELEMENT:
-            return this.createDeleteElement();
-        case ViewPackage.CREATE_VIEW:
-            return this.createCreateView();
-        case ViewPackage.DELETE_VIEW:
-            return this.createDeleteView();
-        case ViewPackage.CONDITIONAL_NODE_STYLE:
-            return this.createConditionalNodeStyle();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE:
-            return this.createConditionalEdgeStyle();
-        case ViewPackage.FORM_DESCRIPTION:
-            return this.createFormDescription();
-        case ViewPackage.GROUP_DESCRIPTION:
-            return this.createGroupDescription();
-        case ViewPackage.TEXTFIELD_DESCRIPTION:
-            return this.createTextfieldDescription();
-        case ViewPackage.CHECKBOX_DESCRIPTION:
-            return this.createCheckboxDescription();
-        case ViewPackage.SELECT_DESCRIPTION:
-            return this.createSelectDescription();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION:
-            return this.createMultiSelectDescription();
-        case ViewPackage.TEXT_AREA_DESCRIPTION:
-            return this.createTextAreaDescription();
-        case ViewPackage.RICH_TEXT_DESCRIPTION:
-            return this.createRichTextDescription();
-        case ViewPackage.RADIO_DESCRIPTION:
-            return this.createRadioDescription();
-        case ViewPackage.BAR_CHART_DESCRIPTION:
-            return this.createBarChartDescription();
-        case ViewPackage.PIE_CHART_DESCRIPTION:
-            return this.createPieChartDescription();
-        case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION:
-            return this.createFlexboxContainerDescription();
-        case ViewPackage.BUTTON_DESCRIPTION:
-            return this.createButtonDescription();
-        case ViewPackage.IMAGE_DESCRIPTION:
-            return this.createImageDescription();
-        case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
-            return this.createTextfieldDescriptionStyle();
-        case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
-            return this.createConditionalTextfieldDescriptionStyle();
-        case ViewPackage.CHECKBOX_DESCRIPTION_STYLE:
-            return this.createCheckboxDescriptionStyle();
-        case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE:
-            return this.createConditionalCheckboxDescriptionStyle();
-        case ViewPackage.SELECT_DESCRIPTION_STYLE:
-            return this.createSelectDescriptionStyle();
-        case ViewPackage.CONDITIONAL_SELECT_DESCRIPTION_STYLE:
-            return this.createConditionalSelectDescriptionStyle();
-        case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE:
-            return this.createMultiSelectDescriptionStyle();
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE:
-            return this.createConditionalMultiSelectDescriptionStyle();
-        case ViewPackage.TEXTAREA_DESCRIPTION_STYLE:
-            return this.createTextareaDescriptionStyle();
-        case ViewPackage.CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE:
-            return this.createConditionalTextareaDescriptionStyle();
-        case ViewPackage.RADIO_DESCRIPTION_STYLE:
-            return this.createRadioDescriptionStyle();
-        case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE:
-            return this.createConditionalRadioDescriptionStyle();
-        case ViewPackage.BUTTON_DESCRIPTION_STYLE:
-            return this.createButtonDescriptionStyle();
-        case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE:
-            return this.createConditionalButtonDescriptionStyle();
-        case ViewPackage.BAR_CHART_DESCRIPTION_STYLE:
-            return this.createBarChartDescriptionStyle();
-        case ViewPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE:
-            return this.createConditionalBarChartDescriptionStyle();
-        case ViewPackage.PIE_CHART_DESCRIPTION_STYLE:
-            return this.createPieChartDescriptionStyle();
-        case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE:
-            return this.createConditionalPieChartDescriptionStyle();
-        case ViewPackage.LABEL_DESCRIPTION:
-            return this.createLabelDescription();
-        case ViewPackage.LABEL_DESCRIPTION_STYLE:
-            return this.createLabelDescriptionStyle();
-        case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE:
-            return this.createConditionalLabelDescriptionStyle();
-        case ViewPackage.LINK_DESCRIPTION:
-            return this.createLinkDescription();
-        case ViewPackage.LINK_DESCRIPTION_STYLE:
-            return this.createLinkDescriptionStyle();
-        case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE:
-            return this.createConditionalLinkDescriptionStyle();
-        case ViewPackage.LIST_DESCRIPTION:
-            return this.createListDescription();
-        case ViewPackage.LIST_DESCRIPTION_STYLE:
-            return this.createListDescriptionStyle();
-        case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE:
-            return this.createConditionalListDescriptionStyle();
-        default:
-            throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+            case ViewPackage.VIEW:
+                return this.createView();
+            case ViewPackage.DIAGRAM_DESCRIPTION:
+                return this.createDiagramDescription();
+            case ViewPackage.NODE_DESCRIPTION:
+                return this.createNodeDescription();
+            case ViewPackage.EDGE_DESCRIPTION:
+                return this.createEdgeDescription();
+            case ViewPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION:
+                return this.createRectangularNodeStyleDescription();
+            case ViewPackage.IMAGE_NODE_STYLE_DESCRIPTION:
+                return this.createImageNodeStyleDescription();
+            case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION:
+                return this.createIconLabelNodeStyleDescription();
+            case ViewPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION:
+                return this.createFreeFormLayoutStrategyDescription();
+            case ViewPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION:
+                return this.createListLayoutStrategyDescription();
+            case ViewPackage.EDGE_STYLE:
+                return this.createEdgeStyle();
+            case ViewPackage.LABEL_EDIT_TOOL:
+                return this.createLabelEditTool();
+            case ViewPackage.DELETE_TOOL:
+                return this.createDeleteTool();
+            case ViewPackage.NODE_TOOL:
+                return this.createNodeTool();
+            case ViewPackage.EDGE_TOOL:
+                return this.createEdgeTool();
+            case ViewPackage.SOURCE_EDGE_END_RECONNECTION_TOOL:
+                return this.createSourceEdgeEndReconnectionTool();
+            case ViewPackage.TARGET_EDGE_END_RECONNECTION_TOOL:
+                return this.createTargetEdgeEndReconnectionTool();
+            case ViewPackage.DROP_TOOL:
+                return this.createDropTool();
+            case ViewPackage.CHANGE_CONTEXT:
+                return this.createChangeContext();
+            case ViewPackage.CREATE_INSTANCE:
+                return this.createCreateInstance();
+            case ViewPackage.SET_VALUE:
+                return this.createSetValue();
+            case ViewPackage.UNSET_VALUE:
+                return this.createUnsetValue();
+            case ViewPackage.DELETE_ELEMENT:
+                return this.createDeleteElement();
+            case ViewPackage.CREATE_VIEW:
+                return this.createCreateView();
+            case ViewPackage.DELETE_VIEW:
+                return this.createDeleteView();
+            case ViewPackage.CONDITIONAL_NODE_STYLE:
+                return this.createConditionalNodeStyle();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE:
+                return this.createConditionalEdgeStyle();
+            case ViewPackage.FORM_DESCRIPTION:
+                return this.createFormDescription();
+            case ViewPackage.GROUP_DESCRIPTION:
+                return this.createGroupDescription();
+            case ViewPackage.TEXTFIELD_DESCRIPTION:
+                return this.createTextfieldDescription();
+            case ViewPackage.CHECKBOX_DESCRIPTION:
+                return this.createCheckboxDescription();
+            case ViewPackage.SELECT_DESCRIPTION:
+                return this.createSelectDescription();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION:
+                return this.createMultiSelectDescription();
+            case ViewPackage.TEXT_AREA_DESCRIPTION:
+                return this.createTextAreaDescription();
+            case ViewPackage.RICH_TEXT_DESCRIPTION:
+                return this.createRichTextDescription();
+            case ViewPackage.RADIO_DESCRIPTION:
+                return this.createRadioDescription();
+            case ViewPackage.BAR_CHART_DESCRIPTION:
+                return this.createBarChartDescription();
+            case ViewPackage.PIE_CHART_DESCRIPTION:
+                return this.createPieChartDescription();
+            case ViewPackage.FLEXBOX_CONTAINER_DESCRIPTION:
+                return this.createFlexboxContainerDescription();
+            case ViewPackage.BUTTON_DESCRIPTION:
+                return this.createButtonDescription();
+            case ViewPackage.IMAGE_DESCRIPTION:
+                return this.createImageDescription();
+            case ViewPackage.TEXTFIELD_DESCRIPTION_STYLE:
+                return this.createTextfieldDescriptionStyle();
+            case ViewPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
+                return this.createConditionalTextfieldDescriptionStyle();
+            case ViewPackage.CHECKBOX_DESCRIPTION_STYLE:
+                return this.createCheckboxDescriptionStyle();
+            case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE:
+                return this.createConditionalCheckboxDescriptionStyle();
+            case ViewPackage.SELECT_DESCRIPTION_STYLE:
+                return this.createSelectDescriptionStyle();
+            case ViewPackage.CONDITIONAL_SELECT_DESCRIPTION_STYLE:
+                return this.createConditionalSelectDescriptionStyle();
+            case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE:
+                return this.createMultiSelectDescriptionStyle();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE:
+                return this.createConditionalMultiSelectDescriptionStyle();
+            case ViewPackage.TEXTAREA_DESCRIPTION_STYLE:
+                return this.createTextareaDescriptionStyle();
+            case ViewPackage.CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE:
+                return this.createConditionalTextareaDescriptionStyle();
+            case ViewPackage.RADIO_DESCRIPTION_STYLE:
+                return this.createRadioDescriptionStyle();
+            case ViewPackage.CONDITIONAL_RADIO_DESCRIPTION_STYLE:
+                return this.createConditionalRadioDescriptionStyle();
+            case ViewPackage.BUTTON_DESCRIPTION_STYLE:
+                return this.createButtonDescriptionStyle();
+            case ViewPackage.CONDITIONAL_BUTTON_DESCRIPTION_STYLE:
+                return this.createConditionalButtonDescriptionStyle();
+            case ViewPackage.BAR_CHART_DESCRIPTION_STYLE:
+                return this.createBarChartDescriptionStyle();
+            case ViewPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE:
+                return this.createConditionalBarChartDescriptionStyle();
+            case ViewPackage.PIE_CHART_DESCRIPTION_STYLE:
+                return this.createPieChartDescriptionStyle();
+            case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE:
+                return this.createConditionalPieChartDescriptionStyle();
+            case ViewPackage.LABEL_DESCRIPTION:
+                return this.createLabelDescription();
+            case ViewPackage.LABEL_DESCRIPTION_STYLE:
+                return this.createLabelDescriptionStyle();
+            case ViewPackage.CONDITIONAL_LABEL_DESCRIPTION_STYLE:
+                return this.createConditionalLabelDescriptionStyle();
+            case ViewPackage.LINK_DESCRIPTION:
+                return this.createLinkDescription();
+            case ViewPackage.LINK_DESCRIPTION_STYLE:
+                return this.createLinkDescriptionStyle();
+            case ViewPackage.CONDITIONAL_LINK_DESCRIPTION_STYLE:
+                return this.createConditionalLinkDescriptionStyle();
+            case ViewPackage.LIST_DESCRIPTION:
+                return this.createListDescription();
+            case ViewPackage.LIST_DESCRIPTION_STYLE:
+                return this.createListDescriptionStyle();
+            case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE:
+                return this.createConditionalListDescriptionStyle();
+            default:
+                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
     }
 
@@ -281,24 +281,24 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
-        case ViewPackage.LAYOUT_DIRECTION:
-            return this.createLayoutDirectionFromString(eDataType, initialValue);
-        case ViewPackage.ARROW_STYLE:
-            return this.createArrowStyleFromString(eDataType, initialValue);
-        case ViewPackage.LINE_STYLE:
-            return this.createLineStyleFromString(eDataType, initialValue);
-        case ViewPackage.SYNCHRONIZATION_POLICY:
-            return this.createSynchronizationPolicyFromString(eDataType, initialValue);
-        case ViewPackage.GROUP_DISPLAY_MODE:
-            return this.createGroupDisplayModeFromString(eDataType, initialValue);
-        case ViewPackage.FLEX_DIRECTION:
-            return this.createFlexDirectionFromString(eDataType, initialValue);
-        case ViewPackage.INTERPRETED_EXPRESSION:
-            return this.createInterpretedExpressionFromString(eDataType, initialValue);
-        case ViewPackage.DOMAIN_TYPE:
-            return this.createDomainTypeFromString(eDataType, initialValue);
-        default:
-            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+            case ViewPackage.LAYOUT_DIRECTION:
+                return this.createLayoutDirectionFromString(eDataType, initialValue);
+            case ViewPackage.ARROW_STYLE:
+                return this.createArrowStyleFromString(eDataType, initialValue);
+            case ViewPackage.LINE_STYLE:
+                return this.createLineStyleFromString(eDataType, initialValue);
+            case ViewPackage.SYNCHRONIZATION_POLICY:
+                return this.createSynchronizationPolicyFromString(eDataType, initialValue);
+            case ViewPackage.GROUP_DISPLAY_MODE:
+                return this.createGroupDisplayModeFromString(eDataType, initialValue);
+            case ViewPackage.FLEX_DIRECTION:
+                return this.createFlexDirectionFromString(eDataType, initialValue);
+            case ViewPackage.INTERPRETED_EXPRESSION:
+                return this.createInterpretedExpressionFromString(eDataType, initialValue);
+            case ViewPackage.DOMAIN_TYPE:
+                return this.createDomainTypeFromString(eDataType, initialValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -310,24 +310,24 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
-        case ViewPackage.LAYOUT_DIRECTION:
-            return this.convertLayoutDirectionToString(eDataType, instanceValue);
-        case ViewPackage.ARROW_STYLE:
-            return this.convertArrowStyleToString(eDataType, instanceValue);
-        case ViewPackage.LINE_STYLE:
-            return this.convertLineStyleToString(eDataType, instanceValue);
-        case ViewPackage.SYNCHRONIZATION_POLICY:
-            return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
-        case ViewPackage.GROUP_DISPLAY_MODE:
-            return this.convertGroupDisplayModeToString(eDataType, instanceValue);
-        case ViewPackage.FLEX_DIRECTION:
-            return this.convertFlexDirectionToString(eDataType, instanceValue);
-        case ViewPackage.INTERPRETED_EXPRESSION:
-            return this.convertInterpretedExpressionToString(eDataType, instanceValue);
-        case ViewPackage.DOMAIN_TYPE:
-            return this.convertDomainTypeToString(eDataType, instanceValue);
-        default:
-            throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+            case ViewPackage.LAYOUT_DIRECTION:
+                return this.convertLayoutDirectionToString(eDataType, instanceValue);
+            case ViewPackage.ARROW_STYLE:
+                return this.convertArrowStyleToString(eDataType, instanceValue);
+            case ViewPackage.LINE_STYLE:
+                return this.convertLineStyleToString(eDataType, instanceValue);
+            case ViewPackage.SYNCHRONIZATION_POLICY:
+                return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
+            case ViewPackage.GROUP_DISPLAY_MODE:
+                return this.convertGroupDisplayModeToString(eDataType, instanceValue);
+            case ViewPackage.FLEX_DIRECTION:
+                return this.convertFlexDirectionToString(eDataType, instanceValue);
+            case ViewPackage.INTERPRETED_EXPRESSION:
+                return this.convertInterpretedExpressionToString(eDataType, instanceValue);
+            case ViewPackage.DOMAIN_TYPE:
+                return this.convertDomainTypeToString(eDataType, instanceValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 

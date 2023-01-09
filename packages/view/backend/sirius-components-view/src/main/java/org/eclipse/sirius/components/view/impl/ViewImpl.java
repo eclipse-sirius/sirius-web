@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,8 +87,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.VIEW__DESCRIPTIONS:
-            return ((InternalEList<?>) this.getDescriptions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.VIEW__DESCRIPTIONS:
+                return ((InternalEList<?>) this.getDescriptions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -101,8 +101,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.VIEW__DESCRIPTIONS:
-            return this.getDescriptions();
+            case ViewPackage.VIEW__DESCRIPTIONS:
+                return this.getDescriptions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -116,10 +116,10 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.VIEW__DESCRIPTIONS:
-            this.getDescriptions().clear();
-            this.getDescriptions().addAll((Collection<? extends RepresentationDescription>) newValue);
-            return;
+            case ViewPackage.VIEW__DESCRIPTIONS:
+                this.getDescriptions().clear();
+                this.getDescriptions().addAll((Collection<? extends RepresentationDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -132,9 +132,9 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.VIEW__DESCRIPTIONS:
-            this.getDescriptions().clear();
-            return;
+            case ViewPackage.VIEW__DESCRIPTIONS:
+                this.getDescriptions().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -147,8 +147,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.VIEW__DESCRIPTIONS:
-            return this.descriptions != null && !this.descriptions.isEmpty();
+            case ViewPackage.VIEW__DESCRIPTIONS:
+                return this.descriptions != null && !this.descriptions.isEmpty();
         }
         return super.eIsSet(featureID);
     }

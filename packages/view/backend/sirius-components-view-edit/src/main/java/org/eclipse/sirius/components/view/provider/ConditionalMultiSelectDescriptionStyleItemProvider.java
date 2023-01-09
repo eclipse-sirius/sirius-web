@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,8 +69,7 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
      */
     protected void addFontSizePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
@@ -80,10 +79,9 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
      * @generated
      */
     protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -92,10 +90,9 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
      * @generated
      */
     protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -105,8 +102,7 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -117,8 +113,7 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
+                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -174,8 +169,8 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
     @Override
     public String getText(Object object) {
         String label = ((ConditionalMultiSelectDescriptionStyle) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalMultiSelectDescriptionStyle_type") :
-                this.getString("_UI_ConditionalMultiSelectDescriptionStyle_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalMultiSelectDescriptionStyle_type")
+                : this.getString("_UI_ConditionalMultiSelectDescriptionStyle_type") + " " + label;
     }
 
     /**
@@ -190,15 +185,15 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ConditionalMultiSelectDescriptionStyle.class)) {
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-        case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

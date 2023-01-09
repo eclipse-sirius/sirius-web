@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -167,14 +167,14 @@ public enum LineStyle implements Enumerator {
      */
     public static LineStyle get(int value) {
         switch (value) {
-        case SOLID_VALUE:
-            return SOLID;
-        case DASH_VALUE:
-            return DASH;
-        case DOT_VALUE:
-            return DOT;
-        case DASH_DOT_VALUE:
-            return DASH_DOT;
+            case SOLID_VALUE:
+                return SOLID;
+            case DASH_VALUE:
+                return DASH;
+            case DOT_VALUE:
+                return DOT;
+            case DASH_DOT_VALUE:
+                return DASH_DOT;
         }
         return null;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -549,28 +549,28 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            return this.getColor();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            return this.getFontSize();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
-            return this.isItalic();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
-            return this.isBold();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
-            return this.isUnderline();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-            return this.isStrikeThrough();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
-            return this.getLineStyle();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
-            return this.getSourceArrowStyle();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
-            return this.getTargetArrowStyle();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
-            return this.getEdgeWidth();
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
-            return this.isShowIcon();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+                return this.getColor();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+                return this.getFontSize();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+                return this.isItalic();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+                return this.isBold();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+                return this.isUnderline();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+                return this.isStrikeThrough();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
+                return this.getLineStyle();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
+                return this.getSourceArrowStyle();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
+                return this.getTargetArrowStyle();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+                return this.getEdgeWidth();
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+                return this.isShowIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -583,39 +583,39 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            this.setColor((String) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            this.setFontSize((Integer) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
-            this.setItalic((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
-            this.setBold((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
-            this.setUnderline((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough((Boolean) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
-            this.setLineStyle((LineStyle) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
-            this.setSourceArrowStyle((ArrowStyle) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
-            this.setTargetArrowStyle((ArrowStyle) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
-            this.setEdgeWidth((Integer) newValue);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
-            this.setShowIcon((Boolean) newValue);
-            return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+                this.setColor((String) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+                this.setFontSize((Integer) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+                this.setItalic((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+                this.setBold((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+                this.setUnderline((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough((Boolean) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
+                this.setLineStyle((LineStyle) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
+                this.setSourceArrowStyle((ArrowStyle) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
+                this.setTargetArrowStyle((ArrowStyle) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+                this.setEdgeWidth((Integer) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+                this.setShowIcon((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -628,39 +628,39 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            this.setColor(COLOR_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            this.setFontSize(FONT_SIZE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
-            this.setItalic(ITALIC_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
-            this.setBold(BOLD_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
-            this.setUnderline(UNDERLINE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-            this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
-            this.setLineStyle(LINE_STYLE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
-            this.setSourceArrowStyle(SOURCE_ARROW_STYLE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
-            this.setTargetArrowStyle(TARGET_ARROW_STYLE_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
-            this.setEdgeWidth(EDGE_WIDTH_EDEFAULT);
-            return;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
-            this.setShowIcon(SHOW_ICON_EDEFAULT);
-            return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+                this.setColor(COLOR_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+                this.setFontSize(FONT_SIZE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+                this.setItalic(ITALIC_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+                this.setBold(BOLD_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+                this.setUnderline(UNDERLINE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
+                this.setLineStyle(LINE_STYLE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
+                this.setSourceArrowStyle(SOURCE_ARROW_STYLE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
+                this.setTargetArrowStyle(TARGET_ARROW_STYLE_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+                this.setEdgeWidth(EDGE_WIDTH_EDEFAULT);
+                return;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+                this.setShowIcon(SHOW_ICON_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -673,28 +673,28 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-            return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-            return this.fontSize != FONT_SIZE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
-            return this.italic != ITALIC_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
-            return this.bold != BOLD_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
-            return this.underline != UNDERLINE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-            return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
-            return this.lineStyle != LINE_STYLE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
-            return this.sourceArrowStyle != SOURCE_ARROW_STYLE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
-            return this.targetArrowStyle != TARGET_ARROW_STYLE_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
-            return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
-        case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
-            return this.showIcon != SHOW_ICON_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+                return this.fontSize != FONT_SIZE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+                return this.italic != ITALIC_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+                return this.bold != BOLD_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+                return this.underline != UNDERLINE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
+                return this.lineStyle != LINE_STYLE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
+                return this.sourceArrowStyle != SOURCE_ARROW_STYLE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
+                return this.targetArrowStyle != TARGET_ARROW_STYLE_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+                return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
+            case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+                return this.showIcon != SHOW_ICON_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -708,42 +708,42 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == Style.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                return ViewPackage.STYLE__COLOR;
-            default:
-                return -1;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
+                    return ViewPackage.STYLE__COLOR;
+                default:
+                    return -1;
             }
         }
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
-                return ViewPackage.LABEL_STYLE__FONT_SIZE;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
-                return ViewPackage.LABEL_STYLE__ITALIC;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
-                return ViewPackage.LABEL_STYLE__BOLD;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
-                return ViewPackage.LABEL_STYLE__UNDERLINE;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
-                return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
+                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
+                    return ViewPackage.LABEL_STYLE__ITALIC;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD:
+                    return ViewPackage.LABEL_STYLE__BOLD;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE:
+                    return ViewPackage.LABEL_STYLE__UNDERLINE;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         if (baseClass == EdgeStyle.class) {
             switch (derivedFeatureID) {
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
-                return ViewPackage.EDGE_STYLE__LINE_STYLE;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
-                return ViewPackage.EDGE_STYLE__SOURCE_ARROW_STYLE;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
-                return ViewPackage.EDGE_STYLE__TARGET_ARROW_STYLE;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
-                return ViewPackage.EDGE_STYLE__EDGE_WIDTH;
-            case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
-                return ViewPackage.EDGE_STYLE__SHOW_ICON;
-            default:
-                return -1;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE:
+                    return ViewPackage.EDGE_STYLE__LINE_STYLE;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE:
+                    return ViewPackage.EDGE_STYLE__SOURCE_ARROW_STYLE;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE:
+                    return ViewPackage.EDGE_STYLE__TARGET_ARROW_STYLE;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH:
+                    return ViewPackage.EDGE_STYLE__EDGE_WIDTH;
+                case ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
+                    return ViewPackage.EDGE_STYLE__SHOW_ICON;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -758,42 +758,42 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == Style.class) {
             switch (baseFeatureID) {
-            case ViewPackage.STYLE__COLOR:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR;
-            default:
-                return -1;
+                case ViewPackage.STYLE__COLOR:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR;
+                default:
+                    return -1;
             }
         }
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE;
-            case ViewPackage.LABEL_STYLE__ITALIC:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC;
-            case ViewPackage.LABEL_STYLE__BOLD:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD;
-            case ViewPackage.LABEL_STYLE__UNDERLINE:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE;
-            case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH;
-            default:
-                return -1;
+                case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE;
+                case ViewPackage.LABEL_STYLE__ITALIC:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC;
+                case ViewPackage.LABEL_STYLE__BOLD:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__BOLD;
+                case ViewPackage.LABEL_STYLE__UNDERLINE:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__UNDERLINE;
+                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
             }
         }
         if (baseClass == EdgeStyle.class) {
             switch (baseFeatureID) {
-            case ViewPackage.EDGE_STYLE__LINE_STYLE:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE;
-            case ViewPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE;
-            case ViewPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE;
-            case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH;
-            case ViewPackage.EDGE_STYLE__SHOW_ICON:
-                return ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON;
-            default:
-                return -1;
+                case ViewPackage.EDGE_STYLE__LINE_STYLE:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__LINE_STYLE;
+                case ViewPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE;
+                case ViewPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE;
+                case ViewPackage.EDGE_STYLE__EDGE_WIDTH:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH;
+                case ViewPackage.EDGE_STYLE__SHOW_ICON:
+                    return ViewPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

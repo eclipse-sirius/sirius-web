@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -129,8 +129,7 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
     @Override
     public String getText(Object object) {
         String label = ((TextfieldDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TextfieldDescription_type") :
-                this.getString("_UI_TextfieldDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_TextfieldDescription_type") : this.getString("_UI_TextfieldDescription_type") + " " + label;
     }
 
     /**
@@ -145,14 +144,14 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(TextfieldDescription.class)) {
-        case ViewPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
-        case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
-        case ViewPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.TEXTFIELD_DESCRIPTION__BODY:
+            case ViewPackage.TEXTFIELD_DESCRIPTION__STYLE:
+            case ViewPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -200,8 +199,7 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
         boolean qualify = childFeature == ViewPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

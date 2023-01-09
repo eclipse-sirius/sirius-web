@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -195,10 +195,10 @@ public class LabelDescriptionImpl extends WidgetDescriptionImpl implements Label
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.LABEL_DESCRIPTION__STYLE:
-            return this.basicSetStyle(null, msgs);
-        case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
-            return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.LABEL_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -211,12 +211,12 @@ public class LabelDescriptionImpl extends WidgetDescriptionImpl implements Label
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
-            return this.getValueExpression();
-        case ViewPackage.LABEL_DESCRIPTION__STYLE:
-            return this.getStyle();
-        case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.getConditionalStyles();
+            case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
+                return this.getValueExpression();
+            case ViewPackage.LABEL_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -230,16 +230,16 @@ public class LabelDescriptionImpl extends WidgetDescriptionImpl implements Label
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
-            this.setValueExpression((String) newValue);
-            return;
-        case ViewPackage.LABEL_DESCRIPTION__STYLE:
-            this.setStyle((LabelDescriptionStyle) newValue);
-            return;
-        case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            this.getConditionalStyles().addAll((Collection<? extends ConditionalLabelDescriptionStyle>) newValue);
-            return;
+            case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
+                this.setValueExpression((String) newValue);
+                return;
+            case ViewPackage.LABEL_DESCRIPTION__STYLE:
+                this.setStyle((LabelDescriptionStyle) newValue);
+                return;
+            case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalLabelDescriptionStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -252,15 +252,15 @@ public class LabelDescriptionImpl extends WidgetDescriptionImpl implements Label
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
-            this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.LABEL_DESCRIPTION__STYLE:
-            this.setStyle((LabelDescriptionStyle) null);
-            return;
-        case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
-            this.getConditionalStyles().clear();
-            return;
+            case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
+                this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.LABEL_DESCRIPTION__STYLE:
+                this.setStyle((LabelDescriptionStyle) null);
+                return;
+            case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -273,12 +273,12 @@ public class LabelDescriptionImpl extends WidgetDescriptionImpl implements Label
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
-            return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
-        case ViewPackage.LABEL_DESCRIPTION__STYLE:
-            return this.style != null;
-        case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
-            return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ViewPackage.LABEL_DESCRIPTION__VALUE_EXPRESSION:
+                return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
+            case ViewPackage.LABEL_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.LABEL_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

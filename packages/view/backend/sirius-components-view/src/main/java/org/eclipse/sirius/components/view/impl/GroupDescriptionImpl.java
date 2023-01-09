@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -290,10 +290,10 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-            return ((InternalEList<?>) this.getToolbarActions()).basicRemove(otherEnd, msgs);
-        case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
-            return ((InternalEList<?>) this.getWidgets()).basicRemove(otherEnd, msgs);
+            case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
+                return ((InternalEList<?>) this.getToolbarActions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
+                return ((InternalEList<?>) this.getWidgets()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -306,18 +306,18 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.GROUP_DESCRIPTION__NAME:
-            return this.getName();
-        case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
-            return this.getLabelExpression();
-        case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
-            return this.getDisplayMode();
-        case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            return this.getSemanticCandidatesExpression();
-        case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-            return this.getToolbarActions();
-        case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
-            return this.getWidgets();
+            case ViewPackage.GROUP_DESCRIPTION__NAME:
+                return this.getName();
+            case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
+                return this.getLabelExpression();
+            case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
+                return this.getDisplayMode();
+            case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                return this.getSemanticCandidatesExpression();
+            case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
+                return this.getToolbarActions();
+            case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
+                return this.getWidgets();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -331,26 +331,26 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.GROUP_DESCRIPTION__NAME:
-            this.setName((String) newValue);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
-            this.setLabelExpression((String) newValue);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
-            this.setDisplayMode((GroupDisplayMode) newValue);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            this.setSemanticCandidatesExpression((String) newValue);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-            this.getToolbarActions().clear();
-            this.getToolbarActions().addAll((Collection<? extends ButtonDescription>) newValue);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
-            this.getWidgets().clear();
-            this.getWidgets().addAll((Collection<? extends WidgetDescription>) newValue);
-            return;
+            case ViewPackage.GROUP_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
+                this.setLabelExpression((String) newValue);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
+                this.setDisplayMode((GroupDisplayMode) newValue);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.setSemanticCandidatesExpression((String) newValue);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
+                this.getToolbarActions().clear();
+                this.getToolbarActions().addAll((Collection<? extends ButtonDescription>) newValue);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
+                this.getWidgets().clear();
+                this.getWidgets().addAll((Collection<? extends WidgetDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -363,24 +363,24 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.GROUP_DESCRIPTION__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
-            this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
-            this.setDisplayMode(DISPLAY_MODE_EDEFAULT);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-            this.getToolbarActions().clear();
-            return;
-        case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
-            this.getWidgets().clear();
-            return;
+            case ViewPackage.GROUP_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
+                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
+                this.setDisplayMode(DISPLAY_MODE_EDEFAULT);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
+                this.getToolbarActions().clear();
+                return;
+            case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
+                this.getWidgets().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -393,18 +393,18 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.GROUP_DESCRIPTION__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-        case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
-            return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
-        case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
-            return this.displayMode != DISPLAY_MODE_EDEFAULT;
-        case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
-        case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-            return this.toolbarActions != null && !this.toolbarActions.isEmpty();
-        case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
-            return this.widgets != null && !this.widgets.isEmpty();
+            case ViewPackage.GROUP_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case ViewPackage.GROUP_DESCRIPTION__LABEL_EXPRESSION:
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case ViewPackage.GROUP_DESCRIPTION__DISPLAY_MODE:
+                return this.displayMode != DISPLAY_MODE_EDEFAULT;
+            case ViewPackage.GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
+            case ViewPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
+                return this.toolbarActions != null && !this.toolbarActions.isEmpty();
+            case ViewPackage.GROUP_DESCRIPTION__WIDGETS:
+                return this.widgets != null && !this.widgets.isEmpty();
         }
         return super.eIsSet(featureID);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,8 +119,8 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
-            return this.basicSetStyle(null, msgs);
+            case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
+                return this.basicSetStyle(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -133,8 +133,8 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
-            return this.getStyle();
+            case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
+                return this.getStyle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -147,9 +147,9 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
-            this.setStyle((NodeStyleDescription) newValue);
-            return;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
+                this.setStyle((NodeStyleDescription) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -162,9 +162,9 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
-            this.setStyle((NodeStyleDescription) null);
-            return;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
+                this.setStyle((NodeStyleDescription) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -177,8 +177,8 @@ public class ConditionalNodeStyleImpl extends ConditionalImpl implements Conditi
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
-            return this.style != null;
+            case ViewPackage.CONDITIONAL_NODE_STYLE__STYLE:
+                return this.style != null;
         }
         return super.eIsSet(featureID);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,8 +100,8 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
-            return this.getExpression();
+            case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
+                return this.getExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -114,9 +114,9 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
-            this.setExpression((String) newValue);
-            return;
+            case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
+                this.setExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -129,9 +129,9 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
-            this.setExpression(EXPRESSION_EDEFAULT);
-            return;
+            case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
+                this.setExpression(EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -144,8 +144,8 @@ public class ChangeContextImpl extends OperationImpl implements ChangeContext {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
-            return EXPRESSION_EDEFAULT == null ? this.expression != null : !EXPRESSION_EDEFAULT.equals(this.expression);
+            case ViewPackage.CHANGE_CONTEXT__EXPRESSION:
+                return EXPRESSION_EDEFAULT == null ? this.expression != null : !EXPRESSION_EDEFAULT.equals(this.expression);
         }
         return super.eIsSet(featureID);
     }

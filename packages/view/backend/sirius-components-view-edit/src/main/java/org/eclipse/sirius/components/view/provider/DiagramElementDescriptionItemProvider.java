@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -192,8 +192,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((DiagramElementDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_DiagramElementDescription_type") :
-                this.getString("_UI_DiagramElementDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_DiagramElementDescription_type") : this.getString("_UI_DiagramElementDescription_type") + " " + label;
     }
 
     /**
@@ -208,17 +207,17 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DiagramElementDescription.class)) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }

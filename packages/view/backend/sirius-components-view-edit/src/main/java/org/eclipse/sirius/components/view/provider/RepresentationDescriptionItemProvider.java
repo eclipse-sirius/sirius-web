@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -143,8 +143,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
     @Override
     public String getText(Object object) {
         String label = ((RepresentationDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RepresentationDescription_type") :
-                this.getString("_UI_RepresentationDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_RepresentationDescription_type") : this.getString("_UI_RepresentationDescription_type") + " " + label;
     }
 
     /**
@@ -159,12 +158,12 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(RepresentationDescription.class)) {
-        case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-        case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-        case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-        case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

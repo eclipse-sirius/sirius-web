@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -408,10 +408,10 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
-            return this.basicSetDeleteTool(null, msgs);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
-            return this.basicSetLabelEditTool(null, msgs);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+                return this.basicSetDeleteTool(null, msgs);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+                return this.basicSetLabelEditTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -424,20 +424,20 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-            return this.getName();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-            return this.getDomainType();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            return this.getSemanticCandidatesExpression();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-            return this.getLabelExpression();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
-            return this.getDeleteTool();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
-            return this.getLabelEditTool();
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-            return this.getSynchronizationPolicy();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+                return this.getName();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+                return this.getDomainType();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                return this.getSemanticCandidatesExpression();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
+                return this.getLabelExpression();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+                return this.getDeleteTool();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+                return this.getLabelEditTool();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+                return this.getSynchronizationPolicy();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -450,27 +450,27 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-            this.setName((String) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-            this.setDomainType((String) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            this.setSemanticCandidatesExpression((String) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-            this.setLabelExpression((String) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
-            this.setDeleteTool((DeleteTool) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
-            this.setLabelEditTool((LabelEditTool) newValue);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-            this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
-            return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType((String) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.setSemanticCandidatesExpression((String) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
+                this.setLabelExpression((String) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+                this.setDeleteTool((DeleteTool) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+                this.setLabelEditTool((LabelEditTool) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+                this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -483,27 +483,27 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-            this.setName(NAME_EDEFAULT);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-            this.setDomainType(DOMAIN_TYPE_EDEFAULT);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-            this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
-            this.setDeleteTool((DeleteTool) null);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
-            this.setLabelEditTool((LabelEditTool) null);
-            return;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-            this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
-            return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
+                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+                this.setDeleteTool((DeleteTool) null);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+                this.setLabelEditTool((LabelEditTool) null);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+                this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -516,20 +516,20 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-            return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-            return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-            return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
-            return this.deleteTool != null;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
-            return this.labelEditTool != null;
-        case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-            return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
+                return this.deleteTool != null;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL:
+                return this.labelEditTool != null;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+                return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }

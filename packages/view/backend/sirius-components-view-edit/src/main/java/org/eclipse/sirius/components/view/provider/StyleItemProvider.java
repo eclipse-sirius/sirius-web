@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,10 +68,9 @@ public class StyleItemProvider extends ItemProviderAdapter implements IEditingDo
      * @generated
      */
     protected void addColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_color_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"),
-                        ViewPackage.Literals.STYLE__COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Style_color_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), ViewPackage.Literals.STYLE__COLOR, true,
+                false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -102,8 +101,7 @@ public class StyleItemProvider extends ItemProviderAdapter implements IEditingDo
     @Override
     public String getText(Object object) {
         String label = ((Style) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_Style_type") :
-                this.getString("_UI_Style_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_Style_type") : this.getString("_UI_Style_type") + " " + label;
     }
 
     /**
@@ -118,9 +116,9 @@ public class StyleItemProvider extends ItemProviderAdapter implements IEditingDo
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Style.class)) {
-        case ViewPackage.STYLE__COLOR:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case ViewPackage.STYLE__COLOR:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
         }
         super.notifyChanged(notification);
     }

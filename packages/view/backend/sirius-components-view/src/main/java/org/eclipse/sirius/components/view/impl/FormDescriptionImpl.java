@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,8 +87,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__GROUPS:
-            return ((InternalEList<?>) this.getGroups()).basicRemove(otherEnd, msgs);
+            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+                return ((InternalEList<?>) this.getGroups()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -101,8 +101,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__GROUPS:
-            return this.getGroups();
+            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+                return this.getGroups();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -116,10 +116,10 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__GROUPS:
-            this.getGroups().clear();
-            this.getGroups().addAll((Collection<? extends GroupDescription>) newValue);
-            return;
+            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+                this.getGroups().clear();
+                this.getGroups().addAll((Collection<? extends GroupDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -132,9 +132,9 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__GROUPS:
-            this.getGroups().clear();
-            return;
+            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+                this.getGroups().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -147,8 +147,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ViewPackage.FORM_DESCRIPTION__GROUPS:
-            return this.groups != null && !this.groups.isEmpty();
+            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+                return this.groups != null && !this.groups.isEmpty();
         }
         return super.eIsSet(featureID);
     }
