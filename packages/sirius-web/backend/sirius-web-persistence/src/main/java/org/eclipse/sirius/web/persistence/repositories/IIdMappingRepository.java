@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.persistence.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -25,11 +27,11 @@ import org.springframework.stereotype.Repository;
  * @author gcoutable
  */
 @Repository
-public interface IIdMappingRepository extends PagingAndSortingRepository<IdMappingEntity, String> {
+public interface IIdMappingRepository extends PagingAndSortingRepository<IdMappingEntity, String>, ListCrudRepository<IdMappingEntity, String> {
 
     @Audited
     @Override
-    Iterable<IdMappingEntity> findAll();
+    List<IdMappingEntity> findAll();
 
     @Audited
     @Override

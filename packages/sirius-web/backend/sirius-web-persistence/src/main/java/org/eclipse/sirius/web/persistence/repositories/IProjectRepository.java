@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.persistence.repositories;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.eclipse.sirius.components.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * @author sbegaudeau
  */
 @Repository
-public interface IProjectRepository extends PagingAndSortingRepository<ProjectEntity, UUID> {
+public interface IProjectRepository extends PagingAndSortingRepository<ProjectEntity, UUID>, ListCrudRepository<ProjectEntity, UUID> {
     @Override
     @Audited
     boolean existsById(UUID id);

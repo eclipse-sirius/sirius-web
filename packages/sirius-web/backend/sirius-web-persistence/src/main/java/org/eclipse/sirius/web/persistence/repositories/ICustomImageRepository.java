@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +27,7 @@ import org.springframework.stereotype.Repository;
  * @author pcdavid
  */
 @Repository
-public interface ICustomImageRepository extends PagingAndSortingRepository<CustomImageEntity, UUID> {
+public interface ICustomImageRepository extends PagingAndSortingRepository<CustomImageEntity, UUID>, ListCrudRepository<CustomImageEntity, UUID> {
     @Audited
     @Override
     Optional<CustomImageEntity> findById(UUID id);

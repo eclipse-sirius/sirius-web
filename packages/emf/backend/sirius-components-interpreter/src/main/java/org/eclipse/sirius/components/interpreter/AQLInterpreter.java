@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.interpreter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,15 +22,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
-
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
-import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.QueryCompletion;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
@@ -101,11 +98,11 @@ public class AQLInterpreter {
         this.queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
         for (Class<?> aClass : classes) {
-            Set<IService> services = ServiceUtils.getServices(this.queryEnvironment, aClass);
+            var services = ServiceUtils.getServices(this.queryEnvironment, aClass);
             ServiceUtils.registerServices(this.queryEnvironment, services);
         }
         for (Object instance : instances) {
-            Set<IService> services = ServiceUtils.getServices(this.queryEnvironment, instance);
+            var services = ServiceUtils.getServices(this.queryEnvironment, instance);
             ServiceUtils.registerServices(this.queryEnvironment, services);
         }
 

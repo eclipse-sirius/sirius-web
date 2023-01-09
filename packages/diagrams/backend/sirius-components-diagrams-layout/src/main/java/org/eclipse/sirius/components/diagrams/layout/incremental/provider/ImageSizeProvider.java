@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import javax.annotation.PreDestroy;
 import javax.imageio.ImageIO;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
@@ -47,6 +46,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.svg.SVGDocument;
+
+import jakarta.annotation.PreDestroy;
 
 /**
  * Provider used to compute the native image size.

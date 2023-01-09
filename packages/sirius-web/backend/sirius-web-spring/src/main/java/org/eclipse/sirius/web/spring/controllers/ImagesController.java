@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.web.services.api.id.IDParser;

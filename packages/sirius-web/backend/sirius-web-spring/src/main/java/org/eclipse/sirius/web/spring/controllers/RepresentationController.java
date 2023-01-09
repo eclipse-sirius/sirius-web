@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;

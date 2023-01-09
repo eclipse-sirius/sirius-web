@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,8 @@ public class NoOpDocumentRepository implements IDocumentRepository {
     }
 
     @Override
-    public <S extends DocumentEntity> Iterable<S> saveAll(Iterable<S> entities) {
-        return entities;
+    public <S extends DocumentEntity> List<S> saveAll(Iterable<S> entities) {
+        return List.of();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class NoOpDocumentRepository implements IDocumentRepository {
     }
 
     @Override
-    public Iterable<DocumentEntity> findAllById(Iterable<UUID> ids) {
+    public List<DocumentEntity> findAllById(Iterable<UUID> ids) {
         return new ArrayList<>();
     }
 
@@ -83,12 +83,12 @@ public class NoOpDocumentRepository implements IDocumentRepository {
     }
 
     @Override
-    public Iterable<DocumentEntity> findAll() {
+    public List<DocumentEntity> findAll() {
         return new ArrayList<>();
     }
 
     @Override
-    public Iterable<DocumentEntity> findAllByType(String name, String uri) {
+    public List<DocumentEntity> findAllByType(String name, String uri) {
         return new ArrayList<>();
     }
 

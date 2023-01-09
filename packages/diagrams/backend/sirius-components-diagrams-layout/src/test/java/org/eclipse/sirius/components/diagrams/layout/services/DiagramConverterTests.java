@@ -92,7 +92,7 @@ public class DiagramConverterTests {
     };
 
     @BeforeAll
-    private static void initTest() {
+    public static void initTest() {
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
     }
 
