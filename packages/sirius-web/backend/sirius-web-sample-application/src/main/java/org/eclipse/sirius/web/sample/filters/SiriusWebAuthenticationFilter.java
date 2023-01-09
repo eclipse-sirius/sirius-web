@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,12 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,8 @@ public class NoOpRepresentationRepository implements IRepresentationRepository {
     }
 
     @Override
-    public <S extends RepresentationEntity> Iterable<S> saveAll(Iterable<S> entities) {
-        return entities;
+    public <S extends RepresentationEntity> List<S> saveAll(Iterable<S> entities) {
+        return List.of();
     }
 
     @Override
@@ -52,12 +52,12 @@ public class NoOpRepresentationRepository implements IRepresentationRepository {
     }
 
     @Override
-    public Iterable<RepresentationEntity> findAll() {
+    public List<RepresentationEntity> findAll() {
         return new ArrayList<>();
     }
 
     @Override
-    public Iterable<RepresentationEntity> findAllById(Iterable<UUID> ids) {
+    public List<RepresentationEntity> findAllById(Iterable<UUID> ids) {
         return new ArrayList<>();
     }
 

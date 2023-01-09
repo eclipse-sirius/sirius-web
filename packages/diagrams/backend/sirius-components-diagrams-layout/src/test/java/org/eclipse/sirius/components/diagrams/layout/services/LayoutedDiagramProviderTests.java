@@ -78,7 +78,7 @@ public class LayoutedDiagramProviderTests {
     private ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
 
     @BeforeAll
-    private static void initTest() {
+    public static void initTest() {
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
     }
 

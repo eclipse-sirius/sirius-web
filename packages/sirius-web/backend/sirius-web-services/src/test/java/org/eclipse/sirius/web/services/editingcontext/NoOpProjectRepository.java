@@ -46,8 +46,8 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public <S extends ProjectEntity> Iterable<S> saveAll(Iterable<S> entities) {
-        return entities;
+    public <S extends ProjectEntity> List<S> saveAll(Iterable<S> entities) {
+        return List.of();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public Iterable<ProjectEntity> findAllById(Iterable<UUID> ids) {
+    public List<ProjectEntity> findAllById(Iterable<UUID> ids) {
         return new ArrayList<>();
     }
 

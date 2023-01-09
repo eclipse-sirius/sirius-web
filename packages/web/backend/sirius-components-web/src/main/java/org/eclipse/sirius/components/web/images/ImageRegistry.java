@@ -30,8 +30,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.slf4j.Logger;

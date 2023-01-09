@@ -11,6 +11,9 @@
 
 === Dependency update
 - https://github.com/eclipse-sirius/sirius-components/issues/1936[#1936] [releng] Switch to Cypress 12.11.0
+- https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Spring Boot 3.0.6
+- https://github.com/eclipse-sirius/sirius-components/issues/265[#265] [core] Switch to the latest release of AQL
+
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1848[#1848] [project] Remove the frontend dependency to `uuid` in favor of `crypto.randomUUID`
 
@@ -27,7 +30,6 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1869[#1869] [tree] Navigate to the first child with the right arrow if a node is expanded.
 Navigate to the parent with the left arrow if a node is collapsed
 - https://github.com/eclipse-sirius/sirius-components/issues/1621[#1621] [project] Migrate the onboard area to Material-UI
-
 
 
 == v2023.4.0
@@ -67,6 +69,7 @@ Such calls will not work anymore since `null` will not be an acceptable value an
 - https://github.com/eclipse-sirius/sirius-components/issues/1890[#1890]  [view] Tools are now retrieved from their corresponding View Description
 +
 Removing dependencies from sirius-components-compatibility-emf in the canHandle methods of sirius-components-view-emf services
+
 
 === Dependency update
 

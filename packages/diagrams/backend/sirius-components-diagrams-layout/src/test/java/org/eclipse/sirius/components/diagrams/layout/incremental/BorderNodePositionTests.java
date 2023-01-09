@@ -68,7 +68,7 @@ public class BorderNodePositionTests {
     private static final Position ZERO_POSITION = Position.at(0, 0);
 
     @BeforeAll
-    private static void initTest() {
+    public static void initTest() {
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
     }
 
