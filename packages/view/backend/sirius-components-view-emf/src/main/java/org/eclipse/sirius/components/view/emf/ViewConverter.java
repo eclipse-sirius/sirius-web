@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,7 +46,9 @@ public class ViewConverter implements IViewConverter {
     private final ApplicationContext applicationContext;
 
     public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext) {
-        this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
+        this.javaServiceProviders = new ArrayList<>();
+        this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
+        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class));
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
