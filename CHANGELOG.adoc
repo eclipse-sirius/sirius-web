@@ -14,7 +14,6 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17
 
-
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1567[#1567] [project] Add support for project templates
@@ -22,6 +21,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1559[#1559] [view] It is now possible to specify the (computed) width and height separately for a _Node Style_ (instead of a single size before, which always resulted in square shapes).
+- https://github.com/eclipse-sirius/sirius-components/issues/1560[#1560] Remove unused `EditingContextCompletionProposalsDataFetcher`
 
 
 == v2023.1.0
