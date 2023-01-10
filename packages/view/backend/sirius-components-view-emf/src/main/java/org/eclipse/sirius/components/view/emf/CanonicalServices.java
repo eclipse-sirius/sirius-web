@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,68 +21,65 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Success;
-import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.EdgeDescription;
 
 /**
- * Canonical implementations of the basic behaviors/tools expected on a diagram. The implementation makes some
- * assumptions on both the structure of the domain and that of the view definition, and may not work (or not as
- * expected) on quite normal but non trivial cases.
+ * Implementation of the default/canonical behaviors suitable to be invoked as services from a plain AQL expression.
  *
  * @author pcdavid
  */
-public class CanonicalBehaviors {
+public class CanonicalServices {
     private final IObjectService objectService;
 
     private final IEditService editService;
 
-    public CanonicalBehaviors(IObjectService objectService, IEditService editService) {
+    public CanonicalServices(IObjectService objectService, IEditService editService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
     }
 
-    public IStatus createNewNode(org.eclipse.sirius.components.view.NodeDescription nodeDescription, VariableManager variableManager) {
-        EObject self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+    /**
+     * Invoke as aql:self.defaultCreateNode(nodeDescription).
+     */
+    public EObject defaultCreateNode(EObject self, org.eclipse.sirius.components.view.NodeDescription nodeDescription) {
         String domainType = nodeDescription.getDomainType();
         var optionalSemanticElement = this.createSemanticInstance(self, domainType);
         optionalSemanticElement.ifPresent(instance -> this.addInParent(self, instance));
-        return new Success();
+        return optionalSemanticElement.orElse(self);
     }
 
-    public IStatus createNewEdge(VariableManager variableManager, EdgeDescription edgeDescription) {
-        EObject semanticSource = variableManager.get(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE, EObject.class).get();
-        EObject semanticTarget = variableManager.get(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET, EObject.class).get();
+    /**
+     * Invoke as aql:semanticEdgeSource.defaultCreateEdge(edgeDescription, semanticEdgeTarget).
+     */
+    public EObject defaultCreateEdge(EObject semanticEdgeSource, org.eclipse.sirius.components.view.EdgeDescription edgeDescription, EObject semanticEdgeTarget) {
         if (edgeDescription.isIsDomainBasedEdge()) {
-            this.createSemanticInstance(semanticSource, edgeDescription.getDomainType()).ifPresent(instance -> {
-                this.addInParent(semanticSource.eContainer(), instance);
-                this.addReferenceTo(instance, semanticSource);
-                this.addReferenceTo(instance, semanticTarget);
+            this.createSemanticInstance(semanticEdgeSource, edgeDescription.getDomainType()).ifPresent(instance -> {
+                this.addInParent(semanticEdgeSource.eContainer(), instance);
+                this.addReferenceTo(instance, semanticEdgeSource);
+                this.addReferenceTo(instance, semanticEdgeTarget);
             });
         } else {
-            this.addReferenceTo(semanticSource, semanticTarget);
+            this.addReferenceTo(semanticEdgeSource, semanticEdgeTarget);
         }
-        return new Success();
+        return semanticEdgeSource;
     }
 
-    public IStatus editLabel(VariableManager variableManager, String newLabel) {
-        this.self(variableManager).ifPresent(self -> {
-            Optional<String> optionalLabelField = this.objectService.getLabelField(self);
-            if (optionalLabelField.isPresent()) {
-                this.editService.editLabel(self, optionalLabelField.get(), newLabel);
-            }
-        });
-        return new Success();
+    /**
+     * Invoke as aql:self.defaultEditLabel(newLabel).
+     */
+    public EObject defaultEditLabel(EObject self, String newLabel) {
+        Optional<String> optionalLabelField = this.objectService.getLabelField(self);
+        if (optionalLabelField.isPresent()) {
+            this.editService.editLabel(self, optionalLabelField.get(), newLabel);
+        }
+        return self;
     }
 
-    public IStatus deleteElement(VariableManager variableManager) {
-        this.self(variableManager).ifPresent(this.editService::delete);
-        return new Success();
-    }
-
-    private Optional<Object> self(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class);
+    /**
+     * Invoke as aql:self.defaultDelete().
+     */
+    public EObject defaultDelete(EObject self) {
+        this.editService.delete(self);
+        return self;
     }
 
     private Optional<EObject> createSemanticInstance(EObject self, String domainType) {

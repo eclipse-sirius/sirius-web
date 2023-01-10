@@ -85,7 +85,6 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.emf.CanonicalBehaviors;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
@@ -112,8 +111,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final StylesFactory stylesFactory;
 
-    private final CanonicalBehaviors canonicalBehaviors;
-
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
     private final Function<VariableManager, String> semanticTargetKindProvider;
@@ -134,7 +131,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
-        this.canonicalBehaviors = new CanonicalBehaviors(objectService, editService);
         this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
     }
 
@@ -342,6 +338,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .handler(variableManager -> {
                             VariableManager child = variableManager.createChild();
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                            child.put("nodeDescription", nodeDescription);
                             return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(child), capturedConvertedNodes).executeTool(nodeTool, child);
                         })
                         .targetDescriptions(allTargetDescriptions)
@@ -359,7 +356,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .handler(variableManager ->  {
                             VariableManager child = variableManager.createChild();
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                            return this.canonicalBehaviors.createNewNode(nodeDescription, variableManager);
+                            child.put("nodeDescription", nodeDescription);
+                            Result result = converterContext.getInterpreter().evaluateExpression(child.getVariables(), "aql:self.defaultCreateNode(nodeDescription)");
+                            if (result.getStatus() == Status.OK) {
+                                return new Success();
+                            } else {
+                                return new Failure("An error has occurred while creating new node of type " + nodeDescription.getName());
+                            }
                         })
                         .targetDescriptions(allTargetDescriptions)
                         .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
@@ -390,6 +393,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .handler(variableManager -> {
                             VariableManager child = variableManager.createChild();
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                            child.put("edgeDescription", edgeDescription);
                             return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, child);
                         })
                         .build();
@@ -409,7 +413,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .handler(variableManager -> {
                             VariableManager child = variableManager.createChild();
                             child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                            return this.canonicalBehaviors.createNewEdge(child, edgeDescription);
+                            child.put("edgeDescription", edgeDescription);
+                            Result result = converterContext.getInterpreter().evaluateExpression(child.getVariables(), "aql:semanticEdgeSource.defaultCreateEdge(edgeDescription, semanticEdgeTarget)");
+                            if (result.getStatus() == Status.OK) {
+                                return new Success();
+                            } else {
+                                return new Failure("An error has occurred while creating a new edge of type " + edgeDescription.getName());
+                            }
                         })
                         .build();
                 // @formatter:on
@@ -656,14 +666,20 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 this.deleteFromDiagram(variableManager);
                 result = new Success();
             } else {
+                VariableManager child = variableManager.createChild();
+                child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+
                 DeleteTool tool = diagramElementDescription.getDeleteTool();
                 if (tool != null) {
-                    VariableManager child = variableManager.createChild();
-                    child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
                     result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                             .executeTool(tool, child);
                 } else {
-                    result = this.canonicalBehaviors.deleteElement(variableManager);
+                    Result interpreterResult = converterContext.getInterpreter().evaluateExpression(child.getVariables(), "aql:self.defaultDelete()");
+                    if (interpreterResult.getStatus() == Status.OK) {
+                        result = new Success();
+                    } else {
+                        result = new Failure("An error has occurred while deleting an element");
+                    }
                 }
             }
             return result;
@@ -688,18 +704,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        LabelEditTool tool = diagramElementDescription.getLabelEditTool();
-        if (tool != null) {
-            return (variableManager, newLabel) -> {
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put("arg0", newLabel);
-                childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+        return (variableManager, newLabel) -> {
+            IStatus result;
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put("arg0", newLabel);
+            childVariableManager.put("newLabel", newLabel);
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+            LabelEditTool tool = diagramElementDescription.getLabelEditTool();
+            if (tool != null) {
+                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                         .executeTool(tool, childVariableManager);
-            };
-        } else {
-            return this.canonicalBehaviors::editLabel;
-        }
+            } else {
+                Result aqlResult = converterContext.getInterpreter().evaluateExpression(childVariableManager.getVariables(), "aql:self.defaultEditLabel(newLabel)");
+                if (aqlResult.getStatus() == Status.OK) {
+                    result = new Success();
+                } else {
+                    result = new Failure("An error has occurred while editing the label");
+                }
+            }
+            return result;
+        };
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.components.view.EdgeDescription edgeDescription) {
