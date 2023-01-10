@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,7 +130,9 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter())
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
-                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
+                .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside())
+                .setProperty(CoreOptions.PADDING, new ElkPadding(0))
+                .setProperty(LayeredOptions.PADDING, new ElkPadding(0));
 
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
         configurator.configureByType(ELKDiagramConverter.DEFAULT_IMAGE_TYPE)

@@ -188,6 +188,10 @@ public class NodeComponent implements IComponent {
 
         Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
         Set<CustomizableProperties> customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
+        if (!Size.UNDEFINED.equals(size)) {
+            customizableProperties = new HashSet<>(customizableProperties);
+            customizableProperties.add(CustomizableProperties.Size);
+        }
 
         Builder nodeElementPropsBuilder = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)

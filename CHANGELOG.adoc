@@ -11,7 +11,7 @@
 === Breaking changes
 
 - [core] Records are now used as the implementations of `IInput`
-- https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] In `diagram.graphqls`, `SingleClickOnDiagramElementTool` member's `targetDescriptions` is now of new type `DiagramElementDescription` instead of `NodeDescription`.  
+- https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] In `diagram.graphqls`, `SingleClickOnDiagramElementTool` member's `targetDescriptions` is now of new type `DiagramElementDescription` instead of `NodeDescription`.
 
 === Dependency update
 
@@ -32,6 +32,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [diagram] Add new methods to the diagram rendering cache to compute the parent, ancestors, children and descendants of a given node identifier
 - https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] Single click tools can now be executed on Edges in addition to Nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1569[#1569] [view] Only delegate semantic deletion to the element's _Delete Tool_
+- https://github.com/eclipse-sirius/sirius-components/issues/1584[#1584] [diagram] Leaf nodes (nodes with no children) which have an explicitly set size (either set by the end-user or by the node's definition) now keep heir size during an _Arrange All_ operation.
 
 == v2023.1.0
 

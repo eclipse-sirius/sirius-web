@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
@@ -104,27 +105,15 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
         super.overrideWith(layoutConfigurator);
 
         for (Map.Entry<String, MapPropertyHolder> entry : layoutConfigurator.idIndex.entrySet()) {
-            MapPropertyHolder thisHolder = this.idIndex.get(entry.getKey());
-            if (thisHolder == null) {
-                thisHolder = new MapPropertyHolder();
-                this.idIndex.put(entry.getKey(), thisHolder);
-            }
+            MapPropertyHolder thisHolder = this.idIndex.computeIfAbsent(entry.getKey(), (key) -> new MapPropertyHolder());
             thisHolder.copyProperties(entry.getValue());
         }
         for (Map.Entry<String, MapPropertyHolder> entry : layoutConfigurator.typeIndex.entrySet()) {
-            MapPropertyHolder thisHolder = this.typeIndex.get(entry.getKey());
-            if (thisHolder == null) {
-                thisHolder = new MapPropertyHolder();
-                this.typeIndex.put(entry.getKey(), thisHolder);
-            }
+            MapPropertyHolder thisHolder = this.typeIndex.computeIfAbsent(entry.getKey(), (key) -> new MapPropertyHolder());
             thisHolder.copyProperties(entry.getValue());
         }
         for (Map.Entry<Class<? extends ILayoutStrategy>, MapPropertyHolder> entry : layoutConfigurator.childrenLayoutPropertyIndex.entrySet()) {
-            MapPropertyHolder thisHolder = this.childrenLayoutPropertyIndex.get(entry.getKey());
-            if (thisHolder == null) {
-                thisHolder = new MapPropertyHolder();
-                this.childrenLayoutPropertyIndex.put(entry.getKey(), thisHolder);
-            }
+            MapPropertyHolder thisHolder = this.childrenLayoutPropertyIndex.computeIfAbsent(entry.getKey(), (key) -> new MapPropertyHolder());
             thisHolder.copyProperties(entry.getValue());
         }
         return this;
@@ -155,6 +144,10 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
                     Node node = optionalNode.get();
                     this.updateElkPadding(child, node);
                 }
+            }
+            if (Boolean.TRUE.equals(child.getProperty(ELKDiagramConverter.PROPERTY_USER_SIZE))) {
+                child.setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
+                child.setProperty(CoreOptions.PADDING, new ElkPadding(0));
             }
         }
         return elkNode;

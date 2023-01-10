@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.elk.alg.common.nodespacing.NodeLabelAndSizeCalculator;
+import org.eclipse.elk.alg.layered.options.LayeredOptions;
+import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.Alignment;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
@@ -32,6 +34,7 @@ import org.eclipse.elk.graph.ElkPort;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.elk.graph.util.ElkGraphUtil;
+import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
@@ -62,6 +65,12 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
     public static final IProperty<String> PROPERTY_TYPE = new Property<>("org.eclipse.sirius.components.layout.type");
 
     public static final IProperty<Class<? extends ILayoutStrategy>> PROPERTY_CHILDREN_LAYOUT_STRATEGY = new Property<>("org.eclipse.sirius.components.layout.children.layout.strategy");
+
+    /**
+     * Indicates if the node has the CustomizableProperties.Size set, in which case ELK should consider the current size
+     * to be fixed.
+     */
+    public static final IProperty<Boolean> PROPERTY_USER_SIZE = new Property<>("org.eclipse.sirius.components.layout.customSize");
 
     public static final String DEFAULT_DIAGRAM_TYPE = "graph";
 
@@ -108,15 +117,29 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY, node.getChildrenLayoutStrategy().getClass());
         }
 
-        TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
-
         if (ListLayoutStrategy.class.equals(parent.getProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY))) {
             elkNode.setProperty(CoreOptions.ALIGNMENT, Alignment.LEFT);
         }
 
-        double width = textBounds.getSize().getWidth();
-        double height = textBounds.getSize().getHeight();
-        elkNode.setDimensions(width, height);
+        // Always ensure enough room for the label
+        TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
+
+        if (node.getCustomizedProperties().contains(CustomizableProperties.Size)) {
+            // Keep the node's explicitly set size if set, while still ensuring enough room for the label
+            double labelWidth = 0;
+            double labelHeight = 0;
+            if (node.getStyle() instanceof RectangularNodeStyle) {
+                labelWidth = textBounds.getSize().getWidth() + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+                labelHeight = textBounds.getSize().getHeight() + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+            }
+            Size currentSize = node.getSize();
+            elkNode.setDimensions(Math.max(labelWidth, currentSize.getWidth()), Math.max(labelHeight, currentSize.getHeight()));
+            elkNode.setProperty(PROPERTY_USER_SIZE, true);
+        } else {
+            double labelWidth = textBounds.getSize().getWidth();
+            double labelHeight = textBounds.getSize().getHeight();
+            elkNode.setDimensions(labelWidth, labelHeight);
+        }
 
         elkNode.setParent(parent);
         connectableShapeIndex.put(elkNode.getIdentifier(), elkNode);
@@ -124,22 +147,27 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
         }
 
-        if (node.getStyle() instanceof ImageNodeStyle) {
-            ImageNodeStyle imageNodeStyle = (ImageNodeStyle) node.getStyle();
-
+        if (node.getStyle() instanceof ImageNodeStyle imageNodeStyle) {
             ElkNode elkImage = ElkGraphFactory.eINSTANCE.createElkNode();
             elkImage.setIdentifier(node.getId() + "_image");
             elkImage.setProperty(PROPERTY_TYPE, DEFAULT_IMAGE_TYPE);
 
             Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
-            elkImage.setDimensions(imageSize.getWidth(), imageSize.getHeight());
+            if (node.getCustomizedProperties().contains(CustomizableProperties.Size)) {
+                // Keep the current set size
+                elkImage.setDimensions(elkNode.getWidth(), elkNode.getHeight());
+                elkImage.setProperty(PROPERTY_USER_SIZE, true);
+            } else {
+                elkImage.setDimensions(imageSize.getWidth(), imageSize.getHeight());
+            }
+
+            elkNode.setProperty(LayeredOptions.PADDING, new ElkPadding(0));
 
             elkImage.setParent(elkNode);
         }
 
         boolean hasHeader = false;
-        if (node.getStyle() instanceof RectangularNodeStyle) {
-            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) node.getStyle();
+        if (node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle) {
             hasHeader = rectangularNodeStyle.isWithHeader();
         }
 
@@ -159,11 +187,22 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkPort.setProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY, borderNode.getChildrenLayoutStrategy().getClass());
         }
 
+        // Always ensure enough room for the label
         TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
-        double width = borderNode.getSize().getWidth();
-        double height = borderNode.getSize().getHeight();
 
-        elkPort.setDimensions(width, height);
+        if (borderNode.getCustomizedProperties().contains(CustomizableProperties.Size)) {
+            // Keep the node's explicitly set size if set, while still ensuring enough room for the label
+            double labelWidth = textBounds.getSize().getWidth() + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+            double labelHeight = textBounds.getSize().getHeight() + 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+            Size currentSize = borderNode.getSize();
+            elkNode.setDimensions(Math.max(labelWidth, currentSize.getWidth()), Math.max(labelHeight, currentSize.getHeight()));
+            elkNode.setProperty(PROPERTY_USER_SIZE, true);
+        } else {
+            double labelWidth = textBounds.getSize().getWidth();
+            double labelHeight = textBounds.getSize().getHeight();
+            elkNode.setDimensions(labelWidth, labelHeight);
+        }
+
         elkPort.setParent(elkNode);
         if (borderNode.getState() == ViewModifier.Hidden) {
             elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
@@ -171,14 +210,13 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
 
-        if (borderNode.getStyle() instanceof ImageNodeStyle) {
-            Size imageSize = this.imageNodeStyleSizeProvider.getSize((ImageNodeStyle) borderNode.getStyle());
+        if (borderNode.getStyle() instanceof ImageNodeStyle imageNodeStyle) {
+            Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
             elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
         }
 
         boolean hasHeader = false;
-        if (borderNode.getStyle() instanceof RectangularNodeStyle) {
-            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) borderNode.getStyle();
+        if (borderNode.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle) {
             hasHeader = rectangularNodeStyle.isWithHeader();
         }
 
