@@ -1,0 +1,96 @@
+= ADR-086 - Allow single click tools to be executed on edges
+
+== Context
+
+Today a single click tool can only be executed on Nodes.
+An enhancement could be to allow single click tools to also be executed on Edges as it is the case in Sirius Desktop.
+
+== Decision
+
+Single click tools can also be executed on Edges.
+
+=== Frontend
+
+In `DiagramRepresentation.types.ts`, a new interface named `DiagramElementDescription` will be introduced.
+`NodeDescription` (there is no `EdgeDescription` in this file) will implement it.
+The target descriptions of a `SingleClickOnDiagramElementTool` will be `DiagramElementDescription` instead of `NodeDescription`.
+
+[source,ts]
+----
+export interface DiagramElementDescription {
+  id: string;
+}
+
+export interface NodeDescription extends DiagramElementDescription {
+}
+
+export interface SingleClickOnDiagramElementTool extends Tool {
+  appliesToDiagramRoot: boolean;
+  selectionDescriptionId: string;
+  targetDescriptions: DiagramElementDescription[];
+}
+----
+
+=== Backend
+
+==== sirius-components-collaborative-diagrams
+
+In `diagram.graphqls`, a new interface `DiagramElementDescription` will be introduced. `NodeDescription` and `EdgeDescription` will implement it.
+
+The target descriptions of a `SingleClickOnDiagramElementTool` will be `DiagramElementDescription` instead of `NodeDescription`.
+
+[source,graphql]
+----
+interface DiagramElementDescription {
+  id: ID!
+}
+
+type NodeDescription implements DiagramElementDescription {
+  synchronizationPolicy: SynchronizationPolicy!
+  borderNodeDescriptions: [NodeDescription!]!
+  childNodeDescriptions: [NodeDescription!]!
+}
+
+type EdgeDescription implements DiagramElementDescription {
+  synchronizationPolicy: SynchronizationPolicy!
+  sourceNodeDescriptions: [NodeDescription!]!
+  targetNodeDescriptions: [NodeDescription!]!
+}
+
+type SingleClickOnDiagramElementTool implements Tool {
+  id: ID!
+  label: String!
+  imageURL: String!
+  appliesToDiagramRoot: Boolean!
+  selectionDescriptionId: String
+  targetDescriptions: [DiagramElementDescription!]!
+}
+----
+
+In `InvokeSingleClickOnDiagramElementToolEventHandler.java`, the `executeTool` method shall handle edges in addition to nodes.
+
+==== sirius-components-diagrams
+
+A new interface named `IDiagramElementDescription.java` will be introduced.
+`NodeDescription.java` and `EdgeDescription.java` will implement it.
+
+[source,java]
+----
+public interface IDiagramElementDescription {
+    UUID getId();
+}
+----
+
+The target descriptions of `SingleClickOnDiagramElementTool.java` will be `DiagramElementDescription` instead of `NodeDescription`.
+
+==== sirius-components-view-emf (out-of-scope)
+
+`ViewDiagramDescriptionConverter.java` and `ViewToolSectionsProvider.java` should be updated to handle edges in addition to nodes.
+
+==== sirius-components-compatibility
+
+`CompatibilityToolSectionsProvider.java` and `ToolProvider.java` will be updated to handle edges in addition to nodes.
+
+== Status
+
+WIP
