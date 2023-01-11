@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ArrangeAllInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ArrangeAllSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -67,7 +66,7 @@ public class ArrangeAllEventHandler implements IDiagramEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeSingleClickOnDiagramElementToolInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ArrangeAllInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -41,7 +41,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     private Function<VariableManager, IStatus> handler;
 
-    private List<NodeDescription> targetDescriptions;
+    private List<IDiagramElementDescription> targetDescriptions;
 
     private boolean appliesToDiagramRoot;
 
@@ -51,7 +51,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
         // Prevent instantiation
     }
 
-    public List<NodeDescription> getTargetDescriptions() {
+    public List<IDiagramElementDescription> getTargetDescriptions() {
         return this.targetDescriptions;
     }
 
@@ -109,7 +109,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
         private Function<VariableManager, IStatus> handler;
 
-        private List<NodeDescription> targetDescriptions;
+        private List<IDiagramElementDescription> targetDescriptions;
 
         private boolean appliesToDiagramRoot;
 
@@ -129,7 +129,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             return this;
         }
 
-        public Builder targetDescriptions(List<NodeDescription> targetDescriptions) {
+        public Builder targetDescriptions(List<IDiagramElementDescription> targetDescriptions) {
             this.targetDescriptions = Objects.requireNonNull(targetDescriptions);
             return this;
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,7 +88,7 @@ export interface Tool {
 export interface SingleClickOnDiagramElementTool extends Tool {
   appliesToDiagramRoot: boolean;
   selectionDescriptionId: string;
-  targetDescriptions: NodeDescription[];
+  targetDescriptions: DiagramElementDescription[];
 }
 
 export interface SingleClickOnTwoDiagramElementsTool extends Tool {
@@ -100,7 +100,11 @@ export interface SingleClickOnTwoDiagramElementsCandidate {
   targets: NodeDescription[];
 }
 
-export interface NodeDescription {
+export interface DiagramElementDescription {
+  id: string;
+}
+
+export interface NodeDescription extends DiagramElementDescription {
   id: string;
 }
 

@@ -176,7 +176,7 @@ type SingleClickOnDiagramElementTool implements Tool {
   imageURL: String!
   appliesToDiagramRoot: Boolean!
   selectionDescriptionId: String
-  targetDescriptions: [NodeDescription!]!
+  targetDescriptions: [DiagramElementDescription!]!
 }
 
 type SingleClickOnTwoDiagramElementsTool implements Tool {
@@ -202,14 +202,19 @@ type DiagramDescription implements RepresentationDescription {
   initialDirectEditElementLabel(labelId: ID!): String!
 }
 
-type NodeDescription {
+interface DiagramElementDescription {
+  id: ID!
+  synchronizationPolicy: SynchronizationPolicy!
+}
+
+type NodeDescription implements DiagramElementDescription {
   id: ID!
   synchronizationPolicy: SynchronizationPolicy!
   borderNodeDescriptions: [NodeDescription!]!
   childNodeDescriptions: [NodeDescription!]!
 }
 
-type EdgeDescription {
+type EdgeDescription implements DiagramElementDescription {
   id: ID!
   synchronizationPolicy: SynchronizationPolicy!
   sourceNodeDescriptions: [NodeDescription!]!

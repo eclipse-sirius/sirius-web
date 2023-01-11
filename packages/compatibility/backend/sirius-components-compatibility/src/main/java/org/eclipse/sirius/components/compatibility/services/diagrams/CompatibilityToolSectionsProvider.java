@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
@@ -258,15 +259,23 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
     private List<ToolSection> createExtraToolSections(Object diagramElementDescription) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
-        List<NodeDescription> targetDescriptions = new ArrayList<>();
+        List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
         boolean unsynchronizedMapping = false;
         //@formatter:off
-        if (diagramElementDescription instanceof NodeDescription) {
-            targetDescriptions.add((NodeDescription) diagramElementDescription);
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((NodeDescription) diagramElementDescription).getSynchronizationPolicy());
-        } else if (diagramElementDescription instanceof EdgeDescription) {
-            EdgeDescription edgeDescription = (EdgeDescription) diagramElementDescription;
-            targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
+        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+            targetDescriptions.add(nodeDescription);
+            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy());
+        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
+            var optionalDiagramElementMapping = this.getDiagramElementMapping(edgeDescription);
+            var domainEdgeMapping = optionalDiagramElementMapping
+                    .filter(EdgeMapping.class::isInstance)
+                    .map(EdgeMapping.class::cast)
+                    .filter(edgeMapping -> edgeMapping.isUseDomainElement());
+            if (domainEdgeMapping.isPresent()) {
+                targetDescriptions.add(edgeDescription);
+            } else {
+                targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
+            }
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((EdgeDescription) diagramElementDescription).getSynchronizationPolicy());
         }
 

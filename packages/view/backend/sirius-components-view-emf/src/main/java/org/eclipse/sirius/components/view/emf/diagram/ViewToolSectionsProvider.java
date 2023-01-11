@@ -21,9 +21,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageCons
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
@@ -61,9 +63,11 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         if (diagramElement instanceof Diagram) {
             toolSections.addAll(this.getDiagramToolSections(diagramDescription));
         }
-        if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription) {
-            NodeDescription nodeDescription = (NodeDescription) diagramElementDescription;
+        if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription nodeDescription) {
             toolSections.addAll(this.getNodeToolSections(diagramDescription, nodeDescription));
+        }
+        if (diagramElement instanceof Edge && diagramElementDescription instanceof EdgeDescription edgeDescription) {
+            toolSections.addAll(this.getEdgeToolSections(diagramDescription, edgeDescription));
         }
 
         toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
@@ -101,17 +105,30 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return toolSections;
     }
 
-    private boolean isValidTool(ITool tool, NodeDescription nodeDescription) {
-        boolean isValidTool = tool instanceof SingleClickOnDiagramElementTool && ((SingleClickOnDiagramElementTool) tool).getTargetDescriptions().contains(nodeDescription);
+    private List<ToolSection> getEdgeToolSections(DiagramDescription diagramDescription, EdgeDescription edgeDescription) {
+        List<ToolSection> toolSections = new ArrayList<>();
+        for (ToolSection toolSection : diagramDescription.getToolSections()) {
+            List<ITool> tools = toolSection.getTools().stream().filter(tool -> this.isValidTool(tool, edgeDescription)).toList();
+
+            if (!tools.isEmpty()) {
+                ToolSection filteredToolSection = ToolSection.newToolSection(toolSection).tools(tools).build();
+                toolSections.add(filteredToolSection);
+            }
+        }
+        return toolSections;
+    }
+
+    private boolean isValidTool(ITool tool, IDiagramElementDescription diagramElementDescription) {
+        boolean isValidTool = tool instanceof SingleClickOnDiagramElementTool && ((SingleClickOnDiagramElementTool) tool).getTargetDescriptions().contains(diagramElementDescription);
         isValidTool = isValidTool || tool instanceof SingleClickOnTwoDiagramElementsTool
-                && ((SingleClickOnTwoDiagramElementsTool) tool).getCandidates().stream().anyMatch(edgeCandidate -> edgeCandidate.getSources().contains(nodeDescription));
+                && ((SingleClickOnTwoDiagramElementsTool) tool).getCandidates().stream().anyMatch(edgeCandidate -> edgeCandidate.getSources().contains(diagramElementDescription));
         return isValidTool;
     }
 
     private List<ToolSection> createExtraToolSections(Object diagramElementDescription) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
-        List<NodeDescription> targetDescriptions = new ArrayList<>();
+        List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
         boolean unsynchronizedMapping = false;
         //@formatter:off
         if (diagramElementDescription instanceof NodeDescription) {

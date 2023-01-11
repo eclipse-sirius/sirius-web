@@ -322,7 +322,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private List<ITool> getNodeTools(ViewDiagramDescriptionConverterContext converterContext, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedConvertedNodes) {
         List<ITool> nodeCreationTools = new ArrayList<>();
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
-            List<NodeDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
+            List<org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
             String imageURL = this.viewToolImageProvider.getImage(nodeDescription);
 
             // Add custom tools
@@ -412,8 +412,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return edgeTools;
     }
 
-    private List<NodeDescription> getAllTargetDescriptions(org.eclipse.sirius.components.view.NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        List<NodeDescription> allTargetDescriptions = new ArrayList<>();
+    private List<org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription> getAllTargetDescriptions(org.eclipse.sirius.components.view.NodeDescription nodeDescription,
+            ViewDiagramDescriptionConverterContext converterContext) {
+        List<org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription> allTargetDescriptions = new ArrayList<>();
         var targetDescriptions = Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().toList();
         allTargetDescriptions.addAll(targetDescriptions);
 

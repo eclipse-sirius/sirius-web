@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
@@ -135,25 +136,17 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
-        Optional<Object> self = Optional.empty();
-        if (node.isPresent()) {
-            self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
-        } else if (Objects.equals(diagram.getId(), diagramElementId)) {
-            self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
-        } else {
-            this.logger.warn("The node creation tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId());
+        Optional<Edge> edge = Optional.empty();
+        if (node.isEmpty()) {
+            // may be the tool applies on an Edge
+            edge = this.diagramQueryService.findEdgeById(diagram, diagramElementId);
         }
+        Optional<Object> self = this.getCurrentContext(editingContext, diagramElementId, tool, diagram, node, edge);
 
         // Else, cannot find the node with the given optionalDiagramElementId
 
         if (self.isPresent()) {
-            VariableManager variableManager = new VariableManager();
-            variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-            variableManager.put(VariableManager.SELF, self.get());
-            variableManager.put(Node.SELECTED_NODE, node.orElse(null));
-
+            VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
             String selectionDescriptionId = tool.getSelectionDescriptionId();
             if (selectionDescriptionId != null && selectedObjectId != null) {
                 var selectionDescriptionOpt = this.representationDescriptionSearchService.findById(editingContext, selectionDescriptionId);
@@ -172,4 +165,29 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         return result;
     }
 
+    private Optional<Object> getCurrentContext(IEditingContext editingContext, String diagramElementId, SingleClickOnDiagramElementTool tool, Diagram diagram, Optional<Node> node,
+            Optional<Edge> edge) {
+        Optional<Object> self = Optional.empty();
+        if (node.isPresent()) {
+            self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
+        } else if (edge.isPresent()) {
+            self = this.objectService.getObject(editingContext, edge.get().getTargetObjectId());
+        } else if (Objects.equals(diagram.getId(), diagramElementId)) {
+            self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
+        } else {
+            this.logger.warn("The tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId());
+        }
+        return self;
+    }
+
+    private VariableManager populateVariableManager(IEditingContext editingContext, IDiagramContext diagramContext, Optional<Node> node, Optional<Edge> edge, Optional<Object> self) {
+        VariableManager variableManager = new VariableManager();
+        variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+        variableManager.put(VariableManager.SELF, self.get());
+        variableManager.put(Node.SELECTED_NODE, node.orElse(null));
+        variableManager.put(Edge.SELECTED_EDGE, edge.orElse(null));
+        return variableManager;
+    }
 }
