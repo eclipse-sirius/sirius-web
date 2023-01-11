@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 @Immutable
-public final class EdgeDescription {
+public final class EdgeDescription implements IDiagramElementDescription {
     /**
      * The name of the variables which points to the representation element at the source/origin of a particular edge.
      */
@@ -96,6 +96,7 @@ public final class EdgeDescription {
         // Prevent instantiation
     }
 
+    @Override
     public UUID getId() {
         return this.id;
     }

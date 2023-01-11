@@ -10,6 +10,7 @@
 === Breaking changes
 
 - [core] Records are now used as the implementations of `IInput`
+- https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] In `diagram.graphqls`, `SingleClickOnDiagramElementTool` member's `targetDescriptions` is now of new type `DiagramElementDescription` instead of `NodeDescription`.  
 
 === Dependency update
 
@@ -27,6 +28,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1560[#1560] Remove unused `EditingContextCompletionProposalsDataFetcher`
 - https://github.com/eclipse-sirius/sirius-components/issues/1426[#1426] [view] Add missing data type on initialDirectEditLabelExpression
 - https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [diagram] Add new methods to the diagram rendering cache to compute the parent, ancestors, children and descendants of a given node identifier
+- https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] Single click tools can now be executed on Edges in addition to Nodes.
 
 
 == v2023.1.0
