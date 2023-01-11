@@ -1,0 +1,223 @@
+= ADR-085 - Add support for project templates
+== Context
+
+We want to speed up the creation of a basic project with some data and representations.
+For that, we will introduce project templates, created by a specifier, in order to have a one-click solution to get started.
+
+== Decision
+
+Project templates will be displayed in the `/projects` page.
+Each template will be displayed using an image statically provided by the backend and a label.
+Clicking on the template on the frontend should redirect the user to the workbench with everything properly initialized.
+
+Since this feature is tightly connected to the concept of project, it should not involve changes in Sirius Components.
+
+=== Displaying the first templates
+In order to display the templates of a project, a new API will be introduced to retrieve them.
+
+```
+type ProjectTemplate {
+  id: ID!
+  label: String!
+  imageURL: String!
+}
+```
+
+The project templates will be retrievable directly under the `viewer`:
+
+```
+extend interface Viewer {
+  projectTemplates(page: Int, limit: Int): ViewerProjectTemplateConnection!
+}
+
+type ViewerProjectTemplateConnection {
+  edges: [ViewerProjectTemplateEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ViewerProjectTemplateEdge {
+  node: ProjectTemplate!
+}
+```
+
+As a result, the page displaying the projects will also be able to retrieve the templates using the following query:
+
+```
+query getProjects($projectPage: Int!) {
+  viewer {
+    projectTemplates(page: 0, limit: 7) {
+      edges {
+        node {
+          id
+          label
+          imageURL
+        }
+      }
+    }
+    projects(page: $projectPage, limit: 30, sort: { fields: [lastModifiedOn], order: DESCENDING }) {
+      ... existing query
+    }
+  }
+}
+```
+
+The page displaying the projects will have to display on the same line:
+
+- some templates
+- three hardcoded actions: the "show all templates" button, the "blank project" button and the "upload project" button
+
+As such, displaying seven templates max for this page may help creating a harmonious layout.
+
+
+=== Showing all templates
+
+In order to show all templates, we will display them using a MaterialUI dialog.
+This dialog will just show all templates using the same appearance as in the projects page.
+This dialog should display templates with a pagination since:
+
+- we don't know how many templates we will have
+- discovering that we can scroll down may not be intuitive
+- finding back an interesting template in a long list by scrolling would be annoying
+
+This dialog should be self contained and thus perform the retrieval of the templates, the creation of a project from a template and the redirection to the project page by itself.
+It should thus be easier to test, reuse and/or open source if we choose to do so.
+
+
+=== Providing a template
+
+In order to provide a template to the server, specifier will be able to implement a dedicated interface:
+
+```
+public interface IProjectTemplateProvider {
+  List<ProjectTemplate> getProjectTemplates();
+}
+```
+
+A project template is a simple POJO with the relevant metadata:
+
+```
+public class ProjectTemplate {
+  private final String id;
+  private final String label;
+  private final String imageURL;
+
+  public ProjectTemplate(String id, String label, String imageURL) {
+    this.id = Objects.requireNonNull(id);
+    this.label = Objects.requireNonNull(label);
+    this.imageURL = Objects.requireNonNull(imageURL);
+  }
+
+  // getter and toString
+}
+```
+
+The imageURL should not try to contain the path of the full imageURL, a datafetcher should be used to provide the relevant prefix as it is done for other images.
+The datafetcher can then retrieve the template, sort them by label and return them.
+
+=== Creating a project from a template
+
+In order to create a project from a template, we will update the GraphQL API as such:
+
+```
+extend type Mutation {
+  createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
+}
+
+input CreateProjectFromTemplateInput {
+  id: ID!
+  templateId: ID!
+}
+
+union CreateProjectFromTemplatePayload = ErrorPayload | CreateProjectFromTemplateSuccessPayload
+
+type CreateProjectFromTemplateSuccessPayload {
+  id: ID!
+  project: Project!
+  representationToOpen: RepresentationMetadata
+}
+```
+
+The frontend will only send the identifier of the template to trigger the creation of the project.
+It will be up to the backend to create everything and then return the created project.
+For that, the interface `IProjectCreationService` and its implementation should be updated:
+
+```
+public interface IProjectCreationService {
+  IPayload createProject(CreateProjectInput input);
+  IPayload createProject(CreateProjectFromTemplateInput input);
+}
+```
+
+The `ProjectCreationService` should probably create a `CreateProjectInput` and rely on the existing method in order to perform the creation of the project and after that let the specifier perform the initialization of the project.
+
+For that a new interface will be introduced:
+
+```
+public interface IProjectTemplateInitializer {
+  boolean canHandle(String templateId);
+  Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext);
+}
+```
+
+As such, the creation of a project using a template could look like this:
+
+```
+@Override
+public IPayload createProject(CreateProjectFromTemplateInput input) {
+    IPayload result = new ErrorPayload(input.id(), this.messageService.unexpectedError());
+    var optionalTemplate = this.projectTemplateService.getProjectTemplateProviders().stream()
+            .map(IProjectTemplateProvider::getProjectTemplates)
+            .flatMap(List::stream)
+            .filter(template -> template.getId().equals(input.templateId()))
+            .findFirst();
+
+    var optionalProjectTemplateInitializer = this.projectTemplateService.getProjectTemplateInitializers().stream()
+            .filter(initializer -> initializer.canHandle(input.templateId()))
+            .findFirst();
+
+    if (optionalTemplate.isPresent() && optionalProjectTemplateInitializer.isPresent()) {
+        var template = optionalTemplate.get();
+        var projectTemplateInitializer = optionalProjectTemplateInitializer.get();
+
+        var createProjectInput = new CreateProjectInput(UUID.randomUUID(), template.getLabel(), Visibility.PRIVATE);
+        var payload = this.createProject(createProjectInput);
+        if (payload instanceof CreateProjectSuccessPayload) {
+            var createProjectSuccessPayload = (CreateProjectSuccessPayload) payload;
+            var projectId = createProjectSuccessPayload.getProject().getId();
+
+            var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
+            if (optionalEditingContext.isPresent()) {
+                var editingContext = optionalEditingContext.get();
+                var representationToOpen = projectTemplateInitializer.handle(input.templateId(), editingContext).orElse(null);
+
+                this.editingContextPersistenceService.persist(editingContext);
+                result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.getProject(), representationToOpen);
+            }
+        } else {
+            result = payload;
+        }
+    }
+    return result;
+}
+```
+
+In order for specifiers to initialize a project from a template, they would need to be able to create:
+
+- semantic data
+- representations
+
+Using the editing context, specifiers will be able to create any semantic data quite easily since they can cast it in an `EMFEditingContext`, retrieve its resource set and do anything they want.
+Creating a new representation would involve additional work since we have not completed yet our work on the standardization of the representation metadata but it can be done.
+
+In order to prevent some feature creep while adding support for project template, we will not try to complete everything related to representation metadata nor try to perform heavy refactoring of Sirius Components.
+In order to create a diagram, specifiers would have to rely on `IDiagramCreationService#create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext)`.
+They would need to provide:
+
+- The label (anything they want)
+- The id of the semantic element on which the diagram is created (using IObjectService#getId)
+- The diagram description (that they can retrieve using IDiagramDescriptionSearchService)
+- The editing context (which we will give to them)
+
+== Status
+
+WIP

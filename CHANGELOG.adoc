@@ -2,6 +2,10 @@
 
 == v2023.3.0 (unreleased)
 
+=== Architectural decision records
+
+- [ADR-085] Add support for project templates
+
 === Breaking changes
 
 - [core] Records are now used as the implementations of `IInput`
