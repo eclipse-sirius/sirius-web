@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
@@ -144,20 +145,22 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
-            // Edit Tool (the handler is never called)
-            SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
-                    .label("Edit")
-                    .imageURL(DiagramImageConstants.EDIT_SVG)
-                    .targetDescriptions(targetDescriptions)
-                    .handler(fakeHandler)
-                    .appliesToDiagramRoot(false)
-                    .build();
-            var editToolSection = ToolSection.newToolSection("edit-section")
-                    .label("")
-                    .imageURL("")
-                    .tools(List.of(editTool))
-                    .build();
-            extraToolSections.add(editToolSection);
+            if (this.hasLabelEditTool(diagramElementDescription)) {
+                // Edit Tool (the handler is never called)
+                SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
+                        .label("Edit")
+                        .imageURL(DiagramImageConstants.EDIT_SVG)
+                        .targetDescriptions(targetDescriptions)
+                        .handler(fakeHandler)
+                        .appliesToDiagramRoot(false)
+                        .build();
+                var editToolSection = ToolSection.newToolSection("edit-section")
+                        .label("")
+                        .imageURL("")
+                        .tools(List.of(editTool))
+                        .build();
+                extraToolSections.add(editToolSection);
+            }
             if (unsynchronizedMapping) {
                 SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
                         .label("Delete from diagram")
@@ -173,24 +176,56 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                         .build();
                 extraToolSections.add(graphicalDeleteToolSection);
             }
-
-            // Semantic Delete Tool (the handler is never called)
-            SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
-                    .label("Delete from model")
-                    .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
-                    .targetDescriptions(targetDescriptions)
-                    .handler(fakeHandler)
-                    .appliesToDiagramRoot(false)
-                    .build();
-            var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section")
-                    .label("")
-                    .imageURL("")
-                    .tools(List.of(semanticDeleteTool))
-                    .build();
-            extraToolSections.add(semanticDeleteToolSection);
+            if (this.hasDeleteTool(diagramElementDescription)) {
+                // Semantic Delete Tool (the handler is never called)
+                SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
+                        .label("Delete from model")
+                        .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
+                        .targetDescriptions(targetDescriptions)
+                        .handler(fakeHandler)
+                        .appliesToDiagramRoot(false)
+                        .build();
+                var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section")
+                        .label("")
+                        .imageURL("")
+                        .tools(List.of(semanticDeleteTool))
+                        .build();
+                extraToolSections.add(semanticDeleteToolSection);
+            }
         }
         return extraToolSections;
         //@formatter:on
     }
 
+    private boolean hasLabelEditTool(Object diagramElementDescription) {
+        boolean result = true;
+        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+            var handler = nodeDescription.getLabelEditHandler();
+            if (handler instanceof IViewNodeLabelEditHandler viewNodeLabelEditHandler) {
+                result = viewNodeLabelEditHandler.hasLabelEditTool();
+            }
+        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
+            var handler = edgeDescription.getLabelEditHandler();
+            if (handler instanceof IViewEdgeLabelEditHandler viewEdgeLabelEditHandler) {
+                result = viewEdgeLabelEditHandler.hasLabelEditTool(EdgeLabelKind.CENTER_LABEL);
+            }
+        }
+        return result;
+    }
+
+    private boolean hasDeleteTool(Object diagramElementDescription) {
+        boolean result = true;
+        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+            var handler = nodeDescription.getDeleteHandler();
+            if (handler instanceof IViewNodeDeleteHandler viewNodeDeleteHandler) {
+                result = viewNodeDeleteHandler.hasSemanticDeleteTool();
+            }
+        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
+            var handler = edgeDescription.getDeleteHandler();
+            if (handler instanceof IViewNodeDeleteHandler viewElementDeleteHandler) {
+                result = viewElementDeleteHandler.hasSemanticDeleteTool();
+            }
+        }
+        return result;
+    }
 }

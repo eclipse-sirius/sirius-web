@@ -178,12 +178,11 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node");
         nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        new DefaultToolsFactory().addDefaultNodeTools(nodeChild);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();
@@ -191,6 +190,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         newEdgeStyle.setColor("#002639");
         edgeChild.setStyle(newEdgeStyle);
+        new DefaultToolsFactory().addDefaultEdgeTools(edgeChild);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
 
         DropTool dropTool = ViewFactory.eINSTANCE.createDropTool();

@@ -22,15 +22,9 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.SetValue;
-import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -284,40 +278,12 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        LabelEditTool newBeginLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
-        newBeginLabelEditTool.setName("Edit Begin Label");
-        newBeginLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, newBeginLabelEditTool));
-
-        LabelEditTool newEndLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
-        newEndLabelEditTool.setName("Edit End Label");
-        newEndLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, newEndLabelEditTool));
-
-        EdgeTool newEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        newEdgeTool.setName("Create Edge");
-        ChangeContext initialOperation = ViewFactory.eINSTANCE.createChangeContext();
-        initialOperation.setExpression("aql:semanticEdgeSource");
-        newEdgeTool.getBody().add(initialOperation);
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, newEdgeTool));
-
-        SourceEdgeEndReconnectionTool sourceReconnectionTool = ViewFactory.eINSTANCE.createSourceEdgeEndReconnectionTool();
-        sourceReconnectionTool.setName("Reconnect Edge Source");
-        ChangeContext reconnectSourceInitialOperation = ViewFactory.eINSTANCE.createChangeContext();
-        reconnectSourceInitialOperation.setExpression("aql:edgeSemanticElement");
-        SetValue reconnectSourceSetValue = ViewFactory.eINSTANCE.createSetValue();
-        reconnectSourceInitialOperation.getChildren().add(reconnectSourceSetValue);
-        sourceReconnectionTool.getBody().add(reconnectSourceInitialOperation);
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, sourceReconnectionTool));
-
-        TargetEdgeEndReconnectionTool targetReconnectionTool = ViewFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
-        targetReconnectionTool.setName("Reconnect Edge Target");
-        ChangeContext reconnectTargetInitialOperation = ViewFactory.eINSTANCE.createChangeContext();
-        reconnectTargetInitialOperation.setExpression("aql:edgeSemanticElement");
-        SetValue reconnectTargetSetValue = ViewFactory.eINSTANCE.createSetValue();
-        reconnectTargetInitialOperation.getChildren().add(reconnectTargetSetValue);
-        targetReconnectionTool.getBody().add(reconnectTargetInitialOperation);
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, targetReconnectionTool));
+        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultBeginLabelEditTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultEndLabelEditTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, defaultToolsFactory.createDefaultSourceEdgeReconnectionTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, defaultToolsFactory.createDefaultTargetEdgeReconnectionTool()));
 
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         newEdgeStyle.setColor("#002639");

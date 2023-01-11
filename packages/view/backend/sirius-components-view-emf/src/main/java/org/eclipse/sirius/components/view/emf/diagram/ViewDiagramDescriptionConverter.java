@@ -349,29 +349,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 // @formatter:on
                 nodeCreationTools.add(customTool);
             }
-            // If there are no custom tools defined, add a canonical creation tool
-            if (i == 0) {
-                // @formatter:off
-                SingleClickOnDiagramElementTool tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.idProvider.apply(nodeDescription) + "_creationTool")
-                        .label("New " + this.getSimpleTypeName(nodeDescription.getDomainType()))
-                        .imageURL(imageURL)
-                        .handler(variableManager ->  {
-                            VariableManager child = variableManager.createChild();
-                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                            child.put("nodeDescription", nodeDescription);
-                            Result result = converterContext.getInterpreter().evaluateExpression(child.getVariables(), "aql:self.defaultCreateNode(nodeDescription)");
-                            if (result.getStatus() == Status.OK) {
-                                return new Success();
-                            } else {
-                                return new Failure("An error has occurred while creating new node of type " + nodeDescription.getName());
-                            }
-                        })
-                        .targetDescriptions(allTargetDescriptions)
-                        .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
-                        .build();
-                // @formatter:on
-                nodeCreationTools.add(tool);
-            }
         }
         return nodeCreationTools;
     }
@@ -401,31 +378,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         .build();
                 // @formatter:on
                 edgeTools.add(customTool);
-            }
-            // If there are no custom tools defined, add a canonical creation tool
-            if (i == 0) {
-                // @formatter:off
-                SingleClickOnTwoDiagramElementsTool tool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(this.idProvider.apply(edgeDescription) + "_creationTool")
-                        .label("New " + this.getSimpleTypeName(edgeDescription.getDomainType()))
-                        .imageURL(imageURL)
-                        .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                                .build()))
-                        .handler(variableManager -> {
-                            VariableManager child = variableManager.createChild();
-                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                            child.put("edgeDescription", edgeDescription);
-                            Result result = converterContext.getInterpreter().evaluateExpression(child.getVariables(), "aql:semanticEdgeSource.defaultCreateEdge(edgeDescription, semanticEdgeTarget)");
-                            if (result.getStatus() == Status.OK) {
-                                return new Success();
-                            } else {
-                                return new Failure("An error has occurred while creating a new edge of type " + edgeDescription.getName());
-                            }
-                        })
-                        .build();
-                // @formatter:on
-                edgeTools.add(tool);
             }
         }
         return edgeTools;
@@ -484,14 +436,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
 
         return tools;
-    }
-
-    private String getSimpleTypeName(String domainType) {
-        String result = Optional.ofNullable(domainType).orElse("");
-        if (result.contains("::")) {
-            result = domainType.substring(domainType.indexOf("::") + 2);
-        }
-        return result;
     }
 
     private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
@@ -661,7 +605,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        return variableManager -> {
+        Function<VariableManager, IStatus> handler = variableManager -> {
             IStatus result;
             DeletionPolicy deletionPolicy = variableManager.get(DeleteFromDiagramEventHandler.DELETION_POLICY, DeletionPolicy.class).orElse(DeletionPolicy.SEMANTIC);
             if (deletionPolicy == DeletionPolicy.GRAPHICAL) {
@@ -676,15 +620,22 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                             .executeTool(tool, child);
                 } else {
-                    Result interpreterResult = converterContext.getInterpreter().evaluateExpression(child.getVariables(), "aql:self.defaultDelete()");
-                    if (interpreterResult.getStatus() == Status.OK) {
-                        result = new Success();
-                    } else {
-                        result = new Failure("An error has occurred while deleting an element");
-                    }
+                    result = new Failure("No deletion tool configured");
                 }
             }
             return result;
+        };
+
+        return new IViewNodeDeleteHandler() {
+            @Override
+            public boolean hasSemanticDeleteTool() {
+                return diagramElementDescription.getDeleteTool() != null;
+            }
+
+            @Override
+            public IStatus apply(VariableManager variableManager) {
+                return handler.apply(variableManager);
+            }
         };
     }
 
@@ -706,7 +657,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        return (variableManager, newLabel) -> {
+        BiFunction<VariableManager, String, IStatus> handler = (variableManager, newLabel) -> {
             IStatus result;
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
@@ -717,19 +668,25 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                         .executeTool(tool, childVariableManager);
             } else {
-                Result aqlResult = converterContext.getInterpreter().evaluateExpression(childVariableManager.getVariables(), "aql:self.defaultEditLabel(newLabel)");
-                if (aqlResult.getStatus() == Status.OK) {
-                    result = new Success();
-                } else {
-                    result = new Failure("An error has occurred while editing the label");
-                }
+                result = new Failure("No label edition tool configured");
             }
             return result;
+        };
+        return new IViewNodeLabelEditHandler() {
+            @Override
+            public IStatus apply(VariableManager variableManager, String newLabel) {
+                return handler.apply(variableManager, newLabel);
+            }
+
+            @Override
+            public boolean hasLabelEditTool() {
+                return diagramElementDescription.getLabelEditTool() != null;
+            }
         };
     }
 
     private IEdgeEditLabelHandler createEdgeLabelEditHandler(org.eclipse.sirius.components.view.EdgeDescription edgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        return (variableManager, edgeLabelKind, newLabel) -> {
+        IEdgeEditLabelHandler handler = (variableManager, edgeLabelKind, newLabel) -> {
             IStatus result;
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
@@ -750,14 +707,24 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                         .executeTool(tool, childVariableManager);
             } else {
-                Result aqlResult = converterContext.getInterpreter().evaluateExpression(childVariableManager.getVariables(), "aql:self.defaultEditLabel(newLabel)");
-                if (aqlResult.getStatus() == Status.OK) {
-                    result = new Success();
-                } else {
-                    result = new Failure("An error has occurred while editing the label");
-                }
+                result = new Failure("No label edition tool configured");
             }
             return result;
+        };
+        return new IViewEdgeLabelEditHandler() {
+            @Override
+            public IStatus editLabel(VariableManager variableManager, EdgeLabelKind edgeLabelKind, String newLabel) {
+                return handler.editLabel(variableManager, edgeLabelKind, newLabel);
+            }
+
+            @Override
+            public boolean hasLabelEditTool(EdgeLabelKind labelKind) {
+                return switch (labelKind) {
+                    case BEGIN_LABEL -> edgeDescription.getBeginLabelEditTool() != null;
+                    case CENTER_LABEL -> edgeDescription.getLabelEditTool() != null;
+                    case END_LABEL -> edgeDescription.getEndLabelEditTool() != null;
+                };
+            }
         };
     }
 

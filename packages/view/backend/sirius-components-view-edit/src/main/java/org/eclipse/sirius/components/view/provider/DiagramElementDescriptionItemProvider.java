@@ -230,17 +230,9 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-
-        LabelEditTool newLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
-        newLabelEditTool.setName("Edit Label");
-        newLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, newLabelEditTool));
-
-        DeleteTool newDeleteTool = ViewFactory.eINSTANCE.createDeleteTool();
-        newDeleteTool.setName("Delete");
-        newDeleteTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, newDeleteTool));
+        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultLabelEditTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL, defaultToolsFactory.createDefaultDeleteTool()));
     }
 
     /**
