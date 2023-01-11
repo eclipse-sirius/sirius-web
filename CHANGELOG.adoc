@@ -14,6 +14,9 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17
 
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1567[#1567] [project] Add support for project templates
 
 == v2023.1.0
 

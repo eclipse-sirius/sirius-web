@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { assign, Machine } from 'xstate';
-import { GQLGetProjectsQueryData, Project } from './ProjectsView.types';
+import { GQLGetProjectsQueryData, Project, ProjectTemplate } from './ProjectsView.types';
 
 export interface ProjectsViewStateSchema {
   states: {
@@ -36,10 +36,13 @@ export type SchemaValue = {
   projectsView: 'loading' | 'loaded' | 'empty';
 };
 
-export type ProjectsViewModal = 'Rename' | 'Delete';
+export type ProjectsViewModal = 'Rename' | 'Delete' | 'ProjectTemplates';
 
 export interface ProjectsViewContext {
   projects: Project[];
+  projectTemplates: ProjectTemplate[];
+  runningTemplate: ProjectTemplate | null;
+  redirectUrl: string | null;
   selectedProject: Project | null;
   menuAnchor: HTMLElement | null;
   modalToDisplay: ProjectsViewModal | null;
@@ -53,6 +56,8 @@ export type OpenMenuEvent = { type: 'OPEN_MENU'; menuAnchor: HTMLElement; projec
 export type CloseMenuEvent = { type: 'CLOSE_MENU' };
 export type OpenModalEvent = { type: 'OPEN_MODAL'; modalToDisplay: ProjectsViewModal };
 export type CloseModalEvent = { type: 'CLOSE_MODAL' };
+export type InvokeTemplateEvent = { type: 'INVOKE_TEMPLATE'; template: ProjectTemplate };
+export type RedirectEvent = { type: 'REDIRECT'; projectId: string; representationId: string | null };
 export type ProjectsViewEvent =
   | FetchedProjectsEvent
   | ShowToastEvent
@@ -60,13 +65,18 @@ export type ProjectsViewEvent =
   | OpenMenuEvent
   | CloseMenuEvent
   | OpenModalEvent
-  | CloseModalEvent;
+  | CloseModalEvent
+  | InvokeTemplateEvent
+  | RedirectEvent;
 
 export const projectsViewMachine = Machine<ProjectsViewContext, ProjectsViewStateSchema, ProjectsViewEvent>(
   {
     type: 'parallel',
     context: {
       projects: [],
+      projectTemplates: [],
+      runningTemplate: null,
+      redirectUrl: null,
       selectedProject: null,
       menuAnchor: null,
       modalToDisplay: null,
@@ -145,10 +155,23 @@ export const projectsViewMachine = Machine<ProjectsViewContext, ProjectsViewStat
                   actions: 'closeModal',
                 },
               ],
+              INVOKE_TEMPLATE: [
+                {
+                  actions: 'invokeTemplate',
+                },
+              ],
+              REDIRECT: [{ actions: 'redirect' }],
             },
           },
           empty: {
-            type: 'final',
+            on: {
+              INVOKE_TEMPLATE: [
+                {
+                  actions: 'invokeTemplate',
+                },
+              ],
+              REDIRECT: [{ actions: 'redirect' }],
+            },
           },
         },
       },
@@ -169,10 +192,14 @@ export const projectsViewMachine = Machine<ProjectsViewContext, ProjectsViewStat
       updateProjects: assign((context, event) => {
         const {
           data: {
-            viewer: { projects },
+            viewer: { projects, projectTemplates },
           },
         } = event as FetchedProjectsEvent;
-        return { projects: projects.edges.map((edge) => edge.node) };
+        return {
+          projects: projects.edges.map((edge) => edge.node),
+          pageInfo: projects.pageInfo,
+          projectTemplates: projectTemplates.edges.map((edge) => edge.node),
+        };
       }),
       openMenu: assign((_, event) => {
         const { menuAnchor, project } = event as OpenMenuEvent;
@@ -194,6 +221,18 @@ export const projectsViewMachine = Machine<ProjectsViewContext, ProjectsViewStat
       }),
       clearMessage: assign((_) => {
         return { message: null };
+      }),
+      invokeTemplate: assign((_, event) => {
+        const { template } = event as InvokeTemplateEvent;
+        return { runningTemplate: template };
+      }),
+      redirect: assign((_, event) => {
+        const { projectId, representationId } = event as RedirectEvent;
+        if (representationId) {
+          return { redirectUrl: `/projects/${projectId}/edit/${representationId}` };
+        } else {
+          return { redirectUrl: `/projects/${projectId}/edit` };
+        }
       }),
     },
   }

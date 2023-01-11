@@ -20,15 +20,21 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.VisibilityEntity;
 import org.eclipse.sirius.web.persistence.repositories.IAccountRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectFromTemplateInput;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
@@ -51,12 +57,22 @@ public class ProjectService implements IProjectService {
 
     private final IAccountRepository accountRepository;
 
+    private final IProjectTemplateService projectTemplateService;
+
+    private final IEditingContextSearchService editingContextSearchService;
+
+    private final IEditingContextPersistenceService editingContextPersistenceService;
+
     private final ProjectMapper projectMapper;
 
-    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IAccountRepository accountRepository) {
+    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IAccountRepository accountRepository, IProjectTemplateService projectTemplateService,
+            IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.accountRepository = Objects.requireNonNull(accountRepository);
+        this.projectTemplateService = Objects.requireNonNull(projectTemplateService);
+        this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.projectMapper = new ProjectMapper();
     }
 
@@ -98,6 +114,45 @@ public class ProjectService implements IProjectService {
             }
         }
         return payload;
+    }
+
+    @Override
+    public IPayload createProject(CreateProjectFromTemplateInput input) {
+        IPayload result = new ErrorPayload(input.id(), this.messageService.unexpectedError());
+        // @formatter:off
+        var optionalTemplate = this.projectTemplateService.getProjectTemplateProviders().stream()
+                .map(IProjectTemplateProvider::getProjectTemplates)
+                .flatMap(List::stream)
+                .filter(template -> template.getId().equals(input.templateId()))
+                .findFirst();
+
+        var optionalProjectTemplateInitializer = this.projectTemplateService.getProjectTemplateInitializers().stream()
+                .filter(initializer -> initializer.canHandle(input.templateId()))
+                .findFirst();
+        // @formatter:on
+        if (optionalTemplate.isPresent() && optionalProjectTemplateInitializer.isPresent()) {
+            var template = optionalTemplate.get();
+            var projectTemplateInitializer = optionalProjectTemplateInitializer.get();
+
+            var createProjectInput = new CreateProjectInput(UUID.randomUUID(), template.getLabel(), Visibility.PRIVATE);
+            var payload = this.createProject(createProjectInput);
+            if (payload instanceof CreateProjectSuccessPayload) {
+                var createProjectSuccessPayload = (CreateProjectSuccessPayload) payload;
+                var projectId = createProjectSuccessPayload.getProject().getId();
+
+                var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
+                if (optionalEditingContext.isPresent()) {
+                    var editingContext = optionalEditingContext.get();
+                    var representationToOpen = projectTemplateInitializer.handle(input.templateId(), editingContext).orElse(null);
+
+                    this.editingContextPersistenceService.persist(editingContext);
+                    result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.getProject(), representationToOpen);
+                }
+            } else {
+                result = payload;
+            }
+        }
+        return result;
     }
 
     private ProjectEntity createProjectEntity(String projectName, AccountEntity owner, Visibility visibility) {

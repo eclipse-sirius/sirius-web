@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
@@ -27,6 +30,7 @@ import org.eclipse.sirius.web.persistence.repositories.IAccountRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.junit.jupiter.api.Test;
@@ -55,6 +59,19 @@ public class ProjectServiceTests {
         }
     };
 
+    private IEditingContextSearchService noOpEditingContextSearchService = new IEditingContextSearchService() {
+
+        @Override
+        public Optional<IEditingContext> findById(String editingContextId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public boolean existsById(String editingContextId) {
+            return false;
+        }
+    };
+
     private IAccountRepository fakeAccountRepository = new NoOpAccountRepository() {
         @Override
         public Optional<AccountEntity> findByUsername(String userName) {
@@ -69,7 +86,8 @@ public class ProjectServiceTests {
         }
     };
 
-    private ProjectService projectService = new ProjectService(this.noOpMessageService, this.noOpProjectRepository, this.fakeAccountRepository);
+    private ProjectService projectService = new ProjectService(this.noOpMessageService, this.noOpProjectRepository, this.fakeAccountRepository, new IProjectTemplateService.NoOp(),
+            this.noOpEditingContextSearchService, new IEditingContextPersistenceService.NoOp());
 
     @Test
     public void testProjectCreationWithInvalidName() {

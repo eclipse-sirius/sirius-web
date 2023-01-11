@@ -37,16 +37,37 @@ enum Visibility {
   PUBLIC
 }
 
+type ProjectTemplate {
+  id: ID!
+  label: String!
+  imageURL: String!
+}
+
+extend interface Viewer {
+  projectTemplates(page: Int, limit: Int): ViewerProjectTemplateConnection!
+}
+
+type ViewerProjectTemplateConnection {
+  edges: [ViewerProjectTemplateEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ViewerProjectTemplateEdge {
+  node: ProjectTemplate!
+}
+
 type User implements Viewer {
   id: ID!
   username: String!
   editingContext(editingContextId: ID!): EditingContext
   project(projectId: ID!): Project
   projects(page: Int): ViewerProjectConnection!
+  projectTemplates(page: Int, limit: Int): ViewerProjectTemplateConnection!
 }
 
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
+  createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
   renameProject(input: RenameProjectInput!): RenameProjectPayload!
   uploadProject(input: UploadProjectInput!): UploadProjectPayload!
@@ -70,6 +91,19 @@ union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload
 type CreateProjectSuccessPayload {
   id: ID!
   project: Project!
+}
+
+input CreateProjectFromTemplateInput {
+  id: ID!
+  templateId: ID!
+}
+
+union CreateProjectFromTemplatePayload = ErrorPayload | CreateProjectFromTemplateSuccessPayload
+
+type CreateProjectFromTemplateSuccessPayload {
+  id: ID!
+  project: Project!
+  representationToOpen: RepresentationMetadata
 }
 
 input DeleteProjectInput {

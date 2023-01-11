@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public interface IProjectService {
 
     IPayload createProject(CreateProjectInput input);
 
+    IPayload createProject(CreateProjectFromTemplateInput input);
+
     void delete(UUID projectId);
 
     Optional<Project> renameProject(UUID projectId, String newName);
@@ -54,6 +56,11 @@ public interface IProjectService {
 
         @Override
         public IPayload createProject(CreateProjectInput input) {
+            return null;
+        }
+
+        @Override
+        public IPayload createProject(CreateProjectFromTemplateInput input) {
             return null;
         }
 
