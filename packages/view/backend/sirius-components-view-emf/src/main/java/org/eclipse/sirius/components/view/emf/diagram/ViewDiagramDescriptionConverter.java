@@ -30,17 +30,23 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
+import org.eclipse.sirius.components.collaborative.diagrams.handlers.DeleteFromDiagramEventHandler;
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
@@ -63,6 +69,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.DeleteTool;
@@ -642,16 +649,40 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        DeleteTool tool = diagramElementDescription.getDeleteTool();
-        if (tool != null) {
-            return variableManager -> {
-                VariableManager child = variableManager.createChild();
-                child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
-                        .executeTool(tool, child);
-            };
-        } else {
-            return this.canonicalBehaviors::deleteElement;
+        return variableManager -> {
+            IStatus result;
+            DeletionPolicy deletionPolicy = variableManager.get(DeleteFromDiagramEventHandler.DELETION_POLICY, DeletionPolicy.class).orElse(DeletionPolicy.SEMANTIC);
+            if (deletionPolicy == DeletionPolicy.GRAPHICAL) {
+                this.deleteFromDiagram(variableManager);
+                result = new Success();
+            } else {
+                DeleteTool tool = diagramElementDescription.getDeleteTool();
+                if (tool != null) {
+                    VariableManager child = variableManager.createChild();
+                    child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                    result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                            .executeTool(tool, child);
+                } else {
+                    result = this.canonicalBehaviors.deleteElement(variableManager);
+                }
+            }
+            return result;
+        };
+    }
+
+    private void deleteFromDiagram(VariableManager variableManager) {
+        var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
+        if (optionalDiagramContext.isPresent()) {
+            String elementId = null;
+            if (variableManager.get(Node.SELECTED_NODE, Node.class).isPresent()) {
+                elementId = variableManager.get(Node.SELECTED_NODE, Node.class).get().getId();
+            } else if (variableManager.get(Edge.SELECTED_EDGE, Edge.class).isPresent()) {
+                elementId = variableManager.get(Edge.SELECTED_EDGE, Edge.class).get().getId();
+            }
+            if (elementId != null) {
+                ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
+                optionalDiagramContext.get().getViewDeletionRequests().add(viewDeletionRequest);
+            }
         }
     }
 

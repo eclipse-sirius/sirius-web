@@ -19,15 +19,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
-import org.eclipse.sirius.components.collaborative.diagrams.handlers.DeleteFromDiagramEventHandler;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -84,32 +77,7 @@ public class CanonicalBehaviors {
     }
 
     public IStatus deleteElement(VariableManager variableManager) {
-        // @formatter:off
-        DeletionPolicy deletionPolicy = variableManager.get(DeleteFromDiagramEventHandler.DELETION_POLICY, DeletionPolicy.class)
-                .orElse(DeletionPolicy.SEMANTIC);
-        // @formatter:on
-        switch (deletionPolicy) {
-            case SEMANTIC:
-                this.self(variableManager).ifPresent(this.editService::delete);
-                break;
-            case GRAPHICAL:
-                var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
-                if (optionalDiagramContext.isPresent()) {
-                    String elementId = null;
-                    if (variableManager.get(Node.SELECTED_NODE, Node.class).isPresent()) {
-                        elementId = variableManager.get(Node.SELECTED_NODE, Node.class).get().getId();
-                    } else if (variableManager.get(Edge.SELECTED_EDGE, Edge.class).isPresent()) {
-                        elementId = variableManager.get(Edge.SELECTED_EDGE, Edge.class).get().getId();
-                    }
-                    if (elementId != null) {
-                        ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
-                        optionalDiagramContext.get().getViewDeletionRequests().add(viewDeletionRequest);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
+        this.self(variableManager).ifPresent(this.editService::delete);
         return new Success();
     }
 
