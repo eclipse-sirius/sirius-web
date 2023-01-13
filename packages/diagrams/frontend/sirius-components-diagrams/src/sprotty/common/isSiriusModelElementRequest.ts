@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import { decorate, inject } from 'inversify';
 import { CommandExecutionContext, SModelElement, SModelRoot, TYPES } from 'sprotty';
 import { generateRequestId, RequestAction, ResponseAction } from 'sprotty-protocol';
 import { ModelRequestCommand } from 'sprotty/lib/base/commands/request-command';
-import { Edge, Node } from '../Diagram.types';
+import { BorderNode, Edge, Node } from '../Diagram.types';
 
 export interface IsSiriusModelElementAction extends RequestAction<IsSiriusModelElementResult> {
   kind: typeof IsSiriusModelElementAction.KIND;
@@ -71,5 +71,5 @@ export class IsSiriusModelElementCommand extends ModelRequestCommand {
 decorate(inject(TYPES.Action) as ParameterDecorator, IsSiriusModelElementCommand, 0);
 
 export const isSiriusModelElement = (element: SModelElement): boolean => {
-  return element instanceof Node || element instanceof Edge;
+  return element instanceof Node || element instanceof BorderNode || element instanceof Edge;
 };
