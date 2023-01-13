@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.elk.graph.ElkBendPoint;
@@ -25,6 +26,7 @@ import org.eclipse.elk.graph.ElkEdgeSection;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.elk.graph.ElkNode;
+import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -88,6 +90,7 @@ public class ELKLayoutedDiagramProvider {
 
         List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2ElkGraphElements, layoutConfigurator);
         List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2ElkGraphElements, layoutConfigurator);
+        Set<CustomizableProperties> customizedProperties = node.getCustomizedProperties();
         // @formatter:off
         return Node.newNode(node)
                 .label(label)
@@ -95,6 +98,7 @@ public class ELKLayoutedDiagramProvider {
                 .position(position)
                 .childNodes(childNodes)
                 .borderNodes(borderNodes)
+                .customizedProperties(customizedProperties.stream().filter(property -> !CustomizableProperties.Size.equals(property)).collect(Collectors.toSet()))
                 .build();
         // @formatter:on
     }

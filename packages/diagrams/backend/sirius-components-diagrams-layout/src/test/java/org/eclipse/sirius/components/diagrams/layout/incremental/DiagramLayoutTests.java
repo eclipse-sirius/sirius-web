@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.services.DefaultTestDiagramDescriptionProvider;
@@ -102,10 +103,12 @@ public class DiagramLayoutTests {
             }
         };
 
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
-        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
+        ImageNodeStyleSizeProvider imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(imageSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
         LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(), new LayoutConfiguratorRegistry(List.of()),
                 new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
@@ -249,12 +252,18 @@ public class DiagramLayoutTests {
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
-                .rectangleNode(FIRST_TARGET_OBJECT_ID).at(10, 10).of(-1, -1)
+                .rectangleNode(FIRST_TARGET_OBJECT_ID)
+                    .at(10, 10)
+                    .of(-1, -1)
+                    .withHeader(true)
                     .childNodes(columnListLayoutStrategy)
                         .iconLabelNode("Child").at(-1, -1).of(-1, -1).and()
                         .and()
                     .and()
-                .rectangleNode(SECOND_TARGET_OBJECT_ID).at(100, 100).of(-1, -1)
+                .rectangleNode(SECOND_TARGET_OBJECT_ID)
+                    .at(200, 200)
+                    .of(-1, -1)
+                    .withHeader(true)
                     .childNodes(columnListLayoutStrategy).and()
                     .and()
             .and()

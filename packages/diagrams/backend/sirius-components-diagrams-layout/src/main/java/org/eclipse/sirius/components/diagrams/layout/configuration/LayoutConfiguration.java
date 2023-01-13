@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchP
 import org.eclipse.sirius.components.diagrams.layout.incremental.IBorderNodeLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.incremental.LayoutEngineHandlerSwitch;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,8 +32,10 @@ import org.springframework.context.annotation.Configuration;
 public class LayoutConfiguration {
 
     @Bean
-    ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider(IBorderNodeLayoutEngine borderNodeLayoutEngine, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
-        return () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, customLabelPositionProviders);
+    public ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider(IBorderNodeLayoutEngine borderNodeLayoutEngine, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders,
+            ImageSizeProvider imageSizeProvider) {
+        ImageNodeStyleSizeProvider imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(imageSizeProvider);
+        return () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, customLabelPositionProviders, imageNodeStyleSizeProvider);
     }
 
 }

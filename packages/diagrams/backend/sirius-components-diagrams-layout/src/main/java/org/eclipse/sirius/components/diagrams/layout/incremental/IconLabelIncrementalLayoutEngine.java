@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelSizeProvider;
@@ -40,7 +41,7 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     @Override
-    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, Optional<Double> optionalMaxWidth) {
         IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
 
         // Positions the label inside the node icon label if the icon label is just created.
@@ -49,7 +50,7 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
             nodeLayoutData.getLabel().setPosition(Position.at(nodeLabelPadding.left, nodeLabelPadding.top));
         }
 
-        Size newNodeSize = this.getNodeSize(nodeLayoutData, nodeTypePropertyHolder, nodeLabelPadding, Optional.empty());
+        Size newNodeSize = this.getNodeSize(optionalDiagramEvent, nodeLayoutData, nodeTypePropertyHolder, nodeLabelPadding, optionalMaxWidth);
 
         if (!nodeLayoutData.getSize().equals(newNodeSize)) {
             nodeLayoutData.setSize(newNodeSize);
@@ -59,29 +60,23 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
         return nodeLayoutData;
     }
 
-    @Override
-    public NodeLayoutData layout(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, double maxWidth) {
-        IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
-
-        // Positions the label inside the node icon label if the icon label is just created.
-        ElkPadding nodeLabelPadding = this.nodeLabelSizeProvider.getLabelPadding(nodeLayoutData, layoutConfigurator);
-        if (nodeLayoutData.getLabel().getPosition().equals(Position.UNDEFINED)) {
-            nodeLayoutData.getLabel().setPosition(Position.at(nodeLabelPadding.left, nodeLabelPadding.top));
-        }
-
-        Size newNodeSize = this.getNodeSize(nodeLayoutData, nodeTypePropertyHolder, nodeLabelPadding, Optional.of(maxWidth));
-
-        if (!nodeLayoutData.getSize().equals(newNodeSize)) {
-            nodeLayoutData.setSize(newNodeSize);
-            nodeLayoutData.setChanged(true);
-        }
-
-        return nodeLayoutData;
-    }
-
-    private Size getNodeSize(NodeLayoutData nodeLayoutData, IPropertyHolder nodeTypePropertyHolder, ElkPadding nodeLabelPadding, Optional<Double> forceWidth) {
+    private Size getNodeSize(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, IPropertyHolder nodeTypePropertyHolder, ElkPadding nodeLabelPadding,
+            Optional<Double> forceWidth) {
         double newNodeWidth = 0;
         double newNodeHeight = 0;
+
+        if (optionalDiagramEvent.isPresent()) {
+            IDiagramEvent diagramEvent = optionalDiagramEvent.get();
+            if (diagramEvent instanceof ResizeEvent resizeEvent) {
+                if (resizeEvent.nodeId().equals(nodeLayoutData.getId())) {
+                    Size newSize = resizeEvent.newSize();
+                    newNodeWidth = newSize.getWidth();
+                    newNodeHeight = newSize.getHeight();
+                    nodeLayoutData.setResizedByUser(true);
+                }
+            }
+        }
+
         if (nodeTypePropertyHolder.hasProperty(CoreOptions.NODE_SIZE_CONSTRAINTS) && nodeTypePropertyHolder.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS).contains(SizeConstraint.MINIMUM_SIZE)) {
             KVector minSize = nodeTypePropertyHolder.getProperty(CoreOptions.NODE_SIZE_MINIMUM);
             newNodeWidth = minSize.x;
@@ -108,11 +103,6 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
 
     @Override
     public double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        return this.getNodeMinimalWidth(nodeLayoutData, layoutConfigurator);
-    }
-
-    @Override
-    public double getNodeMinimalWidth(NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
         IPropertyHolder nodeTypePropertyHolder = layoutConfigurator.configureByType(nodeLayoutData.getNodeType());
 
         // Positions the label inside the node icon label if the icon label is just created.
@@ -120,6 +110,6 @@ public class IconLabelIncrementalLayoutEngine implements INodeIncrementalLayoutE
         if (nodeLayoutData.getLabel().getPosition().equals(Position.UNDEFINED)) {
             nodeLayoutData.getLabel().setPosition(Position.at(nodeLabelPadding.left, nodeLabelPadding.top));
         }
-        return this.getNodeSize(nodeLayoutData, nodeTypePropertyHolder, nodeLabelPadding, Optional.empty()).getWidth();
+        return this.getNodeSize(optionalDiagramEvent, nodeLayoutData, nodeTypePropertyHolder, nodeLabelPadding, Optional.empty()).getWidth();
     }
 }

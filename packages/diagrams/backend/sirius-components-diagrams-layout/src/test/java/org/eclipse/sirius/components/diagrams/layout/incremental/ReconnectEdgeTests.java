@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -37,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.services.DefaultTestDiagramDescriptionProvider;
@@ -79,10 +82,12 @@ public class ReconnectEdgeTests {
             }
         };
 
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
-        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
+        ImageNodeStyleSizeProvider imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(imageSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
         LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(), new LayoutConfiguratorRegistry(List.of()),
                 new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
@@ -116,9 +121,9 @@ public class ReconnectEdgeTests {
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT)
             .nodes()
-                .rectangleNode(FIRST_NODE).at(10, 10).of(100, 100).and()
-                .rectangleNode(SECOND_NODE).at(150, 10).of(100, 100).and()
-                .rectangleNode(THIRD_NODE).at(150, 150).of(100, 100).and()
+                .rectangleNode(FIRST_NODE).at(10, 10).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                .rectangleNode(SECOND_NODE).at(250, 10).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                .rectangleNode(THIRD_NODE).at(250, 250).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
                 .and()
             .edge(EDGE_TO_RECONNECT_LABEL)
                 .from(FIRST_NODE).at(0.25, 0.25)
@@ -135,7 +140,7 @@ public class ReconnectEdgeTests {
 
         Edge edge = diagram.getEdges().get(0);
         String edgeId = edge.getId();
-        ReconnectEdgeEvent reconnectEdgeEvent = new ReconnectEdgeEvent(ReconnectEdgeKind.TARGET, edgeId, thirdNode.get().getId(), Position.at(175, 200));
+        ReconnectEdgeEvent reconnectEdgeEvent = new ReconnectEdgeEvent(ReconnectEdgeKind.TARGET, edgeId, thirdNode.get().getId(), Position.at(300, 350));
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
         Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, reconnectEdgeEvent);
@@ -166,9 +171,9 @@ public class ReconnectEdgeTests {
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT)
             .nodes()
-                .rectangleNode(FIRST_NODE).at(10, 10).of(100, 100).and()
-                .rectangleNode(SECOND_NODE).at(150, 10).of(100, 100).and()
-                .rectangleNode(THIRD_NODE).at(150, 150).of(100, 100).and()
+                .rectangleNode(FIRST_NODE).at(10, 10).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                .rectangleNode(SECOND_NODE).at(250, 10).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                .rectangleNode(THIRD_NODE).at(250, 250).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
                 .and()
             .edge(EDGE_TO_RECONNECT_LABEL)
                 .from(FIRST_NODE).at(0.25, 0.25)
@@ -186,7 +191,7 @@ public class ReconnectEdgeTests {
 
         Edge edge = diagram.getEdges().get(0);
         String edgeId = edge.getId();
-        ReconnectEdgeEvent reconnectEdgeEvent = new ReconnectEdgeEvent(ReconnectEdgeKind.SOURCE, edgeId, thirdNode.get().getId(), Position.at(175, 200));
+        ReconnectEdgeEvent reconnectEdgeEvent = new ReconnectEdgeEvent(ReconnectEdgeKind.SOURCE, edgeId, thirdNode.get().getId(), Position.at(300, 350));
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
         Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, reconnectEdgeEvent);
@@ -221,9 +226,9 @@ public class ReconnectEdgeTests {
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT)
             .nodes()
-                .rectangleNode(FIRST_NODE).at(10, 10).of(100, 100).and()
-                .rectangleNode(SECOND_NODE).at(150, 10).of(100, 100).and()
-                .rectangleNode(THIRD_NODE).at(150, 150).of(100, 100).and()
+                .rectangleNode(FIRST_NODE).at(10, 10).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                .rectangleNode(SECOND_NODE).at(250, 10).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                .rectangleNode(THIRD_NODE).at(250, 250).of(200, 200).customizedProperties(Set.of(CustomizableProperties.Size)).and()
                 .and()
             .edge("f -> s 0")
                 .from(FIRST_NODE).at(0.75, 0.2)
@@ -244,7 +249,7 @@ public class ReconnectEdgeTests {
             .edge("f -> t 0")
                 .from(FIRST_NODE).at(0.5, 0.75)
                 .to(THIRD_NODE).at(0.25, 0.5)
-                .goingThrough(60, 200)
+                .goingThrough(110, 350)
                 .and()
             .build();
         // @formatter:on
@@ -259,7 +264,7 @@ public class ReconnectEdgeTests {
 
         Edge edgeToReconnect = diagram.getEdges().get(1);
         String edgeToReconnectId = edgeToReconnect.getId();
-        ReconnectEdgeEvent reconnectEdgeEvent = new ReconnectEdgeEvent(ReconnectEdgeKind.TARGET, edgeToReconnectId, thirdNode.get().getId(), Position.at(175, 175));
+        ReconnectEdgeEvent reconnectEdgeEvent = new ReconnectEdgeEvent(ReconnectEdgeKind.TARGET, edgeToReconnectId, thirdNode.get().getId(), Position.at(300, 300));
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
         Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, reconnectEdgeEvent);
@@ -273,7 +278,7 @@ public class ReconnectEdgeTests {
             .anySatisfy(edge -> {
                 assertThat(edge.getTargetId()).isEqualTo(thirdNode.get().getId());
                 assertThat(edge)
-                    .goesThrough(List.of(Position.at(60, 200)))
+                    .goesThrough(List.of(Position.at(110, 350)))
                     .hasSourceAnchorRelativePositionRatio(Ratio.of(0.5, 0.75))
                     .hasTargetAnchorRelativePositionRatio(Ratio.of(0.25, 0.5));
             })

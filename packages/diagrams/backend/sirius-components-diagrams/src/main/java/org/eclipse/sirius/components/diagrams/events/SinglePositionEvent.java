@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.events;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.diagrams.Position;
 
 /**
@@ -21,15 +19,5 @@ import org.eclipse.sirius.components.diagrams.Position;
  *
  * @author fbarbin
  */
-public class SinglePositionEvent implements IDiagramEvent {
-
-    private final Position position;
-
-    public SinglePositionEvent(Position position) {
-        this.position = Objects.requireNonNull(position);
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
+public record SinglePositionEvent(Position position) implements IDiagramEvent {
 }

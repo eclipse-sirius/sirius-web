@@ -54,7 +54,7 @@ public class NodeComponent implements IComponent {
 
     public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds";
 
-    private NodeComponentProps props;
+    private final NodeComponentProps props;
 
     public NodeComponent(NodeComponentProps props) {
         this.props = Objects.requireNonNull(props);

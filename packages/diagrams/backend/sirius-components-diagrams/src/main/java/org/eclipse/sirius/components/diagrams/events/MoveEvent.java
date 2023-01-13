@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.events;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.diagrams.Position;
 
 /**
@@ -21,23 +19,5 @@ import org.eclipse.sirius.components.diagrams.Position;
  *
  * @author wpiers
  */
-public class MoveEvent implements IDiagramEvent {
-
-    private final String nodeId;
-
-    private final Position newPosition;
-
-    public MoveEvent(String nodeId, Position newPosition) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.newPosition = Objects.requireNonNull(newPosition);
-    }
-
-    public String getNodeId() {
-        return this.nodeId;
-    }
-
-    public Position getNewPosition() {
-        return this.newPosition;
-    }
-
+public record MoveEvent(String nodeId, Position newPosition) implements IDiagramEvent {
 }

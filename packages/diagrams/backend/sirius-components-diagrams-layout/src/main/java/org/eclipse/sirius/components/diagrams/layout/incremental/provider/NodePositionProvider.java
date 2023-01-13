@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -129,7 +129,7 @@ public class NodePositionProvider {
     private Position getPositionRelativeToParent(NodeLayoutData node, SinglePositionEvent diagramElementEvent) {
         Position position;
         IContainerLayoutData parent = node.getParent();
-        Position eventPosition = diagramElementEvent.getPosition();
+        Position eventPosition = diagramElementEvent.position();
         if (Position.UNDEFINED.equals(parent.getPosition())) {
             position = this.getDefaultPosition(node);
         } else {
@@ -173,8 +173,8 @@ public class NodePositionProvider {
     }
 
     private Optional<Position> getPositionFromMoveEvent(NodeLayoutData node, MoveEvent moveEvent) {
-        if (moveEvent.getNodeId().equals(node.getId())) {
-            return Optional.of(moveEvent.getNewPosition());
+        if (moveEvent.nodeId().equals(node.getId())) {
+            return Optional.of(moveEvent.newPosition());
         }
         return Optional.empty();
     }
@@ -182,20 +182,20 @@ public class NodePositionProvider {
     private Optional<Position> getPositionFromResizeEvent(NodeLayoutData node, ResizeEvent resizeEvent) {
         Optional<Position> optionalPosition = Optional.empty();
         // The current node is directly resized
-        if (resizeEvent.getNodeId().equals(node.getId())) {
+        if (resizeEvent.nodeId().equals(node.getId())) {
             Position oldPosition = node.getPosition();
-            double newX = oldPosition.getX() - resizeEvent.getPositionDelta().getX();
-            double newY = oldPosition.getY() - resizeEvent.getPositionDelta().getY();
+            double newX = oldPosition.getX() - resizeEvent.positionDelta().getX();
+            double newY = oldPosition.getY() - resizeEvent.positionDelta().getY();
             optionalPosition = Optional.of(Position.at(newX, newY));
 
         }
         // The current node is a direct child of a resized container.
-        else if (resizeEvent.getNodeId().toString().equals(node.getParent().getId().toString())) {
+        else if (resizeEvent.nodeId().toString().equals(node.getParent().getId().toString())) {
             // The parent has been resized so the relative new position may have to be changed to keep the same
             // absolute coordinates
             Position oldPosition = node.getPosition();
-            double newX = oldPosition.getX() + resizeEvent.getPositionDelta().getX();
-            double newY = oldPosition.getY() + resizeEvent.getPositionDelta().getY();
+            double newX = oldPosition.getX() + resizeEvent.positionDelta().getX();
+            double newY = oldPosition.getY() + resizeEvent.positionDelta().getY();
             optionalPosition = Optional.of(Position.at(newX, newY));
         }
         return optionalPosition;

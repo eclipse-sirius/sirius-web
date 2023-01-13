@@ -20,6 +20,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LayoutEngineHandlerSwitch implements Function<String, Optional<INodeIncrementalLayoutEngine>> {
 
-    private final Logger logger = LoggerFactory.getLogger(LayoutStrategyEngineHandlerSwitch.class);
+    private final Logger logger = LoggerFactory.getLogger(LayoutEngineHandlerSwitch.class);
 
     private final IBorderNodeLayoutEngine borderNodeLayoutEngine;
 
@@ -38,10 +39,14 @@ public class LayoutEngineHandlerSwitch implements Function<String, Optional<INod
 
     private final ChildLayoutStrategyEngineHandler childLayoutStrategyEngineHandler;
 
-    public LayoutEngineHandlerSwitch(IBorderNodeLayoutEngine borderNodeLayoutEngine, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
+    private final ImageNodeStyleSizeProvider imageNodeStyleSizeProvider;
+
+    public LayoutEngineHandlerSwitch(IBorderNodeLayoutEngine borderNodeLayoutEngine, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders,
+            ImageNodeStyleSizeProvider imageNodeStyleSizeProvider) {
         this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
         this.customLabelPositionProviders = Objects.requireNonNull(customLabelPositionProviders);
-        this.childLayoutStrategyEngineHandler = new ChildLayoutStrategyEngineHandler(borderNodeLayoutEngine, customLabelPositionProviders);
+        this.imageNodeStyleSizeProvider = Objects.requireNonNull(imageNodeStyleSizeProvider);
+        this.childLayoutStrategyEngineHandler = new ChildLayoutStrategyEngineHandler(borderNodeLayoutEngine, customLabelPositionProviders, imageNodeStyleSizeProvider);
     }
 
     @Override
@@ -50,6 +55,9 @@ public class LayoutEngineHandlerSwitch implements Function<String, Optional<INod
         switch (nodeType) {
             case NodeType.NODE_RECTANGLE:
                 optionalLayoutEngine = this.caseRectangleNodeLayoutEngine();
+                break;
+            case NodeType.NODE_IMAGE:
+                optionalLayoutEngine = this.caseImageNodeLayoutEngine();
                 break;
             case NodeType.NODE_ICON_LABEL:
                 optionalLayoutEngine = this.caseIconLabelNodeLayoutEngine();
@@ -71,6 +79,10 @@ public class LayoutEngineHandlerSwitch implements Function<String, Optional<INod
 
     private Optional<INodeIncrementalLayoutEngine> caseRectangleNodeLayoutEngine() {
         return Optional.of(new RectangleIncrementalLayoutEngine(this.childLayoutStrategyEngineHandler, this.borderNodeLayoutEngine, this.customLabelPositionProviders));
+    }
+
+    private Optional<INodeIncrementalLayoutEngine> caseImageNodeLayoutEngine() {
+        return Optional.of(new ImageIncrementalLayoutEngine(this.childLayoutStrategyEngineHandler, this.borderNodeLayoutEngine, this.customLabelPositionProviders, this.imageNodeStyleSizeProvider));
     }
 
     private Optional<INodeIncrementalLayoutEngine> caseIconLabelNodeLayoutEngine() {

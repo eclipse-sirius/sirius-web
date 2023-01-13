@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +35,9 @@ public class LayoutStrategyEngineHandlerSwitch implements Function<ILayoutStrate
 
     private final ChildNodeIncrementalLayoutEngineHandler childNodeIncrementalLayoutEngineHandler;
 
-    public LayoutStrategyEngineHandlerSwitch(IBorderNodeLayoutEngine borderNodeLayoutEngine, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
-        this.childNodeIncrementalLayoutEngineHandler = new ChildNodeIncrementalLayoutEngineHandler(borderNodeLayoutEngine, customLabelPositionProviders);
+    public LayoutStrategyEngineHandlerSwitch(IBorderNodeLayoutEngine borderNodeLayoutEngine, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders,
+            ImageNodeStyleSizeProvider imageNodeStyleSizeProvider) {
+        this.childNodeIncrementalLayoutEngineHandler = new ChildNodeIncrementalLayoutEngineHandler(borderNodeLayoutEngine, customLabelPositionProviders, imageNodeStyleSizeProvider);
     }
 
     @Override
@@ -42,6 +45,8 @@ public class LayoutStrategyEngineHandlerSwitch implements Function<ILayoutStrate
         Optional<ILayoutStrategyEngine> optionalLayoutStrategyEngine = Optional.empty();
         if (layoutStrategy instanceof ListLayoutStrategy) {
             optionalLayoutStrategyEngine = this.caseListLayoutStrategyEngine();
+        } else if (layoutStrategy instanceof FreeFormLayoutStrategy) {
+            optionalLayoutStrategyEngine = this.caseFreeFormLayoutStrategyEngine();
         }
 
         if (optionalLayoutStrategyEngine.isEmpty()) {
@@ -54,6 +59,10 @@ public class LayoutStrategyEngineHandlerSwitch implements Function<ILayoutStrate
 
     private Optional<ILayoutStrategyEngine> caseListLayoutStrategyEngine() {
         return Optional.of(new ListLayoutStrategyEngine(this.childNodeIncrementalLayoutEngineHandler));
+    }
+
+    private Optional<ILayoutStrategyEngine> caseFreeFormLayoutStrategyEngine() {
+        return Optional.of(new FreeFormLayoutStrategyEngine(this.childNodeIncrementalLayoutEngineHandler));
     }
 
 }

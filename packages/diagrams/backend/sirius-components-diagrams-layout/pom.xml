@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<elk.version>0.7.1</elk.version>
+		<elk.version>0.8.1</elk.version>
 	</properties>
 
 	<distributionManagement>
