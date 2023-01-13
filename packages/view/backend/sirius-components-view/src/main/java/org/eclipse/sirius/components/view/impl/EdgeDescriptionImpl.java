@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -232,6 +233,26 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getBeginLabelEditTool() <em>Begin Label Edit Tool</em>}' containment reference.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getBeginLabelEditTool()
+     * @generated
+     * @ordered
+     */
+    protected LabelEditTool beginLabelEditTool;
+
+    /**
+     * The cached value of the '{@link #getEndLabelEditTool() <em>End Label Edit Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndLabelEditTool()
+     * @generated
+     * @ordered
+     */
+    protected LabelEditTool endLabelEditTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -509,6 +530,102 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public LabelEditTool getBeginLabelEditTool() {
+        return this.beginLabelEditTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetBeginLabelEditTool(LabelEditTool newBeginLabelEditTool, NotificationChain msgs) {
+        LabelEditTool oldBeginLabelEditTool = this.beginLabelEditTool;
+        this.beginLabelEditTool = newBeginLabelEditTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, oldBeginLabelEditTool, newBeginLabelEditTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBeginLabelEditTool(LabelEditTool newBeginLabelEditTool) {
+        if (newBeginLabelEditTool != this.beginLabelEditTool) {
+            NotificationChain msgs = null;
+            if (this.beginLabelEditTool != null)
+                msgs = ((InternalEObject) this.beginLabelEditTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, null, msgs);
+            if (newBeginLabelEditTool != null)
+                msgs = ((InternalEObject) newBeginLabelEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, null, msgs);
+            msgs = this.basicSetBeginLabelEditTool(newBeginLabelEditTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, newBeginLabelEditTool, newBeginLabelEditTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LabelEditTool getEndLabelEditTool() {
+        return this.endLabelEditTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetEndLabelEditTool(LabelEditTool newEndLabelEditTool, NotificationChain msgs) {
+        LabelEditTool oldEndLabelEditTool = this.endLabelEditTool;
+        this.endLabelEditTool = newEndLabelEditTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, oldEndLabelEditTool, newEndLabelEditTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEndLabelEditTool(LabelEditTool newEndLabelEditTool) {
+        if (newEndLabelEditTool != this.endLabelEditTool) {
+            NotificationChain msgs = null;
+            if (this.endLabelEditTool != null)
+                msgs = ((InternalEObject) this.endLabelEditTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, null, msgs);
+            if (newEndLabelEditTool != null)
+                msgs = ((InternalEObject) newEndLabelEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, null, msgs);
+            msgs = this.basicSetEndLabelEditTool(newEndLabelEditTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, newEndLabelEditTool, newEndLabelEditTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ViewPackage.EDGE_DESCRIPTION__STYLE:
@@ -519,6 +636,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return ((InternalEList<?>) this.getReconnectEdgeTools()).basicRemove(otherEnd, msgs);
             case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
+                return this.basicSetBeginLabelEditTool(null, msgs);
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
+                return this.basicSetEndLabelEditTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -555,6 +676,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getConditionalStyles();
             case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return this.getPreconditionExpression();
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
+                return this.getBeginLabelEditTool();
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
+                return this.getEndLabelEditTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -609,6 +734,12 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression((String) newValue);
                 return;
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
+                this.setBeginLabelEditTool((LabelEditTool) newValue);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
+                this.setEndLabelEditTool((LabelEditTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -657,6 +788,12 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
                 return;
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
+                this.setBeginLabelEditTool((LabelEditTool) null);
+                return;
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
+                this.setEndLabelEditTool((LabelEditTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -693,6 +830,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
+                return this.beginLabelEditTool != null;
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
+                return this.endLabelEditTool != null;
         }
         return super.eIsSet(featureID);
     }

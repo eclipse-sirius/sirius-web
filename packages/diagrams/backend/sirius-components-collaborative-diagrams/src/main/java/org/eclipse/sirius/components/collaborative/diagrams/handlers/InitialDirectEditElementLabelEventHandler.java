@@ -107,7 +107,7 @@ public class InitialDirectEditElementLabelEventHandler implements IDiagramEventH
                     String labelId = input.labelId();
                     var element = this.findGraphicalElement(diagram, labelId);
                     if (element.isPresent()) {
-                        String initialDirectEditElementLabel = initialDirectEditElementLabelProvider.getInitialDirectEditElementLabel(element.get(), diagram, editingContext);
+                        String initialDirectEditElementLabel = initialDirectEditElementLabelProvider.getInitialDirectEditElementLabel(element.get(), labelId, diagram, editingContext);
                         payload = new InitialDirectEditElementLabelSuccessPayload(diagramInput.id(), initialDirectEditElementLabel);
                     }
                 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.compatibility.services.diagrams;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IInitialDirectEditElementLabelProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -44,22 +43,20 @@ public class CompatibilityInitialDirectEditElementLabelProvider implements IInit
     }
 
     @Override
-    public String getInitialDirectEditElementLabel(Object graphicalElement, Diagram diagram, IEditingContext editingContext) {
-
-        // @formatter:off
-        return this.mapDiagramElementToLabel(graphicalElement)
-            .orElse("");
-        // @formatter:on
-    }
-
-    private Optional<String> mapDiagramElementToLabel(Object object) {
-        Optional<String> targetObjectId = Optional.empty();
-        if (object instanceof Node) {
-            targetObjectId = Optional.of(((Node) object).getLabel().getText());
-        } else if (object instanceof Edge) {
-            targetObjectId = Optional.of(((Edge) object).getCenterLabel().getText());
+    public String getInitialDirectEditElementLabel(Object diagramElement, String labelId, Diagram diagram, IEditingContext editingContext) {
+        String label = "";
+        if (diagramElement instanceof Node node) {
+            label = node.getLabel().getText();
+        } else if (diagramElement instanceof Edge edge) {
+            if (edge.getBeginLabel().getId().equals(labelId)) {
+                label = edge.getBeginLabel().getText();
+            } else if (edge.getCenterLabel().getId().equals(labelId)) {
+                label = edge.getCenterLabel().getText();
+            } else if (edge.getEndLabel().getId().equals(labelId)) {
+                label = edge.getEndLabel().getText();
+            }
         }
-        return targetObjectId;
+        return label;
     }
 
 }

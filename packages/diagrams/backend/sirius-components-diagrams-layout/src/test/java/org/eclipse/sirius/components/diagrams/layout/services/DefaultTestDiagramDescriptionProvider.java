@@ -364,7 +364,7 @@ public class DefaultTestDiagramDescriptionProvider {
                             .build();
                 })
                 .deleteHandler(variableManager -> new Failure(""))
-                .labelEditHandler((variableManager, newValue) -> new Failure(""))
+                .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Failure(""))
                 .build();
         // @formatter:on
 

@@ -178,7 +178,7 @@ public class DiagramElementChangeVisibilityTests {
                 .targetNodesProvider(targetNodesProvider)
                 .targetObjectLabelProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
-                .labelEditHandler((variableManager, newLabel) -> new Success())
+                .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
         // @formatter:on

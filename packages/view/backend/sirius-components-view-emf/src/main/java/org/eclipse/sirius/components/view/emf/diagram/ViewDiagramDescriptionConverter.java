@@ -49,6 +49,8 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
+import org.eclipse.sirius.components.diagrams.description.IEdgeEditLabelHandler;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -645,7 +647,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .targetNodesProvider(targetNodesProvider)
                 .styleProvider(styleProvider)
                 .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext))
-                .labelEditHandler(this.createLabelEditHandler(viewEdgeDescription, converterContext));
+                .labelEditHandler(this.createEdgeLabelEditHandler(viewEdgeDescription, converterContext));
 
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter).ifPresent(builder::beginLabelDescription);
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getLabelExpression(), "_centerlabel", interpreter).ifPresent(builder::centerLabelDescription);
@@ -711,6 +713,39 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             childVariableManager.put("newLabel", newLabel);
             childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
             LabelEditTool tool = diagramElementDescription.getLabelEditTool();
+            if (tool != null) {
+                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                        .executeTool(tool, childVariableManager);
+            } else {
+                Result aqlResult = converterContext.getInterpreter().evaluateExpression(childVariableManager.getVariables(), "aql:self.defaultEditLabel(newLabel)");
+                if (aqlResult.getStatus() == Status.OK) {
+                    result = new Success();
+                } else {
+                    result = new Failure("An error has occurred while editing the label");
+                }
+            }
+            return result;
+        };
+    }
+
+    private IEdgeEditLabelHandler createEdgeLabelEditHandler(org.eclipse.sirius.components.view.EdgeDescription edgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        return (variableManager, edgeLabelKind, newLabel) -> {
+            IStatus result;
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put("arg0", newLabel);
+            childVariableManager.put("newLabel", newLabel);
+            var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+
+            LabelEditTool tool = null;
+            if (edgeLabelKind == EdgeLabelKind.BEGIN_LABEL) {
+                tool = edgeDescription.getBeginLabelEditTool();
+            } else if (edgeLabelKind == EdgeLabelKind.CENTER_LABEL) {
+                tool = edgeDescription.getLabelEditTool();
+            } else if (edgeLabelKind == EdgeLabelKind.END_LABEL) {
+                tool = edgeDescription.getEndLabelEditTool();
+            }
+
             if (tool != null) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
                         .executeTool(tool, childVariableManager);

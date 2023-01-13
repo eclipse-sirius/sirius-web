@@ -508,7 +508,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)
                 .deleteHandler(vm -> new Success())
-                .labelEditHandler((vm, newLabel) -> new Success())
+                .labelEditHandler((vm, edgeKind, newLabel) -> new Success())
                 .semanticElementsProvider(vm -> List.of(new Object()))
                 .sourceNodeDescriptions(List.of())
                 .sourceNodesProvider(vm -> List.of())

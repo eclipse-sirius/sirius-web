@@ -82,6 +82,10 @@
         eType="#//ConditionalEdgeStyle" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
         eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="beginLabelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endLabelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelStyle" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" lowerBound="1"

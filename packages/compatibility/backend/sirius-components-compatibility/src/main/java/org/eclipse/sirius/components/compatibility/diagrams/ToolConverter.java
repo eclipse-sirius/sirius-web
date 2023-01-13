@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.description.IEdgeEditLabelHandler;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -62,7 +63,7 @@ public class ToolConverter {
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
-    public BiFunction<VariableManager, String, IStatus> createDirectEditToolHandler(DirectEditLabel labelEditDescription) {
+    public BiFunction<VariableManager, String, IStatus> createNodeDirectEditToolHandler(DirectEditLabel labelEditDescription) {
         var optionalInitialOperation = Optional.ofNullable(labelEditDescription).map(DirectEditLabel::getInitialOperation);
         if (optionalInitialOperation.isPresent()) {
             InitialOperation initialOperation = optionalInitialOperation.get();
@@ -77,6 +78,24 @@ public class ToolConverter {
         } else {
             // If no direct edit tool is defined, nothing to do but consider this OK.
             return (variableManager, newText) -> new Success();
+        }
+    }
+
+    public IEdgeEditLabelHandler createEdgeDirectEditToolHandler(DirectEditLabel labelEditDescription) {
+        var optionalInitialOperation = Optional.ofNullable(labelEditDescription).map(DirectEditLabel::getInitialOperation);
+        if (optionalInitialOperation.isPresent()) {
+            InitialOperation initialOperation = optionalInitialOperation.get();
+            return (variableManager, edgeLabelKind, newText) -> {
+                Map<String, Object> variables = variableManager.getVariables();
+                variables.put("arg0", newText);
+                var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(this.interpreter);
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
+                    return handler.handle(variables);
+                }).orElse(new Failure(""));
+            };
+        } else {
+            // If no direct edit tool is defined, nothing to do but consider this OK.
+            return (variableManager, edgeLabelKind, newText) -> new Success();
         }
     }
 

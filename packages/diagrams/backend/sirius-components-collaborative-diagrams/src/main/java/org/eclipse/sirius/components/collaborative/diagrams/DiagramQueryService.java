@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,7 +63,12 @@ public class DiagramQueryService implements IDiagramQueryService {
 
     @Override
     public Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId) {
-        return diagram.getEdges().stream().filter(edge -> Objects.equals(edge.getCenterLabel().getId(), labelId)).findFirst();
+        return diagram.getEdges().stream().filter(edge -> {
+            boolean isValid = edge.getBeginLabel() != null && Objects.equals(edge.getBeginLabel().getId(), labelId);
+            isValid = isValid || (edge.getCenterLabel() != null && Objects.equals(edge.getCenterLabel().getId(), labelId));
+            isValid = isValid || (edge.getEndLabel() != null && Objects.equals(edge.getEndLabel().getId(), labelId));
+            return isValid;
+        }).findFirst();
     }
 
 }

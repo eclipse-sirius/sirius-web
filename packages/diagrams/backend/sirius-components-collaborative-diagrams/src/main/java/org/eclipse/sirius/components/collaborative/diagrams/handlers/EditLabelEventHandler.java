@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
@@ -111,7 +112,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 if (edge.isPresent()) {
                     payload = new EditLabelSuccessPayload(diagramInput.id(), diagram);
                     try {
-                        this.invokeDirectEditTool(edge.get(), editingContext, diagram, input.newText());
+                        this.invokeDirectEditTool(edge.get(), input.labelId(), editingContext, diagram, input.newText());
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                     } catch (IllegalArgumentException e) {
                         payload = new ErrorPayload(diagramInput.id(), this.messageService.invalidNewValue(input.newText()));
@@ -143,7 +144,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         }
     }
 
-    private void invokeDirectEditTool(Edge edge, IEditingContext editingContext, Diagram diagram, String newText) {
+    private void invokeDirectEditTool(Edge edge, String labelId, IEditingContext editingContext, Diagram diagram, String newText) {
         var optionalEdgeDescription = this.findEdgeDescription(edge, diagram, editingContext);
         if (optionalEdgeDescription.isPresent()) {
             EdgeDescription edgeDescription = optionalEdgeDescription.get();
@@ -152,10 +153,27 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
 
+                var edgeLabelKind = EdgeLabelKind.CENTER_LABEL;
+                if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
+                    edgeLabelKind = EdgeLabelKind.BEGIN_LABEL;
+                } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
+                    edgeLabelKind = EdgeLabelKind.END_LABEL;
+                }
+
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(VariableManager.SELF, self);
-                edgeDescription.getLabelEditHandler().apply(variableManager, newText);
+                // @formatter:off
+                var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
+                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                        .orElse(null);
+                var semanticEdgeTarget = this.diagramQueryService.findNodeById(diagram, edge.getTargetId())
+                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                        .orElse(null);
+                variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticEdgeSource);
+                variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticEdgeTarget);
+                // @formatter:on
+                edgeDescription.getLabelEditHandler().editLabel(variableManager, edgeLabelKind, newText);
                 this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText);
             }
         }
