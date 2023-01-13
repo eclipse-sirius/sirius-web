@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -90,7 +89,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, IStatus> deleteHandler;
 
-    private BiFunction<VariableManager, String, IStatus> labelEditHandler;
+    private IEdgeEditLabelHandler labelEditHandler;
 
     private EdgeDescription() {
         // Prevent instantiation
@@ -161,7 +160,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
         return this.deleteHandler;
     }
 
-    public BiFunction<VariableManager, String, IStatus> getLabelEditHandler() {
+    public IEdgeEditLabelHandler getLabelEditHandler() {
         return this.labelEditHandler;
     }
 
@@ -214,7 +213,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> deleteHandler;
 
-        private BiFunction<VariableManager, String, IStatus> labelEditHandler;
+        private IEdgeEditLabelHandler labelEditHandler;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -296,7 +295,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
             return this;
         }
 
-        public Builder labelEditHandler(BiFunction<VariableManager, String, IStatus> labelEditHandler) {
+        public Builder labelEditHandler(IEdgeEditLabelHandler labelEditHandler) {
             this.labelEditHandler = Objects.requireNonNull(labelEditHandler);
             return this;
         }

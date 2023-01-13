@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
@@ -191,6 +192,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -263,6 +266,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
             case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
+            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
+            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -278,6 +283,16 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+
+        LabelEditTool newBeginLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        newBeginLabelEditTool.setName("Edit Begin Label");
+        newBeginLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, newBeginLabelEditTool));
+
+        LabelEditTool newEndLabelEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        newEndLabelEditTool.setName("Edit End Label");
+        newEndLabelEditTool.getBody().add(ViewFactory.eINSTANCE.createChangeContext());
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, newEndLabelEditTool));
 
         EdgeTool newEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
         newEdgeTool.setName("Create Edge");
@@ -324,7 +339,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
+        boolean qualify = childFeature == ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL
+                || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE
+                || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
             return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });

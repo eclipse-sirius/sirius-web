@@ -256,4 +256,50 @@ public interface EdgeDescription extends DiagramElementDescription {
      */
     void setPreconditionExpression(String value);
 
+    /**
+     * Returns the value of the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Begin Label Edit Tool</em>' containment reference.
+     * @see #setBeginLabelEditTool(LabelEditTool)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_BeginLabelEditTool()
+     * @model containment="true"
+     * @generated
+     */
+    LabelEditTool getBeginLabelEditTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelEditTool <em>Begin
+     * Label Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Begin Label Edit Tool</em>' containment reference.
+     * @see #getBeginLabelEditTool()
+     * @generated
+     */
+    void setBeginLabelEditTool(LabelEditTool value);
+
+    /**
+     * Returns the value of the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>End Label Edit Tool</em>' containment reference.
+     * @see #setEndLabelEditTool(LabelEditTool)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_EndLabelEditTool()
+     * @model containment="true"
+     * @generated
+     */
+    LabelEditTool getEndLabelEditTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelEditTool <em>End
+     * Label Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>End Label Edit Tool</em>' containment reference.
+     * @see #getEndLabelEditTool()
+     * @generated
+     */
+    void setEndLabelEditTool(LabelEditTool value);
+
 } // EdgeDescription

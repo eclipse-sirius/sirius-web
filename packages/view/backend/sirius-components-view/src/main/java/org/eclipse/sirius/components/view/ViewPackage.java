@@ -686,13 +686,31 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
+     * The feature id for the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+
+    /**
+     * The feature id for the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+
+    /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6677,6 +6695,30 @@ public interface ViewPackage extends EPackage {
     EAttribute getEdgeDescription_PreconditionExpression();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelEditTool <em>Begin Label Edit
+     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Begin Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelEditTool()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_BeginLabelEditTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelEditTool <em>End Label Edit Tool</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>End Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgeDescription#getEndLabelEditTool()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_EndLabelEditTool();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9428,6 +9470,22 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getEdgeDescription_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Begin Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL = eINSTANCE.getEdgeDescription_BeginLabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>End Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL = eINSTANCE.getEdgeDescription_EndLabelEditTool();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LabelStyleImpl <em>Label

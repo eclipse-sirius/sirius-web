@@ -128,7 +128,7 @@ public class AbstractNodeMappingConverter {
 
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(abstractNodeMapping.getDeletionDescription());
-        var labelEditHandler = toolConverter.createDirectEditToolHandler(abstractNodeMapping.getLabelDirectEdit());
+        var labelEditHandler = toolConverter.createNodeDirectEditToolHandler(abstractNodeMapping.getLabelDirectEdit());
 
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
         if (!abstractNodeMapping.isCreateElements()) {

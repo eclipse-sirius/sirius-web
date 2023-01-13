@@ -269,7 +269,7 @@ public class DiagramRendererEdgeTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .styleProvider(edgeStyleProvider)
                 .deleteHandler(variableManager -> new Failure(""))
-                .labelEditHandler((variableManager, newLabel) -> new Failure(""))
+                .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Failure(""))
                 .build();
         // @formatter:on
     }
