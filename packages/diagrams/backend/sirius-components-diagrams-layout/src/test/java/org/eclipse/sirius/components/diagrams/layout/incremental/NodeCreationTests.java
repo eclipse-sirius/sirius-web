@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchP
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
@@ -119,8 +120,8 @@ public class NodeCreationTests {
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram("Root")
                 .nodes()
-                    .rectangleNode("A").at(10, 10).of(200, 300).and()
-                    .rectangleNode("B").at(500, 500).of(200, 300).and()
+                    .rectangleNode("A").at(10, 10).of(200, 300).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                    .rectangleNode("B").at(500, 500).of(200, 300).customizedProperties(Set.of(CustomizableProperties.Size)).and()
                 .and()
             .build();
         // @formatter:on
@@ -198,12 +199,13 @@ public class NodeCreationTests {
      * @return its default position
      */
     private Position getDefaultPosition(Node parent, Node child) {
-        double defaultLabelPadding = 2 * LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
+        double defaultLabelPadding = LayoutOptionValues.DEFAULT_ELK_NODE_LABELS_PADDING;
         double defaultYPosition = LayoutOptionValues.DEFAULT_ELK_PADDING;
         double labelPaddings = 0;
         if (this.isLabelOfType(parent, "inside")) {
+            // We consider here the label is also on TOP of the node
             double parentLabelHeight = parent.getLabel().getSize().getHeight();
-            labelPaddings += parentLabelHeight + defaultLabelPadding;
+            labelPaddings += defaultLabelPadding + parentLabelHeight + defaultYPosition;
         }
         if (this.isLabelOfType(child, "outside")) {
             double nodeLabelHeight = child.getLabel().getSize().getHeight();
@@ -274,10 +276,12 @@ public class NodeCreationTests {
             }
         };
 
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
-        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
+        ImageNodeStyleSizeProvider imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(imageSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
         LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(), new LayoutConfiguratorRegistry(List.of()),
                 new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);

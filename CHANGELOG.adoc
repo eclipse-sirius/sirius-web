@@ -44,6 +44,7 @@ The scheduling policy of our various `IRepresentationEventProcessor` will thus b
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17
 - [backend] Switch to EMFJson 2.3.4
+- https://github.com/eclipse-sirius/sirius-components/issues/1496[#1496] [layout] Switch to ELK 0.8.1
 
 === Bug fixes
 
@@ -56,19 +57,23 @@ https://github.com/eclipse-sirius/sirius-components/issues/1580[#1580] [diagram]
 - https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [diagram] Add the ability to filter the edge created using some graphical variables
 - https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [view] Add a precondition expression to the edge description
 - https://github.com/eclipse-sirius/sirius-components/issues/1463[#1463] [diagram] Add support for the direct edit of the start and end labels of an edge. Two new tools can be defined on an edge in order to specify how the begin and end labels can be edited.
-
++
 image:doc/images/View_edit_begin_and_end_labels.png[width=491,height=285]
-
++
 For each of those tools, `Edit Begin Label` and `Edit End Label` in the previous screenshot, the specifier can also enter an `Initial Direct Edit Label Expression` which will be used to compute the initial value of the label when the edition will be triggered.
 This is mostly used to support the edition of computed labels.
 The variables `semanticEdgeSource` and `semanticEdgeTarget` are now available both in the `Initial Direct Edit Label Expression` and while evaluating the behavior of the tools themselves.
-
++
 image:doc/images/View_edit_begin_label_initial_expression.png[width=522,height=224]
-
++
 In order to edit a begin or end label of an edge, it is necessary to double click on said label.
 Using `F2`` will trigger the edition of the center label of the edge.
-
++
 image:doc/images/View_edit_begin_label_in_action.png[width=550,height=234]
+- https://github.com/eclipse-sirius/sirius-components/issues/1496[#1496] [layout] Add the support for free form compartment.
++
+image:doc/images/Free_form_layout_in_a_list_layout.png[A node with three free form compartment]
+
 
 === Improvements
 

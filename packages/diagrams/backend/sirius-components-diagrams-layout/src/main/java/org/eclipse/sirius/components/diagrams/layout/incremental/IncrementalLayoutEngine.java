@@ -12,18 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.DoublePositionEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
@@ -32,7 +26,6 @@ import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.events.UpdateEdgeRoutingPointsEvent;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
-import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -40,10 +33,7 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.ILayoutDat
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.EdgeLabelPositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.EdgeRoutingPointsProvider;
-import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
-import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelPositionProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePositionProvider;
-import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.updater.ContainmentUpdater;
 import org.eclipse.sirius.components.diagrams.layout.incremental.updater.OverlapsUpdater;
 import org.springframework.stereotype.Service;
@@ -65,32 +55,19 @@ public class IncrementalLayoutEngine {
      */
     public static final double NODES_GAP = 30;
 
-    private NodeLabelPositionProvider nodeLabelPositionProvider;
-
     private final EdgeRoutingPointsProvider edgeRoutingPointsProvider = new EdgeRoutingPointsProvider();
 
     private EdgeLabelPositionProvider edgeLabelPositionProvider;
 
     private final NodePositionProvider nodePositionProvider = new NodePositionProvider();
 
-    private final NodeSizeProvider nodeSizeProvider;
-
-    private final List<ICustomNodeLabelPositionProvider> customLabelPositionProviders;
-
     private final ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider;
 
-    private final IBorderNodeLayoutEngine borderNodeLayoutEngine;
-
-    public IncrementalLayoutEngine(NodeSizeProvider nodeSizeProvider, List<ICustomNodeLabelPositionProvider> customLabelPositionProviders,
-            ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider, IBorderNodeLayoutEngine borderNodeLayoutEngine) {
+    public IncrementalLayoutEngine(ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider) {
         this.layoutEngineHandlerSwitchProvider = Objects.requireNonNull(layoutEngineHandlerSwitchProvider);
-        this.nodeSizeProvider = Objects.requireNonNull(nodeSizeProvider);
-        this.customLabelPositionProviders = Objects.requireNonNull(customLabelPositionProviders);
-        this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
     }
 
     public void layout(Optional<IDiagramEvent> optionalDiagramElementEvent, IncrementalLayoutConvertedDiagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        this.nodeLabelPositionProvider = new NodeLabelPositionProvider(layoutConfigurator);
         this.edgeLabelPositionProvider = new EdgeLabelPositionProvider(layoutConfigurator);
         DiagramLayoutData diagramLayoutData = diagram.getDiagramLayoutData();
         Optional<Position> optionalDelta = this.getDeltaFromMoveEvent(optionalDiagramElementEvent, diagram);
@@ -120,11 +97,10 @@ public class IncrementalLayoutEngine {
         return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
                 .map(MoveEvent.class::cast)
                 .map(moveEvent -> {
-                    ILayoutData iLayoutData = id2LayoutData.get(moveEvent.getNodeId());
-                    if (iLayoutData instanceof NodeLayoutData) {
-                        NodeLayoutData nodeLayoutData = (NodeLayoutData) iLayoutData;
+                    ILayoutData iLayoutData = id2LayoutData.get(moveEvent.nodeId());
+                    if (iLayoutData instanceof NodeLayoutData nodeLayoutData) {
                         Position fromPosition = nodeLayoutData.getPosition();
-                        Position toPosition = moveEvent.getNewPosition();
+                        Position toPosition = moveEvent.newPosition();
                         return Position.at(toPosition.getX() - fromPosition.getX(), toPosition.getY() - fromPosition.getY());
                     }
                     return null;
@@ -183,94 +159,16 @@ public class IncrementalLayoutEngine {
     }
 
     private void layoutNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
-
         var optionalNodeIncrementalLayoutEngine = this.layoutEngineHandlerSwitchProvider.getLayoutEngineHandlerSwitch().apply(node.getNodeType());
-
-        if (optionalNodeIncrementalLayoutEngine.isPresent() && node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+        if (optionalNodeIncrementalLayoutEngine.isPresent()) {
             var nodeIncrementalLayoutEngine = optionalNodeIncrementalLayoutEngine.get();
-            NodeLayoutData layoutedNode = nodeIncrementalLayoutEngine.layout(optionalDiagramElementEvent, node, layoutConfigurator);
-
-            // recompute the node position
-            Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, layoutedNode);
-            if (!position.equals(layoutedNode.getPosition())) {
-                layoutedNode.setPosition(position);
-                layoutedNode.setChanged(true);
-                layoutedNode.setPinned(true);
+            NodeLayoutData laidOutNode = nodeIncrementalLayoutEngine.layout(optionalDiagramElementEvent, node, layoutConfigurator, Optional.empty());
+            Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, laidOutNode);
+            if (!position.equals(laidOutNode.getPosition())) {
+                laidOutNode.setPosition(position);
+                laidOutNode.setChanged(true);
+                laidOutNode.setPinned(true);
             }
-
-        } else {
-            for (NodeLayoutData childNode : node.getChildrenNodes()) {
-                if (NodeType.NODE_ICON_LABEL.equals(childNode.getNodeType())) {
-                    this.layoutIconLabelNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
-                } else {
-                    this.layoutNode(optionalDiagramElementEvent, childNode, layoutConfigurator);
-                }
-            }
-
-            // compute the node size according to what has been done in the previous steps
-            Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);
-            if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
-                node.setSize(size);
-                node.setChanged(true);
-            }
-            // recompute the node position
-            Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, node);
-            if (!position.equals(node.getPosition())) {
-                node.setPosition(position);
-                node.setChanged(true);
-                node.setPinned(true);
-            }
-
-            // resolve overlaps due to previous changes
-            new OverlapsUpdater().update(node);
-
-            // resize / change position according to the content
-            new ContainmentUpdater().update(node);
-
-            // update the border node once the current node bounds are updated
-            Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
-            List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds,
-                    layoutConfigurator);
-
-            // recompute the label
-            if (node.getLabel() != null) {
-                // @formatter:off
-                Position nodeLabelPosition = this.customLabelPositionProviders.stream()
-                        .map(customLabelPositionProvider -> customLabelPositionProvider.getLabelPosition(layoutConfigurator, node.getLabel().getTextBounds().getSize(), node.getSize(),
-                                node.getNodeType(), node.getStyle()))
-                        .flatMap(Optional::stream)
-                        .findFirst()
-                        .orElseGet(() -> this.nodeLabelPositionProvider.getPosition(node, node.getLabel(), borderNodesOnSide));
-                // @formatter:on
-                node.getLabel().setPosition(nodeLabelPosition);
-            }
-        }
-    }
-
-    private void layoutIconLabelNode(Optional<IDiagramEvent> optionalDiagramElementEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        Bounds initialNodeBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
-
-        Size size = this.nodeSizeProvider.getSize(optionalDiagramElementEvent, node, layoutConfigurator);
-        if (!this.getRoundedSize(size).equals(this.getRoundedSize(node.getSize()))) {
-            node.setSize(size);
-            node.setChanged(true);
-        }
-
-        Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, node);
-        if (!position.equals(node.getPosition())) {
-            node.setPosition(position);
-            node.setChanged(true);
-            node.setPinned(true);
-        }
-
-        // update the border node once the current node bounds are updated
-        Bounds newBounds = Bounds.newBounds().position(node.getPosition()).size(node.getSize()).build();
-        List<BorderNodesOnSide> borderNodesOnSide = this.borderNodeLayoutEngine.layoutBorderNodes(optionalDiagramElementEvent, node.getBorderNodes(), initialNodeBounds, newBounds, layoutConfigurator);
-
-        // recompute the label
-        if (node.getLabel() != null) {
-            node.getLabel().setPosition(this.nodeLabelPositionProvider.getPosition(node, node.getLabel(), borderNodesOnSide));
         }
     }
 
@@ -336,24 +234,10 @@ public class IncrementalLayoutEngine {
             result = true;
         } else {
             IContainerLayoutData parent = node.getParent();
-            if (parent instanceof NodeLayoutData) {
-                result = this.hasChanged((NodeLayoutData) parent);
+            if (parent instanceof NodeLayoutData parentLayoutData) {
+                result = this.hasChanged(parentLayoutData);
             }
         }
         return result;
-    }
-
-    /**
-     * Round size to 1/1000 of a pixel. It is needed when an image has a width or height with a very big decimal part
-     * (e.g: 140.0004672837)
-     *
-     * @param size
-     *            the {@link Size} to round.
-     * @return the rounded size.
-     */
-    private Size getRoundedSize(Size size) {
-        BigDecimal roundedWidth = BigDecimal.valueOf(size.getWidth()).setScale(4, RoundingMode.HALF_UP);
-        BigDecimal roundedHeight = BigDecimal.valueOf(size.getHeight()).setScale(4, RoundingMode.HALF_UP);
-        return Size.of(roundedWidth.doubleValue(), roundedHeight.doubleValue());
     }
 }

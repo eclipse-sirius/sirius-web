@@ -74,8 +74,8 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        if (diagramInput instanceof UpdateNodeBoundsInput) {
-            this.handleUpdateNodeBounds(payloadSink, changeDescriptionSink, diagramContext, (UpdateNodeBoundsInput) diagramInput);
+        if (diagramInput instanceof UpdateNodeBoundsInput updateNodeBoundsInput) {
+            this.handleUpdateNodeBounds(payloadSink, changeDescriptionSink, diagramContext, updateNodeBoundsInput);
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), UpdateNodeBoundsEventHandler.class.getSimpleName());
             payloadSink.tryEmitValue(new ErrorPayload(diagramInput.id(), message));

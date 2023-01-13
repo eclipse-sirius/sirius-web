@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy;
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.alg.layered.options.LayeringStrategy;
 import org.eclipse.elk.alg.layered.options.OrderingStrategy;
@@ -93,6 +94,8 @@ public class LayoutConfiguratorRegistry {
         configurator.configureByType(ELKDiagramConverter.DEFAULT_DIAGRAM_TYPE)
                 .setProperty(CoreOptions.ALGORITHM, LayeredOptions.ALGORITHM_ID)
                 .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
+                .setProperty(LayeredOptions.CONSIDER_MODEL_ORDER_STRATEGY, OrderingStrategy.NODES_AND_EDGES)
+                .setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
                 .setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
                 .setProperty(LayeredOptions.SPACING_LABEL_NODE, SPACING_LABEL_NODE)
                 .setProperty(LayeredOptions.SPACING_NODE_NODE, SPACING_NODE_NODE)
@@ -101,6 +104,7 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(LayeredOptions.SPACING_EDGE_NODE_BETWEEN_LAYERS, SPACING_NODE_EDGE);
 
         configurator.configureByType(NodeType.NODE_RECTANGLE)
+                .setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.NONE)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.NODE_LABELS))
                 .setProperty(CoreOptions.NODE_SIZE_MINIMUM, new KVector(MIN_WIDTH_CONSTRAINT, MIN_HEIGHT_CONSTRAINT))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
@@ -108,6 +112,7 @@ public class LayoutConfiguratorRegistry {
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         configurator.configureByType(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE)
+                .setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.NONE)
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideTopCenter())
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
@@ -120,16 +125,19 @@ public class LayoutConfiguratorRegistry {
         IndividualSpacings iconLabelIndividualSpacing = new IndividualSpacings();
         iconLabelIndividualSpacing.setProperty(CoreOptions.NODE_LABELS_PADDING, new ElkPadding(0, 5, 0, 5));
         configurator.configureByType(NodeType.NODE_ICON_LABEL)
+                .setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.NONE)
                 .setProperty(CoreOptions.SPACING_INDIVIDUAL, iconLabelIndividualSpacing)
                 .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.NODE_LABELS))
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, EnumSet.of(NodeLabelPlacement.INSIDE, NodeLabelPlacement.V_CENTER, NodeLabelPlacement.H_LEFT));
 
         configurator.configureByType(NodeType.NODE_IMAGE)
-                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS))
+                .setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.NONE)
+                .setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, EnumSet.of(SizeConstraint.MINIMUM_SIZE, SizeConstraint.PORT_LABELS, SizeConstraint.PORTS, SizeConstraint.NODE_LABELS))
                 .setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.outsideTopCenter())
                 .setProperty(CoreOptions.NODE_SIZE_OPTIONS, EnumSet.of(SizeOptions.ASYMMETRICAL))
                 .setProperty(CoreOptions.PORT_BORDER_OFFSET, DEFAULT_PORT_BORDER_OFFSET)
+                .setProperty(CoreOptions.PADDING, new ElkPadding(0))
                 .setProperty(CoreOptions.PORT_LABELS_PLACEMENT, PortLabelPlacement.outside());
 
         // This image type does not match any diagram item. We add it to define the image size as constraint for the node image parent.
@@ -138,7 +146,6 @@ public class LayoutConfiguratorRegistry {
 
         configurator.configureByChildrenLayoutStrategy(ListLayoutStrategy.class)
                 .setProperty(CoreOptions.HIERARCHY_HANDLING, HierarchyHandling.INCLUDE_CHILDREN)
-                .setProperty(LayeredOptions.CONSIDER_MODEL_ORDER, OrderingStrategy.NODES_AND_EDGES)
                 .setProperty(CoreOptions.PADDING, new ElkPadding(5, 0, 0, 0))
                 .setProperty(CoreOptions.SPACING_NODE_NODE, 0d);
 

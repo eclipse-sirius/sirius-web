@@ -72,7 +72,7 @@ public class EdgeRoutingPointsProvider {
         // @formatter:off
         return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
                 .map(MoveEvent.class::cast)
-                .map(MoveEvent::getNodeId)
+                .map(MoveEvent::nodeId)
                 .filter(node.getId()::equals)
                 .isPresent();
         // @formatter:on
@@ -102,7 +102,7 @@ public class EdgeRoutingPointsProvider {
         // @formatter:off
         return optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
                 .map(MoveEvent.class::cast)
-                .map(MoveEvent::getNodeId)
+                .map(MoveEvent::nodeId)
                 .filter(nodeId -> this.isContainedIn(node, nodeId))
                 .isPresent();
         // @formatter:on

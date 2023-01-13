@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.services.DefaultTestDiagramDescriptionProvider;
@@ -67,21 +68,21 @@ public class NodeResizeTests {
     @Test
     public void testDownsizeFromNE() {
         Position positionDelta = Position.at(0, -100);
-        Size newSize = Size.of(100, 200);
+        Size newSize = Size.of(150, 200);
         this.testResizeNode(positionDelta, Position.at(100, 200), newSize);
     }
 
     @Test
     public void testDownsizeFromE() {
         Position positionDelta = Position.at(0, 0);
-        Size newSize = Size.of(100, 300);
+        Size newSize = Size.of(150, 300);
         this.testResizeNode(positionDelta, Position.at(100, 100), newSize);
     }
 
     @Test
     public void testDownsizeFromSE() {
         Position positionDelta = Position.at(0, 0);
-        Size newSize = Size.of(100, 200);
+        Size newSize = Size.of(150, 200);
         this.testResizeNode(positionDelta, Position.at(100, 100), newSize);
     }
 
@@ -95,21 +96,21 @@ public class NodeResizeTests {
     @Test
     public void testDownsizeFromSW() {
         Position positionDelta = Position.at(-100, 0);
-        Size newSize = Size.of(100, 200);
+        Size newSize = Size.of(150, 200);
         this.testResizeNode(positionDelta, Position.at(200, 100), newSize);
     }
 
     @Test
     public void testDownsizeFromW() {
         Position positionDelta = Position.at(-100, 0);
-        Size newSize = Size.of(100, 300);
+        Size newSize = Size.of(150, 300);
         this.testResizeNode(positionDelta, Position.at(200, 100), newSize);
     }
 
     @Test
     public void testDownsizeFromNW() {
         Position positionDelta = Position.at(-100, -100);
-        Size newSize = Size.of(100, 200);
+        Size newSize = Size.of(150, 200);
         this.testResizeNode(positionDelta, Position.at(200, 200), newSize);
     }
 
@@ -221,10 +222,12 @@ public class NodeResizeTests {
             }
         };
 
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
-        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
+        ImageNodeStyleSizeProvider imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(imageSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
         LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(), new LayoutConfiguratorRegistry(List.of()),
                 new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);

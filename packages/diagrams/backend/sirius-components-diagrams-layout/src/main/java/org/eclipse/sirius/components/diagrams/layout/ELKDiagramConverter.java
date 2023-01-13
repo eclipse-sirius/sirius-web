@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,8 +124,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
         }
 
-        if (node.getStyle() instanceof ImageNodeStyle) {
-            ImageNodeStyle imageNodeStyle = (ImageNodeStyle) node.getStyle();
+        if (node.getStyle() instanceof ImageNodeStyle imageNodeStyle) {
 
             ElkNode elkImage = ElkGraphFactory.eINSTANCE.createElkNode();
             elkImage.setIdentifier(node.getId() + "_image");
@@ -138,8 +137,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         }
 
         boolean hasHeader = false;
-        if (node.getStyle() instanceof RectangularNodeStyle) {
-            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) node.getStyle();
+        if (node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle) {
             hasHeader = rectangularNodeStyle.isWithHeader();
         }
 
@@ -171,14 +169,13 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
 
-        if (borderNode.getStyle() instanceof ImageNodeStyle) {
-            Size imageSize = this.imageNodeStyleSizeProvider.getSize((ImageNodeStyle) borderNode.getStyle());
+        if (borderNode.getStyle() instanceof ImageNodeStyle imageNodeStyle) {
+            Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
             elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
         }
 
         boolean hasHeader = false;
-        if (borderNode.getStyle() instanceof RectangularNodeStyle) {
-            RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) borderNode.getStyle();
+        if (borderNode.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle) {
             hasHeader = rectangularNodeStyle.isWithHeader();
         }
 

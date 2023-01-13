@@ -105,7 +105,7 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
         boolean isParentRectangleResized = optionalDiagramElementEvent
             .filter(ResizeEvent.class::isInstance)
             .map(ResizeEvent.class::cast)
-            .map(ResizeEvent::getNodeId)
+            .map(ResizeEvent::nodeId)
             .filter(parentId::equals)
             .isPresent();
         // @formatter:on
@@ -145,7 +145,7 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
         // @formatter:off
         optionalDiagramElementEvent.filter(MoveEvent.class::isInstance)
             .map(MoveEvent.class::cast)
-            .map(MoveEvent::getNodeId)
+            .map(MoveEvent::nodeId)
             .filter(nodeLayoutData.getId()::equals)
             .ifPresent(nodeId  -> {
                 Position position = this.nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);

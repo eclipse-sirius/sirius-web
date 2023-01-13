@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,14 +36,14 @@ public class BorderNodeLabelPositionProvider {
             boolean isBorderNodeMoved = optionalDiagramElementEvent
                     .filter(MoveEvent.class::isInstance)
                     .map(MoveEvent.class::cast)
-                    .map(MoveEvent::getNodeId)
+                    .map(MoveEvent::nodeId)
                     .filter(borderNodeLayoutData.getId()::equals)
                     .isPresent();
 
             boolean isBorderNodeResized = optionalDiagramElementEvent
                     .filter(ResizeEvent.class::isInstance)
                     .map(ResizeEvent.class::cast)
-                    .map(ResizeEvent::getNodeId)
+                    .map(ResizeEvent::nodeId)
                     .filter(borderNodeLayoutData.getId()::equals)
                     .isPresent();
             // @formatter:on

@@ -17,9 +17,11 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramAssertions.ass
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -32,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.services.DefaultTestDiagramDescriptionProvider;
@@ -61,10 +64,10 @@ public class NodeMoveTests {
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram("Root")
             .nodes()
-                .rectangleNode("Parent").at(100, 100).of(500, 500)
+                .rectangleNode("Parent").at(100, 100).of(500, 500).customizedProperties(Set.of(CustomizableProperties.Size))
                     .childNodes(new FreeFormLayoutStrategy())
-                        .rectangleNode("First Child").at(100, 100).of(100, 100).and()
-                        .rectangleNode("Second Child").at(300, 300).of(100, 100).and()
+                        .rectangleNode("First Child").at(100, 100).of(150, 150).customizedProperties(Set.of(CustomizableProperties.Size)).and()
+                        .rectangleNode("Second Child").at(300, 300).of(150, 150).customizedProperties(Set.of(CustomizableProperties.Size)).and()
                     .and()
                 .and()
             .and()
@@ -89,10 +92,10 @@ public class NodeMoveTests {
 
         assertThat(parentNode.getChildNodes()).hasSize(2);
         Node firstChildNode = parentNode.getChildNodes().get(0);
-        assertThat(firstChildNode).hasBounds(100, 100, 100, 100);
+        assertThat(firstChildNode).hasBounds(100, 100, 150, 150);
 
         Node secondChildNode = parentNode.getChildNodes().get(1);
-        assertThat(secondChildNode).hasBounds(300, 300, 100, 100);
+        assertThat(secondChildNode).hasBounds(300, 300, 150, 150);
 
         assertThat(layoutedDiagram.getEdges()).hasSize(1);
         Edge edge = layoutedDiagram.getEdges().get(0);
@@ -108,10 +111,12 @@ public class NodeMoveTests {
             }
         };
 
-        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(imageSizeProvider);
         BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
-        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
-        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
+        ImageNodeStyleSizeProvider imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(imageSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
         LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(), new LayoutConfiguratorRegistry(List.of()),
                 new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);

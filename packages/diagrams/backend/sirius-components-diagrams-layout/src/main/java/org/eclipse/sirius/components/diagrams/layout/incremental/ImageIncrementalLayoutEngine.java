@@ -23,6 +23,7 @@ import java.util.Set;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
+import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -30,20 +31,20 @@ import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
-import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.ChildLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.ChildrenAreaLaidOutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelPositionProvider;
 
 /**
- * The incremental layout engine to layout rectangle nodes.
+ * The incremental layout engine to layout image nodes.
  *
  * @author gcoutable
  */
-public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutEngine {
+public class ImageIncrementalLayoutEngine implements INodeIncrementalLayoutEngine {
 
     private final ChildLayoutStrategyEngineHandler childLayoutStrategyEngineHandler;
 
@@ -51,11 +52,14 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
 
     private final List<ICustomNodeLabelPositionProvider> customLabelPositionProviders;
 
-    public RectangleIncrementalLayoutEngine(ChildLayoutStrategyEngineHandler childLayoutStrategyEngineHandler, IBorderNodeLayoutEngine borderNodeLayoutEngine,
-            List<ICustomNodeLabelPositionProvider> customLabelPositionProviders) {
+    private final ImageNodeStyleSizeProvider imageNodeStyleSizeProvider;
+
+    public ImageIncrementalLayoutEngine(ChildLayoutStrategyEngineHandler childLayoutStrategyEngineHandler, IBorderNodeLayoutEngine borderNodeLayoutEngine,
+            List<ICustomNodeLabelPositionProvider> customLabelPositionProviders, ImageNodeStyleSizeProvider imageNodeStyleSizeProvider) {
         this.childLayoutStrategyEngineHandler = Objects.requireNonNull(childLayoutStrategyEngineHandler);
         this.borderNodeLayoutEngine = Objects.requireNonNull(borderNodeLayoutEngine);
         this.customLabelPositionProviders = Objects.requireNonNull(customLabelPositionProviders);
+        this.imageNodeStyleSizeProvider = Objects.requireNonNull(imageNodeStyleSizeProvider);
     }
 
     @Override
@@ -300,7 +304,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     private double getNodeMinimalWidthConsideringChildren(NodeContext nodeContext, double childrenAreaWidth) {
-        double newNodeWidth = LayoutOptionValues.MIN_WIDTH_CONSTRAINT;
+        double newNodeWidth = this.imageNodeStyleSizeProvider.getSize((ImageNodeStyle) nodeContext.getNode().getStyle()).getWidth();
         if (nodeContext.isMinimumSizeConstrained()) {
             KVector minSize = nodeContext.getNodeProperty(CoreOptions.NODE_SIZE_MINIMUM);
             newNodeWidth = Math.max(newNodeWidth, minSize.x);
@@ -308,8 +312,8 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
 
         double labelOnlyWidth = 0;
         double labelAndChildrenWidth = 0;
-        Set<NodeLabelPlacement> labelPlacements = nodeContext.getLabelPlacements();
         double labelWidth = 0;
+        Set<NodeLabelPlacement> labelPlacements = nodeContext.getLabelPlacements();
         if (nodeContext.hasLabel() && nodeContext.isNodeLabelInside()) {
             labelWidth = nodeContext.getNode().getLabel().getTextBounds().getSize().getWidth();
         }
@@ -339,7 +343,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     private double getNodeMinimalHeightConsideringChildren(NodeContext nodeContext, double childrenAreaHeight) {
-        double newNodeHeight = LayoutOptionValues.MIN_HEIGHT_CONSTRAINT;
+        double newNodeHeight = this.imageNodeStyleSizeProvider.getSize((ImageNodeStyle) nodeContext.getNode().getStyle()).getHeight();
         if (nodeContext.isMinimumSizeConstrained()) {
             KVector minSize = nodeContext.getNodeProperty(CoreOptions.NODE_SIZE_MINIMUM);
             newNodeHeight = Math.max(newNodeHeight, minSize.y);
@@ -461,4 +465,5 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
         BigDecimal roundedHeight = BigDecimal.valueOf(size.getHeight()).setScale(4, RoundingMode.HALF_UP);
         return Size.of(roundedWidth.doubleValue(), roundedHeight.doubleValue());
     }
+
 }

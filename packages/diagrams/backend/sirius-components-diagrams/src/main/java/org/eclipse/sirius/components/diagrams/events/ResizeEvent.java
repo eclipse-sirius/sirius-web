@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,40 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.events;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 
 /**
  * Represent an immutable resize event.
  *
+ * <p>
+ * It can be created thanks to an user action, or it can be created internally when a node being resized lays out its
+ * children as a list. Each child will have to handle its own resize event. When the event is created thanks to a user
+ * action, it will be marked as such. When the node is created internally for a layout purpose, it will not be marked as
+ * created by user.
+ * </p>
+ *
  * @author fbarbin
  */
-public class ResizeEvent implements IDiagramEvent {
 
-    private final String nodeId;
-
-    private final Position positionDelta;
-
-    private final Size newSize;
-
-    public ResizeEvent(String nodeId, Position positionDelta, Size newSize) {
-        this.nodeId = Objects.requireNonNull(nodeId);
-        this.positionDelta = Objects.requireNonNull(positionDelta);
-        this.newSize = Objects.requireNonNull(newSize);
-    }
-
-    public String getNodeId() {
-        return this.nodeId;
-    }
-
-    public Position getPositionDelta() {
-        return this.positionDelta;
-    }
-
-    public Size getNewSize() {
-        return this.newSize;
-    }
-
+public record ResizeEvent(String nodeId, Position positionDelta, Size newSize) implements IDiagramEvent {
 }

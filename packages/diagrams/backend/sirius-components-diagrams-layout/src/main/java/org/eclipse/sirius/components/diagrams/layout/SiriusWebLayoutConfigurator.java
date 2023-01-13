@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,8 +81,8 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
 
     @Override
     public LayoutConfigurator overrideWith(LayoutConfigurator other) {
-        if (other instanceof SiriusWebLayoutConfigurator) {
-            return this.overrideWith((SiriusWebLayoutConfigurator) other);
+        if (other instanceof SiriusWebLayoutConfigurator siriusWebLayoutConfigurator) {
+            return this.overrideWith(siriusWebLayoutConfigurator);
         } else {
             return super.overrideWith(other);
         }
@@ -171,8 +171,7 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
      */
     private void updateElkPadding(ElkNode elkNode, Node node) {
         INodeStyle nodeStyle = node.getStyle();
-        if (nodeStyle instanceof RectangularNodeStyle) {
-            RectangularNodeStyle style = (RectangularNodeStyle) nodeStyle;
+        if (nodeStyle instanceof RectangularNodeStyle style) {
             if (style.isWithHeader()) {
                 // We are supposing that rectangular node label is positioned on top center of the node, which could not
                 // be always right

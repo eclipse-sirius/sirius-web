@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout.incremental;
 
-import java.util.Optional;
-
-import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
-import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layout.incremental.data.ChildrenAreaLaidOutData;
 
 /**
  * Implementation of this interface will lay out the children of a node.
@@ -27,38 +23,14 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayout
 public interface ILayoutStrategyEngine {
 
     /**
-     * Lays out the given node children's and returns the size of the area children needed to be laid out correctly.
+     * Returns the children area layout data that should be used by the node to positions its children and calculates
+     * its size.
      *
-     * <p>
-     * NOTE: The parent node will translate its children to put them in the intended area.
-     * </p>
-     *
-     * @param optionalDiagramEvent
-     *            The optional diagram event
-     * @param node
-     *            The node whose children will be laid out
+     * @param childrenAreaLayoutContext
+     *            The context used to get the children area layout data
      * @param layoutConfigurator
      *            the layout configurator
-     * @return The size of the area children needed to be laid out correctly
+     * @return The children area laid out data to use to update the parent node
      */
-    Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator);
-
-    /**
-     * Lays out the given node children's and returns the size of the area children needed to be laid out correctly.
-     *
-     * <p>
-     * NOTE: The parent node will translate its children to put them in the intended area.
-     * </p>
-     *
-     * @param optionalDiagramEvent
-     *            The optional diagram event
-     * @param node
-     *            The node whose children will be laid out
-     * @param layoutConfigurator
-     *            the layout configurator
-     * @param width
-     *            The width children have to do their layout
-     * @return The size of the area children needed to be laid out correctly
-     */
-    Size layoutChildren(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData node, ISiriusWebLayoutConfigurator layoutConfigurator, double width);
+    ChildrenAreaLaidOutData layoutChildrenArea(ChildrenAreaLayoutContext childrenAreaLayoutContext, ISiriusWebLayoutConfigurator layoutConfigurator);
 }
