@@ -17,6 +17,10 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17
 - [backend] Switch to EMFJson 2.3.4
 
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1374[#1374] [layout] The border node position is now updated when its parents bounds has changed (e.g. when a node increases its size because of a child creation).
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1567[#1567] [project] Add support for project templates

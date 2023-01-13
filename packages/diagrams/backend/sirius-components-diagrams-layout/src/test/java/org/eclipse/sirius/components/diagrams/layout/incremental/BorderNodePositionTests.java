@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2022, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.diagrams.layout.incremental;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import java.util.UUID;
 
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -145,14 +148,14 @@ public class BorderNodePositionTests {
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
 
         // move slightly the north border node so that the incremental layout updates the label position
-        Optional<IDiagramEvent> resizeEvent = Optional.of(new MoveEvent(northBorderNode.getId(), Position.at(northBorderNode.getPosition().getX() + 1, northBorderNode.getPosition().getY())));
-        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        Optional<IDiagramEvent> moveEvent = Optional.of(new MoveEvent(northBorderNode.getId(), Position.at(northBorderNode.getPosition().getX() + 1, northBorderNode.getPosition().getY())));
+        incrementalLayoutEngine.layout(moveEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(northBorderNode.getLabel(), Position.at(-100, -BORDER_NODE_LABEL_TEXT_BOUNDS.getSize().getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
 
         // move slightly the east border node so that the incremental layout updates the label position
-        resizeEvent = Optional.of(new MoveEvent(eastBorderNode.getId(), Position.at(eastBorderNode.getPosition().getX() + 1, eastBorderNode.getPosition().getY())));
-        incrementalLayoutEngine.layout(resizeEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+        moveEvent = Optional.of(new MoveEvent(eastBorderNode.getId(), Position.at(eastBorderNode.getPosition().getX() + 1, eastBorderNode.getPosition().getY())));
+        incrementalLayoutEngine.layout(moveEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
         this.checkBorderNodeLabel(eastBorderNode.getLabel(), Position.at(DEFAULT_BORDER_NODE_SIZE.getWidth(), DEFAULT_BORDER_NODE_SIZE.getHeight()), BORDER_NODE_LABEL_TEXT_BOUNDS);
     }
 
@@ -165,6 +168,41 @@ public class BorderNodePositionTests {
         assertThat(borderNodes.get(5).getPosition()).isEqualTo(Position.at(88, 92));
         assertThat(borderNodes.get(6).getPosition()).isEqualTo(Position.at(-16, 40));
         assertThat(borderNodes.get(7).getPosition()).isEqualTo(Position.at(-16, -10));
+    }
+
+    @Test
+    public void testUpdateBorderNodePositionOnParentResizeDueToChildCreation() {
+        IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
+        DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
+        NodeLayoutData parentNode = initializeDiagram.getChildrenNodes().get(0);
+        parentNode.setResizedByUser(true);
+        parentNode.setChildrenLayoutStrategy(new FreeFormLayoutStrategy());
+        List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
+
+        NodeSizeProvider nodeSizeProvider = new NodeSizeProvider(new ImageSizeProvider());
+        BorderNodeLayoutEngine borderNodeLayoutEngine = new BorderNodeLayoutEngine(nodeSizeProvider);
+        ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of());
+        IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(nodeSizeProvider, List.of(), layoutEngineHandlerSwitchProvider, borderNodeLayoutEngine);
+
+        NodeLayoutData newChildLayoutData = this.createNodeLayoutData(Position.UNDEFINED, Size.UNDEFINED, parentNode, NodeType.NODE_RECTANGLE);
+        // The height 118 is the right height to prevent the parent node decrease its height
+        SinglePositionEvent singlePositionEvent = new SinglePositionEvent(Position.at(200, 118));
+        incrementalLayoutEngine.layout(Optional.of(singlePositionEvent), incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
+
+        assertThat(newChildLayoutData.getPosition()).isEqualTo(Position.at(100, 18));
+        assertThat(newChildLayoutData.getSize()).isEqualTo(Size.of(150, 70));
+        this.checkBorderNodesAfterParentResizeDueToChildCreation(borderNodes);
+    }
+
+    private void checkBorderNodesAfterParentResizeDueToChildCreation(List<NodeLayoutData> borderNodes) {
+        assertThat(this.getRoundedPosition(borderNodes.get(0).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(40.4, -12)));
+        assertThat(this.getRoundedPosition(borderNodes.get(1).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(53.5, -12)));
+        assertThat(this.getRoundedPosition(borderNodes.get(2).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(254, 40)));
+        assertThat(this.getRoundedPosition(borderNodes.get(3).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(254, 90)));
+        assertThat(this.getRoundedPosition(borderNodes.get(4).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(250, 92)));
+        assertThat(this.getRoundedPosition(borderNodes.get(5).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(119, 92)));
+        assertThat(this.getRoundedPosition(borderNodes.get(6).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(-16, 40)));
+        assertThat(this.getRoundedPosition(borderNodes.get(7).getPosition())).isEqualTo(this.getRoundedPosition(Position.at(-16, -10)));
     }
 
     @Test
@@ -269,11 +307,8 @@ public class BorderNodePositionTests {
         diagramLayoutData.setEdges(new ArrayList<>());
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.at(100, 100), DEFAULT_NODE_SIZE, diagramLayoutData, NodeType.NODE_RECTANGLE);
-        List<NodeLayoutData> nodes = new ArrayList<>();
-        nodes.add(nodeLayoutData);
-        diagramLayoutData.setChildrenNodes(nodes);
 
-        List<NodeLayoutData> borderNodes = new ArrayList<>();
+        List<NodeLayoutData> borderNodes = nodeLayoutData.getBorderNodes();
 
         // Position of the border if it was located centered at the origin of its parent
         Position borderNodeCenterAtOrigin = Position.at(-DEFAULT_BORDER_NODE_SIZE.getWidth() / 2, -DEFAULT_BORDER_NODE_SIZE.getHeight() / 2);
@@ -302,8 +337,6 @@ public class BorderNodePositionTests {
         borderNodes.add(this.createBorderNodeLayoutData(Position.at(borderNodeCenterAtOrigin.getX() - 2, borderNodeCenterAtOrigin.getY() - 1), DEFAULT_BORDER_NODE_SIZE, nodeLayoutData,
                 NodeType.NODE_RECTANGLE));
 
-        nodeLayoutData.setBorderNodes(borderNodes);
-
         IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = new IncrementalLayoutConvertedDiagram(diagramLayoutData, Map.of());
         return incrementalLayoutConvertedDiagram;
     }
@@ -313,7 +346,7 @@ public class BorderNodePositionTests {
         diagramLayoutData.setId(UUID.randomUUID().toString());
         diagramLayoutData.setPosition(Position.at(0, 0));
         diagramLayoutData.setSize(Size.of(1000, 1000));
-
+        diagramLayoutData.setChildrenNodes(new ArrayList<>());
         return diagramLayoutData;
     }
 
@@ -343,7 +376,9 @@ public class BorderNodePositionTests {
         nodeLayoutData.setSize(size);
         nodeLayoutData.setNodeType(nodeType);
         nodeLayoutData.setChildrenNodes(new ArrayList<>());
+        nodeLayoutData.setBorderNodes(new ArrayList<>());
         nodeLayoutData.setLabel(this.createLabelLayoutData(Position.at(0, 0), "inside", new TextBounds(Size.of(0, 0), Position.at(0, 0))));
+        parent.getChildrenNodes().add(nodeLayoutData);
         return nodeLayoutData;
     }
 
@@ -354,6 +389,12 @@ public class BorderNodePositionTests {
         labelLayoutData.setLabelType(labelType);
         labelLayoutData.setTextBounds(textBounds);
         return labelLayoutData;
+    }
+
+    private Position getRoundedPosition(Position position) {
+        BigDecimal roundedX = BigDecimal.valueOf(position.getX()).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal roundedY = BigDecimal.valueOf(position.getY()).setScale(4, RoundingMode.HALF_UP);
+        return Position.at(roundedX.doubleValue(), roundedY.doubleValue());
     }
 
 }

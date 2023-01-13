@@ -109,6 +109,7 @@ public class BorderNodeLayoutEngine implements IBorderNodeLayoutEngine {
             .filter(parentId::equals)
             .isPresent();
         // @formatter:on
+        isParentRectangleResized = isParentRectangleResized || !initialNodeBounds.getSize().equals(newNodeBounds.getSize());
 
         if (isParentRectangleResized && !initialNodeBounds.equals(newNodeBounds)) {
             EnumMap<RectangleSide, Double> sideHomotheticRatio = this.getHomotheticRatio(initialNodeBounds.getSize(), newNodeBounds.getSize());
