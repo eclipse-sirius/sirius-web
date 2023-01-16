@@ -17,6 +17,8 @@
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1567[#1567] [project] Add support for project templates
+- https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [diagram] Add the ability to filter the edge created using some graphical variables
+- https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [view] Add a precondition expression to the edge description
 
 === Improvements
 

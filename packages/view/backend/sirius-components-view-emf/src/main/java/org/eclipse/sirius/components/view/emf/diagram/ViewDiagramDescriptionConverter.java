@@ -552,6 +552,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).toList());
         }
 
+        Predicate<VariableManager> shouldRenderPredicate = variableManager -> {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewEdgeDescription.getPreconditionExpression());
+            return result.asBoolean().orElse(true);
+        };
+
         Function<VariableManager, List<Element>> sourceNodesProvider = null;
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
             sourceNodesProvider = variableManager -> {
@@ -616,6 +621,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
                 .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
                 .semanticElementsProvider(semanticElementsProvider)
+                .shouldRenderPredicate(shouldRenderPredicate)
                 .synchronizationPolicy(synchronizationPolicy)
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
