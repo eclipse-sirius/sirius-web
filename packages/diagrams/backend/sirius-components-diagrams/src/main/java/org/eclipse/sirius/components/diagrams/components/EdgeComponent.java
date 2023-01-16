@@ -108,90 +108,103 @@ public class EdgeComponent implements IComponent {
         edgeVariableManager.put(VariableManager.SELF, semanticElement);
         edgeVariableManager.put(DiagramDescription.CACHE, cache);
 
-        String targetObjectId = edgeDescription.getTargetObjectIdProvider().apply(edgeVariableManager);
-        String targetObjectKind = edgeDescription.getTargetObjectKindProvider().apply(edgeVariableManager);
-        String targetObjectLabel = edgeDescription.getTargetObjectLabelProvider().apply(edgeVariableManager);
-
         List<Element> sourceNodes = edgeDescription.getSourceNodesProvider().apply(edgeVariableManager);
         if (!sourceNodes.isEmpty()) {
             List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(edgeVariableManager);
 
             for (Element sourceNode : sourceNodes) {
                 for (Element targetNode : targetNodes) {
-                    String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceNode, targetNode);
-                    int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
-
-                    Function<Integer, String> edgeIdProvider = this.getEdgeIdProvider(edgeDescription, sourceNode, targetNode);
-                    String id = edgeIdProvider.apply(count);
-                    String sourceId = this.getId(sourceNode);
-                    String targetId = this.getId(targetNode);
-
-                    Optional<Edge> optionalPreviousEdge = this.props.getEdgesRequestor().getById(id);
-                    Builder edgeElementPropsBuilder = EdgeElementProps.newEdgeElementProps(id);
-
-                    Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousEdge, id);
-                    edgeElementPropsBuilder.modifiers(modifiers);
-                    ViewModifier state = this.computeState(optionalDiagramEvent, sourceNode, sourceId, targetNode, targetId, modifiers);
-                    edgeElementPropsBuilder.state(state);
-
-                    if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof RemoveEdgeEvent removeEdgeEvent) {
-                        optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, removeEdgeEvent, edgeIdProvider, count);
-                        Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                        Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                        edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
-                        edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
-                    } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof ReconnectEdgeEvent reconnectEdgeEvent) {
-                        optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, reconnectEdgeEvent, edgeIdProvider, count, optionalPreviousEdge, edgeElementPropsBuilder);
-                    } else {
-                        Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                        Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
-                        edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
-                        edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
-                    }
-
                     var edgeInstanceVariableManager = edgeVariableManager.createChild();
-                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, cache.getNodeToObject().get(sourceNode));
-                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, cache.getNodeToObject().get(targetNode));
+                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
+                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, this.props.getCache().getNodeToObject().get(targetNode));
+                    edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceNode);
+                    edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_TARGET, targetNode);
 
-                    SynchronizationPolicy synchronizationPolicy = edgeDescription.getSynchronizationPolicy();
-                    boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED
-                            || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
-
+                    var shouldRender = edgeDescription.getShouldRenderPredicate().test(edgeInstanceVariableManager);
                     if (shouldRender) {
-                        EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeInstanceVariableManager);
-
-                        // @formatter:off
-                        String edgeType = optionalPreviousEdge
-                                .map(Edge::getType)
-                                .orElse("edge:straight");
-
-                        List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
-                        List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeInstanceVariableManager, optionalPreviousEdge, id, routingPoints);
-                        EdgeElementProps edgeElementProps = edgeElementPropsBuilder
-                                .type(edgeType)
-                                .descriptionId(edgeDescription.getId())
-                                .targetObjectId(targetObjectId)
-                                .targetObjectKind(targetObjectKind)
-                                .targetObjectLabel(targetObjectLabel)
-                                .sourceId(sourceId)
-                                .targetId(targetId)
-                                .style(style)
-                                .routingPoints(routingPoints)
-                                .children(labelChildren)
-                                .build();
-                        // @formatter:on
-
-                        Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
-                        edgeElements.add(edgeElement);
-                        edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
-                        if (optionalPreviousEdge.isPresent()) {
-                            lastPreviousRenderedEdgeIds.add(optionalPreviousEdge.get().getId());
-                        }
+                        this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceNode, targetNode, optionalDiagramEvent, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)
+                                .ifPresent(edgeElements::add);
                     }
                 }
             }
         }
         return edgeElements;
+    }
+
+    private Optional<Element> doRenderEdge(VariableManager edgeVariableManager, EdgeDescription edgeDescription, Element sourceNode, Element targetNode, Optional<IDiagramEvent> optionalDiagramEvent,
+            Map<String, Integer> edgeIdPrefixToCount, List<String> lastPreviousRenderedEdgeIds) {
+        String targetObjectId = edgeDescription.getTargetObjectIdProvider().apply(edgeVariableManager);
+        String targetObjectKind = edgeDescription.getTargetObjectKindProvider().apply(edgeVariableManager);
+        String targetObjectLabel = edgeDescription.getTargetObjectLabelProvider().apply(edgeVariableManager);
+
+        String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceNode, targetNode);
+        int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
+
+        Function<Integer, String> edgeIdProvider = this.getEdgeIdProvider(edgeDescription, sourceNode, targetNode);
+        String id = edgeIdProvider.apply(count);
+        String sourceId = this.getId(sourceNode);
+        String targetId = this.getId(targetNode);
+
+        Optional<Edge> optionalPreviousEdge = this.props.getEdgesRequestor().getById(id);
+        Builder edgeElementPropsBuilder = EdgeElementProps.newEdgeElementProps(id);
+
+        Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousEdge, id);
+        edgeElementPropsBuilder.modifiers(modifiers);
+        ViewModifier state = this.computeState(optionalDiagramEvent, sourceNode, sourceId, targetNode, targetId, modifiers);
+        edgeElementPropsBuilder.state(state);
+
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof RemoveEdgeEvent removeEdgeEvent) {
+            optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, removeEdgeEvent, edgeIdProvider, count);
+            Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+            Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+            edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
+            edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
+        } else if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof ReconnectEdgeEvent reconnectEdgeEvent) {
+            optionalPreviousEdge = this.getPreviousEdge(id, lastPreviousRenderedEdgeIds, reconnectEdgeEvent, edgeIdProvider, count, optionalPreviousEdge, edgeElementPropsBuilder);
+        } else {
+            Ratio sourceAnchorRelativePosition = optionalPreviousEdge.map(Edge::getSourceAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+            Ratio targetAnchorRelativePosition = optionalPreviousEdge.map(Edge::getTargetAnchorRelativePosition).orElse(Ratio.UNDEFINED);
+            edgeElementPropsBuilder.sourceAnchorRelativePosition(sourceAnchorRelativePosition);
+            edgeElementPropsBuilder.targetAnchorRelativePosition(targetAnchorRelativePosition);
+        }
+
+        SynchronizationPolicy synchronizationPolicy = edgeDescription.getSynchronizationPolicy();
+        boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
+
+        if (shouldRender) {
+            EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
+
+            // @formatter:off
+            String edgeType = optionalPreviousEdge
+                    .map(Edge::getType)
+                    .orElse("edge:straight");
+
+            List<Position> routingPoints = optionalPreviousEdge.map(Edge::getRoutingPoints).orElse(List.of());
+            List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, optionalPreviousEdge, id, routingPoints);
+            EdgeElementProps edgeElementProps = edgeElementPropsBuilder
+                    .type(edgeType)
+                    .descriptionId(edgeDescription.getId())
+                    .targetObjectId(targetObjectId)
+                    .targetObjectKind(targetObjectKind)
+                    .targetObjectLabel(targetObjectLabel)
+                    .sourceId(sourceId)
+                    .targetId(targetId)
+                    .style(style)
+                    .routingPoints(routingPoints)
+                    .children(labelChildren)
+                    .build();
+            // @formatter:on
+
+            Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
+            edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
+            if (optionalPreviousEdge.isPresent()) {
+                lastPreviousRenderedEdgeIds.add(optionalPreviousEdge.get().getId());
+            }
+
+            return Optional.of(edgeElement);
+        }
+
+        return Optional.empty();
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
@@ -53,6 +54,10 @@ public final class EdgeDescription {
      */
     public static final String SEMANTIC_EDGE_TARGET = "semanticEdgeTarget";
 
+    public static final String GRAPHICAL_EDGE_SOURCE = "graphicalEdgeSource";
+
+    public static final String GRAPHICAL_EDGE_TARGET = "graphicalEdgeTarget";
+
     private UUID id;
 
     private SynchronizationPolicy synchronizationPolicy;
@@ -64,6 +69,8 @@ public final class EdgeDescription {
     private Function<VariableManager, String> targetObjectLabelProvider;
 
     private Function<VariableManager, List<?>> semanticElementsProvider;
+
+    private Predicate<VariableManager> shouldRenderPredicate;
 
     private LabelDescription beginLabelDescription;
 
@@ -111,6 +118,10 @@ public final class EdgeDescription {
 
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
+    }
+
+    public Predicate<VariableManager> getShouldRenderPredicate() {
+        return this.shouldRenderPredicate;
     }
 
     public LabelDescription getBeginLabelDescription() {
@@ -182,6 +193,8 @@ public final class EdgeDescription {
 
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
+        private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
+
         private LabelDescription beginLabelDescription;
 
         private LabelDescription centerLabelDescription;
@@ -228,6 +241,11 @@ public final class EdgeDescription {
 
         public Builder semanticElementsProvider(Function<VariableManager, List<?>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
+            return this;
+        }
+
+        public Builder shouldRenderPredicate(Predicate<VariableManager> shouldRenderPredicate) {
+            this.shouldRenderPredicate = Objects.requireNonNull(shouldRenderPredicate);
             return this;
         }
 
@@ -292,6 +310,7 @@ public final class EdgeDescription {
             edgeDescription.sourceNodeDescriptions = Objects.requireNonNull(this.sourceNodeDescriptions);
             edgeDescription.targetNodeDescriptions = Objects.requireNonNull(this.targetNodeDescriptions);
             edgeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
+            edgeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             edgeDescription.beginLabelDescription = this.beginLabelDescription;
             edgeDescription.centerLabelDescription = this.centerLabelDescription;
             edgeDescription.endLabelDescription = this.endLabelDescription;

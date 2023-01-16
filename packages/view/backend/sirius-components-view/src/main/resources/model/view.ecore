@@ -80,6 +80,8 @@
         eType="#//EdgeReconnectionTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalEdgeStyle" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelStyle" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" lowerBound="1"

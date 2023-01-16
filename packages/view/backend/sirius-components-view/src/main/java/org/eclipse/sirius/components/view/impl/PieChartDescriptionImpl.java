@@ -227,8 +227,7 @@ public class PieChartDescriptionImpl extends WidgetDescriptionImpl implements Pi
     @Override
     public EList<ConditionalPieChartDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalPieChartDescriptionStyle.class, this,
-                    ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalPieChartDescriptionStyle.class, this, ViewPackage.PIE_CHART_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }
