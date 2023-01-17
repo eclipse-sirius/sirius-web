@@ -63,10 +63,6 @@ public class TestViewProvider {
 
     private NodeDescription classAttributeNodeDescription;
 
-    private NodeDescription classReferencesNodeDescription;
-
-    private NodeDescription classReferenceNodeDescription;
-
     private NodeDescription classOperationsNodeDescription;
 
     private NodeDescription classOperationNodeDescription;
@@ -108,8 +104,6 @@ public class TestViewProvider {
         this.classNodeDescription = this.createClassNodeDescription();
         this.classAttributesNodeDescription = this.createClassAttributesNodeDescription();
         this.classAttributeNodeDescription = this.createClassAttributeNodeDescription();
-        this.classReferencesNodeDescription = this.createClassReferencesNodeDescription();
-        this.classReferenceNodeDescription = this.createClassReferenceNodeDescription();
         this.classOperationsNodeDescription = this.createClassOperationsNodeDescription();
         this.classOperationNodeDescription = this.createClassOperationNodeDescription();
         this.dataTypeNodeDescription = this.createDataTypeNodeDescription();
@@ -144,13 +138,9 @@ public class TestViewProvider {
         this.packageNodeDescription.getChildrenDescriptions().add(this.enumNodeDescription);
 
         this.classNodeDescription.getChildrenDescriptions().add(this.classAttributesNodeDescription);
-        this.classNodeDescription.getChildrenDescriptions().add(this.classReferencesNodeDescription);
         this.classNodeDescription.getChildrenDescriptions().add(this.classOperationsNodeDescription);
 
         this.classAttributesNodeDescription.getChildrenDescriptions().add(this.classAttributeNodeDescription);
-
-        this.classReferencesNodeDescription.getChildrenDescriptions().add(this.classReferenceNodeDescription);
-
         this.classOperationsNodeDescription.getChildrenDescriptions().add(this.classOperationNodeDescription);
 
         this.enumNodeDescription.getChildrenDescriptions().add(this.enumLiteralNodeDescription);
@@ -178,12 +168,26 @@ public class TestViewProvider {
         extendsInterfaceEdgeDescription.getSourceNodeDescriptions().add(this.interfaceNodeDescription);
         extendsInterfaceEdgeDescription.getTargetNodeDescriptions().add(this.interfaceNodeDescription);
 
+        var implementsInterfaceEdgeDescription = this.createImplementsInterfaceEdgeDescription();
+        implementsInterfaceEdgeDescription.getSourceNodeDescriptions().add(this.classNodeDescription);
+        implementsInterfaceEdgeDescription.getTargetNodeDescriptions().add(this.interfaceNodeDescription);
+
+        var extendsClassEdgeDescription = this.createExtendsClassEdgeDescription();
+        extendsClassEdgeDescription.getSourceNodeDescriptions().add(this.classNodeDescription);
+        extendsClassEdgeDescription.getTargetNodeDescriptions().add(this.classNodeDescription);
+
+        var referencesClassEdgeDescription = this.createReferencesClassEdgeDescription();
+        referencesClassEdgeDescription.getSourceNodeDescriptions().add(this.classNodeDescription);
+        referencesClassEdgeDescription.getTargetNodeDescriptions().add(this.classNodeDescription);
+
         this.diagramDescription.getEdgeDescriptions().add(interactionEdgeDescription);
         this.diagramDescription.getEdgeDescriptions().add(realizedByEdgeDescription);
         this.diagramDescription.getEdgeDescriptions().add(dependsOnEdgeDescription);
         this.diagramDescription.getEdgeDescriptions().add(fulfillsContractEdgeDescription);
         this.diagramDescription.getEdgeDescriptions().add(extendsInterfaceEdgeDescription);
-
+        this.diagramDescription.getEdgeDescriptions().add(implementsInterfaceEdgeDescription);
+        this.diagramDescription.getEdgeDescriptions().add(extendsClassEdgeDescription);
+        this.diagramDescription.getEdgeDescriptions().add(referencesClassEdgeDescription);
     }
 
     private NodeDescription createOperationalEntityNodeDescription() {
@@ -432,8 +436,8 @@ public class TestViewProvider {
         fulfillsContractEdgeDescription.setTargetNodesExpression("aql:self.contract");
         fulfillsContractEdgeDescription.setIsDomainBasedEdge(false);
 
-        var dependsOnEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        dependsOnEdgeTool.setName("Fulfills contract");
+        var fulfillsContractEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        fulfillsContractEdgeTool.setName("Fulfills contract");
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:semanticEdgeSource");
         var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
@@ -441,9 +445,9 @@ public class TestViewProvider {
         setTargetValue.setValueExpression("aql:semanticEdgeTarget");
 
         changeContext.getChildren().add(setTargetValue);
-        dependsOnEdgeTool.getBody().add(changeContext);
+        fulfillsContractEdgeTool.getBody().add(changeContext);
 
-        fulfillsContractEdgeDescription.getEdgeTools().add(dependsOnEdgeTool);
+        fulfillsContractEdgeDescription.getEdgeTools().add(fulfillsContractEdgeTool);
 
         return fulfillsContractEdgeDescription;
     }
@@ -518,16 +522,16 @@ public class TestViewProvider {
         extendsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         extendsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
 
-        var fulfillsContractEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
-        fulfillsContractEdgeDescription.setName("Extends");
-        fulfillsContractEdgeDescription.setLabelExpression("aql:'Extends'");
-        fulfillsContractEdgeDescription.setStyle(extendsInterfaceEdgeStyle);
-        fulfillsContractEdgeDescription.setSourceNodesExpression("aql:self");
-        fulfillsContractEdgeDescription.setTargetNodesExpression("aql:self.extends");
-        fulfillsContractEdgeDescription.setIsDomainBasedEdge(false);
+        var extendsInterfaceEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        extendsInterfaceEdgeDescription.setName("Extends Interface");
+        extendsInterfaceEdgeDescription.setLabelExpression("aql:'Extends'");
+        extendsInterfaceEdgeDescription.setStyle(extendsInterfaceEdgeStyle);
+        extendsInterfaceEdgeDescription.setSourceNodesExpression("aql:self");
+        extendsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.extends");
+        extendsInterfaceEdgeDescription.setIsDomainBasedEdge(false);
 
-        var dependsOnEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        dependsOnEdgeTool.setName("Extends");
+        var extendsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        extendsInterfaceEdgeTool.setName("Extends");
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:semanticEdgeSource");
         var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
@@ -535,11 +539,11 @@ public class TestViewProvider {
         setTargetValue.setValueExpression("aql:semanticEdgeTarget");
 
         changeContext.getChildren().add(setTargetValue);
-        dependsOnEdgeTool.getBody().add(changeContext);
+        extendsInterfaceEdgeTool.getBody().add(changeContext);
 
-        fulfillsContractEdgeDescription.getEdgeTools().add(dependsOnEdgeTool);
+        extendsInterfaceEdgeDescription.getEdgeTools().add(extendsInterfaceEdgeTool);
 
-        return fulfillsContractEdgeDescription;
+        return extendsInterfaceEdgeDescription;
     }
 
     private NodeDescription createClassNodeDescription() {
@@ -588,36 +592,6 @@ public class TestViewProvider {
         return nodeDescription;
     }
 
-    private NodeDescription createClassReferencesNodeDescription() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
-        nodeStyle.setBorderColor("");
-        nodeStyle.setLabelColor("white");
-
-        var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Class")));
-        nodeDescription.setName(nodeDescription.getName() + " - References");
-        nodeDescription.setSemanticCandidatesExpression("aql:self");
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("");
-        nodeDescription.setStyle(nodeStyle);
-
-        return nodeDescription;
-    }
-
-    private NodeDescription createClassReferenceNodeDescription() {
-        var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
-        nodeStyle.setBorderColor("");
-        nodeStyle.setLabelColor("white");
-
-        var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Reference")));
-        nodeDescription.setSemanticCandidatesExpression("aql:self.references");
-        nodeDescription.setLabelExpression("aql:self.name + ': ' + self.type.name");
-        nodeDescription.setStyle(nodeStyle);
-
-        return nodeDescription;
-    }
-
     private NodeDescription createClassOperationsNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor("#2196f3");
@@ -646,6 +620,91 @@ public class TestViewProvider {
         nodeDescription.setStyle(nodeStyle);
 
         return nodeDescription;
+    }
+
+    private EdgeDescription createImplementsInterfaceEdgeDescription() {
+        var implementsInterfaceEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        implementsInterfaceEdgeStyle.setColor("#1a237e");
+        implementsInterfaceEdgeStyle.setEdgeWidth(1);
+        implementsInterfaceEdgeStyle.setLineStyle(LineStyle.SOLID);
+        implementsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
+        implementsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+
+        var implementsInterfaceEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        implementsInterfaceEdgeDescription.setName("Implements");
+        implementsInterfaceEdgeDescription.setLabelExpression("");
+        implementsInterfaceEdgeDescription.setStyle(implementsInterfaceEdgeStyle);
+        implementsInterfaceEdgeDescription.setSourceNodesExpression("aql:self");
+        implementsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.implements");
+        implementsInterfaceEdgeDescription.setIsDomainBasedEdge(false);
+
+        var implementsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        implementsInterfaceEdgeTool.setName("Implements");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("implements");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        implementsInterfaceEdgeTool.getBody().add(changeContext);
+
+        implementsInterfaceEdgeDescription.getEdgeTools().add(implementsInterfaceEdgeTool);
+
+        return implementsInterfaceEdgeDescription;
+    }
+
+    private EdgeDescription createExtendsClassEdgeDescription() {
+        var extendsClassEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        extendsClassEdgeStyle.setColor("#0d47a1");
+        extendsClassEdgeStyle.setEdgeWidth(1);
+        extendsClassEdgeStyle.setLineStyle(LineStyle.SOLID);
+        extendsClassEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
+        extendsClassEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);
+
+        var extendsClassEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        extendsClassEdgeDescription.setName("Extends Class");
+        extendsClassEdgeDescription.setLabelExpression("");
+        extendsClassEdgeDescription.setStyle(extendsClassEdgeStyle);
+        extendsClassEdgeDescription.setSourceNodesExpression("aql:self");
+        extendsClassEdgeDescription.setTargetNodesExpression("aql:self.extends");
+        extendsClassEdgeDescription.setIsDomainBasedEdge(false);
+
+        var extendsClassEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        extendsClassEdgeTool.setName("Extends");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("extends");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        extendsClassEdgeTool.getBody().add(changeContext);
+
+        extendsClassEdgeDescription.getEdgeTools().add(extendsClassEdgeTool);
+
+        return extendsClassEdgeDescription;
+    }
+
+    private EdgeDescription createReferencesClassEdgeDescription() {
+        var extendsClassEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        extendsClassEdgeStyle.setColor("#0d47a1");
+        extendsClassEdgeStyle.setEdgeWidth(1);
+        extendsClassEdgeStyle.setLineStyle(LineStyle.SOLID);
+        extendsClassEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
+        extendsClassEdgeStyle.setTargetArrowStyle(ArrowStyle.DIAMOND);
+
+        var extendsClassEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        extendsClassEdgeDescription.setName("References Class");
+        extendsClassEdgeDescription.setLabelExpression("aql:self.name");
+        extendsClassEdgeDescription.setStyle(extendsClassEdgeStyle);
+        extendsClassEdgeDescription.setSemanticCandidatesExpression("aql:self.eAllContents()");
+        extendsClassEdgeDescription.setDomainType("papaya::Reference");
+        extendsClassEdgeDescription.setSourceNodesExpression("aql:self.eContainer()");
+        extendsClassEdgeDescription.setTargetNodesExpression("aql:self.type");
+        extendsClassEdgeDescription.setIsDomainBasedEdge(true);
+
+        return extendsClassEdgeDescription;
     }
 
     private NodeDescription createDataTypeNodeDescription() {
