@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,6 +90,8 @@ public class TestService {
 
     private EObject siriusWebApplication;
 
+    private EObject siriusComponentsCore;
+
     private EObject siriusComponentsRepresentations;
 
     private EObject siriusComponentsCollaborative;
@@ -116,15 +118,113 @@ public class TestService {
 
     private EObject provideTreeEventProcessor;
 
+    private EObject packageSiriusComponentsCollaborativeEditingContext;
+
     private EObject packageSiriusComponentsCollaborativeApi;
 
+    private EObject packageSiriusComponentsCollaborativeDiagramsApi;
+
+    private EObject packageSiriusComponentsCollaborativeDiagrams;
+
+    private EObject packageSiriusComponentsCollaborativeFormsApi;
+
+    private EObject packageSiriusComponentsCollaborativeForms;
+
+    private EObject packageSiriusComponentsCollaborativeTreesApi;
+
+    private EObject packageSiriusComponentsCollaborativeTrees;
+
     private EObject packageSiriusComponentsRepresentations;
+
+    private EObject packageSiriusComponentsDiagrams;
+
+    private EObject packageSiriusComponentsDiagramsDescription;
+
+    private EObject packageSiriusComponentsForms;
+
+    private EObject packageSiriusComponentsFormsDescription;
+
+    private EObject packageSiriusComponentsTrees;
+
+    private EObject packageSiriusComponentsTreesDescription;
+
+    private EObject editingContextEventProcessor;
+
+    private EObject iEditingContextEventProcessor;
+
+    private EObject iEditingContextEventProcessorFactory;
+
+    private EObject iEditingContextEventProcessorRegistry;
+
+    private EObject iEditingContextEventHandler;
+
+    private EObject changeDescription;
+
+    private EObject iSubscriptionManager;
+
+    private EObject iSubscriptionManagerFactory;
+
+    private EObject iRepresentationSearchService;
+
+    private EObject iRepresentationPersistenceService;
 
     private EObject iRepresentationEventProcessor;
 
     private EObject iRepresentation;
 
     private EObject iRepresentationDescription;
+
+    private EObject iDiagramEventProcessor;
+
+    private EObject iFormEventProcessor;
+
+    private EObject iTreeEventProcessor;
+
+    private EObject diagramEventProcessor;
+
+    private EObject formEventProcessor;
+
+    private EObject treeEventProcessor;
+
+    private EObject diagram;
+
+    private EObject node;
+
+    private EObject label;
+
+    private EObject edge;
+
+    private EObject size;
+
+    private EObject position;
+
+    private EObject diagramDescription;
+
+    private EObject nodeDescription;
+
+    private EObject labelDescription;
+
+    private EObject edgeDescription;
+
+    private EObject form;
+
+    private EObject page;
+
+    private EObject group;
+
+    private EObject abstractWidget;
+
+    private EObject formDescription;
+
+    private EObject pageDescription;
+
+    private EObject groupDescription;
+
+    private EObject tree;
+
+    private EObject treeItem;
+
+    private EObject treeDescription;
 
     private EObject operationIRepresentationEventProcessorGetRepresentation;
 
@@ -153,10 +253,11 @@ public class TestService {
         this.linkOperationalObjects();
         this.linkComponents();
 
-        this.addChildren(eObject, "operationalEntities", List.of(this.eclipseFoundation));
-        this.addChildren(eObject, "operationalActors", List.of(this.specifier, this.endUser, this.webmaster));
-        this.addChildren(eObject, "components", List.of(this.siriusWebApplication, this.siriusComponentsCollaborative, this.siriusComponentsCollaborativeDiagrams, this.siriusComponentsDiagrams,
-                this.siriusComponentsCollaborativeForms, this.siriusComponentsForms, this.siriusComponentsCollaborativeTrees, this.siriusComponentsTrees));
+        this.addMany(eObject, "operationalEntities", List.of(this.eclipseFoundation));
+        this.addMany(eObject, "operationalActors", List.of(this.specifier, this.endUser, this.webmaster));
+        this.addMany(eObject, "components",
+                List.of(this.siriusWebApplication, this.siriusComponentsCore, this.siriusComponentsCollaborative, this.siriusComponentsRepresentations, this.siriusComponentsCollaborativeDiagrams,
+                        this.siriusComponentsDiagrams, this.siriusComponentsCollaborativeForms, this.siriusComponentsForms, this.siriusComponentsCollaborativeTrees, this.siriusComponentsTrees));
 
         return eObject;
     }
@@ -200,6 +301,7 @@ public class TestService {
 
     private void createComponents() {
         this.siriusWebApplication = this.component("sirius-web-sample-application");
+        this.siriusComponentsCore = this.component("sirius-components-core");
         this.siriusComponentsCollaborative = this.component("sirius-components-collaborative");
         this.siriusComponentsRepresentations = this.component("sirius-components-representations");
 
@@ -217,35 +319,112 @@ public class TestService {
     }
 
     private void createCode() {
+        this.createSiriusComponentsCollaborative();
+        this.createSiriusComponentsDiagrams();
+        this.createSiriusComponentsForms();
+        this.createSiriusComponentsTrees();
+    }
+
+    private void createSiriusComponentsCollaborative() {
+        this.packageSiriusComponentsCollaborativeEditingContext = this.packageEObject("org.eclipse.sirius.components.collaborative.editingcontext");
+        this.editingContextEventProcessor = this.classEObject("EditingContextEventProcessor");
+
         this.packageSiriusComponentsCollaborativeApi = this.packageEObject("org.eclipse.sirius.components.collaborative.api");
-        this.packageSiriusComponentsRepresentations = this.packageEObject("org.eclipse.sirius.components.representations");
+        this.iEditingContextEventProcessor = this.interfaceEObject("IEditingContextEventProcessor");
+        this.iEditingContextEventProcessorFactory = this.interfaceEObject("IEditingContextEventProcessorFactory");
+        this.iEditingContextEventProcessorRegistry = this.interfaceEObject("IEditingContextEventProcessorRegistry");
+        this.iEditingContextEventHandler = this.interfaceEObject("IEditingContextEventHandler");
+        this.changeDescription = this.classEObject("ChangeDescription");
+        this.iSubscriptionManager = this.interfaceEObject("ISubscriptionManager");
+        this.iSubscriptionManagerFactory = this.interfaceEObject("ISubscriptionManagerFactory");
+        this.iRepresentationSearchService = this.interfaceEObject("IRepresentationSearchService");
+        this.iRepresentationPersistenceService = this.interfaceEObject("IRepresentationPersistenceService");
 
         this.iRepresentationEventProcessor = this.interfaceEObject("IRepresentationEventProcessor");
-        this.iRepresentation = this.interfaceEObject("IRepresentation");
-        this.iRepresentationDescription = this.interfaceEObject("IRepresentationDescription");
-
         this.operationIRepresentationEventProcessorGetRepresentation = this.operation("getRepresentation");
         this.operationIRepresentationEventProcessorRefresh = this.operation("refresh");
 
+        this.packageSiriusComponentsRepresentations = this.packageEObject("org.eclipse.sirius.components.representations");
+        this.iRepresentation = this.interfaceEObject("IRepresentation");
         this.operationIRepresentationGetId = this.operation("getId");
         this.operationIRepresentationGetLabel = this.operation("getLabel");
         this.operationIRepresentationGetKind = this.operation("getKind");
         this.operationIRepresentationGetDescriptionId = this.operation("getDescriptionId");
 
+        this.iRepresentationDescription = this.interfaceEObject("IRepresentationDescription");
         this.operationIRepresentationDescriptionGetId = this.operation("getId");
         this.operationIRepresentationDescriptionGetLabel = this.operation("getLabel");
+
+        this.packageSiriusComponentsCollaborativeDiagramsApi = this.packageEObject("org.eclipse.sirius.components.collaborative.diagrams.api");
+        this.iDiagramEventProcessor = this.interfaceEObject("IDiagramEventProcessor");
+
+        this.packageSiriusComponentsCollaborativeDiagrams = this.packageEObject("org.eclipse.sirius.components.collaborative.diagrams");
+        this.diagramEventProcessor = this.classEObject("DiagramEventProcessor");
+
+        this.packageSiriusComponentsCollaborativeFormsApi = this.packageEObject("org.eclipse.sirius.components.collaborative.forms.api");
+        this.iFormEventProcessor = this.interfaceEObject("IFormEventProcessor");
+
+        this.packageSiriusComponentsCollaborativeForms = this.packageEObject("org.eclipse.sirius.components.collaborative.forms");
+        this.formEventProcessor = this.classEObject("FormEventProcessor");
+
+        this.packageSiriusComponentsCollaborativeTreesApi = this.packageEObject("org.eclipse.sirius.components.collaborative.trees.api");
+        this.iTreeEventProcessor = this.interfaceEObject("ITreeEventProcessor");
+
+        this.packageSiriusComponentsCollaborativeTrees = this.packageEObject("org.eclipse.sirius.components.collaborative.trees");
+        this.treeEventProcessor = this.classEObject("TreeEventProcessor");
+    }
+
+    private void createSiriusComponentsDiagrams() {
+        this.packageSiriusComponentsDiagrams = this.packageEObject("org.eclipse.sirius.components.diagrams");
+        this.diagram = this.classEObject("Diagram");
+        this.node = this.classEObject("Node");
+        this.label = this.classEObject("Label");
+        this.edge = this.classEObject("Edge");
+        this.size = this.classEObject("Size");
+        this.position = this.classEObject("Position");
+
+        this.packageSiriusComponentsDiagramsDescription = this.packageEObject("org.eclipse.sirius.components.diagrams.description");
+        this.diagramDescription = this.classEObject("DiagramDescription");
+        this.nodeDescription = this.classEObject("NodeDescription");
+        this.labelDescription = this.classEObject("LabelDescription");
+        this.edgeDescription = this.classEObject("EdgeDescription");
+
+    }
+
+    private void createSiriusComponentsForms() {
+        this.packageSiriusComponentsForms = this.packageEObject("org.eclipse.sirius.components.forms");
+        this.form = this.classEObject("Form");
+        this.page = this.classEObject("Page");
+        this.group = this.classEObject("Group");
+        this.abstractWidget = this.classEObject("AbstractWidget");
+
+        this.packageSiriusComponentsFormsDescription = this.packageEObject("org.eclipse.sirius.components.forms.description");
+        this.formDescription = this.classEObject("FormDescription");
+        this.pageDescription = this.classEObject("PageDescription");
+        this.groupDescription = this.classEObject("GroupDescription");
+
+    }
+
+    private void createSiriusComponentsTrees() {
+        this.packageSiriusComponentsTrees = this.packageEObject("org.eclipse.sirius.components.trees");
+        this.tree = this.classEObject("Tree");
+        this.treeItem = this.classEObject("TreeItem");
+
+        this.packageSiriusComponentsTreesDescription = this.packageEObject("org.eclipse.sirius.components.trees.description");
+        this.treeDescription = this.classEObject("TreeDescription");
+
     }
 
     private void linkOperationalObjects() {
-        this.addChildren(this.eclipseFoundation, "operationalPerimeters", List.of(this.githubOrganization, this.siriusWeb));
-        this.addChildren(this.eclipseFoundation, "operationalActors", List.of(this.contributor));
-        this.addChildren(this.githubOrganization, "operationalActivities", List.of(this.hostTheSourceCode, this.hostTheIssues, this.buildTheProject, this.runTheTests, this.hostTheReleases));
-        this.addChildren(this.siriusWeb, "operationalActivities", List.of(this.provideConfigurableRepresentationDescriptions, this.offerSupportForDiagrams, this.offerSupportForForms,
+        this.addMany(this.eclipseFoundation, "operationalPerimeters", List.of(this.githubOrganization, this.siriusWeb));
+        this.addMany(this.eclipseFoundation, "operationalActors", List.of(this.contributor));
+        this.addMany(this.githubOrganization, "operationalActivities", List.of(this.hostTheSourceCode, this.hostTheIssues, this.buildTheProject, this.runTheTests, this.hostTheReleases));
+        this.addMany(this.siriusWeb, "operationalActivities", List.of(this.provideConfigurableRepresentationDescriptions, this.offerSupportForDiagrams, this.offerSupportForForms,
                 this.offerSupportForTrees, this.provideCompatibilityLayerForSiriusDesktop, this.offerCollaborativeModelEdition));
-        this.addChildren(this.contributor, "operationalActivities", List.of(this.managesTheProject, this.contributeNewCode, this.raiseIssues, this.performNewReleases));
-        this.addChildren(this.specifier, "operationalActivities",
+        this.addMany(this.contributor, "operationalActivities", List.of(this.managesTheProject, this.contributeNewCode, this.raiseIssues, this.performNewReleases));
+        this.addMany(this.specifier, "operationalActivities",
                 List.of(this.configureRepresentationDescriptions, this.reuseExistingOdesignConfigurations, this.downloadReleases, this.customizeTheCode, this.buildCustomSiriusWebBasedApplications));
-        this.addChildren(this.endUser, "operationalActivities", List.of(this.useSiriusWeBasedApplications, this.raiseFeatureRequests));
+        this.addMany(this.endUser, "operationalActivities", List.of(this.useSiriusWeBasedApplications, this.raiseFeatureRequests));
 
         this.interactWith(this.managesTheProject, this.hostTheSourceCode);
         this.interactWith(this.hostTheSourceCode, this.buildTheProject);
@@ -275,36 +454,107 @@ public class TestService {
     }
 
     private void linkComponents() {
-        this.addChildren(this.siriusComponentsCollaborative, "requiredServices", List.of(this.requireRepresentationEventProcessor));
-        this.addChildren(this.siriusComponentsCollaborativeDiagrams, "providedServices", List.of(this.provideDiagramEventProcessor));
-        this.addChildren(this.siriusComponentsCollaborativeForms, "providedServices", List.of(this.provideFormEventProcessor));
-        this.addChildren(this.siriusComponentsCollaborativeTrees, "providedServices", List.of(this.provideTreeEventProcessor));
+        this.linkSiriusComponentsCollaborativeCode();
+        this.linkSiriusComponentsRepresentationsCode();
+    }
 
-        this.addChildren(this.siriusComponentsRepresentations, "packages", List.of(this.packageSiriusComponentsRepresentations));
-        this.addChildren(this.siriusComponentsCollaborative, "packages", List.of(this.packageSiriusComponentsCollaborativeApi));
+    private void linkSiriusComponentsCollaborativeCode() {
+        this.addMany(this.siriusComponentsCollaborative, "requiredServices", List.of(this.requireRepresentationEventProcessor));
+        this.addMany(this.siriusComponentsCollaborativeDiagrams, "providedServices", List.of(this.provideDiagramEventProcessor));
+        this.addMany(this.siriusComponentsCollaborativeForms, "providedServices", List.of(this.provideFormEventProcessor));
+        this.addMany(this.siriusComponentsCollaborativeTrees, "providedServices", List.of(this.provideTreeEventProcessor));
+
+        this.addMany(this.siriusComponentsCollaborative, "packages", List.of(this.packageSiriusComponentsCollaborativeEditingContext, this.packageSiriusComponentsCollaborativeApi));
+        this.addMany(this.siriusComponentsCollaborativeDiagrams, "packages", List.of(this.packageSiriusComponentsCollaborativeDiagrams, this.packageSiriusComponentsCollaborativeDiagramsApi));
+        this.addMany(this.siriusComponentsCollaborativeForms, "packages", List.of(this.packageSiriusComponentsCollaborativeForms, this.packageSiriusComponentsCollaborativeFormsApi));
+        this.addMany(this.siriusComponentsCollaborativeTrees, "packages", List.of(this.packageSiriusComponentsCollaborativeTrees, this.packageSiriusComponentsCollaborativeTreesApi));
 
         this.contract(this.requireRepresentationEventProcessor, this.iRepresentationEventProcessor);
+        this.contract(this.provideDiagramEventProcessor, this.iDiagramEventProcessor);
+        this.contract(this.provideFormEventProcessor, this.iFormEventProcessor);
+        this.contract(this.provideTreeEventProcessor, this.iTreeEventProcessor);
 
-        this.addChildren(this.packageSiriusComponentsCollaborativeApi, "types", List.of(this.iRepresentationEventProcessor));
-        this.addChildren(this.packageSiriusComponentsRepresentations, "types", List.of(this.iRepresentationDescription, this.iRepresentation));
+        this.addMany(this.packageSiriusComponentsCollaborativeEditingContext, "types", List.of(this.editingContextEventProcessor));
+        this.addMany(this.packageSiriusComponentsCollaborativeApi, "types",
+                List.of(this.iRepresentationEventProcessor, this.iEditingContextEventProcessor, this.iEditingContextEventProcessorFactory, this.iEditingContextEventProcessorRegistry,
+                        this.iEditingContextEventHandler, this.changeDescription, this.iSubscriptionManager, this.iSubscriptionManagerFactory, this.iRepresentationSearchService,
+                        this.iRepresentationPersistenceService));
+        this.addMany(this.packageSiriusComponentsCollaborativeDiagramsApi, "types", List.of(this.iDiagramEventProcessor));
+        this.addMany(this.packageSiriusComponentsCollaborativeDiagrams, "types", List.of(this.diagramEventProcessor));
+        this.addMany(this.packageSiriusComponentsCollaborativeFormsApi, "types", List.of(this.iFormEventProcessor));
+        this.addMany(this.packageSiriusComponentsCollaborativeForms, "types", List.of(this.formEventProcessor));
+        this.addMany(this.packageSiriusComponentsCollaborativeTreesApi, "types", List.of(this.iTreeEventProcessor));
+        this.addMany(this.packageSiriusComponentsCollaborativeTrees, "types", List.of(this.treeEventProcessor));
 
-        this.addChildren(this.iRepresentationEventProcessor, "operations", List.of(this.operationIRepresentationEventProcessorGetRepresentation));
-        this.addChildren(this.iRepresentationEventProcessor, "operations", List.of(this.operationIRepresentationEventProcessorRefresh));
+        this.addMany(this.iRepresentationEventProcessor, "operations", List.of(this.operationIRepresentationEventProcessorGetRepresentation));
+        this.addMany(this.iRepresentationEventProcessor, "operations", List.of(this.operationIRepresentationEventProcessorRefresh));
 
-        this.addChildren(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetId));
-        this.addChildren(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetKind));
-        this.addChildren(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetLabel));
-        this.addChildren(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetDescriptionId));
+        this.addMany(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetId));
+        this.addMany(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetKind));
+        this.addMany(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetLabel));
+        this.addMany(this.iRepresentation, "operations", List.of(this.operationIRepresentationGetDescriptionId));
 
-        this.addChildren(this.iRepresentationDescription, "operations", List.of(this.operationIRepresentationDescriptionGetId));
-        this.addChildren(this.iRepresentationDescription, "operations", List.of(this.operationIRepresentationDescriptionGetLabel));
+        this.addMany(this.iRepresentationDescription, "operations", List.of(this.operationIRepresentationDescriptionGetId));
+        this.addMany(this.iRepresentationDescription, "operations", List.of(this.operationIRepresentationDescriptionGetLabel));
+
+        this.addMany(this.iDiagramEventProcessor, "extends", List.of(this.iRepresentationEventProcessor));
+        this.addMany(this.iFormEventProcessor, "extends", List.of(this.iRepresentationEventProcessor));
+        this.addMany(this.iTreeEventProcessor, "extends", List.of(this.iRepresentationEventProcessor));
+
+        this.addMany(this.diagramEventProcessor, "implements", List.of(this.iDiagramEventProcessor));
+        this.reference(this.diagramEventProcessor, "currentDiagram", false, this.diagram);
+        this.addMany(this.formEventProcessor, "implements", List.of(this.iFormEventProcessor));
+        this.reference(this.formEventProcessor, "currentForm", false, this.form);
+        this.addMany(this.treeEventProcessor, "implements", List.of(this.iTreeEventProcessor));
+        this.reference(this.treeEventProcessor, "currentTree", false, this.tree);
+    }
+
+    private void linkSiriusComponentsRepresentationsCode() {
+        this.addMany(this.siriusComponentsRepresentations, "packages", List.of(this.packageSiriusComponentsRepresentations));
+        this.addMany(this.siriusComponentsDiagrams, "packages", List.of(this.packageSiriusComponentsDiagrams, this.packageSiriusComponentsDiagramsDescription));
+        this.addMany(this.siriusComponentsForms, "packages", List.of(this.packageSiriusComponentsForms, this.packageSiriusComponentsFormsDescription));
+        this.addMany(this.siriusComponentsTrees, "packages", List.of(this.packageSiriusComponentsTrees, this.packageSiriusComponentsTreesDescription));
+
+        this.addMany(this.packageSiriusComponentsRepresentations, "types", List.of(this.iRepresentationDescription, this.iRepresentation));
+        this.addMany(this.packageSiriusComponentsDiagrams, "types", List.of(this.diagram, this.node, this.label, this.edge, this.size, this.position));
+        this.addMany(this.packageSiriusComponentsDiagramsDescription, "types", List.of(this.diagramDescription, this.nodeDescription, this.labelDescription, this.edgeDescription));
+        this.addMany(this.packageSiriusComponentsForms, "types", List.of(this.form, this.page, this.group, this.abstractWidget));
+        this.addMany(this.packageSiriusComponentsFormsDescription, "types", List.of(this.formDescription, this.pageDescription, this.groupDescription));
+        this.addMany(this.packageSiriusComponentsTrees, "types", List.of(this.tree, this.treeItem));
+        this.addMany(this.packageSiriusComponentsTreesDescription, "types", List.of(this.treeDescription));
+
+        this.addMany(this.diagram, "implements", List.of(this.iRepresentation));
+        this.reference(this.diagram, "nodes", true, this.node);
+        this.reference(this.diagram, "edges", true, this.edge);
+        this.reference(this.node, "label", false, this.label);
+        this.reference(this.node, "size", false, this.size);
+        this.reference(this.node, "position", false, this.position);
+        this.reference(this.edge, "beginLabel", false, this.label);
+        this.reference(this.edge, "centerLabel", false, this.label);
+        this.reference(this.edge, "endLabel", false, this.label);
+
+        this.addMany(this.form, "implements", List.of(this.iRepresentation));
+        this.reference(this.form, "pages", true, this.page);
+        this.reference(this.page, "groups", true, this.group);
+        this.reference(this.group, "widgets", true, this.abstractWidget);
+
+        this.addMany(this.tree, "implements", List.of(this.iRepresentation));
+        this.reference(this.tree, "treeItems", true, this.treeItem);
+
+        this.addMany(this.diagramDescription, "implements", List.of(this.iRepresentationDescription));
+        this.reference(this.diagramDescription, "nodeDescriptions", true, this.nodeDescription);
+        this.reference(this.nodeDescription, "labelDescription", true, this.labelDescription);
+        this.reference(this.diagramDescription, "edgeDescriptions", true, this.edgeDescription);
+
+        this.addMany(this.formDescription, "implements", List.of(this.iRepresentationDescription));
+        this.addMany(this.treeDescription, "implements", List.of(this.iRepresentationDescription));
     }
 
     private EClass eClass(String name) {
         return Optional.ofNullable(this.ePackage.getEClassifier(name)).filter(EClass.class::isInstance).map(EClass.class::cast).orElse(null);
     }
 
-    private void addChildren(EObject parentEObject, String featureName, List<EObject> childEObjects) {
+    private void addMany(EObject parentEObject, String featureName, List<EObject> childEObjects) {
         var value = parentEObject.eGet(parentEObject.eClass().getEStructuralFeature(featureName));
         if (value instanceof Collection<?>) {
             var collection = (Collection<EObject>) value;
@@ -344,7 +594,7 @@ public class TestService {
         var interactionEClass = this.eClass("Interaction");
         var interaction = this.eFactory.create(interactionEClass);
         interaction.eSet(interactionEClass.getEStructuralFeature("target"), targetActivity);
-        this.addChildren(sourceActivity, "interactions", List.of(interaction));
+        this.addMany(sourceActivity, "interactions", List.of(interaction));
     }
 
     private EObject component(String name) {
@@ -384,6 +634,13 @@ public class TestService {
         return interfaceEObject;
     }
 
+    private EObject classEObject(String name) {
+        var classEClass = this.eClass("Class");
+        var classEObject = this.eFactory.create(classEClass);
+        classEObject.eSet(classEClass.getEStructuralFeature("name"), name);
+        return classEObject;
+    }
+
     private EObject operation(String name) {
         var operationEClass = this.eClass("Operation");
         var operation = this.eFactory.create(operationEClass);
@@ -393,6 +650,16 @@ public class TestService {
 
     private void realizedBy(EObject sourceActivity, EObject targetComponent) {
         sourceActivity.eSet(sourceActivity.eClass().getEStructuralFeature("realizedBy"), targetComponent);
+    }
+
+    private void reference(EObject parent, String name, boolean isMany, EObject type) {
+        var referenceEClass = this.eClass("Reference");
+        var referenceEObject = this.eFactory.create(referenceEClass);
+        referenceEObject.eSet(referenceEClass.getEStructuralFeature("name"), name);
+        referenceEObject.eSet(referenceEClass.getEStructuralFeature("many"), isMany);
+        referenceEObject.eSet(referenceEClass.getEStructuralFeature("type"), type);
+
+        this.addMany(parent, "references", List.of(referenceEObject));
     }
 
 }
