@@ -100,6 +100,7 @@ public class NodeComponent implements IComponent {
 
                 cache.put(nodeDescription.getId(), nodeElement);
                 cache.put(semanticElement, nodeElement);
+                cache.put(nodeElement, this.props.getParentElementId());
             }
 
         }
