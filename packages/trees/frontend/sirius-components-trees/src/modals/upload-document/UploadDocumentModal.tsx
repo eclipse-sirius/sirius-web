@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,13 +20,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormGroup from '@material-ui/core/FormGroup';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { sendFile } from 'common/sendFile';
-import { FileUpload } from 'core/file-upload/FileUpload';
-import { Form } from 'core/form/Form';
-import React, { useContext, useEffect } from 'react';
+
+import { useContext, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
+import { sendFile } from '../../common/sendFile';
+import { FileUpload } from '../../core/file-upload/FileUpload';
 import { GQLErrorPayload, GQLUploadDocumentPayload, UploadDocumentModalProps } from './UploadDocumentModal.types';
 import {
   HandleResponseEvent,
@@ -62,9 +63,21 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
   const { file, message } = context;
 
   const { httpOrigin } = useContext(ServerContext);
-
+  const useFormStyles = makeStyles((theme) => ({
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      paddingTop: theme.spacing(1),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      '& > *': {
+        marginBottom: theme.spacing(2),
+      },
+    },
+  }));
+  const styles = useFormStyles();
   // Execute the upload of a document and redirect to the newly created document
-  const uploadDocument = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const uploadDocument = async () => {
     const requestDocumentUploadingEvent: RequestDocumentUploadingEvent = { type: 'REQUEST_DOCUMENT_UPLOADING' };
     dispatch(requestDocumentUploadingEvent);
 
@@ -120,11 +133,11 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
         <DialogTitle id="dialog-title">Upload new model</DialogTitle>
         <DialogContent>
-          <Form id="upload-form-id" onSubmit={uploadDocument} encType="multipart/form-data">
+          <form id="upload-form-id" onSubmit={uploadDocument} encType="multipart/form-data" className={styles.form}>
             <FormGroup>
-              <FileUpload onFileSelected={onFileSelected} data-testid="file" />
+              <FileUpload onFileSelected={onFileSelected} dataTestid="file" />
             </FormGroup>
-          </Form>
+          </form>
         </DialogContent>
         <DialogActions>
           <Button

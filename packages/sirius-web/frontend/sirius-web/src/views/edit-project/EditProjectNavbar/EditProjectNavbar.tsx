@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  DeleteProjectModal,
-  NewDocumentModal,
-  RenameProjectModal,
-  UploadDocumentModal,
-} from '@eclipse-sirius/sirius-components';
+import { DeleteProjectModal, RenameProjectModal } from '@eclipse-sirius/sirius-components';
 import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -24,12 +19,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { emphasize, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PublishIcon from '@material-ui/icons/Publish';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React, { useContext, useReducer } from 'react';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
@@ -97,13 +90,7 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
 
   let modal = null;
   if (project) {
-    if (modalDisplayed === 'CreateDocument') {
-      modal = <NewDocumentModal editingContextId={project.currentEditingContext.id} onClose={onCloseModal} />;
-    } else if (modalDisplayed === 'UploadDocument') {
-      modal = (
-        <UploadDocumentModal editingContextId={project.id} onDocumentUploaded={onCloseModal} onClose={onCloseModal} />
-      );
-    } else if (modalDisplayed === 'RenameProject') {
+    if (modalDisplayed === 'RenameProject') {
       modal = (
         <RenameProjectModal
           projectId={project.id}
@@ -142,23 +129,6 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
         anchorEl={projectMenuAnchor}
         data-testid="navbar-contextmenu"
         onClose={() => dispatch({ type: HANDLE_CLOSE_CONTEXT_MENU__ACTION })}>
-        <MenuItem
-          onClick={() => dispatch({ modalDisplayed: 'CreateDocument', type: HANDLE_SHOW_MODAL__ACTION })}
-          data-testid="new-model">
-          <ListItemIcon>
-            <AddIcon />
-          </ListItemIcon>
-          <ListItemText primary="New model" />
-        </MenuItem>
-        <MenuItem
-          divider
-          data-testid="upload-document"
-          onClick={() => dispatch({ modalDisplayed: 'UploadDocument', type: HANDLE_SHOW_MODAL__ACTION })}>
-          <ListItemIcon>
-            <PublishIcon />
-          </ListItemIcon>
-          <ListItemText primary="Upload model" />
-        </MenuItem>
         <MenuItem onClick={() => dispatch({ modalDisplayed: 'RenameProject', type: HANDLE_SHOW_MODAL__ACTION })}>
           <ListItemIcon>
             <EditIcon />

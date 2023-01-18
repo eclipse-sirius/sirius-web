@@ -44,6 +44,7 @@ On top of that, creating more complex subscriptions involving the representation
 The scheduling policy of our various `IRepresentationEventProcessor` will thus be updated in order to ensure that the subscription will be performed in another thread.
 - https://github.com/eclipse-sirius/sirius-components/issues/1615[#1615] [diagram] `DiagramDescription.getTools()` has been removed.
 It was not actually used, as tools have long been found in `DiagramDescription.getToolSections()` instead.
+- https://github.com/eclipse-sirius/sirius-components/issues/1588[#1588] [project] Moved the action "New Model" and "Upload model" in a new tree toolbar
 
 === Dependency update
 
@@ -91,6 +92,9 @@ Using the view DSL, one can use the expression `aql:collapsingState.toString() =
 - https://github.com/eclipse-sirius/sirius-components/issues/1583[#1583] [diagram] Add support for diagram nodes labels' auto-wrap
 +
 image:doc/images/Diagram_node_labels_auto_wrap.png[width=517,height=424]
+- https://github.com/eclipse-sirius/sirius-components/issues/1588[#1588] [tree] Add support for enabling/disabling the synchronization between the explorer and the current selection.
+When it is enabled, if the current selection is not visible in the explorer, it will be revealed by expanding the relevant tree items.
+On the other hand, when it is disabled, the selection will be visible in the explorer but no tree items will be automatically expanded.
 
 === Improvements
 

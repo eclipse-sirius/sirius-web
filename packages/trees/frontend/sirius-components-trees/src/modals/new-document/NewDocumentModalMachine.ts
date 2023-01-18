@@ -10,12 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import { assign, Machine } from 'xstate';
 import {
   GQLCreateDocumentMutationData,
   GQLGetStereotypeDescriptionsQueryData,
   StereotypeDescription,
-} from 'modals/new-document/NewDocumentModal.types';
-import { assign, Machine } from 'xstate';
+} from './NewDocumentModal.types';
 
 export interface NewDocumentModalStateSchema {
   states: {

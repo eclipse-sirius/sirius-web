@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,8 @@ export interface ExplorerViewContext {
   tree: GQLTree | null;
   expanded: string[];
   maxDepth: number;
-  synchronized: boolean;
+  synchronizedSelection: boolean;
+  synchronizedWithRepresentation: boolean;
   message: string | null;
 }
 
@@ -60,7 +61,11 @@ export type HandleSubscriptionResultEvent = {
   result: SubscriptionResult<GQLExplorerEventData>;
 };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-export type SynchronizeEvent = { type: 'SYNCHRONIZE'; synchronized: boolean };
+export type SynchronizeSelectionEvent = { type: 'SYNCHRONIZE_SELECTION'; synchronizedSelection: boolean };
+export type SynchronizeWithRepresentationEvent = {
+  type: 'SYNCHRONISE_WITH_REPRESENTATION';
+  synchronizedWithRepresentation: boolean;
+};
 export type HandleExpandedEvent = { type: 'HANDLE_EXPANDED'; id: string; depth: number };
 export type HandleTreePathEvent = { type: 'HANDLE_TREE_PATH'; treePathData: GQLGetTreePathData };
 export type ExplorerViewEvent =
@@ -68,9 +73,10 @@ export type ExplorerViewEvent =
   | HandleCompleteEvent
   | ShowToastEvent
   | HideToastEvent
-  | SynchronizeEvent
+  | SynchronizeSelectionEvent
   | HandleExpandedEvent
-  | HandleTreePathEvent;
+  | HandleTreePathEvent
+  | SynchronizeWithRepresentationEvent;
 
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload.__typename === 'TreeRefreshedEventPayload';
@@ -83,7 +89,8 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
       tree: null,
       expanded: [],
       maxDepth: 1,
-      synchronized: true,
+      synchronizedSelection: true,
+      synchronizedWithRepresentation: true,
       message: null,
     },
     states: {
@@ -132,8 +139,8 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
                 target: 'ready',
                 actions: 'handleSubscriptionResult',
               },
-              SYNCHRONIZE: {
-                actions: 'synchronize',
+              SYNCHRONIZE_SELECTION: {
+                actions: 'synchronizeSelection',
               },
               HANDLE_EXPANDED: {
                 actions: 'expand',
@@ -143,6 +150,9 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
               },
               HANDLE_COMPLETE: {
                 target: 'complete',
+              },
+              SYNCHRONISE_WITH_REPRESENTATION: {
+                actions: 'synchronizeWithRepresentation',
               },
             },
           },
@@ -172,9 +182,16 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
         }
         return {};
       }),
-      synchronize: assign((_, event) => {
-        const { synchronized } = event as SynchronizeEvent;
-        return { synchronized };
+      synchronizeWithRepresentation: assign((_, event) => {
+        const { synchronizedWithRepresentation } = event as SynchronizeWithRepresentationEvent;
+        return {
+          synchronizedWithRepresentation: synchronizedWithRepresentation,
+          synchronized: synchronizedWithRepresentation,
+        };
+      }),
+      synchronizeSelection: assign((_, event) => {
+        const { synchronizedSelection } = event as SynchronizeSelectionEvent;
+        return { synchronizedSelection };
       }),
       expand: assign((context, event) => {
         const { expanded, maxDepth } = context;
@@ -185,7 +202,7 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
           newExpanded.splice(newExpanded.indexOf(id), 1);
 
           // Disable synchronize mode on collapse
-          return { expanded: newExpanded, synchronized: false, maxDepth: Math.max(maxDepth, depth) };
+          return { expanded: newExpanded, synchronizedSelection: false, maxDepth: Math.max(maxDepth, depth) };
         }
         return { expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) };
       }),
