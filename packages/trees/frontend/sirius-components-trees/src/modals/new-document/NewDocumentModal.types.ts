@@ -10,11 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '../../workbench/Workbench.types';
 export interface NewDocumentModalProps {
   editingContextId: string;
-  item: any;
-  setSelection: (selection: Selection) => void;
   onClose: () => void;
 }
 
