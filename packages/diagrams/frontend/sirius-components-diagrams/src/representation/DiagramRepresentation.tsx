@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1288,6 +1288,7 @@ export const DiagramRepresentation = ({
         onArrangeAll={onArrangeAll}
         onUnhideAll={onUnhideAll}
         onUnfadeAll={onUnfadeAll}
+        readOnly={readOnly}
         setZoomLevel={setZoomLevel}
         autoLayout={diagram?.autoLayout}
         zoomLevel={zoomLevel}

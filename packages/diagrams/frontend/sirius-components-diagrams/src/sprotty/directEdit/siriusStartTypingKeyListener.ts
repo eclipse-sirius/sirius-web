@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { EditLabelAction, isSelectable, KeyListener, SModelElement } from 'sprotty';
+import { EditLabelAction, isEditableLabel, isSelectable, KeyListener, SModelElement } from 'sprotty';
 import { Action } from 'sprotty-protocol';
 import { matchesKeystroke } from 'sprotty/lib/utils/keyboard';
 import { Label } from '../Diagram.types';
@@ -41,12 +41,12 @@ export class StartTypingKeyListener extends KeyListener {
          * label kept the old index.
          */
         const label = item.editableLabel;
-        if (label) {
+        if (label && isEditableLabel(label)) {
           const editableLabel = item.children.find((c) => c instanceof Label);
           editableLabel.initialText = event.key;
           editableLabel.preSelect = false;
+          actions.push(EditLabelAction.create(label.id));
         }
-        actions.push(EditLabelAction.create(label.id));
       });
       return actions;
     }

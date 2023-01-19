@@ -58,6 +58,7 @@ image:doc/images/View_edit_begin_label_in_action.png[width=550,height=234]
 They can be used as any custom image (e.g. in a View-based diagram), but their precise shape is partially computed on the backend, in this case to adjust the size of the label compartment to the actual label's width.
 - https://github.com/eclipse-sirius/sirius-components/issues/1563[#1563] [view] If a diagram description does not explicitly configure a delete/direct edit/element creation tool, the corresponding behavior is simply disabled.
 By default, new nodes, edges and tools are explicitly configured to invoke the default canonical behavior; it is just made explicit in the model and can now serve as a based or removed to disable the behavior.
+- https://github.com/eclipse-sirius/sirius-components/issues/1558[#1558] [diagram] When a diagram is read-only, the following actions are now disabled: _Arrange All_, _Reveal hidden_ and _Reveal faded_ elements, and triggering direct edit or delete from the keyboard.
 
 == v2023.1.0
 

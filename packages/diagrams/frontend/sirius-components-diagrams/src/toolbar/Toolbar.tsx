@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ export const Toolbar = ({
   onArrangeAll,
   onUnhideAll,
   onUnfadeAll,
+  readOnly,
   setZoomLevel,
   autoLayout,
   zoomLevel,
@@ -148,7 +149,7 @@ export const Toolbar = ({
           color="inherit"
           aria-label="arrange-all"
           title="Arrange all"
-          disabled={autoLayout}
+          disabled={autoLayout || readOnly}
           onClick={onArrangeAll}
           data-testid="arrange-all">
           <AccountTreeIcon fontSize="small" />
@@ -161,6 +162,7 @@ export const Toolbar = ({
           color="inherit"
           aria-label="reveal hidden elements"
           title="Reveal hidden elements"
+          disabled={readOnly}
           onClick={onUnhideAll}
           data-testid="reveal-hidden-elements">
           <VisibilityOffIcon fontSize="small" />
@@ -170,6 +172,7 @@ export const Toolbar = ({
           color="inherit"
           aria-label="reveal faded elements"
           title="Reveal faded elements"
+          disabled={readOnly}
           onClick={onUnfadeAll}
           data-testid="reveal-faded-elements">
           <TonalityIcon fontSize="small" />
