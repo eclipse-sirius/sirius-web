@@ -6,6 +6,7 @@
 
 - [ADR-085] Add support for project templates
 - [ADR-086] Add support of Edges as targets of single click tools
+- [ADR-087] Keep custom node size on Arrange All when possible
 
 === Breaking changes
 

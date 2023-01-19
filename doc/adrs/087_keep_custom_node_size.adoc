@@ -1,0 +1,36 @@
+= ADR-087 - Keep custom node size on Arrange All when possible
+
+== Context
+
+When the studio maker specifies a width/height for a node, it is always ignored by ELK on an _Arrange All_ operation.
+This also occurs when the end-user has explicitly set a custom size.
+
+It should be possible to configure a node's style so that, barring other constraints, both the incremental and full layouts keep the size defined by the size-provider.
+
+== Decision
+
+We already have the `CustomizableProperties.Size` flag, which is set when the *end-user* resizes a node.
+It indicates that the user-supplied size should take priority over the default size (from the node's sizeProvider).
+It is currently only taken into account by the incremental layout; ELK ignores it during an "Arrange All".
+
+First, we will change the ELK configuration so that if the flag is present, and there are no incompatible constraints, ELK keeps the current size for the node.
+This may not be possible for all kinds of nodes.
+In particular, for nodes which contain sub-nodes (containers), ELK will ignore this flag, as part of the contract for the "Arrange All" layout is to compute the "best" size for containers.
+
+This should however work for "leaf nodes" (nodes with no children) of type:
+
+- rectangle;
+- image;
+- parametric SVG images.
+
+For rectangles, currently the node's label is always placed inside, so the new size must always be large enough to contain the label, regardless of the user-set size.
+
+Secondly, we will add a new flag to node styles to indicate that the `CustomizableProperties.Size` should automatically be applied when a new node is created, initially with the size returned by its `sizeProvider`.
+The behavior will be equivalent to the end-user having explicitly resized the node to the same size as returned by the `sizeProvider`.
+
+== Status
+
+Draft.
+
+== Consequences
+
