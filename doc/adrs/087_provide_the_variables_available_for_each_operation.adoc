@@ -1,0 +1,171 @@
+= ADR-087 - Provide the variables available for each operation
+
+== Context
+
+We need to know the variables available for an operation to document them, provide content assist and validate operations to help specifiers.
+
+All operations may have different variables.
+Given the way a representation description is organized, the number of variables and their type may change.
+We need to give access to the list of the variables in:
+
+- Our documentation
+- The Java API
+- The details view for the View DSL
+
+We need to keep in mind that a single operation implemented by the Java API may be transformed into multiple operations in the view DSL with different variables.
+A simple Java tool handler may become a complex set of model operations with several expressions which may come with specific variables.
+
+This is both a very important topic and a very complex one.
+We can't fulfill every requirement on the first try, so we will have to try to cover as much as possible with a small investment.
+
+== Decision
+
+=== Define operations
+
+We will list all the operations in the application.
+An operation may be implemented by one or many Java handlers or expressions.
+It is a simple key used to attach variables to Java code or expressions.
+We will thus need to map operations with the way they are interpreted (Java code or expressions).
+
+For that, we will start listing all the operations available, for example in the diagram representation:
+
+[source,java]
+----
+public interface IOperationProvider {
+  List<String> getOperations();
+}
+----
+
+[source,java]
+----
+public class DiagramOperationProvider implements IOperationProvider {
+  @Override
+  public <String> getOperations() {
+    return List.of(
+      "Diagram#canCreate",
+      "Diagram#label",
+      "Diagram#targetObjectId",
+      "Node#semanticElements",
+      "Edge#shouldRender"
+    );
+  }
+}
+----
+
+=== Define variables
+
+Once the operations are defined, we can define the variables which can be available for an operation.
+
+[source,java]
+----
+public interface IVariableProvider {
+  List<Variable> getVariables(String operation);
+}
+----
+
+[source,java]
+----
+public record Variable(String name, List<Class<?>> types, String documentation) {}
+----
+
+[source,java]
+----
+public final class CommonVariables {
+
+  public static final Variable ENVIRONMENT = new Variable("environment", Environment.class, "...");
+  public static final Variable EDITING_CONTEXT = new Variable("editingContext", IEditingContext.class, "...");
+  public static final Variable SELF = new Variable("self", Object.class, "...");
+
+
+  private CommonVariables() {
+    // Prevent instantiation
+  }
+}
+----
+
+[source,java]
+----
+import static CommonVariables.ENVIRONMENT;
+import static CommonVariables.EDITING_CONTEXT;
+import static CommonVariables.SELF;
+
+public class DiagramVariableProvider implements IVariableProvider {
+
+  private static final Variable SEMANTIC_EDGE_SOURCE = new Variable("semanticEdgeSource", Object.class, "...");
+  private static final Variable SEMANTIC_EDGE_TARGET = new Variable("semanticEdgeTarget", Object.class, "...");
+  private static final Variable GRAPHICAL_EDGE_SOURCE = new Variable("graphicalEdgeSource", Element.class, "...");
+  private static final Variable GRAPHICAL_EDGE_TARGET = new Variable("graphicalEdgeSource", Element.class, "...");
+
+  @Override
+  public List<Variable> getVariables(String operation) {
+    return switch (operation) {
+      case "Diagram#canCreate", "Diagram#label", "Diagram#targetObjectId" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF);
+      case "Node#semanticElements" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF);
+      case "Edge#shouldRender" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET)
+      default -> List.of();
+    }
+  }
+}
+----
+
+=== Attach operations
+
+After that, we will attach the operation definition to the code responsible for their execution.
+For that, we can use a simple annotation to indicate that some Java handler is used to implement a specific operation:
+
+[source,java]
+----
+@Operation("Node#semanticElements")
+public class SemanticCandidatesProvider implements Function<VariableManager, List<?>> {
+  public List<?> apply(VariableManager variableManager) {
+    return List.<Object>of();
+  }
+}
+----
+
+Using this annotation, we could start validating the variables attached to the operation to ensure that our expectations are matching what is really happening:
+
+[source,java]
+----
+public interface IOperationValidator {
+  void validate(Object object, VariableManager variableManager);
+}
+----
+
+[source,java]
+----
+@Operation("Node#semanticElements")
+public class SemanticCandidatesProvider implements Function<VariableManager, List<?>> {
+  private final IOperationValidator operationValidator;
+
+  public List<?> apply(VariableManager variableManager) {
+    this.operationValidator.validate(this, variableManager);
+
+    return List.<Object>of();
+  }
+}
+----
+
+The operation validator would have for only job to check the `@Operation` annotation on the class and ensure that the variables found at runtime are matching what was expected.
+It could thus log as a warning, missing variables, and as an info, additional variables.
+
+In a similar fashion, we can attach the operation to an expression using an EAnnotation on objects of the View DSL to indicate that the feature NodeDescription#semanticCandidatesExpression is linked to the operation `Node#semanticElements`.
+
+
+=== Generate the documentation
+
+It should be possible after that to generate the list of all the available variables for each expression of the view DSL and for all Java handlers.
+
+== Status
+
+WIP
+
+== Consequences
+
+Such support would give us the ability to list all the variables which should be available for all operations of your representations both in Java and in the View DSL.
+This would represent a foundation that would be improved in the future to solve additional problems such as:
+
+- Dynamically compute the type of the variables (specifying a domain type in the View DSL should change the type of `self`)
+- Dynamically compute the list of the variables using the description
+- Define the expected result for every operation
+- Support more precise completion of AQL expressions
