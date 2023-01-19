@@ -13,6 +13,7 @@
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Java 17
+- [backend] Switch to EMFJson 2.3.4
 
 === New Features
 
