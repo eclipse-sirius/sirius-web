@@ -5,7 +5,8 @@
 === Architectural decision records
 
 - [ADR-085] Add support for project templates
-- [ADR-086] Add support of Edges as targets of single click tools
+- [ADR-086] Add support of edges as targets of single click tools
+- [ADR-087] Provide the variables available to each operation
 
 === Breaking changes
 
