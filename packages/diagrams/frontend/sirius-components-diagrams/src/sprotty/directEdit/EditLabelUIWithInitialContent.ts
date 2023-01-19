@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,7 @@ export class EditLabelUIWithInitialContent extends EditLabelUI {
             this.editControl.setSelectionRange(0, this.editControl.value.length);
           }
         } catch (error) {
-          // We should probably tells Srotty an error has occurred to give feedback to the user. Hope he will not wait to long !!
+          // We should probably tells Sprotty an error has occurred to give feedback to the user. Hope he will not wait to long !!
         }
       }
     } else {
