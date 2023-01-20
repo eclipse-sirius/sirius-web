@@ -1,0 +1,59 @@
+= ADR-086 - Provide better control on contextual palette's content
+
+== Context
+
+In View-based diagrams, the rules which define the content of the contextual palette of an element from the actual View model are hard to understand and require all sorts of workarounds in concrete modelers to get a usable behavior.
+
+Currently, if a node or edge descriptions defines a _Label Edit_ or _Delete_ tool, these will be available on the contextual palette of instances of that description.
+This is fine: it's easy to understand and control, especially with https://github.com/eclipse-sirius/sirius-components/issues/1563.
+
+However, the rule for _Node Tool_ or _Edge Tools_ are different, hard to understand and require all sorts of workarounds in concrete modelers to get a usable behavior.
+Concretely, a _Node Tool_ defined in a node description _ND_ will not appear in the palette of _ND_ instances, but in the palette of elements which _can contain_ instances of _ND_.
+This choice was made when _Node Tool_ were initialy designed as tools to *create new instances* of a node, so it made sense to make them available in the context(s) where those new instances can be created.
+However _Node Tools_ can have an arbitrary behavior, not just for creating new instances.
+In practical modelers it is often needed to create a tool that will apply some transformation on the node it is applied to.
+Currently, the only way to do this is to create these tools not on the actual target but on one of its child element.
+If the node does not have any child, one has to create a "dummy" child node, with an empty `semanticCandidateExpression` just for the purpose of holding the tool(s) that one want to appear in the parent's palette.
+
+The initial reasoning and issues are similar for _Edge Tools_.
+An additional issue/limitation for edges is that it currently not possible to create "single element" tools that apply to them, even though the core runtime (will) supports this with https://github.com/eclipse-sirius/sirius-components/issues/1574.
+
+== Decision
+
+Following a similar philosophy as in https://github.com/eclipse-sirius/sirius-components/issues/1563 we will change the View DSL to make the rules simpler and more explicit directly in the model.
+
+We will add a new _Palette_ child element in:
+
+- _Node Description_
+- _Edge Description_
+- _Diagram Description_
+
+A _Palette_ will have specific fields for _Label Edit_, _Delete_ (on _Node_ and _Edge_ descriptions) and _Drop Tool_ on _Diagram Description_ as these are special and at most one instance of them can exist.
+This will require specific sub-types of _Palette_, e.g. _DiagramPalette_ and _DiagramElementPalette_.
+
+A _Palette_ will also *contain* any number of tools.
+The palette of both nodes and edges will be able to contain "Node Tools" (`SingleClickOnDiagramElementTool`) and "Edge Tools" (`SingleClickOnTwoDiagramElementsTool`).
+We will need new names for them in the model/UI to reflect the fact they are more generic.
+
+Applying `SingleClickOnDiagramElementTool` on edge will be supported thanks to the work already done for https://github.com/eclipse-sirius/sirius-components/issues/1574.
+
+Applying `SingleClickOnTwoDiagramElementsTool` on nodes may require some additional work.
+
+A _Palette_ will also be able to _reference_ tools defined elsewhere in the model to support reuse of tool definitions.
+If a tool _T_ is *defined* inside the palette of node description _ND1_ and *reused* in the palette of node description _ND2_, it will appear in the palette of instances of _ND2_ and behave exactly as if it had been defined directly in the palette of _ND2_.
+It is the responsibility of the tool implementer to make sur the body of the tool can apply in all the contexts where it is referenced/reused.
+
+This work will require no changes on the frontend.
+Change will only concern the View DSL definition, `ViewDiagramDescriptionConverter` and `ViewToolSectionsProvider` (and maybe auxiliary classes).
+
+== Status
+
+Draft.
+
+== Consequences
+
+- Studio makers will have an easier control on which tools appear in the palette of each element of their diagrams.
+- It will be possible to reuse tool definitions to avoid duplication.
+This means reused tools must be implemented in a way that supports execution from different contexts.
+- In this proposed version there is no way to organise the tools in a palette in different sections.
+This would certainly be possible but add more complexity to the model (e.g. add a _Tool Section_ element inside _Palette_).

@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-085] Add support for project templates
+- [ADR-086] Provide better control on contextual palette's content
 
 === Breaking changes
 
