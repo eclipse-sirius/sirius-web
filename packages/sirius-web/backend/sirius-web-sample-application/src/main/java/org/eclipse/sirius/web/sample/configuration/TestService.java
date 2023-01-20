@@ -14,12 +14,19 @@ package org.eclipse.sirius.web.sample.configuration;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.view.NodeDescription;
 
 /**
  * Java Service for the test view.
@@ -28,6 +35,9 @@ import org.eclipse.emf.ecore.EPackage;
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class TestService {
+
+    private final IObjectService objectService;
+
     private EPackage ePackage;
 
     private EFactory eFactory;
@@ -242,11 +252,16 @@ public class TestService {
 
     private EObject operationIRepresentationDescriptionGetLabel;
 
-    public EObject initialize(EObject eObject) {
+    public TestService(IObjectService objectService) {
+        this.objectService = Objects.requireNonNull(objectService);
+    }
+
+    public EObject initialize(EObject eObject, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
         this.ePackage = eObject.eClass().getEPackage();
         this.eFactory = this.ePackage.getEFactoryInstance();
 
-        this.createOperationalObjects();
+        this.createOperationalObjects(diagramContext, convertedNodes);
         this.createComponents();
         this.createCode();
 
@@ -259,10 +274,12 @@ public class TestService {
                 List.of(this.siriusWebApplication, this.siriusComponentsCore, this.siriusComponentsCollaborative, this.siriusComponentsRepresentations, this.siriusComponentsCollaborativeDiagrams,
                         this.siriusComponentsDiagrams, this.siriusComponentsCollaborativeForms, this.siriusComponentsForms, this.siriusComponentsCollaborativeTrees, this.siriusComponentsTrees));
 
+        this.drop(this.eclipseFoundation, null, diagramContext, convertedNodes);
+
         return eObject;
     }
 
-    private void createOperationalObjects() {
+    private void createOperationalObjects(IDiagramContext diagramContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
         this.eclipseFoundation = this.operationalEntity("Eclipse Foundation");
         this.githubOrganization = this.operationalPerimeter("Github");
         this.siriusWeb = this.operationalPerimeter("Sirius Web");
@@ -660,6 +677,37 @@ public class TestService {
         referenceEObject.eSet(referenceEClass.getEStructuralFeature("type"), type);
 
         this.addMany(parent, "references", List.of(referenceEObject));
+    }
+
+    public EObject drop(EObject self, Node selectedNode, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
+        // @formatter:off
+        var parentElementId = Optional.ofNullable(selectedNode)
+                .map(Node::getTargetObjectId)
+                .orElse(diagramContext.getDiagram().getId());
+
+        var targetObjectId = this.objectService.getId(self);
+
+        var domainType = self.eClass().getEPackage().getName() + "::" + self.eClass().getName();
+        var nodeDescriptionName = "Node " + domainType;
+
+        var descriptionId = convertedNodes.entrySet().stream()
+                .filter(entry -> entry.getKey().getName().equals(nodeDescriptionName))
+                .findFirst()
+                .map(entry -> entry.getValue().getId())
+                .orElse(null);
+
+        if (parentElementId != null && targetObjectId != null && descriptionId != null) {
+            var viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+                    .parentElementId(parentElementId)
+                    .targetObjectId(targetObjectId)
+                    .descriptionId(descriptionId)
+                    .build();
+            diagramContext.getViewCreationRequests().add(viewCreationRequest);
+        }
+        // @formatter:on
+
+        return self;
     }
 
 }
