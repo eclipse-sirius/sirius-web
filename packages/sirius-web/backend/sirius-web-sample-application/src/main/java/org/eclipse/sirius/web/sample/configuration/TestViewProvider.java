@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 
@@ -81,6 +82,14 @@ public class TestViewProvider {
         this.diagramDescription.setName("Diagram");
         this.diagramDescription.setTitleExpression(this.domain.getName() + " Diagram");
         this.diagramDescription.setAutoLayout(false);
+
+        var dropTool = ViewFactory.eINSTANCE.createDropTool();
+        dropTool.setName("Drop Tool");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:self.drop(selectedNode, diagramContext, convertedNodes)");
+        dropTool.getBody().add(changeContext);
+        this.diagramDescription.setOnDrop(dropTool);
+
         view.getDescriptions().add(this.diagramDescription);
 
         this.createNodeDescriptions();
@@ -200,20 +209,34 @@ public class TestViewProvider {
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalEntities");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeDescription.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
 
         var defaultNodeTool = ViewFactory.eINSTANCE.createNodeTool();
         defaultNodeTool.setName("New Operational Entity");
+
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:self");
 
         var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
         createInstance.setReferenceName("operationalEntities");
         createInstance.setTypeName(this.domainType(this.entity("OperationalEntity")));
+        createInstance.setVariableName("self");
 
+        var createView = ViewFactory.eINSTANCE.createCreateView();
+        createView.setElementDescription(nodeDescription);
+        createView.setSemanticElementExpression("aql:self");
+        createView.setParentViewExpression("aql:selectedNode");
+
+        var setValue = ViewFactory.eINSTANCE.createSetValue();
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:'New Operational Entity'");
+
+        createView.getChildren().add(setValue);
+        createInstance.getChildren().add(createView);
         changeContext.getChildren().add(createInstance);
         defaultNodeTool.getBody().add(changeContext);
 
-        nodeDescription.getNodeTools().addAll(List.of(defaultNodeTool, this.getInitializeNodeTool()));
+        nodeDescription.getNodeTools().addAll(List.of(this.getInitializeNodeTool(), defaultNodeTool));
 
         return nodeDescription;
     }
@@ -223,7 +246,7 @@ public class TestViewProvider {
         initializeNodeTool.setName("Initialize Data");
 
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:self.initialize()");
+        changeContext.setExpression("aql:self.initialize(diagramContext, convertedNodes)");
 
         initializeNodeTool.getBody().add(changeContext);
 
@@ -769,7 +792,7 @@ public class TestViewProvider {
 
     private NodeDescription createNodeDescription(String domainType) {
         var nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeDescription.setName(domainType + " node");
+        nodeDescription.setName("Node " + domainType);
         nodeDescription.setDomainType(domainType);
         return nodeDescription;
     }
