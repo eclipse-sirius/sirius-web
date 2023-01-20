@@ -1,0 +1,395 @@
+:imagesdir: images/090
+= ADR-090 - Improve support for compartment
+
+== Context
+
+In the ADR `069 add support for children layout strategy`, we discussed layout improvement.
+How we should handle the layout of nodes and their children.
+At this time ELK was not able to lay out children nodes as a list.
+We were doing the layout of children nodes as a list ourselves.
+Since we have improved the ELK configuration to support the layout of children nodes as list, we can now support free-form compartments.
+
+=== State of the art
+
+We need to take account of the way ELK compute the size of nodes since we don't want the incremental layout to update the node size the next refresh after a diagram creation or an `arrange all`.
+
+==== Label placement and node size
+
+In this section we suppose the node size options contain the option `NODE_LABELS`.
+The size of a node depends on many properties, among them the placement of the label.
+With ELK the label can be placed outside or inside the node.
+We are not going into details for outside labels because all ELK layout options for outside node will not be supported in the incremental layout.
+Keep in mind that outside node will be supported only on top and horizontally centrered.
+
+image:090_node_division.png[ELK divide each node into nine parts indentified by the combination of the two sets \[TOP; CENTER; BOTTOM\] and \[LEFT; CENTER; RIGHT\].]
+
+To compute the size of a node, ELK has two possible formula and take the max size computed between the two.
+One uses only label size and label padding, the other one uses the children area size, the node padding, the label and some part of the label padding.
+
+The first formula whether it is used to compute the width or the height, uses the label padding left, the label padding right and the label width to compute the width while, it uses the label padding top, the label padding bottom and the label height to compute the height.
+
+NOTE: Labels on [CENTER, CENTER] will overlap children nodes.
+
+To illustrate the second formula, we will suppose the label is position at [TOP, CENTER] of the node.
+ELK will consider that children are placed in the [CENTER, CENTER] area.
+
+===== Node height children aware
+
+image:090_node_height_children_aware.png[One node with an inside label and a children area. (1): padding top between the label and the top border; (2): label height; (3): padding top between the node and the label; (4): children area height; (5): padding bottom between the children area and the bottom border]
+
+Since the label is on `TOP`, ELK considers, as a possible height, the sum of (1): the `label padding top`, (2): the `label height`, (3): the `node padding top`, (4): the `children area height` and (5): the `node padding bottom`.
+
+===== Node height excluding children
+
+image:090_node_height_excluding_children.png[One node with an inside label and a children area. (1): padding top between the label and the top border; (2): label height; (3): label padding bottom between the label and the bottom border; (4): children area; ]
+
+Since the label is on `TOP`, ELK considers, as a possible height, the sum of (1): the `label padding top`, (2): the `label height`, (3): the `label padding bottom`.
+
+===== Node width
+
+In this example, ELK considers the width of the column `CENTER` since both the label and children are horizontally centered.
+The width of the node wil be :
+
+[source,java]
+----
+double labelOnlyWidth = labelPadding.left + label.width + labelPaddin.right;
+double childrenWidth = nodePadding.left + childrenArea.width + nodePadding.right;
+double nodeWidth = Math.max(labelOnlyWidth, childrenWidth);
+----
+
+[NOTE]
+====
+
+ELK uses the same process to compute de width of the node.
+ELK will take into accout the label padding left or right if the label is placed on the left or on the right of the node like it does when the label is on `TOP` or `BOTTOM`.
+
+====
+
+
+==== Conclusion
+
+Whether the size of the children area increase or decrease, ELK can switch to one of the two formula to compute the size of node.
+
+== Decision
+
+As seen in the state of the are we will implements the same behaior to compute the size nodes.
+The size of the children area will be computed by implementations of `ILayoutStrategyEngine`
+
+We already stated that a column list layout needs to find the largest children to apply the widest width to all children while the free-form layout only needs the layout to be done.
+
+=== Node context
+
+To ease the layout of a node and its children, implementations of `INodeIncrementalLayoutEngine` can use the node context.
+
+[source,java]
+----
+public class NodeContext {
+    // The node being laid out.
+    public NodeLayoutData getNode() {}
+
+    // If we need to consider children in the layout.
+    public boolean areChildrenConsidered() {}
+
+    // If the node has a label.
+    public boolean hasLabel() {}
+
+    // If the node as a label inside his bounds.
+    public boolean isNodeLabelInside() {}
+
+    // Where the label is placed.
+    public Set<NodeLabelPlacement> getLabelPlacements() {}
+
+    // The padding between the node border and its children.
+    public ElkPadding getNodePadding() {}
+
+    // The padding between the inside label and what is around it.
+    public ElkPadding getNodeLabelPadding() {}
+
+    // The space between the header and the children.
+    public double getHeaderPadding() {}
+
+    // The space to consider around each children.
+    public double getChildrenNodeMargin() {}
+
+    // The x offset inside the node. The abscissa where to put the children area.
+    public double getXOffset() {}
+
+    // The y offset inside the node. The ordinal where to put the children area.
+    public double getYOffset() {}
+
+    // If the node has a minimum size constraint.
+    public boolean isMinimumSizeConstrained() {}
+
+    // Look for a specific layout property.
+    public <T> T getNodeProperty(IProperty<T> property) {}
+
+    // The strategy to layout children.
+    public Optional<ILayoutStrategy> getOptionalChildrenLayoutStrategy() {}
+
+    // If a child is excluded from layout computation, it will not be included in the returned list.
+    public List<NodeLayoutData> getChildrenToLayout() {}
+
+    // Currently, it depends on if the position and the size of the node is "UNDEFINED".
+    public boolean isNodeBeingCreated() {}
+}
+----
+
+[NOTE]
+.node property
+====
+
+It will look for the value of the given property for the node.
+First we look in the properties based on the node type.
+If a value cannot be found, we look in the properties base on the way the node layout its children.
+If a value can still not be found, we return the default value for the property.
+
+====
+
+=== Children layout area
+
+image:090_layout_children_area.png[Two nodes containing three childrens. In the first node, children are relative to their parent. In the second node, the children area is drawn with red dashes, children are relative to the children area and the children are is relative to the parent.]
+
+The children layout area is a virtual area - the red dashes area - used to abstract the position of children inside their parent.
+We use the children area layout context to position children relatively to the children area instead of the parent node.
+Children nodes on the left image are node layout data relative to the parent.
+For the layout of children these node layout data are converted into child layout data relative to the children area.
+
+==== Children area layout context
+
+The "node layout engine" will create a "children layout context" to lay out its children.
+More specifically, the layout strategy engine requires this context to lay out the children of the laying node.
+
+[source,java]
+----
+public final class ChildrenAreaLayoutContext {
+    // The id of the parent
+    public String getParentId() {}
+
+    // The parent sizea
+    public Size getParentSize() {}
+
+    // The size the parent needs when it has no child
+    public Size getParentMinimalSize() {}
+
+    // If the parent has already been resized by the user since the last arrange all.
+    public boolean isParentResizedByUser() {}
+
+    // The list of children node layout data.
+    public List<ChildLayoutData> getChildrenLayoutData() {}
+
+    // The space to consider around each child
+    public double getNodeMargin() {}
+
+    // The parent absolute position + the parent inside offset
+    public Position getAbsolutePosition() {}
+
+    // If the parent is being created
+    public boolean isParentBeingCreated() {}
+
+    // The strategy to layout children
+    public ILayoutStrategy getChildrenLayoutStrategy() {}
+
+    // If not empty, the width the children area has to lay out, unlimited size otherwise.
+    public Optional<Double> getOptionalChildrenAreaWidth() {}
+
+    // The diagram event. The event can be initiated by the user, or, it can be derivied
+    // from the user but created by layout engines.
+    public Optional<IDiagramEvent> getOptionalDiagramEvent() {}
+}
+----
+
+[NOTE]
+.optional children area width
+====
+
+During the layout of children as a list, the list layout strategy asks all of its children the width they need to lay out then, when all width have been retrieved, the list layout strategy asks all of its children to lay out with the largest width.
+When the list layout strategy asks its children their needed width, it asks all its children to lay out with an empty "children area" width.
+Once the largest width has been determined, the list layout strategy asks all the children to lay out with the largest width as the "children area" width.
+
+====
+
+===== Child layout data
+
+A child layout data is a node layout data on which we have removed the x-offset and y-offset from its position that depends on node padding, node label, node label padding.
+This will ease the layout of children by making an abstraction of the position of children inside their parents.
+
+The list of children layout data created from actual children `NodeLayoutData` in the children area layout context does not contain children that are excluded from layout, like hidden nodes.
+
+==== Children area laid out data
+
+Once children have been laid out by the layout strategy engine to handle the free-form layout or the list layout, they returns the `ChildrenAreaLaidOutData` which will be used by the parent node to update its layout.
+
+[source,java]
+----
+public class ChildrenAreaLaidOutData {
+    // If the delta position of the children area after layout.
+    public Position getDeltaPosition() {}
+
+    // The size of the children area after layout.
+    public Size getSize() {}
+
+    // The map of id to children area layout data to update actual NodeLayoutData
+    // that have been laid out, knowing that node excluded from layout has not been handled.
+    public Map<String, ChildLayoutData> getNodeIdToChildLayoutData() {}
+}
+----
+
+===== Delta position
+
+It may happen that children nodes move because of a specific diagram event or because of the overlap updater.
+In such case, it may happen that children go out of the children area.
+If it happens by the left or by the top, children node have negative position.
+We choose to make the parent grows when a child move out of the children area like it does when the child goes out the children area by the right or bottom.
+The delta position is the minimum abscissa and the minimum ordinal of nodes that have been moved out the children area layout by the left or the top.
+
+image:090_children_laid_out_data_delta_position.png[Three steps, with three nodes. The first node has three children relative to the children. One is out of the children area by the top, another one is out of the children area by the left. the last one is inside the children area.]
+
+On the leftmost node, after the layout of children the two children outside the children area will be used to calculate the delta position.
+The delta position is used to increase the parent size to make all children fit inside the children area (middle node).
+At the same time we update node layout data position from the child layout data and the delta position (rightmost node).
+
+=== Support for diagram event
+
+There are three diagram event that can modify the layout of node:
+
+- the single position event
+- the move event
+- the resize event
+
+Diagram event are resolved in each layout strategy engine.
+The free-fom layout strategy engine can handle the three diagram event while the list layout strategy engine can only handle the single position event and the resize event, the move event is not supported for a list layout.
+
+Before being resolved by the layout strategy engine, each node can adapt the diagram event to their needs before giving it to the layout strategy engine.
+
+==== Single position event
+
+The Single position event is used to position a node that have been created using a node creation tool.
+
+[source,java]
+----
+
+public record SinglePositionEvent(Position position) implements IDiagramEvent {}
+
+----
+
+The position in the single position event is absolute since it is not related to any element.
+It will be used to position a node that has just been created (that kind of node has `Position(-1; -1)` and `Size(-1; -1)`).
+The list layout will display the node according to its semantic order.
+The free-form layout will display the node at the position provided by the single position event.
+
+[NOTE]
+.Multiple node creation
+====
+
+It may happen that the node creation tool can created many nodes.
+If the node creation tool creates many nodes on the same level they will all use the position provided by the single position event to position themselve.
+If the node creation tool creates a node and children nodes, each `INodeIncrementalLayoutEngine` should prevent the event propagation to children.
+
+====
+
+==== Move event
+
+The move event is used to move a node inside the diagram.
+
+[source,java]
+----
+
+public record MoveEvent(String nodeId, Position newPosition) implements IDiagramEvent {}
+
+----
+
+The new position in the move event is relative to the parent since it is associated with a node.
+Implementation of `INodeIncrementalLayoutEngine` should think about adapting the move event.
+For example, the `RectangleIncrementalLayoutEngine` remove the `x-offset` and `y-offset` to make the relative to the children layout area if the move event concerns a child of the rectangle node.
+The move event is then handled in the free-form layout strategy.
+
+==== Resize event
+
+The resize event is used to resize a node.
+
+[source,java]
+----
+
+public record ResizeEvent(String nodeId, Position positionDelta, Size newSize) implements IDiagramEvent {}
+
+----
+
+The `newSize` should be used in implementation of `INodeIncrementalLayoutEngine` to retrieve the new size of the node being resized.
+The `positionDelta` is used in implementation of `ILayoutStrategyEngine` to update the position of the node being resize.
+
+[NOTE]
+.position delta reminder
+====
+
+We are increasing the size of a node (by the NORTH/WEST) if the delta position is negative.
+We ara decreasing the size of a node (by the NORTH/WEST) if the delta position is positive.
+
+====
+
+The behavior is different whether the node size is in a free-form layout or in a list layout.
+
+===== Resize in free form layout
+
+In a free-form layout a node can be resize in the four directions.
+The result updates the size and can update the position of the node being resized.
+If the node being resized has children we need to hande the following cases:
+
+- The node size is increased by NORTH/WEST: Children position are updated the same amount the resize event delta position.
+- The node size is decreased by NORTH/WEST: The node can be resized until the upper left child is at (0, 0) in the children area.
+- The node size is increased or decrease by SOUTH/EST: Nothing change for children neither the position nor the size.
+
+===== Resize in list layout
+
+In a list layout the resize is limited and depend on the node type:
+
+- A rectangle node, an image or a parametric svg represent a compartment and can be resized by the user only on compartment junction.
+- An icon label node cannot be directly resized by the user, but its width can be resized if the width of its parent has increased due to a resize event.
+
+image:090_node_with_compartments.png[Contains a node 'A' that lays out children as a list.'A' contains two children 'B' and 'C'. 'B' lays out its children as a list and contains two icon labels. 'C' lays out children freely and contains two simple node children. There are five interesting points where resize can start. The four first points are located respectively on NORTH(1); EAST(2); SOUTH(3) and WEST(4) sides of the node. The fifth point is located at the junction of 'B' and 'C'.]
+
+`(1)`, `(2)`, `(3)` and `(4)` can resize `A`.
+`(5)` can resize `B` and `C`.
+The resize event will be handled in the list layout strategy of `A`.
+A resize from `(1)`, `(2)`, `(3)` or `(4)` creates a resize event for each children.
+Here, it will create two resize events, one for `B` and one for `C`.
+A resize from `5` depending on which compartment is selected creates the resize event for the other compartment.
+
+The resize from `(1)` and `(3)` creates a resize event for `B` and `C` that spread the delta size over `B` and `C` with the same ratio of size that `B` and `C` takes in `A`.
+
+The resize from `(2)` and `(4)` creates the same resize event but for `B` and `C`.
+The resize event is then spread to the two icon labels when `B` will handle the created resize event.
+
+The resize from `(5)`, if increase one compartment, creates a decreasing resize event for the sibling or vice versa.
+
+In all decreasing resize events, `B` and `C` cannot be resized under their needed size.
+Thus, it limits the decreasing resize that can be done on `A`.
+
+=== To keep in mind
+
+Implementations of `INodeIncrementalLayoutEngine` should focus on update the node size only while implementation of `ILayoutStrategyEngine` should focus on positioning children nodes.
+
+A diagram event that modify the position of a node also update the size and the position of its parent.
+If a node is going out the children area by the SOUTH or the EST, the parent size will be updated.
+If a node is going out the children area by the NORH or the WEST, the parent size will be update, and its position too.
+The position will be update regarding the delta return by the `ChildrenAreaLaidOutData`.
+
+== Status
+
+Implemented
+
+== Consequence
+
+=== Issues
+
+- The resize to decrease the size of a node should not make the opposite side move.
+- ELK does not support edge between nodes of two different compartments inside the same parent.
+- The incremental layout does as if the `SizeOptions#OUTSIDE_NODE_LABELS_OVERHANG` is provided for Image nodes.
+
+=== What's next
+
+- We should add support for the `H_PRIORITY` option to improve the label positioning (especially outside labels).
+- We will remove layout data from diagram data structure [#1527](https://github.com/eclipse-sirius/sirius-components/issues/1527)
+This issue will make the layout data immutable and `Position(-1; -1)` will be a valide position.
+- We should support the move event inside a list layout.
+- The resize of compartment should be available only on junctions. The actual behavior makes possible to resize a compartment in any direction (only a junction resize will be handled by the backend). 
+- Prototype the use of reactor flux to handle diagram event.
