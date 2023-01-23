@@ -34,7 +34,7 @@ public class EdgeRoutingPointsProvider {
     public List<Position> getRoutingPoints(Optional<IDiagramEvent> optionalDiagramElementEvent, Optional<Position> optionalDelta, EdgeLayoutData edge) {
         List<Position> positions = List.of();
         this.supportOldDiagramWithExistingEdge(edge);
-        if (optionalDiagramElementEvent.filter(UpdateEdgeRoutingPointsEvent.class::isInstance).isPresent()) {
+        if (this.isEdgeRoutingPointUpdated(optionalDiagramElementEvent, edge.getId())) {
             UpdateEdgeRoutingPointsEvent updateEdgeRoutingPointsEvent = optionalDiagramElementEvent.map(UpdateEdgeRoutingPointsEvent.class::cast).get();
             positions = updateEdgeRoutingPointsEvent.getRoutingPoints();
         } else {
@@ -55,6 +55,17 @@ public class EdgeRoutingPointsProvider {
             }
         }
         return positions;
+    }
+
+    private boolean isEdgeRoutingPointUpdated(Optional<IDiagramEvent> optionalDiagramElementEvent, String edgeId) {
+        // @formatter:off
+        return optionalDiagramElementEvent
+                .filter(UpdateEdgeRoutingPointsEvent.class::isInstance)
+                .map(UpdateEdgeRoutingPointsEvent.class::cast)
+                .map(UpdateEdgeRoutingPointsEvent::getEdgeId)
+                .filter(edgeId::equals)
+                .isPresent();
+        // @formatter:on
     }
 
     private boolean hasBeenMoved(NodeLayoutData node, Optional<IDiagramEvent> optionalDiagramElementEvent) {
