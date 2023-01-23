@@ -574,7 +574,7 @@ public class TestViewProvider {
         nodeStyle.setColor("#2196f3");
         nodeStyle.setBorderColor("#0d47a1");
         nodeStyle.setLabelColor("white");
-        nodeStyle.setWithHeader(true);
+        nodeStyle.setWithHeader(false);
 
         var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Class")));
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
@@ -588,8 +588,9 @@ public class TestViewProvider {
     private NodeDescription createClassAttributesNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor("#2196f3");
-        nodeStyle.setBorderColor("");
+        nodeStyle.setBorderColor("#0d47a1");
         nodeStyle.setLabelColor("white");
+        nodeStyle.setBorderRadius(0);
 
         var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Class")));
         nodeDescription.setName(nodeDescription.getName() + " - Attributes");
@@ -609,7 +610,7 @@ public class TestViewProvider {
 
         var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Attribute")));
         nodeDescription.setSemanticCandidatesExpression("aql:self.attributes");
-        nodeDescription.setLabelExpression("aql:self.name + ': ' + self.type.name");
+        nodeDescription.setLabelExpression("aql:self.name + ': ' + if self.type = null then 'void' else self.type.name endif");
         nodeDescription.setStyle(nodeStyle);
 
         return nodeDescription;
@@ -618,8 +619,9 @@ public class TestViewProvider {
     private NodeDescription createClassOperationsNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor("#2196f3");
-        nodeStyle.setBorderColor("");
+        nodeStyle.setBorderColor("#0d47a1");
         nodeStyle.setLabelColor("white");
+        nodeStyle.setBorderRadius(0);
 
         var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Class")));
         nodeDescription.setName(nodeDescription.getName() + " - Operations");
@@ -638,7 +640,7 @@ public class TestViewProvider {
         nodeStyle.setLabelColor("white");
 
         var nodeDescription = this.createNodeDescription(this.domainType(this.entity("Operation")));
-        nodeDescription.setSemanticCandidatesExpression("aql:self.attributes");
+        nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
         nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
         nodeDescription.setStyle(nodeStyle);
 

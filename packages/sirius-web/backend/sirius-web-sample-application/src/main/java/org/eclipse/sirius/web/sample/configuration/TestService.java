@@ -158,6 +158,8 @@ public class TestService {
 
     private EObject packageSiriusComponentsTreesDescription;
 
+    private EObject packageSiriusComponentsCollaborativeRepresentations;
+
     private EObject editingContextEventProcessor;
 
     private EObject iEditingContextEventProcessor;
@@ -196,17 +198,65 @@ public class TestService {
 
     private EObject treeEventProcessor;
 
+    private EObject subscriptionManager;
+
+    private EObject subscriptionManagerSubscriptionCount;
+
+    private EObject subscriptionManagerGetFlux;
+
+    private EObject subscriptionManagerIsEmpty;
+
+    private EObject subscriptionManagerCanBeDisposed;
+
+    private EObject subscriptionManagerDispose;
+
     private EObject diagram;
+
+    private EObject diagramId;
 
     private EObject node;
 
+    private EObject nodeId;
+
+    private EObject nodeType;
+
+    private EObject nodeTargetObjectId;
+
+    private EObject nodeTargetObjectKind;
+
+    private EObject nodeTargetObjectLabel;
+
     private EObject label;
+
+    private EObject labelId;
+
+    private EObject labelType;
+
+    private EObject labelText;
 
     private EObject edge;
 
+    private EObject edgeId;
+
+    private EObject edgeType;
+
+    private EObject edgeTargetObjectId;
+
+    private EObject edgeTargetObjectKind;
+
+    private EObject edgeTargetObjectLabel;
+
     private EObject size;
 
+    private EObject width;
+
+    private EObject height;
+
     private EObject position;
+
+    private EObject x;
+
+    private EObject y;
 
     private EObject diagramDescription;
 
@@ -361,6 +411,14 @@ public class TestService {
         this.operationIRepresentationEventProcessorGetRepresentation = this.operation("getRepresentation");
         this.operationIRepresentationEventProcessorRefresh = this.operation("refresh");
 
+        this.packageSiriusComponentsCollaborativeRepresentations = this.packageEObject("org.eclipse.sirius.components.collaborative.representations");
+        this.subscriptionManager = this.classEObject("SubscriptionManager");
+        this.subscriptionManagerSubscriptionCount = this.attributeEObject("subscriptionCount");
+        this.subscriptionManagerGetFlux = this.operation("getFlux");
+        this.subscriptionManagerIsEmpty = this.operation("isEmpty");
+        this.subscriptionManagerCanBeDisposed = this.operation("canBeDisposed");
+        this.subscriptionManagerDispose = this.operation("dispose");
+
         this.packageSiriusComponentsRepresentations = this.packageEObject("org.eclipse.sirius.components.representations");
         this.iRepresentation = this.interfaceEObject("IRepresentation");
         this.operationIRepresentationGetId = this.operation("getId");
@@ -394,11 +452,34 @@ public class TestService {
     private void createSiriusComponentsDiagrams() {
         this.packageSiriusComponentsDiagrams = this.packageEObject("org.eclipse.sirius.components.diagrams");
         this.diagram = this.classEObject("Diagram");
+        this.diagramId = this.attributeEObject("id");
+
         this.node = this.classEObject("Node");
+        this.nodeId = this.attributeEObject("id");
+        this.nodeType = this.attributeEObject("type");
+        this.nodeTargetObjectId = this.attributeEObject("targetObjectId");
+        this.nodeTargetObjectKind = this.attributeEObject("targetObjectKind");
+        this.nodeTargetObjectLabel = this.attributeEObject("targetObjectLabel");
+
         this.label = this.classEObject("Label");
+        this.labelId = this.attributeEObject("id");
+        this.labelType = this.attributeEObject("type");
+        this.labelText = this.attributeEObject("text");
+
         this.edge = this.classEObject("Edge");
+        this.edgeId = this.attributeEObject("id");
+        this.edgeType = this.attributeEObject("type");
+        this.edgeTargetObjectId = this.attributeEObject("targetObjectId");
+        this.edgeTargetObjectKind = this.attributeEObject("targetObjectKind");
+        this.edgeTargetObjectLabel = this.attributeEObject("targetObjectLabel");
+
         this.size = this.classEObject("Size");
+        this.width = this.attributeEObject("width");
+        this.height = this.attributeEObject("height");
+
         this.position = this.classEObject("Position");
+        this.x = this.attributeEObject("x");
+        this.y = this.attributeEObject("y");
 
         this.packageSiriusComponentsDiagramsDescription = this.packageEObject("org.eclipse.sirius.components.diagrams.description");
         this.diagramDescription = this.classEObject("DiagramDescription");
@@ -481,7 +562,8 @@ public class TestService {
         this.addMany(this.siriusComponentsCollaborativeForms, "providedServices", List.of(this.provideFormEventProcessor));
         this.addMany(this.siriusComponentsCollaborativeTrees, "providedServices", List.of(this.provideTreeEventProcessor));
 
-        this.addMany(this.siriusComponentsCollaborative, "packages", List.of(this.packageSiriusComponentsCollaborativeEditingContext, this.packageSiriusComponentsCollaborativeApi));
+        this.addMany(this.siriusComponentsCollaborative, "packages",
+                List.of(this.packageSiriusComponentsCollaborativeEditingContext, this.packageSiriusComponentsCollaborativeApi, this.packageSiriusComponentsCollaborativeRepresentations));
         this.addMany(this.siriusComponentsCollaborativeDiagrams, "packages", List.of(this.packageSiriusComponentsCollaborativeDiagrams, this.packageSiriusComponentsCollaborativeDiagramsApi));
         this.addMany(this.siriusComponentsCollaborativeForms, "packages", List.of(this.packageSiriusComponentsCollaborativeForms, this.packageSiriusComponentsCollaborativeFormsApi));
         this.addMany(this.siriusComponentsCollaborativeTrees, "packages", List.of(this.packageSiriusComponentsCollaborativeTrees, this.packageSiriusComponentsCollaborativeTreesApi));
@@ -496,6 +578,7 @@ public class TestService {
                 List.of(this.iRepresentationEventProcessor, this.iEditingContextEventProcessor, this.iEditingContextEventProcessorFactory, this.iEditingContextEventProcessorRegistry,
                         this.iEditingContextEventHandler, this.changeDescription, this.iSubscriptionManager, this.iSubscriptionManagerFactory, this.iRepresentationSearchService,
                         this.iRepresentationPersistenceService));
+        this.addMany(this.packageSiriusComponentsCollaborativeRepresentations, "types", List.of(this.subscriptionManager));
         this.addMany(this.packageSiriusComponentsCollaborativeDiagramsApi, "types", List.of(this.iDiagramEventProcessor));
         this.addMany(this.packageSiriusComponentsCollaborativeDiagrams, "types", List.of(this.diagramEventProcessor));
         this.addMany(this.packageSiriusComponentsCollaborativeFormsApi, "types", List.of(this.iFormEventProcessor));
@@ -524,6 +607,11 @@ public class TestService {
         this.reference(this.formEventProcessor, "currentForm", false, this.form);
         this.addMany(this.treeEventProcessor, "implements", List.of(this.iTreeEventProcessor));
         this.reference(this.treeEventProcessor, "currentTree", false, this.tree);
+
+        this.addMany(this.subscriptionManager, "implements", List.of(this.iSubscriptionManager));
+        this.addMany(this.subscriptionManager, "attributes", List.of(this.subscriptionManagerSubscriptionCount));
+        this.addMany(this.subscriptionManager, "operations",
+                List.of(this.subscriptionManagerGetFlux, this.subscriptionManagerCanBeDisposed, this.subscriptionManagerIsEmpty, this.subscriptionManagerDispose));
     }
 
     private void linkSiriusComponentsRepresentationsCode() {
@@ -541,6 +629,12 @@ public class TestService {
         this.addMany(this.packageSiriusComponentsTreesDescription, "types", List.of(this.treeDescription));
 
         this.addMany(this.diagram, "implements", List.of(this.iRepresentation));
+        this.addMany(this.diagram, "attributes", List.of(this.diagramId));
+        this.addMany(this.node, "attributes", List.of(this.nodeId, this.nodeType, this.nodeTargetObjectId, this.nodeTargetObjectKind, this.nodeTargetObjectLabel));
+        this.addMany(this.label, "attributes", List.of(this.labelId, this.labelType, this.labelText));
+        this.addMany(this.edge, "attributes", List.of(this.edgeId, this.edgeType, this.edgeTargetObjectId, this.edgeTargetObjectKind, this.edgeTargetObjectLabel));
+        this.addMany(this.size, "attributes", List.of(this.width, this.height));
+        this.addMany(this.position, "attributes", List.of(this.x, this.y));
         this.reference(this.diagram, "nodes", true, this.node);
         this.reference(this.diagram, "edges", true, this.edge);
         this.reference(this.node, "label", false, this.label);
@@ -656,6 +750,13 @@ public class TestService {
         var classEObject = this.eFactory.create(classEClass);
         classEObject.eSet(classEClass.getEStructuralFeature("name"), name);
         return classEObject;
+    }
+
+    private EObject attributeEObject(String name) {
+        var operationEClass = this.eClass("Attribute");
+        var operation = this.eFactory.create(operationEClass);
+        operation.eSet(operationEClass.getEStructuralFeature("name"), name);
+        return operation;
     }
 
     private EObject operation(String name) {
