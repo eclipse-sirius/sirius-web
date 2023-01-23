@@ -46,6 +46,8 @@ image:doc/images/View_edit_begin_label_in_action.png[width=550,height=234]
 - https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] Single click tools can now be executed on Edges in addition to Nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1569[#1569] [view] Only delegate semantic deletion to the element's _Delete Tool_
 - https://github.com/eclipse-sirius/sirius-components/issues/1562[#1562] [view] The default/canonical behaviors for diagram elements can now be invoked explicitly from AQL expressions. See `org.eclipse.sirius.components.view.emf.CanonicalServices`. This feature will be used only for internal for now. There will be breaking changes on this topic soon.
+- https://github.com/eclipse-sirius/sirius-components/issues/1596[#1596] [diagram] Sirius Web now includes two example parametric SVG images named "Package" and "Class".
+They can be used as any custom image (e.g. in a View-based diagram), but their precise shape is partially computed on the backend, in this case to adjust the size of the label compartment to the actual label's width.
 
 == v2023.1.0
 
