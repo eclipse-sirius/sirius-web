@@ -1,0 +1,107 @@
+= ADR-092 - Add support for diagram nodes labels' auto-wrap
+
+== Context
+
+In diagrams, nodes' inside labels are displayed on a single line (except if the text includes line breaks), no matter the size of its node. The label may exceed the size of its node.
+
+=== Incremental Layout - Arrange all
+
+In case of diagrams with manual-layout, when the user clicks on "arrange all" button, the size of nodes sometimes adapt to the size of their labels, sometimes not.
+Furthermore, the nodes inside a container node may overlap the container node's label after the arrange all, especially if the labels are not at the top of their containers.
+
+=== Auto-layout
+
+In case of diagrams with auto-layout, the size of nodes always adapt to the size of their labels.
+Furthermore, the nodes inside a container node may overlap the container node's label after the arrange all, especially if the labels are not at the top of their containers.
+
+== Decision
+
+The inside label of a node should never exceed the size of its node.
+When a very very long text in the label which, even with wrapping, does not fit the node size, then the label is truncated.
+After an arrange all, the node height will extend to keep all the text visible.
+
+=== Cases Matrix
+
+Here are the different cases that should be handled by the work done during the development of this ADR:
+
+[%header,format=csv]
+|===
+Inside Position,Node Rectangle,Node Image,Node Param SVG,Node Icon Label,Border Node,With Header
+V_TOP - H_CENTER,YES,NO,NO,NO,NO,NO
+V_TOP - H_LEFT,YES,NO,NO,NO,NO,NO
+V_TOP - H_RIGHT,YES,NO,NO,NO,NO,NO
+V_CENTER - H_CENTER,NO,NO,YES,NO,NO,NO
+V_CENTER - H_LEFT,YES,NO,NO,NO,NO,NO
+V_CENTER - H_RIGHT,YES,NO,NO,NO,NO,NO
+V_BOTTOM - H_CENTER,YES,NO,NO,NO,NO,NO
+V_BOTTOM - H_LEFT,YES,NO,NO,NO,NO,NO
+V_BOTTOM - H_RIGHT,YES,NO,NO,NO,NO,NO
+|===
+
+Current problems (these problems won't be addressed by the work done during this ADR):
+
+- For the Node Icon type, the only configuration handled today is the following one :
+Node Icon V_TOP - H_LEFT inside a Node Rectangle With Header V_TOP - H_CENTER. All other cases are not properly handled.
+- For the Node With Header, the only configuration handled today is the following one :
+V_TOP - H_CENTER. All other cases are not properly handled.
+- For the Node Rectangle type, in case of H_RIGHT, the label may overflow the right border of the rectangle.
+- For the Node Rectangle type With Header, when the label contains a line break, then the label is always on the left.
+- A Node with Header can't be resized.
+
+
+=== Incremental Layout - Arrange all
+
+The arrange all behavior will not be modified by the developments associated to this ADR. The arrange all should continue to work as before.
+
+Current problems (these problems won't be addressed by the work done during this ADR):
+
+- For the Container Node Rectangle type, in case of V_CENTER, the contained nodes overlaps after an arrange all
+- For the Container Node Rectangle type, in case of V_BOTTOM/V_TOP - H_LEFT, the contained nodes are positioned at the right of the container label after an arrange all
+- For the Container Node Rectangle type, in case of V_BOTTOM/V_TOP - H_RIGHT, the contained nodes are positioned at the left of the container label after an arrange all
+
+=== Auto-layout
+
+The auto-layout behavior will not be modified by the developments associated to this ADR. The auto-layout should continue to work as before.
+
+=== Outside labels
+
+The outside labels are out of scope of this ADR.
+
+=== Vertical labels
+
+The vertical labels are out of scope of this ADR.
+
+=== Frontend
+
+A new `SLabelView` named `InsideLabelView` will be created, besides existing `LabelView`.
+
+This new `SLabelView` will used `foreignObject` svg property, allowing to insert html code inside svg.
+
+Thus, it will be possible to put the label in a `div` with `flex` display and then benefit from the capabilities of `flex` (overflow, justify-content, ...).
+
+=== Backend
+
+New values will be added to the `LabelType` enum:
+
+[source,java]
+----
+public enum LabelType {
+    ...
+    INSIDE_V_TOP_H_CENTER("label:inside-v_top-h_center"),
+    INSIDE_V_TOP_H_LEFT("label:inside-v_top-h_left"),
+    INSIDE_V_TOP_H_RIGHT("label:inside-v_top-h_right"),
+    INSIDE_V_CENTER_H_CENTER("label:inside-v_center-h_center"),
+    INSIDE_V_CENTER_H_LEFT("label:inside-v_center-h_left"),
+    INSIDE_V_CENTER_H_RIGHT("label:inside-v_center-h_right"),
+    INSIDE_V_BOTTOM_H_CENTER("label:inside-v_bottom-h_center"),
+    INSIDE_V_BOTTOM_H_LEFT("label:inside-v_bottom-h_left"),
+    INSIDE_V_BOTTOM_H_RIGHT("label:inside-v_bottom-h_right"),
+    ...
+}
+----
+
+`IncrementalLayoutEngine`, `ELFLayoutDiagramProvider`, `ELKDiagramConverter` will be updated to take into account new label types.
+
+== Status
+
+Work in progress
