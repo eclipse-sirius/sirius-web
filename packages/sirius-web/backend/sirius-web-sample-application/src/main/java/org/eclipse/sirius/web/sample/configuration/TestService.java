@@ -98,6 +98,8 @@ public class TestService {
 
     private EObject raiseFeatureRequests;
 
+    private EObject javaStandardLibrary;
+
     private EObject siriusWebApplication;
 
     private EObject siriusComponentsCore;
@@ -127,6 +129,10 @@ public class TestService {
     private EObject provideFormEventProcessor;
 
     private EObject provideTreeEventProcessor;
+
+    private EObject packageJavaLang;
+
+    private EObject packageJavaUtil;
 
     private EObject packageSiriusComponentsCollaborativeEditingContext;
 
@@ -159,6 +165,16 @@ public class TestService {
     private EObject packageSiriusComponentsTreesDescription;
 
     private EObject packageSiriusComponentsCollaborativeRepresentations;
+
+    private EObject dataTypeVoid;
+
+    private EObject dataTypeObject;
+
+    private EObject dataTypeString;
+
+    private EObject dataTypeInt;
+
+    private EObject dataTypeUUID;
 
     private EObject editingContextEventProcessor;
 
@@ -311,6 +327,7 @@ public class TestService {
         this.ePackage = eObject.eClass().getEPackage();
         this.eFactory = this.ePackage.getEFactoryInstance();
 
+        this.createStandardLibraries();
         this.createOperationalObjects(diagramContext, convertedNodes);
         this.createComponents();
         this.createCode();
@@ -321,12 +338,29 @@ public class TestService {
         this.addMany(eObject, "operationalEntities", List.of(this.eclipseFoundation));
         this.addMany(eObject, "operationalActors", List.of(this.specifier, this.endUser, this.webmaster));
         this.addMany(eObject, "components",
-                List.of(this.siriusWebApplication, this.siriusComponentsCore, this.siriusComponentsCollaborative, this.siriusComponentsRepresentations, this.siriusComponentsCollaborativeDiagrams,
-                        this.siriusComponentsDiagrams, this.siriusComponentsCollaborativeForms, this.siriusComponentsForms, this.siriusComponentsCollaborativeTrees, this.siriusComponentsTrees));
+                List.of(this.javaStandardLibrary, this.siriusWebApplication, this.siriusComponentsCore, this.siriusComponentsCollaborative, this.siriusComponentsRepresentations,
+                        this.siriusComponentsCollaborativeDiagrams, this.siriusComponentsDiagrams, this.siriusComponentsCollaborativeForms, this.siriusComponentsForms,
+                        this.siriusComponentsCollaborativeTrees, this.siriusComponentsTrees));
 
         this.drop(this.eclipseFoundation, null, diagramContext, convertedNodes);
 
         return eObject;
+    }
+
+    private void createStandardLibraries() {
+        this.javaStandardLibrary = this.component("Java Standard Library");
+        this.packageJavaLang = this.packageEObject("java.lang");
+        this.packageJavaUtil = this.packageEObject("java.util");
+
+        this.dataTypeObject = this.dataType("Object");
+        this.dataTypeString = this.dataType("String");
+        this.dataTypeInt = this.dataType("int");
+        this.dataTypeVoid = this.dataType("Void");
+        this.dataTypeUUID = this.dataType("UUID");
+
+        this.addMany(this.javaStandardLibrary, "packages", List.of(this.packageJavaLang, this.packageJavaUtil));
+        this.addMany(this.packageJavaLang, "types", List.of(this.dataTypeObject, this.dataTypeVoid, this.dataTypeString, this.dataTypeInt));
+        this.addMany(this.packageJavaUtil, "types", List.of(this.dataTypeUUID));
     }
 
     private void createOperationalObjects(IDiagramContext diagramContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
@@ -413,7 +447,7 @@ public class TestService {
 
         this.packageSiriusComponentsCollaborativeRepresentations = this.packageEObject("org.eclipse.sirius.components.collaborative.representations");
         this.subscriptionManager = this.classEObject("SubscriptionManager");
-        this.subscriptionManagerSubscriptionCount = this.attributeEObject("subscriptionCount");
+        this.subscriptionManagerSubscriptionCount = this.attributeEObject("subscriptionCount", this.dataTypeInt);
         this.subscriptionManagerGetFlux = this.operation("getFlux");
         this.subscriptionManagerIsEmpty = this.operation("isEmpty");
         this.subscriptionManagerCanBeDisposed = this.operation("canBeDisposed");
@@ -452,34 +486,34 @@ public class TestService {
     private void createSiriusComponentsDiagrams() {
         this.packageSiriusComponentsDiagrams = this.packageEObject("org.eclipse.sirius.components.diagrams");
         this.diagram = this.classEObject("Diagram");
-        this.diagramId = this.attributeEObject("id");
+        this.diagramId = this.attributeEObject("id", this.dataTypeString);
 
         this.node = this.classEObject("Node");
-        this.nodeId = this.attributeEObject("id");
-        this.nodeType = this.attributeEObject("type");
-        this.nodeTargetObjectId = this.attributeEObject("targetObjectId");
-        this.nodeTargetObjectKind = this.attributeEObject("targetObjectKind");
-        this.nodeTargetObjectLabel = this.attributeEObject("targetObjectLabel");
+        this.nodeId = this.attributeEObject("id", this.dataTypeString);
+        this.nodeType = this.attributeEObject("type", this.dataTypeString);
+        this.nodeTargetObjectId = this.attributeEObject("targetObjectId", this.dataTypeString);
+        this.nodeTargetObjectKind = this.attributeEObject("targetObjectKind", this.dataTypeString);
+        this.nodeTargetObjectLabel = this.attributeEObject("targetObjectLabel", this.dataTypeString);
 
         this.label = this.classEObject("Label");
-        this.labelId = this.attributeEObject("id");
-        this.labelType = this.attributeEObject("type");
-        this.labelText = this.attributeEObject("text");
+        this.labelId = this.attributeEObject("id", this.dataTypeString);
+        this.labelType = this.attributeEObject("type", this.dataTypeString);
+        this.labelText = this.attributeEObject("text", this.dataTypeString);
 
         this.edge = this.classEObject("Edge");
-        this.edgeId = this.attributeEObject("id");
-        this.edgeType = this.attributeEObject("type");
-        this.edgeTargetObjectId = this.attributeEObject("targetObjectId");
-        this.edgeTargetObjectKind = this.attributeEObject("targetObjectKind");
-        this.edgeTargetObjectLabel = this.attributeEObject("targetObjectLabel");
+        this.edgeId = this.attributeEObject("id", this.dataTypeString);
+        this.edgeType = this.attributeEObject("type", this.dataTypeString);
+        this.edgeTargetObjectId = this.attributeEObject("targetObjectId", this.dataTypeString);
+        this.edgeTargetObjectKind = this.attributeEObject("targetObjectKind", this.dataTypeString);
+        this.edgeTargetObjectLabel = this.attributeEObject("targetObjectLabel", this.dataTypeString);
 
         this.size = this.classEObject("Size");
-        this.width = this.attributeEObject("width");
-        this.height = this.attributeEObject("height");
+        this.width = this.attributeEObject("width", this.dataTypeInt);
+        this.height = this.attributeEObject("height", this.dataTypeInt);
 
         this.position = this.classEObject("Position");
-        this.x = this.attributeEObject("x");
-        this.y = this.attributeEObject("y");
+        this.x = this.attributeEObject("x", this.dataTypeInt);
+        this.y = this.attributeEObject("y", this.dataTypeInt);
 
         this.packageSiriusComponentsDiagramsDescription = this.packageEObject("org.eclipse.sirius.components.diagrams.description");
         this.diagramDescription = this.classEObject("DiagramDescription");
@@ -495,6 +529,7 @@ public class TestService {
         this.page = this.classEObject("Page");
         this.group = this.classEObject("Group");
         this.abstractWidget = this.classEObject("AbstractWidget");
+        this.set(this.abstractWidget, "abstract", true);
 
         this.packageSiriusComponentsFormsDescription = this.packageEObject("org.eclipse.sirius.components.forms.description");
         this.formDescription = this.classEObject("FormDescription");
@@ -673,6 +708,10 @@ public class TestService {
         }
     }
 
+    private void set(EObject eObject, String featureName, Object value) {
+        eObject.eSet(eObject.eClass().getEStructuralFeature(featureName), value);
+    }
+
     private EObject operationalEntity(String name) {
         var operationalEntityEClass = this.eClass("OperationalEntity");
         var operationalEntity = this.eFactory.create(operationalEntityEClass);
@@ -752,15 +791,23 @@ public class TestService {
         return classEObject;
     }
 
-    private EObject attributeEObject(String name) {
-        var operationEClass = this.eClass("Attribute");
+    private EObject attributeEObject(String name, EObject type) {
+        var attributeEClass = this.eClass("Attribute");
+        var attribute = this.eFactory.create(attributeEClass);
+        attribute.eSet(attributeEClass.getEStructuralFeature("name"), name);
+        attribute.eSet(attributeEClass.getEStructuralFeature("type"), type);
+        return attribute;
+    }
+
+    private EObject operation(String name) {
+        var operationEClass = this.eClass("Operation");
         var operation = this.eFactory.create(operationEClass);
         operation.eSet(operationEClass.getEStructuralFeature("name"), name);
         return operation;
     }
 
-    private EObject operation(String name) {
-        var operationEClass = this.eClass("Operation");
+    private EObject dataType(String name) {
+        var operationEClass = this.eClass("DataType");
         var operation = this.eFactory.create(operationEClass);
         operation.eSet(operationEClass.getEStructuralFeature("name"), name);
         return operation;
