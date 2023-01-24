@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@ public class LabelAssert extends AbstractAssert<LabelAssert, Label> {
             assertThat(this.actual.getId()).isEqualTo(label.getId());
         }
 
-        assertThat(this.actual.getType()).isEqualTo(label.getType());
+        // Actual label type can not be equal to label type because of the dummy label type set in NodeComponent.
+        assertThat(this.actual.getType()).isNotEqualTo(label.getType());
+
         assertThat(this.actual.getText()).isEqualTo(label.getText());
         assertThat(this.actual.getStyle()).matches(label.getStyle());
 

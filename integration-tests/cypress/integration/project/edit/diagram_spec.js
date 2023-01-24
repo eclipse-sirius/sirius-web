@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,7 +89,8 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
 
-    cy.get('#diagram>svg text.sprotty-label').should('have.length', 25);
+    cy.get('#diagram>svg text.sprotty-label').should('have.length', 23);
+    cy.get('#diagram>svg foreignObject.sprotty-label').should('have.length', 2);
     cy.get('#diagram>svg g.sprotty-edge').should('have.length', 7);
     cy.get('#diagram>svg image').should('have.length', 10);
     cy.get('#diagram rect').should('have.length', 18);

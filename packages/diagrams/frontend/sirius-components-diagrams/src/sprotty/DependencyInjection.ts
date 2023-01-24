@@ -58,6 +58,7 @@ import { DiagramView } from './views/DiagramView';
 import { EdgeView } from './views/EdgeView';
 import { IconLabelView } from './views/IconLabelView';
 import { ImageView } from './views/ImageView';
+import { InsideLabelView } from './views/InsideLabelView';
 import { LabelView } from './views/LabelView';
 import { ParametricSVGImageView } from './views/ParametricSVGImageView';
 import { RectangleView } from './views/RectangleView';
@@ -93,6 +94,24 @@ const siriusWebContainerModule = new ContainerModule((bind, unbind, isBound, reb
   configureModelElement(context, 'port:image', BorderNode, ImageView);
   // @ts-ignore
   configureModelElement(context, 'edge:straight', Edge, EdgeView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_top-h_center', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_top-h_left', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_top-h_right', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_center-h_center', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_center-h_left', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_center-h_right', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_bottom-h_center', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_bottom-h_left', Label, InsideLabelView);
+  // @ts-ignore
+  configureModelElement(context, 'label:inside-v_bottom-h_right', Label, InsideLabelView);
   // @ts-ignore
   configureModelElement(context, 'label:inside-center', Label, LabelView);
   // @ts-ignore

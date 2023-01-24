@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,9 +111,9 @@ public class LayoutService implements ILayoutService {
 
     @Override
     public Diagram incrementalLayout(IEditingContext editingContext, Diagram newDiagram, Optional<IDiagramEvent> optionalDiagramElementEvent) {
-        IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram);
-        DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
         ISiriusWebLayoutConfigurator layoutConfigurator = this.getLayoutConfigurator(editingContext, newDiagram);
+        IncrementalLayoutConvertedDiagram convertedDiagram = this.incrementalLayoutDiagramConverter.convert(newDiagram, layoutConfigurator);
+        DiagramLayoutData diagramLayoutData = convertedDiagram.getDiagramLayoutData();
 
         this.incrementalLayoutEngine.layout(optionalDiagramElementEvent, convertedDiagram, layoutConfigurator);
 
@@ -137,7 +137,7 @@ public class LayoutService implements ILayoutService {
     }
 
     private ELKConvertedDiagram prepareForLayout(IEditingContext editingContext, Diagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram);
+        ELKConvertedDiagram convertedDiagram = this.elkDiagramConverter.convert(diagram, layoutConfigurator);
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
 
         ElkUtil.applyVisitors(elkDiagram, layoutConfigurator);

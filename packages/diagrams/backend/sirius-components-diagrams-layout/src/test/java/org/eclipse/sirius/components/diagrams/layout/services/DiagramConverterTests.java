@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.assertj.core.data.Offset;
+import org.eclipse.elk.alg.layered.options.LayeredOptions;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkLabel;
@@ -29,14 +31,19 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.layout.ELKConvertedDiagram;
 import org.eclipse.sirius.components.diagrams.layout.ELKDiagramConverter;
+import org.eclipse.sirius.components.diagrams.layout.ELKPropertiesService;
+import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
+import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -63,6 +70,8 @@ public class DiagramConverterTests {
 
     private static final String FIRST_EDGE_ID = UUID.randomUUID().toString();
 
+    private ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
+
     private TextBoundsService textBoundsService = new TextBoundsService() {
         @Override
         public TextBounds getBounds(Label label) {
@@ -70,7 +79,19 @@ public class DiagramConverterTests {
             Position alignment = Position.UNDEFINED;
             return new TextBounds(size, alignment);
         }
+
+        @Override
+        public TextBounds getAutoWrapBounds(Label label, double maxWidth) {
+            Size size = Size.of(TEXT_WIDTH, TEXT_HEIGHT);
+            Position alignment = Position.UNDEFINED;
+            return new TextBounds(size, alignment);
+        }
     };
+
+    @BeforeAll
+    private static void initTest() {
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
+    }
 
     private void assertSize(ElkShape elkShape, double width, double height) {
         assertThat(elkShape.getWidth()).isCloseTo(width, Offset.offset(0.0001));
@@ -80,18 +101,22 @@ public class DiagramConverterTests {
     @Test
     public void testDiagramOneRectangularNode() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider, this.elkPropertiesService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
-        Node node = diagramBuilder.getNode(FIRST_NODE_ID);
+        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+                .type(NodeType.NODE_RECTANGLE)
+                .style(diagramBuilder.getRectangularNodeStyle())
+                .build();
 
         Diagram diagram = Diagram.newDiagram(diagramBuilder.getDiagram(DIAGRAM_ID))
                 .nodes(List.of(node))
                 .build();
         // @formatter:on
 
-        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram, layoutConfigurator);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
@@ -101,7 +126,7 @@ public class DiagramConverterTests {
         assertThat(id2ElkGraphElements.get(node.getLabel().getId().toString())).isInstanceOf(ElkLabel.class);
 
         ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
-        this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);
+        this.assertSize(elkNode, Size.UNDEFINED.getWidth(), Size.UNDEFINED.getHeight());
 
         assertThat(elkNode.getLabels().size()).isEqualTo(1);
         ElkLabel elkLabel = elkNode.getLabels().get(0);
@@ -113,11 +138,12 @@ public class DiagramConverterTests {
     @Test
     public void testDiagramOneImageNode() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider, this.elkPropertiesService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
         Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+                .type(NodeType.NODE_IMAGE)
                 .style(diagramBuilder.getImageNodeStyle())
                 .build();
 
@@ -126,7 +152,8 @@ public class DiagramConverterTests {
                 .build();
         // @formatter:on
 
-        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram, layoutConfigurator);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
@@ -152,7 +179,7 @@ public class DiagramConverterTests {
     @Test
     public void testDiagramOneNodeAndOneEdge() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider, this.elkPropertiesService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -169,7 +196,8 @@ public class DiagramConverterTests {
                 .build();
         // @formatter:on
 
-        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram, layoutConfigurator);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getContainedEdges().size()).isEqualTo(1);
@@ -183,7 +211,7 @@ public class DiagramConverterTests {
     @Test
     public void testDiagramOneNodeAndOneBorderNode() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider, this.elkPropertiesService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -202,7 +230,8 @@ public class DiagramConverterTests {
                 .build();
         // @formatter:on
 
-        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram, layoutConfigurator);
 
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
@@ -219,7 +248,7 @@ public class DiagramConverterTests {
     @Test
     public void testDiagramOneEdgeBetweenTwoBorderNodes() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
-        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider);
+        ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider, this.elkPropertiesService);
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
@@ -245,7 +274,8 @@ public class DiagramConverterTests {
                 .build();
         // @formatter:on
 
-        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram);
+        ISiriusWebLayoutConfigurator layoutConfigurator = new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator();
+        ELKConvertedDiagram convertedDiagram = diagramConverter.convert(diagram, layoutConfigurator);
         ElkNode elkDiagram = convertedDiagram.getElkDiagram();
         assertThat(elkDiagram.getChildren().size()).isEqualTo(1);
         assertThat(elkDiagram.getChildren().get(0)).isInstanceOf(ElkNode.class);

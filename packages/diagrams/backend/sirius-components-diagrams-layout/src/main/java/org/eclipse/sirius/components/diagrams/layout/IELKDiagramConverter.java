@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
  */
 public interface IELKDiagramConverter {
 
-    ELKConvertedDiagram convert(Diagram diagram);
+    ELKConvertedDiagram convert(Diagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -31,7 +31,7 @@ public interface IELKDiagramConverter {
     class NoOp implements IELKDiagramConverter {
 
         @Override
-        public ELKConvertedDiagram convert(Diagram diagram) {
+        public ELKConvertedDiagram convert(Diagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
             return null;
         }
 

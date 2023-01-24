@@ -84,6 +84,10 @@ A node can be collapsed or expanded if its view description is collapsible or if
 As a result, it is possible to create a conditional style which will use the collapsing state quite easily.
 Using the view DSL, one can use the expression `aql:collapsingState.toString() = 'COLLAPSED'` as a condition to create a style which will be used when the node is collapsed.
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1583[#1583] [diagram] Add support for diagram nodes labels' auto-wrap
++
+image:doc/images/Diagram_node_labels_auto_wrap.png[width=517,height=424]
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1559[#1559] [view] It is now possible to specify the (computed) width and height separately for a _Node Style_ (instead of a single size before, which always resulted in square shapes).

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,6 +88,10 @@ public class TextBoundsService {
 
     public TextBounds getBounds(Label label) {
         return this.textBoundsProvider.computeBounds(label.getStyle(), label.getText());
+    }
+
+    public TextBounds getAutoWrapBounds(Label label, double maxWidth) {
+        return this.textBoundsProvider.computeAutoWrapBounds(label.getStyle(), label.getText(), maxWidth);
     }
 
 }

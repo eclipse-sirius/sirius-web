@@ -39,7 +39,6 @@ import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -73,21 +72,24 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
     private final ImageNodeStyleSizeProvider imageNodeStyleSizeProvider;
 
+    private final ELKPropertiesService elkPropertiesService;
+
     private final Logger logger = LoggerFactory.getLogger(ELKDiagramConverter.class);
 
-    public ELKDiagramConverter(TextBoundsService textBoundsService, ImageSizeProvider imageSizeProvider) {
+    public ELKDiagramConverter(TextBoundsService textBoundsService, ImageSizeProvider imageSizeProvider, ELKPropertiesService elkPropertiesService) {
         this.textBoundsService = Objects.requireNonNull(textBoundsService);
         this.imageSizeProvider = Objects.requireNonNull(imageSizeProvider);
         this.imageNodeStyleSizeProvider = new ImageNodeStyleSizeProvider(this.imageSizeProvider);
+        this.elkPropertiesService = Objects.requireNonNull(elkPropertiesService);
     }
 
     @Override
-    public ELKConvertedDiagram convert(Diagram diagram) {
+    public ELKConvertedDiagram convert(Diagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
         ElkNode elkDiagram = this.convertDiagram(diagram);
 
         Map<String, ElkGraphElement> id2ElkGraphElements = new HashMap<>();
         Map<String, ElkConnectableShape> connectableShapeIndex = new LinkedHashMap<>();
-        diagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
+        diagram.getNodes().stream().forEach(node -> this.convertNode(node, elkDiagram, connectableShapeIndex, id2ElkGraphElements, layoutConfigurator));
         diagram.getEdges().stream().forEach(edge -> this.convertEdge(edge, elkDiagram, connectableShapeIndex, id2ElkGraphElements));
 
         return new ELKConvertedDiagram(elkDiagram, id2ElkGraphElements);
@@ -100,7 +102,8 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         return elkDiagram;
     }
 
-    private void convertNode(Node node, ElkNode parent, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements) {
+    private void convertNode(Node node, ElkNode parent, Map<String, ElkConnectableShape> connectableShapeIndex, Map<String, ElkGraphElement> id2ElkGraphElements,
+            ISiriusWebLayoutConfigurator layoutConfigurator) {
         ElkNode elkNode = ElkGraphFactory.eINSTANCE.createElkNode();
         elkNode.setIdentifier(node.getId());
         elkNode.setProperty(PROPERTY_TYPE, node.getType());
@@ -108,15 +111,23 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY, node.getChildrenLayoutStrategy().getClass());
         }
 
-        TextBounds textBounds = this.textBoundsService.getBounds(node.getLabel());
+        TextBounds textBounds = null;
+        Label label = node.getLabel();
+        String labelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+        if (labelType.startsWith("label:inside-v")) {
+            double maxPadding = this.elkPropertiesService.getMaxPadding(node, layoutConfigurator);
+            textBounds = this.textBoundsService.getAutoWrapBounds(label, node.getSize().getWidth() - maxPadding);
+            elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
+        } else {
+            textBounds = this.textBoundsService.getBounds(label);
+            double width = textBounds.getSize().getWidth();
+            double height = textBounds.getSize().getHeight();
+            elkNode.setDimensions(width, height);
+        }
 
         if (ListLayoutStrategy.class.equals(parent.getProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY))) {
             elkNode.setProperty(CoreOptions.ALIGNMENT, Alignment.LEFT);
         }
-
-        double width = textBounds.getSize().getWidth();
-        double height = textBounds.getSize().getHeight();
-        elkNode.setDimensions(width, height);
 
         elkNode.setParent(parent);
         connectableShapeIndex.put(elkNode.getIdentifier(), elkNode);
@@ -136,15 +147,11 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkImage.setParent(elkNode);
         }
 
-        boolean hasHeader = false;
-        if (node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle) {
-            hasHeader = rectangularNodeStyle.isWithHeader();
-        }
-
         node.getBorderNodes().stream().forEach(borderNode -> this.convertBorderNode(borderNode, elkNode, connectableShapeIndex, id2ElkGraphElements));
-        node.getChildNodes().stream().forEach(childNode -> this.convertNode(childNode, elkNode, connectableShapeIndex, id2ElkGraphElements));
+        node.getChildNodes().stream().forEach(childNode -> this.convertNode(childNode, elkNode, connectableShapeIndex, id2ElkGraphElements, layoutConfigurator));
 
-        this.convertLabel(node.getLabel(), textBounds, elkNode, id2ElkGraphElements, hasHeader, null);
+        boolean hasHeader = this.elkPropertiesService.hasHeader(node);
+        this.convertLabel(label, textBounds, elkNode, id2ElkGraphElements, hasHeader, null);
 
         id2ElkGraphElements.put(node.getId(), elkNode);
     }
@@ -174,11 +181,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
         }
 
-        boolean hasHeader = false;
-        if (borderNode.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle) {
-            hasHeader = rectangularNodeStyle.isWithHeader();
-        }
-
+        boolean hasHeader = this.elkPropertiesService.hasHeader(borderNode);
         this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, hasHeader, null);
 
         id2ElkGraphElements.put(borderNode.getId(), elkPort);

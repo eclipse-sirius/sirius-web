@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -25,6 +26,9 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.TextBoundsProvider;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.LabelType;
+import org.eclipse.sirius.components.diagrams.layout.ELKPropertiesService;
+import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -41,7 +45,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class IncrementalLayoutDiagramConverter {
 
-    public IncrementalLayoutConvertedDiagram convert(Diagram diagram) {
+    private final ELKPropertiesService elkPropertiesService;
+
+    public IncrementalLayoutDiagramConverter(ELKPropertiesService elkPropertiesService) {
+        this.elkPropertiesService = Objects.requireNonNull(elkPropertiesService);
+    }
+
+    public IncrementalLayoutConvertedDiagram convert(Diagram diagram, ISiriusWebLayoutConfigurator layoutConfigurator) {
         Map<String, ILayoutData> id2LayoutData = new HashMap<>();
 
         DiagramLayoutData layoutData = new DiagramLayoutData();
@@ -54,7 +64,7 @@ public class IncrementalLayoutDiagramConverter {
 
         List<NodeLayoutData> nodes = new ArrayList<>();
         for (Node node : diagram.getNodes()) {
-            nodes.add(this.convertNode(node, layoutData, id2LayoutData));
+            nodes.add(this.convertNode(node, layoutData, id2LayoutData, layoutConfigurator));
         }
         layoutData.setChildrenNodes(nodes);
 
@@ -67,7 +77,7 @@ public class IncrementalLayoutDiagramConverter {
         return new IncrementalLayoutConvertedDiagram(layoutData, id2LayoutData);
     }
 
-    private NodeLayoutData convertNode(Node node, IContainerLayoutData parent, Map<String, ILayoutData> id2LayoutData) {
+    private NodeLayoutData convertNode(Node node, IContainerLayoutData parent, Map<String, ILayoutData> id2LayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
         NodeLayoutData layoutData = new NodeLayoutData();
         String id = node.getId();
         layoutData.setId(id);
@@ -83,17 +93,17 @@ public class IncrementalLayoutDiagramConverter {
 
         List<NodeLayoutData> borderNodes = new ArrayList<>();
         for (Node borderNode : node.getBorderNodes()) {
-            borderNodes.add(this.convertNode(borderNode, layoutData, id2LayoutData));
+            borderNodes.add(this.convertNode(borderNode, layoutData, id2LayoutData, layoutConfigurator));
         }
         layoutData.setBorderNodes(borderNodes);
 
         List<NodeLayoutData> childNodes = new ArrayList<>();
         for (Node childNode : node.getChildNodes()) {
-            childNodes.add(this.convertNode(childNode, layoutData, id2LayoutData));
+            childNodes.add(this.convertNode(childNode, layoutData, id2LayoutData, layoutConfigurator));
         }
         layoutData.setChildrenNodes(childNodes);
 
-        LabelLayoutData labelLayoutData = this.convertLabel(node.getLabel(), id2LayoutData);
+        LabelLayoutData labelLayoutData = this.convertNodeLabel(node, id2LayoutData, layoutConfigurator);
         layoutData.setLabel(labelLayoutData);
 
         layoutData.setResizedByUser(node.getCustomizedProperties().contains(CustomizableProperties.Size));
@@ -114,13 +124,13 @@ public class IncrementalLayoutDiagramConverter {
         id2LayoutData.put(id, layoutData);
 
         if (edge.getBeginLabel() != null) {
-            layoutData.setBeginLabel(this.convertLabel(edge.getBeginLabel(), id2LayoutData));
+            layoutData.setBeginLabel(this.convertEdgeLabel(edge.getBeginLabel(), LabelType.EDGE_BEGIN, id2LayoutData));
         }
         if (edge.getCenterLabel() != null) {
-            layoutData.setCenterLabel(this.convertLabel(edge.getCenterLabel(), id2LayoutData));
+            layoutData.setCenterLabel(this.convertEdgeLabel(edge.getCenterLabel(), LabelType.EDGE_CENTER, id2LayoutData));
         }
         if (edge.getEndLabel() != null) {
-            layoutData.setEndLabel(this.convertLabel(edge.getEndLabel(), id2LayoutData));
+            layoutData.setEndLabel(this.convertEdgeLabel(edge.getEndLabel(), LabelType.EDGE_END, id2LayoutData));
         }
 
         layoutData.setRoutingPoints(edge.getRoutingPoints());
@@ -132,14 +142,14 @@ public class IncrementalLayoutDiagramConverter {
         return layoutData;
     }
 
-    private LabelLayoutData convertLabel(Label label, Map<String, ILayoutData> id2LayoutData) {
+    private LabelLayoutData convertEdgeLabel(Label label, LabelType labelType, Map<String, ILayoutData> id2LayoutData) {
         LabelLayoutData layoutData = new LabelLayoutData();
         String id = label.getId();
         layoutData.setId(id);
         id2LayoutData.put(id, layoutData);
 
         layoutData.setPosition(label.getPosition());
-        layoutData.setLabelType(label.getType());
+        layoutData.setLabelType(labelType.getValue());
 
         TextBounds textBounds = new TextBoundsProvider().computeBounds(label.getStyle(), label.getText());
         layoutData.setTextBounds(textBounds);
@@ -147,4 +157,25 @@ public class IncrementalLayoutDiagramConverter {
         return layoutData;
     }
 
+    private LabelLayoutData convertNodeLabel(Node node, Map<String, ILayoutData> id2LayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+        LabelLayoutData layoutData = new LabelLayoutData();
+        Label label = node.getLabel();
+        String id = label.getId();
+        layoutData.setId(id);
+        id2LayoutData.put(id, layoutData);
+
+        layoutData.setPosition(label.getPosition());
+        String labelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+        layoutData.setLabelType(labelType);
+
+        TextBounds textBounds = null;
+        if (labelType.startsWith("label:inside-v")) {
+            textBounds = new TextBoundsProvider().computeAutoWrapBounds(label.getStyle(), label.getText(), node.getSize().getWidth());
+        } else {
+            textBounds = new TextBoundsProvider().computeBounds(label.getStyle(), label.getText());
+        }
+        layoutData.setTextBounds(textBounds);
+
+        return layoutData;
+    }
 }

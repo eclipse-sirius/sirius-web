@@ -44,8 +44,17 @@ public class NodeLabelPositionProvider {
     }
 
     public Position getPosition(NodeLayoutData node, LabelLayoutData label, List<BorderNodesOnSide> borderNodesOnSide) {
-        double x = this.getHorizontalPosition(node, label, borderNodesOnSide);
-        double y = this.getVerticalPosition(node, label);
+        double x = 0.0;
+        double y = 0.0;
+        String labelType = label.getLabelType();
+        if (labelType != null && labelType.startsWith("label:inside-v")) {
+            double maxPadding = this.getMaxPadding(node);
+            x = maxPadding;
+            y = maxPadding;
+        } else {
+            x = this.getHorizontalPosition(node, label, borderNodesOnSide);
+            y = this.getVerticalPosition(node, label);
+        }
 
         return Position.at(x, y);
     }
@@ -134,6 +143,17 @@ public class NodeLabelPositionProvider {
             }
         }
         return y;
+    }
+
+    private double getMaxPadding(NodeLayoutData node) {
+        double maxPadding = 0d;
+        ElkPadding nodeLabelsPadding = this.layoutConfigurator.configureByType(node.getNodeType()).getProperty(CoreOptions.NODE_LABELS_PADDING);
+        double leftPadding = nodeLabelsPadding.getLeft();
+        double rightPadding = nodeLabelsPadding.getRight();
+        double topPadding = nodeLabelsPadding.getTop();
+        double bottomPadding = nodeLabelsPadding.getBottom();
+        maxPadding = Double.max(Double.max(leftPadding, rightPadding), Double.max(topPadding, bottomPadding));
+        return maxPadding;
     }
 
     private boolean isOutside(EnumSet<NodeLabelPlacement> nodeLabelPlacementSet) {
