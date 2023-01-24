@@ -122,6 +122,8 @@ public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
                     }
 
                     payload = new GetConnectorToolsSuccessPayload(diagramInput.id(), connectorTools);
+                } else {
+                    payload = new GetConnectorToolsSuccessPayload(diagramInput.id(), List.of());
                 }
             }
         } else {

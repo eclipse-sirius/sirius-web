@@ -104,7 +104,7 @@ public class TestDomainProvider {
         this.typedElementEntity = this.createEntity(domain, "TypedElement", true, List.of(this.namedElementEntity));
         this.interfaceEntity = this.createEntity(domain, "Interface", false, List.of(this.typeEntity));
         this.classEntity = this.createEntity(domain, "Class", false, List.of(this.typeEntity));
-        this.dataTypeEntity = this.createEntity(domain, "DataType", false, List.of(this.namedElementEntity));
+        this.dataTypeEntity = this.createEntity(domain, "DataType", false, List.of(this.typeEntity));
         this.enumEntity = this.createEntity(domain, "Enum", false, List.of(this.dataTypeEntity));
         this.enumLiteralEntity = this.createEntity(domain, "EnumLiteral", false, List.of(this.namedElementEntity));
         this.attributeEntity = this.createEntity(domain, "Attribute", false, List.of(this.namedElementEntity));

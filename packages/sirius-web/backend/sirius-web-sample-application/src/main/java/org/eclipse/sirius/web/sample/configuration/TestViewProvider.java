@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
@@ -571,7 +572,7 @@ public class TestViewProvider {
 
     private NodeDescription createClassNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
+        nodeStyle.setColor("#1976D2");
         nodeStyle.setBorderColor("#0d47a1");
         nodeStyle.setLabelColor("white");
         nodeStyle.setWithHeader(false);
@@ -582,12 +583,23 @@ public class TestViewProvider {
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
+        var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        abstractNodeStyle.setColor("#00796B");
+        abstractNodeStyle.setBorderColor("#004D40");
+        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setWithHeader(false);
+
+        var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        abstractConditionalNodeStyle.setCondition("aql:self.abstract");
+        abstractConditionalNodeStyle.setStyle(abstractNodeStyle);
+        nodeDescription.getConditionalStyles().add(abstractConditionalNodeStyle);
+
         return nodeDescription;
     }
 
     private NodeDescription createClassAttributesNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
+        nodeStyle.setColor("#1976D2");
         nodeStyle.setBorderColor("#0d47a1");
         nodeStyle.setLabelColor("white");
         nodeStyle.setBorderRadius(0);
@@ -599,12 +611,23 @@ public class TestViewProvider {
         nodeDescription.setLabelExpression("");
         nodeDescription.setStyle(nodeStyle);
 
+        var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        abstractNodeStyle.setColor("#00796B");
+        abstractNodeStyle.setBorderColor("#004D40");
+        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setWithHeader(false);
+
+        var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        abstractConditionalNodeStyle.setCondition("aql:self.abstract");
+        abstractConditionalNodeStyle.setStyle(abstractNodeStyle);
+        nodeDescription.getConditionalStyles().add(abstractConditionalNodeStyle);
+
         return nodeDescription;
     }
 
     private NodeDescription createClassAttributeNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
+        nodeStyle.setColor("");
         nodeStyle.setBorderColor("");
         nodeStyle.setLabelColor("white");
 
@@ -618,7 +641,7 @@ public class TestViewProvider {
 
     private NodeDescription createClassOperationsNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
+        nodeStyle.setColor("#1976D2");
         nodeStyle.setBorderColor("#0d47a1");
         nodeStyle.setLabelColor("white");
         nodeStyle.setBorderRadius(0);
@@ -630,12 +653,23 @@ public class TestViewProvider {
         nodeDescription.setLabelExpression("");
         nodeDescription.setStyle(nodeStyle);
 
+        var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        abstractNodeStyle.setColor("#00796B");
+        abstractNodeStyle.setBorderColor("#004D40");
+        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setWithHeader(false);
+
+        var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        abstractConditionalNodeStyle.setCondition("aql:self.abstract");
+        abstractConditionalNodeStyle.setStyle(abstractNodeStyle);
+        nodeDescription.getConditionalStyles().add(abstractConditionalNodeStyle);
+
         return nodeDescription;
     }
 
     private NodeDescription createClassOperationNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("#2196f3");
+        nodeStyle.setColor("");
         nodeStyle.setBorderColor("");
         nodeStyle.setLabelColor("white");
 
@@ -651,13 +685,17 @@ public class TestViewProvider {
         var implementsInterfaceEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         implementsInterfaceEdgeStyle.setColor("#1a237e");
         implementsInterfaceEdgeStyle.setEdgeWidth(1);
-        implementsInterfaceEdgeStyle.setLineStyle(LineStyle.SOLID);
+        implementsInterfaceEdgeStyle.setLineStyle(LineStyle.DASH);
         implementsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         implementsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
 
         var implementsInterfaceEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
         implementsInterfaceEdgeDescription.setName("Implements");
         implementsInterfaceEdgeDescription.setLabelExpression("");
+        implementsInterfaceEdgeDescription.setBeginLabelExpression("aql:'implements ' + semanticEdgeTarget.name");
+        implementsInterfaceEdgeDescription.setBeginLabelEditTool(this.editImplementsInterfaceEdgeBeginLabel());
+        implementsInterfaceEdgeDescription.setEndLabelExpression("aql:'implemented by ' + semanticEdgeSource.name");
+        implementsInterfaceEdgeDescription.setEndLabelEditTool(this.editImplementsInterfaceEdgeEndLabel());
         implementsInterfaceEdgeDescription.setStyle(implementsInterfaceEdgeStyle);
         implementsInterfaceEdgeDescription.setSourceNodesExpression("aql:self");
         implementsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.implements");
@@ -677,6 +715,43 @@ public class TestViewProvider {
         implementsInterfaceEdgeDescription.getEdgeTools().add(implementsInterfaceEdgeTool);
 
         return implementsInterfaceEdgeDescription;
+    }
+
+    private LabelEditTool editImplementsInterfaceEdgeBeginLabel() {
+        var editLabelTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        editLabelTool.setName("Edit Begin Label");
+        editLabelTool.setInitialDirectEditLabelExpression("aql:semanticEdgeTarget.name");
+
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeTarget");
+
+        var setValue = ViewFactory.eINSTANCE.createSetValue();
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:newLabel");
+
+        changeContext.getChildren().add(setValue);
+        editLabelTool.getBody().add(changeContext);
+
+        return editLabelTool;
+    }
+
+    private LabelEditTool editImplementsInterfaceEdgeEndLabel() {
+        var editLabelTool = ViewFactory.eINSTANCE.createLabelEditTool();
+
+        editLabelTool.setName("Edit End Label");
+        editLabelTool.setInitialDirectEditLabelExpression("aql:semanticEdgeSource.name");
+
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+
+        var setValue = ViewFactory.eINSTANCE.createSetValue();
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:newLabel");
+
+        changeContext.getChildren().add(setValue);
+        editLabelTool.getBody().add(changeContext);
+
+        return editLabelTool;
     }
 
     private EdgeDescription createExtendsClassEdgeDescription() {
