@@ -142,13 +142,19 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
   {
     guards: {
       isNewSelection: (context, event) => {
-        const updateSelectionEvent = event as UpdateSelectionEvent;
+        const { selection, representations: selectedRepresentations } = event as UpdateSelectionEvent;
+
         const isEqual =
-          context.selection.entries.length === updateSelectionEvent.selection.entries.length &&
-          context.selection.entries.every(
-            (value, index) => value.id === updateSelectionEvent.selection.entries[index].id
-          );
-        return !isEqual;
+          context.selection.entries.length === selection.entries.length &&
+          context.selection.entries.every((value, index) => value.id === selection.entries[index].id);
+
+        const isSelectedRepresentationDisplayed =
+          context.displayedRepresentation &&
+          selectedRepresentations
+            .map((representation) => representation.id)
+            .includes(context.displayedRepresentation.id);
+
+        return !isEqual || !isSelectedRepresentationDisplayed;
       },
     },
     actions: {
