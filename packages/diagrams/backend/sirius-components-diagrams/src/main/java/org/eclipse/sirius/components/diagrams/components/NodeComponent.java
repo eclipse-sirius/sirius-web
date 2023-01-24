@@ -27,7 +27,9 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -178,15 +180,12 @@ public class NodeComponent implements IComponent {
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
 
-        LabelType nodeLabelType = LabelType.INSIDE_CENTER;
-        if (containmentKind == NodeContainmentKind.BORDER_NODE) {
-            nodeLabelType = LabelType.OUTSIDE;
-        } else if (NodeType.NODE_IMAGE.equals(type)) {
-            nodeLabelType = LabelType.OUTSIDE_CENTER;
-        }
+        // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
+        // the diagrams-layout.
+        LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
 
         Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
-        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, nodeLabelType.getValue());
+        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, dummyLabelType.getValue());
         Element labelElement = new Element(LabelComponent.class, labelComponentProps);
 
         List<Element> nodeChildren = new ArrayList<>();
@@ -227,6 +226,22 @@ public class NodeComponent implements IComponent {
 
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
+    }
+
+    private LabelType getLabelType(NodeContainmentKind containmentKind, String type, INodeStyle style) {
+        LabelType dummyLabelType = LabelType.INSIDE_V_TOP_H_CENTER;
+        if (containmentKind == NodeContainmentKind.BORDER_NODE) {
+            dummyLabelType = LabelType.OUTSIDE;
+        } else if (NodeType.NODE_IMAGE.equals(type)) {
+            dummyLabelType = LabelType.OUTSIDE_CENTER;
+        } else if (NodeType.NODE_ICON_LABEL.equals(type)) {
+            dummyLabelType = LabelType.INSIDE_CENTER;
+        } else if (ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE.equals(type)) {
+            dummyLabelType = LabelType.INSIDE_CENTER;
+        } else if (style instanceof RectangularNodeStyle rectangularNodeStyle && rectangularNodeStyle.isWithHeader()) {
+            dummyLabelType = LabelType.INSIDE_CENTER;
+        }
+        return dummyLabelType;
     }
 
     private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {

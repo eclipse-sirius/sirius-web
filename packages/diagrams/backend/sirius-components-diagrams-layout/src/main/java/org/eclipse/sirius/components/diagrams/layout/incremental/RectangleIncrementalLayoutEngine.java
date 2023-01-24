@@ -127,7 +127,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
                     .toList();
 
             Size parentMinimalSize = Size.newSize()
-                    .width(this.getNodeMinimalWidthConsideringChildren(nodeContext, 0))
+                    .width(this.getNodeMinimalWidthConsideringChildren(nodeContext, 0, true))
                     .height(this.getNodeMinimalHeightConsideringChildren(nodeContext, 0))
                     .build();
 
@@ -254,16 +254,17 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
     }
 
     private double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeContext nodeContext, double childrenAreaWidth) {
-        double nodeWidth = this.getNodeMinimalWidthConsideringChildren(nodeContext, childrenAreaWidth);
-
         // @formatter:off
-        Optional<Double> optionalWidth = this.getNodeSizeFromEvent(optionalDiagramEvent, nodeContext)
+        Optional<Double> resizedWidth = this.getNodeSizeFromEvent(optionalDiagramEvent, nodeContext)
                 .map(Size::getWidth)
                 .or(() -> Optional.of(nodeContext.getNode()).filter(NodeLayoutData::isResizedByUser).map(NodeLayoutData::getSize).map(Size::getWidth));
         // @formatter:on
-        if (optionalWidth.isPresent()) {
-            if (optionalWidth.get() > nodeWidth) {
-                nodeWidth = optionalWidth.get();
+
+        double nodeWidth = this.getNodeMinimalWidthConsideringChildren(nodeContext, childrenAreaWidth, resizedWidth.map(width -> false).orElse(true));
+
+        if (resizedWidth.isPresent()) {
+            if (resizedWidth.get() > nodeWidth) {
+                nodeWidth = resizedWidth.get();
             }
         }
         return nodeWidth;
@@ -300,7 +301,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
         return size;
     }
 
-    private double getNodeMinimalWidthConsideringChildren(NodeContext nodeContext, double childrenAreaWidth) {
+    private double getNodeMinimalWidthConsideringChildren(NodeContext nodeContext, double childrenAreaWidth, boolean takeLabelWidthIntoAccount) {
         double newNodeWidth = LayoutOptionValues.MIN_WIDTH_CONSTRAINT;
         if (nodeContext.isMinimumSizeConstrained()) {
             KVector minSize = nodeContext.getNodeProperty(CoreOptions.NODE_SIZE_MINIMUM);
@@ -311,7 +312,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
         double labelAndChildrenWidth = 0;
         Set<NodeLabelPlacement> labelPlacements = nodeContext.getLabelPlacements();
         double labelWidth = 0;
-        if (nodeContext.hasLabel() && nodeContext.isNodeLabelInside()) {
+        if (nodeContext.hasLabel() && nodeContext.isNodeLabelInside() && takeLabelWidthIntoAccount) {
             labelWidth = nodeContext.getNode().getLabel().getTextBounds().getSize().getWidth();
         }
         if (labelPlacements.contains(NodeLabelPlacement.H_CENTER)) {

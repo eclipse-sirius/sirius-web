@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
+import org.eclipse.sirius.components.diagrams.layout.ELKPropertiesService;
 import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
@@ -94,8 +95,8 @@ public class NodeCollapseExpandTests {
         ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
-        LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(), new LayoutConfiguratorRegistry(List.of()),
-                new ELKLayoutedDiagramProvider(List.of()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
+        LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(new ELKPropertiesService()), new LayoutConfiguratorRegistry(List.of()),
+                new ELKLayoutedDiagramProvider(List.of(), new ELKPropertiesService()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
 
         return new TestDiagramCreationService(this.objectService, representationDescriptionSearchService, layoutService);
     }
@@ -188,12 +189,12 @@ public class NodeCollapseExpandTests {
         Node laidOutContainer = laidOutDiagram.getNodes().get(1);
         assertThat(laidOutContainer.getPosition()).isEqualTo(Position.at(10, 10));
         assertThat(laidOutContainer.getSize().getWidth()).isEqualTo(174);
-        assertThat(laidOutContainer.getSize().getHeight()).isBetween(115.0, 116.0);
+        assertThat(laidOutContainer.getSize().getHeight()).isBetween(124.0, 125.0);
         assertThat(laidOutContainer.getChildNodes()).hasSize(1);
 
         Node laidOutChild = laidOutContainer.getChildNodes().get(0);
         assertThat(laidOutChild.getPosition().getX()).isEqualTo(12);
-        assertThat(laidOutChild.getPosition().getY()).isBetween(33.0, 34.0);
+        assertThat(laidOutChild.getPosition().getY()).isBetween(42.0, 43.0);
         assertThat(laidOutChild.getSize()).isEqualTo(Size.of(150, 70));
 
         Edge laidOutEdge = laidOutDiagram.getEdges().get(0);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.elk.alg.layered.options.LayeredOptions;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.graph.ElkBendPoint;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkEdgeSection;
@@ -32,10 +34,12 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.layout.ELKConvertedDiagram;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
+import org.eclipse.sirius.components.diagrams.layout.ELKPropertiesService;
 import org.eclipse.sirius.components.diagrams.layout.SiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.tests.IdPolicy;
 import org.eclipse.sirius.components.diagrams.tests.LayoutPolicy;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -71,6 +75,13 @@ public class LayoutedDiagramProviderTests {
 
     private static final String FIRST_EDGE_ID = UUID.randomUUID().toString();
 
+    private ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
+
+    @BeforeAll
+    private static void initTest() {
+        LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(new LayeredOptions());
+    }
+
     @Test
     public void testLayoutedDiagramProvider() {
         // @formatter:off
@@ -90,8 +101,8 @@ public class LayoutedDiagramProviderTests {
 
         ELKConvertedDiagram convertedDiagram = this.getConvertedDiagram(originalDiagram);
 
-        Diagram layoutedDiagram = new ELKLayoutedDiagramProvider(List.of()).getLayoutedDiagram(originalDiagram, convertedDiagram.getElkDiagram(), convertedDiagram.getId2ElkGraphElements(),
-                new SiriusWebLayoutConfigurator());
+        Diagram layoutedDiagram = new ELKLayoutedDiagramProvider(List.of(), this.elkPropertiesService).getLayoutedDiagram(originalDiagram, convertedDiagram.getElkDiagram(),
+                convertedDiagram.getId2ElkGraphElements(), new SiriusWebLayoutConfigurator());
         assertThat(layoutedDiagram).hasBounds(0, 0, 0, 0);
         assertThat(layoutedDiagram.getNodes()).hasSizeGreaterThan(0);
         assertThat(layoutedDiagram.getNodes().get(0)).hasBounds(NODE_X, NODE_Y, NODE_WIDTH, NODE_HEIGHT);
