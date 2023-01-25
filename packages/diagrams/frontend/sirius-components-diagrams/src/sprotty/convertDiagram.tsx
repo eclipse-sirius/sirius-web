@@ -63,6 +63,14 @@ import {
 } from './Diagram.types';
 import { resizeFeature } from './dragAndDrop/model';
 
+const isImageNodeStyle = (style: GQLINodeStyle): style is GQLImageNodeStyle => style.__typename === 'ImageNodeStyle';
+const isParametricSVGNodeStyle = (style: GQLINodeStyle): style is GQLParametricSVGNodeStyle =>
+  style.__typename === 'ParametricSVGNodeStyle';
+const isRectangularNodeStyle = (style: GQLINodeStyle): style is GQLRectangularNodeStyle =>
+  style.__typename === 'RectangularNodeStyle';
+const isIconLabelNodeStyle = (style: GQLINodeStyle): style is GQLIconLabelNodeStyle =>
+  style.__typename === 'IconLabelNodeStyle';
+
 /**
  * Convert the given diagram object to a Sprotty diagram.
  *
@@ -217,9 +225,7 @@ const handleNodeFeatures = (gqlNode: GQLNode, readOnly: boolean, autoLayout: boo
     withEditLabelFeature,
   ]);
 
-  if (isRectangularNodeStyle(gqlNode.style) && gqlNode.style.withHeader) {
-    features.delete(resizeFeature);
-  } else if (gqlNode.type === 'node:icon-label') {
+  if (isIconLabelNodeStyle(gqlNode.style)) {
     features.delete(resizeFeature);
     features.delete(connectableFeature);
     features.delete(moveFeature);
@@ -282,14 +288,6 @@ const convertLabel = (
   return label;
 };
 
-const isImageNodeStyle = (style: GQLINodeStyle): style is GQLImageNodeStyle => style.__typename === 'ImageNodeStyle';
-const isParametricSVGNodeStyle = (style: GQLINodeStyle): style is GQLParametricSVGNodeStyle =>
-  style.__typename === 'ParametricSVGNodeStyle';
-const isRectangularNodeStyle = (style: GQLINodeStyle): style is GQLRectangularNodeStyle =>
-  style.__typename === 'RectangularNodeStyle';
-const isIconLabelNodeStyle = (style: GQLINodeStyle): style is GQLIconLabelNodeStyle =>
-  style.__typename === 'IconLabelNodeStyle';
-
 const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle | null => {
   let convertedStyle: INodeStyle | null = null;
 
@@ -330,10 +328,10 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
   } else if (isIconLabelNodeStyle(style)) {
     const { backgroundColor } = style;
 
-    const listItemNodeStyle = new IconLabelNodeStyle();
-    listItemNodeStyle.backgroundColor = backgroundColor;
+    const iconLabelNodeStyle = new IconLabelNodeStyle();
+    iconLabelNodeStyle.backgroundColor = backgroundColor;
 
-    convertedStyle = listItemNodeStyle;
+    convertedStyle = iconLabelNodeStyle;
   }
   return convertedStyle;
 };
