@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.configuration;
+package org.eclipse.sirius.web.sample.papaya.view.services;
 
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
  * @author sbegaudeau
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class TestService {
+public class PapayaService {
 
     private final IObjectService objectService;
 
@@ -318,7 +318,7 @@ public class TestService {
 
     private EObject operationIRepresentationDescriptionGetLabel;
 
-    public TestService(IObjectService objectService) {
+    public PapayaService(IObjectService objectService) {
         this.objectService = Objects.requireNonNull(objectService);
     }
 

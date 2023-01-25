@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.sirius.web.sample.papaya.view.services.PapayaService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +37,7 @@ public class TestJavaServiceProvider implements IJavaServiceProvider {
                 .anyMatch(diagramDescription -> diagramDescription.getDomainType().equals("papaya::Root"));
         // @formatter:on
         if (isTestView) {
-            return List.of(TestService.class);
+            return List.of(PapayaService.class);
         }
         return List.of();
     }
