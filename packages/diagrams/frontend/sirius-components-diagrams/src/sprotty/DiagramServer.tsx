@@ -28,7 +28,6 @@ import {
   ReconnectAction,
   SEdge,
   SelectionResult,
-  SGraph,
   SModelElement,
   SNode,
   SPort,
@@ -474,10 +473,7 @@ export class DiagramServer extends ModelSource {
 
   handleShowContextualToolbarAction(action: ShowContextualToolbarAction) {
     const { element, position: palettePosition } = action;
-    if (
-      !!element &&
-      ((element as any).kind === 'siriusComponents://representation?type=Diagram' || (element as any).parent)
-    ) {
+    if (element) {
       this.actionDispatcher.request<ViewportResult>(GetViewportAction.create()).then((viewportResult) => {
         const { viewport, canvasBounds } = viewportResult;
         const { scroll, zoom } = viewport;
@@ -501,8 +497,6 @@ export class DiagramServer extends ModelSource {
             canvasBounds: bounds,
             edgeStartPosition,
             element,
-            renameable: !(element instanceof SGraph),
-            deletable: !(element instanceof SGraph),
           };
           this.setContextualPalette(contextualPalette);
         }
