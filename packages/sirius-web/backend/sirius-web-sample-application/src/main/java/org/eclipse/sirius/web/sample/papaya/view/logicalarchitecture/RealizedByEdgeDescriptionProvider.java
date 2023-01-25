@@ -44,19 +44,6 @@ public class RealizedByEdgeDescriptionProvider implements IEdgeDescriptionProvid
         realizedByEdgeDescription.setTargetNodesExpression("aql:self.realizedBy");
         realizedByEdgeDescription.setIsDomainBasedEdge(false);
 
-        var realizedByEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        realizedByEdgeTool.setName("Realized by");
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("realizedBy");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        changeContext.getChildren().add(setTargetValue);
-        realizedByEdgeTool.getBody().add(changeContext);
-
-        realizedByEdgeDescription.getEdgeTools().add(realizedByEdgeTool);
-
         return realizedByEdgeDescription;
     }
 

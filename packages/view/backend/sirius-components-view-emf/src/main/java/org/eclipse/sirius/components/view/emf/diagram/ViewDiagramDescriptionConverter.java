@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,13 +21,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -57,11 +51,6 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -72,15 +61,13 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
@@ -98,10 +85,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private static final String CONVERTED_NODES_VARIABLE = "convertedNodes";
 
     private static final String DEFAULT_DIAGRAM_LABEL = "Diagram";
-
-    private static final String NODE_CREATION_TOOL_SECTION = "Node Creation";
-
-    private static final String EDGE_CREATION_TOOL_SECTION = "Edge Creation";
 
     private final IObjectService objectService;
 
@@ -139,22 +122,33 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     @Override
     public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, AQLInterpreter interpreter) {
-        org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
+        final org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
         ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
         // Nodes must be fully converted first.
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).toList();
         List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).toList();
         // @formatter:off
         String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
+        var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider);
         return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString())
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
-                .canCreatePredicate(variableManager -> this.canCreateDiagram(viewDiagramDescription, variableManager, interpreter))
+                .canCreatePredicate(new IViewDiagramCreationPredicate() {
+                    @Override
+                    public boolean test(VariableManager variableManager) {
+                        return ViewDiagramDescriptionConverter.this.canCreateDiagram(viewDiagramDescription, variableManager, interpreter);
+                    }
+
+                    @Override
+                    public org.eclipse.sirius.components.view.DiagramDescription getSourceDiagramDescription() {
+                        return viewDiagramDescription;
+                    }
+                })
                 .autoLayout(viewDiagramDescription.isAutoLayout())
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .toolSections(this.createToolSections(converterContext))
+                .toolSections(toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
                 .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
                 .build();
         // @formatter:on
@@ -164,11 +158,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             ViewDiagramDescriptionConverterContext converterContext) {
         Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(converterContext.getConvertedNodes());
         return variableManager -> {
-            if (viewDiagramDescription.getOnDrop() != null) {
+            Optional<DropTool> optionalDropTool = new ToolFinder().findDropTool(viewDiagramDescription);
+            if (optionalDropTool.isPresent()) {
                 var augmentedVariableManager = variableManager.createChild();
                 augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, capturedNodeDescriptions);
                 return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
-                        .executeTool(viewDiagramDescription.getOnDrop(), augmentedVariableManager);
+                        .executeTool(optionalDropTool.get(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured");
             }
@@ -270,7 +265,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .sizeProvider(sizeProvider)
                 .userResizable(viewNodeDescription.isUserResizable())
-                .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, converterContext))
+                .labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate)
                 .build();
@@ -305,115 +300,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private boolean matches(AQLInterpreter interpreter, String condition, VariableManager variableManager) {
         return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
-    }
-
-    private List<ToolSection> createToolSections(ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        var nodeCreationTools = this.getNodeTools(converterContext, capturedConvertedNodes);
-        var edgeTools = this.getEdgeTools(converterContext, capturedConvertedNodes);
-
-        // @formatter:off
-        var nodeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
-                .label(NODE_CREATION_TOOL_SECTION)
-                .tools(nodeCreationTools)
-                .imageURL("")
-                .build();
-        var edgeCreationToolSection = ToolSection.newToolSection(UUID.randomUUID().toString())
-                .label(EDGE_CREATION_TOOL_SECTION)
-                .tools(edgeTools)
-                .imageURL("")
-                .build();
-        return List.of(nodeCreationToolSection, edgeCreationToolSection);
-        // @formatter:on
-    }
-
-    private List<ITool> getNodeTools(ViewDiagramDescriptionConverterContext converterContext, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedConvertedNodes) {
-        List<ITool> nodeCreationTools = new ArrayList<>();
-        for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
-            List<org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription> allTargetDescriptions = this.getAllTargetDescriptions(nodeDescription, converterContext);
-            String imageURL = this.viewToolImageProvider.getImage(nodeDescription);
-
-            // Add custom tools
-            int i = 0;
-            for (NodeTool nodeTool : nodeDescription.getNodeTools()) {
-                // @formatter:off
-                SingleClickOnDiagramElementTool customTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(this.getToolId(nodeDescription, i++))
-                        .label(nodeTool.getName())
-                        .imageURL(imageURL)
-                        .handler(variableManager -> {
-                            VariableManager child = variableManager.createChild();
-                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                            child.put("nodeDescription", nodeDescription);
-                            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(child), capturedConvertedNodes).executeTool(nodeTool, child);
-                        })
-                        .targetDescriptions(allTargetDescriptions)
-                        .appliesToDiagramRoot(nodeDescription.eContainer() instanceof org.eclipse.sirius.components.view.DiagramDescription)
-                        .build();
-                // @formatter:on
-                nodeCreationTools.add(customTool);
-            }
-        }
-        return nodeCreationTools;
-    }
-
-    private List<ITool> getEdgeTools(ViewDiagramDescriptionConverterContext converterContext, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedConvertedNodes) {
-        List<ITool> edgeTools = new ArrayList<>();
-        for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
-            String imageURL = this.viewToolImageProvider.getImage(edgeDescription);
-
-            // Add custom tools
-            int i = 0;
-            for (EdgeTool edgeTool : edgeDescription.getEdgeTools()) {
-                // @formatter:off
-                SingleClickOnTwoDiagramElementsTool customTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(this.getToolId(edgeDescription, i++))
-                        .label(edgeTool.getName())
-                        .imageURL(imageURL)
-                        .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                                .sources(edgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                                .targets(edgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                                .build()))
-                        .handler(variableManager -> {
-                            VariableManager child = variableManager.createChild();
-                            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                            child.put("edgeDescription", edgeDescription);
-                            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeTool, child);
-                        })
-                        .build();
-                // @formatter:on
-                edgeTools.add(customTool);
-            }
-        }
-        return edgeTools;
-    }
-
-    private List<org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription> getAllTargetDescriptions(org.eclipse.sirius.components.view.NodeDescription nodeDescription,
-            ViewDiagramDescriptionConverterContext converterContext) {
-        List<org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription> allTargetDescriptions = new ArrayList<>();
-        var targetDescriptions = Optional.ofNullable(nodeDescription.eContainer()).map(converterContext.getConvertedNodes()::get).stream().toList();
-        allTargetDescriptions.addAll(targetDescriptions);
-
-        // @formatter:off
-        var crossReferencesAdapter = Optional.ofNullable(nodeDescription.eResource())
-                .map(Resource::getResourceSet)
-                .map(ResourceSet::eAdapters)
-                .orElseGet(BasicEList::new)
-                .stream()
-                .filter(ECrossReferenceAdapter.class::isInstance)
-                .map(ECrossReferenceAdapter.class::cast)
-                .findFirst()
-                .orElse(new ECrossReferenceAdapter());
-        // @formatter:on
-        var crossReferences = crossReferencesAdapter.getInverseReferences(nodeDescription);
-        for (Setting setting : crossReferences) {
-            if (setting.getEObject() instanceof org.eclipse.sirius.components.view.NodeDescription) {
-                var nodeDescriptionCrossReference = (org.eclipse.sirius.components.view.NodeDescription) setting.getEObject();
-                if (nodeDescriptionCrossReference.getReusedChildNodeDescriptions().contains(nodeDescription)
-                        || nodeDescriptionCrossReference.getReusedBorderNodeDescriptions().contains(nodeDescription)) {
-                    allTargetDescriptions.add(converterContext.getConvertedNodes().get(nodeDescriptionCrossReference));
-                }
-            }
-        }
-        return allTargetDescriptions;
     }
 
     private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
@@ -593,10 +479,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 VariableManager child = variableManager.createChild();
                 child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
 
-                DeleteTool tool = diagramElementDescription.getDeleteTool();
-                if (tool != null) {
+                var optionalTooltool = new ToolFinder().findDeleteTool(diagramElementDescription);
+                if (optionalTooltool.isPresent()) {
                     result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
-                            .executeTool(tool, child);
+                            .executeTool(optionalTooltool.get(), child);
                 } else {
                     result = new Failure("No deletion tool configured");
                 }
@@ -607,7 +493,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return new IViewNodeDeleteHandler() {
             @Override
             public boolean hasSemanticDeleteTool() {
-                return diagramElementDescription.getDeleteTool() != null;
+                return new ToolFinder().findDeleteTool(diagramElementDescription).isPresent();
             }
 
             @Override
@@ -633,7 +519,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
     }
 
-    private BiFunction<VariableManager, String, IStatus> createLabelEditHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.NodeDescription nodeDescription,
+            ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         BiFunction<VariableManager, String, IStatus> handler = (variableManager, newLabel) -> {
             IStatus result;
@@ -641,10 +528,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             childVariableManager.put("arg0", newLabel);
             childVariableManager.put("newLabel", newLabel);
             childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-            LabelEditTool tool = diagramElementDescription.getLabelEditTool();
-            if (tool != null) {
+            var optionalTool = new ToolFinder().findNodeLabelEditTool(nodeDescription);
+            if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
-                        .executeTool(tool, childVariableManager);
+                        .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
             }
@@ -658,7 +545,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
             @Override
             public boolean hasLabelEditTool() {
-                return diagramElementDescription.getLabelEditTool() != null;
+                return new ToolFinder().findNodeLabelEditTool(nodeDescription).isPresent();
             }
         };
     }
@@ -672,18 +559,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
             childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
 
-            LabelEditTool tool = null;
-            if (edgeLabelKind == EdgeLabelKind.BEGIN_LABEL) {
-                tool = edgeDescription.getBeginLabelEditTool();
-            } else if (edgeLabelKind == EdgeLabelKind.CENTER_LABEL) {
-                tool = edgeDescription.getLabelEditTool();
-            } else if (edgeLabelKind == EdgeLabelKind.END_LABEL) {
-                tool = edgeDescription.getEndLabelEditTool();
-            }
-
-            if (tool != null) {
+            Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
+            if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
-                        .executeTool(tool, childVariableManager);
+                        .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
             }
@@ -697,11 +576,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
             @Override
             public boolean hasLabelEditTool(EdgeLabelKind labelKind) {
-                return switch (labelKind) {
-                    case BEGIN_LABEL -> edgeDescription.getBeginLabelEditTool() != null;
-                    case CENTER_LABEL -> edgeDescription.getLabelEditTool() != null;
-                    case END_LABEL -> edgeDescription.getEndLabelEditTool() != null;
-                };
+                return new ToolFinder().findLabelEditTool(edgeDescription, labelKind).isPresent();
             }
         };
     }
@@ -711,8 +586,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {
-        if (nodeElement.getProps() instanceof NodeElementProps) {
-            NodeElementProps props = (NodeElementProps) nodeElement.getProps();
+        if (nodeElement.getProps() instanceof NodeElementProps props) {
             return Objects.equals(this.idProvider.apply(diagramElementDescription), props.getDescriptionId());
         }
         return false;
@@ -729,9 +603,4 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private IDiagramContext getDiagramContext(VariableManager variableManager) {
         return variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
     }
-
-    private String getToolId(DiagramElementDescription diagramElementDescription, int count) {
-        return this.idProvider.apply(diagramElementDescription) + "_tool" + count;
-    }
-
 }

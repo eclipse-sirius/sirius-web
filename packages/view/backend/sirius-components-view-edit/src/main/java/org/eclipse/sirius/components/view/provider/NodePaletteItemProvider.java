@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view.provider;
 
 import java.util.Collection;
@@ -27,26 +27,23 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.View} object. <!-- begin-user-doc
- * --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.NodePalette} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class ViewItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class NodePaletteItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public ViewItemProvider(AdapterFactory adapterFactory) {
+    public NodePaletteItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -76,7 +73,10 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ViewPackage.Literals.VIEW__DESCRIPTIONS);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_PALETTE__DELETE_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_PALETTE__NODE_TOOLS);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_PALETTE__EDGE_TOOLS);
         }
         return this.childrenFeatures;
     }
@@ -95,13 +95,13 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     }
 
     /**
-     * This returns View.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns NodePalette.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/View.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NodePalette.svg"));
     }
 
     /**
@@ -121,7 +121,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_View_type");
+        return this.getString("_UI_NodePalette_type");
     }
 
     /**
@@ -135,8 +135,11 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(View.class)) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
+        switch (notification.getFeatureID(NodePalette.class)) {
+            case ViewPackage.NODE_PALETTE__DELETE_TOOL:
+            case ViewPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+            case ViewPackage.NODE_PALETTE__NODE_TOOLS:
+            case ViewPackage.NODE_PALETTE__EDGE_TOOLS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -153,17 +156,11 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        DiagramDescription newDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        newDiagramDescription.setName("New Diagram Description");
-        newDiagramDescription.setPalette(new DefaultToolsFactory().createDefaultDiagramPalette());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
-
-        FormDescription newFormDescription = ViewFactory.eINSTANCE.createFormDescription();
-        newFormDescription.setName("New Form Description");
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        newFormDescription.getGroups().add(groupDescription);
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));
-
+        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_PALETTE__DELETE_TOOL, defaultToolsFactory.createDefaultDeleteTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultLabelEditTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_PALETTE__NODE_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_PALETTE__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
     }
 
     /**

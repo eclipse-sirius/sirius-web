@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,10 @@ import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DeleteView;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
@@ -71,6 +73,7 @@ import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
@@ -547,6 +550,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalListDescriptionStyle(ConditionalListDescriptionStyle object) {
             return ViewAdapterFactory.this.createConditionalListDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseDiagramPalette(DiagramPalette object) {
+            return ViewAdapterFactory.this.createDiagramPaletteAdapter();
+        }
+
+        @Override
+        public Adapter caseNodePalette(NodePalette object) {
+            return ViewAdapterFactory.this.createNodePaletteAdapter();
+        }
+
+        @Override
+        public Adapter caseEdgePalette(EdgePalette object) {
+            return ViewAdapterFactory.this.createEdgePaletteAdapter();
         }
 
         @Override
@@ -1598,6 +1616,46 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalListDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DiagramPalette
+     * <em>Diagram Palette</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DiagramPalette
+     * @generated
+     */
+    public Adapter createDiagramPaletteAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.NodePalette <em>Node
+     * Palette</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.NodePalette
+     * @generated
+     */
+    public Adapter createNodePaletteAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.EdgePalette <em>Edge
+     * Palette</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.EdgePalette
+     * @generated
+     */
+    public Adapter createEdgePaletteAdapter() {
         return null;
     }
 

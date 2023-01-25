@@ -17,8 +17,10 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.EdgeTool} object. <!--
@@ -46,8 +48,22 @@ public class EdgeToolItemProvider extends ToolItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addTargetElementDescriptionsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Target Element Descriptions feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addTargetElementDescriptionsPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeTool_targetElementDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeTool_targetElementDescriptions_feature", "_UI_EdgeTool_type"),
+                ViewPackage.Literals.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
     /**

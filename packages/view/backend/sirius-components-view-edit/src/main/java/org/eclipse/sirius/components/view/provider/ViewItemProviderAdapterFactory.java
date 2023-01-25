@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1532,6 +1532,75 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DiagramPalette}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DiagramPaletteItemProvider diagramPaletteItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DiagramPalette}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDiagramPaletteAdapter() {
+        if (this.diagramPaletteItemProvider == null) {
+            this.diagramPaletteItemProvider = new DiagramPaletteItemProvider(this);
+        }
+
+        return this.diagramPaletteItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.NodePalette}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected NodePaletteItemProvider nodePaletteItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.NodePalette}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createNodePaletteAdapter() {
+        if (this.nodePaletteItemProvider == null) {
+            this.nodePaletteItemProvider = new NodePaletteItemProvider(this);
+        }
+
+        return this.nodePaletteItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.EdgePalette}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EdgePaletteItemProvider edgePaletteItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.EdgePalette}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEdgePaletteAdapter() {
+        if (this.edgePaletteItemProvider == null) {
+            this.edgePaletteItemProvider = new EdgePaletteItemProvider(this);
+        }
+
+        return this.edgePaletteItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1881,6 +1950,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.listDescriptionStyleItemProvider.dispose();
         if (this.conditionalListDescriptionStyleItemProvider != null)
             this.conditionalListDescriptionStyleItemProvider.dispose();
+        if (this.diagramPaletteItemProvider != null)
+            this.diagramPaletteItemProvider.dispose();
+        if (this.nodePaletteItemProvider != null)
+            this.nodePaletteItemProvider.dispose();
+        if (this.edgePaletteItemProvider != null)
+            this.edgePaletteItemProvider.dispose();
     }
 
 }

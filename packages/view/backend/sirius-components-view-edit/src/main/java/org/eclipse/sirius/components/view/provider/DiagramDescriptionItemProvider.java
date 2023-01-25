@@ -23,7 +23,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -57,7 +56,6 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             super.getPropertyDescriptors(object);
 
             this.addAutoLayoutPropertyDescriptor(object);
-            this.addOnDropPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -75,17 +73,6 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     }
 
     /**
-     * This adds a property descriptor for the On Drop feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addOnDropPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramDescription_onDrop_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_onDrop_feature", "_UI_DiagramDescription_type"),
-                ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, true, false, true, null, null, null));
-    }
-
-    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
@@ -97,6 +84,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
+            this.childrenFeatures.add(ViewPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE);
             this.childrenFeatures.add(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
             this.childrenFeatures.add(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
         }
@@ -162,6 +150,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__PALETTE:
             case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -178,11 +167,16 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
+        super.collectNewChildDescriptors(newChildDescriptors, object);
+        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
+
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node");
         nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        new DefaultToolsFactory().addDefaultNodeTools(nodeChild);
+        nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();
@@ -190,12 +184,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         newEdgeStyle.setColor("#002639");
         edgeChild.setStyle(newEdgeStyle);
-        new DefaultToolsFactory().addDefaultEdgeTools(edgeChild);
+        edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
-
-        DropTool dropTool = ViewFactory.eINSTANCE.createDropTool();
-        dropTool.setName("On Drop");
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__ON_DROP, dropTool));
     }
 
 }

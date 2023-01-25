@@ -13,7 +13,11 @@
 package org.eclipse.sirius.web.sample.papaya.view;
 
 import java.util.List;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.DiagramPalette;
+import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ClassNodeDescriptionProvider;
@@ -60,7 +64,9 @@ public class PapayaViewProvider {
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:self.drop(selectedNode, diagramContext, convertedNodes)");
         dropTool.getBody().add(changeContext);
-        this.diagramDescription.setOnDrop(dropTool);
+        DiagramPalette palette = ViewFactory.eINSTANCE.createDiagramPalette();
+        palette.setDropTool(dropTool);
+        this.diagramDescription.setPalette(palette);
 
         view.getDescriptions().add(this.diagramDescription);
 
@@ -97,6 +103,58 @@ public class PapayaViewProvider {
         });
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(this.diagramDescription, cache));
 
+        var builder = new PapayaViewBuilder();
+        var newOperationalEntityNodeTool = this.createNewOperationalEntityTool(builder, cache.getNodeDescription("Node papaya_operational_analysis::OperationalEntity"));
+        palette.getNodeTools().addAll(List.of(this.getInitializeNodeTool(), newOperationalEntityNodeTool));
+
+        var newComponentNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Component", "components", "Component");
+        newComponentNodeTool.setName("New Component");
+        palette.getNodeTools().add(newComponentNodeTool);
+
+        var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActor", "operationalActors", "Operational Actor");
+        newOperationalActorNodeTool.setName("New Operational Actor");
+        palette.getNodeTools().add(newOperationalActorNodeTool);
+
         return view;
+    }
+
+    private NodeTool createNewOperationalEntityTool(PapayaViewBuilder builder, NodeDescription nodeDescription) {
+        var defaultNodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        defaultNodeTool.setName("New Operational Entity");
+
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:self");
+
+        var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
+        createInstance.setReferenceName("operationalEntities");
+        createInstance.setTypeName(builder.domainType(builder.entity("OperationalEntity")));
+        createInstance.setVariableName("self");
+
+        var createView = ViewFactory.eINSTANCE.createCreateView();
+        createView.setElementDescription(nodeDescription);
+        createView.setSemanticElementExpression("aql:self");
+        createView.setParentViewExpression("aql:false");
+
+        var setValue = ViewFactory.eINSTANCE.createSetValue();
+        setValue.setFeatureName("name");
+        setValue.setValueExpression("aql:'Operational Entity'");
+
+        createView.getChildren().add(setValue);
+        createInstance.getChildren().add(createView);
+        changeContext.getChildren().add(createInstance);
+        defaultNodeTool.getBody().add(changeContext);
+        return defaultNodeTool;
+    }
+
+    private NodeTool getInitializeNodeTool() {
+        var initializeNodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        initializeNodeTool.setName("Initialize Data");
+
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:self.initialize(diagramContext, convertedNodes)");
+
+        initializeNodeTool.getBody().add(changeContext);
+
+        return initializeNodeTool;
     }
 }

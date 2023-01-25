@@ -18,12 +18,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//DiagramPalette"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeDescriptions" upperBound="-1"
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeDescriptions" upperBound="-1"
         eType="#//EdgeDescription" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="onDrop" eType="#//DropTool"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -33,16 +33,21 @@
         eType="#//InterpretedExpression" defaultValueLiteral="aql:self.eContents()"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
         eType="#//InterpretedExpression"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"
-        defaultValueLiteral="aql:self.name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="labelEditTool" eType="#//LabelEditTool"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="synchronizationPolicy"
         eType="#//SynchronizationPolicy"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"
+        defaultValueLiteral="aql:self.name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeDescription" eSuperTypes="#//DiagramElementDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="collapsible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//NodePalette"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenLayoutStrategy"
+        eType="#//LayoutStrategyDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalNodeStyle" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="childrenDescriptions" upperBound="-1"
         eType="#//NodeDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="borderNodesDescriptions"
@@ -51,17 +56,8 @@
         upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reusedBorderNodeDescriptions"
         upperBound="-1" eType="#//NodeDescription"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="userResizable" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
-        eType="#//NodeTool" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
-        eType="#//ConditionalNodeStyle" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenLayoutStrategy"
-        eType="#//LayoutStrategyDescription" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="collapsible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="#//InterpretedExpression"
@@ -69,6 +65,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endLabelExpression" eType="#//InterpretedExpression"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//EdgePalette"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceNodeDescriptions"
         lowerBound="1" upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodeDescriptions"
@@ -79,16 +77,8 @@
         eType="#//InterpretedExpression" defaultValueLiteral="aql:self.eCrossReferences()"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//EdgeStyle"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
-        eType="#//EdgeTool" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="reconnectEdgeTools" upperBound="-1"
-        eType="#//EdgeReconnectionTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalEdgeStyle" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="beginLabelEditTool" eType="#//LabelEditTool"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="endLabelEditTool" eType="#//LabelEditTool"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelStyle" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" lowerBound="1"
@@ -185,7 +175,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTool" eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EdgeTool" eSuperTypes="#//Tool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EdgeTool" eSuperTypes="#//Tool">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetElementDescriptions"
+        upperBound="-1" eType="#//DiagramElementDescription"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeReconnectionTool" abstract="true"
       eSuperTypes="#//Tool"/>
   <eClassifiers xsi:type="ecore:EClass" name="SourceEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>
@@ -475,4 +468,34 @@
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalListDescriptionStyle" eSuperTypes="#//Conditional #//ListDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EDataType" name="InterpretedExpression" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EDataType" name="DomainType" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dropTool" eType="#//DropTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodePalette">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
+        eType="#//EdgeTool" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EdgePalette">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="centerLabelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="beginLabelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endLabelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeReconnectionTools"
+        upperBound="-1" eType="#//EdgeReconnectionTool" containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

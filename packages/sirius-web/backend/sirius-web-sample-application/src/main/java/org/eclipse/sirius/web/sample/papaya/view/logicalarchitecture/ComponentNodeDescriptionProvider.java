@@ -40,11 +40,15 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setStyle(nodeStyle);
 
-        var newComponentNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Component", "components", "Component");
-        newComponentNodeTool.setName("New Component");
-        nodeDescription.getNodeTools().add(newComponentNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+
+        var newPackageNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Package", "packages", "Package");
+        newPackageNodeTool.setName("New Package");
+        nodePalette.getNodeTools().add(newPackageNodeTool);
+
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }

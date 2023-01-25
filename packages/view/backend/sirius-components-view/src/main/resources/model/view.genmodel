@@ -5,7 +5,7 @@
     modelDirectory="/sirius-components-view/src/main/java" creationIcons="false" editDirectory="/sirius-components-view-edit/src/main/java"
     editorDirectory="" modelPluginID="sirius-components-view" modelName="View" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
-    bundleManifest="false" complianceLevel="11.0" copyrightFields="false" editPluginID="sirius-components-view-edit"
+    bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="sirius-components-view-edit"
     editorPluginID="sirius-components-view-editor" operationReflection="true" importOrganizing="true"
     cleanup="true">
   <foreignModel>view.ecore</foreignModel>
@@ -64,46 +64,41 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramDescription/autoLayout"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/palette"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/nodeDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/edgeDescriptions"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//DiagramDescription/onDrop"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/domainType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/preconditionExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/deleteTool"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramElementDescription/labelEditTool"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/synchronizationPolicy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DiagramElementDescription/labelExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//NodeDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeDescription/collapsible"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/palette"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenLayoutStrategy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/conditionalStyles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/borderNodesDescriptions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/reusedChildNodeDescriptions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/reusedBorderNodeDescriptions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/style"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeDescription/userResizable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/nodeTools"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/conditionalStyles"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//NodeDescription/childrenLayoutStrategy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeDescription/collapsible"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/beginLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/endLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/isDomainBasedEdge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/palette"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/sourceNodeDescriptions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/targetNodeDescriptions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/sourceNodesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//EdgeDescription/targetNodesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/style"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/edgeTools"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/reconnectEdgeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/conditionalStyles"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/beginLabelEditTool"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgeDescription/endLabelEditTool"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//LabelStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelStyle/fontSize"/>
@@ -153,7 +148,9 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DeleteTool"/>
     <genClasses ecoreClass="view.ecore#//NodeTool"/>
-    <genClasses ecoreClass="view.ecore#//EdgeTool"/>
+    <genClasses ecoreClass="view.ecore#//EdgeTool">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//EdgeTool/targetElementDescriptions"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//EdgeReconnectionTool"/>
     <genClasses ecoreClass="view.ecore#//SourceEdgeEndReconnectionTool"/>
     <genClasses ecoreClass="view.ecore#//TargetEdgeEndReconnectionTool"/>
@@ -359,5 +356,23 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalListDescriptionStyle"/>
+    <genClasses ecoreClass="view.ecore#//DiagramPalette">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramPalette/dropTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DiagramPalette/nodeTools"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//NodePalette">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodePalette/deleteTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodePalette/labelEditTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodePalette/nodeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//NodePalette/edgeTools"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//EdgePalette">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgePalette/deleteTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgePalette/centerLabelEditTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgePalette/beginLabelEditTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgePalette/endLabelEditTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgePalette/nodeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//EdgePalette/edgeReconnectionTools"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

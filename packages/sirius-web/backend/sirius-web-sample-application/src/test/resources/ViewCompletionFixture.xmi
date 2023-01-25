@@ -19,16 +19,18 @@
       <style color="#002639"/>
       <conditionalStyles color="#002639"/>
     </edgeDescriptions>
-    <onDrop name="On Drop">
-      <body xmi:type="view:ChangeContext">
-        <children xmi:type="view:CreateInstance"/>
-        <children xmi:type="view:SetValue"/>
-        <children xmi:type="view:UnsetValue"/>
-        <children xmi:type="view:DeleteElement"/>
-        <children xmi:type="view:CreateView"/>
-        <children xmi:type="view:DeleteView"/>
-      </body>
-    </onDrop>
+    <palette>
+      <dropTool name="On Drop">
+        <body xmi:type="view:ChangeContext">
+          <children xmi:type="view:CreateInstance"/>
+          <children xmi:type="view:SetValue"/>
+          <children xmi:type="view:UnsetValue"/>
+          <children xmi:type="view:DeleteElement"/>
+          <children xmi:type="view:CreateView"/>
+          <children xmi:type="view:DeleteView"/>
+        </body>
+      </dropTool>
+    </palette>
   </descriptions>
   <descriptions xmi:type="view:FormDescription" name="Form Completion Fixture" titleExpression="aql:'Form Completion Fixture'">
   <groups xmi:type="view:GroupDescription">

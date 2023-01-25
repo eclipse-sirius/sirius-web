@@ -44,19 +44,6 @@ public class ExtendsInterfaceEdgeDescriptionProvider implements IEdgeDescription
         extendsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.extends");
         extendsInterfaceEdgeDescription.setIsDomainBasedEdge(false);
 
-        var extendsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        extendsInterfaceEdgeTool.setName("Extends");
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("extends");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        changeContext.getChildren().add(setTargetValue);
-        extendsInterfaceEdgeTool.getBody().add(changeContext);
-
-        extendsInterfaceEdgeDescription.getEdgeTools().add(extendsInterfaceEdgeTool);
-
         return extendsInterfaceEdgeDescription;
     }
 

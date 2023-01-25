@@ -45,8 +45,10 @@ import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DeleteView;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
@@ -70,6 +72,7 @@ import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
@@ -964,6 +967,27 @@ public class ViewSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescriptionStyle(conditionalListDescriptionStyle);
                 if (result == null)
                     result = this.caseLabelStyle(conditionalListDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DIAGRAM_PALETTE: {
+                DiagramPalette diagramPalette = (DiagramPalette) theEObject;
+                T result = this.caseDiagramPalette(diagramPalette);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.NODE_PALETTE: {
+                NodePalette nodePalette = (NodePalette) theEObject;
+                T result = this.caseNodePalette(nodePalette);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.EDGE_PALETTE: {
+                EdgePalette edgePalette = (EdgePalette) theEObject;
+                T result = this.caseEdgePalette(edgePalette);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2085,6 +2109,49 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalListDescriptionStyle(ConditionalListDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Diagram Palette</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Diagram Palette</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDiagramPalette(DiagramPalette object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Node Palette</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Node Palette</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNodePalette(NodePalette object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edge Palette</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edge Palette</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEdgePalette(EdgePalette object) {
         return null;
     }
 

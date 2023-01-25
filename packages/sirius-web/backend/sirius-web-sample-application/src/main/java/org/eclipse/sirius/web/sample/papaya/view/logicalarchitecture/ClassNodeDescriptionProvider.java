@@ -12,11 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Description of the class.
@@ -42,9 +46,14 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.getChildrenDescriptions().add(this.attributesNodeDescription());
         nodeDescription.getChildrenDescriptions().add(this.operationsNodeDescription());
 
-        var newClassNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Class", "types", "Class");
-        newClassNodeTool.setName("New Class");
-        nodeDescription.getNodeTools().add(newClassNodeTool);
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        var newAttributeNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Attribute", "attributes", "Attibute");
+        newAttributeNodeTool.setName("New Attribute");
+        nodePalette.getNodeTools().add(newAttributeNodeTool);
+        var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Operation", "operations", "Operation");
+        newOperationNodeTool.setName("New Operation");
+        nodePalette.getNodeTools().add(newOperationNodeTool);
 
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         abstractNodeStyle.setColor("#00796B");
@@ -56,10 +65,40 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         abstractConditionalNodeStyle.setCondition("aql:self.abstract");
         abstractConditionalNodeStyle.setStyle(abstractNodeStyle);
         nodeDescription.getConditionalStyles().add(abstractConditionalNodeStyle);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        nodePalette.getEdgeTools().add(this.createExtendsClassEdgeTool());
+        nodePalette.getEdgeTools().add(this.createImplementsInterfaceEdgeTool());
 
         return nodeDescription;
+    }
+
+    private EdgeTool createExtendsClassEdgeTool() {
+        var extendsClassEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        extendsClassEdgeTool.setName("Extends");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("extends");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        extendsClassEdgeTool.getBody().add(changeContext);
+        return extendsClassEdgeTool;
+    }
+
+    private EdgeTool createImplementsInterfaceEdgeTool() {
+        var implementsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        implementsInterfaceEdgeTool.setName("Implements");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("implements");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        implementsInterfaceEdgeTool.getBody().add(changeContext);
+        return implementsInterfaceEdgeTool;
     }
 
     private NodeDescription attributesNodeDescription() {
@@ -76,6 +115,12 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setLabelExpression("");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.attributeNodeDescription());
+
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var newAttributeNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Attribute", "attributes", "Attribute");
+        newAttributeNodeTool.setName("New Attribute");
+        nodePalette.getNodeTools().add(newAttributeNodeTool);
+        nodeDescription.setPalette(nodePalette);
 
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         abstractNodeStyle.setColor("#00796B");
@@ -120,6 +165,12 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.operationNodeDescription());
 
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Operation", "operations", "Operation");
+        newOperationNodeTool.setName("New Operation");
+        nodePalette.getNodeTools().add(newOperationNodeTool);
+        nodeDescription.setPalette(nodePalette);
+
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         abstractNodeStyle.setColor("#00796B");
         abstractNodeStyle.setBorderColor("#004D40");
@@ -146,6 +197,20 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setStyle(nodeStyle);
 
         return nodeDescription;
+    }
+
+    @Override
+    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
+        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
+
+        EList<EdgeTool> edgeTools = classNodeDescription.getPalette().getEdgeTools();
+        edgeTools.stream().filter(tool -> tool.getName().equals("Extends")).findFirst().ifPresent(extendsClassEdgeTool -> {
+            extendsClassEdgeTool.getTargetElementDescriptions().add(classNodeDescription);
+        });
+        edgeTools.stream().filter(tool -> tool.getName().equals("Implements")).findFirst().ifPresent(extendsClassEdgeTool -> {
+            extendsClassEdgeTool.getTargetElementDescriptions().add(interfaceNodeDescription);
+        });
     }
 
 }

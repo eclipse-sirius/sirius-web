@@ -52,11 +52,14 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         nodeDescription.getConditionalStyles().add(conditionalNodeStyle);
         nodeDescription.setCollapsible(true);
 
-        var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActor", "operationalActors", "Operational Actor");
-        newOperationalActorNodeTool.setName("New Operational Actor");
-        nodeDescription.getNodeTools().add(newOperationalActorNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
+
+        var newOperationalActivityNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActivity", "operationalActivities", "Operational Activity");
+        newOperationalActivityNodeTool.setName("New Operational Activity");
+        nodePalette.getNodeTools().add(newOperationalActivityNodeTool);
 
         return nodeDescription;
     }

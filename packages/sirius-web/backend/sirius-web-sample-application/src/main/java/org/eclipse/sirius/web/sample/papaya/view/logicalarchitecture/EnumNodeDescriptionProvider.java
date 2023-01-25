@@ -40,11 +40,14 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.enumLiteralNodeDescription());
 
-        var newEnumNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Enum", "types", "Enum");
-        newEnumNodeTool.setName("New Enum");
-        nodeDescription.getNodeTools().add(newEnumNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        var newEnumLiteralNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::EnumLiteral", "enumLiterals", "EnumLiteral");
+        newEnumLiteralNodeTool.setName("New Enum Literal");
+        nodePalette.getNodeTools().add(newEnumLiteralNodeTool);
+
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }
@@ -60,11 +63,11 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
-        var newEnumLiteralNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::EnumLiteral", "enumLiterals", "EnumLiteral");
-        newEnumLiteralNodeTool.setName("New Enum Literal");
-        nodeDescription.getNodeTools().add(newEnumLiteralNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }

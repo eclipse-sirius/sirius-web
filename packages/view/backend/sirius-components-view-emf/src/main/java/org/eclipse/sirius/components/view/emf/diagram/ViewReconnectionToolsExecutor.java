@@ -36,8 +36,6 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewService;
@@ -105,13 +103,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             if (optionalViewEdgeDescription.isPresent()) {
                 var viewEdgeDescription = optionalViewEdgeDescription.get();
 
-                List<org.eclipse.sirius.components.view.EdgeReconnectionTool> edgeReconnectionTools = List.of();
-                if (toolInterpreterData.getKind() == ReconnectEdgeKind.SOURCE) {
-                    edgeReconnectionTools = viewEdgeDescription.getReconnectEdgeTools().stream().filter(SourceEdgeEndReconnectionTool.class::isInstance).toList();
-                } else {
-                    edgeReconnectionTools = viewEdgeDescription.getReconnectEdgeTools().stream().filter(TargetEdgeEndReconnectionTool.class::isInstance).toList();
-                }
-
+                List<org.eclipse.sirius.components.view.EdgeReconnectionTool> edgeReconnectionTools = new ToolFinder().findReconnectionTools(viewEdgeDescription, toolInterpreterData.getKind());
                 for (org.eclipse.sirius.components.view.EdgeReconnectionTool edgeReconnectionTool : edgeReconnectionTools) {
                     VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 

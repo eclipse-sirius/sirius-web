@@ -33,15 +33,15 @@ public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider
         nodeStyle.setLabelColor("white");
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("DataType");
+        nodeDescription.setPreconditionExpression("aql:self.oclIsTypeOf(papaya_logical_architecture::DataType)");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
-        var newDataTypeNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::DataType", "types", "DataType");
-        newDataTypeNodeTool.setName("New DataType");
-        nodeDescription.getNodeTools().add(newDataTypeNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }

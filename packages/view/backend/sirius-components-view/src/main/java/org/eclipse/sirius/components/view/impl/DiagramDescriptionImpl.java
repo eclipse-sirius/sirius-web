@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DropTool;
+import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -36,11 +36,11 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl#isAutoLayout <em>Auto Layout</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl#getPalette <em>Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl#getNodeDescriptions <em>Node
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl#getEdgeDescriptions <em>Edge
  * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.DiagramDescriptionImpl#getOnDrop <em>On Drop</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,6 +67,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
 
     /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getPalette()
+     * @generated
+     * @ordered
+     */
+    protected DiagramPalette palette;
+
+    /**
      * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -85,16 +95,6 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected EList<EdgeDescription> edgeDescriptions;
-
-    /**
-     * The cached value of the '{@link #getOnDrop() <em>On Drop</em>}' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getOnDrop()
-     * @generated
-     * @ordered
-     */
-    protected DropTool onDrop;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -170,8 +170,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
-    public DropTool getOnDrop() {
-        return this.onDrop;
+    public DiagramPalette getPalette() {
+        return this.palette;
     }
 
     /**
@@ -179,11 +179,11 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      *
      * @generated
      */
-    public NotificationChain basicSetOnDrop(DropTool newOnDrop, NotificationChain msgs) {
-        DropTool oldOnDrop = this.onDrop;
-        this.onDrop = newOnDrop;
+    public NotificationChain basicSetPalette(DiagramPalette newPalette, NotificationChain msgs) {
+        DiagramPalette oldPalette = this.palette;
+        this.palette = newPalette;
         if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, oldOnDrop, newOnDrop);
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__PALETTE, oldPalette, newPalette);
             if (msgs == null)
                 msgs = notification;
             else
@@ -198,18 +198,18 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
-    public void setOnDrop(DropTool newOnDrop) {
-        if (newOnDrop != this.onDrop) {
+    public void setPalette(DiagramPalette newPalette) {
+        if (newPalette != this.palette) {
             NotificationChain msgs = null;
-            if (this.onDrop != null)
-                msgs = ((InternalEObject) this.onDrop).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, null, msgs);
-            if (newOnDrop != null)
-                msgs = ((InternalEObject) newOnDrop).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, null, msgs);
-            msgs = this.basicSetOnDrop(newOnDrop, msgs);
+            if (this.palette != null)
+                msgs = ((InternalEObject) this.palette).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_DESCRIPTION__PALETTE, null, msgs);
+            if (newPalette != null)
+                msgs = ((InternalEObject) newPalette).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.DIAGRAM_DESCRIPTION__PALETTE, null, msgs);
+            msgs = this.basicSetPalette(newPalette, msgs);
             if (msgs != null)
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP, newOnDrop, newOnDrop));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_DESCRIPTION__PALETTE, newPalette, newPalette));
     }
 
     /**
@@ -220,12 +220,12 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
+            case ViewPackage.DIAGRAM_DESCRIPTION__PALETTE:
+                return this.basicSetPalette(null, msgs);
             case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
             case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
-            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-                return this.basicSetOnDrop(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -240,12 +240,12 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         switch (featureID) {
             case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 return this.isAutoLayout();
+            case ViewPackage.DIAGRAM_DESCRIPTION__PALETTE:
+                return this.getPalette();
             case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return this.getNodeDescriptions();
             case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return this.getEdgeDescriptions();
-            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-                return this.getOnDrop();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -262,6 +262,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 this.setAutoLayout((Boolean) newValue);
                 return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__PALETTE:
+                this.setPalette((DiagramPalette) newValue);
+                return;
             case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
                 this.getNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
@@ -269,9 +272,6 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 this.getEdgeDescriptions().clear();
                 this.getEdgeDescriptions().addAll((Collection<? extends EdgeDescription>) newValue);
-                return;
-            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-                this.setOnDrop((DropTool) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -288,14 +288,14 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
                 return;
+            case ViewPackage.DIAGRAM_DESCRIPTION__PALETTE:
+                this.setPalette((DiagramPalette) null);
+                return;
             case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
                 return;
             case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 this.getEdgeDescriptions().clear();
-                return;
-            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-                this.setOnDrop((DropTool) null);
                 return;
         }
         super.eUnset(featureID);
@@ -311,12 +311,12 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         switch (featureID) {
             case ViewPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
+            case ViewPackage.DIAGRAM_DESCRIPTION__PALETTE:
+                return this.palette != null;
             case ViewPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
             case ViewPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
-            case ViewPackage.DIAGRAM_DESCRIPTION__ON_DROP:
-                return this.onDrop != null;
         }
         return super.eIsSet(featureID);
     }

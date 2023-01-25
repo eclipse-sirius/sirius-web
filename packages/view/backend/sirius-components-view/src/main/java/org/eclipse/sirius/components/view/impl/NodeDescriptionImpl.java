@@ -26,8 +26,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -44,6 +44,66 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * @generated
  */
 public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implements NodeDescription {
+    /**
+     * The default value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isCollapsible()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean COLLAPSIBLE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isCollapsible()
+     * @generated
+     * @ordered
+     */
+    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getPalette()
+     * @generated
+     * @ordered
+     */
+    protected NodePalette palette;
+
+    /**
+     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getChildrenLayoutStrategy()
+     * @generated
+     * @ordered
+     */
+    protected LayoutStrategyDescription childrenLayoutStrategy;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getStyle()
+     * @generated
+     * @ordered
+     */
+    protected NodeStyleDescription style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalNodeStyle> conditionalStyles;
+
     /**
      * The cached value of the '{@link #getChildrenDescriptions() <em>Children Descriptions</em>}' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -85,16 +145,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected EList<NodeDescription> reusedBorderNodeDescriptions;
 
     /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
-    protected NodeStyleDescription style;
-
-    /**
      * The default value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -113,56 +163,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected boolean userResizable = USER_RESIZABLE_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getNodeTools() <em>Node Tools</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getNodeTools()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeTool> nodeTools;
-
-    /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getConditionalStyles()
-     * @generated
-     * @ordered
-     */
-    protected EList<ConditionalNodeStyle> conditionalStyles;
-
-    /**
-     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getChildrenLayoutStrategy()
-     * @generated
-     * @ordered
-     */
-    protected LayoutStrategyDescription childrenLayoutStrategy;
-
-    /**
-     * The default value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isCollapsible()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean COLLAPSIBLE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isCollapsible()
-     * @generated
-     * @ordered
-     */
-    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -312,19 +312,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public EList<NodeTool> getNodeTools() {
-        if (this.nodeTools == null) {
-            this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, ViewPackage.NODE_DESCRIPTION__NODE_TOOLS);
-        }
-        return this.nodeTools;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EList<ConditionalNodeStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
             this.conditionalStyles = new EObjectContainmentEList<>(ConditionalNodeStyle.class, this, ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -410,20 +397,68 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public NodePalette getPalette() {
+        return this.palette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetPalette(NodePalette newPalette, NotificationChain msgs) {
+        NodePalette oldPalette = this.palette;
+        this.palette = newPalette;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__PALETTE, oldPalette, newPalette);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPalette(NodePalette newPalette) {
+        if (newPalette != this.palette) {
+            NotificationChain msgs = null;
+            if (this.palette != null)
+                msgs = ((InternalEObject) this.palette).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ViewPackage.NODE_DESCRIPTION__PALETTE, null, msgs);
+            if (newPalette != null)
+                msgs = ((InternalEObject) newPalette).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ViewPackage.NODE_DESCRIPTION__PALETTE, null, msgs);
+            msgs = this.basicSetPalette(newPalette, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__PALETTE, newPalette, newPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
+            case ViewPackage.NODE_DESCRIPTION__PALETTE:
+                return this.basicSetPalette(null, msgs);
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.basicSetChildrenLayoutStrategy(null, msgs);
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getChildrenDescriptions()).basicRemove(otherEnd, msgs);
             case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getBorderNodesDescriptions()).basicRemove(otherEnd, msgs);
-            case ViewPackage.NODE_DESCRIPTION__STYLE:
-                return this.basicSetStyle(null, msgs);
-            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-                return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
-            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
-            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                return this.basicSetChildrenLayoutStrategy(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -436,6 +471,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                return this.isCollapsible();
+            case ViewPackage.NODE_DESCRIPTION__PALETTE:
+                return this.getPalette();
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.getChildrenLayoutStrategy();
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
                 return this.getChildrenDescriptions();
             case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
@@ -444,18 +489,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getReusedChildNodeDescriptions();
             case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
                 return this.getReusedBorderNodeDescriptions();
-            case ViewPackage.NODE_DESCRIPTION__STYLE:
-                return this.getStyle();
             case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 return this.isUserResizable();
-            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-                return this.getNodeTools();
-            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.getConditionalStyles();
-            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                return this.getChildrenLayoutStrategy();
-            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
-                return this.isCollapsible();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -469,6 +504,22 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                this.setCollapsible((Boolean) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__PALETTE:
+                this.setPalette((NodePalette) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                this.setStyle((NodeStyleDescription) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalNodeStyle>) newValue);
+                return;
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
                 this.getChildrenDescriptions().clear();
                 this.getChildrenDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
@@ -485,25 +536,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.getReusedBorderNodeDescriptions().clear();
                 this.getReusedBorderNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
                 return;
-            case ViewPackage.NODE_DESCRIPTION__STYLE:
-                this.setStyle((NodeStyleDescription) newValue);
-                return;
             case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 this.setUserResizable((Boolean) newValue);
-                return;
-            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-                this.getNodeTools().clear();
-                this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
-                return;
-            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                this.getConditionalStyles().addAll((Collection<? extends ConditionalNodeStyle>) newValue);
-                return;
-            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
-                return;
-            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
-                this.setCollapsible((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -517,6 +551,21 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                this.setCollapsible(COLLAPSIBLE_EDEFAULT);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__PALETTE:
+                this.setPalette((NodePalette) null);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                this.setStyle((NodeStyleDescription) null);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
                 this.getChildrenDescriptions().clear();
                 return;
@@ -529,23 +578,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
                 this.getReusedBorderNodeDescriptions().clear();
                 return;
-            case ViewPackage.NODE_DESCRIPTION__STYLE:
-                this.setStyle((NodeStyleDescription) null);
-                return;
             case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 this.setUserResizable(USER_RESIZABLE_EDEFAULT);
-                return;
-            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-                this.getNodeTools().clear();
-                return;
-            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                return;
-            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
-                return;
-            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
-                this.setCollapsible(COLLAPSIBLE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -559,6 +593,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                return this.collapsible != COLLAPSIBLE_EDEFAULT;
+            case ViewPackage.NODE_DESCRIPTION__PALETTE:
+                return this.palette != null;
+            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.childrenLayoutStrategy != null;
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
                 return this.childrenDescriptions != null && !this.childrenDescriptions.isEmpty();
             case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
@@ -567,18 +611,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.reusedChildNodeDescriptions != null && !this.reusedChildNodeDescriptions.isEmpty();
             case ViewPackage.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS:
                 return this.reusedBorderNodeDescriptions != null && !this.reusedBorderNodeDescriptions.isEmpty();
-            case ViewPackage.NODE_DESCRIPTION__STYLE:
-                return this.style != null;
             case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 return this.userResizable != USER_RESIZABLE_EDEFAULT;
-            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-                return this.nodeTools != null && !this.nodeTools.isEmpty();
-            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
-            case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                return this.childrenLayoutStrategy != null;
-            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
-                return this.collapsible != COLLAPSIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -594,10 +628,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (userResizable: ");
-        result.append(this.userResizable);
-        result.append(", collapsible: ");
+        result.append(" (collapsible: ");
         result.append(this.collapsible);
+        result.append(", userResizable: ");
+        result.append(this.userResizable);
         result.append(')');
         return result.toString();
     }

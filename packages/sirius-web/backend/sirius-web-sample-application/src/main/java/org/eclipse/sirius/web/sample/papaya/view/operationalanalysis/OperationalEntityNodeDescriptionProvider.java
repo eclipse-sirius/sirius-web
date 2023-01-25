@@ -12,10 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
-import java.util.List;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
@@ -45,48 +43,20 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
 
-        var defaultNodeTool = ViewFactory.eINSTANCE.createNodeTool();
-        defaultNodeTool.setName("New Operational Entity");
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:self");
+        var newOperationalPerimeterNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalPerimeter", "operationalPerimeters", "Operational Perimeter");
+        newOperationalPerimeterNodeTool.setName("New Operational Perimeter");
+        nodePalette.getNodeTools().add(newOperationalPerimeterNodeTool);
 
-        var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
-        createInstance.setReferenceName("operationalEntities");
-        createInstance.setTypeName(builder.domainType(builder.entity("OperationalEntity")));
-        createInstance.setVariableName("self");
-
-        var createView = ViewFactory.eINSTANCE.createCreateView();
-        createView.setElementDescription(nodeDescription);
-        createView.setSemanticElementExpression("aql:self");
-        createView.setParentViewExpression("aql:selectedNode");
-
-        var setValue = ViewFactory.eINSTANCE.createSetValue();
-        setValue.setFeatureName("name");
-        setValue.setValueExpression("aql:'Operational Entity'");
-
-        createView.getChildren().add(setValue);
-        createInstance.getChildren().add(createView);
-        changeContext.getChildren().add(createInstance);
-        defaultNodeTool.getBody().add(changeContext);
-
-        nodeDescription.getNodeTools().addAll(List.of(this.getInitializeNodeTool(), defaultNodeTool));
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActor", "operationalActors", "Operational Actor");
+        newOperationalActorNodeTool.setName("New Operational Actor");
+        nodePalette.getNodeTools().add(newOperationalActorNodeTool);
 
         return nodeDescription;
-    }
-
-    private NodeTool getInitializeNodeTool() {
-        var initializeNodeTool = ViewFactory.eINSTANCE.createNodeTool();
-        initializeNodeTool.setName("Initialize Data");
-
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:self.initialize(diagramContext, convertedNodes)");
-
-        initializeNodeTool.getBody().add(changeContext);
-
-        return initializeNodeTool;
     }
 
     @Override

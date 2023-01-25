@@ -168,12 +168,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__PALETTE);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS);
-            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS);
             this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
-            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL);
-            this.childrenFeatures.add(ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -241,12 +238,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case ViewPackage.EDGE_DESCRIPTION__PALETTE:
             case ViewPackage.EDGE_DESCRIPTION__STYLE:
-            case ViewPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
-            case ViewPackage.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS:
             case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
-            case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
-            case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -262,13 +256,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultBeginLabelEditTool()));
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultEndLabelEditTool()));
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, defaultToolsFactory.createDefaultSourceEdgeReconnectionTool()));
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS, defaultToolsFactory.createDefaultTargetEdgeReconnectionTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultEdgePalette()));
 
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
         newEdgeStyle.setColor("#002639");
@@ -290,9 +280,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL
-                || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE
-                || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
+        boolean qualify = childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
             return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
