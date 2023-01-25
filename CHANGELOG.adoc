@@ -10,6 +10,7 @@
 - [ADR-088] Align the lifecycle of views on the lifecycle of domains
 - [ADR-089] Add a URL based kind to representation description
 - [ADR-090] Improve support for compartments
+- [ADR-091] Add support of the compartment expand/collapse
 
 === Breaking changes
 
