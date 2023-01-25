@@ -44,19 +44,6 @@ public class FulfillsContractEdgeDescriptionProvider implements IEdgeDescription
         fulfillsContractEdgeDescription.setTargetNodesExpression("aql:self.contract");
         fulfillsContractEdgeDescription.setIsDomainBasedEdge(false);
 
-        var fulfillsContractEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        fulfillsContractEdgeTool.setName("Fulfills contract");
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("contract");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        changeContext.getChildren().add(setTargetValue);
-        fulfillsContractEdgeTool.getBody().add(changeContext);
-
-        fulfillsContractEdgeDescription.getEdgeTools().add(fulfillsContractEdgeTool);
-
         return fulfillsContractEdgeDescription;
     }
 

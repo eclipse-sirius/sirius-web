@@ -213,13 +213,22 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__AUTO_LAYOUT = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__PALETTE = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Node Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
+    int DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Edge Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -228,16 +237,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>On Drop</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_DESCRIPTION__ON_DROP = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+    int DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Diagram Description</em>' class. <!-- begin-user-doc --> <!--
@@ -302,40 +302,22 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION = 3;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 4;
-
-    /**
-     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = 5;
-
-    /**
-     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 6;
-
-    /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 7;
+    int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 4;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 5;
 
     /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
@@ -344,7 +326,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 8;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -400,33 +382,6 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__DELETE_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL;
-
-    /**
-     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL;
-
-    /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -436,75 +391,30 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
 
     /**
-     * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Reused Child Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Reused Border Node Descriptions</b></em>' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
-
-    /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int NODE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>User Resizable</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int NODE_DESCRIPTION__COLLAPSIBLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__NODE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
-
-    /**
-     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int NODE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
@@ -513,15 +423,69 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__COLLAPSIBLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Reused Child Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Reused Border Node Descriptions</b></em>' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>User Resizable</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
@@ -585,33 +549,6 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__DELETE_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL;
-
-    /**
-     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL;
-
-    /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -619,6 +556,15 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Begin Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -648,13 +594,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
      * The feature id for the '<em><b>Source Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Target Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -663,7 +618,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Source Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -672,7 +627,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Target Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -681,7 +636,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -690,25 +645,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
-
-    /**
-     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>Reconnect Edge Tools</b></em>' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -717,25 +654,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
-
-    /**
-     * The feature id for the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
-
-    /**
-     * The feature id for the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
@@ -744,7 +663,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1805,6 +1724,18 @@ public interface ViewPackage extends EPackage {
     EAttribute getDiagramDescription_AutoLayout();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getPalette <em>Palette</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Palette</em>'.
+     * @see org.eclipse.sirius.components.view.DiagramDescription#getPalette()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EReference getDiagramDescription_Palette();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc --> >>>>>>> 025361a0 ([512] View DSL: Add support for layout mode
@@ -1931,13 +1862,22 @@ public interface ViewPackage extends EPackage {
     int EDGE_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Target Element Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS = TOOL_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6170,6 +6110,195 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_LIST_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DiagramPaletteImpl <em>Diagram
+     * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DiagramPaletteImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramPalette()
+     * @generated
+     */
+    int DIAGRAM_PALETTE = 80;
+
+    /**
+     * The feature id for the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE__DROP_TOOL = 0;
+
+    /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE__NODE_TOOLS = 1;
+
+    /**
+     * The number of structural features of the '<em>Diagram Palette</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Diagram Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.NodePaletteImpl <em>Node
+     * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.NodePaletteImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodePalette()
+     * @generated
+     */
+    int NODE_PALETTE = 81;
+
+    /**
+     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__DELETE_TOOL = 0;
+
+    /**
+     * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__LABEL_EDIT_TOOL = 1;
+
+    /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__NODE_TOOLS = 2;
+
+    /**
+     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__EDGE_TOOLS = 3;
+
+    /**
+     * The number of structural features of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.EdgePaletteImpl <em>Edge
+     * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.EdgePaletteImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgePalette()
+     * @generated
+     */
+    int EDGE_PALETTE = 82;
+
+    /**
+     * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__DELETE_TOOL = 0;
+
+    /**
+     * The feature id for the '<em><b>Center Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL = 1;
+
+    /**
+     * The feature id for the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL = 2;
+
+    /**
+     * The feature id for the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__END_LABEL_EDIT_TOOL = 3;
+
+    /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__NODE_TOOLS = 4;
+
+    /**
+     * The feature id for the '<em><b>Edge Reconnection Tools</b></em>' containment reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 5;
+
+    /**
+     * The number of structural features of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE_FEATURE_COUNT = 6;
+
+    /**
+     * The number of operations of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout Direction</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6177,7 +6306,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 80;
+    int LAYOUT_DIRECTION = 83;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
@@ -6187,7 +6316,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 81;
+    int ARROW_STYLE = 84;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -6197,7 +6326,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 82;
+    int LINE_STYLE = 85;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -6207,7 +6336,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 83;
+    int SYNCHRONIZATION_POLICY = 86;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
@@ -6217,7 +6346,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 84;
+    int GROUP_DISPLAY_MODE = 87;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -6227,7 +6356,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 85;
+    int FLEX_DIRECTION = 88;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -6237,7 +6366,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 86;
+    int INTERPRETED_EXPRESSION = 89;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6246,7 +6375,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 87;
+    int DOMAIN_TYPE = 90;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -6363,18 +6492,6 @@ public interface ViewPackage extends EPackage {
     EReference getDiagramDescription_EdgeDescriptions();
 
     /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.DiagramDescription#getOnDrop <em>On Drop</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>On Drop</em>'.
-     * @see org.eclipse.sirius.components.view.DiagramDescription#getOnDrop()
-     * @see #getDiagramDescription()
-     * @generated
-     */
-    EReference getDiagramDescription_OnDrop();
-
-    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DiagramElementDescription
      * <em>Diagram Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6431,30 +6548,6 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getDiagramElementDescription_LabelExpression();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDeleteTool <em>Delete Tool</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Delete Tool</em>'.
-     * @see org.eclipse.sirius.components.view.DiagramElementDescription#getDeleteTool()
-     * @see #getDiagramElementDescription()
-     * @generated
-     */
-    EReference getDiagramElementDescription_DeleteTool();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool <em>Label Edit Tool</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Label Edit Tool</em>'.
-     * @see org.eclipse.sirius.components.view.DiagramElementDescription#getLabelEditTool()
-     * @see #getDiagramElementDescription()
-     * @generated
-     */
-    EReference getDiagramElementDescription_LabelEditTool();
 
     /**
      * Returns the meta object for the attribute
@@ -6564,18 +6657,6 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.NodeDescription#getNodeTools <em>Node Tools</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
-     * @see org.eclipse.sirius.components.view.NodeDescription#getNodeTools()
-     * @see #getNodeDescription()
-     * @generated
-     */
-    EReference getNodeDescription_NodeTools();
-
-    /**
-     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.NodeDescription#getConditionalStyles <em>Conditional Styles</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6609,6 +6690,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getNodeDescription_Collapsible();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#getPalette <em>Palette</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Palette</em>'.
+     * @see org.eclipse.sirius.components.view.NodeDescription#getPalette()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EReference getNodeDescription_Palette();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeDescription <em>Edge
@@ -6655,6 +6748,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getEdgeDescription_IsDomainBasedEdge();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getPalette <em>Palette</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Palette</em>'.
+     * @see org.eclipse.sirius.components.view.EdgeDescription#getPalette()
+     * @see #getEdgeDescription()
+     * @generated
+     */
+    EReference getEdgeDescription_Palette();
 
     /**
      * Returns the meta object for the reference list
@@ -6718,30 +6823,6 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEdgeTools <em>Edge Tools</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
-     * @see org.eclipse.sirius.components.view.EdgeDescription#getEdgeTools()
-     * @see #getEdgeDescription()
-     * @generated
-     */
-    EReference getEdgeDescription_EdgeTools();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getReconnectEdgeTools <em>Reconnect Edge Tools</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Reconnect Edge Tools</em>'.
-     * @see org.eclipse.sirius.components.view.EdgeDescription#getReconnectEdgeTools()
-     * @see #getEdgeDescription()
-     * @generated
-     */
-    EReference getEdgeDescription_ReconnectEdgeTools();
-
-    /**
-     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.EdgeDescription#getConditionalStyles <em>Conditional Styles</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6751,30 +6832,6 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getEdgeDescription_ConditionalStyles();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelEditTool <em>Begin Label Edit
-     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Begin Label Edit Tool</em>'.
-     * @see org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelEditTool()
-     * @see #getEdgeDescription()
-     * @generated
-     */
-    EReference getEdgeDescription_BeginLabelEditTool();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelEditTool <em>End Label Edit Tool</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>End Label Edit Tool</em>'.
-     * @see org.eclipse.sirius.components.view.EdgeDescription#getEndLabelEditTool()
-     * @see #getEdgeDescription()
-     * @generated
-     */
-    EReference getEdgeDescription_EndLabelEditTool();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'.
@@ -7210,6 +7267,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EClass getEdgeTool();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.EdgeTool#getTargetElementDescriptions <em>Target Element
+     * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Target Element Descriptions</em>'.
+     * @see org.eclipse.sirius.components.view.EdgeTool#getTargetElementDescriptions()
+     * @see #getEdgeTool()
+     * @generated
+     */
+    EReference getEdgeTool_TargetElementDescriptions();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeReconnectionTool <em>Edge
@@ -8789,6 +8858,180 @@ public interface ViewPackage extends EPackage {
     EClass getConditionalListDescriptionStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DiagramPalette <em>Diagram
+     * Palette</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Diagram Palette</em>'.
+     * @see org.eclipse.sirius.components.view.DiagramPalette
+     * @generated
+     */
+    EClass getDiagramPalette();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.DiagramPalette#getDropTool <em>Drop Tool</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Drop Tool</em>'.
+     * @see org.eclipse.sirius.components.view.DiagramPalette#getDropTool()
+     * @see #getDiagramPalette()
+     * @generated
+     */
+    EReference getDiagramPalette_DropTool();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.DiagramPalette#getNodeTools <em>Node Tools</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.components.view.DiagramPalette#getNodeTools()
+     * @see #getDiagramPalette()
+     * @generated
+     */
+    EReference getDiagramPalette_NodeTools();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodePalette <em>Node Palette</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Node Palette</em>'.
+     * @see org.eclipse.sirius.components.view.NodePalette
+     * @generated
+     */
+    EClass getNodePalette();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.NodePalette#getDeleteTool <em>Delete Tool</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Delete Tool</em>'.
+     * @see org.eclipse.sirius.components.view.NodePalette#getDeleteTool()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_DeleteTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.NodePalette#getLabelEditTool <em>Label Edit Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.components.view.NodePalette#getLabelEditTool()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_LabelEditTool();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.NodePalette#getNodeTools <em>Node Tools</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.components.view.NodePalette#getNodeTools()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_NodeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.NodePalette#getEdgeTools <em>Edge Tools</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
+     * @see org.eclipse.sirius.components.view.NodePalette#getEdgeTools()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_EdgeTools();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgePalette <em>Edge Palette</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Edge Palette</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette
+     * @generated
+     */
+    EClass getEdgePalette();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgePalette#getDeleteTool <em>Delete Tool</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Delete Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette#getDeleteTool()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_DeleteTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgePalette#getCenterLabelEditTool <em>Center Label Edit Tool</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Center Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette#getCenterLabelEditTool()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_CenterLabelEditTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgePalette#getBeginLabelEditTool <em>Begin Label Edit Tool</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Begin Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette#getBeginLabelEditTool()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_BeginLabelEditTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.EdgePalette#getEndLabelEditTool <em>End Label Edit Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>End Label Edit Tool</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette#getEndLabelEditTool()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_EndLabelEditTool();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.EdgePalette#getNodeTools <em>Node Tools</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette#getNodeTools()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_NodeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.EdgePalette#getEdgeReconnectionTools <em>Edge Reconnection
+     * Tools</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Edge Reconnection Tools</em>'.
+     * @see org.eclipse.sirius.components.view.EdgePalette#getEdgeReconnectionTools()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_EdgeReconnectionTools();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout
      * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9260,6 +9503,14 @@ public interface ViewPackage extends EPackage {
         EAttribute DIAGRAM_DESCRIPTION__AUTO_LAYOUT = eINSTANCE.getDiagramDescription_AutoLayout();
 
         /**
+         * The meta object literal for the '<em><b>Palette</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_DESCRIPTION__PALETTE = eINSTANCE.getDiagramDescription_Palette();
+
+        /**
          * The meta object literal for the '<em><b>Node Descriptions</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -9274,14 +9525,6 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = eINSTANCE.getDiagramDescription_EdgeDescriptions();
-
-        /**
-         * The meta object literal for the '<em><b>On Drop</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference DIAGRAM_DESCRIPTION__ON_DROP = eINSTANCE.getDiagramDescription_OnDrop();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl
@@ -9324,22 +9567,6 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getDiagramElementDescription_LabelExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Delete Tool</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = eINSTANCE.getDiagramElementDescription_DeleteTool();
-
-        /**
-         * The meta object literal for the '<em><b>Label Edit Tool</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = eINSTANCE.getDiagramElementDescription_LabelEditTool();
 
         /**
          * The meta object literal for the '<em><b>Synchronization Policy</b></em>' attribute feature. <!--
@@ -9416,14 +9643,6 @@ public interface ViewPackage extends EPackage {
         EAttribute NODE_DESCRIPTION__USER_RESIZABLE = eINSTANCE.getNodeDescription_UserResizable();
 
         /**
-         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference NODE_DESCRIPTION__NODE_TOOLS = eINSTANCE.getNodeDescription_NodeTools();
-
-        /**
          * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -9446,6 +9665,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute NODE_DESCRIPTION__COLLAPSIBLE = eINSTANCE.getNodeDescription_Collapsible();
+
+        /**
+         * The meta object literal for the '<em><b>Palette</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__PALETTE = eINSTANCE.getNodeDescription_Palette();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeDescriptionImpl <em>Edge
@@ -9480,6 +9707,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE = eINSTANCE.getEdgeDescription_IsDomainBasedEdge();
+
+        /**
+         * The meta object literal for the '<em><b>Palette</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__PALETTE = eINSTANCE.getEdgeDescription_Palette();
 
         /**
          * The meta object literal for the '<em><b>Source Node Descriptions</b></em>' reference list feature. <!--
@@ -9522,44 +9757,12 @@ public interface ViewPackage extends EPackage {
         EReference EDGE_DESCRIPTION__STYLE = eINSTANCE.getEdgeDescription_Style();
 
         /**
-         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference EDGE_DESCRIPTION__EDGE_TOOLS = eINSTANCE.getEdgeDescription_EdgeTools();
-
-        /**
-         * The meta object literal for the '<em><b>Reconnect Edge Tools</b></em>' containment reference list feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference EDGE_DESCRIPTION__RECONNECT_EDGE_TOOLS = eINSTANCE.getEdgeDescription_ReconnectEdgeTools();
-
-        /**
          * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference EDGE_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getEdgeDescription_ConditionalStyles();
-
-        /**
-         * The meta object literal for the '<em><b>Begin Label Edit Tool</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL = eINSTANCE.getEdgeDescription_BeginLabelEditTool();
-
-        /**
-         * The meta object literal for the '<em><b>End Label Edit Tool</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL = eINSTANCE.getEdgeDescription_EndLabelEditTool();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LabelStyleImpl <em>Label
@@ -9916,6 +10119,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass EDGE_TOOL = eINSTANCE.getEdgeTool();
+
+        /**
+         * The meta object literal for the '<em><b>Target Element Descriptions</b></em>' reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS = eINSTANCE.getEdgeTool_TargetElementDescriptions();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeReconnectionToolImpl
@@ -11165,6 +11376,132 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass CONDITIONAL_LIST_DESCRIPTION_STYLE = eINSTANCE.getConditionalListDescriptionStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DiagramPaletteImpl
+         * <em>Diagram Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DiagramPaletteImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramPalette()
+         * @generated
+         */
+        EClass DIAGRAM_PALETTE = eINSTANCE.getDiagramPalette();
+
+        /**
+         * The meta object literal for the '<em><b>Drop Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_PALETTE__DROP_TOOL = eINSTANCE.getDiagramPalette_DropTool();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_PALETTE__NODE_TOOLS = eINSTANCE.getDiagramPalette_NodeTools();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodePaletteImpl <em>Node
+         * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.NodePaletteImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodePalette()
+         * @generated
+         */
+        EClass NODE_PALETTE = eINSTANCE.getNodePalette();
+
+        /**
+         * The meta object literal for the '<em><b>Delete Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__DELETE_TOOL = eINSTANCE.getNodePalette_DeleteTool();
+
+        /**
+         * The meta object literal for the '<em><b>Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__LABEL_EDIT_TOOL = eINSTANCE.getNodePalette_LabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__NODE_TOOLS = eINSTANCE.getNodePalette_NodeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__EDGE_TOOLS = eINSTANCE.getNodePalette_EdgeTools();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgePaletteImpl <em>Edge
+         * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.EdgePaletteImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgePalette()
+         * @generated
+         */
+        EClass EDGE_PALETTE = eINSTANCE.getEdgePalette();
+
+        /**
+         * The meta object literal for the '<em><b>Delete Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__DELETE_TOOL = eINSTANCE.getEdgePalette_DeleteTool();
+
+        /**
+         * The meta object literal for the '<em><b>Center Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL = eINSTANCE.getEdgePalette_CenterLabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>Begin Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL = eINSTANCE.getEdgePalette_BeginLabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>End Label Edit Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__END_LABEL_EDIT_TOOL = eINSTANCE.getEdgePalette_EndLabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__NODE_TOOLS = eINSTANCE.getEdgePalette_NodeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Reconnection Tools</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = eINSTANCE.getEdgePalette_EdgeReconnectionTools();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout

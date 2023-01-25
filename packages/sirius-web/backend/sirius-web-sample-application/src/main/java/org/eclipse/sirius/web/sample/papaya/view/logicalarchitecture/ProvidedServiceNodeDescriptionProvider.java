@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Description of provided service.
@@ -38,7 +41,32 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeDescription.setLabelExpression("aql:if self.contract = null then 'undefined' else self.contract.name endif");
         nodeDescription.setStyle(nodeStyle);
 
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+
+        var fulfillsContractEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        fulfillsContractEdgeTool.setName("Fulfills contract");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("contract");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        fulfillsContractEdgeTool.getBody().add(changeContext);
+
+        nodePalette.getEdgeTools().add(fulfillsContractEdgeTool);
+
         return nodeDescription;
+    }
+
+    @Override
+    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
+        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
+
+        EdgeTool fulfillsContractEdgeTool = providedServiceNodeDescription.getPalette().getEdgeTools().get(0);
+        fulfillsContractEdgeTool.getTargetElementDescriptions().add(requiredServiceNodeDescription);
     }
 
 }

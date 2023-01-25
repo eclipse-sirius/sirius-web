@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,26 +76,26 @@ public interface DiagramDescription extends RepresentationDescription {
     EList<EdgeDescription> getEdgeDescriptions();
 
     /**
-     * Returns the value of the '<em><b>On Drop</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @return the value of the '<em>On Drop</em>' containment reference.
-     * @see #setOnDrop(DropTool)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getDiagramDescription_OnDrop()
+     * @return the value of the '<em>Palette</em>' containment reference.
+     * @see #setPalette(DiagramPalette)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getDiagramDescription_Palette()
      * @model containment="true"
      * @generated
      */
-    DropTool getOnDrop();
+    DiagramPalette getPalette();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramDescription#getOnDrop <em>On Drop</em>}'
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.DiagramDescription#getPalette <em>Palette</em>}'
      * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>On Drop</em>' containment reference.
-     * @see #getOnDrop()
+     *            the new value of the '<em>Palette</em>' containment reference.
+     * @see #getPalette()
      * @generated
      */
-    void setOnDrop(DropTool value);
+    void setPalette(DiagramPalette value);
 
 } // DiagramDescription

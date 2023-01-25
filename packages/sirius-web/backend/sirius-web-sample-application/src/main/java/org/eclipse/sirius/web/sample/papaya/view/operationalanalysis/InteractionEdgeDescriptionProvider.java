@@ -48,26 +48,6 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
         interactionEdgeDescription.setTargetNodesExpression("aql:self.target");
         interactionEdgeDescription.setStyle(interactionEdgeStyle);
 
-        var interactionEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        interactionEdgeTool.setName("Interacts with");
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-
-        var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
-        createInstance.setTypeName(builder.domainType(builder.entity("Interaction")));
-        createInstance.setReferenceName("interactions");
-        createInstance.setVariableName("self");
-
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("target");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        createInstance.getChildren().add(setTargetValue);
-        changeContext.getChildren().add(createInstance);
-        interactionEdgeTool.getBody().add(changeContext);
-
-        interactionEdgeDescription.getEdgeTools().add(interactionEdgeTool);
-
         return interactionEdgeDescription;
     }
 

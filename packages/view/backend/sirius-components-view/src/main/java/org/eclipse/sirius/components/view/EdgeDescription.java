@@ -108,6 +108,29 @@ public interface EdgeDescription extends DiagramElementDescription {
     void setIsDomainBasedEdge(boolean value);
 
     /**
+     * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Palette</em>' containment reference.
+     * @see #setPalette(EdgePalette)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_Palette()
+     * @model containment="true"
+     * @generated
+     */
+    EdgePalette getPalette();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getPalette <em>Palette</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Palette</em>' containment reference.
+     * @see #getPalette()
+     * @generated
+     */
+    void setPalette(EdgePalette value);
+
+    /**
      * Returns the value of the '<em><b>Source Node Descriptions</b></em>' reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.view.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -199,29 +222,6 @@ public interface EdgeDescription extends DiagramElementDescription {
     void setStyle(EdgeStyle value);
 
     /**
-     * Returns the value of the '<em><b>Edge Tools</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.EdgeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Edge Tools</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_EdgeTools()
-     * @model containment="true"
-     * @generated
-     */
-    EList<EdgeTool> getEdgeTools();
-
-    /**
-     * Returns the value of the '<em><b>Reconnect Edge Tools</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.EdgeReconnectionTool}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Reconnect Edge Tools</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_ReconnectEdgeTools()
-     * @model containment="true"
-     * @generated
-     */
-    EList<EdgeReconnectionTool> getReconnectEdgeTools();
-
-    /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
      * of type {@link org.eclipse.sirius.components.view.ConditionalEdgeStyle}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -232,51 +232,5 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @generated
      */
     EList<ConditionalEdgeStyle> getConditionalStyles();
-
-    /**
-     * Returns the value of the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Begin Label Edit Tool</em>' containment reference.
-     * @see #setBeginLabelEditTool(LabelEditTool)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_BeginLabelEditTool()
-     * @model containment="true"
-     * @generated
-     */
-    LabelEditTool getBeginLabelEditTool();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getBeginLabelEditTool <em>Begin
-     * Label Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Begin Label Edit Tool</em>' containment reference.
-     * @see #getBeginLabelEditTool()
-     * @generated
-     */
-    void setBeginLabelEditTool(LabelEditTool value);
-
-    /**
-     * Returns the value of the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>End Label Edit Tool</em>' containment reference.
-     * @see #setEndLabelEditTool(LabelEditTool)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_EndLabelEditTool()
-     * @model containment="true"
-     * @generated
-     */
-    LabelEditTool getEndLabelEditTool();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getEndLabelEditTool <em>End
-     * Label Edit Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>End Label Edit Tool</em>' containment reference.
-     * @see #getEndLabelEditTool()
-     * @generated
-     */
-    void setEndLabelEditTool(LabelEditTool value);
 
 } // EdgeDescription

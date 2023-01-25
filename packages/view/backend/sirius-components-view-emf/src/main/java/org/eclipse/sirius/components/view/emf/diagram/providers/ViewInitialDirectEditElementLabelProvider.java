@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -39,8 +40,10 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewService;
@@ -104,28 +107,26 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
             Optional<LabelEditTool> optionalLabelEditTool = Optional.empty();
             Optional<Object> semanticElement = Optional.empty();
 
-            if (diagramElement instanceof Node) {
-                Node node = (Node) diagramElement;
+            if (diagramElement instanceof Node node) {
                 UUID descriptionId = node.getDescriptionId();
-                optionalLabelEditTool = this.getNodeDescription(diagramDescription.getNodeDescriptions(), descriptionId).map(NodeDescription::getLabelEditTool);
+                optionalLabelEditTool = this.getNodeDescription(diagramDescription.getNodeDescriptions(), descriptionId).map(NodeDescription::getPalette).map(NodePalette::getLabelEditTool);
                 semanticElement = this.objectService.getObject(editingContext, node.getTargetObjectId());
                 initialDirectEditElementLabel = node.getLabel().getText();
-            } else if (diagramElement instanceof Edge) {
-                Edge edge = (Edge) diagramElement;
+            } else if (diagramElement instanceof Edge edge) {
                 UUID descriptionId = edge.getDescriptionId();
                 semanticElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());
 
                 var optionalEdgeDescription = this.getEdgeDescription(diagramDescription.getEdgeDescriptions(), descriptionId);
 
                 if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
-                    optionalLabelEditTool = optionalEdgeDescription.map(EdgeDescription::getBeginLabelEditTool);
+                    optionalLabelEditTool = optionalEdgeDescription.flatMap(edgeDescription -> this.getLabelEditTool(edgeDescription, EdgeLabelKind.BEGIN_LABEL));
                     initialDirectEditElementLabel = edge.getBeginLabel().getText();
                 } else if (edge.getCenterLabel() != null && edge.getCenterLabel().getId().equals(labelId)) {
                     initialDirectEditElementLabel = edge.getCenterLabel().getText();
-                    optionalLabelEditTool = optionalEdgeDescription.map(EdgeDescription::getLabelEditTool);
+                    optionalLabelEditTool = optionalEdgeDescription.flatMap(edgeDescription -> this.getLabelEditTool(edgeDescription, EdgeLabelKind.CENTER_LABEL));
                 } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
                     initialDirectEditElementLabel = edge.getEndLabel().getText();
-                    optionalLabelEditTool = optionalEdgeDescription.map(EdgeDescription::getEndLabelEditTool);
+                    optionalLabelEditTool = optionalEdgeDescription.flatMap(edgeDescription -> this.getLabelEditTool(edgeDescription, EdgeLabelKind.END_LABEL));
                 }
             }
 
@@ -160,6 +161,14 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
         }
 
         return initialDirectEditElementLabel;
+    }
+
+    private Optional<LabelEditTool> getLabelEditTool(org.eclipse.sirius.components.view.EdgeDescription edgeDescription, EdgeLabelKind labelKind) {
+        return Optional.ofNullable(edgeDescription).map(org.eclipse.sirius.components.view.EdgeDescription::getPalette).map(switch (labelKind) {
+            case BEGIN_LABEL -> EdgePalette::getBeginLabelEditTool;
+            case CENTER_LABEL -> EdgePalette::getCenterLabelEditTool;
+            case END_LABEL -> EdgePalette::getEndLabelEditTool;
+        });
     }
 
     private Optional<NodeDescription> getNodeDescription(List<NodeDescription> nodeDescriptions, UUID descriptionId) {

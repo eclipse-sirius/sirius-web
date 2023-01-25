@@ -57,11 +57,11 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addCollapsiblePropertyDescriptor(object);
+            this.addChildrenLayoutStrategyPropertyDescriptor(object);
             this.addReusedChildNodeDescriptionsPropertyDescriptor(object);
             this.addReusedBorderNodeDescriptionsPropertyDescriptor(object);
             this.addUserResizablePropertyDescriptor(object);
-            this.addChildrenLayoutStrategyPropertyDescriptor(object);
-            this.addCollapsiblePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -140,11 +140,11 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__PALETTE);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
-            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS);
-            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -205,15 +205,15 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeDescription.class)) {
-            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
             case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case ViewPackage.NODE_DESCRIPTION__PALETTE:
+            case ViewPackage.NODE_DESCRIPTION__STYLE:
+            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            case ViewPackage.NODE_DESCRIPTION__STYLE:
-            case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
-            case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -232,20 +232,20 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__NODE_TOOLS, defaultToolsFactory.createDefaultNodeTool()));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultNodePalette()));
 
         NodeDescription nodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Sub-node");
         nodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         nodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        defaultToolsFactory.addDefaultNodeTools(nodeChild);
+        nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
         NodeDescription borderNodeChild = ViewFactory.eINSTANCE.createNodeDescription();
         borderNodeChild.setName("Border node");
         borderNodeChild.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
         borderNodeChild.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        defaultToolsFactory.addDefaultNodeTools(borderNodeChild);
+        borderNodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.NODE_DESCRIPTION__STYLE, ViewFactory.eINSTANCE.createRectangularNodeStyleDescription()));

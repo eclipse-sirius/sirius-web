@@ -27,6 +27,8 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class PackageNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private static final String FEATURE_TYPES = "types";
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
@@ -41,11 +43,31 @@ public class PackageNodeDescriptionProvider implements INodeDescriptionProvider 
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getReusedChildNodeDescriptions().add(nodeDescription);
 
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+
         var newPackageNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Package", "packages", "Package");
         newPackageNodeTool.setName("New Package");
-        nodeDescription.getNodeTools().add(newPackageNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        nodePalette.getNodeTools().add(newPackageNodeTool);
+
+        var newClassNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Class", FEATURE_TYPES, "Class");
+        newClassNodeTool.setName("New Class");
+        nodePalette.getNodeTools().add(newClassNodeTool);
+
+        var newInterfaceNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Interface", FEATURE_TYPES, "Interface");
+        newInterfaceNodeTool.setName("New Interface");
+        nodePalette.getNodeTools().add(newInterfaceNodeTool);
+
+        var newDataTypeNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::DataType", FEATURE_TYPES, "DataType");
+        newDataTypeNodeTool.setName("New DataType");
+        nodePalette.getNodeTools().add(newDataTypeNodeTool);
+
+        var newEnumNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Enum", FEATURE_TYPES, "Enum");
+        newEnumNodeTool.setName("New Enum");
+        nodePalette.getNodeTools().add(newEnumNodeTool);
+
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }

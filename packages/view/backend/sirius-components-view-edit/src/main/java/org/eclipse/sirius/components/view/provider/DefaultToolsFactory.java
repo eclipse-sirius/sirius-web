@@ -14,10 +14,11 @@ package org.eclipse.sirius.components.view.provider;
 
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.DiagramPalette;
+import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
@@ -31,19 +32,26 @@ import org.eclipse.sirius.components.view.ViewFactory;
  */
 public class DefaultToolsFactory {
 
-    public void addDefaultNodeTools(NodeDescription nodeDescription) {
-        nodeDescription.setDeleteTool(this.createDefaultDeleteTool());
-        nodeDescription.setLabelEditTool(this.createDefaultLabelEditTool());
-        nodeDescription.getNodeTools().add(this.createDefaultNodeTool());
+    public DiagramPalette createDefaultDiagramPalette() {
+        DiagramPalette palette = ViewFactory.eINSTANCE.createDiagramPalette();
+        return palette;
     }
 
-    public void addDefaultEdgeTools(EdgeDescription edgeDescription) {
-        edgeDescription.setDeleteTool(this.createDefaultDeleteTool());
-        edgeDescription.setLabelEditTool(this.createDefaultLabelEditTool());
-        edgeDescription.getEdgeTools().add(this.createDefaultEdgeTool());
+    public NodePalette createDefaultNodePalette() {
+        NodePalette palette = ViewFactory.eINSTANCE.createNodePalette();
+        palette.setDeleteTool(this.createDefaultDeleteTool());
+        palette.setLabelEditTool(this.createDefaultLabelEditTool());
+        return palette;
     }
 
-    public NodeTool createDefaultNodeTool() {
+    public EdgePalette createDefaultEdgePalette() {
+        EdgePalette palette = ViewFactory.eINSTANCE.createEdgePalette();
+        palette.setDeleteTool(this.createDefaultDeleteTool());
+        palette.setCenterLabelEditTool(this.createDefaultLabelEditTool());
+        return palette;
+    }
+
+    public NodeTool createDefaultNodeCreationTool() {
         NodeTool newNodeTool = ViewFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Create Node");
         ChangeContext newNodeBody = ViewFactory.eINSTANCE.createChangeContext();

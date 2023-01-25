@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
+import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Description of the operational activity.
@@ -37,13 +40,62 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 
-        var newOperationalActivityNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActivity", "operationalActivities", "Operational Activity");
-        newOperationalActivityNodeTool.setName("New Operational Activity");
-        nodeDescription.getNodeTools().add(newOperationalActivityNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
+
+        nodePalette.getEdgeTools().add(this.createInteractionEdgeTool(nodeDescription));
+        nodePalette.getEdgeTools().add(this.createRealizedByEdgeTool());
 
         return nodeDescription;
     }
 
+    private EdgeTool createInteractionEdgeTool(NodeDescription nodeDescription) {
+        var interactionEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        interactionEdgeTool.setName("Interacts with");
+        interactionEdgeTool.getTargetElementDescriptions().add(nodeDescription);
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var builder = new PapayaViewBuilder();
+        var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
+        createInstance.setTypeName(builder.domainType(builder.entity("Interaction")));
+        createInstance.setReferenceName("interactions");
+        createInstance.setVariableName("self");
+
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("target");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        createInstance.getChildren().add(setTargetValue);
+        changeContext.getChildren().add(createInstance);
+        interactionEdgeTool.getBody().add(changeContext);
+        return interactionEdgeTool;
+    }
+
+    private EdgeTool createRealizedByEdgeTool() {
+        var realizedByEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        realizedByEdgeTool.setName("Realized by");
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("realizedBy");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        realizedByEdgeTool.getBody().add(changeContext);
+        return realizedByEdgeTool;
+    }
+
+    @Override
+    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
+        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+        var componentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
+
+        var tools = operationalActivityNodeDescription.getPalette().getEdgeTools();
+        tools.stream().filter(tool -> tool.getName().equals("Realized by")).findFirst().ifPresent(edgeRealizedByTool -> {
+            edgeRealizedByTool.getTargetElementDescriptions().add(componentNodeDescription);
+        });
+
+    }
 }

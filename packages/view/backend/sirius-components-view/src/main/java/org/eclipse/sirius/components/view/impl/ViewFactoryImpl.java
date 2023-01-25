@@ -46,8 +46,10 @@ import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DeleteView;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.DropTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FlexDirection;
@@ -72,6 +74,7 @@ import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
@@ -268,6 +271,12 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createListDescriptionStyle();
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE:
                 return this.createConditionalListDescriptionStyle();
+            case ViewPackage.DIAGRAM_PALETTE:
+                return this.createDiagramPalette();
+            case ViewPackage.NODE_PALETTE:
+                return this.createNodePalette();
+            case ViewPackage.EDGE_PALETTE:
+                return this.createEdgePalette();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -1011,6 +1020,39 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public ConditionalListDescriptionStyle createConditionalListDescriptionStyle() {
         ConditionalListDescriptionStyleImpl conditionalListDescriptionStyle = new ConditionalListDescriptionStyleImpl();
         return conditionalListDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DiagramPalette createDiagramPalette() {
+        DiagramPaletteImpl diagramPalette = new DiagramPaletteImpl();
+        return diagramPalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NodePalette createNodePalette() {
+        NodePaletteImpl nodePalette = new NodePaletteImpl();
+        return nodePalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EdgePalette createEdgePalette() {
+        EdgePaletteImpl edgePalette = new EdgePaletteImpl();
+        return edgePalette;
     }
 
     /**

@@ -39,11 +39,14 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 
-        var newOperationalPerimeterNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalPerimeter", "operationalPerimeters", "Operational Perimeter");
-        newOperationalPerimeterNodeTool.setName("New Operational Perimeter");
-        nodeDescription.getNodeTools().add(newOperationalPerimeterNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        var newOperationalActivityNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActivity", "operationalActivities", "Operational Activity");
+        newOperationalActivityNodeTool.setName("New Operational Activity");
+        nodePalette.getNodeTools().add(newOperationalActivityNodeTool);
+
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }

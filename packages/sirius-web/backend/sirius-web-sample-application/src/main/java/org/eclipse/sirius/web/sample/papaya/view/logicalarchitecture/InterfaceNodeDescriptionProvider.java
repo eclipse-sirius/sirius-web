@@ -40,11 +40,26 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.operationNodeDescription());
 
-        var newInterfaceNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Interface", "types", "Interface");
-        newInterfaceNodeTool.setName("New Interface");
-        nodeDescription.getNodeTools().add(newInterfaceNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Operation", "operations", "Operation");
+        newOperationNodeTool.setName("New Operation");
+        nodePalette.getNodeTools().add(newOperationNodeTool);
+
+        var extendsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        extendsInterfaceEdgeTool.setName("Extends");
+        extendsInterfaceEdgeTool.getTargetElementDescriptions().add(nodeDescription);
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:semanticEdgeSource");
+        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
+        setTargetValue.setFeatureName("extends");
+        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
+
+        changeContext.getChildren().add(setTargetValue);
+        extendsInterfaceEdgeTool.getBody().add(changeContext);
+        nodePalette.getEdgeTools().add(extendsInterfaceEdgeTool);
 
         return nodeDescription;
     }
@@ -60,11 +75,11 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
         nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
 
-        var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Operation", "operations", "Operation");
-        newOperationNodeTool.setName("New Operation");
-        nodeDescription.getNodeTools().add(newOperationNodeTool);
-        nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodeDescription.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        nodeDescription.setPalette(nodePalette);
+
+        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
 
         return nodeDescription;
     }

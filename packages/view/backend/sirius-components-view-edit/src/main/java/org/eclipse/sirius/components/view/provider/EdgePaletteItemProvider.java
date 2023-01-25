@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view.provider;
 
 import java.util.Collection;
@@ -27,26 +27,24 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.View} object. <!-- begin-user-doc
- * --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.EdgePalette} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class ViewItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class EdgePaletteItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public ViewItemProvider(AdapterFactory adapterFactory) {
+    public EdgePaletteItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -76,7 +74,12 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ViewPackage.Literals.VIEW__DESCRIPTIONS);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_PALETTE__DELETE_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_PALETTE__NODE_TOOLS);
+            this.childrenFeatures.add(ViewPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
         }
         return this.childrenFeatures;
     }
@@ -95,13 +98,13 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     }
 
     /**
-     * This returns View.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns EdgePalette.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/View.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgePalette.svg"));
     }
 
     /**
@@ -121,7 +124,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_View_type");
+        return this.getString("_UI_EdgePalette_type");
     }
 
     /**
@@ -135,8 +138,13 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(View.class)) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
+        switch (notification.getFeatureID(EdgePalette.class)) {
+            case ViewPackage.EDGE_PALETTE__DELETE_TOOL:
+            case ViewPackage.EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL:
+            case ViewPackage.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL:
+            case ViewPackage.EDGE_PALETTE__END_LABEL_EDIT_TOOL:
+            case ViewPackage.EDGE_PALETTE__NODE_TOOLS:
+            case ViewPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -147,23 +155,45 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        DiagramDescription newDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        newDiagramDescription.setName("New Diagram Description");
-        newDiagramDescription.setPalette(new DefaultToolsFactory().createDefaultDiagramPalette());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__DELETE_TOOL, ViewFactory.eINSTANCE.createDeleteTool()));
 
-        FormDescription newFormDescription = ViewFactory.eINSTANCE.createFormDescription();
-        newFormDescription.setName("New Form Description");
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        newFormDescription.getGroups().add(groupDescription);
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL, ViewFactory.eINSTANCE.createLabelEditTool()));
 
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL, ViewFactory.eINSTANCE.createLabelEditTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL, ViewFactory.eINSTANCE.createLabelEditTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__NODE_TOOLS, ViewFactory.eINSTANCE.createNodeTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, ViewFactory.eINSTANCE.createSourceEdgeEndReconnectionTool()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, ViewFactory.eINSTANCE.createTargetEdgeEndReconnectionTool()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ViewPackage.Literals.EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL || childFeature == ViewPackage.Literals.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL
+                || childFeature == ViewPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
     /**

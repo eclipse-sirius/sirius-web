@@ -124,17 +124,6 @@ public interface NodeDescription extends DiagramElementDescription {
     void setUserResizable(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Node Tools</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_NodeTools()
-     * @model containment="true"
-     * @generated
-     */
-    EList<NodeTool> getNodeTools();
-
-    /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
      * of type {@link org.eclipse.sirius.components.view.ConditionalNodeStyle}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -190,5 +179,28 @@ public interface NodeDescription extends DiagramElementDescription {
      * @generated
      */
     void setCollapsible(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Palette</em>' containment reference.
+     * @see #setPalette(NodePalette)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_Palette()
+     * @model containment="true"
+     * @generated
+     */
+    NodePalette getPalette();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#getPalette <em>Palette</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Palette</em>' containment reference.
+     * @see #getPalette()
+     * @generated
+     */
+    void setPalette(NodePalette value);
 
 } // NodeDescription

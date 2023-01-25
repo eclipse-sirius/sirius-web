@@ -41,26 +41,17 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
         implementsInterfaceEdgeDescription.setName("Edge Implements interface");
         implementsInterfaceEdgeDescription.setLabelExpression("");
         implementsInterfaceEdgeDescription.setBeginLabelExpression("aql:'implements ' + semanticEdgeTarget.name");
-        implementsInterfaceEdgeDescription.setBeginLabelEditTool(this.editImplementsInterfaceEdgeBeginLabel());
+
         implementsInterfaceEdgeDescription.setEndLabelExpression("aql:'implemented by ' + semanticEdgeSource.name");
-        implementsInterfaceEdgeDescription.setEndLabelEditTool(this.editImplementsInterfaceEdgeEndLabel());
         implementsInterfaceEdgeDescription.setStyle(implementsInterfaceEdgeStyle);
         implementsInterfaceEdgeDescription.setSourceNodesExpression("aql:self");
         implementsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.implements");
         implementsInterfaceEdgeDescription.setIsDomainBasedEdge(false);
 
-        var implementsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        implementsInterfaceEdgeTool.setName("Implements");
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("implements");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        changeContext.getChildren().add(setTargetValue);
-        implementsInterfaceEdgeTool.getBody().add(changeContext);
-
-        implementsInterfaceEdgeDescription.getEdgeTools().add(implementsInterfaceEdgeTool);
+        var edgePalette = ViewFactory.eINSTANCE.createEdgePalette();
+        implementsInterfaceEdgeDescription.setPalette(edgePalette);
+        edgePalette.setBeginLabelEditTool(this.editImplementsInterfaceEdgeBeginLabel());
+        edgePalette.setEndLabelEditTool(this.editImplementsInterfaceEdgeEndLabel());
 
         return implementsInterfaceEdgeDescription;
     }

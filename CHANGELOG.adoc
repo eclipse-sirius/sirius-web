@@ -9,6 +9,7 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1643[1643] [core] Removed our dependencies to Spring Security
+- https://github.com/eclipse-sirius/sirius-components/issues/1592[#1592] [view] In View-based diagram definition, all tools applicable on a given element are now configured inside the new _Palette_ element directly inside the element (diagram, node or edge) description.
 
 === Dependency update
 
