@@ -25,6 +25,8 @@ import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.PapayaDomainProvider;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -107,7 +109,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
     }
 
     private String getPapayaDomainContent() {
-        return this.stereotypeBuilder.getStereotypeBody(new TestDomainProvider().getDomain());
+        return this.stereotypeBuilder.getStereotypeBody(new PapayaDomainProvider().getDomain());
     }
 
     private String getEmptyViewContent() {
@@ -119,7 +121,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
     }
 
     private String getPapayaViewContent() {
-        return this.stereotypeBuilder.getStereotypeBody(new TestViewProvider().getView());
+        return this.stereotypeBuilder.getStereotypeBody(new PapayaViewProvider().getView());
     }
 
     private String getEmptyContent() {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.configuration;
+package org.eclipse.sirius.web.sample.papaya;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.domain.Relation;
  * @author sbegaudeau
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class TestDomainProvider {
+public class PapayaDomainProvider {
     private Entity rootEntity;
 
     private Entity modelElementEntity;
@@ -135,7 +135,7 @@ public class TestDomainProvider {
         this.requiredServiceEntity.getRelations().add(this.createRelation("contract", false, false, false, this.interfaceEntity));
 
         this.packageEntity.getRelations().add(this.createRelation("types", true, true, false, this.typeEntity));
-        this.packageEntity.getRelations().add(this.createRelation("childPackages", true, true, false, this.packageEntity));
+        this.packageEntity.getRelations().add(this.createRelation("packages", true, true, false, this.packageEntity));
         this.typedElementEntity.getAttributes().add(this.createAttribute("many", false, false, DataType.BOOLEAN));
         this.typedElementEntity.getRelations().add(this.createRelation("type", false, false, false, this.typeEntity));
         this.interfaceEntity.getRelations().add(this.createRelation("operations", true, true, false, this.operationEntity));
