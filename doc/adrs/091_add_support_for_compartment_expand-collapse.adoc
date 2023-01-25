@@ -1,0 +1,174 @@
+= ADR-091 - Add support for node expand/collapse
+
+== Context
+
+We want to expand or collapse nodes.
+
+== Decision
+
+=== Frontend
+
+The collapse/expand tool will be available in the palette.
+The tool will be present depending on the description of the node the user has clicked on and its current state (expanded or collapsed).
+
+=== Backend
+
+==== Node Description
+
+We will add the boolean `isCollapsible` on `NodeDescription` API.
+It will be converted from `isCollapsible` of `view::NodeDescription`.
+It will be converted from odesign whether the sirius node description is a Stack.
+
+==== Node rendering
+
+We will add a new attribute on Node:
+
+[source,java]
+----
+
+public enum CollapsingState {
+    COLLAPSED, EXPANDED
+}
+
+public final class Node {
+
+    private CollapsingState collapsingState;
+
+}
+
+----
+
+If a node is collapsed, its children will not be rendered at all while its border nodes will, and thus, the `EdgeComponent` will not render edges involving any child node either.
+
+NOTE: If a collapsed node with children is expanded, all nodes and edges will be displayed at their default position.
+
+NOTE: This new attribute will not be sent to the frontend through the graphql API.
+
+The action to collapse a node may require to remove the custom property `size` to force the collapsed node to take its minimal space on next layout.
+
+During the node rendering we will add the `collapse` variable to the node variable manager whether the node is already collapsed or if a collapse event has been emit by the user.
+It could be used, for example, in a conditional style expression to display the node with a different node style wheter the node is collapsed or not.
+
+==== Collapse/Expand action
+
+We will add a tool only for metadata, like the direct-edit tool or the delete tool in `ViewToolSectionsProvider#createExtraToolSections`:
+
+[source,java]
+----
+
+private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
+    if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+        if (nodeDescription.isCollapsible() && diagramElement instanceof Node node) {
+            List<ITool> collapsingTools = new ArrayList<>();
+            // Collapse expand
+            var collapseTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("collapse")
+                    .label("Collapse")
+                    .imageURL(DiagramImageConstants.COLLAPSE_SVG)
+                    .targetDescriptions(targetDescriptions)
+                    .handler(fakeHandler)
+                    .appliesToDiagramRoot(false)
+                    .build();
+
+            var expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
+                    .label("Expand")
+                    .imageURL(DiagramImageConstants.EXPAND_SVG)
+                    .targetDescriptions(targetDescriptions)
+                    .handler(fakeHandler)
+                    .appliesToDiagramRoot(false)
+                    .build();
+
+            switch(node.getCollapsingState()) {
+                case CollapsingState.EXPANDED:
+                    collapsingTools.add(expandTool);
+                    break;
+                case CollapsingState.COLLAPSED:
+                    collapsingTools.add(collapseTool);
+                    break;
+                default:
+                    break;
+            }
+
+            var expandCollapseToolSection = ToolSection.newToolSection("expand-collapse-section")
+                    .label("")
+                    .imageURL("")
+                    .tools(collapsingTools)
+                    .build();
+            extraToolSections.add(expandCollapseToolSection);
+        }
+    }
+}
+
+----
+
+To handle the action we will add some new concepts to our GraphQL api
+
+===== Graphql API
+
+[source,graphql]
+----
+
+extend type Mutation {
+    updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
+}
+
+input UpdateCollapsingStateInput {
+    id: ID!
+    editingContextId: ID!
+    representationId: ID!
+    nodeId: ID!
+    collapsingState: CollapsingState!
+}
+
+enum CollapsingState {
+    COLLAPSED
+    EXPANDED
+}
+
+union UpdateCollapsingStatePayload = ErrorPayload | UpdateCollapsingStateSuccessPayload
+
+type UpdateCollapsingStateSuccessPayload {
+    id: ID!
+}
+
+----
+
+===== Input and Handler
+
+
+[source,java]
+----
+
+public record UpdateCollapsingStateInput(UUID id, String editingContext, String representationId, String nodeId, CollapsingState collapsingState) implements IDiagramInput {}
+
+public class UpdateCollapsingStateEventHandler implements IDiagramEventHandler {
+
+    @Override
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+        if (diagramInput instanceof UpdateCollapsingStateInput updateCollapsingStateInput) {
+            this.handleUpdateCollapsingState(payloadSink, changeDescriptionSink, editingContext, diagramContext, diagramInput);
+        } else {
+            // send error payload
+        }
+    }
+
+    private void handleUpdateCollapsingState(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, UpdateCollapsingStateInput updateCollapsingStateInput) {
+        ...
+
+        diagramContext.setDiagramEvent(new UpdateCollapsingStateEvent(updateCollapsingStateInput.nodeId, updateCollapsingStateInput.collapsingState));
+        payloadSink.tryEmitValue(new UpdateCollapsingStateSuccessPayload(updateCollapsingStateInput.id));
+        changeDescriptionSink.tryEmitValue(new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_COLLAPSING_STATE_CHANGE, diagramInput.representationId(), diagramInput));
+    }
+
+}
+
+----
+
+== Status
+
+Proposed
+
+== Consequence
+
+The boolean `isCollapsible` on `view::NodeDescription` could become `CollapsingStateExpression` used to dynamically return the possibility for a node to be expandable, collapsible or none.
+`NodeDescription#isCollapsible` could also becomre a function `NodeDescription#isCollapsiblePredicate` in order to support this dynamic behavior.
+This will let the specifier to describe much more complex behavior.
