@@ -195,7 +195,6 @@ public class DiagramElementChangeVisibilityTests {
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .toolSections(List.of())
-                .tools(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
 

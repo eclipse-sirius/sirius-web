@@ -52,7 +52,6 @@ public class TestDiagramDescriptionBuilder {
             .nodeDescriptions(nodeDescriptions)
             .edgeDescriptions(edgeDescriptions)
             .toolSections(toolSections)
-            .tools(List.of())
             .dropHandler(variableManager -> new Failure(""))
             .build();
         // @formatter:on

@@ -19,7 +19,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -59,8 +58,6 @@ public final class DiagramDescription implements IRepresentationDescription {
     private List<NodeDescription> nodeDescriptions;
 
     private List<EdgeDescription> edgeDescriptions;
-
-    private List<ITool> tools;
 
     private Function<VariableManager, IStatus> dropHandler;
 
@@ -107,10 +104,6 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.edgeDescriptions;
     }
 
-    public List<ITool> getTools() {
-        return this.tools;
-    }
-
     public Function<VariableManager, IStatus> getDropHandler() {
         return this.dropHandler;
     }
@@ -154,8 +147,6 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private List<EdgeDescription> edgeDescriptions;
 
-        private List<ITool> tools;
-
         private Function<VariableManager, IStatus> dropHandler;
 
         private Builder(String id) {
@@ -172,7 +163,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.toolSections = diagramDescription.getToolSections();
             this.nodeDescriptions = diagramDescription.getNodeDescriptions();
             this.edgeDescriptions = diagramDescription.getEdgeDescriptions();
-            this.tools = diagramDescription.getTools();
             this.dropHandler = diagramDescription.getDropHandler();
         }
 
@@ -216,11 +206,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder tools(List<ITool> tools) {
-            this.tools = Objects.requireNonNull(tools);
-            return this;
-        }
-
         public Builder dropHandler(Function<VariableManager, IStatus> dropHandler) {
             this.dropHandler = Objects.requireNonNull(dropHandler);
             return this;
@@ -237,7 +222,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.toolSections = Objects.requireNonNull(this.toolSections);
             diagramDescription.nodeDescriptions = Objects.requireNonNull(this.nodeDescriptions);
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
-            diagramDescription.tools = Objects.requireNonNull(this.tools);
             diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);
             return diagramDescription;
         }

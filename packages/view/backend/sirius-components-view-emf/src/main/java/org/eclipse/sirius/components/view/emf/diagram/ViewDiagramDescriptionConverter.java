@@ -56,9 +56,7 @@ import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
-import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.tools.EdgeReconnectionTool;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
@@ -84,8 +82,6 @@ import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
@@ -159,7 +155,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .toolSections(this.createToolSections(converterContext))
-                .tools(this.createTools(converterContext))
                 .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
                 .build();
         // @formatter:on
@@ -412,31 +407,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             }
         }
         return allTargetDescriptions;
-    }
-
-    private List<ITool> createTools(ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        List<ITool> tools = new ArrayList<>();
-        int i = 0;
-        for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
-            for (org.eclipse.sirius.components.view.EdgeReconnectionTool edgeReconnectionTool : edgeDescription.getReconnectEdgeTools()) {
-                // @formatter:off
-                EdgeReconnectionTool.Builder reconnectionToolBuilder = EdgeReconnectionTool.newEdgeReconnectionTool(this.getToolId(edgeDescription, i++))
-                        .label(edgeReconnectionTool.getName())
-                        .handler(variableManager -> new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes).executeTool(edgeReconnectionTool, variableManager));
-                // @formatter:on
-
-                if (edgeReconnectionTool instanceof SourceEdgeEndReconnectionTool) {
-                    reconnectionToolBuilder.kind(ReconnectEdgeKind.SOURCE);
-                } else if (edgeReconnectionTool instanceof TargetEdgeEndReconnectionTool) {
-                    reconnectionToolBuilder.kind(ReconnectEdgeKind.TARGET);
-                }
-
-                tools.add(reconnectionToolBuilder.build());
-            }
-        }
-
-        return tools;
     }
 
     private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
