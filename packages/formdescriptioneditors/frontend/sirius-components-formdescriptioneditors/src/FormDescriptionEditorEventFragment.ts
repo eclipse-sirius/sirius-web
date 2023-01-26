@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ export const addGroupMutation = gql`
   mutation addGroup($input: AddGroupInput!) {
     addGroup(input: $input) {
       __typename
-      ... on AddGroupSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -79,7 +79,7 @@ export const deleteGroupMutation = gql`
   mutation deleteGroup($input: DeleteGroupInput!) {
     deleteGroup(input: $input) {
       __typename
-      ... on DeleteGroupSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -93,7 +93,7 @@ export const moveGroupMutation = gql`
   mutation moveGroup($input: MoveGroupInput!) {
     moveGroup(input: $input) {
       __typename
-      ... on MoveGroupSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -107,7 +107,7 @@ export const addWidgetMutation = gql`
   mutation addWidget($input: AddWidgetInput!) {
     addWidget(input: $input) {
       __typename
-      ... on AddWidgetSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -121,7 +121,7 @@ export const deleteWidgetMutation = gql`
   mutation deleteWidget($input: DeleteWidgetInput!) {
     deleteWidget(input: $input) {
       __typename
-      ... on DeleteWidgetSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -135,7 +135,7 @@ export const moveWidgetMutation = gql`
   mutation moveWidget($input: MoveWidgetInput!) {
     moveWidget(input: $input) {
       __typename
-      ... on MoveWidgetSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -149,7 +149,7 @@ export const addToolbarActionMutation = gql`
   mutation addToolbarAction($input: AddToolbarActionInput!) {
     addToolbarAction(input: $input) {
       __typename
-      ... on AddToolbarActionSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -163,7 +163,7 @@ export const deleteToolbarActionMutation = gql`
   mutation deleteToolbarAction($input: DeleteToolbarActionInput!) {
     deleteToolbarAction(input: $input) {
       __typename
-      ... on DeleteToolbarActionSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -177,7 +177,7 @@ export const moveToolbarActionMutation = gql`
   mutation moveToolbarAction($input: MoveToolbarActionInput!) {
     moveToolbarAction(input: $input) {
       __typename
-      ... on MoveToolbarActionSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {

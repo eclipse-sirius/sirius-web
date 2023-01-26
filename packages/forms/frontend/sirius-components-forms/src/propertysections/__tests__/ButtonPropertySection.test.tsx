@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import {
   GQLErrorPayload,
   GQLPushButtonMutationData,
   GQLPushButtonMutationVariables,
-  GQLPushButtonSuccessPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusSuccessPayload,
@@ -88,8 +88,8 @@ const pushButtonVariables: GQLPushButtonMutationVariables = {
     buttonId: 'buttonId',
   },
 };
-const pushButtonSuccessPayload: GQLPushButtonSuccessPayload = { __typename: 'PushButtonSuccessPayload' };
-const pushButtonSuccessData: GQLPushButtonMutationData = { pushButton: pushButtonSuccessPayload };
+const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const pushButtonSuccessData: GQLPushButtonMutationData = { pushButton: successPayload };
 
 const pushButtonErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',

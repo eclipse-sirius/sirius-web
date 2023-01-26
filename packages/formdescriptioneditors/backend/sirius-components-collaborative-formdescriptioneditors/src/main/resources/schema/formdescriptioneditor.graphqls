@@ -45,11 +45,7 @@ input AddGroupInput {
   index: Int!
 }
 
-union AddGroupPayload = AddGroupSuccessPayload | ErrorPayload
-
-type AddGroupSuccessPayload {
-  id: ID!
-}
+union AddGroupPayload = SuccessPayload | ErrorPayload
 
 input DeleteGroupInput {
   id: ID!
@@ -58,11 +54,7 @@ input DeleteGroupInput {
   groupId: String!
 }
 
-union DeleteGroupPayload = DeleteGroupSuccessPayload | ErrorPayload
-
-type DeleteGroupSuccessPayload {
-  id: ID!
-}
+union DeleteGroupPayload = SuccessPayload | ErrorPayload
 
 input MoveGroupInput {
   id: ID!
@@ -72,11 +64,7 @@ input MoveGroupInput {
   index: Int!
 }
 
-union MoveGroupPayload = MoveGroupSuccessPayload | ErrorPayload
-
-type MoveGroupSuccessPayload {
-  id: ID!
-}
+union MoveGroupPayload = SuccessPayload | ErrorPayload
 
 input AddWidgetInput {
   id: ID!
@@ -87,11 +75,7 @@ input AddWidgetInput {
   index: Int!
 }
 
-union AddWidgetPayload = AddWidgetSuccessPayload | ErrorPayload
-
-type AddWidgetSuccessPayload {
-  id: ID!
-}
+union AddWidgetPayload = SuccessPayload | ErrorPayload
 
 input DeleteWidgetInput {
   id: ID!
@@ -100,11 +84,7 @@ input DeleteWidgetInput {
   widgetId: String!
 }
 
-union DeleteWidgetPayload = DeleteWidgetSuccessPayload | ErrorPayload
-
-type DeleteWidgetSuccessPayload {
-  id: ID!
-}
+union DeleteWidgetPayload = SuccessPayload | ErrorPayload
 
 input MoveWidgetInput {
   id: ID!
@@ -115,11 +95,7 @@ input MoveWidgetInput {
   index: Int!
 }
 
-union MoveWidgetPayload = MoveWidgetSuccessPayload | ErrorPayload
-
-type MoveWidgetSuccessPayload {
-  id: ID!
-}
+union MoveWidgetPayload = SuccessPayload | ErrorPayload
 
 input AddToolbarActionInput {
   id: ID!
@@ -128,11 +104,7 @@ input AddToolbarActionInput {
   containerId: ID!
 }
 
-union AddToolbarActionPayload = AddToolbarActionSuccessPayload | ErrorPayload
-
-type AddToolbarActionSuccessPayload {
-  id: ID!
-}
+union AddToolbarActionPayload = SuccessPayload | ErrorPayload
 
 input DeleteToolbarActionInput {
   id: ID!
@@ -141,11 +113,7 @@ input DeleteToolbarActionInput {
   toolbarActionId: String!
 }
 
-union DeleteToolbarActionPayload = DeleteToolbarActionSuccessPayload | ErrorPayload
-
-type DeleteToolbarActionSuccessPayload {
-  id: ID!
-}
+union DeleteToolbarActionPayload = SuccessPayload | ErrorPayload
 
 input MoveToolbarActionInput {
   id: ID!
@@ -156,8 +124,4 @@ input MoveToolbarActionInput {
   index: Int!
 }
 
-union MoveToolbarActionPayload = MoveToolbarActionSuccessPayload | ErrorPayload
-
-type MoveToolbarActionSuccessPayload {
-  id: ID!
-}
+union MoveToolbarActionPayload = SuccessPayload | ErrorPayload

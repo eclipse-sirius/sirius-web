@@ -25,12 +25,12 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
@@ -89,7 +89,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
             int index = ((AddWidgetInput) formDescriptionEditorInput).index();
             boolean addWidget = this.addWidget(editingContext, formDescriptionEditorContext, containerId, kind, index);
             if (addWidget) {
-                payload = new AddWidgetSuccessPayload(formDescriptionEditorInput.id());
+                payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }

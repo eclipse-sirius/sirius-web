@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.web.services.api.document.RewriteProxiesInput;
-import org.eclipse.sirius.web.services.api.document.RewriteProxiesSuccessPayload;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +70,7 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
             if (totalRewrittenCount > 0) {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
-            payload = new RewriteProxiesSuccessPayload(input.id());
+            payload = new SuccessPayload(input.id());
         }
 
         payloadSink.tryEmitValue(payload);

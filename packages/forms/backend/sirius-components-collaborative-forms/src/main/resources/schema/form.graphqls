@@ -379,11 +379,7 @@ input EditCheckboxInput {
   newValue: Boolean!
 }
 
-union EditCheckboxPayload = ErrorPayload | EditCheckboxSuccessPayload
-
-type EditCheckboxSuccessPayload {
-  id: ID!
-}
+union EditCheckboxPayload = ErrorPayload | SuccessPayload
 
 input EditMultiSelectInput {
   id: ID!
@@ -393,11 +389,7 @@ input EditMultiSelectInput {
   newValues: [String]!
 }
 
-union EditMultiSelectPayload = ErrorPayload | EditMultiSelectSuccessPayload
-
-type EditMultiSelectSuccessPayload {
-  id: ID!
-}
+union EditMultiSelectPayload = ErrorPayload | SuccessPayload
 
 input EditRadioInput {
   id: ID!
@@ -407,11 +399,7 @@ input EditRadioInput {
   newValue: ID!
 }
 
-union EditRadioPayload = ErrorPayload | EditRadioSuccessPayload
-
-type EditRadioSuccessPayload {
-  id: ID!
-}
+union EditRadioPayload = ErrorPayload | SuccessPayload
 
 input EditSelectInput {
   id: ID!
@@ -421,11 +409,7 @@ input EditSelectInput {
   newValue: ID!
 }
 
-union EditSelectPayload = ErrorPayload | EditSelectSuccessPayload
-
-type EditSelectSuccessPayload {
-  id: ID!
-}
+union EditSelectPayload = ErrorPayload | SuccessPayload
 
 input EditTextfieldInput {
   id: ID!
@@ -435,11 +419,7 @@ input EditTextfieldInput {
   newValue: String!
 }
 
-union EditTextfieldPayload = ErrorPayload | EditTextfieldSuccessPayload
-
-type EditTextfieldSuccessPayload {
-  id: ID!
-}
+union EditTextfieldPayload = ErrorPayload | SuccessPayload
 
 input EditRichTextInput {
   id: ID!
@@ -449,12 +429,7 @@ input EditRichTextInput {
   newValue: String!
 }
 
-union EditRichTextPayload = ErrorPayload | EditRichTextSuccessPayload
-
-type EditRichTextSuccessPayload {
-  id: ID!
-}
-
+union EditRichTextPayload = ErrorPayload | SuccessPayload
 
 input UpdateWidgetFocusInput {
   id: ID!
@@ -479,11 +454,7 @@ input DeleteListItemInput {
   listItemId: ID!
 }
 
-type DeleteListItemSuccessPayload {
-  id: ID!
-}
-
-union DeleteListItemPayload = ErrorPayload | DeleteListItemSuccessPayload
+union DeleteListItemPayload = ErrorPayload | SuccessPayload
 
 input ClickListItemInput {
   id: ID!
@@ -499,11 +470,7 @@ enum ClickEventKind {
   DOUBLE_CLICK
 }
 
-type ClickListItemSuccessPayload {
-  id: ID!
-}
-
-union ClickListItemPayload = ErrorPayload | ClickListItemSuccessPayload
+union ClickListItemPayload = ErrorPayload | SuccessPayload
 
 input PushButtonInput {
   id: ID!
@@ -512,8 +479,4 @@ input PushButtonInput {
   buttonId: ID!
 }
 
-type PushButtonSuccessPayload {
-  id: ID!
-}
-
-union PushButtonPayload = ErrorPayload | PushButtonSuccessPayload
+union PushButtonPayload = ErrorPayload | SuccessPayload

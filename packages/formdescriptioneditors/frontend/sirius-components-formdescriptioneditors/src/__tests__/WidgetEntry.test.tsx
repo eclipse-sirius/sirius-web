@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,14 +19,12 @@ import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../
 import {
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
-  GQLAddWidgetSuccessPayload,
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
-  GQLDeleteWidgetSuccessPayload,
   GQLFormDescriptionEditor,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLMoveWidgetSuccessPayload,
+  GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
 import { WidgetEntry } from '../WidgetEntry';
 import { DataTransfer } from './DataTransfer';
@@ -41,6 +39,11 @@ const emptySelection: Selection = {
 
 const emptySetSelection = (_: Selection) => {};
 
+const successPayload: GQLSuccessPayload = {
+  __typename: 'SuccessPayload',
+  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+};
+
 const addWidgetVariables: GQLAddWidgetMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -51,11 +54,8 @@ const addWidgetVariables: GQLAddWidgetMutationVariables = {
     index: 0,
   },
 };
-const addWidgetSuccessPayload: GQLAddWidgetSuccessPayload = {
-  __typename: 'AddWidgetSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
-const addWidgetSuccessData: GQLAddWidgetMutationData = { addWidget: addWidgetSuccessPayload };
+
+const addWidgetSuccessData: GQLAddWidgetMutationData = { addWidget: successPayload };
 
 const deleteTextfieldWidgetVariables: GQLDeleteWidgetMutationVariables = {
   input: {
@@ -73,11 +73,8 @@ const deletePieChartWidgetVariables: GQLDeleteWidgetMutationVariables = {
     widgetId: 'ChartWidget1',
   },
 };
-const deleteWidgetSuccessPayload: GQLDeleteWidgetSuccessPayload = {
-  __typename: 'DeleteWidgetSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
-const deleteWidgetSuccessData: GQLDeleteWidgetMutationData = { deleteWidget: deleteWidgetSuccessPayload };
+
+const deleteWidgetSuccessData: GQLDeleteWidgetMutationData = { deleteWidget: successPayload };
 
 const moveWidgetVariables: GQLMoveWidgetMutationVariables = {
   input: {
@@ -89,11 +86,8 @@ const moveWidgetVariables: GQLMoveWidgetMutationVariables = {
     index: 0,
   },
 };
-const moveWidgetSuccessPayload: GQLMoveWidgetSuccessPayload = {
-  __typename: 'MoveWidgetSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
-const moveWidgetSuccessData: GQLMoveWidgetMutationData = { moveWidget: moveWidgetSuccessPayload };
+
+const moveWidgetSuccessData: GQLMoveWidgetMutationData = { moveWidget: successPayload };
 
 test('should drop the Textfield in the drop area', async () => {
   const textfieldWidget: GQLTextfield = {
@@ -112,6 +106,7 @@ test('should drop the Textfield in the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    supportsCompletion: false,
   };
 
   const group: GQLGroup = {
@@ -195,6 +190,7 @@ test('should delete the Textfield from the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    supportsCompletion: false,
   };
 
   const group: GQLGroup = {
@@ -369,6 +365,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    supportsCompletion: false,
   };
 
   const group: GQLGroup = {

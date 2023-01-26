@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto;
+package org.eclipse.sirius.components.core.api;
 
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-
 /**
- * The payload of the Form Description Editor add group mutation.
+ * General purpose success payload.
  *
- * @author arichard
+ * @author mcharfadi
  */
-public class AddGroupSuccessPayload implements IPayload {
+public class SuccessPayload implements IPayload {
     private final UUID id;
 
-    public AddGroupSuccessPayload(UUID id) {
+    public SuccessPayload(UUID id) {
         this.id = Objects.requireNonNull(id);
     }
 
@@ -40,5 +38,4 @@ public class AddGroupSuccessPayload implements IPayload {
         String pattern = "{0} '{'id: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
-
 }

@@ -24,11 +24,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.UpdateEdgeRoutingPointsInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.UpdateEdgeRoutingPointsSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.UpdateEdgeRoutingPointsEvent;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,7 @@ public class UpdateEdgeRoutingPointsEventHandler implements IDiagramEventHandler
 
         if (optionalEdge.isPresent()) {
             diagramContext.setDiagramEvent(new UpdateEdgeRoutingPointsEvent(diagramInput.diagramElementId(), diagramInput.routingPoints()));
-            payloadSink.tryEmitValue(new UpdateEdgeRoutingPointsSuccessPayload(diagramInput.id()));
+            payloadSink.tryEmitValue(new SuccessPayload(diagramInput.id()));
             changeDescriptionSink.tryEmitNext(new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput));
         } else {
             String message = this.messageService.edgeNotFound(String.valueOf(diagramInput.diagramElementId()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,10 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ArrangeAllInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ArrangeAllSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ public class ArrangeAllEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(ArrangeAllSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
 
         assertThat(diagramContext.getDiagramEvent()).isInstanceOf(ArrangeAllEvent.class);
     }

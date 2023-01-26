@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,6 @@ import {
   GQLAddGroupInput,
   GQLAddGroupMutationData,
   GQLAddGroupMutationVariables,
-  GQLAddWidgetPayload,
   GQLErrorPayload,
   GQLFormDescriptionEditorEventInput,
   GQLFormDescriptionEditorEventSubscription,
@@ -52,7 +51,7 @@ import {
   GQLMoveGroupInput,
   GQLMoveGroupMutationData,
   GQLMoveGroupMutationVariables,
-  GQLMoveWidgetPayload,
+  GQLWidgetOperationPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import {
   FormDescriptionEditorRepresentationContext,
@@ -67,7 +66,7 @@ import {
 import { Group } from './Group';
 import { Button } from './icons/Button';
 import { isKind } from './WidgetOperations';
-const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({

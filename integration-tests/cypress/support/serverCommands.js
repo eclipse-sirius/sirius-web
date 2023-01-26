@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,7 +98,7 @@ Cypress.Commands.add('createDocument', (editingContextId, stereotypeDescriptionI
   mutation createDocument($input: CreateDocumentInput!) {
     createDocument(input: $input) {
       __typename
-      ... on CreateDocumentSuccessPayload {
+      ... on SuccessPayload {
         id
       }
     }

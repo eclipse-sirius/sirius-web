@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,11 +23,11 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.FormDe
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.TestFormDescriptionEditorBuilder;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.MoveWidgetInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.MoveWidgetSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +66,6 @@ public class MoveWidgetEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(MoveWidgetSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
     }
 }
