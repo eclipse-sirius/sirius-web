@@ -1,0 +1,53 @@
+= ADR-089 - Add a URL based kind to representation description
+
+== Context
+
+While the identifier of a representation description has the type `String`, we are only using `UUID` as the identifer.
+As a result, the backend does not leak any meaningful information with this identifier and it stays quite compact.
+On the other hand, because we don't have any information from this identifier nor any other piece of information, we cannot optimize some operations.
+
+== Decision
+
+Using an approach similar to what we used for `IRepresentation#kind`, we will add a `kind` attribute to `IRepresentationDescription` which will encode some additional details.
+In this attribute, we will encode a way to retrieve the source of the representation description quickly.
+
+We will thus create this attribute with the following structure:
+
+|===
+|Source | Kind
+|Sirius Desktop compatibility  |`siriusComponents://representationDescription?source=odesign&sourceId=f476b851-d9a8-43ad-a256-7b4f2f9f4a2e`
+|View                          |`siriusComponents://representationDescription?source=view&sourceId=33236b23-984c-4d96-895c-c829e922c204`
+|Programmatically              |No specific constraints
+|===
+
+Using this piece of information, when the backend will be asked to execute a tool on a diagram with `9d4c168b-ea0d-44b7-bb99-52f023c3116d` as its description identifier, it will retrieve the representation description and use its kind to figure out if the behavior should be handled by the compatibility layer, the view layer or by a programmatic contribution.
+
+With a diagram description like this:
+
+```
+{
+  "id": "a4304972-588b-40c3-91b3-265cda4b53a3",
+  "kind": "siriusComponents://representationDescription?source=view&sourceId=33236b23-984c-4d96-895c-c829e922c204"
+}
+```
+
+We will easily know that we are looking for a view document which should have the id `33236b23-984c-4d96-895c-c829e922c204` and which should contain a diagram description with a converted id matching `a4304972-588b-40c3-91b3-265cda4b53a3`.
+This will greatly speed up and simplify the retrieval of the source of the representation description compared to the current situation.
+
+== Status
+
+Accepted
+
+== Consequences
+
+Being able to find out easily the source of a representation description will simplify greatly the compatibility layer and the view support.
+It will also give us the ability to remove the `IIdMappingRepository` and all the issues it brings especially for those who are contributing programmatic representation descriptions.
+
+
+== Out of scope
+
+We will not change anything with regard to the stability of the identifiers of the objects of the view document.
+Changing the order of a representation description for example would still create issues.
+
+Likewise, we will not change anything here on the lifecycle of the View document itself.
+We could still end up with issues if a specifier deletes a View document which is actively used.
