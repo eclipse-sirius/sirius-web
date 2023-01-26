@@ -167,7 +167,6 @@ public class GetConnectorToolsEventHandlerTests {
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
                 .toolSections(List.of(toolSection))
-                .tools(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
         //@formatter:on

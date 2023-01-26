@@ -85,7 +85,6 @@ public class CreateViewOperationHandlerTests {
                 .canCreatePredicate(variableManager -> true)
                 .labelProvider(variableManager -> "Diagram")
                 .toolSections(List.of())
-                .tools(List.of())
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))

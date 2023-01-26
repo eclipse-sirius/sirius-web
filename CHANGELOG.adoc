@@ -42,6 +42,8 @@ This contribution also ensures that the local context is configured as necessary
 +
 On top of that, creating more complex subscriptions involving the representation description could trigger a deadlock since the subcription on the reactive `Flux` emitting the payloads was performed in the thread of the `EditingContextEventProcessor`.
 The scheduling policy of our various `IRepresentationEventProcessor` will thus be updated in order to ensure that the subscription will be performed in another thread.
+- https://github.com/eclipse-sirius/sirius-components/issues/1615[#1615] [diagram] `DiagramDescription.getTools()` has been removed.
+It was not actually used, as tools have long been found in `DiagramDescription.getToolSections()` instead.
 
 === Dependency update
 
