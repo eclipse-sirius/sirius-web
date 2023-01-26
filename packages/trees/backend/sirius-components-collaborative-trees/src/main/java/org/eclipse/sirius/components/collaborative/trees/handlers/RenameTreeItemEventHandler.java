@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ICollaborativeTreeMessageService;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeQueryService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -100,7 +100,7 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
                 if (status instanceof Success) {
                     Success success = (Success) status;
                     changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
-                    payload = new RenameTreeItemSuccessPayload(treeInput.id());
+                    payload = new SuccessPayload(treeInput.id());
                 } else if (status instanceof Failure) {
                     payload = new ErrorPayload(treeInput.id(), ((Failure) status).getMessage());
                 }

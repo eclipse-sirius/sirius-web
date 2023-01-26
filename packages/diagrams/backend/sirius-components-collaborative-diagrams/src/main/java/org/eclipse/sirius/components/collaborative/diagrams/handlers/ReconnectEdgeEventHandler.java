@@ -30,13 +30,13 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQuerySer
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -122,7 +122,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             if (status instanceof Success) {
                 diagramContext.setDiagramEvent(
                         new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId(), reconnectEdgeInput.newEdgeEndId(), reconnectEdgeInput.newEdgeEndPosition()));
-                payload = new ReconnectEdgeSuccessPayload(reconnectEdgeInput.id());
+                payload = new SuccessPayload(reconnectEdgeInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             } else {
                 String failureMessage = ((Failure) status).getMessage();

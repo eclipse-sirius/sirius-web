@@ -28,11 +28,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.HideDiagramElementInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.HideDiagramElementSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
@@ -115,7 +115,7 @@ public class HideDiagramElementEventHandler implements IDiagramEventHandler {
     private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext,
             HideDiagramElementInput diagramInput) {
         var changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.representationId(), diagramInput);
-        IPayload payload = new HideDiagramElementSuccessPayload(diagramInput.id());
+        IPayload payload = new SuccessPayload(diagramInput.id());
         if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.messageService.deleteFailed());

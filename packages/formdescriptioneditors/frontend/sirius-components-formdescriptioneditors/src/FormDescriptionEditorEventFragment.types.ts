@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,17 @@
 
 import { GQLGroup } from '@eclipse-sirius/sirius-components-forms';
 
+export interface GQLWidgetOperationPayload {
+  __typename: string;
+}
+
+export interface GQLSuccessPayload extends GQLWidgetOperationPayload {
+  id: string;
+}
+
+export interface GQLErrorPayload extends GQLWidgetOperationPayload {
+  message: string;
+}
 export interface GQLFormDescriptionEditorEventSubscription {
   formDescriptionEditorEvent: GQLFormDescriptionEditorEventPayload;
 }
@@ -88,15 +99,7 @@ export interface GQLAddWidgetMutationVariables {
 }
 
 export interface GQLAddWidgetMutationData {
-  addWidget: GQLAddWidgetPayload;
-}
-
-export interface GQLAddWidgetPayload {
-  __typename: string;
-}
-
-export interface GQLAddWidgetSuccessPayload extends GQLAddWidgetPayload {
-  id: string;
+  addWidget: GQLWidgetOperationPayload;
 }
 
 export interface GQLDeleteWidgetInput {
@@ -111,15 +114,7 @@ export interface GQLDeleteWidgetMutationVariables {
 }
 
 export interface GQLDeleteWidgetMutationData {
-  deleteWidget: GQLDeleteWidgetPayload;
-}
-
-export interface GQLDeleteWidgetPayload {
-  __typename: string;
-}
-
-export interface GQLDeleteWidgetSuccessPayload extends GQLDeleteWidgetPayload {
-  id: string;
+  deleteWidget: GQLWidgetOperationPayload;
 }
 
 export interface GQLMoveWidgetInput {
@@ -136,15 +131,7 @@ export interface GQLMoveWidgetMutationVariables {
 }
 
 export interface GQLMoveWidgetMutationData {
-  moveWidget: GQLMoveWidgetPayload;
-}
-
-export interface GQLMoveWidgetPayload {
-  __typename: string;
-}
-
-export interface GQLMoveWidgetSuccessPayload extends GQLMoveWidgetPayload {
-  id: string;
+  moveWidget: GQLWidgetOperationPayload;
 }
 
 export interface GQLAddToolbarActionInput {
@@ -159,15 +146,7 @@ export interface GQLAddToolbarActionMutationVariables {
 }
 
 export interface GQLAddToolbarActionMutationData {
-  addToolbarAction: GQLAddToolbarActionPayload;
-}
-
-export interface GQLAddToolbarActionPayload {
-  __typename: string;
-}
-
-export interface GQLAddToolbarActionSuccessPayload extends GQLAddToolbarActionPayload {
-  id: string;
+  addToolbarAction: GQLWidgetOperationPayload;
 }
 
 export interface GQLDeleteToolbarActionInput {
@@ -182,15 +161,7 @@ export interface GQLDeleteToolbarActionMutationVariables {
 }
 
 export interface GQLDeleteToolbarActionMutationData {
-  deleteToolbarAction: GQLDeleteToolbarActionPayload;
-}
-
-export interface GQLDeleteToolbarActionPayload {
-  __typename: string;
-}
-
-export interface GQLDeleteToolbarActionSuccessPayload extends GQLDeleteToolbarActionPayload {
-  id: string;
+  deleteToolbarAction: GQLWidgetOperationPayload;
 }
 
 export interface GQLMoveToolbarActionInput {
@@ -207,15 +178,7 @@ export interface GQLMoveToolbarActionMutationVariables {
 }
 
 export interface GQLMoveToolbarActionMutationData {
-  moveToolbarAction: GQLMoveToolbarActionPayload;
-}
-
-export interface GQLMoveToolbarActionPayload {
-  __typename: string;
-}
-
-export interface GQLMoveToolbarActionSuccessPayload extends GQLMoveToolbarActionPayload {
-  id: string;
+  moveToolbarAction: GQLWidgetOperationPayload;
 }
 
 export interface GQLAddGroupInput {
@@ -230,17 +193,8 @@ export interface GQLAddGroupMutationVariables {
 }
 
 export interface GQLAddGroupMutationData {
-  addGroup: GQLAddGroupPayload;
+  addGroup: GQLWidgetOperationPayload;
 }
-
-export interface GQLAddGroupPayload {
-  __typename: string;
-}
-
-export interface GQLAddGroupSuccessPayload extends GQLAddGroupPayload {
-  id: string;
-}
-
 export interface GQLDeleteGroupInput {
   id: string;
   editingContextId: string;
@@ -253,15 +207,7 @@ export interface GQLDeleteGroupMutationVariables {
 }
 
 export interface GQLDeleteGroupMutationData {
-  deleteGroup: GQLDeleteGroupPayload;
-}
-
-export interface GQLDeleteGroupPayload {
-  __typename: string;
-}
-
-export interface GQLDeleteGroupSuccessPayload extends GQLDeleteGroupPayload {
-  id: string;
+  deleteGroup: GQLWidgetOperationPayload;
 }
 
 export interface GQLMoveGroupInput {
@@ -277,26 +223,5 @@ export interface GQLMoveGroupMutationVariables {
 }
 
 export interface GQLMoveGroupMutationData {
-  moveGroup: GQLMoveGroupPayload;
-}
-
-export interface GQLMoveGroupPayload {
-  __typename: string;
-}
-
-export interface GQLMoveGroupSuccessPayload extends GQLMoveGroupPayload {
-  id: string;
-}
-
-export interface GQLErrorPayload
-  extends GQLAddWidgetPayload,
-    GQLDeleteWidgetPayload,
-    GQLMoveWidgetPayload,
-    GQLAddToolbarActionPayload,
-    GQLDeleteToolbarActionPayload,
-    GQLMoveToolbarActionPayload,
-    GQLAddGroupPayload,
-    GQLDeleteGroupPayload,
-    GQLMoveGroupPayload {
-  message: string;
+  moveGroup: GQLWidgetOperationPayload;
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,12 +26,11 @@ import {
   GQLAddToolbarActionInput,
   GQLAddToolbarActionMutationData,
   GQLAddToolbarActionMutationVariables,
-  GQLAddToolbarActionPayload,
   GQLErrorPayload,
   GQLMoveToolbarActionInput,
   GQLMoveToolbarActionMutationData,
   GQLMoveToolbarActionMutationVariables,
-  GQLMoveToolbarActionPayload,
+  GQLWidgetOperationPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
@@ -67,9 +66,8 @@ const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
   },
 }));
 
-const isErrorPayload = (
-  payload: GQLAddToolbarActionPayload | GQLMoveToolbarActionPayload
-): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 export const ToolbarActions = ({
   editingContextId,

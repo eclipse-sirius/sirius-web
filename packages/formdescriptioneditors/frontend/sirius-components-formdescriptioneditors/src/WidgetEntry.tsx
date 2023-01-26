@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,16 +47,14 @@ import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
-  GQLAddWidgetPayload,
   GQLDeleteWidgetInput,
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
-  GQLDeleteWidgetPayload,
   GQLErrorPayload,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLMoveWidgetPayload,
+  GQLWidgetOperationPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { ImageWidget } from './ImageWidget';
 import { LabelWidget } from './LabelWidget';
@@ -115,9 +113,8 @@ const WidgetTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const isErrorPayload = (
-  payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
-): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 export const WidgetEntry = ({
   editingContextId,

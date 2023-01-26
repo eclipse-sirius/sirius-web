@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,14 +23,12 @@ import {
 import {
   GQLAddToolbarActionMutationData,
   GQLAddToolbarActionMutationVariables,
-  GQLAddToolbarActionSuccessPayload,
   GQLDeleteToolbarActionMutationData,
   GQLDeleteToolbarActionMutationVariables,
-  GQLDeleteToolbarActionSuccessPayload,
   GQLFormDescriptionEditor,
   GQLMoveToolbarActionMutationData,
   GQLMoveToolbarActionMutationVariables,
-  GQLMoveToolbarActionSuccessPayload,
+  GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
 import { ToolbarActions } from '../ToolbarActions';
 import { DataTransfer } from './DataTransfer';
@@ -45,6 +43,11 @@ const emptySelection: Selection = {
 
 const emptySetSelection = (_: Selection) => {};
 
+const successPayload: GQLSuccessPayload = {
+  __typename: 'SuccessPayload',
+  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+};
+
 const addToolbarActionVariables: GQLAddToolbarActionMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -53,12 +56,9 @@ const addToolbarActionVariables: GQLAddToolbarActionMutationVariables = {
     containerId: 'group1',
   },
 };
-const addToolbarActionSuccessPayload: GQLAddToolbarActionSuccessPayload = {
-  __typename: 'AddToolbarActionSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const addToolbarActionSuccessData: GQLAddToolbarActionMutationData = {
-  addToolbarAction: addToolbarActionSuccessPayload,
+  addToolbarAction: successPayload,
 };
 
 const deleteToolbarActionVariables: GQLDeleteToolbarActionMutationVariables = {
@@ -69,12 +69,9 @@ const deleteToolbarActionVariables: GQLDeleteToolbarActionMutationVariables = {
     toolbarActionId: 'ToolbarAction1',
   },
 };
-const deleteToolbarActionSuccessPayload: GQLDeleteToolbarActionSuccessPayload = {
-  __typename: 'DeleteToolbarActionSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const deleteToolbarActionSuccessData: GQLDeleteToolbarActionMutationData = {
-  deleteToolbarAction: deleteToolbarActionSuccessPayload,
+  deleteToolbarAction: successPayload,
 };
 
 const moveToolbarActionVariables: GQLMoveToolbarActionMutationVariables = {
@@ -87,12 +84,9 @@ const moveToolbarActionVariables: GQLMoveToolbarActionMutationVariables = {
     index: 0,
   },
 };
-const moveToolbarActionSuccessPayload: GQLMoveToolbarActionSuccessPayload = {
-  __typename: 'MoveToolbarActionSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const moveToolbarActionSuccessData: GQLMoveToolbarActionMutationData = {
-  moveToolbarAction: moveToolbarActionSuccessPayload,
+  moveToolbarAction: successPayload,
 };
 
 const moveToolbarActionAtTheEndVariables: GQLMoveToolbarActionMutationVariables = {
@@ -105,12 +99,9 @@ const moveToolbarActionAtTheEndVariables: GQLMoveToolbarActionMutationVariables 
     index: 1,
   },
 };
-const moveToolbarActionAtTheEndSuccessPayload: GQLMoveToolbarActionSuccessPayload = {
-  __typename: 'MoveToolbarActionSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const moveToolbarActionAtTheEndSuccessData: GQLMoveToolbarActionMutationData = {
-  moveToolbarAction: moveToolbarActionAtTheEndSuccessPayload,
+  moveToolbarAction: successPayload,
 };
 
 test('add ToolbarAction by clicking on the Add Toolbar Action button', async () => {

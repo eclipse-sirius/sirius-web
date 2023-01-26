@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,18 +25,17 @@ import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
-  GQLAddWidgetPayload,
   GQLErrorPayload,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLMoveWidgetPayload,
+  GQLWidgetOperationPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { WidgetEntry } from './WidgetEntry';
 import { FlexboxContainerWidgetProps } from './WidgetEntry.types';
 import { getAllToolbarActions, isKind } from './WidgetOperations';
 
-const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) => ({

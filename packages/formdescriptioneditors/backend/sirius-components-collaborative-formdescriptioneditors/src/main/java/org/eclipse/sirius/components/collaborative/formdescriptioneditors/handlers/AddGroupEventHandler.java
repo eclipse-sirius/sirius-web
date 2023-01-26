@@ -21,12 +21,12 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddGroupInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddGroupSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.springframework.stereotype.Service;
@@ -79,7 +79,7 @@ public class AddGroupEventHandler implements IFormDescriptionEditorEventHandler 
             int index = ((AddGroupInput) formDescriptionEditorInput).index();
             boolean addGroup = this.addGroup(editingContext, formDescriptionEditorContext, index);
             if (addGroup) {
-                payload = new AddGroupSuccessPayload(formDescriptionEditorInput.id());
+                payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }

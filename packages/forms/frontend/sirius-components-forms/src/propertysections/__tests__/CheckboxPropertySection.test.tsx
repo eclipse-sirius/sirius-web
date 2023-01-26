@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ import { CheckboxPropertySection, editCheckboxMutation, updateWidgetFocusMutatio
 import {
   GQLEditCheckboxMutationData,
   GQLEditCheckboxMutationVariables,
-  GQLEditCheckboxSuccessPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusSuccessPayload,
@@ -73,8 +73,8 @@ const editCheckboxVariables: GQLEditCheckboxMutationVariables = {
     newValue: true,
   },
 };
-const editCheckboxSuccessPayload: GQLEditCheckboxSuccessPayload = { __typename: 'EditCheckboxSuccessPayload' };
-const editCheckboxSuccessData: GQLEditCheckboxMutationData = { editCheckbox: editCheckboxSuccessPayload };
+const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const editCheckboxSuccessData: GQLEditCheckboxMutationData = { editCheckbox: successPayload };
 
 const editCheckboxErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',

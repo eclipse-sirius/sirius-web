@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.DeleteObjectInput;
-import org.eclipse.sirius.components.collaborative.dto.DeleteObjectSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -28,6 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -88,7 +88,7 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
                 Object object = optionalObject.get();
                 this.editService.delete(object);
 
-                payload = new DeleteObjectSuccessPayload(input.id());
+                payload = new SuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
                 this.logger.warn("The object with the id {} does not exist", deleteObjectInput.objectId());

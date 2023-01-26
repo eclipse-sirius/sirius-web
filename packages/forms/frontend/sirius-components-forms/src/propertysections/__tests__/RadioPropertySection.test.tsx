@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,8 @@ import {
 import {
   GQLEditRadioMutationData,
   GQLEditRadioMutationVariables,
-  GQLEditRadioSuccessPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusSuccessPayload,
@@ -120,8 +120,8 @@ const editRadioVariables: GQLEditRadioMutationVariables = {
     newValue: '1',
   },
 };
-const editRadioSuccessPayload: GQLEditRadioSuccessPayload = { __typename: 'EditRadioSuccessPayload' };
-const editRadioSuccessData: GQLEditRadioMutationData = { editRadio: editRadioSuccessPayload };
+const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const editRadioSuccessData: GQLEditRadioMutationData = { editRadio: successPayload };
 
 const editRadioErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
