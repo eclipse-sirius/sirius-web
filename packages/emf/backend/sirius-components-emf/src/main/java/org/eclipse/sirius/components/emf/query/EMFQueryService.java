@@ -125,7 +125,7 @@ public class EMFQueryService implements IQueryService {
 
         classes.addAll(providedClasses);
         classes.add(EditingContextServices.class);
-        List<EPackage> ePackages = this.editingContextEPackageService.getEPackages(editingContext.getId());
+        List<EPackage> ePackages = this.editingContextEPackageService.getEPackages();
 
         Map<String, Object> variables = new HashMap<>(providedVariables);
         variables.put(IEditingContext.EDITING_CONTEXT, editingContext);

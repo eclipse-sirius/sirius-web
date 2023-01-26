@@ -85,7 +85,7 @@ public class EditingContextSearchServiceTests {
 
         String projectId = UUID.randomUUID().toString();
 
-        IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
+        IEditingContextEPackageService editingContextEPackageService = () -> List.of();
 
         EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, new SimpleMeterRegistry());
@@ -128,7 +128,7 @@ public class EditingContextSearchServiceTests {
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
         ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
-        IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
+        IEditingContextEPackageService editingContextEPackageService = () -> List.of();
         EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();

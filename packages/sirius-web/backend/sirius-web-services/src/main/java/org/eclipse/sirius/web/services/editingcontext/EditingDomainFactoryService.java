@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,13 +52,13 @@ public class EditingDomainFactoryService {
         this.resourceFactoryRegistryOpt = resourceFactoryRegistryOpt;
     }
 
-    public AdapterFactoryEditingDomain createEditingDomain(String editingContextId) {
+    public AdapterFactoryEditingDomain createEditingDomain() {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         this.globalEPackageRegistry.forEach(ePackageRegistry::put);
-        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
+        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages();
         additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         resourceSet.setPackageRegistry(ePackageRegistry);
 
