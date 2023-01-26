@@ -1,0 +1,39 @@
+= ADR-088 - Align the lifecycle of views on the lifecycle of domains
+
+== Context
+
+Domains are converted when the `IEditingContext` is created and accessible after that thanks to the `EPackageRegistry` of the `ResourceSet` of the `EditingDomain`.
+Views on the other hand are converted on the fly when requested.
+This creates performance issues and it can lead to odd situation where the definition of a representation could stop being aligned to the definition of the metamodel.
+
+== Decision
+
+We will modify `EditingContext` to keep the representation description availables.
+
+[source:java]
+----
+public class EditingContext implements IEditingContext {
+
+    private final String id;
+
+    private final AdapterFactoryEditingDomain editingDomain;
+
+    private final Map<String, IRepresentationDescription> representationDescriptions;
+
+}
+----
+
+The creation of the `EditingContext` in Sirius Web will thus populate the `EditingContext` with the representation descriptions available.
+The `RepresentationDescriptionSearchService` will thus be moved from Sirius Web to Sirius Components EMF since it will only require the `EditingContext` to find the representation desctiptions and not the persistence layer anymore.
+
+As a result, every pieces of code using `IRepresentationDescriptionSearchService#findById` will have a result more quickly.
+This will give us the ability to retrieve the representation description without having to worry about a performance penalty anymore.
+
+== Status
+
+Accepted
+
+== Consequence
+
+Modifying a View description will require the `EditingContext` to be fully disposed in order to reload it from scratch to see the new description.
+We could probably chage the time to wait from 6s to 1s to limit this impact.

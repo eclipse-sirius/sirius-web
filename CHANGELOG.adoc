@@ -7,6 +7,8 @@
 - [ADR-085] Add support for project templates
 - [ADR-086] Add support of edges as targets of single click tools
 - [ADR-087] Provide the variables available to each operation
+- [ADR-088] Align the lifecycle of views on the lifecycle of domains
+- [ADR-089] Add a URL based kind to representation description
 
 === Breaking changes
 
