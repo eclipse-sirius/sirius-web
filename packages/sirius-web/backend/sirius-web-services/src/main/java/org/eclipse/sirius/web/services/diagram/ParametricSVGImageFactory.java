@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import javax.xml.XMLConstants;
@@ -111,11 +110,10 @@ public class ParametricSVGImageFactory implements IParametricSVGImageFactory {
                     Double halfBorderSize = Double.valueOf(attributesValues.get(SVGAttribute.BORDERSIZE)) * 0.5d;
                     String realWidth = String.valueOf(Double.valueOf(attributesValues.get(SVGAttribute.WIDTH)) + halfBorderSize * 2);
                     String realHeight = String.valueOf(Double.valueOf(attributesValues.get(SVGAttribute.HEIGHT)) + halfBorderSize * 2);
-                    String viewBox = String.format(Locale.US, "-%f -%f %s %s", halfBorderSize, halfBorderSize, realWidth, realHeight);
                     element.setAttribute(WIDTH, realWidth);
                     element.setAttribute(HEIGHT, realHeight);
-                    element.setAttribute("viewBox", viewBox);
-
+                    // Allows to break the ratio and to have a better feedback when the SVG is resized in the diagram.
+                    element.removeAttribute("viewBox");
                 }
 
                 String expr = String.format("//*[contains(@id, '%s')]|//*[contains(@id, '%s')]", RECTANGLE_ELEMENT_LABEL_ID, RECTANGLE_ELEMENT_MAIN_ID);
