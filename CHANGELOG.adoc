@@ -20,7 +20,8 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1374[#1374] [layout] The border node position is now updated when its parents bounds has changed (e.g. when a node increases its size because of a child creation).
-https://github.com/eclipse-sirius/sirius-components/issues/1580[#1580] [diagram] Border nodes do not return to their previous position after they have been moved manually
+- https://github.com/eclipse-sirius/sirius-components/issues/1580[#1580] [diagram] Border nodes do not return to their previous position after they have been moved manually
+- https://github.com/eclipse-sirius/sirius-components/issues/1625[#1625] [core] Fix upload document when a dedicated factory is used to instanciate and load the resource correctly
 
 === New Features
 

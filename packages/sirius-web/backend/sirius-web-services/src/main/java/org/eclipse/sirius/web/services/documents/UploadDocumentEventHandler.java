@@ -54,6 +54,7 @@ import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
+import org.eclipse.sirius.web.services.editingcontext.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,9 +81,12 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public UploadDocumentEventHandler(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry) {
+    private final IEditingDomainFactoryService editingDomainFactoryService;
+
+    public UploadDocumentEventHandler(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry, IEditingDomainFactoryService editingDomainFactoryService) {
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
 
         // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -158,7 +162,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     private Optional<String> getContent(EPackage.Registry registry, UploadFile file, boolean checkProxies) {
         String fileName = file.getName();
         Optional<String> content = Optional.empty();
-        ResourceSet resourceSet = new ResourceSetImpl();
+        ResourceSet resourceSet = this.editingDomainFactoryService.createEditingDomain().getResourceSet();
         resourceSet.setPackageRegistry(registry);
         try (var inputStream = file.getInputStream()) {
             URI resourceURI = new JSONResourceFactory().createResourceURI(fileName);

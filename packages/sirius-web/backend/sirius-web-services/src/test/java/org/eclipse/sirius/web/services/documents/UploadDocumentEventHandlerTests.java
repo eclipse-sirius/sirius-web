@@ -54,6 +54,7 @@ import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.Visibility;
+import org.eclipse.sirius.web.services.editingcontext.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
@@ -166,7 +167,7 @@ public class UploadDocumentEventHandlerTests {
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), new IEditingDomainFactoryService.NoOp());
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
@@ -238,14 +239,13 @@ public class UploadDocumentEventHandlerTests {
      */
     private void simulatesDocumentUpload(AdapterFactoryEditingDomain editingDomain, UUID documentId, byte[] resourceBytes) {
         IDocumentService documentService = new IDocumentService.NoOp() {
-
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
                 return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), new IEditingDomainFactoryService.NoOp());
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);

@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
  * @author lfasani
  */
 @Service
-public class EditingDomainFactoryService {
+public class EditingDomainFactoryService implements IEditingDomainFactoryService {
 
     private final IEditingContextEPackageService editingContextEPackageService;
 
@@ -52,6 +52,7 @@ public class EditingDomainFactoryService {
         this.resourceFactoryRegistryOpt = resourceFactoryRegistryOpt;
     }
 
+    @Override
     public AdapterFactoryEditingDomain createEditingDomain() {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
