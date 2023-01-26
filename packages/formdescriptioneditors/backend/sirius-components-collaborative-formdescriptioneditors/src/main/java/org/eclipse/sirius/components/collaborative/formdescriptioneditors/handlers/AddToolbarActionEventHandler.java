@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddToolbarActionInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddToolbarActionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.springframework.stereotype.Service;
@@ -80,7 +80,7 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
             String containerId = ((AddToolbarActionInput) formDescriptionEditorInput).containerId();
             boolean addToolbarAction = this.addToolbarAction(editingContext, formDescriptionEditorContext, containerId);
             if (addToolbarAction) {
-                payload = new AddToolbarActionSuccessPayload(formDescriptionEditorInput.id());
+                payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }

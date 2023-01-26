@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,8 @@ import {
   GQLCompletionProposalsQueryVariables,
   GQLEditTextfieldMutationData,
   GQLEditTextfieldMutationVariables,
-  GQLEditTextfieldSuccessPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusSuccessPayload,
@@ -95,8 +95,8 @@ const editTextfieldVariables: GQLEditTextfieldMutationVariables = {
     newValue: 'Main Composite Processor',
   },
 };
-const editTextfieldSuccessPayload: GQLEditTextfieldSuccessPayload = { __typename: 'EditTextfieldSuccessPayload' };
-const editTextfieldSuccessData: GQLEditTextfieldMutationData = { editTextfield: editTextfieldSuccessPayload };
+const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const editTextfieldSuccessData: GQLEditTextfieldMutationData = { editTextfield: successPayload };
 
 const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
   input: {

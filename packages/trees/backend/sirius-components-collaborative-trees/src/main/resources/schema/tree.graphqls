@@ -59,11 +59,7 @@ input DeleteTreeItemInput {
   treeItemId: ID!
 }
 
-type DeleteTreeItemSuccessPayload {
-  id: ID!
-}
-
-union DeleteTreeItemPayload = DeleteTreeItemSuccessPayload | ErrorPayload
+union DeleteTreeItemPayload = SuccessPayload | ErrorPayload
 
 input RenameTreeItemInput {
     id: ID!
@@ -73,8 +69,4 @@ input RenameTreeItemInput {
     newLabel: String!
 }
 
-type RenameTreeItemSuccessPayload {
-  id: ID!
-}
-
-union RenameTreeItemPayload = RenameTreeItemSuccessPayload | ErrorPayload
+union RenameTreeItemPayload = SuccessPayload | ErrorPayload

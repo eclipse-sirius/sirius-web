@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.dto.DeleteObjectInput;
-import org.eclipse.sirius.components.collaborative.dto.DeleteObjectSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -71,7 +71,7 @@ public class DeleteObjectEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(DeleteObjectSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 }

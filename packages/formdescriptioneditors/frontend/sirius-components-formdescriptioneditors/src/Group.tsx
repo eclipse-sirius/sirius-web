@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,20 +37,17 @@ import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
-  GQLAddWidgetPayload,
   GQLDeleteGroupInput,
   GQLDeleteGroupMutationData,
   GQLDeleteGroupMutationVariables,
-  GQLDeleteGroupPayload,
   GQLErrorPayload,
   GQLMoveGroupInput,
   GQLMoveGroupMutationData,
   GQLMoveGroupMutationVariables,
-  GQLMoveGroupPayload,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLMoveWidgetPayload,
+  GQLWidgetOperationPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { GroupProps, GroupState } from './Group.types';
 import { ToolbarActions } from './ToolbarActions';
@@ -136,9 +133,8 @@ const GroupTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const isErrorPayload = (
-  payload: GQLAddWidgetPayload | GQLDeleteGroupPayload | GQLMoveGroupPayload | GQLMoveWidgetPayload
-): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 export const Group = ({
   editingContextId,

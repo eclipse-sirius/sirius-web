@@ -19,10 +19,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.images.DeleteImageInput;
-import org.eclipse.sirius.web.services.api.images.DeleteImageSuccessPayload;
 import org.eclipse.sirius.web.services.api.images.ICustomImageEditService;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -60,6 +60,6 @@ public class MutationDeleteImageDataFetcher implements IDataFetcherWithFieldCoor
         Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteImageInput.class);
         this.customImageEditService.delete(input.imageId());
-        return CompletableFuture.completedFuture(new DeleteImageSuccessPayload(input.id()));
+        return CompletableFuture.completedFuture(new SuccessPayload(input.id()));
     }
 }

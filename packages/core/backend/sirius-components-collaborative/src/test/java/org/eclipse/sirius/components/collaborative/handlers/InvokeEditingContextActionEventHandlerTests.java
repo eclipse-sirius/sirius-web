@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,11 +23,11 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionHandler;
 import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
-import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.junit.jupiter.api.Test;
@@ -77,7 +77,7 @@ public class InvokeEditingContextActionEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(InvokeEditingContextActionSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
         assertThat(hasBeenCalled.get()).isTrue();
     }
 

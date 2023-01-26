@@ -22,11 +22,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ArrangeAllInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ArrangeAllSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +72,7 @@ public class ArrangeAllEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof ArrangeAllInput) {
             diagramContext.setDiagramEvent(new ArrangeAllEvent());
-            payload = new ArrangeAllSuccessPayload(diagramInput.id());
+            payload = new SuccessPayload(diagramInput.id());
             changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, diagramInput.representationId(), diagramInput);
         }
 

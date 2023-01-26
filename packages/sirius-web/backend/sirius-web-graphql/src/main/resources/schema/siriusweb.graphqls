@@ -148,11 +148,7 @@ input DeleteDocumentInput {
   documentId: ID!
 }
 
-union DeleteDocumentPayload = ErrorPayload | DeleteDocumentSuccessPayload
-
-type DeleteDocumentSuccessPayload {
-  id: ID!
-}
+union DeleteDocumentPayload = ErrorPayload | SuccessPayload
 
 input DeleteRepresentationInput {
   id: ID!
@@ -172,11 +168,7 @@ input RenameDocumentInput {
   newName: String!
 }
 
-union RenameDocumentPayload = ErrorPayload | RenameDocumentSuccessPayload
-
-type RenameDocumentSuccessPayload {
-  id: ID!
-}
+union RenameDocumentPayload = ErrorPayload | SuccessPayload
 
 input RenameRepresentationInput {
   id: ID!
@@ -212,19 +204,11 @@ input RenameImageInput {
   newLabel: String!
 }
 
-union RenameImagePayload = ErrorPayload | RenameImageSuccessPayload
-
-type RenameImageSuccessPayload {
-  id: ID!
-}
+union RenameImagePayload = ErrorPayload | SuccessPayload
 
 input DeleteImageInput {
   id: ID!
   imageId: ID!
 }
 
-type DeleteImageSuccessPayload {
-  id: ID!
-}
-
-union DeleteImagePayload = ErrorPayload | DeleteImageSuccessPayload
+union DeleteImagePayload = ErrorPayload | SuccessPayload

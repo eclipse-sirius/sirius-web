@@ -22,11 +22,11 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditMultiSelectInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.EditMultiSelectSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.representations.Failure;
@@ -90,7 +90,7 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new EditMultiSelectSuccessPayload(formInput.id());
+                payload = new SuccessPayload(formInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure) {
                 payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());

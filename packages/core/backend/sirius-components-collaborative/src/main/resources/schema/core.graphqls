@@ -129,6 +129,10 @@ type ErrorPayload {
   message: String!
 }
 
+type SuccessPayload {
+  id: ID!
+}
+
 "Information about pagination in a connection."
 type PageInfo {
   count: Int!
@@ -207,11 +211,7 @@ input CreateDocumentInput {
   stereotypeDescriptionId: ID!
 }
 
-union CreateDocumentPayload = ErrorPayload | CreateDocumentSuccessPayload
-
-type CreateDocumentSuccessPayload {
-  id: ID!
-}
+union CreateDocumentPayload = ErrorPayload | SuccessPayload
 
 input CreateRepresentationInput {
   id: ID!
@@ -249,11 +249,7 @@ input DeleteObjectInput {
   objectId: ID!
 }
 
-union DeleteObjectPayload = ErrorPayload | DeleteObjectSuccessPayload
-
-type DeleteObjectSuccessPayload {
-  id: ID!
-}
+union DeleteObjectPayload = ErrorPayload | SuccessPayload
 
 input RenameObjectInput {
   id: ID!
@@ -298,8 +294,4 @@ input InvokeEditingContextActionInput {
   actionId: String!
 }
 
-union InvokeEditingContextActionPayload = ErrorPayload | InvokeEditingContextActionSuccessPayload
-
-type InvokeEditingContextActionSuccessPayload {
-  id: ID!
-}
+union InvokeEditingContextActionPayload = ErrorPayload | SuccessPayload

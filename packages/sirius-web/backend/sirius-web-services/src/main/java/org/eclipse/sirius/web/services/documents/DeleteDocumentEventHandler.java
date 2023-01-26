@@ -26,11 +26,11 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.DeleteDocumentInput;
-import org.eclipse.sirius.components.collaborative.dto.DeleteDocumentSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.services.api.document.Document;
@@ -108,7 +108,7 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
                 this.documentService.delete(document.getId());
 
-                payload = new DeleteDocumentSuccessPayload(input.id());
+                payload = new SuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
         }

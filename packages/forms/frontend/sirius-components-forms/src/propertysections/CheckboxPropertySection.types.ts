@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ export interface GQLErrorPayload extends GQLEditCheckboxPayload, GQLUpdateWidget
   message: string;
 }
 
-export interface GQLEditCheckboxSuccessPayload extends GQLEditCheckboxPayload {}
+export interface GQLSuccessPayload extends GQLEditCheckboxPayload {}
 
 export interface GQLUpdateWidgetFocusMutationData {
   updateWidgetFocus: GQLUpdateWidgetFocusPayload;

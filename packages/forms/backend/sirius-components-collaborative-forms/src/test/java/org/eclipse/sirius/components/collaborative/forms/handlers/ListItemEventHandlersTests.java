@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,12 +27,11 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.Form;
@@ -129,7 +128,7 @@ public class ListItemEventHandlersTests {
         assertThat(changeDescriptionParameters.get(changeDescriptionParameterKey)).isEqualTo(listItemId);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(DeleteListItemSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
 
         assertThat(hasBeenExecuted.get()).isTrue();
     }
@@ -206,7 +205,7 @@ public class ListItemEventHandlersTests {
         assertThat(changeDescriptionParameters.get(changeDescriptionParameterKey)).isEqualTo(listItemId);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(ClickListItemSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
 
         assertThat(hasBeenExecuted.get()).isTrue();
     }

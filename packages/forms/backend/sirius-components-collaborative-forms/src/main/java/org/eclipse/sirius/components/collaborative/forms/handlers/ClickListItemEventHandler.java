@@ -22,11 +22,11 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.ClickListItemSuccessPayload;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.List;
 import org.eclipse.sirius.components.forms.ListItem;
@@ -98,7 +98,7 @@ public class ClickListItemEventHandler implements IFormEventHandler {
             if (status instanceof Success) {
                 Success success = (Success) status;
                 changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
-                payload = new ClickListItemSuccessPayload(formInput.id());
+                payload = new SuccessPayload(formInput.id());
             } else if (status instanceof Failure) {
                 payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
             }

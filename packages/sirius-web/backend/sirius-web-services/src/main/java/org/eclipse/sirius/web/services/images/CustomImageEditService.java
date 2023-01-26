@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.persistence.entities.CustomImageMetadataEntity;
 import org.eclipse.sirius.web.persistence.repositories.ICustomImageMetadataRepository;
 import org.eclipse.sirius.web.services.api.images.ICustomImageEditService;
-import org.eclipse.sirius.web.services.api.images.RenameImageSuccessPayload;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,7 +46,7 @@ public class CustomImageEditService implements ICustomImageEditService {
             CustomImageMetadataEntity imageEntity = optionalImageEntity.get();
             imageEntity.setLabel(newLabel);
             this.customImageMetadataRepository.save(imageEntity);
-            result = new RenameImageSuccessPayload(inputId);
+            result = new SuccessPayload(inputId);
         }
         return result;
     }

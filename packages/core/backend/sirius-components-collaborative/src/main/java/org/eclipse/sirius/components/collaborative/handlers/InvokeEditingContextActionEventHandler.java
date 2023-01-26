@@ -21,12 +21,12 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextActionHand
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
-import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -91,7 +91,7 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
             // @formatter:on
 
             if (status instanceof Success) {
-                payload = new InvokeEditingContextActionSuccessPayload(invokeEditingContextActionInput.id());
+                payload = new SuccessPayload(invokeEditingContextActionInput.id());
                 changeDescription = new ChangeDescription(((Success) status).getChangeKind(), editingContext.getId(), input);
             } else if (status instanceof Failure) {
                 this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.actionId());

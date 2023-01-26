@@ -247,11 +247,7 @@ input ArrangeAllInput {
   representationId: ID!
 }
 
-union ArrangeAllPayload = ArrangeAllSuccessPayload | ErrorPayload
-
-type ArrangeAllSuccessPayload {
-  id: ID!
-}
+union ArrangeAllPayload = SuccessPayload | ErrorPayload
 
 input DeleteFromDiagramInput {
   id: ID!
@@ -391,11 +387,7 @@ input PositionInput {
   y: Float!
 }
 
-union UpdateEdgeRoutingPointsPayload = ErrorPayload | UpdateEdgeRoutingPointsSuccessPayload
-
-type UpdateEdgeRoutingPointsSuccessPayload {
-  id: ID!
-}
+union UpdateEdgeRoutingPointsPayload = ErrorPayload | SuccessPayload
 
 enum ReconnectEdgeKind {
   SOURCE
@@ -412,11 +404,7 @@ input ReconnectEdgeInput {
   newEdgeEndPosition: PositionInput!
 }
 
-union ReconnectEdgePayload = ErrorPayload | ReconnectEdgeSuccessPayload
-
-type ReconnectEdgeSuccessPayload {
-  id: ID!
-}
+union ReconnectEdgePayload = ErrorPayload | SuccessPayload
 
 input HideDiagramElementInput {
   id: ID!
@@ -426,11 +414,7 @@ input HideDiagramElementInput {
   hide: Boolean!
 }
 
-union HideDiagramElementPayload = ErrorPayload | HideDiagramElementSuccessPayload
-
-type HideDiagramElementSuccessPayload {
-  id: ID!
-}
+union HideDiagramElementPayload = ErrorPayload | SuccessPayload
 
 input FadeDiagramElementInput {
   id: ID!
@@ -441,8 +425,4 @@ input FadeDiagramElementInput {
 }
 
 
-union FadeDiagramElementPayload = ErrorPayload | FadeDiagramElementSuccessPayload
-
-type FadeDiagramElementSuccessPayload {
-  id: ID!
-}
+union FadeDiagramElementPayload = ErrorPayload | SuccessPayload

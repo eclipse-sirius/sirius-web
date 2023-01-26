@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -197,7 +197,7 @@ export const newDocumentModalMachine = Machine<
       },
       isResponseSuccessful: (_, event) => {
         const { data } = event as HandleResponseEvent;
-        return data.createDocument.__typename === 'CreateDocumentSuccessPayload';
+        return data.createDocument.__typename === 'SuccessPayload';
       },
     },
     actions: {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,14 +19,12 @@ import { addGroupMutation, deleteGroupMutation, moveGroupMutation } from '../For
 import {
   GQLAddGroupMutationData,
   GQLAddGroupMutationVariables,
-  GQLAddGroupSuccessPayload,
   GQLDeleteGroupMutationData,
   GQLDeleteGroupMutationVariables,
-  GQLDeleteGroupSuccessPayload,
   GQLFormDescriptionEditor,
   GQLMoveGroupMutationData,
   GQLMoveGroupMutationVariables,
-  GQLMoveGroupSuccessPayload,
+  GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
 import { Group } from '../Group';
 import { DataTransfer } from './DataTransfer';
@@ -41,6 +39,11 @@ const emptySelection: Selection = {
 
 const emptySetSelection = (_: Selection) => {};
 
+const successPayload: GQLSuccessPayload = {
+  __typename: 'SuccessPayload',
+  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+};
+
 const addGroupVariables: GQLAddGroupMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -49,12 +52,9 @@ const addGroupVariables: GQLAddGroupMutationVariables = {
     index: 0,
   },
 };
-const addGroupSuccessPayload: GQLAddGroupSuccessPayload = {
-  __typename: 'AddGroupSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const addGroupSuccessData: GQLAddGroupMutationData = {
-  addGroup: addGroupSuccessPayload,
+  addGroup: successPayload,
 };
 
 const deleteGroupVariables: GQLDeleteGroupMutationVariables = {
@@ -65,12 +65,9 @@ const deleteGroupVariables: GQLDeleteGroupMutationVariables = {
     groupId: 'Group1',
   },
 };
-const deleteGroupSuccessPayload: GQLDeleteGroupSuccessPayload = {
-  __typename: 'DeleteGroupSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const deleteGroupSuccessData: GQLDeleteGroupMutationData = {
-  deleteGroup: deleteGroupSuccessPayload,
+  deleteGroup: successPayload,
 };
 
 const moveGroupVariables: GQLMoveGroupMutationVariables = {
@@ -82,12 +79,9 @@ const moveGroupVariables: GQLMoveGroupMutationVariables = {
     index: 0,
   },
 };
-const moveGroupSuccessPayload: GQLMoveGroupSuccessPayload = {
-  __typename: 'MoveGroupSuccessPayload',
-  id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-};
+
 const moveGroupSuccessData: GQLMoveGroupMutationData = {
-  moveGroup: moveGroupSuccessPayload,
+  moveGroup: successPayload,
 };
 
 test('should drop the Group in the drop area', async () => {

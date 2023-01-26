@@ -21,13 +21,13 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeleteWidgetInput;
-import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.DeleteWidgetSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -81,7 +81,7 @@ public class DeleteWidgetEventHandler implements IFormDescriptionEditorEventHand
             String widgetId = ((DeleteWidgetInput) formDescriptionEditorInput).widgetId();
             boolean deleteWidget = this.deleteWidget(editingContext, formDescriptionEditorContext, widgetId);
             if (deleteWidget) {
-                payload = new DeleteWidgetSuccessPayload(formDescriptionEditorInput.id());
+                payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
             }
         }

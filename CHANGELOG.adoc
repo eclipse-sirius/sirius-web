@@ -11,6 +11,7 @@
 
 - [core] Records are now used as the implementations of `IInput`
 - https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] In `diagram.graphqls`, `SingleClickOnDiagramElementTool` member's `targetDescriptions` is now of new type `DiagramElementDescription` instead of `NodeDescription`.
+- https://github.com/eclipse-sirius/sirius-components/issues/1614[#1614] [graphql] Add a SuccessPayload to replace most basic payloads, add GQLWidgetOperationPayload to replace most basic Operation
 
 === Dependency update
 

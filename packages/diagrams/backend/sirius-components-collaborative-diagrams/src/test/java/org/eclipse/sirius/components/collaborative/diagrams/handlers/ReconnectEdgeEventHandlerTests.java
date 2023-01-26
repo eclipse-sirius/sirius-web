@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,12 +26,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQuerySer
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -145,7 +145,7 @@ public class ReconnectEdgeEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(ReconnectEdgeSuccessPayload.class);
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
 
         assertThat(diagramContext.getDiagramEvent()).isInstanceOf(ReconnectEdgeEvent.class);
     }
