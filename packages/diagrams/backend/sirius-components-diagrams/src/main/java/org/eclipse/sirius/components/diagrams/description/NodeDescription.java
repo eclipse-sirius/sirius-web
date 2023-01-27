@@ -60,6 +60,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private List<NodeDescription> childNodeDescriptions;
 
+    private boolean collapsible;
+
     private List<UUID> reusedBorderNodeDescriptionIds;
 
     private List<UUID> reusedChildNodeDescriptionIds;
@@ -125,6 +127,10 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.childNodeDescriptions;
     }
 
+    public boolean isCollapsible() {
+        return this.collapsible;
+    }
+
     public List<UUID> getReusedBorderNodeDescriptionIds() {
         return this.reusedBorderNodeDescriptionIds;
     }
@@ -143,6 +149,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public static Builder newNodeDescription(UUID id) {
         return new Builder(id);
+    }
+
+    public static Builder newNodeDescription(NodeDescription nodeDescription) {
+        return new Builder(nodeDescription);
     }
 
     @Override
@@ -184,6 +194,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private List<NodeDescription> childNodeDescriptions = new ArrayList<>();
 
+        private boolean collapsible;
+
         private List<UUID> reusedBorderNodeDescriptionIds = new ArrayList<>();
 
         private List<UUID> reusedChildNodeDescriptionIds = new ArrayList<>();
@@ -194,6 +206,27 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(NodeDescription nodeDescription) {
+            this.id = nodeDescription.getId();
+            this.synchronizationPolicy = nodeDescription.getSynchronizationPolicy();
+            this.typeProvider = nodeDescription.getTypeProvider();
+            this.targetObjectIdProvider = nodeDescription.getTargetObjectIdProvider();
+            this.targetObjectKindProvider = nodeDescription.getTargetObjectKindProvider();
+            this.targetObjectLabelProvider = nodeDescription.getTargetObjectLabelProvider();
+            this.semanticElementsProvider = nodeDescription.getSemanticElementsProvider();
+            this.labelDescription = nodeDescription.getLabelDescription();
+            this.styleProvider = nodeDescription.getStyleProvider();
+            this.sizeProvider = nodeDescription.getSizeProvider();
+            this.childrenLayoutStrategyProvider = nodeDescription.getChildrenLayoutStrategyProvider();
+            this.borderNodeDescriptions = nodeDescription.getBorderNodeDescriptions();
+            this.childNodeDescriptions = nodeDescription.getChildNodeDescriptions();
+            this.collapsible = nodeDescription.isCollapsible();
+            this.reusedBorderNodeDescriptionIds = nodeDescription.getReusedBorderNodeDescriptionIds();
+            this.reusedChildNodeDescriptionIds = nodeDescription.getReusedChildNodeDescriptionIds();
+            this.labelEditHandler = nodeDescription.getLabelEditHandler();
+            this.deleteHandler = nodeDescription.getDeleteHandler();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -256,6 +289,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder collapsible(boolean collapsible) {
+            this.collapsible = collapsible;
+            return this;
+        }
+
         public Builder reusedBorderNodeDescriptionIds(List<UUID> reusedBorderNodeDescriptionIds) {
             this.reusedBorderNodeDescriptionIds = Objects.requireNonNull(reusedBorderNodeDescriptionIds);
             return this;
@@ -291,6 +329,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
+            nodeDescription.collapsible = this.collapsible;
             nodeDescription.reusedBorderNodeDescriptionIds = Objects.requireNonNull(this.reusedBorderNodeDescriptionIds);
             nodeDescription.reusedChildNodeDescriptionIds = Objects.requireNonNull(this.reusedChildNodeDescriptionIds);
             nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);

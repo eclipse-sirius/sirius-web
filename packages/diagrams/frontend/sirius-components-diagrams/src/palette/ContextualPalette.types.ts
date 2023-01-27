@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SModelElement } from 'sprotty';
-import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { GQLCollapsingState, GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
 
 export interface ContextualPaletteProps {
   editingContextId: string;
@@ -24,6 +24,7 @@ export interface ContextualPaletteProps {
   invokeClose: () => void;
   invokeHide: () => void;
   invokeFade: () => void;
+  updateCollapsingState: (collapsingState: GQLCollapsingState) => void;
 }
 
 export interface ContextualPaletteStyleProps {

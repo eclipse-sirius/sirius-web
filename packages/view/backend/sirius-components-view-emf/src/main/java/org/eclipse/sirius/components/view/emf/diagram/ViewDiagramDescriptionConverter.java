@@ -265,6 +265,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
+                .collapsible(viewNodeDescription.isCollapsible())
                 .reusedChildNodeDescriptionIds(reusedChildNodeDescriptionIds)
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .sizeProvider(sizeProvider)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -57,6 +58,8 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private Size size;
 
+    private CollapsingState collapsingState = CollapsingState.EXPANDED;
+
     private ILayoutStrategy childrenLayoutStrategy;
 
     private NodesBuilder<RectangleNodeBuilder<T>> borderNodesBuilder;
@@ -83,6 +86,11 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     public RectangleNodeBuilder<T> withHeader(boolean withHeader) {
         this.withHeader = withHeader;
+        return this;
+    }
+
+    public RectangleNodeBuilder<T> collapsingState(CollapsingState collapsingState) {
+        this.collapsingState = collapsingState;
         return this;
     }
 
@@ -147,7 +155,8 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .targetObjectLabel(this.label.getText())
                .style(Objects.requireNonNull(style))
                .modifiers(Set.of())
-               .state(ViewModifier.Normal);
+               .state(ViewModifier.Normal)
+               .collapsingState(this.collapsingState);
 
         if (this.childrenLayoutStrategy != null) {
             nodeBuilder.childrenLayoutStrategy(this.childrenLayoutStrategy);

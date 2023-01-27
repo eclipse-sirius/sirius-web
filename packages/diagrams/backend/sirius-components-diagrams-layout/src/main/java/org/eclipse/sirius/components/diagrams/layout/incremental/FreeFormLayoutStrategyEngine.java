@@ -63,8 +63,11 @@ public class FreeFormLayoutStrategyEngine implements ILayoutStrategyEngine {
         // 2- Update position regarding diagram events
         childrenAreaLayoutContext.getOptionalDiagramEvent().ifPresent(event -> this.handleDiagramEvent(event, childrenAreaLayoutContext));
 
-        // 3- Handle children of node that is being created
-        if (childrenAreaLayoutContext.isParentBeingCreated()) {
+        // 3- Handle children of node that is being created or expanded
+        if (childrenAreaLayoutContext.isParentBeingCreated() || childrenAreaLayoutContext.isParentBeingExpanded()) {
+            // Used to correct the position of children that will be displayed while the event to display them does not
+            // concern them. We may have to remove this part, as well as, the two NodeContext methods after we spread
+            // layout data from node data.
             childrenLayoutData.forEach(node -> {
                 if (Position.UNDEFINED.equals(node.getPosition())) {
                     // If a child does not have its position initialized

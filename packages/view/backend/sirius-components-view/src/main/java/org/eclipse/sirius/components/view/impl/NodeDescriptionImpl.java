@@ -125,6 +125,26 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected LayoutStrategyDescription childrenLayoutStrategy;
 
     /**
+     * The default value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isCollapsible()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean COLLAPSIBLE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isCollapsible()
+     * @generated
+     * @ordered
+     */
+    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -324,6 +344,29 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public boolean isCollapsible() {
+        return this.collapsible;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCollapsible(boolean newCollapsible) {
+        boolean oldCollapsible = this.collapsible;
+        this.collapsible = newCollapsible;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE, oldCollapsible, this.collapsible));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
@@ -366,6 +409,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getConditionalStyles();
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.getChildrenLayoutStrategy();
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                return this.isCollapsible();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -409,6 +454,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
                 return;
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                this.setCollapsible((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -445,6 +493,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
                 return;
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                this.setCollapsible(COLLAPSIBLE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -473,8 +524,27 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.childrenLayoutStrategy != null;
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                return this.collapsible != COLLAPSIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (collapsible: ");
+        result.append(this.collapsible);
+        result.append(')');
+        return result.toString();
     }
 
 } // NodeDescriptionImpl

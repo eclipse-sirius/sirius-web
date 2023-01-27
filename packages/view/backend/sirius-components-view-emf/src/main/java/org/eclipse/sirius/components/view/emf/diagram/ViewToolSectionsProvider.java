@@ -71,7 +71,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             toolSections.addAll(this.getEdgeToolSections(diagramDescription, edgeDescription));
         }
 
-        toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
+        toolSections.addAll(this.createExtraToolSections(diagramElementDescription, diagramElement));
         return toolSections;
     }
 
@@ -126,7 +126,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return isValidTool;
     }
 
-    private List<ToolSection> createExtraToolSections(Object diagramElementDescription) {
+    private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
         List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
@@ -141,60 +141,117 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((EdgeDescription) diagramElementDescription).getSynchronizationPolicy());
         }
 
-        Function<VariableManager, IStatus> fakeHandler = variableManager -> new Success();
-
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
-        if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
+        if (diagramElementDescription instanceof NodeDescription nodeDescription || diagramElementDescription instanceof EdgeDescription) {
             if (this.hasLabelEditTool(diagramElementDescription)) {
                 // Edit Tool (the handler is never called)
-                SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
-                        .label("Edit")
-                        .imageURL(DiagramImageConstants.EDIT_SVG)
-                        .targetDescriptions(targetDescriptions)
-                        .handler(fakeHandler)
-                        .appliesToDiagramRoot(false)
-                        .build();
-                var editToolSection = ToolSection.newToolSection("edit-section")
-                        .label("")
-                        .imageURL("")
-                        .tools(List.of(editTool))
-                        .build();
+                var editToolSection = this.createExtraEditLabelEditTool(targetDescriptions);
                 extraToolSections.add(editToolSection);
             }
             if (unsynchronizedMapping) {
-                SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
-                        .label("Delete from diagram")
-                        .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
-                        .targetDescriptions(targetDescriptions)
-                        .handler(fakeHandler)
-                        .appliesToDiagramRoot(false)
-                        .build();
-                var graphicalDeleteToolSection = ToolSection.newToolSection("graphical-delete-section")
-                        .label("")
-                        .imageURL("")
-                        .tools(List.of(graphicalDeleteTool))
-                        .build();
+                // Graphical Delete Tool (the handler is never called)
+                var graphicalDeleteToolSection = this.createExtraGraphicalDeleteTool(targetDescriptions);
                 extraToolSections.add(graphicalDeleteToolSection);
             }
             if (this.hasDeleteTool(diagramElementDescription)) {
                 // Semantic Delete Tool (the handler is never called)
-                SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
-                        .label("Delete from model")
-                        .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
-                        .targetDescriptions(targetDescriptions)
-                        .handler(fakeHandler)
-                        .appliesToDiagramRoot(false)
-                        .build();
-                var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section")
-                        .label("")
-                        .imageURL("")
-                        .tools(List.of(semanticDeleteTool))
-                        .build();
+                var semanticDeleteToolSection = this.createExtraSemanticDeleteTool(targetDescriptions);
                 extraToolSections.add(semanticDeleteToolSection);
+            }
+            if (this.isCollapsible(diagramElementDescription, diagramElement)) {
+                // Collapse or expand Tool (the handler is never called)
+                var expandCollapseToolSection = this.createExtraExpandCollapseTool(targetDescriptions, diagramElement);
+                extraToolSections.add(expandCollapseToolSection);
             }
         }
         return extraToolSections;
         //@formatter:on
+    }
+
+    private ToolSection createExtraExpandCollapseTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
+        Function<VariableManager, IStatus> fakeHandler = variableManager -> new Success();
+        // @formatter:off
+        var expandCollapseToolSectionBuilder = ToolSection.newToolSection("expand-collapse-section")
+                .label("")
+                .imageURL("")
+                .tools(List.of());
+        // @formatter:on
+
+        if (diagramElement instanceof Node node) {
+            List<ITool> collapsingTools = new ArrayList<>();
+            // @formatter:off
+            SingleClickOnDiagramElementTool collapseTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("collapse")
+                    .label("Collapse")
+                    .imageURL(DiagramImageConstants.COLLAPSE_SVG)
+                    .targetDescriptions(targetDescriptions)
+                    .handler(fakeHandler)
+                    .appliesToDiagramRoot(false)
+                    .build();
+            SingleClickOnDiagramElementTool expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
+                    .label("Expand")
+                    .imageURL(DiagramImageConstants.EXPAND_SVG)
+                    .targetDescriptions(targetDescriptions)
+                    .handler(fakeHandler)
+                    .appliesToDiagramRoot(false)
+                    .build();
+            // @formatter:on
+            switch (node.getCollapsingState()) {
+                case EXPANDED:
+                    collapsingTools.add(collapseTool);
+                    break;
+                case COLLAPSED:
+                    collapsingTools.add(expandTool);
+                    break;
+                default:
+                    break;
+            }
+            expandCollapseToolSectionBuilder.tools(collapsingTools);
+        }
+        return expandCollapseToolSectionBuilder.build();
+    }
+
+    private ToolSection createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
+        // @formatter:off
+        SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
+                .label("Delete from model")
+                .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
+                .targetDescriptions(targetDescriptions)
+                .handler(variableManager -> new Success())
+                .appliesToDiagramRoot(false)
+                .build();
+        var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section")
+                .label("")
+                .imageURL("")
+                .tools(List.of(semanticDeleteTool))
+                .build();
+        // @formatter:on
+        return semanticDeleteToolSection;
+    }
+
+    private ToolSection createExtraGraphicalDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
+        // @formatter:off
+        SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
+                .label("Delete from diagram")
+                .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
+                .targetDescriptions(targetDescriptions)
+                .handler(variableManager -> new Success())
+                .appliesToDiagramRoot(false)
+                .build();
+        var graphicalDeleteToolSection = ToolSection.newToolSection("graphical-delete-section")
+                .label("")
+                .imageURL("")
+                .tools(List.of(graphicalDeleteTool))
+                .build();
+        // @formatter:on
+        return graphicalDeleteToolSection;
+    }
+
+    private boolean isCollapsible(Object diagramElementDescription, Object diagramElement) {
+        if (diagramElementDescription instanceof NodeDescription nodeDescription && diagramElement instanceof Node) {
+            return nodeDescription.isCollapsible();
+        }
+
+        return false;
     }
 
     private boolean hasLabelEditTool(Object diagramElementDescription) {
@@ -211,6 +268,24 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             }
         }
         return result;
+    }
+
+    private ToolSection createExtraEditLabelEditTool(List<IDiagramElementDescription> targetDescriptions) {
+        // @formatter:off
+        SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
+                .label("Edit")
+                .imageURL(DiagramImageConstants.EDIT_SVG)
+                .targetDescriptions(targetDescriptions)
+                .handler(variableManager -> new Success())
+                .appliesToDiagramRoot(false)
+                .build();
+        var editToolSection = ToolSection.newToolSection("edit-section")
+                .label("")
+                .imageURL("")
+                .tools(List.of(editTool))
+                .build();
+        // @formatter:on
+        return editToolSection;
     }
 
     private boolean hasDeleteTool(Object diagramElementDescription) {

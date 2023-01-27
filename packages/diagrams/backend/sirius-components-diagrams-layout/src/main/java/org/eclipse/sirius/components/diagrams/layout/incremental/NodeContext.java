@@ -24,12 +24,15 @@ import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
+import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeLabelSizeProvider;
@@ -62,6 +65,8 @@ public class NodeContext {
 
     private final double yOffset;
 
+    private final boolean isNodeBeingExpanded;
+
     private final Set<NodeLabelPlacement> labelPlacements;
 
     private final IPropertyHolder nodeTypePropertyHolder;
@@ -74,7 +79,7 @@ public class NodeContext {
 
     private final Optional<IPropertyHolder> optionalChildrenLayoutStrategyPropertyHolder;
 
-    public NodeContext(NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
+    public NodeContext(NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator, Optional<IDiagramEvent> optionalDiagramEvent) {
         this.node = nodeLayoutData;
         this.optionalChildrenLayoutStrategy = Optional.ofNullable(this.node.getChildrenLayoutStrategy());
         this.nodeTypePropertyHolder = new MapPropertyHolder().copyProperties(layoutConfigurator.configureByType(this.node.getNodeType()));
@@ -136,6 +141,14 @@ public class NodeContext {
         this.xOffset = childrenXOffset;
         this.yOffset = childrenYOffset;
         this.labelPlacements = nodeLabelPlacements;
+
+        boolean nodeIsBeingExpanded = false;
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof UpdateCollapsingStateEvent updateCollapsingStateEvent) {
+            if (this.node.getId().equals(updateCollapsingStateEvent.diagramElementId())) {
+                nodeIsBeingExpanded = CollapsingState.EXPANDED.equals(updateCollapsingStateEvent.collapsingState());
+            }
+        }
+        this.isNodeBeingExpanded = nodeIsBeingExpanded;
     }
 
     public NodeLayoutData getNode() {
@@ -277,6 +290,10 @@ public class NodeContext {
      */
     public boolean isNodeBeingCreated() {
         return Position.UNDEFINED.equals(this.node.getPosition()) && Size.UNDEFINED.equals(this.node.getSize());
+    }
+
+    public boolean isNodeBeingExpanded() {
+        return this.isNodeBeingExpanded;
     }
 
 }

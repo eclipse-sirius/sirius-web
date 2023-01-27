@@ -64,7 +64,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
 
         // 1- Prepare to layout the children area : create the context and remove from all children positions the
         // padding top and padding left (label included)
-        NodeContext nodeContext = new NodeContext(nodeLayoutData, layoutConfigurator);
+        NodeContext nodeContext = new NodeContext(nodeLayoutData, layoutConfigurator, optionalDiagramEvent);
 
         // 2- Layout the children area
         Optional<ChildrenAreaLaidOutData> optionalChildrenAreaLayoutData = this.handleChildren(optionalDiagramEvent, nodeContext, layoutConfigurator, optionalMaxWidth);
@@ -110,7 +110,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
 
     @Override
     public double getNodeWidth(Optional<IDiagramEvent> optionalDiagramEvent, NodeLayoutData nodeLayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        NodeContext nodeContext = new NodeContext(nodeLayoutData, layoutConfigurator);
+        NodeContext nodeContext = new NodeContext(nodeLayoutData, layoutConfigurator, optionalDiagramEvent);
         Optional<ChildrenAreaLaidOutData> optionalChildrenAreaLayoutData = this.handleChildren(optionalDiagramEvent, nodeContext, layoutConfigurator, Optional.empty());
         Size childrenAreaSize = optionalChildrenAreaLayoutData.map(ChildrenAreaLaidOutData::getSize).orElse(Size.of(0, 0));
         return this.getNodeWidth(optionalDiagramEvent, nodeContext, childrenAreaSize.getWidth());
@@ -139,6 +139,7 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
                     .childrenLayoutData(childrenLayoutData)
                     .childrenLayoutStrategy(nodeContext.getOptionalChildrenLayoutStrategy().get())
                     .parentBeingCreated(nodeContext.isNodeBeingCreated())
+                    .parentBeingExpanded(nodeContext.isNodeBeingExpanded())
                     .nodeMargin(nodeContext.getChildrenNodeMargin())
                     .absolutePosition(Position.at(nodeAbsolutePosition.getX() + nodeContext.getXOffset(), nodeAbsolutePosition.getY() + nodeContext.getYOffset()));
             // @formatter:on

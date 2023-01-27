@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,6 +119,10 @@ public final class DiagramDescription implements IRepresentationDescription {
         return new Builder(id);
     }
 
+    public static Builder newDiagramDescription(DiagramDescription diagramDescription) {
+        return new Builder(diagramDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, nodeDescriptionCount: {3}, edgeDescriptionCount: {4}'}'";
@@ -156,6 +160,20 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(DiagramDescription diagramDescription) {
+            this.id = diagramDescription.getId();
+            this.label = diagramDescription.getLabel();
+            this.autoLayout = diagramDescription.isAutoLayout();
+            this.targetObjectIdProvider = diagramDescription.getTargetObjectIdProvider();
+            this.canCreatePredicate = diagramDescription.getCanCreatePredicate();
+            this.labelProvider = diagramDescription.getLabelProvider();
+            this.toolSections = diagramDescription.getToolSections();
+            this.nodeDescriptions = diagramDescription.getNodeDescriptions();
+            this.edgeDescriptions = diagramDescription.getEdgeDescriptions();
+            this.tools = diagramDescription.getTools();
+            this.dropHandler = diagramDescription.getDropHandler();
         }
 
         public Builder label(String label) {

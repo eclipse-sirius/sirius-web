@@ -490,13 +490,21 @@ public interface ViewPackage extends EPackage {
     int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
+     * The feature id for the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__COLLAPSIBLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6541,6 +6549,18 @@ public interface ViewPackage extends EPackage {
     EReference getNodeDescription_ChildrenLayoutStrategy();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.NodeDescription#isCollapsible <em>Collapsible</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Collapsible</em>'.
+     * @see org.eclipse.sirius.components.view.NodeDescription#isCollapsible()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EAttribute getNodeDescription_Collapsible();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeDescription <em>Edge
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9364,6 +9384,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = eINSTANCE.getNodeDescription_ChildrenLayoutStrategy();
+
+        /**
+         * The meta object literal for the '<em><b>Collapsible</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_DESCRIPTION__COLLAPSIBLE = eINSTANCE.getNodeDescription_Collapsible();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeDescriptionImpl <em>Edge

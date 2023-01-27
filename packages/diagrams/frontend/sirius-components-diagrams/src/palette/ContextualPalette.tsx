@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { GQLCollapsingState, GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
 import {
   ContextualPaletteProps,
   ContextualPaletteStyleProps,
@@ -167,6 +167,7 @@ export const ContextualPalette = ({
   invokeClose,
   invokeHide,
   invokeFade,
+  updateCollapsingState,
 }: ContextualPaletteProps) => {
   const [{ value, context }, dispatch] = useMachine<ContextualPaletteContext, ContextualPaletteEvent>(
     contextualPaletteMachine
@@ -222,6 +223,10 @@ export const ContextualPalette = ({
         invokeDelete(GQLDeletionPolicy.SEMANTIC);
       } else if (tool.id === 'graphical-delete') {
         invokeDelete(GQLDeletionPolicy.GRAPHICAL);
+      } else if (tool.id === 'expand') {
+        updateCollapsingState(GQLCollapsingState.EXPANDED);
+      } else if (tool.id === 'collapse') {
+        updateCollapsingState(GQLCollapsingState.COLLAPSED);
       } else {
         invokeTool(tool);
       }

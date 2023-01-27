@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription;
@@ -135,6 +136,11 @@ public class AbstractNodeMappingConverter {
             synchronizationPolicy = SynchronizationPolicy.UNSYNCHRONIZED;
         }
 
+        boolean collapsible = false;
+        if (abstractNodeMapping instanceof ContainerMapping containerMapping) {
+            collapsible = new ContainerMappingQuery(containerMapping).isRegion();
+        }
+
         // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(abstractNodeMapping)))
                 .typeProvider(typeProvider)
@@ -149,6 +155,7 @@ public class AbstractNodeMappingConverter {
                 .sizeProvider(sizeProvider)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .childNodeDescriptions(childNodeDescriptions)
+                .collapsible(collapsible)
                 .labelEditHandler(labelEditHandler)
                 .deleteHandler(deleteHandler)
                 .build();

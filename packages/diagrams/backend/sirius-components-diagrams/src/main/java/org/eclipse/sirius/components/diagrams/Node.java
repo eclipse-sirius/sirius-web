@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ public final class Node {
     private Set<ViewModifier> modifiers;
 
     private ViewModifier state;
+
+    private CollapsingState collapsingState;
 
     private Label label;
 
@@ -102,6 +104,10 @@ public final class Node {
 
     public ViewModifier getState() {
         return this.state;
+    }
+
+    public CollapsingState getCollapsingState() {
+        return this.collapsingState;
     }
 
     public Label getLabel() {
@@ -176,6 +182,8 @@ public final class Node {
 
         private ViewModifier state;
 
+        private CollapsingState collapsingState;
+
         private Label label;
 
         private INodeStyle style;
@@ -206,6 +214,7 @@ public final class Node {
             this.borderNode = node.isBorderNode();
             this.modifiers = node.getModifiers();
             this.state = node.getState();
+            this.collapsingState = node.getCollapsingState();
             this.label = node.getLabel();
             this.style = node.getStyle();
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
@@ -253,6 +262,11 @@ public final class Node {
 
         public Builder state(ViewModifier state) {
             this.state = Objects.requireNonNull(state);
+            return this;
+        }
+
+        public Builder collapsingState(CollapsingState collapsingState) {
+            this.collapsingState = Objects.requireNonNull(collapsingState);
             return this;
         }
 
@@ -307,6 +321,7 @@ public final class Node {
             node.borderNode = this.borderNode;
             node.modifiers = Objects.requireNonNull(this.modifiers);
             node.state = Objects.requireNonNull(this.state);
+            node.collapsingState = Objects.requireNonNull(this.collapsingState);
             node.label = Objects.requireNonNull(this.label);
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;

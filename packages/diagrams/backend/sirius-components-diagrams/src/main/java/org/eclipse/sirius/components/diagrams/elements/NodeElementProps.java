@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -55,6 +56,8 @@ public final class NodeElementProps implements IProps {
     private Set<ViewModifier> modifiers;
 
     private ViewModifier state;
+
+    private CollapsingState collapsingState;
 
     private INodeStyle style;
 
@@ -106,6 +109,10 @@ public final class NodeElementProps implements IProps {
 
     public ViewModifier getState() {
         return this.state;
+    }
+
+    public CollapsingState getCollapsingState() {
+        return this.collapsingState;
     }
 
     public INodeStyle getStyle() {
@@ -168,6 +175,8 @@ public final class NodeElementProps implements IProps {
 
         private ViewModifier state;
 
+        private CollapsingState collapsingState;
+
         private INodeStyle style;
 
         private ILayoutStrategy childrenLayoutStrategy;
@@ -224,6 +233,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder collapsingState(CollapsingState collapsingState) {
+            this.collapsingState = Objects.requireNonNull(collapsingState);
+            return this;
+        }
+
         public Builder style(INodeStyle style) {
             this.style = Objects.requireNonNull(style);
             return this;
@@ -265,6 +279,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.borderNode = this.borderNode;
             nodeElementProps.modifiers = Objects.requireNonNull(this.modifiers);
             nodeElementProps.state = Objects.requireNonNull(this.state);
+            nodeElementProps.collapsingState = Objects.requireNonNull(this.collapsingState);
             nodeElementProps.style = Objects.requireNonNull(this.style);
             nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.position = Objects.requireNonNull(this.position);

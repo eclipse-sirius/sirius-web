@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.compatibility.emf.compatibility.services.Ed
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.DeleteViewOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -112,6 +113,7 @@ public class DeleteViewOperationHandlerTests {
                 .childNodes(List.of())
                 .state(ViewModifier.Normal)
                 .modifiers(Set.of())
+                .collapsingState(CollapsingState.EXPANDED)
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())

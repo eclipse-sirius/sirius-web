@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -38,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -150,19 +152,24 @@ public class NodeComponent implements IComponent {
         INodeDescriptionRequestor nodeDescriptionRequestor = this.props.getNodeDescriptionRequestor();
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
-        Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
+
+        Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
+        ViewModifier state = this.computeState(modifiers);
+        CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent);
+
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
-        Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
-        ViewModifier state = this.computeState(modifiers);
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
 
         var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
-        var childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
+        List<Element> childNodes = List.of();
+        if (CollapsingState.EXPANDED.equals(collapsingState) || !nodeDescription.isCollapsible()) {
+            childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
+        }
 
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
@@ -174,6 +181,7 @@ public class NodeComponent implements IComponent {
             nodeLabelType = LabelType.OUTSIDE_CENTER;
         }
 
+        Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
         LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, nodeLabelType.getValue());
         Element labelElement = new Element(LabelComponent.class, labelComponentProps);
 
@@ -187,7 +195,11 @@ public class NodeComponent implements IComponent {
                 .orElse(Position.UNDEFINED);
 
         Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
-        Set<CustomizableProperties> customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
+
+        Set<CustomizableProperties> customizableProperties = Set.of();
+        if (CollapsingState.EXPANDED.equals(collapsingState)) {
+            customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
+        }
 
         Builder nodeElementPropsBuilder = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
@@ -202,7 +214,8 @@ public class NodeComponent implements IComponent {
                 .children(nodeChildren)
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
-                .state(state);
+                .state(state)
+                .collapsingState(collapsingState);
 
         if (layoutStrategy != null) {
             nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
@@ -210,6 +223,22 @@ public class NodeComponent implements IComponent {
 
         // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
+    }
+
+    private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {
+        CollapsingState newCollapsingState = CollapsingState.EXPANDED;
+
+        if (optionalPreviousNode.isPresent()) {
+            Node previousNode = optionalPreviousNode.get();
+            newCollapsingState = previousNode.getCollapsingState();
+        }
+
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof UpdateCollapsingStateEvent updateCollapsingStateEvent
+                && updateCollapsingStateEvent.diagramElementId().equals(nodeId)) {
+            newCollapsingState = updateCollapsingStateEvent.collapsingState();
+        }
+
+        return newCollapsingState;
     }
 
     /**

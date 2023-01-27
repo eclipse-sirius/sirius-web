@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,10 @@ public final class DiagramImageConstants {
     private static final String IMAGES_ROOT_FOLDER = "/diagram-images";
 
     public static final String EDIT_SVG = IMAGES_ROOT_FOLDER + "/edit.svg";
+
+    public static final String COLLAPSE_SVG = IMAGES_ROOT_FOLDER + "/collapse.svg";
+
+    public static final String EXPAND_SVG = IMAGES_ROOT_FOLDER + "/expand.svg";
 
     public static final String SEMANTIC_DELETE_SVG = IMAGES_ROOT_FOLDER + "/semanticDelete.svg";
 

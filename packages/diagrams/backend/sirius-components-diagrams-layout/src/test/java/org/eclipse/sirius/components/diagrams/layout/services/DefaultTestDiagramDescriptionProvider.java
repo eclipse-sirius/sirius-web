@@ -382,6 +382,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .styleProvider(this.nodeStyleProvider)
                 .childrenLayoutStrategyProvider(this.childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
+                .collapsible(false)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of(childDescription))
                 .deleteHandler(variableManager -> new Failure(""))
