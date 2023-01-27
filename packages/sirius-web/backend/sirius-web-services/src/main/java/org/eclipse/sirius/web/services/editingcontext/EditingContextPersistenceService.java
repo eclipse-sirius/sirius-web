@@ -110,6 +110,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         Optional<DocumentEntity> result = Optional.empty();
         HashMap<Object, Object> options = new HashMap<>();
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
+        options.put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             resource.save(outputStream, options);
