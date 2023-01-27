@@ -266,6 +266,20 @@ export const fadeDiagramElementMutation = gql`
   }
 `;
 
+export const updateCollapsingStateMutation = gql`
+  mutation updateCollapsingState($input: UpdateCollapsingStateInput!) {
+    updateCollapsingState(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
 export const editLabelMutation = gql`
   mutation editLabel($input: EditLabelInput!) {
     editLabel(input: $input) {

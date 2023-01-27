@@ -47,6 +47,8 @@ public final class ChildrenAreaLayoutContext {
 
     private boolean parentBeingCreated;
 
+    private boolean parentBeingExpanded;
+
     private ILayoutStrategy childrenLayoutStrategy;
 
     private Optional<Double> optionalChildrenAreaWidth;
@@ -89,6 +91,10 @@ public final class ChildrenAreaLayoutContext {
         return this.parentBeingCreated;
     }
 
+    public boolean isParentBeingExpanded() {
+        return this.parentBeingExpanded;
+    }
+
     public ILayoutStrategy getChildrenLayoutStrategy() {
         return this.childrenLayoutStrategy;
     }
@@ -122,6 +128,8 @@ public final class ChildrenAreaLayoutContext {
         private Position absolutePosition;
 
         private boolean parentBeingCreated;
+
+        private boolean parentBeingExpanded;
 
         private ILayoutStrategy childrenLayoutStrategy;
 
@@ -168,6 +176,11 @@ public final class ChildrenAreaLayoutContext {
             return this;
         }
 
+        public Builder parentBeingExpanded(boolean parentBeingExpanded) {
+            this.parentBeingExpanded = parentBeingExpanded;
+            return this;
+        }
+
         public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
             this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
             return this;
@@ -193,6 +206,7 @@ public final class ChildrenAreaLayoutContext {
             childrenAreaLayoutContext.nodeMargin = this.nodeMargin;
             childrenAreaLayoutContext.absolutePosition = Objects.requireNonNull(this.absolutePosition);
             childrenAreaLayoutContext.parentBeingCreated = this.parentBeingCreated;
+            childrenAreaLayoutContext.parentBeingExpanded = this.parentBeingExpanded;
             childrenAreaLayoutContext.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             childrenAreaLayoutContext.optionalChildrenAreaWidth = this.optionalChildrenAreaWidth;
             childrenAreaLayoutContext.optionalDiagramEvent = this.optionalDiagramEvent;

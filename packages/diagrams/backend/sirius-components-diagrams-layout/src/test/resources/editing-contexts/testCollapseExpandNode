@@ -1,0 +1,23 @@
+{
+  "name": "diag:Root",
+  "children": [
+    {
+      "name": "rect:Container-sibling",
+      "children": []
+    },
+    {
+      "name": "rect:Container",
+      "children": [
+        {
+          "name": "rect:Child",
+          "children": [
+            {
+              "name": "edge:Container-sibling",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

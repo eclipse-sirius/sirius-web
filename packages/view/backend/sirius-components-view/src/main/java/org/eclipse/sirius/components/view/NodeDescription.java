@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -145,5 +145,27 @@ public interface NodeDescription extends DiagramElementDescription {
      * @generated
      */
     void setChildrenLayoutStrategy(LayoutStrategyDescription value);
+
+    /**
+     * Returns the value of the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Collapsible</em>' attribute.
+     * @see #setCollapsible(boolean)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_Collapsible()
+     * @model
+     * @generated
+     */
+    boolean isCollapsible();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#isCollapsible
+     * <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Collapsible</em>' attribute.
+     * @see #isCollapsible()
+     * @generated
+     */
+    void setCollapsible(boolean value);
 
 } // NodeDescription

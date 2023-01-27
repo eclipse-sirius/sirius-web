@@ -117,7 +117,8 @@ public class DiagramElementFactory implements IElementFactory {
                 .childNodes(childNodes)
                 .customizedProperties(props.getCustomizableProperties())
                 .state(props.getState())
-                .modifiers(props.getModifiers());
+                .modifiers(props.getModifiers())
+                .collapsingState(props.getCollapsingState());
 
         if (props.getChildrenLayoutStrategy() != null) {
             nodeBuilder.childrenLayoutStrategy(props.getChildrenLayoutStrategy());

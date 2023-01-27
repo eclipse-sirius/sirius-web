@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
@@ -59,6 +60,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addReusedChildNodeDescriptionsPropertyDescriptor(object);
             this.addReusedBorderNodeDescriptionsPropertyDescriptor(object);
             this.addChildrenLayoutStrategyPropertyDescriptor(object);
+            this.addCollapsiblePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -100,6 +102,17 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.getString("_UI_NodeDescription_childrenLayoutStrategy_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_childrenLayoutStrategy_feature", "_UI_NodeDescription_type"),
                 ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Collapsible feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addCollapsiblePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_collapsible_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_collapsible_feature", "_UI_NodeDescription_type"),
+                ViewPackage.Literals.NODE_DESCRIPTION__COLLAPSIBLE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -179,6 +192,9 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeDescription.class)) {
+            case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
             case ViewPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             case ViewPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
             case ViewPackage.NODE_DESCRIPTION__STYLE:

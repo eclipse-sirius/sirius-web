@@ -238,6 +238,7 @@ extend type Mutation {
   reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
   hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
   fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
+  updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
 }
 
 input ArrangeAllInput {
@@ -425,3 +426,18 @@ input FadeDiagramElementInput {
 
 
 union FadeDiagramElementPayload = ErrorPayload | SuccessPayload
+
+input UpdateCollapsingStateInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  collapsingState: CollapsingState!
+}
+
+enum CollapsingState {
+  COLLAPSED
+  EXPANDED
+}
+
+union UpdateCollapsingStatePayload = ErrorPayload | SuccessPayload

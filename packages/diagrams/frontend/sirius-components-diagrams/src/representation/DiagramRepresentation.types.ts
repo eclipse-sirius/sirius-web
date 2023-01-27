@@ -433,7 +433,10 @@ export interface GQLErrorPayload
     GQLEditLabelPayload,
     GQLUpdateNodePositionPayload,
     GQLUpdateNodeBoundsPayload,
-    GQLArrangeAllPayload {
+    GQLArrangeAllPayload,
+    GQLFadeDiagramElementPayload,
+    GQLHideDiagramElementPayload,
+    GQLUpdateCollapsingStatePayload {
   message: string;
 }
 export interface GQLWorkbenchSelection {
@@ -564,4 +567,29 @@ export interface GQLFadeDiagramElementPayload {
 }
 export interface GQLFadeDiagramElementData {
   fadeDiagramElement: GQLFadeDiagramElementPayload;
+}
+
+export enum GQLCollapsingState {
+  EXPANDED = 'EXPANDED',
+  COLLAPSED = 'COLLAPSED',
+}
+
+export interface GQLUpdateCollapsingStateVariables {
+  input: GQLUpdateCollapsingStateInput;
+}
+
+export interface GQLUpdateCollapsingStateInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramElementId: string;
+  collapsingState: GQLCollapsingState;
+}
+
+export interface GQLUpdateCollapsingStateData {
+  collapseExpandDiagramElement: GQLUpdateCollapsingStatePayload;
+}
+
+export interface GQLUpdateCollapsingStatePayload {
+  __typename: string;
 }

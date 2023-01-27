@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation, useSubscription } from '@apollo/client';
+import { ApolloError, useMutation, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   Selection,
@@ -60,6 +60,7 @@ import {
   GQLArrangeAllData,
   GQLArrangeAllInput,
   GQLArrangeAllVariables,
+  GQLCollapsingState,
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
   GQLDeleteFromDiagramVariables,
@@ -95,6 +96,9 @@ import {
   GQLReconnectEdgeVariables,
   GQLReconnectKind,
   GQLSubscribersUpdatedEventPayload,
+  GQLUpdateCollapsingStateData,
+  GQLUpdateCollapsingStateInput,
+  GQLUpdateCollapsingStateVariables,
   GQLUpdateEdgeRoutingPointsData,
   GQLUpdateEdgeRoutingPointsInput,
   GQLUpdateEdgeRoutingPointsVariables,
@@ -143,6 +147,7 @@ import {
   invokeSingleClickOnDiagramElementToolMutation,
   invokeSingleClickOnTwoDiagramElementsToolMutation,
   reconnectEdgeMutation,
+  updateCollapsingStateMutation,
   updateEdgeRoutingPointsOp,
   updateNodeBoundsOp,
   updateNodePositionOp,
@@ -394,6 +399,14 @@ export const DiagramRepresentation = ({
   const [updateEdgeEnd, { loading: reconnectEdgeLoading, data: reconnectEdgeData, error: reconnectEdgeError }] =
     useMutation<GQLReconnectEdgeData, GQLReconnectEdgeVariables>(reconnectEdgeMutation);
   const [
+    collapseExpandMutation,
+    {
+      loading: collapseExpandDiagramElementLoading,
+      data: collapseExpandDiagramElementData,
+      error: collapseExpandDiagramElementError,
+    },
+  ] = useMutation<GQLUpdateCollapsingStateData, GQLUpdateCollapsingStateVariables>(updateCollapsingStateMutation);
+  const [
     invokeSingleClickOnDiagramElementTool,
     {
       loading: invokeSingleClickOnDiagramElementToolLoading,
@@ -566,6 +579,21 @@ export const DiagramRepresentation = ({
       resetTools();
     },
     [editingContextId, representationId, fadeElementMutation, resetTools]
+  );
+
+  const collapseExpandElement = useCallback(
+    (nodeId: string, collapsingState: GQLCollapsingState) => {
+      const input: GQLUpdateCollapsingStateInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        diagramElementId: nodeId,
+        collapsingState,
+      };
+      collapseExpandMutation({ variables: { input } });
+      resetTools();
+    },
+    [editingContextId, representationId, collapseExpandMutation, resetTools]
   );
 
   const reconnectEdge = useCallback(
@@ -981,8 +1009,10 @@ export const DiagramRepresentation = ({
     }
   };
 
+  const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
+
   const handleError = useCallback(
-    (loading, data, error) => {
+    (loading: boolean, data, error: ApolloError) => {
       if (!loading) {
         if (error) {
           const showToastEvent: ShowToastEvent = {
@@ -996,7 +1026,7 @@ export const DiagramRepresentation = ({
           if (keys.length > 0) {
             const firstKey = keys[0];
             const firstField = data[firstKey];
-            if (firstField.__typename === 'ErrorPayload') {
+            if (isStandardErrorPayload(firstField)) {
               const { message } = firstField;
               const showToastEvent: ShowToastEvent = {
                 type: 'SHOW_TOAST',
@@ -1029,6 +1059,18 @@ export const DiagramRepresentation = ({
   useEffect(() => {
     handleError(fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError);
   }, [fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError, handleError]);
+  useEffect(() => {
+    handleError(
+      collapseExpandDiagramElementLoading,
+      collapseExpandDiagramElementData,
+      collapseExpandDiagramElementError
+    );
+  }, [
+    collapseExpandDiagramElementLoading,
+    collapseExpandDiagramElementData,
+    collapseExpandDiagramElementError,
+    handleError,
+  ]);
   useEffect(() => {
     handleError(reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError);
   }, [reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError, handleError]);
@@ -1135,6 +1177,8 @@ export const DiagramRepresentation = ({
       invokeDeleteFromContextualPalette = (deletionPolicy: GQLDeletionPolicy) =>
         deleteElements([element], deletionPolicy);
     }
+    const invokeCollapseExpandElement = (collapsingState: GQLCollapsingState) =>
+      collapseExpandElement(element.id, collapsingState);
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
         const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
@@ -1207,6 +1251,7 @@ export const DiagramRepresentation = ({
           invokeClose={resetTools}
           invokeHide={invokeHideDiagramElement}
           invokeFade={invokeFadeDiagramElement}
+          updateCollapsingState={invokeCollapseExpandElement}
         />
       </div>
     );
