@@ -18,6 +18,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1591[#1591] [emf] Creating root elements in a model will now use the EPackages loaded in the package registry of the editing domain
 - https://github.com/eclipse-sirius/sirius-components/issues/1746[#1746] [forms] Rich-text editor toolbar on forms representations are not grayed when read-only
 - https://github.com/eclipse-sirius/sirius-components/issues/1744[#1744] [forms] Checkboxes on forms representations are not grayed when read-only
+- https://github.com/eclipse-sirius/sirius-components/issues/1639[#1639] [core] Support schemaLocation and extendedMetaData for JSON resource
 
 === New Features
 
@@ -68,7 +69,6 @@ It was not actually used, as tools have long been found in `DiagramDescription.g
 They are now correctly supported
 - https://github.com/eclipse-sirius/sirius-components/issues/1741[#1741] [diagram] Border node placement specified with ELK configuration not taken into account anymore
 - https://github.com/eclipse-sirius/sirius-components/issues/1720[#1720] [diagram] Fix the position where newly created views appear on a diagram after a drop
-
 
 === New Features
 
