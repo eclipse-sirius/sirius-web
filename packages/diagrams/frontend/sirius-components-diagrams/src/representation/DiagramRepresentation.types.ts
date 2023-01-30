@@ -15,6 +15,7 @@ import { Node } from '../sprotty/Diagram.types';
 export type CursorValue = 'pointer' | 'copy' | 'not-allowed';
 
 export interface DiagramDescription {
+  id: string;
   autoLayout: boolean;
 }
 
@@ -124,12 +125,6 @@ export interface GQLRepresentationMetadata {
   id: string;
   label: string;
   kind: string;
-  description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  __typename: string;
-  id: string;
 }
 
 export enum GQLSynchronizationPolicy {

@@ -37,5 +37,6 @@ export interface GQLGetDiagramDescriptionRepresentationDescription {
 }
 
 export interface GQLGetDiagramDescriptionDiagramDescription extends GQLGetDiagramDescriptionRepresentationDescription {
+  id: string;
   autoLayout: boolean;
 }

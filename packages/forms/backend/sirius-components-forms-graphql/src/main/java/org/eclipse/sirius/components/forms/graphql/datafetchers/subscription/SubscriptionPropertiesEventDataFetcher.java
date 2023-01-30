@@ -13,7 +13,8 @@
 package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
@@ -24,8 +25,10 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.reactivestreams.Publisher;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
@@ -34,7 +37,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author hmarchadour
  */
 @SubscriptionDataFetcher(type = "Subscription", field = "propertiesEvent")
-public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
+public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -51,13 +54,20 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
     }
 
     @Override
-    public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
+    public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
         var propertiesConfiguration = new PropertiesConfiguration(input.objectIds());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input),
-                input);
+        Map<String, Object> localContext = new HashMap<>();
+        localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, propertiesConfiguration.getId());
+
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input), input)
+                .map(payload ->  DataFetcherResult.<IPayload>newResult()
+                        .data(payload)
+                        .localContext(localContext)
+                        .build());
     }
 
 }

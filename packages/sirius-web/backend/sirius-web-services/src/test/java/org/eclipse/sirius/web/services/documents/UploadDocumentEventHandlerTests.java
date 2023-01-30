@@ -171,7 +171,7 @@ public class UploadDocumentEventHandlerTests {
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
@@ -248,7 +248,7 @@ public class UploadDocumentEventHandlerTests {
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

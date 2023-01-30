@@ -57,20 +57,8 @@ export interface GQLRepresentation {
   id: string;
 }
 
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-  description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  id: string;
-}
-
 export interface GQLFormDescriptionEditor extends GQLRepresentation {
   id: string;
-  metadata: GQLRepresentationMetadata;
   groups: GQLGroup[];
 }
 

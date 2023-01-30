@@ -120,12 +120,6 @@ test('should drop the Textfield in the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -204,12 +198,6 @@ test('should delete the Textfield from the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -297,12 +285,6 @@ test('should delete the PieChart from the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -379,12 +361,6 @@ test('should move the existing Textfield from/into the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 

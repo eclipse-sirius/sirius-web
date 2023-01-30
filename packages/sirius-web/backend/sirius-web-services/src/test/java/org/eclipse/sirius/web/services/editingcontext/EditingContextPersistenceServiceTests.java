@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -84,7 +85,7 @@ public class EditingContextPersistenceServiceTests {
         IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
         assertThat(entities).hasSize(0);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);

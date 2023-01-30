@@ -234,7 +234,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      *
      * @param payloadSink
      *            The sink to publish payload
-     * @param inputEvent
+     * @param input
      *            The input event
      * @return The response computed by the event handler
      */
@@ -252,11 +252,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     /**
      * Refresh all the representations except the one with the given representationId.
      *
-     *
-     * @param input
-     *            The input which has triggered the refresh sequence
-     * @param representationId
-     *            The identifier of the representation which should not be refreshed
      * @param changeDescription
      *            The description of change to consider in order to determine if the representation should be refreshed
      */
