@@ -22,15 +22,15 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Persistence layer used to manipulate projects.
- * <p>
- * The actual definitions for the named queries referenced here must be available at runtime in a file at
- * <code>META-INF/jpa-named-queries.properties</code>. For the Sirius Web example application it is in Typically it is
- * defined in <code>sirius-web-sample-application/src/main/resources/META-INF/jpa-named-queries.properties</code>.
  *
  * @author sbegaudeau
  */
 @Repository
 public interface IProjectRepository extends PagingAndSortingRepository<ProjectEntity, UUID> {
+    @Override
+    @Audited
+    boolean existsById(UUID id);
+
     @Audited
     @Override
     Optional<ProjectEntity> findById(UUID id);

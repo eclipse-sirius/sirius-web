@@ -10,24 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.representations;
+package org.eclipse.sirius.web.services.editingcontext;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -36,7 +33,7 @@ import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
-import org.eclipse.sirius.web.services.api.representations.IDynamicRepresentationDescriptionService;
+import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,8 +56,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
 
     private final boolean isStudioDefinitionEnabled;
 
-    public DynamicRepresentationDescriptionService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IViewConverter viewConverter,
-            @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean isStudioDefinitionEnabled) {
+    public DynamicRepresentationDescriptionService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IViewConverter viewConverter, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean isStudioDefinitionEnabled) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
         this.viewConverter = Objects.requireNonNull(viewConverter);
@@ -68,11 +64,11 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     }
 
     @Override
-    public List<IRepresentationDescription> findDynamicRepresentationDescriptions(IEditingContext editingContext) {
+    public List<IRepresentationDescription> findDynamicRepresentationDescriptions(String editingContextId, EditingDomain editingDomain) {
         List<IRepresentationDescription> dynamicRepresentationDescriptions = new ArrayList<>();
         if (this.isStudioDefinitionEnabled) {
             List<View> views = new ArrayList<>();
-            List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);
+            List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingDomain);
             ResourceSet resourceSet = this.createResourceSet(this.ePackageRegistry);
             this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
                 Resource resource = this.loadDocumentAsEMF(documentEntity, resourceSet);
@@ -87,41 +83,13 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
         return dynamicRepresentationDescriptions;
     }
 
-    @Override
-    public Optional<IRepresentationDescription> findDynamicRepresentationDescriptionById(IEditingContext editingContext, String representationDescriptionId) {
-        if (this.isStudioDefinitionEnabled) {
-            List<View> views = new ArrayList<>();
-            List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);
-            ResourceSet resourceSet = this.createResourceSet(this.ePackageRegistry);
-            this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
-                Resource resource = this.loadDocumentAsEMF(documentEntity, resourceSet);
-                views.addAll(this.getViewDefinitions(resource).toList());
-            });
-            // @formatter:off
-            var candidate = this.viewConverter.convert(views, accessibleEPackages).stream()
-                    .filter(Objects::nonNull)
-                    .filter(representationDescription -> Objects.equals(representationDescriptionId, representationDescription.getId()))
-                    .findFirst();
-            // @formatter:on
-            if (candidate.isPresent()) {
-                return candidate;
-            }
-        }
-        return Optional.empty();
-    }
+    private List<EPackage> getAccessibleEPackages(EditingDomain editingDomain) {
+        var packageRegistry = editingDomain.getResourceSet().getPackageRegistry();
 
-    private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext) {
-            Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            // @formatter:off
-            return packageRegistry.values().stream()
-                    .filter(EPackage.class::isInstance)
-                    .map(EPackage.class::cast)
-                    .toList();
-            // @formatter:on
-        } else {
-            return List.of();
-        }
+        return packageRegistry.values().stream()
+                .filter(EPackage.class::isInstance)
+                .map(EPackage.class::cast)
+                .toList();
     }
 
     private Stream<View> getViewDefinitions(Resource resource) {

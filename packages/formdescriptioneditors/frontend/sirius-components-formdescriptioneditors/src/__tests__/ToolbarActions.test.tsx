@@ -135,12 +135,6 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -231,12 +225,6 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -329,12 +317,6 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -428,12 +410,6 @@ test('move the existing ToolbarAction from/into the drop area located at the end
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 

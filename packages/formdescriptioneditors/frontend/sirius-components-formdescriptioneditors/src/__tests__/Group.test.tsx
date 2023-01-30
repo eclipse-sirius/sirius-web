@@ -96,12 +96,6 @@ test('should drop the Group in the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -158,12 +152,6 @@ test('should delete the Group from the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group],
   };
 
@@ -228,12 +216,6 @@ test('should move the existing Group from/into the drop area', async () => {
 
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    metadata: {
-      id: 'FormDescriptionEditor1',
-      description: { id: 'FormDescriptionEditorRepresentation' },
-      kind: 'FormDescriptionEditor',
-      label: 'FormDescriptionEditor1',
-    },
     groups: [group1, group2],
   };
 

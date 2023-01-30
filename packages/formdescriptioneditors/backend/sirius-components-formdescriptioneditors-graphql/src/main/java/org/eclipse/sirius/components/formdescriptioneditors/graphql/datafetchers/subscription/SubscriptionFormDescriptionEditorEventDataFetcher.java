@@ -13,20 +13,23 @@
 package org.eclipse.sirius.components.formdescriptioneditors.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventProcessor;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.reactivestreams.Publisher;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.publisher.Flux;
 
 /**
  * The data fetcher used to send the refreshed form description editor to a subscription.
@@ -43,31 +46,37 @@ import reactor.core.publisher.Flux;
  * @author arichard
  */
 @SubscriptionDataFetcher(type = "Subscription", field = "formDescriptionEditorEvent")
-public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
+public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IExceptionWrapper exceptionWrapper;
 
-    public SubscriptionFormDescriptionEditorEventDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
+
+    public SubscriptionFormDescriptionEditorEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
+        this.eventProcessorSubscriptionProvider = Objects.requireNonNull(eventProcessorSubscriptionProvider);
     }
 
     @Override
-    public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
+    public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, FormDescriptionEditorEventInput.class);
         var formDescriptionEditorConfiguration = new FormDescriptionEditorConfiguration(input.formDescriptionEditorId());
 
-        // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.editingContextId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormDescriptionEditorEventProcessor.class, formDescriptionEditorConfiguration, input))
-                .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
-                .orElse(Flux.empty());
-        // @formatter:on
+        Map<String, Object> localContext = new HashMap<>();
+        localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
+        localContext.put(LocalContextConstants.REPRESENTATION_ID, input.formDescriptionEditorId());
+
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormDescriptionEditorEventProcessor.class, formDescriptionEditorConfiguration, input), input)
+                .map(payload ->  DataFetcherResult.<IPayload>newResult()
+                        .data(payload)
+                        .localContext(localContext)
+                        .build());
     }
 
 }

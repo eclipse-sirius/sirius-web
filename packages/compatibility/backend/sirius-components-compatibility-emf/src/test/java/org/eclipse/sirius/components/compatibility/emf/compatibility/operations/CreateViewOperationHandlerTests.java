@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -109,7 +110,7 @@ public class CreateViewOperationHandlerTests {
         // @formatter:on
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.createViewOperation = org.eclipse.sirius.diagram.description.tool.ToolFactory.eINSTANCE.createCreateView();

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,7 +63,7 @@ public class DeleteDocumentEventHandlerTests {
 
         Resource resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
         editingDomain.getResourceSet().getResources().add(resource);
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.representation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -21,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchServi
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.representations.IRepresentation;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.FieldCoordinates;
 
@@ -30,7 +33,7 @@ import graphql.schema.FieldCoordinates;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "Representation", field = "metadata")
-public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldCoordinates<RepresentationMetadata> {
+public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<RepresentationMetadata>> {
 
     private static final String METADATA_FIELD = "metadata";
 
@@ -57,9 +60,18 @@ public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldC
     }
 
     @Override
-    public RepresentationMetadata get(DataFetchingEnvironment environment) throws Exception {
+    public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
         IRepresentation representation = environment.getSource();
-        return this.representationMetadataSearchService.findByRepresentation(representation).orElse(null);
+        var metadata = this.representationMetadataSearchService.findByRepresentation(representation).orElse(null);
+
+        Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
+
+        // @formatter:off
+        return DataFetcherResult.<RepresentationMetadata>newResult()
+                .data(metadata)
+                .localContext(localContext)
+                .build();
+        // @formatter:on
     }
 
 }

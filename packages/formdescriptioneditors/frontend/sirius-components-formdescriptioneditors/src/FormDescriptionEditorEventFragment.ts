@@ -33,13 +33,6 @@ export const formDescriptionEditorEventSubscription = gql`
         id
         formDescriptionEditor {
           id
-          metadata {
-            kind
-            label
-            description {
-              id
-            }
-          }
           groups {
             id
             label
