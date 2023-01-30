@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,22 +157,6 @@ public class ProjectRepositoryIntegrationTests extends AbstractIntegrationTests 
             assertThat(projectFound.getName()).isEqualTo(FIRST_PROJECT_NAME);
             assertThat(projectFound.getVisibility()).isSameAs(VisibilityEntity.PUBLIC);
         });
-    }
-
-    @Test
-    @Transactional
-    public void testIsOwner() {
-        AccountEntity firstAccountEntity = this.createAndSaveUser(FIRST_OWNER_NAME);
-        AccountEntity secondAccountEntity = this.createAndSaveUser(SECOND_OWNER_NAME);
-
-        ProjectEntity project = new ProjectEntity();
-        project.setName(FIRST_PROJECT_NAME);
-        project.setOwner(firstAccountEntity);
-        project.setVisibility(VisibilityEntity.PUBLIC);
-
-        project = this.projectRepository.save(project);
-        assertThat(this.projectRepository.isOwner(firstAccountEntity.getUsername(), project.getId())).isTrue();
-        assertThat(this.projectRepository.isOwner(secondAccountEntity.getUsername(), project.getId())).isFalse();
     }
 
     private AccountEntity createAndSaveUser(String username) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.persistence.entities.AccessLevelEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.springframework.data.domain.Page;
@@ -96,28 +95,4 @@ public class NoOpProjectRepository implements IProjectRepository {
         return new ArrayList<>();
     }
 
-    @Override
-    public boolean existsByIdAndIsVisibleBy(UUID id, String userName) {
-        return false;
-    }
-
-    @Override
-    public List<ProjectEntity> findAllVisibleBy(String userName) {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public Optional<ProjectEntity> findByIdIfVisibleBy(UUID projectId, String currentUserName) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean isOwner(String username, UUID projectId) {
-        return false;
-    }
-
-    @Override
-    public AccessLevelEntity getUserAccessLevel(UUID projectId, String userName) {
-        return AccessLevelEntity.READ;
-    }
 }

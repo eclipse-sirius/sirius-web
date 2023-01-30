@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,18 +13,26 @@
 package org.eclipse.sirius.web.graphql.datafetchers.representation;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionInput;
+import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionPayload;
 import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 import graphql.schema.DataFetchingEnvironment;
+import reactor.core.publisher.Mono;
 
 /**
  * The data fetcher used to retrieve the description from the representation metadata.
@@ -32,10 +40,10 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "RepresentationMetadata", field = "description")
-public class RepresentationMetadataDescriptionDataFetcher implements IDataFetcherWithFieldCoordinates<IRepresentationDescription> {
+public class RepresentationMetadataDescriptionDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IRepresentationDescription>> {
 
     // @formatter:off
-    private static final FormDescription FAKE_DETAILS_DESCRIPTION = FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
+    private static final IRepresentationDescription FAKE_DETAILS_DESCRIPTION = FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
             .label(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
             .idProvider(new GetOrCreateRandomIdProvider())
             .labelProvider(variableManager -> PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
@@ -46,14 +54,16 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
             .build();
     // @formatter:on
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public RepresentationMetadataDescriptionDataFetcher(IRepresentationDescriptionSearchService representationDescriptionSearchService) {
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    public RepresentationMetadataDescriptionDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
-    public IRepresentationDescription get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<IRepresentationDescription> get(DataFetchingEnvironment environment) throws Exception {
+        CompletableFuture<IRepresentationDescription> result = Mono.<IRepresentationDescription> empty().toFuture();
+
         RepresentationMetadata representationMetadata = environment.getSource();
         if (Objects.equals(PropertiesEventProcessorFactory.DETAILS_VIEW_ID, representationMetadata.getDescriptionId())) {
             /*
@@ -63,9 +73,25 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
              * only to allow GraphQL resolution to continue on queries like "completionProposals" defined on
              * FormDescription.
              */
-            return FAKE_DETAILS_DESCRIPTION;
+            result = Mono.just(FAKE_DETAILS_DESCRIPTION).toFuture();
+        } else {
+            Map<String, Object> localContext = environment.getLocalContext();
+
+            String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
+            String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
+            if (editingContextId != null && representationId != null) {
+                GetRepresentationDescriptionInput input = new GetRepresentationDescriptionInput(UUID.randomUUID(), editingContextId, representationId);
+
+                // @formatter:off
+                result = this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+                        .filter(GetRepresentationDescriptionPayload.class::isInstance)
+                        .map(GetRepresentationDescriptionPayload.class::cast)
+                        .map(GetRepresentationDescriptionPayload::getRepresentationDescription)
+                        .toFuture();
+                // @formatter:on
+            }
         }
-        return this.representationDescriptionSearchService.findById(null, representationMetadata.getDescriptionId()).orElse(null);
+        return result;
     }
 
 }

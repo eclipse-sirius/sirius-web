@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.services;
 
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
  * Implementation of the editing context.
@@ -34,9 +36,12 @@ public class EditingContext implements IEditingContext {
 
     private final AdapterFactoryEditingDomain editingDomain;
 
-    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain) {
+    private final Map<String, IRepresentationDescription> representationDescriptions;
+
+    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions) {
         this.id = Objects.requireNonNull(id);
         this.editingDomain = Objects.requireNonNull(editingDomain);
+        this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
     }
 
     @Override
@@ -46,6 +51,10 @@ public class EditingContext implements IEditingContext {
 
     public AdapterFactoryEditingDomain getDomain() {
         return this.editingDomain;
+    }
+
+    public Map<String, IRepresentationDescription> getRepresentationDescriptions() {
+        return this.representationDescriptions;
     }
 
 }

@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.projects;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -76,20 +76,15 @@ public class ProjectService implements IProjectService {
         this.projectMapper = new ProjectMapper();
     }
 
-    private String getCurrentUserName() {
-        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-        return Optional.ofNullable(principal).map(Principal::getName).orElse("");
-    }
-
     @Override
     public Optional<Project> getProject(UUID projectId) {
-        return this.projectRepository.findByIdIfVisibleBy(projectId, this.getCurrentUserName()).map(this.projectMapper::toDTO);
+        return this.projectRepository.findById(projectId).map(this.projectMapper::toDTO);
     }
 
     @Override
     public List<Project> getProjects() {
         // @formatter:off
-        return this.projectRepository.findAllVisibleBy(this.getCurrentUserName()).stream()
+        return StreamSupport.stream(this.projectRepository.findAll().spliterator(), false)
                 .map(this.projectMapper::toDTO)
                 .collect(Collectors.toUnmodifiableList());
         // @formatter:on
@@ -173,14 +168,14 @@ public class ProjectService implements IProjectService {
 
     @Override
     public void delete(UUID projectId) {
-        if (this.projectRepository.existsByIdAndIsVisibleBy(projectId, this.getCurrentUserName())) {
+        if (this.projectRepository.existsById(projectId)) {
             this.projectRepository.deleteById(projectId);
         }
     }
 
     @Override
     public Optional<Project> renameProject(UUID projectId, String newName) {
-        Optional<ProjectEntity> optionalProjectEntity = this.projectRepository.findByIdIfVisibleBy(projectId, this.getCurrentUserName());
+        Optional<ProjectEntity> optionalProjectEntity = this.projectRepository.findById(projectId);
         if (optionalProjectEntity.isPresent()) {
             ProjectEntity projectEntity = optionalProjectEntity.get();
             projectEntity.setName(newName);

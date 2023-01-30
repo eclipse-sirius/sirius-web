@@ -14,7 +14,11 @@ package org.eclipse.sirius.components.validation.graphql.datafetchers.subscripti
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
+
+import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationEventProcessor;
@@ -24,9 +28,13 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.reactivestreams.Publisher;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * The data fetcher used to send the refreshed validation to a subscription.
@@ -34,7 +42,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  */
 @SubscriptionDataFetcher(type = "Subscription", field = "validationEvent")
-public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
+public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -44,6 +52,8 @@ public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithF
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
+    private final Scheduler scheduler = Schedulers.newSingle(this.getClass().getSimpleName());
+
     public SubscriptionValidationEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
@@ -51,12 +61,29 @@ public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithF
     }
 
     @Override
-    public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
+    public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, ValidationEventInput.class);
         var validationConfiguration = new ValidationConfiguration(input.editingContextId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IValidationEventProcessor.class, validationConfiguration, input),
-                input);
+        Map<String, Object> localContext = Map.of(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId(), LocalContextConstants.REPRESENTATION_ID, "validation");
+        // @formatter:off
+        return this.exceptionWrapper
+                .wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IValidationEventProcessor.class, validationConfiguration, input), input)
+                .publishOn(this.scheduler)
+                .map(payload -> DataFetcherResult.<IPayload>newResult()
+                        .data(payload)
+                        .localContext(localContext)
+                        .build());
+        // @formatter:on
+    }
+
+    @PreDestroy
+    public void dispose() {
+        // @formatter:off
+        this.scheduler.disposeGracefully()
+                .timeout(Duration.ofMillis(100))
+                .block();
+        // @formatter:on
     }
 }
