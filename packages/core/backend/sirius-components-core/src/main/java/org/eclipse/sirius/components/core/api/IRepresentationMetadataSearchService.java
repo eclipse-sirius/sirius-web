@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  * @author sbegaudeau
  */
 public interface IRepresentationMetadataSearchService {
+    Optional<RepresentationMetadata> findByRepresentationId(String representationId);
+
     Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation);
 
     List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId);
@@ -34,6 +36,11 @@ public interface IRepresentationMetadataSearchService {
      * @author arichard
      */
     class NoOp implements IRepresentationMetadataSearchService {
+
+        @Override
+        public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
+            return Optional.empty();
+        }
 
         @Override
         public Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation) {

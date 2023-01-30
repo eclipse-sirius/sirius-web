@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
@@ -56,8 +55,7 @@ public class SubscriptionRelatedElementsEventDataFetcher implements IDataFetcher
         var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
         var propertiesConfiguration = new RelatedElementsConfiguration(input.objectIds());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input),
-                input);
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input), input);
     }
 
 }

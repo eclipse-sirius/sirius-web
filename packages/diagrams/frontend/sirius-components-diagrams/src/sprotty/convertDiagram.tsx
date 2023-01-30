@@ -91,7 +91,7 @@ export const convertDiagram = (
 ): Diagram => {
   const {
     id,
-    metadata: { label, kind, description },
+    metadata: { label, kind },
     targetObjectId,
     nodes,
     edges,
@@ -102,7 +102,7 @@ export const convertDiagram = (
   diagram.type = 'graph';
   diagram.kind = kind;
   diagram.label = label;
-  diagram.descriptionId = description.id;
+  diagram.descriptionId = diagramDescription.id;
   diagram.targetObjectId = targetObjectId;
   diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
 

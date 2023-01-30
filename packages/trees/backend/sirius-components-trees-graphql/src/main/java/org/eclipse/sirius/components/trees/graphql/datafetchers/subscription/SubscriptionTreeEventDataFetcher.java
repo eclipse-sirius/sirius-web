@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.trees.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
@@ -59,5 +58,4 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
 
         return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), ITreeEventProcessor.class, treeConfiguration, input), input);
     }
-
 }

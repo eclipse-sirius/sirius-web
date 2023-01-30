@@ -25,10 +25,6 @@ export const siriusWebDiagram: GQLDiagram = {
     id: 'bf6a7cc1-011d-4900-8fa1-16b575a71175',
     label: 'Topography',
     kind: 'siriusComponents://representation?type=DiagramDiagram',
-    description: {
-      id: "inmemory.odesign#//@ownedViewpoints[name='Exchanges']/@ownedRepresentations[name='Topography']",
-      __typename: 'DiagramDescription',
-    },
   },
   targetObjectId: 'robot#/',
   position: {

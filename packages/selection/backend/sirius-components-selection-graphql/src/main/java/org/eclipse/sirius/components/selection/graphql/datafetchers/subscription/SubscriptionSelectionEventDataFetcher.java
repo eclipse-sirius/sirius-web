@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.selection.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.UUID;
 
@@ -57,9 +56,7 @@ public class SubscriptionSelectionEventDataFetcher implements IDataFetcherWithFi
         var input = this.objectMapper.convertValue(argument, SelectionEventInput.class);
         var selectionConfiguration = new SelectionConfiguration(UUID.randomUUID().toString(), input.selectionId(), input.targetObjectId());
 
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), ISelectionEventProcessor.class, selectionConfiguration, input),
-                input);
-
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), ISelectionEventProcessor.class, selectionConfiguration, input), input);
     }
 
 }

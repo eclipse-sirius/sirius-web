@@ -13,20 +13,19 @@
 package org.eclipse.sirius.components.formdescriptioneditors.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventProcessor;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.reactivestreams.Publisher;
 
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.publisher.Flux;
 
 /**
  * The data fetcher used to send the refreshed form description editor to a subscription.
@@ -49,11 +48,14 @@ public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataF
 
     private final ObjectMapper objectMapper;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IExceptionWrapper exceptionWrapper;
 
-    public SubscriptionFormDescriptionEditorEventDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
+
+    public SubscriptionFormDescriptionEditorEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
+        this.eventProcessorSubscriptionProvider = Objects.requireNonNull(eventProcessorSubscriptionProvider);
     }
 
     @Override
@@ -62,12 +64,7 @@ public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataF
         var input = this.objectMapper.convertValue(argument, FormDescriptionEditorEventInput.class);
         var formDescriptionEditorConfiguration = new FormDescriptionEditorConfiguration(input.formDescriptionEditorId());
 
-        // @formatter:off
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.editingContextId())
-                .flatMap(processor -> processor.acquireRepresentationEventProcessor(IFormDescriptionEditorEventProcessor.class, formDescriptionEditorConfiguration, input))
-                .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
-                .orElse(Flux.empty());
-        // @formatter:on
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormDescriptionEditorEventProcessor.class, formDescriptionEditorConfiguration, input), input);
     }
 
 }

@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.services.representations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -179,6 +178,17 @@ public class RepresentationService implements IRepresentationService, IRepresent
     @Override
     public void deleteDanglingRepresentations(String editingContextId) {
         new IDParser().parse(editingContextId).ifPresent(this.representationRepository::deleteDanglingRepresentations);
+    }
+
+    @Override
+    public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
+        return new IDParser().parse(representationId)
+                .flatMap(this.representationRepository::findById)
+                .map(new RepresentationMapper(this.objectMapper)::toDTO)
+                .map(RepresentationDescriptor::getRepresentation)
+                .filter(ISemanticRepresentation.class::isInstance)
+                .map(ISemanticRepresentation.class::cast)
+                .map(representation -> new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId(), representation.getTargetObjectId()));
     }
 
     @Override

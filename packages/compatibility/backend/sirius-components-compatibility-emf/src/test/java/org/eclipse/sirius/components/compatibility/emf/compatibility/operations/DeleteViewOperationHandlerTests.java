@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -134,7 +135,7 @@ public class DeleteViewOperationHandlerTests {
         // @formatter:on
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.operationTestContext.getVariables().put(VariableManager.SELF, diagram.getNodes().get(0));

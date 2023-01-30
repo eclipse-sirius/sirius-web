@@ -33,9 +33,6 @@ export const diagramEventSubscription = gql`
           metadata {
             kind
             label
-            description {
-              id
-            }
           }
           targetObjectId
           position {
