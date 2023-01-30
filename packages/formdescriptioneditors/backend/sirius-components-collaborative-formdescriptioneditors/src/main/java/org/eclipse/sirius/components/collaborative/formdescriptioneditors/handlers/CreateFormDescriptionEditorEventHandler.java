@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
@@ -85,7 +87,8 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input,
+            List<IRepresentationEventProcessor> representationEventProcessors) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateRepresentationInput.class.getSimpleName());

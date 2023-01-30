@@ -71,7 +71,7 @@ public class InvokeEditingContextActionEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(eventHandler.canHandle(editingContext, input)).isTrue();
-        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
@@ -92,7 +92,7 @@ public class InvokeEditingContextActionEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(eventHandler.canHandle(editingContext, input)).isTrue();
-        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);

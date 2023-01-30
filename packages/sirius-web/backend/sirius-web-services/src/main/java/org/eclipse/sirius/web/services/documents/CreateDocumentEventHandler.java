@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.services.documents;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateDocumentInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -84,7 +86,8 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input,
+            List<IRepresentationEventProcessor> representationEventProcessors) {
         this.counter.increment();
 
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -92,6 +92,6 @@ public class QueryBasedObjectsEventHandlerTests {
         assertThat(queryBasedObjectsEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        queryBasedObjectsEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+        queryBasedObjectsEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class GetEditingContextActionsEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(eventHandler.canHandle(editingContext, input)).isTrue();
-        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);

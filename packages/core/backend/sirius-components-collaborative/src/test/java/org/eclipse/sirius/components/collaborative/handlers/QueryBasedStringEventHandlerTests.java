@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.handlers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -90,6 +91,6 @@ public class QueryBasedStringEventHandlerTests {
         assertThat(queryBasedStringEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        queryBasedStringEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
+        queryBasedStringEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
     }
 }
