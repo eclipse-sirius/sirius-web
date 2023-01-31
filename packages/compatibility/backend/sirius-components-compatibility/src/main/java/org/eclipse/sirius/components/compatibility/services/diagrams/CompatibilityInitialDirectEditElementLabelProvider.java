@@ -48,11 +48,11 @@ public class CompatibilityInitialDirectEditElementLabelProvider implements IInit
         if (diagramElement instanceof Node node) {
             label = node.getLabel().getText();
         } else if (diagramElement instanceof Edge edge) {
-            if (edge.getBeginLabel().getId().equals(labelId)) {
+            if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
                 label = edge.getBeginLabel().getText();
-            } else if (edge.getCenterLabel().getId().equals(labelId)) {
+            } else if (edge.getCenterLabel() != null && edge.getCenterLabel().getId().equals(labelId)) {
                 label = edge.getCenterLabel().getText();
-            } else if (edge.getEndLabel().getId().equals(labelId)) {
+            } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
                 label = edge.getEndLabel().getText();
             }
         }
