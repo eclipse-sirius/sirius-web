@@ -153,28 +153,33 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
 
-                var edgeLabelKind = EdgeLabelKind.CENTER_LABEL;
+                Optional<EdgeLabelKind> optionalEdgeLabelKind = Optional.empty();
                 if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
-                    edgeLabelKind = EdgeLabelKind.BEGIN_LABEL;
+                    optionalEdgeLabelKind = Optional.of(EdgeLabelKind.BEGIN_LABEL);
+                } else if (edge.getCenterLabel() != null && edge.getCenterLabel().getId().equals(labelId)) {
+                    optionalEdgeLabelKind = Optional.of(EdgeLabelKind.CENTER_LABEL);
                 } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
-                    edgeLabelKind = EdgeLabelKind.END_LABEL;
+                    optionalEdgeLabelKind = Optional.of(EdgeLabelKind.END_LABEL);
                 }
-
-                VariableManager variableManager = new VariableManager();
-                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-                variableManager.put(VariableManager.SELF, self);
-                // @formatter:off
-                var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
-                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
-                        .orElse(null);
-                var semanticEdgeTarget = this.diagramQueryService.findNodeById(diagram, edge.getTargetId())
-                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
-                        .orElse(null);
-                variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticEdgeSource);
-                variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticEdgeTarget);
-                // @formatter:on
-                edgeDescription.getLabelEditHandler().editLabel(variableManager, edgeLabelKind, newText);
-                this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText);
+                if (optionalEdgeLabelKind.isPresent()) {
+                    VariableManager variableManager = new VariableManager();
+                    variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+                    variableManager.put(VariableManager.SELF, self);
+                    // @formatter:off
+                    var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
+                            .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                            .orElse(null);
+                    var semanticEdgeTarget = this.diagramQueryService.findNodeById(diagram, edge.getTargetId())
+                            .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                            .orElse(null);
+                    variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticEdgeSource);
+                    variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticEdgeTarget);
+                    // @formatter:on
+                    edgeDescription.getLabelEditHandler().editLabel(variableManager, optionalEdgeLabelKind.get(), newText);
+                    this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText);
+                } else {
+                    this.logger.debug("No label with id {} to edit on edge {}", labelId, edge.getId());
+                }
             }
         }
     }
