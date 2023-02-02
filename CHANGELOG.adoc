@@ -17,7 +17,7 @@
 
 - [core] Records are now used as the implementations of `IInput`
 - https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] In `diagram.graphqls`, `SingleClickOnDiagramElementTool` member's `targetDescriptions` is now of new type `DiagramElementDescription` instead of `NodeDescription`.
-- https://github.com/eclipse-sirius/sirius-components/issues/1614[#1614] [graphql] Add a SuccessPayload to replace most basic payloads, add GQLWidgetOperationPayload to replace most basic Operation
+- https://github.com/eclipse-sirius/sirius-components/issues/1614[#1614] [graphql] Add a SuccessPayload to replace most basic payloads
 - https://github.com/eclipse-sirius/sirius-components/issues/1638[#1638] [view] The lifecycle of the representation descriptions from the view DSL is now aligned with the lifecycle of the metamodels computed from the Domain DSL.
 +
 As such, the representation descriptions available for an `EditingContext` are now computed and transformed when the `EditingContext` is loaded.

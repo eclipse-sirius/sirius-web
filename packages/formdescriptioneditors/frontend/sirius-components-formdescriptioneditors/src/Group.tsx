@@ -37,17 +37,20 @@ import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
+  GQLAddWidgetPayload,
   GQLDeleteGroupInput,
   GQLDeleteGroupMutationData,
   GQLDeleteGroupMutationVariables,
+  GQLDeleteGroupPayload,
   GQLErrorPayload,
   GQLMoveGroupInput,
   GQLMoveGroupMutationData,
   GQLMoveGroupMutationVariables,
+  GQLMoveGroupPayload,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { GroupProps, GroupState } from './Group.types';
 import { ToolbarActions } from './ToolbarActions';
@@ -133,8 +136,9 @@ const GroupTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
+const isErrorPayload = (
+  payload: GQLAddWidgetPayload | GQLDeleteGroupPayload | GQLMoveGroupPayload | GQLMoveWidgetPayload
+): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
 export const Group = ({
   editingContextId,

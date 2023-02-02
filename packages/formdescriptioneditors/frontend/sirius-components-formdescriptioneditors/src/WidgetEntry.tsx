@@ -47,14 +47,16 @@ import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
+  GQLAddWidgetPayload,
   GQLDeleteWidgetInput,
   GQLDeleteWidgetMutationData,
   GQLDeleteWidgetMutationVariables,
+  GQLDeleteWidgetPayload,
   GQLErrorPayload,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { ImageWidget } from './ImageWidget';
 import { LabelWidget } from './LabelWidget';
@@ -113,8 +115,9 @@ const WidgetTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
+const isErrorPayload = (
+  payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
+): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
 export const WidgetEntry = ({
   editingContextId,
