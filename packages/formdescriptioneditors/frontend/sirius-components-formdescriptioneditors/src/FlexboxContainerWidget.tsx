@@ -25,17 +25,18 @@ import {
   GQLAddWidgetInput,
   GQLAddWidgetMutationData,
   GQLAddWidgetMutationVariables,
+  GQLAddWidgetPayload,
   GQLErrorPayload,
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { WidgetEntry } from './WidgetEntry';
 import { FlexboxContainerWidgetProps } from './WidgetEntry.types';
 import { getAllToolbarActions, isKind } from './WidgetOperations';
 
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) => ({

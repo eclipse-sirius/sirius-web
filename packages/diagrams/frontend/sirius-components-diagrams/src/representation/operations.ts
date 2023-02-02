@@ -242,7 +242,7 @@ export const hideDiagramElementMutation = gql`
   mutation hideDiagramElement($input: HideDiagramElementInput!) {
     hideDiagramElement(input: $input) {
       __typename
-      ... on HideDiagramElementSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -256,7 +256,7 @@ export const fadeDiagramElementMutation = gql`
   mutation fadeDiagramElement($input: FadeDiagramElementInput!) {
     fadeDiagramElement(input: $input) {
       __typename
-      ... on FadeDiagramElementSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
