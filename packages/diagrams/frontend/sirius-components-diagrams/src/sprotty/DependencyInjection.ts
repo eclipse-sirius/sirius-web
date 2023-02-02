@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import {
   graphModule,
   hoverModule,
   HtmlRootView,
+  isDeletable,
   KeyListener,
   labelEditModule,
   LogLevel,
@@ -238,7 +239,7 @@ export const createDependencyInjectionContainer = (
 
   const keyListener = new KeyListener();
   keyListener.keyDown = (element, event) => {
-    if (event.code === 'Delete') {
+    if (event.code === 'Delete' && isDeletable(element)) {
       return [{ kind: SPROTTY_DELETE_ACTION, element }];
     } else if (event.code === 'Escape') {
       return [{ kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION }];
