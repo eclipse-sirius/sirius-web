@@ -34,9 +34,13 @@ import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.domain.Relation;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
+import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.View;
@@ -208,7 +212,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
         Relation linkedTo = DomainFactory.eINSTANCE.createRelation();
         linkedTo.setName("linkedTo");
-        linkedTo.setContainment(true);
+        linkedTo.setContainment(false);
         linkedTo.setOptional(true);
         linkedTo.setMany(true);
         linkedTo.setTargetType(entity2);
@@ -235,9 +239,9 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         View view = ViewFactory.eINSTANCE.createView();
 
         org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        viewDiagramDescription.setName("Root Diagram Description");
+        viewDiagramDescription.setName(domainName + "::Root Diagram Description");
         viewDiagramDescription.setDomainType(domainName + "::Root");
-        viewDiagramDescription.setTitleExpression("aql:'New Representation'");
+        viewDiagramDescription.setTitleExpression(domainName + " diagram");
         view.getDescriptions().add(viewDiagramDescription);
 
         NodeDescription entity1Node = ViewFactory.eINSTANCE.createNodeDescription();
@@ -246,6 +250,9 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         entity1Node.setSemanticCandidatesExpression("aql:self.eContents()");
         entity1Node.setLabelExpression("aql:self.name");
         entity1Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
+        entity1Node.setDeleteTool(this.createDefaultDeleteTool());
+        entity1Node.setLabelEditTool(this.createDefaultLabelEditTool());
+        entity1Node.getNodeTools().add(this.createDefaultNodeTool("Create Entity1"));
         viewDiagramDescription.getNodeDescriptions().add(entity1Node);
 
         RectangularNodeStyleDescription entity1Style = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
@@ -262,6 +269,9 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         entity2Node.setSemanticCandidatesExpression("aql:self.eContents()");
         entity2Node.setLabelExpression("aql:self.name");
         entity2Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
+        entity2Node.setDeleteTool(this.createDefaultDeleteTool());
+        entity2Node.setLabelEditTool(this.createDefaultLabelEditTool());
+        entity2Node.getNodeTools().add(this.createDefaultNodeTool("Create Entity2"));
         viewDiagramDescription.getNodeDescriptions().add(entity2Node);
 
         RectangularNodeStyleDescription entity2Style = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
@@ -280,6 +290,9 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         linkedToEdge.setSourceNodesExpression("aql:self");
         linkedToEdge.getTargetNodeDescriptions().add(entity2Node);
         linkedToEdge.setTargetNodesExpression("aql:self.linkedTo");
+        linkedToEdge.setDeleteTool(this.createDefaultDeleteTool());
+        linkedToEdge.setLabelEditTool(this.createDefaultLabelEditTool());
+        linkedToEdge.getEdgeTools().add(this.createDefaultEdgeTool("Create LinkedTo"));
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 
         EdgeStyle edgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
@@ -287,6 +300,42 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         linkedToEdge.setStyle(edgeStyle);
 
         return this.stereotypeBuilder.getStereotypeBody(view);
+    }
+
+    private DeleteTool createDefaultDeleteTool() {
+        var tool = ViewFactory.eINSTANCE.createDeleteTool();
+        tool.setName("Delete");
+        var body = ViewFactory.eINSTANCE.createChangeContext();
+        body.setExpression("aql:self.defaultDelete()");
+        tool.getBody().add(body);
+        return tool;
+    }
+
+    private LabelEditTool createDefaultLabelEditTool() {
+        var tool = ViewFactory.eINSTANCE.createLabelEditTool();
+        tool.setName("Edit Label");
+        var body = ViewFactory.eINSTANCE.createChangeContext();
+        body.setExpression("aql:self.defaultEditLabel(newLabel)");
+        tool.getBody().add(body);
+        return tool;
+    }
+
+    private NodeTool createDefaultNodeTool(String name) {
+        var tool = ViewFactory.eINSTANCE.createNodeTool();
+        tool.setName(name);
+        var body = ViewFactory.eINSTANCE.createChangeContext();
+        body.setExpression("aql:self.defaultCreateNode(nodeDescription)");
+        tool.getBody().add(body);
+        return tool;
+    }
+
+    private EdgeTool createDefaultEdgeTool(String name) {
+        var tool = ViewFactory.eINSTANCE.createEdgeTool();
+        tool.setName(name);
+        var body = ViewFactory.eINSTANCE.createChangeContext();
+        body.setExpression("aql:semanticEdgeSource.defaultCreateEdge(edgeDescription, semanticEdgeTarget)");
+        tool.getBody().add(body);
+        return tool;
     }
 
     private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, String label) {
