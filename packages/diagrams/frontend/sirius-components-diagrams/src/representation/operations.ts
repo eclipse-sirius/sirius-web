@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -240,7 +240,7 @@ export const hideDiagramElementMutation = gql`
   mutation hideDiagramElement($input: HideDiagramElementInput!) {
     hideDiagramElement(input: $input) {
       __typename
-      ... on HideDiagramElementSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {
@@ -254,7 +254,7 @@ export const fadeDiagramElementMutation = gql`
   mutation fadeDiagramElement($input: FadeDiagramElementInput!) {
     fadeDiagramElement(input: $input) {
       __typename
-      ... on FadeDiagramElementSuccessPayload {
+      ... on SuccessPayload {
         id
       }
       ... on ErrorPayload {

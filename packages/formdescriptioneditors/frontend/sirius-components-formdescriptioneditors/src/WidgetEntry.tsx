@@ -54,7 +54,7 @@ import {
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLSuccessPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { ImageWidget } from './ImageWidget';
 import { LabelWidget } from './LabelWidget';
@@ -113,7 +113,7 @@ const WidgetTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLSuccessPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 export const WidgetEntry = ({

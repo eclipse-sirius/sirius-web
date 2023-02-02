@@ -60,7 +60,7 @@ export interface GQLCreateDocumentPayload {
   __typename: string;
 }
 
-export interface GQLCreateDocumentSuccessPayload extends GQLCreateDocumentPayload {
+export interface GQLSuccessPayload extends GQLCreateDocumentPayload {
   id: string;
 }
 

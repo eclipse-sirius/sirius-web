@@ -47,7 +47,7 @@ import {
   GQLMoveWidgetInput,
   GQLMoveWidgetMutationData,
   GQLMoveWidgetMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLSuccessPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { GroupProps, GroupState } from './Group.types';
 import { ToolbarActions } from './ToolbarActions';
@@ -133,7 +133,7 @@ const GroupTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLSuccessPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 export const Group = ({

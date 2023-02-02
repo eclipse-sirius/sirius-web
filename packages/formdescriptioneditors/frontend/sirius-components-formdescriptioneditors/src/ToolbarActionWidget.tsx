@@ -36,7 +36,7 @@ import {
   GQLMoveToolbarActionInput,
   GQLMoveToolbarActionMutationData,
   GQLMoveToolbarActionMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLSuccessPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionProps, ToolbarActionState } from './ToolbarActionWidget.types';
 import { getAllWidgets, isKind } from './WidgetOperations';
@@ -104,7 +104,7 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   },
 }));
 
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLSuccessPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 export const ToolbarActionWidget = ({

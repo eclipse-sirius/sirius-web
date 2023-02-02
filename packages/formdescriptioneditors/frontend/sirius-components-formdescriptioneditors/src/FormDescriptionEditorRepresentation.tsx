@@ -51,7 +51,7 @@ import {
   GQLMoveGroupInput,
   GQLMoveGroupMutationData,
   GQLMoveGroupMutationVariables,
-  GQLWidgetOperationPayload,
+  GQLSuccessPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import {
   FormDescriptionEditorRepresentationContext,
@@ -66,7 +66,7 @@ import {
 import { Group } from './Group';
 import { Button } from './icons/Button';
 import { isKind } from './WidgetOperations';
-const isErrorPayload = (payload: GQLWidgetOperationPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLSuccessPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
