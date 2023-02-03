@@ -1,0 +1,29 @@
+= ADR-093 - Improve node size control
+
+== Context
+
+The way node sizes is computed is currently no uniform between the different types of nodes, and the interactions between i) a node's `sizeProvider`, ii) the two layout algorithms (incremental and ELK) and iii) the potential size set by the end-user are complex to understand.
+
+== Decision
+
+We will simplify the rules like this:
+
+- we will introduce a new flag, `NodeDescription.userResizable : boolean`.
+It defaults to `true` to keep the current behavior by default.
+It propagates to all instance of the corresponding `NodeDescription`.
+- when a node *is not* user-resizable, the frontend prevents the user to resize the node, and the `sizeProvider` (computed at render-time) will be used as the reference for the _prefered size_ as decided by the studio maker.
+- when a node *is* user-resizable, the frontend allows the end-user to resize it.
+As long as the end-user has not done so, the `sizeProvider` is still used to computed the prefered node size.
+As soon as the end-user has given an explicit size to a (user-resizable) node, the node is marked as resized and the user-set size is now the prefered size.
+- in all cases, the prefered size determined from the above rules is combined with other constraints (minimum size for a node to contain all its chilren; maximum size for e.g. a compartment) to produce the _actual size_.
+- if the actual size determined for a node is different from the user-set size (i.e. the size requested by the end-user is not possible because of other constraints), the node's "user-resized" mark is removed.
+
+We will only handle rectangle nodes in this first iteration to limit the risk of regressions.
+
+== Status
+
+Accepted
+
+== Consequence
+
+The View DSL will be updated to support the configuration of the new "User resizable" flag.
