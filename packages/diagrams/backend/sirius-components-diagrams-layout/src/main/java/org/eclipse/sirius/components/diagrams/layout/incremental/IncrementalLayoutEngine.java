@@ -137,15 +137,37 @@ public class IncrementalLayoutEngine {
      * This can be removed when we will consider all diagram should have been migrated
      */
     private boolean isEdgePositioned(EdgeLayoutData edge) {
-        return edge.getSourceAnchorRelativePosition() != null && edge.getTargetAnchorRelativePosition() != null;
+        boolean isEdgePositioned = true;
+
+        isEdgePositioned = isEdgePositioned && edge.getSourceAnchorRelativePosition() != null;
+        isEdgePositioned = isEdgePositioned && edge.getTargetAnchorRelativePosition() != null;
+        isEdgePositioned = isEdgePositioned && !edge.getSourceAnchorRelativePosition().equals(Ratio.UNDEFINED);
+        isEdgePositioned = isEdgePositioned && !edge.getTargetAnchorRelativePosition().equals(Ratio.UNDEFINED);
+
+        return isEdgePositioned;
     }
 
     private boolean isLabelPositioned(EdgeLayoutData edge) {
+        boolean isLabelPositioned = true;
         if (edge.getCenterLabel() != null) {
             Position position = edge.getCenterLabel().getPosition();
-            return position.getX() != -1 || position.getY() != -1;
+            isLabelPositioned = isLabelPositioned && position.getX() != -1 || position.getY() != -1;
         }
-        return false;
+        if (edge.getBeginLabel() != null) {
+            // The code below is commented since it cannot work without a fix for this issue:
+            // https://github.com/eclipse-sirius/sirius-components/issues/1529
+
+            // Position position = edge.getBeginLabel().getPosition();
+            // isLabelPositioned = isLabelPositioned && position.getX() != -1 || position.getY() != -1;
+        }
+        if (edge.getEndLabel() != null) {
+            // The code below is commented since it cannot work without a fix for this issue:
+            // https://github.com/eclipse-sirius/sirius-components/issues/1529
+
+            // Position position = edge.getEndLabel().getPosition();
+            // isLabelPositioned = isLabelPositioned && position.getX() != -1 || position.getY() != -1;
+        }
+        return isLabelPositioned;
     }
 
     private boolean hasRoutingPointsToUpdate(Optional<IDiagramEvent> diagramEvent, EdgeLayoutData edge) {
