@@ -264,6 +264,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .reusedChildNodeDescriptionIds(reusedChildNodeDescriptionIds)
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .sizeProvider(sizeProvider)
+                .userResizable(viewNodeDescription.isUserResizable())
                 .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, converterContext))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .build();

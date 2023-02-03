@@ -95,6 +95,26 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected NodeStyleDescription style;
 
     /**
+     * The default value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isUserResizable()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean USER_RESIZABLE_EDEFAULT = true;
+
+    /**
+     * The cached value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isUserResizable()
+     * @generated
+     * @ordered
+     */
+    protected boolean userResizable = USER_RESIZABLE_EDEFAULT;
+
+    /**
      * The cached value of the '{@link #getNodeTools() <em>Node Tools</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -269,6 +289,29 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public boolean isUserResizable() {
+        return this.userResizable;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setUserResizable(boolean newUserResizable) {
+        boolean oldUserResizable = this.userResizable;
+        this.userResizable = newUserResizable;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE, oldUserResizable, this.userResizable));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<NodeTool> getNodeTools() {
         if (this.nodeTools == null) {
             this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, ViewPackage.NODE_DESCRIPTION__NODE_TOOLS);
@@ -403,6 +446,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getReusedBorderNodeDescriptions();
             case ViewPackage.NODE_DESCRIPTION__STYLE:
                 return this.getStyle();
+            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
+                return this.isUserResizable();
             case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
                 return this.getNodeTools();
             case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -442,6 +487,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return;
             case ViewPackage.NODE_DESCRIPTION__STYLE:
                 this.setStyle((NodeStyleDescription) newValue);
+                return;
+            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
+                this.setUserResizable((Boolean) newValue);
                 return;
             case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
                 this.getNodeTools().clear();
@@ -484,6 +532,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.NODE_DESCRIPTION__STYLE:
                 this.setStyle((NodeStyleDescription) null);
                 return;
+            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
+                this.setUserResizable(USER_RESIZABLE_EDEFAULT);
+                return;
             case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
                 this.getNodeTools().clear();
                 return;
@@ -518,6 +569,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.reusedBorderNodeDescriptions != null && !this.reusedBorderNodeDescriptions.isEmpty();
             case ViewPackage.NODE_DESCRIPTION__STYLE:
                 return this.style != null;
+            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
+                return this.userResizable != USER_RESIZABLE_EDEFAULT;
             case ViewPackage.NODE_DESCRIPTION__NODE_TOOLS:
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
             case ViewPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -541,7 +594,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (collapsible: ");
+        result.append(" (userResizable: ");
+        result.append(this.userResizable);
+        result.append(", collapsible: ");
         result.append(this.collapsible);
         result.append(')');
         return result.toString();

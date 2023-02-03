@@ -113,6 +113,7 @@ public class DiagramElementFactory implements IElementFactory {
                 .style(props.getStyle())
                 .position(props.getPosition())
                 .size(props.getSize())
+                .userResizable(props.isUserResizable())
                 .borderNodes(borderNodes)
                 .childNodes(childNodes)
                 .customizedProperties(props.getCustomizableProperties())

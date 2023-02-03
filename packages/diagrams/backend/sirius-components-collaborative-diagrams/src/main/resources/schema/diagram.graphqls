@@ -40,6 +40,7 @@ type Node {
   targetObjectKind: String!
   targetObjectLabel: String!
   size: Size!
+  userResizable: Boolean!
   position: Position!
   state: ViewModifier!
   style: INodeStyle!

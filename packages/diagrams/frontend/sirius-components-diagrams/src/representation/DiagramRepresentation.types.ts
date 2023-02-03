@@ -183,6 +183,7 @@ export interface GQLNode {
   targetObjectKind: string;
   targetObjectLabel: string;
   size: GQLSize;
+  userResizable: boolean;
   position: GQLPosition;
   state: GQLViewModifier;
   style: GQLINodeStyle;

@@ -67,6 +67,8 @@ public final class NodeElementProps implements IProps {
 
     private Size size;
 
+    private boolean userResizable;
+
     private Set<CustomizableProperties> customizableProperties;
 
     private List<Element> children;
@@ -131,6 +133,10 @@ public final class NodeElementProps implements IProps {
         return this.size;
     }
 
+    public boolean isUserResizable() {
+        return this.userResizable;
+    }
+
     public Set<CustomizableProperties> getCustomizableProperties() {
         return this.customizableProperties;
     }
@@ -184,6 +190,8 @@ public final class NodeElementProps implements IProps {
         private Position position;
 
         private Size size;
+
+        private boolean userResizable;
 
         private Set<CustomizableProperties> customizableProperties = Set.of();
 
@@ -258,6 +266,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder userResizable(boolean userResizable) {
+            this.userResizable = userResizable;
+            return this;
+        }
+
         public Builder customizableProperties(Set<CustomizableProperties> customizableProperties) {
             this.customizableProperties = Objects.requireNonNull(customizableProperties);
             return this;
@@ -284,6 +297,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.position = Objects.requireNonNull(this.position);
             nodeElementProps.size = Objects.requireNonNull(this.size);
+            nodeElementProps.userResizable = this.userResizable;
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);
             return nodeElementProps;

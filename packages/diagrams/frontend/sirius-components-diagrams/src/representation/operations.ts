@@ -152,6 +152,7 @@ export const diagramEventSubscription = gql`
       width
       height
     }
+    userResizable
   }
 
   fragment edgeFields on Edge {

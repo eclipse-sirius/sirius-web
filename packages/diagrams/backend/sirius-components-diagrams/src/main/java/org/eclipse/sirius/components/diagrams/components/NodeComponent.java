@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,6 +42,7 @@ import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
@@ -197,11 +199,22 @@ public class NodeComponent implements IComponent {
         Position position = optionalPreviousNode.map(Node::getPosition)
                 .orElse(Position.UNDEFINED);
 
-        Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
-
         Set<CustomizableProperties> customizableProperties = Set.of();
+
+        Size size = this.getSize(optionalPreviousNode, nodeDescription, nodeVariableManager);
+        Optional<Size> newSize = this.getNodeSizeFromEvent(this.props.getDiagramEvent(), nodeId);
+        if (newSize.isPresent()) {
+            size = newSize.get();
+        }
+
         if (CollapsingState.EXPANDED.equals(collapsingState)) {
             customizableProperties = optionalPreviousNode.map(Node::getCustomizedProperties).orElse(Set.of());
+        }
+
+        if (newSize.isPresent()) {
+            var newProperties = new LinkedHashSet<>(customizableProperties);
+            newProperties.add(CustomizableProperties.Size);
+            customizableProperties = newProperties;
         }
 
         Builder nodeElementPropsBuilder = NodeElementProps.newNodeElementProps(nodeId)
@@ -214,6 +227,7 @@ public class NodeComponent implements IComponent {
                 .style(style)
                 .position(position)
                 .size(size)
+                .userResizable(nodeDescription.isUserResizable())
                 .children(nodeChildren)
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
@@ -343,6 +357,14 @@ public class NodeComponent implements IComponent {
             if (size.getHeight() <= 0 || size.getWidth() <= 0) {
                 size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
             }
+        }
+        return size;
+    }
+
+    private Optional<Size> getNodeSizeFromEvent(Optional<IDiagramEvent> optionalDiagramEvent, String nodeId) {
+        Optional<Size> size = Optional.empty();
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof ResizeEvent resizeEvent && resizeEvent.nodeId().equals(nodeId)) {
+            return Optional.of(resizeEvent.newSize());
         }
         return size;
     }

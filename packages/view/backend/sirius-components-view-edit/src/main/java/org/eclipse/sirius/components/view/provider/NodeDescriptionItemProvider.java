@@ -59,6 +59,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
             this.addReusedChildNodeDescriptionsPropertyDescriptor(object);
             this.addReusedBorderNodeDescriptionsPropertyDescriptor(object);
+            this.addUserResizablePropertyDescriptor(object);
             this.addChildrenLayoutStrategyPropertyDescriptor(object);
             this.addCollapsiblePropertyDescriptor(object);
         }
@@ -89,6 +90,18 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.getString("_UI_NodeDescription_reusedBorderNodeDescriptions_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedBorderNodeDescriptions_feature", "_UI_NodeDescription_type"),
                 ViewPackage.Literals.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the User Resizable feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addUserResizablePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_userResizable_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_userResizable_feature", "_UI_NodeDescription_type"), ViewPackage.Literals.NODE_DESCRIPTION__USER_RESIZABLE,
+                true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -192,6 +205,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(NodeDescription.class)) {
+            case ViewPackage.NODE_DESCRIPTION__USER_RESIZABLE:
             case ViewPackage.NODE_DESCRIPTION__COLLAPSIBLE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

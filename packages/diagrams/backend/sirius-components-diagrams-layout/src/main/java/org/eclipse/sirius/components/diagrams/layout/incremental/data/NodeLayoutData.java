@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
     private Position position;
 
     private Size size;
+
+    private boolean userResizable;
 
     private IContainerLayoutData parent;
 
@@ -78,6 +80,14 @@ public class NodeLayoutData implements IContainerLayoutData, IConnectable {
     @Override
     public Size getSize() {
         return this.size;
+    }
+
+    public boolean isUserResizable() {
+        return this.userResizable;
+    }
+
+    public void setUserResizable(boolean userResizable) {
+        this.userResizable = userResizable;
     }
 
     @Override

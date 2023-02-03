@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
@@ -155,6 +156,9 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
                     Node node = optionalNode.get();
                     this.updateElkPadding(child, node);
                 }
+            }
+            if (Boolean.TRUE.equals(child.getProperty(ELKDiagramConverter.PROPERTY_CUSTOM_SIZE))) {
+                child.setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
             }
         }
         return elkNode;

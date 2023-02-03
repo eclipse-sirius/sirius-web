@@ -75,11 +75,14 @@ public class IncrementalLayoutedDiagramProvider {
         Set<CustomizableProperties> customizableProperties = new HashSet<>(node.getCustomizedProperties());
         if (nodeLayoutData.isResizedByUser()) {
             customizableProperties.add(CustomizableProperties.Size);
+        } else {
+            customizableProperties.remove(CustomizableProperties.Size);
         }
         // @formatter:off
         return Node.newNode(node)
                 .label(label)
                 .size(nodeLayoutData.getSize())
+                .userResizable(nodeLayoutData.isUserResizable())
                 .position(nodeLayoutData.getPosition())
                 .childNodes(childNodes)
                 .borderNodes(borderNodes)

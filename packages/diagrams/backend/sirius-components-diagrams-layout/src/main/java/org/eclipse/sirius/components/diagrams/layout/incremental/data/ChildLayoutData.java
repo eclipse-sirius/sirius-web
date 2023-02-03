@@ -79,6 +79,8 @@ public final class ChildLayoutData extends NodeLayoutData {
 
         private Size size;
 
+        private boolean userResizable;
+
         private IContainerLayoutData parent;
 
         private List<NodeLayoutData> borderNodes;
@@ -110,6 +112,7 @@ public final class ChildLayoutData extends NodeLayoutData {
         public Builder(NodeLayoutData childNode) {
             this.id = childNode.getId();
             this.size = childNode.getSize();
+            this.userResizable = childNode.isUserResizable();
             this.parent = childNode.getParent();
             this.borderNodes = childNode.getBorderNodes();
             this.nodes = childNode.getChildrenNodes();
@@ -148,6 +151,7 @@ public final class ChildLayoutData extends NodeLayoutData {
             // There are many _FIXME: Massive workaround (undefined position)_ around the code.
             childLayoutData.setPosition(Optional.ofNullable(this.position).orElse(Position.UNDEFINED));
             childLayoutData.setSize(Objects.requireNonNull(this.size));
+            childLayoutData.setUserResizable(this.userResizable);
             childLayoutData.setParent(Objects.requireNonNull(this.parent));
             childLayoutData.setBorderNodes(Objects.requireNonNull(this.borderNodes));
             childLayoutData.setChildrenNodes(Objects.requireNonNull(this.nodes));

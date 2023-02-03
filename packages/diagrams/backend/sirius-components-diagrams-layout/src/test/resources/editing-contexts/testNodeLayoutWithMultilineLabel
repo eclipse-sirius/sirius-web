@@ -1,3 +1,14 @@
 {
-  "name": "diag:Root"
+  "name": "diag:Root",
+  "children": [
+    {
+      "name": "rect:First LineAAAAAAAA\nSecond LineBBBBBBBBB",
+      "children": [
+        {
+          "name": "rect:First child",
+          "children": []
+        }
+      ]
+    }
+  ]
 }

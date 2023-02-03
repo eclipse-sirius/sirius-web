@@ -98,7 +98,7 @@ public class UpdateNodeBoundsEventHandler implements IDiagramEventHandler {
 
         Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramInput.diagramElementId());
 
-        if (optionalNode.isPresent()) {
+        if (optionalNode.isPresent() && (optionalNode.get().isUserResizable() || newSize.equals(optionalNode.get().getSize()))) {
             Position oldPosition = optionalNode.get().getPosition();
             //@formatter:off
             Position delta = Position.newPosition()
