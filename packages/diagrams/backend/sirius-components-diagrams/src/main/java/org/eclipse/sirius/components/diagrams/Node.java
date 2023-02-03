@@ -60,6 +60,8 @@ public final class Node {
 
     private Size size;
 
+    private boolean userResizable;
+
     private List<Node> borderNodes;
 
     private List<Node> childNodes;
@@ -130,6 +132,10 @@ public final class Node {
         return this.size;
     }
 
+    public boolean isUserResizable() {
+        return this.userResizable;
+    }
+
     public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
@@ -194,6 +200,8 @@ public final class Node {
 
         private Size size;
 
+        private boolean userResizable;
+
         private List<Node> borderNodes;
 
         private List<Node> childNodes;
@@ -220,6 +228,7 @@ public final class Node {
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.position = node.getPosition();
             this.size = node.getSize();
+            this.userResizable = node.userResizable;
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.customizedProperties = node.getCustomizedProperties();
@@ -295,6 +304,11 @@ public final class Node {
             return this;
         }
 
+        public Builder userResizable(boolean userResizable) {
+            this.userResizable = userResizable;
+            return this;
+        }
+
         public Builder borderNodes(List<Node> borderNodes) {
             this.borderNodes = Objects.requireNonNull(borderNodes);
             return this;
@@ -327,6 +341,7 @@ public final class Node {
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);
             node.size = Objects.requireNonNull(this.size);
+            node.userResizable = this.userResizable;
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.customizedProperties = this.customizedProperties;

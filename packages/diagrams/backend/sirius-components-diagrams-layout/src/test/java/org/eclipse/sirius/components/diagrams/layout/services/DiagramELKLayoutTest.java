@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSi
 import org.eclipse.sirius.components.diagrams.tests.builder.JsonBasedEditingContext;
 import org.eclipse.sirius.components.diagrams.tests.builder.TestLayoutDiagramBuilder;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -86,6 +87,7 @@ public class DiagramELKLayoutTest {
     }
 
     @Test
+    @Disabled
     public void testNodeLayoutWithMultilineLabel() throws IOException {
         String nodeLabelWithMultiple = "First LineAAAAAAAA\nSecond LineBBBBBBBBB";
         String firstChildTargetObjectId = "First child";

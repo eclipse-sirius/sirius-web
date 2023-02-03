@@ -58,6 +58,8 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private Size size;
 
+    private boolean userResizable = true;
+
     private CollapsingState collapsingState = CollapsingState.EXPANDED;
 
     private ILayoutStrategy childrenLayoutStrategy;
@@ -91,6 +93,11 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     public RectangleNodeBuilder<T> collapsingState(CollapsingState collapsingState) {
         this.collapsingState = collapsingState;
+        return this;
+    }
+
+    public RectangleNodeBuilder<T> userResizable(boolean userResizable) {
+        this.userResizable = userResizable;
         return this;
     }
 
@@ -156,6 +163,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                .style(Objects.requireNonNull(style))
                .modifiers(Set.of())
                .state(ViewModifier.Normal)
+               .userResizable(this.userResizable)
                .collapsingState(this.collapsingState);
 
         if (this.childrenLayoutStrategy != null) {

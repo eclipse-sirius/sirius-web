@@ -92,6 +92,9 @@ A node can be collapsed or expanded if its view description is collapsible or if
 - https://github.com/eclipse-sirius/sirius-components/issues/1624[#1624] [diagram] The `collapsingState` of a node is now available as a variable to compute its style.
 As a result, it is possible to create a conditional style which will use the collapsing state quite easily.
 Using the view DSL, one can use the expression `aql:collapsingState.toString() = 'COLLAPSED'` as a condition to create a style which will be used when the node is collapsed.
+- https://github.com/eclipse-sirius/sirius-components/issues/1584[#1584] [diagram] Studio makers can indicate whether or not a node type can be resized by the end-user or not.
+Nodes which can not be resized (or have not been resized yet) haver their actual size computed from the NodeDescrition's sizeProvider in a uniform way for all node types.
+Nodes which can and *have* been resized keep their user-chosen size across both incremental and full layout (as long as the requested size is compatible with other constraints).
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1583[#1583] [diagram] Add support for diagram nodes labels' auto-wrap
 +

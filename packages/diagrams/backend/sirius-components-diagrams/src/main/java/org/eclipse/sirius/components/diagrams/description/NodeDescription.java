@@ -56,6 +56,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, Size> sizeProvider;
 
+    private boolean userResizable;
+
     private List<NodeDescription> borderNodeDescriptions;
 
     private List<NodeDescription> childNodeDescriptions;
@@ -117,6 +119,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, Size> getSizeProvider() {
         return this.sizeProvider;
+    }
+
+    public boolean isUserResizable() {
+        return this.userResizable;
     }
 
     public List<NodeDescription> getBorderNodeDescriptions() {
@@ -189,6 +195,8 @@ public final class NodeDescription implements IDiagramElementDescription {
         private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
 
         private Function<VariableManager, Size> sizeProvider;
+
+        private boolean userResizable = true;
 
         private List<NodeDescription> borderNodeDescriptions = new ArrayList<>();
 
@@ -279,6 +287,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder userResizable(boolean userResizable) {
+            this.userResizable = userResizable;
+            return this;
+        }
+
         public Builder borderNodeDescriptions(List<NodeDescription> borderNodeDescriptions) {
             this.borderNodeDescriptions = Objects.requireNonNull(borderNodeDescriptions);
             return this;
@@ -326,6 +339,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.labelDescription = Objects.requireNonNull(this.labelDescription);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
+            nodeDescription.userResizable = this.userResizable;
             nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);

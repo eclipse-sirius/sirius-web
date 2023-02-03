@@ -209,7 +209,8 @@ public class NodeResizeTests {
         Node firstParent = optionalFirstParent.get();
 
         IDiagramEvent resizeEvent = new ResizeEvent(firstParent.getId(), positionDelta, newSize);
-        Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, diagram, resizeEvent);
+        Optional<Diagram> newDiagram = diagramCreationService.performRefresh(editingContext, diagram, resizeEvent);
+        Diagram layoutedDiagram = diagramCreationService.performLayout(editingContext, newDiagram.get(), resizeEvent);
 
         Optional<Node> optionalResizedFirstParent = this.getNode(layoutedDiagram.getNodes(), objectId);
         assertThat(optionalResizedFirstParent).isPresent();

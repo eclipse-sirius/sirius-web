@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -61,6 +62,12 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
     public static final IProperty<String> PROPERTY_TYPE = new Property<>("org.eclipse.sirius.components.layout.type");
 
     public static final IProperty<Class<? extends ILayoutStrategy>> PROPERTY_CHILDREN_LAYOUT_STRATEGY = new Property<>("org.eclipse.sirius.components.layout.children.layout.strategy");
+
+    /**
+     * Indicates if the node has the CustomizableProperties.Size set, in which case ELK should consider the current size
+     * to be fixed.
+     */
+    public static final IProperty<Boolean> PROPERTY_CUSTOM_SIZE = new Property<>("org.eclipse.sirius.components.layout.customSize");
 
     public static final String DEFAULT_DIAGRAM_TYPE = "graph";
 
@@ -122,6 +129,14 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             textBounds = this.textBoundsService.getBounds(label);
             double width = textBounds.getSize().getWidth();
             double height = textBounds.getSize().getHeight();
+            elkNode.setDimensions(width, height);
+        }
+
+        if (node.getStyle() instanceof RectangularNodeStyle) {
+            elkNode.setProperty(PROPERTY_CUSTOM_SIZE, true);
+            Size currentSize = node.getSize();
+            double width = Math.max(elkNode.getWidth(), currentSize.getWidth());
+            double height = Math.max(elkNode.getHeight(), currentSize.getHeight());
             elkNode.setDimensions(width, height);
         }
 

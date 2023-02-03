@@ -101,6 +101,29 @@ public interface NodeDescription extends DiagramElementDescription {
     void setStyle(NodeStyleDescription value);
 
     /**
+     * Returns the value of the '<em><b>User Resizable</b></em>' attribute. The default value is <code>"true"</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>User Resizable</em>' attribute.
+     * @see #setUserResizable(boolean)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeDescription_UserResizable()
+     * @model default="true" required="true"
+     * @generated
+     */
+    boolean isUserResizable();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeDescription#isUserResizable <em>User
+     * Resizable</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>User Resizable</em>' attribute.
+     * @see #isUserResizable()
+     * @generated
+     */
+    void setUserResizable(boolean value);
+
+    /**
      * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.view.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

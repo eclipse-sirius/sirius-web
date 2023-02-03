@@ -90,6 +90,7 @@ public class IncrementalLayoutDiagramConverter {
 
         layoutData.setPosition(node.getPosition());
         layoutData.setSize(node.getSize());
+        layoutData.setUserResizable(node.isUserResizable());
 
         List<NodeLayoutData> borderNodes = new ArrayList<>();
         for (Node borderNode : node.getBorderNodes()) {

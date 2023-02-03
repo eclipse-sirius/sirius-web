@@ -132,6 +132,7 @@ const convertNode = (
     targetObjectKind,
     targetObjectLabel,
     size,
+    userResizable,
     position,
     style,
     borderNodes,
@@ -163,7 +164,7 @@ const convertNode = (
   node.targetObjectLabel = targetObjectLabel;
   node.position = position;
   node.size = size;
-  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
+  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout, userResizable);
   node.style.opacity = node.state === ViewModifier.Faded ? 0.25 : 1;
 
   return node;
@@ -184,6 +185,7 @@ const convertBorderNode = (
     targetObjectKind,
     targetObjectLabel,
     size,
+    userResizable,
     position,
     style,
     state,
@@ -205,12 +207,17 @@ const convertBorderNode = (
   node.targetObjectLabel = targetObjectLabel;
   node.position = position;
   node.size = size;
-  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout);
+  node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout, userResizable);
   node.state = ViewModifier[GQLViewModifier[state]];
   return node;
 };
 
-const handleNodeFeatures = (gqlNode: GQLNode, readOnly: boolean, autoLayout: boolean): FeatureSet => {
+const handleNodeFeatures = (
+  gqlNode: GQLNode,
+  readOnly: boolean,
+  autoLayout: boolean,
+  userResizable: boolean
+): FeatureSet => {
   const features = new Set<symbol>([
     connectableFeature,
     deletableFeature,
@@ -224,6 +231,10 @@ const handleNodeFeatures = (gqlNode: GQLNode, readOnly: boolean, autoLayout: boo
     resizeFeature,
     withEditLabelFeature,
   ]);
+
+  if (!userResizable) {
+    features.delete(resizeFeature);
+  }
 
   if (isIconLabelNodeStyle(gqlNode.style)) {
     features.delete(resizeFeature);
