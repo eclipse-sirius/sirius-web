@@ -12,6 +12,7 @@
 - [ADR-090] Improve support for compartments
 - [ADR-091] Add support of the compartment expand/collapse
 - [ADR-092] Add support for diagram nodes labels' auto-wrap
+- [ADR-093] Improve node size control
 
 === Breaking changes
 
