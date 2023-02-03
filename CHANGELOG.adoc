@@ -54,6 +54,7 @@ The scheduling policy of our various `IRepresentationEventProcessor` will thus b
 - https://github.com/eclipse-sirius/sirius-components/issues/1374[#1374] [layout] The border node position is now updated when its parents bounds has changed (e.g. when a node increases its size because of a child creation).
 - https://github.com/eclipse-sirius/sirius-components/issues/1580[#1580] [diagram] Border nodes do not return to their previous position after they have been moved manually.
 - https://github.com/eclipse-sirius/sirius-components/issues/1522[#1522] [diagram] Rectangle nodes with a header can now be resized.
+- https://github.com/eclipse-sirius/sirius-components/issues/1529[#1529] [diagram] Improve the layout of newly created edges with a begin or end label
 
 === New Features
 

@@ -300,7 +300,7 @@ public final class ListLayoutStrategyEngine implements ILayoutStrategyEngine {
                 maxWidth = newParentSize.getWidth();
             }
         } else {
-            if (childrenAreaLayoutContext.isParentResizedByUser() && maxWidth < childrenAreaLayoutContext.getParentSize().getWidth()) {
+            if (maxWidth < childrenAreaLayoutContext.getParentSize().getWidth()) {
                 maxWidth = childrenAreaLayoutContext.getParentSize().getWidth();
             }
         }
