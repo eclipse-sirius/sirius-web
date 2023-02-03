@@ -95,6 +95,64 @@ public class EdgeLabelPositionProvider {
         return position;
     }
 
+    public Position getTailPosition(EdgeLayoutData edge, LabelLayoutData label) {
+        Position position = Position.UNDEFINED;
+        List<Position> routingPoints = edge.getRoutingPoints();
+        Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
+        Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
+        Position sourceAbsolutePosition = this.toAbsolutePosition(edge.getSourceAnchorRelativePosition(), sourceBounds);
+        Position targetAbsolutePosition = this.toAbsolutePosition(edge.getTargetAnchorRelativePosition(), targetBounds);
+        if (routingPoints.size() > 0) {
+            targetAbsolutePosition = routingPoints.get(0);
+        }
+
+        Geometry geometry = new Geometry();
+        Optional<Position> optionalSourceIntersection = geometry.getIntersection(targetAbsolutePosition, sourceAbsolutePosition, sourceBounds);
+
+        if (optionalSourceIntersection.isPresent()) {
+            Position sourceAnchor = optionalSourceIntersection.get();
+            position = this.getLabelEndPosition(label, sourceAnchor, targetAbsolutePosition);
+        }
+
+        return position;
+    }
+
+    public Position getHeadPosition(EdgeLayoutData edge, LabelLayoutData label) {
+        Position position = Position.UNDEFINED;
+        List<Position> routingPoints = edge.getRoutingPoints();
+        Bounds sourceBounds = this.getAbsoluteBounds(edge.getSource());
+        Bounds targetBounds = this.getAbsoluteBounds(edge.getTarget());
+        Position sourceAbsolutePosition = this.toAbsolutePosition(edge.getSourceAnchorRelativePosition(), sourceBounds);
+        Position targetAbsolutePosition = this.toAbsolutePosition(edge.getTargetAnchorRelativePosition(), targetBounds);
+
+        if (routingPoints.size() > 0) {
+            sourceAbsolutePosition = routingPoints.get(routingPoints.size() - 1);
+        }
+
+        Geometry geometry = new Geometry();
+        Optional<Position> optionalTargetIntersection = geometry.getIntersection(sourceAbsolutePosition, targetAbsolutePosition, targetBounds);
+
+        if (optionalTargetIntersection.isPresent()) {
+            Position targetAnchor = optionalTargetIntersection.get();
+            position = this.getLabelEndPosition(label, targetAnchor, sourceAbsolutePosition);
+        }
+
+        return position;
+    }
+
+    private Position getLabelEndPosition(LabelLayoutData label, Position edgeEndPositionForLabel, Position edgeOtherEnd) {
+        Double spacingEdgeLabel = null;
+        spacingEdgeLabel = this.layoutConfigurator.configureByElementClass(ElkEdge.class).getProperty(CoreOptions.SPACING_EDGE_LABEL);
+        if (spacingEdgeLabel == null) {
+            spacingEdgeLabel = CoreOptions.SPACING_EDGE_LABEL.getDefault();
+        }
+
+        // TODO:
+        Position position = Position.at(edgeEndPositionForLabel.getX() + spacingEdgeLabel, edgeEndPositionForLabel.getY() + spacingEdgeLabel);
+
+        return position;
+    }
+
     private Position toAbsolutePosition(Ratio anchorRelativePosition, Bounds sourceBounds) {
         double edgeAbsoluteX = sourceBounds.getPosition().getX() + sourceBounds.getSize().getWidth() * anchorRelativePosition.getX();
         double edgeAbsoluteY = sourceBounds.getPosition().getY() + sourceBounds.getSize().getHeight() * anchorRelativePosition.getY();

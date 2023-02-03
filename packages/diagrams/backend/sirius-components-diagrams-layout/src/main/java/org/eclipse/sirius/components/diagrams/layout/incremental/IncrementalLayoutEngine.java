@@ -237,8 +237,16 @@ public class IncrementalLayoutEngine {
         edge.setRoutingPoints(this.edgeRoutingPointsProvider.getRoutingPoints(optionalDiagramElementEvent, optionalDelta, edge));
 
         // recompute edge labels
+        if (edge.getBeginLabel() != null) {
+            edge.getBeginLabel().setPosition(this.edgeLabelPositionProvider.getTailPosition(edge, edge.getBeginLabel()));
+        }
+
         if (edge.getCenterLabel() != null) {
             edge.getCenterLabel().setPosition(this.edgeLabelPositionProvider.getCenterPosition(edge, edge.getCenterLabel()));
+        }
+
+        if (edge.getEndLabel() != null) {
+            edge.getEndLabel().setPosition(this.edgeLabelPositionProvider.getHeadPosition(edge, edge.getEndLabel()));
         }
     }
 
