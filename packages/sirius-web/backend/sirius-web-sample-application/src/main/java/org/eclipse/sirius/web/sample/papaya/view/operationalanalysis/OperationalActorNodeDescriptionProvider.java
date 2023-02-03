@@ -42,7 +42,7 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         operationalActorEmptyNodeStyle.setLabelColor("#1212121");
 
         var conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
-        conditionalNodeStyle.setCondition("aql:self.operationalActivities->size() = 0");
+        conditionalNodeStyle.setCondition("aql:collapsingState.toString() = 'COLLAPSED'");
         conditionalNodeStyle.setStyle(operationalActorEmptyNodeStyle);
 
         var nodeDescription = new PapyaViewBuilder().createNodeDescription("OperationalActor");
@@ -50,6 +50,7 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setStyle(operationalActorNodeStyle);
         nodeDescription.getConditionalStyles().add(conditionalNodeStyle);
+        nodeDescription.setCollapsible(true);
 
         var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya::OperationalActor", "operationalActors", "Operational Actor");
         newOperationalActorNodeTool.setName("New Operational Actor");
