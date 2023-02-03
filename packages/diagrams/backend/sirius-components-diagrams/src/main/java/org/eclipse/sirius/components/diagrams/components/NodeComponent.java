@@ -54,6 +54,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class NodeComponent implements IComponent {
 
+    public static final String COLLAPSING_STATE = "collapsingState";
+
     public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds";
 
     private final NodeComponentProps props;
@@ -156,6 +158,8 @@ public class NodeComponent implements IComponent {
         Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
         ViewModifier state = this.computeState(modifiers);
         CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent);
+
+        nodeVariableManager.put(NodeComponent.COLLAPSING_STATE, collapsingState);
 
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
