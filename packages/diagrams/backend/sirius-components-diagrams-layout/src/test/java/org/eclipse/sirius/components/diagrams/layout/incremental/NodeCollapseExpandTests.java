@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.layout.IELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchProvider;
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodeSizeProvider;
@@ -95,8 +96,9 @@ public class NodeCollapseExpandTests {
         ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
-        LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(new ELKPropertiesService()), new LayoutConfiguratorRegistry(List.of()),
-                new ELKLayoutedDiagramProvider(List.of(), new ELKPropertiesService()), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
+        LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(new TextBoundsService(), new ELKPropertiesService()),
+                new LayoutConfiguratorRegistry(List.of()), new ELKLayoutedDiagramProvider(List.of(), new ELKPropertiesService()), new IncrementalLayoutedDiagramProvider(),
+                representationDescriptionSearchService, incrementalLayoutEngine);
 
         return new TestDiagramCreationService(this.objectService, representationDescriptionSearchService, layoutService);
     }
@@ -140,7 +142,7 @@ public class NodeCollapseExpandTests {
         assertThat(laidOutDiagram.getNodes()).hasSize(2);
         Node laidOutContainer = laidOutDiagram.getNodes().get(1);
         assertThat(laidOutContainer.getPosition()).isEqualTo(Position.at(10, 10));
-        assertThat(laidOutContainer.getSize()).isEqualTo(Size.of(150, 70));
+        assertThat(laidOutContainer.getSize()).isEqualTo(Size.of(200, 70));
     }
 
     @Test
@@ -188,13 +190,13 @@ public class NodeCollapseExpandTests {
         assertThat(laidOutDiagram.getNodes()).hasSize(2);
         Node laidOutContainer = laidOutDiagram.getNodes().get(1);
         assertThat(laidOutContainer.getPosition()).isEqualTo(Position.at(10, 10));
-        assertThat(laidOutContainer.getSize().getWidth()).isEqualTo(174);
-        assertThat(laidOutContainer.getSize().getHeight()).isBetween(124.0, 125.0);
+        assertThat(laidOutContainer.getSize().getWidth()).isEqualTo(200);
+        assertThat(laidOutContainer.getSize().getHeight()).isBetween(118.0, 119.0);
         assertThat(laidOutContainer.getChildNodes()).hasSize(1);
 
         Node laidOutChild = laidOutContainer.getChildNodes().get(0);
         assertThat(laidOutChild.getPosition().getX()).isEqualTo(12);
-        assertThat(laidOutChild.getPosition().getY()).isBetween(42.0, 43.0);
+        assertThat(laidOutChild.getPosition().getY()).isBetween(36.0, 37.0);
         assertThat(laidOutChild.getSize()).isEqualTo(Size.of(150, 70));
 
         Edge laidOutEdge = laidOutDiagram.getEdges().get(0);

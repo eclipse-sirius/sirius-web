@@ -26,8 +26,8 @@ export class InsideLabelView extends SLabelView {
   render(label) {
     const { color, bold, underline, strikeThrough, italic, fontSize, iconURL, opacity } = label.style;
 
-    const width: number = label.parent.size.width - label.position.y * 2;
-    const height: number = label.parent.size.height - label.position.x * 2;
+    const width: number = label.parent.size.width - label.position.x * 2;
+    const height: number = label.parent.size.height - label.position.y * 2;
 
     // The font-family is hardcoded to match with the backend compute bounds algo.
     const textStyle = {
@@ -80,7 +80,7 @@ export class InsideLabelView extends SLabelView {
 
     const foreignObjectContents = (
       <div style={textStyle}>
-        {iconURL ? <img height="16" width="16" alt="" src={iconURL} /> : ''}
+        {iconURL ? <img height="16" width="16" alt="" style={{ marginRight: '4px' }} src={iconURL} /> : ''}
         {label.text}
       </div>
     );
