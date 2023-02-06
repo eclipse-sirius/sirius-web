@@ -13,16 +13,15 @@
 package org.eclipse.sirius.components.diagrams;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
-import java.awt.font.LineBreakMeasurer;
-import java.awt.font.TextAttribute;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.text.AttributedCharacterIterator;
-import java.text.AttributedString;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
  * Provides the TextBounds of a given text applied to a LabelStyle.
@@ -40,6 +39,8 @@ public class TextBoundsProvider {
 
     private static final AffineTransform AFFINE_TRANSFORM = new AffineTransform();
 
+    private static final AffineTransform AFFINE_TRANSFORM_AUTO_WRAP = new AffineTransform();
+
     private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(AFFINE_TRANSFORM, true, true);
 
     private static final int SPACE_FOR_ICON = 20;
@@ -48,9 +49,8 @@ public class TextBoundsProvider {
 
     static {
         // Frontend does not render the font the same way than the backend (it appears bigger on the frontend).
-        // Furthermore, text overflow break rules are not the same between frontend and backend.
-        // So, apply upscales to fill these differences.
-        AFFINE_TRANSFORM.scale(1.05, 1.50);
+        // So, apply ratio to fill this difference.
+        AFFINE_TRANSFORM_AUTO_WRAP.scale(1.09, 1.09);
     }
 
     /**
@@ -95,48 +95,56 @@ public class TextBoundsProvider {
         return new TextBounds(size, alignment);
     }
 
-    public TextBounds computeAutoWrapBounds(LabelStyle labelStyle, String text, double maxWidth) {
-        Rectangle2D labelBounds = new Rectangle();
+    public TextBounds computeAutoWrapBounds(LabelStyle labelStyle, String text, double containerMaxWidth) {
         if (text == null || text.isEmpty()) {
-            labelBounds.setFrame(0, 0, 0, 0);
-        } else {
-            Font font = this.getFont(labelStyle).deriveFont(AFFINE_TRANSFORM);
-            AttributedString attributedString = new AttributedString(text);
-            attributedString.addAttribute(TextAttribute.FONT, font);
-            AttributedCharacterIterator paragraph = attributedString.getIterator();
-            int paragraphStart = paragraph.getBeginIndex();
-            int paragraphEnd = paragraph.getEndIndex();
-            LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph, FONT_RENDER_CONTEXT);
-
-            // Set break width to width of maxWidth.
-            float breakWidth;
-            // maxWidth may be negative in case of a diagram/node creation. In this case we set a break width value
-            // to a very big value.
-            if (maxWidth < 0) {
-                breakWidth = 10000;
-            } else {
-                breakWidth = (float) maxWidth;
-            }
-            float width = 0;
-            float height = 0;
-            // Set position to the index of the first character in the paragraph.
-            lineMeasurer.setPosition(paragraphStart);
-
-            while (lineMeasurer.getPosition() < paragraphEnd) {
-                TextLayout layout = lineMeasurer.nextLayout(breakWidth);
-                // Move y-coordinate by the ascent of the layout.
-                height += layout.getAscent();
-                // Move y-coordinate in preparation for next layout.
-                height += layout.getDescent() + layout.getLeading();
-                Rectangle2D layoutBounds = layout.getBounds();
-                width = (float) Math.max(width, layoutBounds.getWidth());
-            }
-            labelBounds.setFrame(0, 0, width, height);
+            return new TextBounds(Size.of(0, 0), Position.at(0, 0));
         }
+        BufferedImage img = new BufferedImage(10000, 10000, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+        Font font = this.getFont(labelStyle).deriveFont(AFFINE_TRANSFORM_AUTO_WRAP);
+        g2d.setFont(font);
+        FontMetrics fm = g2d.getFontMetrics();
+        float fontSize = font.getSize2D();
+        float backendRatio = fontSize / 10;
+        float lineHeight = fm.getHeight() + backendRatio;
 
+        AtomicReference<Float> height = new AtomicReference<>();
+        height.set(0f);
+        float maxWidth = 0;
+        if (containerMaxWidth < 0) {
+            maxWidth = 1000;
+        } else {
+            maxWidth = (float) containerMaxWidth;
+        }
         boolean isIcon = !labelStyle.getIconURL().isEmpty();
-        Position alignment = this.getAlignment(labelBounds, isIcon, false);
-        Size size = this.getSize(labelBounds, isIcon);
+        if (isIcon) {
+            maxWidth = Math.max(SPACE_FOR_ICON, maxWidth - SPACE_FOR_ICON);
+        }
+        final float breakWidth = maxWidth;
+
+        Stream<String> lines = text.lines();
+        lines.forEach(line -> {
+            height.set(height.get() + lineHeight);
+            int textWidth = fm.stringWidth(line);
+            if (textWidth > breakWidth) {
+                String[] words = line.split("((?=\\t| )|(?<=\\t| ))");
+                String currentLine = "";
+                for (String word : words) {
+                    int lineWidth = fm.stringWidth(currentLine + word);
+                    if (lineWidth >= breakWidth) {
+                        currentLine = word;
+                        height.set(height.get() + lineHeight);
+                    } else {
+                        currentLine += word;
+                    }
+                }
+            }
+        });
+
+        g2d.dispose();
+
+        Position alignment = Position.at(0, 0);
+        Size size = Size.of(containerMaxWidth, height.get());
 
         return new TextBounds(size, alignment);
     }

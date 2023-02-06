@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.layout.ELKPropertiesService;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
+import org.eclipse.sirius.components.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.IContainerLayoutData;
@@ -45,9 +46,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class IncrementalLayoutDiagramConverter {
 
+    private final TextBoundsService textBoundsService;
+
     private final ELKPropertiesService elkPropertiesService;
 
-    public IncrementalLayoutDiagramConverter(ELKPropertiesService elkPropertiesService) {
+    public IncrementalLayoutDiagramConverter(TextBoundsService textBoundsService, ELKPropertiesService elkPropertiesService) {
+        this.textBoundsService = Objects.requireNonNull(textBoundsService);
         this.elkPropertiesService = Objects.requireNonNull(elkPropertiesService);
     }
 
@@ -171,9 +175,10 @@ public class IncrementalLayoutDiagramConverter {
 
         TextBounds textBounds = null;
         if (labelType.startsWith("label:inside-v")) {
-            textBounds = new TextBoundsProvider().computeAutoWrapBounds(label.getStyle(), label.getText(), node.getSize().getWidth());
+            double maxPadding = this.elkPropertiesService.getMaxPadding(node, layoutConfigurator);
+            textBounds = this.textBoundsService.getAutoWrapBounds(label, node.getSize().getWidth() - maxPadding * 2);
         } else {
-            textBounds = new TextBoundsProvider().computeBounds(label.getStyle(), label.getText());
+            textBounds = this.textBoundsService.getBounds(label);
         }
         layoutData.setTextBounds(textBounds);
 

@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layout.ELKDiagramConverter;
 import org.eclipse.sirius.components.diagrams.layout.ELKLayoutedDiagramProvider;
@@ -60,6 +59,8 @@ public class DiagramELKLayoutTest {
 
     private DefaultTestDiagramDescriptionProvider defaultTestDiagramDescriptionProvider = new DefaultTestDiagramDescriptionProvider(this.objectService);
 
+    private TextBoundsService textBoundsService = new TextBoundsService();
+
     private ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
 
     private TestDiagramCreationService createDiagramCreationService(Diagram diagram) {
@@ -80,8 +81,8 @@ public class DiagramELKLayoutTest {
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
         LayoutService layoutService = new LayoutService(new ELKDiagramConverter(new TextBoundsService(), new ImageSizeProvider(), this.elkPropertiesService),
-                new IncrementalLayoutDiagramConverter(this.elkPropertiesService), new LayoutConfiguratorRegistry(List.of()), new ELKLayoutedDiagramProvider(List.of(), this.elkPropertiesService),
-                new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
+                new IncrementalLayoutDiagramConverter(this.textBoundsService, this.elkPropertiesService), new LayoutConfiguratorRegistry(List.of()),
+                new ELKLayoutedDiagramProvider(List.of(), this.elkPropertiesService), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
 
         return new TestDiagramCreationService(this.objectService, representationDescriptionSearchService, layoutService);
     }
@@ -115,11 +116,13 @@ public class DiagramELKLayoutTest {
 
         // Check that the parent node and the label have the right size
         assertThat(firstParent.getLabel().getSize().getWidth()).isCloseTo(190.0, Offset.offset(5.0));
-        assertThat(firstParent.getLabel().getSize().getHeight()).isCloseTo(45.0, Offset.offset(5.0));
+        assertThat(firstParent.getLabel().getSize().getHeight()).isCloseTo(40.0, Offset.offset(5.0));
         assertThat(firstParent.getSize().getWidth()).isCloseTo(200.0, Offset.offset(5.0));
-        assertThat(firstParent.getSize().getHeight()).isCloseTo(185.0, Offset.offset(5.0));
+        assertThat(firstParent.getSize().getHeight()).isCloseTo(155.0, Offset.offset(5.0));
 
         // Check that the inner node is under the multi line label area
-        assertThat(firstParent.getChildNodes().get(0).getPosition()).isEqualTo(Position.at(12, 66));
+        assertThat(firstParent.getChildNodes().get(0).getPosition().getX()).isCloseTo(12, Offset.offset(0.1));
+        assertThat(firstParent.getChildNodes().get(0).getPosition().getY()).isCloseTo(55.8, Offset.offset(0.1));
+
     }
 }

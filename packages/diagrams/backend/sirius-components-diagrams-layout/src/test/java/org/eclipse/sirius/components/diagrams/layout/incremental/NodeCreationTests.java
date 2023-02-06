@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.layout.ILayoutEngineHandlerSwitchP
 import org.eclipse.sirius.components.diagrams.layout.LayoutConfiguratorRegistry;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.LayoutService;
+import org.eclipse.sirius.components.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageNodeStyleSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.NodePositionProvider;
@@ -63,6 +64,8 @@ public class NodeCreationTests {
     private TestLayoutObjectService objectService = new TestLayoutObjectService();
 
     private DefaultTestDiagramDescriptionProvider defaultTestDiagramDescriptionProvider = new DefaultTestDiagramDescriptionProvider(this.objectService);
+
+    private TextBoundsService textBoundsService = new TextBoundsService();
 
     private ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
 
@@ -286,8 +289,9 @@ public class NodeCreationTests {
         ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
-        LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(this.elkPropertiesService), new LayoutConfiguratorRegistry(List.of()),
-                new ELKLayoutedDiagramProvider(List.of(), this.elkPropertiesService), new IncrementalLayoutedDiagramProvider(), representationDescriptionSearchService, incrementalLayoutEngine);
+        LayoutService layoutService = new LayoutService(new IELKDiagramConverter.NoOp(), new IncrementalLayoutDiagramConverter(this.textBoundsService, this.elkPropertiesService),
+                new LayoutConfiguratorRegistry(List.of()), new ELKLayoutedDiagramProvider(List.of(), this.elkPropertiesService), new IncrementalLayoutedDiagramProvider(),
+                representationDescriptionSearchService, incrementalLayoutEngine);
 
         return new TestDiagramCreationService(this.objectService, representationDescriptionSearchService, layoutService);
     }
