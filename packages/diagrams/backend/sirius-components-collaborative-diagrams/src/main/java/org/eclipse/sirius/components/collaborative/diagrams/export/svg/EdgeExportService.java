@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -133,13 +133,13 @@ public class EdgeExportService {
     private StringBuilder exportEdgeLabels(Edge edge) {
         StringBuilder labelsExport = new StringBuilder();
         if (edge.getBeginLabel() != null) {
-            labelsExport.append(this.elementExport.exportLabel(edge.getBeginLabel(), 1));
+            labelsExport.append(this.elementExport.exportLabelAsText(edge.getBeginLabel(), 1));
         }
         if (edge.getCenterLabel() != null) {
-            labelsExport.append(this.elementExport.exportLabel(edge.getCenterLabel(), 1));
+            labelsExport.append(this.elementExport.exportLabelAsText(edge.getCenterLabel(), 1));
         }
         if (edge.getEndLabel() != null) {
-            labelsExport.append(this.elementExport.exportLabel(edge.getEndLabel(), 1));
+            labelsExport.append(this.elementExport.exportLabelAsText(edge.getEndLabel(), 1));
         }
         return labelsExport;
     }

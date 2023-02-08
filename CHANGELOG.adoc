@@ -59,6 +59,7 @@ It was not actually used, as tools have long been found in `DiagramDescription.g
 - https://github.com/eclipse-sirius/sirius-components/issues/1522[#1522] [diagram] Rectangle nodes with a header can now be resized.
 - https://github.com/eclipse-sirius/sirius-components/issues/1529[#1529] [diagram] Improve the layout of newly created edges with a begin or end label
 - https://github.com/eclipse-sirius/sirius-components/issues/1607[#1607] [tree] Make sure that a recently closed representation can be opened again
+- https://github.com/eclipse-sirius/sirius-components/issues/1686[#1686] [diagram] Fix SVG export of the wrapped labels
 
 === New Features
 

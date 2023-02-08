@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,9 @@ import org.springframework.web.context.annotation.RequestScope;
 @Service
 @RequestScope
 public class ImageRegistry implements IImageRegistry {
+
+    private static final String SVG = "svg";
+
     private final Map<URI, UUID> imageRegistry = new HashMap<>();
 
     private final HttpClient imageFetcher;
@@ -101,6 +104,13 @@ public class ImageRegistry implements IImageRegistry {
         return symbols;
     }
 
+    @Override
+    public StringBuilder getImage(UUID symbolId) {
+        StringBuilder symbols = new StringBuilder();
+        this.imageRegistry.entrySet().stream().filter(entry -> entry.getValue().equals(symbolId)).findFirst().ifPresent(entry -> symbols.append(this.getImage(entry.getKey(), entry.getValue())));
+        return symbols;
+    }
+
     private StringBuilder getReferencedImage(URI imageURI, UUID symbolId) {
         HttpRequest request = HttpRequest.newBuilder().uri(imageURI).GET().build();
 
@@ -110,7 +120,7 @@ public class ImageRegistry implements IImageRegistry {
             byte[] byteContent = this.imageFetcher.send(request, BodyHandlers.ofByteArray()).body();
             String content = new String(byteContent);
             if (content.contains("<svg")) {
-                imageType = Optional.of("svg");
+                imageType = Optional.of(SVG);
             } else {
                 imageType = this.getImageType(imageURI);
             }
@@ -130,15 +140,48 @@ public class ImageRegistry implements IImageRegistry {
     private StringBuilder addSymbolElement(UUID symbolId, String imageType, byte[] content) {
         StringBuilder symbol = new StringBuilder();
         symbol.append("<symbol id=\"" + symbolId + "\">");
-        if ("svg".equals(imageType)) {
+        if (SVG.equals(imageType)) {
             symbol.append(this.updateSvgContent(content));
         } else {
-            symbol.append("<image xlink:href=\"data:image/" + imageType + ";charset=utf-8;base64,");
-            String encodedString = Base64.getEncoder().encodeToString(content);
-            symbol.append(encodedString);
+            symbol.append("<image xlink:href=\"");
+            symbol.append(this.getBase64Image(imageType, content));
             symbol.append("\"/>");
         }
         return symbol.append("</symbol>");
+    }
+
+    private StringBuilder getImage(URI imageURI, UUID symbolId) {
+        HttpRequest request = HttpRequest.newBuilder().uri(imageURI).GET().build();
+
+        try {
+            Optional<String> imageType = Optional.empty();
+
+            byte[] byteContent = this.imageFetcher.send(request, BodyHandlers.ofByteArray()).body();
+            String content = new String(byteContent);
+            if (content.contains("<svg")) {
+                imageType = Optional.of(SVG);
+            } else {
+                imageType = this.getImageType(imageURI);
+            }
+
+            if (!imageType.isPresent()) {
+                this.logger.warn("The type of the image at URI " + imageURI + " is not valid.");
+            } else {
+                return this.getBase64Image(imageType.get(), byteContent);
+            }
+        } catch (IOException | InterruptedException e) {
+            this.logger.warn(e.getMessage(), e);
+        }
+        return new StringBuilder();
+
+    }
+
+    private StringBuilder getBase64Image(String imageType, byte[] content) {
+        StringBuilder symbol = new StringBuilder();
+        symbol.append("data:image/" + imageType + ";charset=utf-8;base64,");
+        String encodedString = Base64.getEncoder().encodeToString(content);
+        symbol.append(encodedString);
+        return symbol;
     }
 
     private String updateSvgContent(byte[] content) {

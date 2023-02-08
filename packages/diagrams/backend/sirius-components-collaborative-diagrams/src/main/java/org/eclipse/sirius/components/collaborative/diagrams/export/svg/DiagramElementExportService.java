@@ -39,7 +39,14 @@ public class DiagramElementExportService {
         this.imageRegistry = Objects.requireNonNull(imageRegistry);
     }
 
-    public StringBuilder exportLabel(Label label, float opacity) {
+    public StringBuilder exportLabel(Label label, float opacity, Node node) {
+        if (label.getType().startsWith("label:inside-v")) {
+            return this.exportLabelAsForeignObject(label, opacity, node);
+        }
+        return this.exportLabelAsText(label, opacity);
+    }
+
+    public StringBuilder exportLabelAsText(Label label, float opacity) {
         StringBuilder labelExport = new StringBuilder();
         Position position = label.getPosition();
         Position alignment = label.getAlignment();
@@ -61,6 +68,23 @@ public class DiagramElementExportService {
         labelExport.append(this.exportTextElement(label.getText(), label.getType(), style));
 
         return labelExport.append("</g>");
+    }
+
+    public StringBuilder exportLabelAsForeignObject(Label label, float opacity, Node node) {
+        StringBuilder labelExport = new StringBuilder();
+        double width = node.getSize().getWidth() - label.getPosition().getX() * 2;
+        double height = node.getSize().getHeight() - label.getPosition().getY() * 2;
+        labelExport.append("<foreignObject ");
+        labelExport.append("requiredFeatures=\"http://www.w3.org/TR/SVG11/feature#Extensibility\" ");
+        labelExport.append("width=\"").append(width).append("\" ");
+        labelExport.append("height=\"").append(height).append("\" ");
+        labelExport.append("transform=\"translate(").append(label.getPosition().getX()).append(", ").append(label.getPosition().getY()).append(")\" ");
+        labelExport.append("style=\"pointer-events: none;\"");
+        labelExport.append(">");
+
+        labelExport.append(this.exportTextElementAsDiv(label.getText(), label.getType(), label.getStyle(), opacity, width, height));
+
+        return labelExport.append("</foreignObject>");
     }
 
     public StringBuilder exportImageElement(String imageURL, int x, int y, Optional<Size> size, float nodeOpacity) {
@@ -140,6 +164,57 @@ public class DiagramElementExportService {
         }
 
         return textExport.append("</text>");
+    }
+
+    private StringBuilder exportTextElementAsDiv(String text, String type, LabelStyle labelStyle, float opacity, double width, double height) {
+        StringBuilder textExport = new StringBuilder();
+        textExport.append("<div ");
+        textExport.append("xmlns=\"http://www.w3.org/1999/xhtml\" ");
+        textExport.append("style=\"");
+        textExport.append("width: ").append(width).append("px; ");
+        textExport.append("height: ").append(height).append("px; ");
+        textExport.append("color: ").append(labelStyle.getColor()).append("; ");
+        textExport.append("opacity: ").append(opacity).append("; ");
+        textExport.append("overflow-wrap: anywhere; ");
+        textExport.append("white-space: break-spaces; ");
+        textExport.append("display: flex; ");
+        textExport.append("flex-wrap: no-wrap; ");
+        if (type.endsWith("-h_left")) {
+            textExport.append("text-align: left; ");
+            textExport.append("justify-content: flex-start; ");
+        } else if (type.endsWith("-h_right")) {
+            textExport.append("text-align: right; ");
+            textExport.append("justify-content: flex-end; ");
+        } else {
+            textExport.append("text-align: center; ");
+            textExport.append("justify-content: center; ");
+        }
+        if (type.contains("-v_top")) {
+            textExport.append("align-items: flex-start; ");
+        } else if (type.contains("-v_bottom")) {
+            textExport.append("align-items: flex-end; ");
+        } else {
+            textExport.append("align-items: center; ");
+        }
+        textExport.append(this.exportFont(labelStyle));
+        textExport.append("\">");
+
+        if (!(labelStyle.getIconURL().isEmpty())) {
+            UUID symbolId = this.imageRegistry.registerImage(labelStyle.getIconURL());
+            if (symbolId != null) {
+                StringBuilder image = this.imageRegistry.getImage(symbolId);
+                textExport.append("<img ");
+                textExport.append("src=\"").append(image).append("\" ");
+                textExport.append("width=\"16\" ");
+                textExport.append("height=\"16\" ");
+                textExport.append("style=\"margin-right: 4px;\"");
+                textExport.append("/>");
+            }
+        }
+
+        textExport.append(text);
+
+        return textExport.append("</div>");
     }
 
     private StringBuilder exportFont(LabelStyle labelStyle) {

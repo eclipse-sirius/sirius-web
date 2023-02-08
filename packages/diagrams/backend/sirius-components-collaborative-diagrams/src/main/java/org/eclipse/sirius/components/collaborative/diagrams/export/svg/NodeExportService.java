@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,7 @@ public class NodeExportService {
         Position position = Position.at(-style.getBorderSize() / 2., -style.getBorderSize() / 2.);
         imageExport.append(this.elementExport.exportRectangleElement(imageSize, position, rectangleStyle));
         imageExport.append(this.elementExport.exportImageElement(style.getImageURL(), 0, 0, Optional.of(size), nodeOpacity));
-        imageExport.append(this.elementExport.exportLabel(label, nodeOpacity));
+        imageExport.append(this.elementExport.exportLabel(label, nodeOpacity, node));
         imageExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return imageExport.append("</g>");
@@ -137,7 +137,7 @@ public class NodeExportService {
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Position.at(0, 0), rectangleStyle));
-        rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity));
+        rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity, node));
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return rectangleExport.append("</g>");
@@ -159,7 +159,7 @@ public class NodeExportService {
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Position.at(0, 0), rectangleStyle));
-        rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity));
+        rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity, node));
         if (style.isWithHeader()) {
             rectangleExport.append(this.exportHeaderSeparator(node, node.getLabel(), style, nodeOpacity));
         }
