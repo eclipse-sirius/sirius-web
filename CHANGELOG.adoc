@@ -60,6 +60,8 @@ It was not actually used, as tools have long been found in `DiagramDescription.g
 - https://github.com/eclipse-sirius/sirius-components/issues/1529[#1529] [diagram] Improve the layout of newly created edges with a begin or end label
 - https://github.com/eclipse-sirius/sirius-components/issues/1607[#1607] [tree] Make sure that a recently closed representation can be opened again
 - https://github.com/eclipse-sirius/sirius-components/issues/1686[#1686] [diagram] Fix SVG export of the wrapped labels
+- https://github.com/eclipse-sirius/sirius-components/issues/1692[#1692] [core] JPEG images where previously ignored if using a `.jpg` extension instead of `.jpeg`.
+They are now correctly supported
 
 === New Features
 
