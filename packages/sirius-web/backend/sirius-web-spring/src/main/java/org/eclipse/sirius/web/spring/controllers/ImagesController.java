@@ -75,7 +75,9 @@ public class ImagesController {
 
     private static final String IMAGE_GIF_EXTENSION = "gif";
 
-    private static final String IMAGE_JPG_EXTENSION = "jpeg";
+    private static final String IMAGE_JPG_EXTENSION = "jpg";
+
+    private static final String IMAGE_JPEG_EXTENSION = "jpeg";
 
     private static final String IMAGE_PNG_EXTENSION = "png";
 
@@ -151,14 +153,14 @@ public class ImagesController {
         MediaType mediaType = null;
         int extensionSeparatorIndex = imagePath.lastIndexOf(EXTENSION_SEPARATOR);
         if (extensionSeparatorIndex != -1) {
-            String extention = imagePath.substring(extensionSeparatorIndex + 1, imagePath.length());
-            if (IMAGE_GIF_EXTENSION.equalsIgnoreCase(extention)) {
+            String extension = imagePath.substring(extensionSeparatorIndex + 1, imagePath.length());
+            if (IMAGE_GIF_EXTENSION.equalsIgnoreCase(extension)) {
                 mediaType = MediaType.IMAGE_GIF;
-            } else if (IMAGE_PNG_EXTENSION.equalsIgnoreCase(extention)) {
+            } else if (IMAGE_PNG_EXTENSION.equalsIgnoreCase(extension)) {
                 mediaType = MediaType.IMAGE_PNG;
-            } else if (IMAGE_JPG_EXTENSION.equalsIgnoreCase(extention)) {
+            } else if (IMAGE_JPEG_EXTENSION.equalsIgnoreCase(extension) || IMAGE_JPG_EXTENSION.equalsIgnoreCase(extension)) {
                 mediaType = MediaType.IMAGE_JPEG;
-            } else if (IMAGE_SVG_EXTENSION.equalsIgnoreCase(extention)) {
+            } else if (IMAGE_SVG_EXTENSION.equalsIgnoreCase(extension)) {
                 mediaType = IMAGE_SVG;
             }
         }
