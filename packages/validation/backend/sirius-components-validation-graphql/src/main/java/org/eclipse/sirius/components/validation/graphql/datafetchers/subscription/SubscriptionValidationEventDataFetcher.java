@@ -14,11 +14,8 @@ package org.eclipse.sirius.components.validation.graphql.datafetchers.subscripti
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationEventProcessor;
@@ -33,8 +30,6 @@ import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The data fetcher used to send the refreshed validation to a subscription.
@@ -52,8 +47,6 @@ public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithF
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private final Scheduler scheduler = Schedulers.newSingle(this.getClass().getSimpleName());
-
     public SubscriptionValidationEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
@@ -70,20 +63,10 @@ public class SubscriptionValidationEventDataFetcher implements IDataFetcherWithF
         // @formatter:off
         return this.exceptionWrapper
                 .wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IValidationEventProcessor.class, validationConfiguration, input), input)
-                .publishOn(this.scheduler)
                 .map(payload -> DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)
                         .build());
-        // @formatter:on
-    }
-
-    @PreDestroy
-    public void dispose() {
-        // @formatter:off
-        this.scheduler.disposeGracefully()
-                .timeout(Duration.ofMillis(100))
-                .block();
         // @formatter:on
     }
 }

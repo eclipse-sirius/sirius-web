@@ -14,11 +14,8 @@ package org.eclipse.sirius.components.trees.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventProcessor;
@@ -33,8 +30,6 @@ import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The data fetcher used to send the refreshed tree to a subscription.
@@ -53,8 +48,6 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private final Scheduler scheduler = Schedulers.newSingle(this.getClass().getSimpleName());
-
     public SubscriptionTreeEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
@@ -70,20 +63,10 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
         Map<String, Object> localContext = Map.of(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId(), LocalContextConstants.REPRESENTATION_ID, treeConfiguration.getId());
         // @formatter:off
         return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), ITreeEventProcessor.class, treeConfiguration, input), input)
-                .publishOn(this.scheduler)
                 .map(payload -> DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)
                         .build());
-        // @formatter:on
-    }
-
-    @PreDestroy
-    public void dispose() {
-        // @formatter:off
-        this.scheduler.disposeGracefully()
-                .timeout(Duration.ofMillis(100))
-                .block();
         // @formatter:on
     }
 

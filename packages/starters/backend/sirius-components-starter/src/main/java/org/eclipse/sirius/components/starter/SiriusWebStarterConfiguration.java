@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.starter;
 
+import java.time.Duration;
 import java.util.concurrent.Executors;
+
+import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
@@ -44,6 +47,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * Projects which depend on this starter project will automatically get all the components required to create a Sirius
@@ -127,6 +132,9 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean
     public IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
         return new IEventProcessorSubscriptionProvider() {
+
+            private final Scheduler scheduler = Schedulers.newSingle("EventProcessorSubscriptionProvider");
+
             @Override
             public <T extends IRepresentationEventProcessor> Flux<IPayload> getSubscription(String editingContextId, Class<T> representationEventProcessorClass,
                     IRepresentationConfiguration representationConfiguration, IInput input) {
@@ -134,7 +142,17 @@ public class SiriusWebStarterConfiguration {
                 return editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
                         .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationEventProcessorClass, representationConfiguration, input))
                         .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
-                        .orElse(Flux.empty());
+                        .orElse(Flux.empty())
+                        .publishOn(this.scheduler);
+                // @formatter:on
+            }
+
+            @PreDestroy
+            public void dispose() {
+                // @formatter:off
+                this.scheduler.disposeGracefully()
+                        .timeout(Duration.ofMillis(100))
+                        .block();
                 // @formatter:on
             }
         };

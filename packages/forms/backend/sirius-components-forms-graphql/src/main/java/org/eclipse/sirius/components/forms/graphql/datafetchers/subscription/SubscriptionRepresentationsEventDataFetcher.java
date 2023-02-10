@@ -14,11 +14,8 @@ package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
@@ -33,8 +30,6 @@ import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The data fetcher used to send the refreshed representations form to a subscription.
@@ -52,8 +47,6 @@ public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcher
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private final Scheduler scheduler = Schedulers.newSingle(this.getClass().getSimpleName());
-
     public SubscriptionRepresentationsEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
@@ -70,20 +63,10 @@ public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcher
         // @formatter:off
         return this.exceptionWrapper
                 .wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, representationsConfiguration, input), input)
-                .publishOn(this.scheduler)
                 .map(payload -> DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)
                         .build());
-        // @formatter:on
-    }
-
-    @PreDestroy
-    public void dispose() {
-        // @formatter:off
-        this.scheduler.disposeGracefully()
-                .timeout(Duration.ofMillis(100))
-                .block();
         // @formatter:on
     }
 

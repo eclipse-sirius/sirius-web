@@ -14,11 +14,8 @@ package org.eclipse.sirius.components.formdescriptioneditors.graphql.datafetcher
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
@@ -33,8 +30,6 @@ import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The data fetcher used to send the refreshed form description editor to a subscription.
@@ -61,8 +56,6 @@ public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataF
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private final Scheduler scheduler = Schedulers.newSingle(this.getClass().getSimpleName());
-
     public SubscriptionFormDescriptionEditorEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
@@ -80,20 +73,10 @@ public class SubscriptionFormDescriptionEditorEventDataFetcher implements IDataF
         // @formatter:off
         return this.exceptionWrapper
                 .wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormDescriptionEditorEventProcessor.class, formDescriptionEditorConfiguration, input), input)
-                .publishOn(this.scheduler)
                 .map(payload -> DataFetcherResult.<IPayload>newResult()
                         .data(payload)
                         .localContext(localContext)
                         .build());
-        // @formatter:on
-    }
-
-    @PreDestroy
-    public void dispose() {
-        // @formatter:off
-        this.scheduler.disposeGracefully()
-                .timeout(Duration.ofMillis(100))
-                .block();
         // @formatter:on
     }
 
