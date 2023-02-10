@@ -248,6 +248,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .map(this.idProvider)
                 .toList();
 
+        Predicate<VariableManager> shouldRenderPredicate = variableManager -> {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewNodeDescription.getPreconditionExpression());
+            return result.asBoolean().orElse(true);
+        };
+
         NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
@@ -267,6 +272,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .userResizable(viewNodeDescription.isUserResizable())
                 .labelEditHandler(this.createLabelEditHandler(viewNodeDescription, converterContext))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
+                .shouldRenderPredicate(shouldRenderPredicate)
                 .build();
         // @formatter:on
         converterContext.getConvertedNodes().put(viewNodeDescription, result);

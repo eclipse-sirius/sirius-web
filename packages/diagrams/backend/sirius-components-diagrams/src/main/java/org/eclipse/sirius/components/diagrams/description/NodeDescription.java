@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
@@ -47,6 +48,8 @@ public final class NodeDescription implements IDiagramElementDescription {
     private Function<VariableManager, String> targetObjectLabelProvider;
 
     private Function<VariableManager, List<?>> semanticElementsProvider;
+
+    private Predicate<VariableManager> shouldRenderPredicate;
 
     private LabelDescription labelDescription;
 
@@ -103,6 +106,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
+    }
+
+    public Predicate<VariableManager> getShouldRenderPredicate() {
+        return this.shouldRenderPredicate;
     }
 
     public LabelDescription getLabelDescription() {
@@ -188,6 +195,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
+        private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
+
         private LabelDescription labelDescription;
 
         private Function<VariableManager, INodeStyle> styleProvider;
@@ -235,6 +244,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.reusedChildNodeDescriptionIds = nodeDescription.getReusedChildNodeDescriptionIds();
             this.labelEditHandler = nodeDescription.getLabelEditHandler();
             this.deleteHandler = nodeDescription.getDeleteHandler();
+            this.shouldRenderPredicate = nodeDescription.getShouldRenderPredicate();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -264,6 +274,11 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder semanticElementsProvider(Function<VariableManager, List<?>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
+            return this;
+        }
+
+        public Builder shouldRenderPredicate(Predicate<VariableManager> shouldRenderPredicate) {
+            this.shouldRenderPredicate = Objects.requireNonNull(shouldRenderPredicate);
             return this;
         }
 
@@ -336,6 +351,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             nodeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
             nodeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
+            nodeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             nodeDescription.labelDescription = Objects.requireNonNull(this.labelDescription);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);

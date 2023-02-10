@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getSemanticCandidatesExpression <em>Semantic
  * Candidates Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getLabelExpression <em>Label
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.DiagramElementDescription#getDeleteTool <em>Delete Tool</em>}</li>
@@ -204,5 +206,29 @@ public interface DiagramElementDescription extends EObject {
      * @generated
      */
     void setSynchronizationPolicy(SynchronizationPolicy value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getDiagramElementDescription_PreconditionExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Precondition Expression</em>' attribute.
+     * @see #getPreconditionExpression()
+     * @generated
+     */
+    void setPreconditionExpression(String value);
 
 } // DiagramElementDescription

@@ -31,6 +31,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="aql:self.eContents()"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"
         defaultValueLiteral="aql:self.name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
@@ -83,8 +85,6 @@
         eType="#//EdgeReconnectionTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalEdgeStyle" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
-        eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="beginLabelEditTool" eType="#//LabelEditTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="endLabelEditTool" eType="#//LabelEditTool"

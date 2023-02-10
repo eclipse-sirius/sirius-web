@@ -62,6 +62,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
             this.addNamePropertyDescriptor(object);
             this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
+            this.addPreconditionExpressionPropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
             this.addSynchronizationPolicyPropertyDescriptor(object);
         }
@@ -128,6 +129,19 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_DiagramElementDescription_synchronizationPolicy_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_synchronizationPolicy_feature", "_UI_DiagramElementDescription_type"),
                 ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramElementDescription_preconditionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_preconditionExpression_feature", "_UI_DiagramElementDescription_type"),
+                ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -207,6 +221,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

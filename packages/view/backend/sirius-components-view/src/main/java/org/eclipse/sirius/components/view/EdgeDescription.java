@@ -234,29 +234,6 @@ public interface EdgeDescription extends DiagramElementDescription {
     EList<ConditionalEdgeStyle> getConditionalStyles();
 
     /**
-     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Precondition Expression</em>' attribute.
-     * @see #setPreconditionExpression(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getEdgeDescription_PreconditionExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getPreconditionExpression();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.EdgeDescription#getPreconditionExpression
-     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Precondition Expression</em>' attribute.
-     * @see #getPreconditionExpression()
-     * @generated
-     */
-    void setPreconditionExpression(String value);
-
-    /**
      * Returns the value of the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
