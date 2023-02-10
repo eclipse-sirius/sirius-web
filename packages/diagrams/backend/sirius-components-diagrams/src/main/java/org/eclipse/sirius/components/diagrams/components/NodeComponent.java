@@ -102,7 +102,7 @@ public class NodeComponent implements IComponent {
             String targetObjectId = nodeDescription.getTargetObjectIdProvider().apply(nodeVariableManager);
             var optionalPreviousNode = nodesRequestor.getByTargetObjectId(targetObjectId);
 
-            if (this.shouldRender(targetObjectId, optionalPreviousNode)) {
+            if (this.shouldRender(targetObjectId, optionalPreviousNode, nodeVariableManager)) {
                 Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode, optionalDiagramEvent);
                 children.add(nodeElement);
 
@@ -117,7 +117,7 @@ public class NodeComponent implements IComponent {
         return new Fragment(fragmentProps);
     }
 
-    private boolean shouldRender(String targetObjectId, Optional<Node> optionalPreviousNode) {
+    private boolean shouldRender(String targetObjectId, Optional<Node> optionalPreviousNode, VariableManager variableManager) {
         boolean shouldRender = false;
         NodeDescription nodeDescription = this.props.getNodeDescription();
         SynchronizationPolicy synchronizationPolicy = nodeDescription.getSynchronizationPolicy();
@@ -131,7 +131,8 @@ public class NodeComponent implements IComponent {
                 shouldRender = this.existsViewCreationRequested(targetObjectId);
             }
         }
-        return shouldRender;
+
+        return shouldRender && nodeDescription.getShouldRenderPredicate().test(variableManager);
     }
 
     private boolean existsViewCreationRequested(String targetObjectId) {

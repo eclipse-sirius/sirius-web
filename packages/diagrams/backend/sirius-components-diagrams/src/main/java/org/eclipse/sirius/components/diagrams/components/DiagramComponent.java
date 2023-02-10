@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
@@ -45,6 +46,8 @@ public class DiagramComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
+        variableManager.put(DiagramComponentProps.PREVIOUS_DIAGRAM, optionalPreviousDiagram.orElse(null));
+        variableManager.put(IDiagramEvent.DIAGRAM_EVENT, this.props.getDiagramEvent().orElse(null));
 
         String label = diagramDescription.getLabelProvider().apply(variableManager);
 

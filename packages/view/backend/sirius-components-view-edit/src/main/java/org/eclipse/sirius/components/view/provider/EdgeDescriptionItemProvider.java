@@ -61,7 +61,6 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addTargetNodeDescriptionsPropertyDescriptor(object);
             this.addSourceNodesExpressionPropertyDescriptor(object);
             this.addTargetNodesExpressionPropertyDescriptor(object);
-            this.addPreconditionExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -158,19 +157,6 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_preconditionExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_preconditionExpression_feature", "_UI_EdgeDescription_type"),
-                ViewPackage.Literals.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
@@ -253,7 +239,6 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case ViewPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             case ViewPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
             case ViewPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-            case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case ViewPackage.EDGE_DESCRIPTION__STYLE:

@@ -215,26 +215,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected EList<ConditionalEdgeStyle> conditionalStyles;
 
     /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
-
-    /**
      * The cached value of the '{@link #getBeginLabelEditTool() <em>Begin Label Edit Tool</em>}' containment reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -507,29 +487,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public LabelEditTool getBeginLabelEditTool() {
         return this.beginLabelEditTool;
     }
@@ -674,8 +631,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getReconnectEdgeTools();
             case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
-            case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
             case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
                 return this.getBeginLabelEditTool();
             case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
@@ -731,9 +686,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalEdgeStyle>) newValue);
                 return;
-            case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
-                return;
             case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
                 this.setBeginLabelEditTool((LabelEditTool) newValue);
                 return;
@@ -785,9 +737,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
-            case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
             case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
                 this.setBeginLabelEditTool((LabelEditTool) null);
                 return;
@@ -828,8 +777,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.reconnectEdgeTools != null && !this.reconnectEdgeTools.isEmpty();
             case ViewPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
-            case ViewPackage.EDGE_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case ViewPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL:
                 return this.beginLabelEditTool != null;
             case ViewPackage.EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL:
@@ -859,8 +806,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         result.append(this.sourceNodesExpression);
         result.append(", targetNodesExpression: ");
         result.append(this.targetNodesExpression);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
         result.append(')');
         return result.toString();
     }

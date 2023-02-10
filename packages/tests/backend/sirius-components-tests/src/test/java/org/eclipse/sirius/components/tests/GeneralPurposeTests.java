@@ -64,6 +64,8 @@ public class GeneralPurposeTests {
 
     private static final String CHECKSTYLE_NCSS = "@SuppressWarnings(\"checkstyle:JavaNCSS\")";
 
+    private static final String CHECKSTYLE_INTERFACE_IS_TYPE = "@SuppressWarnings(\"checkstyle:InterfaceIsType\")";
+
     private static final String NON_NLS = "$NON-NLS-";
 
     private static final String BUILDER = "Builder";
@@ -215,6 +217,8 @@ public class GeneralPurposeTests {
             } else if (line.contains(CHECKSTYLE_MULTIPLE_STRING_LITERALS)) {
                 isValidUsage = true;
             } else if (line.contains(CHECKSTYLE_NCSS)) {
+                isValidUsage = true;
+            } else if (line.contains(CHECKSTYLE_INTERFACE_IS_TYPE)) {
                 isValidUsage = true;
             }
             if (!isValidUsage) {

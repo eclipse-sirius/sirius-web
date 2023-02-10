@@ -293,13 +293,22 @@ public interface ViewPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION = 3;
+
+    /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 4;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -308,7 +317,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = 4;
+    int DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL = 5;
 
     /**
      * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -317,7 +326,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 5;
+    int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EDIT_TOOL = 6;
 
     /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -326,7 +335,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 6;
+    int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 7;
 
     /**
      * The number of structural features of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc -->
@@ -335,7 +344,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 7;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Diagram Element Description</em>' class. <!-- begin-user-doc --> <!--
@@ -380,6 +389,15 @@ public interface ViewPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -558,6 +576,15 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -693,22 +720,13 @@ public interface ViewPackage extends EPackage {
     int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
-
-    /**
      * The feature id for the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+    int EDGE_DESCRIPTION__BEGIN_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -717,7 +735,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+    int EDGE_DESCRIPTION__END_LABEL_EDIT_TOOL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
@@ -726,7 +744,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6451,6 +6469,18 @@ public interface ViewPackage extends EPackage {
     EAttribute getDiagramElementDescription_SynchronizationPolicy();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DiagramElementDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DiagramElementDescription#getPreconditionExpression()
+     * @see #getDiagramElementDescription()
+     * @generated
+     */
+    EAttribute getDiagramElementDescription_PreconditionExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodeDescription <em>Node
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6721,18 +6751,6 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getEdgeDescription_ConditionalStyles();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.EdgeDescription#getPreconditionExpression <em>Precondition
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @see org.eclipse.sirius.components.view.EdgeDescription#getPreconditionExpression()
-     * @see #getEdgeDescription()
-     * @generated
-     */
-    EAttribute getEdgeDescription_PreconditionExpression();
 
     /**
      * Returns the meta object for the containment reference
@@ -9332,6 +9350,14 @@ public interface ViewPackage extends EPackage {
         EAttribute DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = eINSTANCE.getDiagramElementDescription_SynchronizationPolicy();
 
         /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getDiagramElementDescription_PreconditionExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.NodeDescriptionImpl <em>Node
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -9518,14 +9544,6 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference EDGE_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getEdgeDescription_ConditionalStyles();
-
-        /**
-         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getEdgeDescription_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Begin Label Edit Tool</b></em>' containment reference feature. <!--

@@ -1,5 +1,22 @@
 = Changelog
 
+== v2023.4.0 (unreleased)
+
+=== Architectural decision records
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1695[#1695] [view] Add a precondition expression to the node description
+
+=== Improvements
+
+
 == v2023.3.0
 
 === Architectural decision records
@@ -82,6 +99,7 @@ image:doc/images/Diagram_node_labels_auto_wrap.png[width=517,height=424]
 - https://github.com/eclipse-sirius/sirius-components/issues/1588[#1588] [tree] Add support for enabling/disabling the synchronization between the explorer and the current selection.
 When it is enabled, if the current selection is not visible in the explorer, it will be revealed by expanding the relevant tree items.
 On the other hand, when it is disabled, the selection will be visible in the explorer but no tree items will be automatically expanded.
+
 
 === Improvements
 

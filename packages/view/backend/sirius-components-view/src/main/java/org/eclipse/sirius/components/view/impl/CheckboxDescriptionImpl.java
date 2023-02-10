@@ -207,7 +207,8 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public EList<ConditionalCheckboxDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalCheckboxDescriptionStyle.class, this, ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalCheckboxDescriptionStyle.class, this,
+                    ViewPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

@@ -36,6 +36,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression
  * <em>Semantic Candidates Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getPreconditionExpression
+ * <em>Precondition Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getLabelExpression <em>Label
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.DiagramElementDescriptionImpl#getDeleteTool <em>Delete
@@ -108,6 +110,26 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
@@ -406,6 +428,29 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getPreconditionExpression() {
+        return this.preconditionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPreconditionExpression(String newPreconditionExpression) {
+        String oldPreconditionExpression = this.preconditionExpression;
+        this.preconditionExpression = newPreconditionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
@@ -430,6 +475,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getDomainType();
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return this.getSemanticCandidatesExpression();
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+                return this.getPreconditionExpression();
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
                 return this.getLabelExpression();
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
@@ -458,6 +505,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return;
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression((String) newValue);
+                return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression((String) newValue);
                 return;
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression((String) newValue);
@@ -492,6 +542,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
                 return;
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+                return;
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
                 return;
@@ -522,6 +575,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
+            case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case ViewPackage.DIAGRAM_ELEMENT_DESCRIPTION__DELETE_TOOL:
@@ -551,6 +606,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.domainType);
         result.append(", semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
         result.append(", labelExpression: ");
         result.append(this.labelExpression);
         result.append(", synchronizationPolicy: ");
