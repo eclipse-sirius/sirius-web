@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,15 @@
  *******************************************************************************/
 import {
   $handleListInsertParagraph,
-  indentList,
   insertList,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
-  outdentList,
   removeList,
   REMOVE_LIST_COMMAND,
 } from '@lexical/list';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { mergeRegister } from '@lexical/utils';
-import {
-  COMMAND_PRIORITY_LOW,
-  INDENT_CONTENT_COMMAND,
-  INSERT_PARAGRAPH_COMMAND,
-  OUTDENT_CONTENT_COMMAND,
-} from 'lexical';
+import { COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND } from 'lexical';
 import { useEffect } from 'react';
 
 /**
@@ -38,22 +31,6 @@ export function ListPlugin(): null {
 
   useEffect(() => {
     return mergeRegister(
-      editor.registerCommand(
-        INDENT_CONTENT_COMMAND,
-        () => {
-          indentList();
-          return false;
-        },
-        COMMAND_PRIORITY_LOW
-      ),
-      editor.registerCommand(
-        OUTDENT_CONTENT_COMMAND,
-        () => {
-          outdentList();
-          return false;
-        },
-        COMMAND_PRIORITY_LOW
-      ),
       editor.registerCommand(
         INSERT_ORDERED_LIST_COMMAND,
         () => {
