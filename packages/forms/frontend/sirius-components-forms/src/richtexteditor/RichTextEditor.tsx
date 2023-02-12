@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { makeStyles } from '@material-ui/core/styles';
 import { $setSelection, TextNode } from 'lexical';
@@ -222,6 +223,7 @@ export const RichTextEditor = ({ value, placeholder, readOnly, onFocus, onBlur }
             placeholder={<div className={classes.editorPlaceholder}>{placeholder}</div>}
             ErrorBoundary={LexicalErrorBoundary}
           />
+          <TabIndentationPlugin />
         </div>
       </OnBlurPlugin>
     </LexicalComposer>

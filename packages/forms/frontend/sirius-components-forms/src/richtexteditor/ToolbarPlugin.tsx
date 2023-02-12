@@ -213,10 +213,10 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
           value={'bullet-list'}
           key={'bullet-list'}
           onClick={() => {
-            if (blockType !== 'ul') {
-              editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, null);
+            if (blockType !== 'bullet-list') {
+              editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
             } else {
-              editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
+              editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
             }
           }}>
           <FormatListBulletedIcon fontSize="small" />
@@ -227,10 +227,10 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
           value={'number-list'}
           key={'number-list'}
           onClick={() => {
-            if (blockType !== 'ol') {
-              editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, null);
+            if (blockType !== 'number-list') {
+              editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
             } else {
-              editor.dispatchCommand(REMOVE_LIST_COMMAND, null);
+              editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
             }
           }}>
           <FormatListNumberedIcon fontSize="small" />

@@ -17,6 +17,8 @@
 
 === Dependency update
 
+- [form] Switch to lexical 0.8.1
+
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1674[#1674] [diagram] The fade and hide tools were available on the background of the diagram
