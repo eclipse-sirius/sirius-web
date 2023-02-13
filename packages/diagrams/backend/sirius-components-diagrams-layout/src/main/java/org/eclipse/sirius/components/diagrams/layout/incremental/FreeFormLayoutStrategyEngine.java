@@ -89,6 +89,14 @@ public class FreeFormLayoutStrategyEngine implements ILayoutStrategyEngine {
             topLeftY = Math.min(topLeftY, laidOutNodePosition.getY());
             bottomRightX = Math.max(bottomRightX, laidOutNodePosition.getX() + laidOutNodeSize.getWidth());
             bottomRightY = Math.max(bottomRightY, laidOutNodePosition.getY() + laidOutNodeSize.getHeight());
+            // Also consider the node's label, which can be positioned outside
+            Position labelRelativePosition = laidOutNode.getLabel().getPosition();
+            Position labelPosition = Position.at(laidOutNodePosition.getX() + labelRelativePosition.getX(), laidOutNodePosition.getY() + labelRelativePosition.getY());
+            Size labelSize = laidOutNode.getLabel().getTextBounds().getSize();
+            topLeftX = Math.min(topLeftX, labelPosition.getX());
+            topLeftY = Math.min(topLeftY, labelPosition.getY());
+            bottomRightX = Math.max(bottomRightX, labelPosition.getX() + labelSize.getWidth());
+            bottomRightY = Math.max(bottomRightY, labelPosition.getY() + labelSize.getHeight());
         }
 
         double childrenAreaWidth = bottomRightX - topLeftX;
@@ -114,6 +122,8 @@ public class FreeFormLayoutStrategyEngine implements ILayoutStrategyEngine {
             Position positionInArea = nodeLayoutData.getPosition();
             minDeltaX = Math.min(minDeltaX, positionInArea.getX());
             minDeltaY = Math.min(minDeltaY, positionInArea.getY());
+            minDeltaX = Math.min(minDeltaX, positionInArea.getX() + nodeLayoutData.getLabel().getPosition().getX());
+            minDeltaY = Math.min(minDeltaY, positionInArea.getY() + nodeLayoutData.getLabel().getPosition().getY());
         }
 
         // @formatter:off
