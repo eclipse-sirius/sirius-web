@@ -37,6 +37,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1708[#1708] [forms] Fix the impossibility to move a toolbar action from a group to another with no toolbar actions in FormDescriptionEditors.
 - https://github.com/eclipse-sirius/sirius-components/issues/1748[#1748] [chart] Underline and strike-through style options are not taken into account for BarCharts.
 - https://github.com/eclipse-sirius/sirius-components/issues/1688[#1688] [form] The title of the Details view will not be wrapped on multiple lines anymore
+- https://github.com/eclipse-sirius/sirius-components/issues/1602[#1602] [diagram] The connector tool does not work with descriptions from the View DSL
 
 === New Features
 
