@@ -53,6 +53,7 @@ It was not actually used, as tools have long been found in `DiagramDescription.g
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1522[#1602] [diagram] The connector tool does not work with descriptions from the View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1374[#1374] [layout] The border node position is now updated when its parents bounds has changed (e.g. when a node increases its size because of a child creation).
 - https://github.com/eclipse-sirius/sirius-components/issues/1580[#1580] [diagram] Border nodes do not return to their previous position after they have been moved manually.
 - https://github.com/eclipse-sirius/sirius-components/issues/1522[#1522] [diagram] Rectangle nodes with a header can now be resized.
