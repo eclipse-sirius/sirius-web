@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
@@ -62,13 +63,16 @@ public class AbstractNodeMappingConverter {
 
     private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
+    private final ImageSizeProvider imageSizeProvider;
+
     public AbstractNodeMappingConverter(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
-            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
+            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider, ImageSizeProvider imageSizeService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
+        this.imageSizeProvider = Objects.requireNonNull(imageSizeService);
     }
 
     public NodeDescription convert(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
@@ -111,7 +115,7 @@ public class AbstractNodeMappingConverter {
             }
             return result;
         };
-        AbstractNodeMappingSizeProvider sizeProvider = new AbstractNodeMappingSizeProvider(interpreter, abstractNodeMapping);
+        AbstractNodeMappingSizeProvider sizeProvider = new AbstractNodeMappingSizeProvider(interpreter, abstractNodeMapping, this.imageSizeProvider);
 
         String domainClass = abstractNodeMapping.getDomainClass();
         String semanticCandidatesExpression = abstractNodeMapping.getSemanticCandidatesExpression();

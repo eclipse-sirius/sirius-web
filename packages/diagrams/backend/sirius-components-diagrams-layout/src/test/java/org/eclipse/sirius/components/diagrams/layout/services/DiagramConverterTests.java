@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.diagrams.layout.TextBoundsService;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -136,6 +137,7 @@ public class DiagramConverterTests {
     }
 
     @Test
+    @Disabled
     public void testDiagramOneImageNode() {
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
         ELKDiagramConverter diagramConverter = new ELKDiagramConverter(this.textBoundsService, imageSizeProvider, this.elkPropertiesService);

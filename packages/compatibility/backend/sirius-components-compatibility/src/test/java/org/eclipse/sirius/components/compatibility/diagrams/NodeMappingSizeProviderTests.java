@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.diagram.description.DescriptionFactory;
@@ -44,7 +45,7 @@ public class NodeMappingSizeProviderTests {
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
 
-        AbstractNodeMappingSizeProvider nodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, nodeMapping);
+        AbstractNodeMappingSizeProvider nodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, nodeMapping, new ImageSizeProvider());
         Size size = nodeMappingSizeProvider.apply(variableManager);
 
         // by default, the size computation expression is 3.
@@ -62,7 +63,7 @@ public class NodeMappingSizeProviderTests {
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
 
-        AbstractNodeMappingSizeProvider nodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, nodeMapping);
+        AbstractNodeMappingSizeProvider nodeMappingSizeProvider = new AbstractNodeMappingSizeProvider(interpreter, nodeMapping, new ImageSizeProvider());
         Size size = nodeMappingSizeProvider.apply(variableManager);
         assertThat(size).extracting(Size::getHeight).isEqualTo(100.0);
         assertThat(size).extracting(Size::getWidth).isEqualTo(100.0);

@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
+import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.LayoutOptionValues;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
@@ -79,7 +80,12 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
         Size childrenAreaSize = optionalChildrenAreaLayoutData.map(ChildrenAreaLaidOutData::getSize).orElse(Size.of(0, 0));
         double newNodeWidth = optionalMaxWidth.orElseGet(() -> this.getNodeWidth(optionalDiagramEvent, nodeContext, childrenAreaSize.getWidth()));
         double newNodeHeight = this.getNodeHeight(optionalDiagramEvent, nodeContext, childrenAreaSize.getHeight());
-        Size newNodeSize = Size.of(newNodeWidth, newNodeHeight);
+        Size newNodeSize;
+        if (optionalDiagramEvent.isEmpty() || !(optionalDiagramEvent.get() instanceof UpdateCollapsingStateEvent)) {
+            newNodeSize = Size.of(Math.max(newNodeWidth, initialNodeBounds.getSize().getWidth()), Math.max(newNodeHeight, initialNodeBounds.getSize().getHeight()));
+        } else {
+            newNodeSize = Size.of(newNodeWidth, newNodeHeight);
+        }
         if (!this.getRoundedSize(nodeLayoutData.getSize()).equals(this.getRoundedSize(newNodeSize))) {
             nodeLayoutData.setSize(newNodeSize);
             nodeLayoutData.setChanged(true);
@@ -159,7 +165,7 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
      * (the position of this event is relative to the parent)</li>
      * <li>The single position event will be transmitted to the children only if the current node is already positioned
      * in order to be handled later. Returns <code>null</code> if the current node is not positioned, meaning the event
-     * is meant to be used to position the current node (not children).</li>
+     * is meant to be used to position the current node (not its children).</li>
      * <li>The resize event will be transmitted to the children layout engine that will handle it if needed.</li>
      * </ul>
      *
@@ -183,7 +189,8 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
             if (Position.UNDEFINED.equals(nodeContext.getNode().getPosition())) {
                 // Since the single position event is not associated to a specific node, it is handled by all
                 // unpositioned nodes. Most of the time it matches a single node creation. If the node creation also
-                // creates a child we don't want the single position event to be used to position the child.
+                // creates a child, we don't want the single position event to be used to also position the child, and
+                // thus, we don't give the event to children.
                 adaptedDiagramEvent = null;
             }
         }
@@ -307,8 +314,8 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
 
         double labelOnlyWidth = 0;
         double labelAndChildrenWidth = 0;
-        Set<NodeLabelPlacement> labelPlacements = nodeContext.getLabelPlacements();
         double labelWidth = 0;
+        Set<NodeLabelPlacement> labelPlacements = nodeContext.getLabelPlacements();
         if (nodeContext.hasLabel() && nodeContext.isNodeLabelInside()) {
             labelWidth = nodeContext.getNode().getLabel().getTextBounds().getSize().getWidth();
         }
@@ -439,7 +446,7 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
         for (NodeLayoutData child : nodeContext.getChildrenToLayout()) {
             ChildLayoutData childLayoutData = nodeIdToChildLayoutData.get(child.getId());
             Size childNewSize = childLayoutData.getSize();
-            if (this.getRoundedSize(childNewSize) != this.getRoundedSize(child.getSize())) {
+            if (!this.getRoundedSize(childNewSize).equals(this.getRoundedSize(child.getSize()))) {
                 child.setSize(childNewSize);
                 child.setChanged(true);
             }
@@ -460,4 +467,5 @@ public class ParametricSVGIncrementalLayoutEngine implements INodeIncrementalLay
         BigDecimal roundedHeight = BigDecimal.valueOf(size.getHeight()).setScale(4, RoundingMode.HALF_UP);
         return Size.of(roundedWidth.doubleValue(), roundedHeight.doubleValue());
     }
+
 }

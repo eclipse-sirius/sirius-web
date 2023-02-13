@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.SinglePositionEvent;
+import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.api.Bounds;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.ChildLayoutData;
@@ -83,7 +84,12 @@ public class ImageIncrementalLayoutEngine implements INodeIncrementalLayoutEngin
         Size childrenAreaSize = optionalChildrenAreaLayoutData.map(ChildrenAreaLaidOutData::getSize).orElse(Size.of(0, 0));
         double newNodeWidth = optionalMaxWidth.orElseGet(() -> this.getNodeWidth(optionalDiagramEvent, nodeContext, childrenAreaSize.getWidth()));
         double newNodeHeight = this.getNodeHeight(optionalDiagramEvent, nodeContext, childrenAreaSize.getHeight());
-        Size newNodeSize = Size.of(newNodeWidth, newNodeHeight);
+        Size newNodeSize;
+        if (optionalDiagramEvent.isEmpty() || !(optionalDiagramEvent.get() instanceof UpdateCollapsingStateEvent)) {
+            newNodeSize = Size.of(Math.max(newNodeWidth, initialNodeBounds.getSize().getWidth()), Math.max(newNodeHeight, initialNodeBounds.getSize().getHeight()));
+        } else {
+            newNodeSize = Size.of(newNodeWidth, newNodeHeight);
+        }
         if (!this.getRoundedSize(nodeLayoutData.getSize()).equals(this.getRoundedSize(newNodeSize))) {
             nodeLayoutData.setSize(newNodeSize);
             nodeLayoutData.setChanged(true);

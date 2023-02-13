@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
@@ -132,7 +133,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setDimensions(width, height);
         }
 
-        if (node.getStyle() instanceof RectangularNodeStyle) {
+        if (node.getStyle() instanceof RectangularNodeStyle || node.getStyle() instanceof ParametricSVGNodeStyle || node.getStyle() instanceof ImageNodeStyle) {
             elkNode.setProperty(PROPERTY_CUSTOM_SIZE, true);
             Size currentSize = node.getSize();
             double width = Math.max(elkNode.getWidth(), currentSize.getWidth());
@@ -150,15 +151,11 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
         }
 
-        if (node.getStyle() instanceof ImageNodeStyle imageNodeStyle) {
-
+        if (node.getStyle() instanceof ImageNodeStyle) {
             ElkNode elkImage = ElkGraphFactory.eINSTANCE.createElkNode();
             elkImage.setIdentifier(node.getId() + "_image");
             elkImage.setProperty(PROPERTY_TYPE, DEFAULT_IMAGE_TYPE);
-
-            Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
-            elkImage.setDimensions(imageSize.getWidth(), imageSize.getHeight());
-
+            elkImage.setDimensions(elkNode.getWidth(), elkNode.getHeight());
             elkImage.setParent(elkNode);
         }
 

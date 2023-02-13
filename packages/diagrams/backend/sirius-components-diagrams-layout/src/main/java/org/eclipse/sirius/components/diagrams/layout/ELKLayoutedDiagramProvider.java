@@ -30,8 +30,10 @@ import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -96,7 +98,7 @@ public class ELKLayoutedDiagramProvider {
         List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2ElkGraphElements, layoutConfigurator);
         List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2ElkGraphElements, layoutConfigurator);
         Set<CustomizableProperties> customizedProperties = node.getCustomizedProperties();
-        if (node.getStyle() instanceof RectangularNodeStyle && !size.equals(node.getSize())) {
+        if ((node.getStyle() instanceof RectangularNodeStyle || node.getStyle() instanceof ParametricSVGNodeStyle || node.getStyle() instanceof ImageNodeStyle) && !size.equals(node.getSize())) {
             // Reset the "custom size" flag if the ELK layout decided on a different size.
             customizedProperties = customizedProperties.stream().filter(property -> !CustomizableProperties.Size.equals(property)).collect(Collectors.toSet());
         }
