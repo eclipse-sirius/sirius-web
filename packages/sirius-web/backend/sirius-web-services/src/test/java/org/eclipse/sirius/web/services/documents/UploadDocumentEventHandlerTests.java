@@ -27,7 +27,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -174,13 +173,13 @@ public class UploadDocumentEventHandlerTests {
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(expectedChangeKind);
@@ -251,13 +250,13 @@ public class UploadDocumentEventHandlerTests {
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);

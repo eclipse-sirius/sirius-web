@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.editingcontext.api;
+package org.eclipse.sirius.web.services.api.representations;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
@@ -23,17 +24,7 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
  * @author pcdavid
  */
 public interface IDynamicRepresentationDescriptionService {
-    List<IRepresentationDescription> findDynamicRepresentationDescriptions(String editingContextId, EditingDomain editingDomain);
+    List<IRepresentationDescription> findDynamicRepresentationDescriptions(IEditingContext eitingContext);
 
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author sbegaudeau
-     */
-    class NoOp implements IDynamicRepresentationDescriptionService {
-        @Override
-        public List<IRepresentationDescription> findDynamicRepresentationDescriptions(String editingContextId, EditingDomain editingDomain) {
-            return List.of();
-        }
-    }
+    Optional<IRepresentationDescription> findDynamicRepresentationDescriptionById(IEditingContext editingContext, String representationDescriptionId);
 }

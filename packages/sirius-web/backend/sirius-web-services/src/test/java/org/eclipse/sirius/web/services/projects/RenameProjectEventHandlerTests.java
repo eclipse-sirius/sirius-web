@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.services.projects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -62,7 +61,7 @@ public class RenameProjectEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

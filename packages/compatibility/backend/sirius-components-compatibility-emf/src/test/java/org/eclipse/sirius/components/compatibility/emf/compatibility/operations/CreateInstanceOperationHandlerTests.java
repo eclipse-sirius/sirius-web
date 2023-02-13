@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.ENamedElement;
@@ -59,7 +58,7 @@ public class CreateInstanceOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();

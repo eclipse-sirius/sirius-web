@@ -14,11 +14,7 @@ package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Duration;
-import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
@@ -28,13 +24,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
-import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.reactivestreams.Publisher;
 
-import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The data fetcher used to send the refreshed properties to a subscription.
@@ -42,7 +34,7 @@ import reactor.core.scheduler.Schedulers;
  * @author hmarchadour
  */
 @SubscriptionDataFetcher(type = "Subscription", field = "propertiesEvent")
-public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
+public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -52,8 +44,6 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private final Scheduler scheduler = Schedulers.newSingle(this.getClass().getSimpleName());
-
     public SubscriptionPropertiesEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
@@ -61,30 +51,13 @@ public class SubscriptionPropertiesEventDataFetcher implements IDataFetcherWithF
     }
 
     @Override
-    public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
+    public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
         var propertiesConfiguration = new PropertiesConfiguration(input.objectIds());
 
-        Map<String, Object> localContext = Map.of(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId(), LocalContextConstants.REPRESENTATION_ID, propertiesConfiguration.getId());
-        // @formatter:off
-        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input), input)
-                .publishOn(this.scheduler)
-                .map(payload -> DataFetcherResult.<IPayload>newResult()
-                        .data(payload)
-                        .localContext(localContext)
-                        .build());
-        // @formatter:on
-
-    }
-
-    @PreDestroy
-    public void dispose() {
-        // @formatter:off
-        this.scheduler.disposeGracefully()
-                .timeout(Duration.ofMillis(100))
-                .block();
-        // @formatter:on
+        return this.exceptionWrapper.wrapFlux(() -> this.eventProcessorSubscriptionProvider.getSubscription(input.editingContextId(), IFormEventProcessor.class, propertiesConfiguration, input),
+                input);
     }
 
 }

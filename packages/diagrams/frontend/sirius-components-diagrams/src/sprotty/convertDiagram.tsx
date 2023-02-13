@@ -32,7 +32,6 @@ import {
 import {
   GQLArrowStyle,
   GQLDiagram,
-  GQLDiagramDescription,
   GQLEdge,
   GQLIconLabelNodeStyle,
   GQLImageNodeStyle,
@@ -87,15 +86,10 @@ export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readO
     id,
     metadata: { label, kind, description },
     targetObjectId,
+    autoLayout,
     nodes,
     edges,
   } = gqlDiagram;
-
-  let autoLayout = false;
-  if (gqlDiagram && gqlDiagram.metadata.description.__typename === 'DiagramDescription') {
-    const diagramDescription = gqlDiagram.metadata.description as GQLDiagramDescription;
-    autoLayout = diagramDescription.autoLayout;
-  }
 
   const diagram = new Diagram();
   diagram.id = id;

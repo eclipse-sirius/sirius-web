@@ -47,7 +47,7 @@ public class GetEditingContextActionsEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(eventHandler.canHandle(editingContext, input)).isTrue();
-        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        eventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.NOTHING);

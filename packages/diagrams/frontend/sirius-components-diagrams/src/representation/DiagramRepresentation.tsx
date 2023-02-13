@@ -66,7 +66,6 @@ import {
   GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
   GQLDiagram,
-  GQLDiagramDescription,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
@@ -1325,11 +1324,6 @@ export const DiagramRepresentation = ({
       />
     );
   }
-  let autoLayout = false;
-  if (diagram && diagram.metadata.description.__typename === 'DiagramDescription') {
-    const diagramDescription = diagram.metadata.description as GQLDiagramDescription;
-    autoLayout = diagramDescription.autoLayout;
-  }
   return (
     <div className={classes.container}>
       <Toolbar
@@ -1341,7 +1335,7 @@ export const DiagramRepresentation = ({
         onUnfadeAll={onUnfadeAll}
         readOnly={readOnly}
         setZoomLevel={setZoomLevel}
-        autoLayout={autoLayout}
+        autoLayout={diagram?.autoLayout}
         zoomLevel={zoomLevel}
         subscribers={subscribers}
       />

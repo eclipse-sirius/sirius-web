@@ -12,12 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.services;
 
-import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
  * Implementation of the editing context.
@@ -36,12 +34,9 @@ public class EditingContext implements IEditingContext {
 
     private final AdapterFactoryEditingDomain editingDomain;
 
-    private final Map<String, IRepresentationDescription> representationDescriptions;
-
-    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions) {
+    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain) {
         this.id = Objects.requireNonNull(id);
         this.editingDomain = Objects.requireNonNull(editingDomain);
-        this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
     }
 
     @Override
@@ -51,10 +46,6 @@ public class EditingContext implements IEditingContext {
 
     public AdapterFactoryEditingDomain getDomain() {
         return this.editingDomain;
-    }
-
-    public Map<String, IRepresentationDescription> getRepresentationDescriptions() {
-        return this.representationDescriptions;
     }
 
 }

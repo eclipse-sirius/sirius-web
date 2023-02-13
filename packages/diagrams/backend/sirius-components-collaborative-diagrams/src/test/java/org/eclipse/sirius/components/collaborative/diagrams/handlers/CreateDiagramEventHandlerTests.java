@@ -98,7 +98,7 @@ public class CreateDiagramEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

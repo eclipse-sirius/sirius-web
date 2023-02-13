@@ -159,6 +159,22 @@ public class ProjectRepositoryIntegrationTests extends AbstractIntegrationTests 
         });
     }
 
+    @Test
+    @Transactional
+    public void testIsOwner() {
+        AccountEntity firstAccountEntity = this.createAndSaveUser(FIRST_OWNER_NAME);
+        AccountEntity secondAccountEntity = this.createAndSaveUser(SECOND_OWNER_NAME);
+
+        ProjectEntity project = new ProjectEntity();
+        project.setName(FIRST_PROJECT_NAME);
+        project.setOwner(firstAccountEntity);
+        project.setVisibility(VisibilityEntity.PUBLIC);
+
+        project = this.projectRepository.save(project);
+        assertThat(this.projectRepository.isOwner(firstAccountEntity.getUsername(), project.getId())).isTrue();
+        assertThat(this.projectRepository.isOwner(secondAccountEntity.getUsername(), project.getId())).isFalse();
+    }
+
     private AccountEntity createAndSaveUser(String username) {
         AccountEntity owner = new AccountEntity();
         owner.setUsername(username);

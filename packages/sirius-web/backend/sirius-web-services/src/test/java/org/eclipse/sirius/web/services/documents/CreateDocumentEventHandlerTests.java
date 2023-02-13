@@ -14,8 +14,6 @@ package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -105,13 +103,13 @@ public class CreateDocumentEventHandlerTests {
         var input = new CreateDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
@@ -141,7 +139,7 @@ public class CreateDocumentEventHandlerTests {
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 
         CreateDocumentEventHandler handler = new CreateDocumentEventHandler(documentService, stereotypeDescriptionService, messageService, new SimpleMeterRegistry());
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -152,7 +150,7 @@ public class CreateDocumentEventHandlerTests {
         var firstCreateInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(editingContext, firstCreateInput)).isTrue();
         One<IPayload> firstPayloadSink = Sinks.one();
-        handler.handle(firstPayloadSink, changeDescriptionSink, editingContext, firstCreateInput, List.of());
+        handler.handle(firstPayloadSink, changeDescriptionSink, editingContext, firstCreateInput);
 
         IPayload firstPayload = firstPayloadSink.asMono().block();
         assertThat(firstPayload).isInstanceOf(SuccessPayload.class);
@@ -160,7 +158,7 @@ public class CreateDocumentEventHandlerTests {
         var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(editingContext, secondCreatedInput)).isTrue();
         One<IPayload> secondPayloadSink = Sinks.one();
-        handler.handle(secondPayloadSink, changeDescriptionSink, editingContext, secondCreatedInput, List.of());
+        handler.handle(secondPayloadSink, changeDescriptionSink, editingContext, secondCreatedInput);
 
         IPayload secondPayload = firstPayloadSink.asMono().block();
         assertThat(secondPayload).isInstanceOf(SuccessPayload.class);

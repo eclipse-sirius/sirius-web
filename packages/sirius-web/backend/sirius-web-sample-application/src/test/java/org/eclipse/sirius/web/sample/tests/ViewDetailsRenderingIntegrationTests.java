@@ -20,7 +20,6 @@ import fr.obeo.dsl.designer.sample.flow.FlowPackage;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -94,7 +93,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
         this.editingDomain.setAdapterFactory(composedAdapterFactory);
         this.editingDomain.getResourceSet().getPackageRegistry().put(FlowPackage.eNS_URI, FlowPackage.eINSTANCE);
-        this.editingContext = new EditingContext(UUID.randomUUID().toString(), this.editingDomain, Map.of());
+        this.editingContext = new EditingContext(UUID.randomUUID().toString(), this.editingDomain);
 
         this.view = this.loadFixture("ViewCompletionFixture.xmi");
 
