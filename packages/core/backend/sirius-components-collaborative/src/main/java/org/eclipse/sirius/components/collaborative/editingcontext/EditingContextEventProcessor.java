@@ -310,9 +310,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         if (optionalEditingContextEventHandler.isPresent()) {
             IEditingContextEventHandler editingContextEventHandler = optionalEditingContextEventHandler.get();
-
-            var processors = this.representationEventProcessors.values().stream().map(RepresentationEventProcessorEntry::getRepresentationEventProcessor).toList();
-            editingContextEventHandler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, input, processors);
+            editingContextEventHandler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, input);
         } else {
             this.logger.warn("No handler found for event: {}", input);
         }
@@ -328,15 +326,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         } else {
             this.logger.warn("No representation event processor found for event: {}", representationInput);
         }
-
-        var processors = this.representationEventProcessors.values().stream().map(RepresentationEventProcessorEntry::getRepresentationEventProcessor).toList();
-
-        // @formatter:off
-        this.editingContextEventHandlers.stream()
-                .filter(handler -> handler.canHandle(this.editingContext, representationInput))
-                .findFirst()
-                .ifPresent(handler -> handler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, representationInput, processors));
-        // @formatter:on
     }
 
     @Override

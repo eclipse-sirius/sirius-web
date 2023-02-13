@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.handlers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -94,6 +93,6 @@ public class QueryBasedIntEventHandlerTests {
         assertThat(queryBasedIntEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        queryBasedIntEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        queryBasedIntEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }

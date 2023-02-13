@@ -34,10 +34,7 @@ export const diagramEventSubscription = gql`
             kind
             label
             description {
-              ... on DiagramDescription {
-                id
-                autoLayout
-              }
+              id
             }
           }
           targetObjectId
@@ -49,6 +46,7 @@ export const diagramEventSubscription = gql`
             width
             height
           }
+          autoLayout
           nodes {
             ...nodeFields
             borderNodes {

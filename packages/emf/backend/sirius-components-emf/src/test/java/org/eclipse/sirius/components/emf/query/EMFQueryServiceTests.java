@@ -129,7 +129,7 @@ public class EMFQueryServiceTests {
         Resource resource = this.createResourceWith4Elements();
         Resource resource2 = this.createResourceWith4Elements();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create(resource, resource2);
-        return new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        return new EditingContext(UUID.randomUUID().toString(), editingDomain);
     }
 
     private Resource createResourceWith4Elements() {

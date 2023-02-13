@@ -14,8 +14,6 @@ package org.eclipse.sirius.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,13 +74,13 @@ public class RenameDocumentEventHandlerTests {
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(OLD_NAME);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(NEW_NAME);

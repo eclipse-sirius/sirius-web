@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.handlers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -72,7 +71,7 @@ public class RenameObjectEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

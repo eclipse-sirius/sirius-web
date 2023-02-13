@@ -19,33 +19,10 @@
 - [core] Records are now used as the implementations of `IInput`
 - https://github.com/eclipse-sirius/sirius-components/issues/1574[#1574] [diagram] In `diagram.graphqls`, `SingleClickOnDiagramElementTool` member's `targetDescriptions` is now of new type `DiagramElementDescription` instead of `NodeDescription`.
 - https://github.com/eclipse-sirius/sirius-components/issues/1614[#1614] [graphql] Add a SuccessPayload to replace most basic payloads
-- https://github.com/eclipse-sirius/sirius-components/issues/1638[#1638] [view] The lifecycle of the representation descriptions from the view DSL is now aligned with the lifecycle of the metamodels computed from the Domain DSL.
-+
-As such, the representation descriptions available for an `EditingContext` are now computed and transformed when the `EditingContext` is loaded.
-It will thus improve the performances of the lookup for representation descriptions since they will be referenced directly by the `EditingContext`.
-This does not come with any changes to the interface `IEditingContext`.
-Alternate implementations of `IEditingContext` do not have to keep the representation descriptions in their implementation of `IEditingContext`.
-+
-By loading representation descriptions from the View DSL when the editing context is being loaded, we are making the editing context the sole source of truth of the representation descriptions available.
-+
-As a result, any datafetcher requiring a representation description will now have to use the editing context event processor registry to find the requested representation description.
-We previously had some datafetcher which were using the `IRepresentationDescriptionSearchService`` with `null` as a value for the editing context.
-Such calls will not work anymore since `null` will not be an acceptable value anymore by our implementation of this interface.
-+
-In our current GraphQL schema, representation descriptions are accessible thanks to two different paths.
-The first path is accessible thanks to `EditingContext#representationDescriptions` and the second one by using `RepresentationMetadata#description`.
-The field `EditingContext#representationDescriptions` has always been able to retrieve all the information necessary to use the `IRepresentationDescriptionSearchService` properly since it has access to a local context with the `editingContextId`.
-This is not always the case of the field `RepresentationMetadata#description`.
-+
-When used by a subscription, this field could not resolve the information required to retrieve all the details of the representation description.
-Only the `id`, `label` and `kind` were available.
-This contribution also ensures that the local context is configured as necessary by our various `SubscriptionXxxEventDataFetcher`.
-+
-On top of that, creating more complex subscriptions involving the representation description could trigger a deadlock since the subcription on the reactive `Flux` emitting the payloads was performed in the thread of the `EditingContextEventProcessor`.
-The scheduling policy of our various `IRepresentationEventProcessor` will thus be updated in order to ensure that the subscription will be performed in another thread.
 - https://github.com/eclipse-sirius/sirius-components/issues/1615[#1615] [diagram] `DiagramDescription.getTools()` has been removed.
 It was not actually used, as tools have long been found in `DiagramDescription.getToolSections()` instead.
 - https://github.com/eclipse-sirius/sirius-components/issues/1588[#1588] [project] Moved the action "New Model" and "Upload model" in a new tree toolbar
+- https://github.com/eclipse-sirius/sirius-components/issues/1614[#1614] [graphql] Add a SuccessPayload to replace most basic payloads, add GQLWidgetOperationPayload to replace most basic Operation
 
 === Dependency update
 

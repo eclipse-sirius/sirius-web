@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handl
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -90,7 +89,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

@@ -12,14 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.handlers;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
@@ -71,8 +69,7 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input,
-            List<IRepresentationEventProcessor> representationEventProcessors) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());

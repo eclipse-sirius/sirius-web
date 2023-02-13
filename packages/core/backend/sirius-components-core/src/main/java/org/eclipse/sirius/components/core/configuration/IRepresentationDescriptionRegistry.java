@@ -23,16 +23,4 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 @PublicApi
 public interface IRepresentationDescriptionRegistry {
     void add(IRepresentationDescription representationDescription);
-
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author sbegaudeau
-     */
-    class NoOp implements IRepresentationDescriptionRegistry {
-        @Override
-        public void add(IRepresentationDescription representationDescription) {
-            // Do nothing
-        }
-    }
 }

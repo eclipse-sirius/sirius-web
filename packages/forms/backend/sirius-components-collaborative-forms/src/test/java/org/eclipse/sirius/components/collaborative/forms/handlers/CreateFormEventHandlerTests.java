@@ -91,7 +91,7 @@ public class CreateFormEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.REPRESENTATION_CREATION);

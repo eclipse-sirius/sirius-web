@@ -125,12 +125,6 @@ export interface GQLRepresentationMetadata {
 
 export interface GQLRepresentationDescription {
   id: string;
-  __typename: string;
-}
-
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  autoLayout: boolean;
-  __typename: 'DiagramDescription';
 }
 
 export enum GQLSynchronizationPolicy {
@@ -146,6 +140,7 @@ export interface GQLDiagram extends GQLRepresentation {
   id: string;
   metadata: GQLRepresentationMetadata;
   targetObjectId: string;
+  autoLayout: boolean;
   size: GQLSize;
   position: GQLPosition;
   nodes: GQLNode[];

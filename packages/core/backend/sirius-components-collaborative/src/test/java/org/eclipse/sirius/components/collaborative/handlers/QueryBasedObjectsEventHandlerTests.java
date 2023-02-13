@@ -92,6 +92,6 @@ public class QueryBasedObjectsEventHandlerTests {
         assertThat(queryBasedObjectsEventHandler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        queryBasedObjectsEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input, List.of());
+        queryBasedObjectsEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
     }
 }
