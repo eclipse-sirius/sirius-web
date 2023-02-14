@@ -99,7 +99,7 @@ public class TextBoundsProvider {
         if (text == null || text.isEmpty()) {
             return new TextBounds(Size.of(0, 0), Position.at(0, 0));
         }
-        BufferedImage img = new BufferedImage(10000, 10000, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = img.createGraphics();
         Font font = this.getFont(labelStyle).deriveFont(AFFINE_TRANSFORM_AUTO_WRAP);
         g2d.setFont(font);
