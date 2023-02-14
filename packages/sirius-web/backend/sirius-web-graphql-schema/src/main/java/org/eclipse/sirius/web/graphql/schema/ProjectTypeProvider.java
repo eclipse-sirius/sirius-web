@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,6 @@ package org.eclipse.sirius.web.graphql.schema;
  * type Project {
  *   id: ID!
  *   name: String!
- *   owner: Account!
- *   visibility: Visibility!
  *   currentEditingContext: EditingContext!
  * }
  * </pre>
@@ -34,10 +32,6 @@ public class ProjectTypeProvider {
     public static final String TYPE = "Project";
 
     public static final String NAME_FIELD = "name";
-
-    public static final String OWNER_FIELD = "owner";
-
-    public static final String VISIBILITY_FIELD = "visibility";
 
     public static final String CURRENT_EDITING_CONTEXT_FIELD = "currentEditingContext";
 }

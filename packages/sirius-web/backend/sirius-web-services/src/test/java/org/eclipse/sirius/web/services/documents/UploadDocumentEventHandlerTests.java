@@ -47,13 +47,11 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
-import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
@@ -161,7 +159,7 @@ public class UploadDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
@@ -241,7 +239,7 @@ public class UploadDocumentEventHandlerTests {
 
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
+                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), ""), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();

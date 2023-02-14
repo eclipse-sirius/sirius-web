@@ -77,7 +77,6 @@ Cypress.Commands.add('createProject', (name) => {
     input: {
       id: uuid(),
       name,
-      visibility: 'PUBLIC',
     },
   };
 

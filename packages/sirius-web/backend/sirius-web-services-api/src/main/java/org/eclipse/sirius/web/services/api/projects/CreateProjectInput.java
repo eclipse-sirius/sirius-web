@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author wpiers
  */
-public record CreateProjectInput(UUID id, String name, Visibility visibility) implements IInput {
+public record CreateProjectInput(UUID id, String name) implements IInput {
 }

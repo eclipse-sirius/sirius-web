@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.junit.jupiter.api.Test;
@@ -37,11 +36,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @ContextConfiguration(classes = PersistenceTestConfiguration.class)
 public class DocumentRepositoryIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String OWNER_NAME = "Jyn Erso";
-
-    private static final String ROLE_USER = "user";
-
     private static final String PROJECT_NAME = "Cluster Prism";
 
     private static final String FIRST_DOCUMENT_NAME = "Concordia";
@@ -59,9 +53,6 @@ public class DocumentRepositoryIntegrationTests extends AbstractIntegrationTests
         + "  \"content\": []" + System.lineSeparator()
         + "}" + System.lineSeparator();
     // @formatter:on
-
-    @Autowired
-    private IAccountRepository accountRepository;
 
     @Autowired
     private IProjectRepository projectRepository;
@@ -187,15 +178,8 @@ public class DocumentRepositoryIntegrationTests extends AbstractIntegrationTests
     }
 
     private ProjectEntity createAndSaveProjectEntity() {
-        AccountEntity owner = new AccountEntity();
-        owner.setUsername(OWNER_NAME);
-        owner.setPassword(OWNER_NAME);
-        owner.setRole(ROLE_USER);
-        AccountEntity savedOwner = this.accountRepository.save(owner);
-
         ProjectEntity project = new ProjectEntity();
         project.setName(PROJECT_NAME);
-        project.setOwner(savedOwner);
         ProjectEntity savedProject = this.projectRepository.save(project);
         return savedProject;
     }

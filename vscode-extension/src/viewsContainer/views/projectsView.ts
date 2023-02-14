@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,16 +48,13 @@ export class ProjectsViewProvider implements TreeDataProvider<ProjectItem> {
         .then((value) => {
           let rootItems: ProjectItem[] = [];
           value.forEach((projectData: ProjectData) => {
-            const description = `${serverData.name} / ${projectData.visibility}`;
+            const description = `${serverData.name}`;
             const command = {
               command: 'siriusweb.displayProjectContents',
               title: 'Display Project Semantic Data & Representations on Click',
               arguments: [this.serverId, projectData.id],
             };
             let icon = new ThemeIcon('unlock');
-            if (projectData.visibility === 'PRIVATE') {
-              icon = new ThemeIcon('lock');
-            }
             const projectItem = new ProjectItem(projectData.id, projectData.name, description, icon, command);
             rootItems.push(projectItem);
           });
