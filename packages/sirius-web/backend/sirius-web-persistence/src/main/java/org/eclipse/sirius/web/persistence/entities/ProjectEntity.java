@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,16 +16,10 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 /**
  * Project entity used by the persistence layer.
@@ -41,14 +35,6 @@ public class ProjectEntity {
     private UUID id;
 
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private AccountEntity owner;
-
-    @Enumerated(EnumType.STRING)
-    @Type(type = "org.eclipse.sirius.web.persistence.util.VisibilityEnumType")
-    private VisibilityEntity visibility = VisibilityEntity.PUBLIC;
 
     public UUID getId() {
         return this.id;
@@ -66,25 +52,9 @@ public class ProjectEntity {
         this.name = name;
     }
 
-    public AccountEntity getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(AccountEntity owner) {
-        this.owner = owner;
-    }
-
-    public VisibilityEntity getVisibility() {
-        return this.visibility;
-    }
-
-    public void setVisibility(VisibilityEntity visibility) {
-        this.visibility = visibility;
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, name: {2}, owner: {3}, visibility: {4}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name, this.owner, this.visibility);
+        String pattern = "{0} '{'id: {1}, name: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name);
     }
 }

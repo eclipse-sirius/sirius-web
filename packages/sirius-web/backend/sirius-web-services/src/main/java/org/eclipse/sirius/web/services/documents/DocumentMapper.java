@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,10 +14,8 @@ package org.eclipse.sirius.web.services.documents;
 
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
-import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
 
 /**
  * Class used to convert document entities to document data transfer objects and vice versa.
@@ -28,9 +26,7 @@ public class DocumentMapper {
     public Document toDTO(DocumentEntity documentEntity) {
         ProjectEntity projectEntity = documentEntity.getProject();
 
-        var profile = new Profile(projectEntity.getOwner().getId(), projectEntity.getOwner().getUsername());
-        var visibility = Visibility.valueOf(projectEntity.getVisibility().name());
-        Project project = new Project(projectEntity.getId(), projectEntity.getName(), profile, visibility);
+        Project project = new Project(projectEntity.getId(), projectEntity.getName());
         return new Document(documentEntity.getId(), project, documentEntity.getName(), documentEntity.getContent());
     }
 }

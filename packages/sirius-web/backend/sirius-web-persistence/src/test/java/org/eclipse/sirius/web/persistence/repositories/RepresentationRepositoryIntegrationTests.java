@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
@@ -45,10 +44,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class RepresentationRepositoryIntegrationTests extends AbstractIntegrationTests {
 
     private static final String DOCUMENT_NAME = "Obsydians";
-
-    private static final String OWNER_NAME = "Jyn Erso";
-
-    private static final String ROLE_USER = "user";
 
     private static final String FIRST_PROJECT_NAME = "Cluster Prism";
 
@@ -77,9 +72,6 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
         + "  \"content\": [%1$s]" + System.lineSeparator()
         + "}" + System.lineSeparator();
     // @formatter:on
-
-    @Autowired
-    private IAccountRepository accountRepository;
 
     @Autowired
     private IProjectRepository projectRepository;
@@ -123,20 +115,12 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
     @Test
     @Transactional
     public void testFindByIdAndProjectId() {
-        AccountEntity owner = new AccountEntity();
-        owner.setUsername(OWNER_NAME);
-        owner.setPassword(OWNER_NAME);
-        owner.setRole(ROLE_USER);
-        AccountEntity savedOwner = this.accountRepository.save(owner);
-
         ProjectEntity firstProject = new ProjectEntity();
         firstProject.setName(FIRST_PROJECT_NAME);
-        firstProject.setOwner(savedOwner);
         ProjectEntity savedFirstProject = this.projectRepository.save(firstProject);
 
         ProjectEntity secondProject = new ProjectEntity();
         secondProject.setName(SECOND_PROJECT_NAME);
-        secondProject.setOwner(savedOwner);
         ProjectEntity savedSecondProject = this.projectRepository.save(secondProject);
 
         RepresentationEntity firstRepresentationEntity = this.createRepresentationEntity(savedFirstProject, FIRST_DIAGRAM_LABEL, FIRST_TARGET_OBJECT_ID);
@@ -235,15 +219,8 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
     }
 
     private ProjectEntity createAndSaveProjectEntity() {
-        AccountEntity owner = new AccountEntity();
-        owner.setUsername(OWNER_NAME);
-        owner.setPassword(OWNER_NAME);
-        owner.setRole(ROLE_USER);
-        AccountEntity savedOwner = this.accountRepository.save(owner);
-
         ProjectEntity project = new ProjectEntity();
         project.setName(FIRST_PROJECT_NAME);
-        project.setOwner(savedOwner);
         ProjectEntity savedProject = this.projectRepository.save(project);
         return savedProject;
     }

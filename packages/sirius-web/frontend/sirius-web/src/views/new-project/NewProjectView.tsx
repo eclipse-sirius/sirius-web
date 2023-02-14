@@ -94,7 +94,6 @@ export const NewProjectView = () => {
       input: {
         id: uuid(),
         name: name.trim(),
-        visibility: 'PUBLIC',
       },
     };
     const submitEvent: RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };

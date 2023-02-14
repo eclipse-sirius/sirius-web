@@ -26,11 +26,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +46,7 @@ public class DeleteDocumentEventHandlerTests {
     @Test
     public void testDeleteDocument() {
         UUID projectId = UUID.randomUUID();
-        Document document = new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), "name", "content");
+        Document document = new Document(UUID.randomUUID(), new Project(projectId, ""), "name", "content");
 
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override

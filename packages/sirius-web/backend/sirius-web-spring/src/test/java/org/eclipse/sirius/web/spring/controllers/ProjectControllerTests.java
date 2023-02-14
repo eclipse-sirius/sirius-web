@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.projects.IProjectExportService;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -54,7 +52,7 @@ public class ProjectControllerTests {
         IProjectService projectService = new IProjectService.NoOp() {
             @Override
             public Optional<Project> getProject(UUID projectId) {
-                return Optional.of(new Project(UUID.fromString(projectFoundId), projectFoundId, new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC));
+                return Optional.of(new Project(UUID.fromString(projectFoundId), projectFoundId));
             }
         };
         IProjectExportService projectExportService = new IProjectExportService.NoOp();

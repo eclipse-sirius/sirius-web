@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,6 @@ export class ServerData {
               node {
                 id
                 name
-                visibility
               }
             }
           }
@@ -85,7 +84,7 @@ export class ServerData {
           this.projectsData = [];
           const projects = response.data.data.viewer.projects.edges.map((e: { node: any }) => e.node);
           projects.forEach((node: { id: string; name: string; visibility: string }) => {
-            const projectData = new ProjectData(node.id, node.name, this.id, node.visibility);
+            const projectData = new ProjectData(node.id, node.name, this.id);
             this.projectsData.push(projectData);
           });
           return Promise.resolve(this.projectsData);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,7 @@ export class ProjectData {
   private representationsData: RepresentationData[];
   private subscriptionTreeEventId: string | undefined;
 
-  constructor(
-    public readonly id: string,
-    public readonly name: string,
-    public readonly serverId: string,
-    public readonly visibility: string
-  ) {
+  constructor(public readonly id: string, public readonly name: string, public readonly serverId: string) {
     this.modelsData = [];
     this.representationsData = [];
   }

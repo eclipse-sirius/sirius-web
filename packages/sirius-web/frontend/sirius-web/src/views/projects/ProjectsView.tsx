@@ -97,7 +97,6 @@ const getProjectsQuery = gql`
           node {
             id
             name
-            visibility
           }
         }
         pageInfo {

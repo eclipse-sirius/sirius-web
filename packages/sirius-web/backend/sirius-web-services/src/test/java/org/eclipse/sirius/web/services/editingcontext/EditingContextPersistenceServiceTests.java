@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.persistence.entities.AccountEntity;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -62,10 +61,6 @@ public class EditingContextPersistenceServiceTests {
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setId(projectId);
         projectEntity.setName("");
-        AccountEntity owner = new AccountEntity();
-        owner.setId(UUID.randomUUID());
-        owner.setUsername("jdoe");
-        projectEntity.setOwner(owner);
 
         DocumentEntity existingEntity = new DocumentEntity();
         existingEntity.setId(id);

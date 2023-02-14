@@ -34,7 +34,6 @@ import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -71,8 +70,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     @Override
     public boolean existsById(String editingContextId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return new IDParser().parse(editingContextId).map(editingContextUUID -> this.projectRepository.existsByIdAndIsVisibleBy(editingContextUUID, username)).orElse(false);
+        return new IDParser().parse(editingContextId).map(editingContextUUID -> this.projectRepository.findById(editingContextUUID)).isPresent();
     }
 
     @Override

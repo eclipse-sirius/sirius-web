@@ -16,8 +16,6 @@ type Project {
   id: ID!
   name: String!
   currentEditingContext: EditingContext!
-  owner: Profile!
-  visibility: Visibility!
   customImages: [CustomImage!]!
 }
 
@@ -25,16 +23,6 @@ type CustomImage {
   id: ID!
   label: String!
   url: String!
-}
-
-type Profile {
-  id: ID!
-  username: String!
-}
-
-enum Visibility {
-  PRIVATE
-  PUBLIC
 }
 
 type ProjectTemplate {
@@ -83,7 +71,6 @@ extend type Mutation {
 input CreateProjectInput {
   id: ID!
   name: String!
-  visibility: Visibility!
 }
 
 union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload

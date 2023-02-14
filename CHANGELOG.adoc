@@ -6,6 +6,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1643[1643] [core] Removed our dependencies to Spring Security
+
 === Dependency update
 
 === Bug fixes

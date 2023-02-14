@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.ProjectManifest;
 import org.eclipse.sirius.web.services.api.projects.UnzippedProject;
 import org.eclipse.sirius.web.services.api.projects.UploadProjectSuccessPayload;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
@@ -96,7 +95,7 @@ public class ProjectImportService implements IProjectImportService {
         ProjectManifest manifest = unzippedProject.getProjectManifest();
         String projectName = unzippedProject.getProjectName();
 
-        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName, Visibility.PRIVATE);
+        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName);
         IPayload createProjectPayload = this.projectService.createProject(createProjectInput);
         if (createProjectPayload instanceof CreateProjectSuccessPayload) {
             Project project = ((CreateProjectSuccessPayload) createProjectPayload).getProject();

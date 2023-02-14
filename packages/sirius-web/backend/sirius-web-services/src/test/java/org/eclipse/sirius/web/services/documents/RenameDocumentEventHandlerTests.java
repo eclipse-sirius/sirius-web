@@ -28,11 +28,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.web.services.api.accounts.Profile;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
-import org.eclipse.sirius.web.services.api.projects.Visibility;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +54,7 @@ public class RenameDocumentEventHandlerTests {
         IDocumentService noOpDocumentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> rename(UUID documentId, String newName) {
-                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), newName, "noContent"));
+                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), ""), newName, "noContent"));
             }
         };
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpServicesMessageService(), new SimpleMeterRegistry());

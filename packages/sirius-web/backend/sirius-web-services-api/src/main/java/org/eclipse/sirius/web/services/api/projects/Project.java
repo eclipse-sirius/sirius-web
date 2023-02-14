@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.services.api.accounts.Profile;
-
 /**
  * DTO representing a project.
  *
@@ -28,15 +26,9 @@ public class Project {
 
     private final String name;
 
-    private final Profile owner;
-
-    private final Visibility visibility;
-
-    public Project(UUID id, String name, Profile owner, Visibility visibility) {
+    public Project(UUID id, String name) {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
-        this.owner = Objects.requireNonNull(owner);
-        this.visibility = visibility;
     }
 
     public UUID getId() {
@@ -47,17 +39,9 @@ public class Project {
         return this.name;
     }
 
-    public Profile getOwner() {
-        return this.owner;
-    }
-
-    public Visibility getVisibility() {
-        return this.visibility;
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, name: {2}, owner: {3}, visibility: {4}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name, this.owner, this.visibility);
+        String pattern = "{0} '{'id: {1}, name: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name);
     }
 }
