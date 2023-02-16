@@ -11,6 +11,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1674[#1674] [diagram] The fade and hide tools were available on the background of the diagram
+- https://github.com/eclipse-sirius/sirius-components/issues/1710[#1710] [diagram] Ensure that the edit box of an empty edge label is not located at the wrong position
 
 === New Features
 
