@@ -160,7 +160,10 @@ export const ToolbarActions = ({
       return;
     }
 
-    let index = group.toolbarActions.length - 1; // Move at the end of the toolbar
+    let index = group.toolbarActions.length;
+    if (group.toolbarActions.find((tba: GQLToolbarAction) => tba.id === id)) {
+      index--; // Move at the end of the toolbar
+    }
 
     const moveToolbarActionInput: GQLMoveToolbarActionInput = {
       id: uuid(),
