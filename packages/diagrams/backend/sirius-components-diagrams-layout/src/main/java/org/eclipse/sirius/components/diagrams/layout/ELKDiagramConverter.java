@@ -214,7 +214,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         elkLabel.setProperty(PROPERTY_TYPE, label.getType());
         elkLabel.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
 
-        this.handleElkLabel(label, elkLabel, isInsideHeader);
+        this.handleElkLabel(label, elkLabel, isInsideHeader, placement != null);
 
         elkLabel.setParent(elkGraphElement);
 
@@ -255,9 +255,11 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
      *            The Elk label created from the sirius-components label
      * @param isInsideHeader
      *            Whether the label is inside a header or not.
+     * @param isEdgeLabel
+     *            Whether the label is and edge label or not.
      */
-    private void handleElkLabel(Label label, ElkLabel elkLabel, boolean isInsideHeader) {
-        if (label.getText().isEmpty() && (!label.getStyle().getIconURL().isEmpty() || isInsideHeader)) {
+    private void handleElkLabel(Label label, ElkLabel elkLabel, boolean isInsideHeader, boolean isEdgeLabel) {
+        if (label.getText().isEmpty() && (!label.getStyle().getIconURL().isEmpty() || isInsideHeader || isEdgeLabel)) {
             elkLabel.setText(" ");
         } else if (label.getText().isEmpty()) {
             // workaround to prevent an empty label to be considered by Elk.

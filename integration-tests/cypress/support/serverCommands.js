@@ -264,3 +264,41 @@ Cypress.Commands.add(
       });
   }
 );
+
+Cypress.Commands.add('createProjectFromTemplate', (templateId) => {
+  const query = `
+  mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
+    createProjectFromTemplate(input: $input) {
+      __typename
+      ... on CreateProjectFromTemplateSuccessPayload {
+        project {
+          id
+        }
+        representationToOpen {
+          id
+        }
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+  `;
+  const variables = {
+    input: {
+      id: uuid(),
+      templateId,
+    },
+  };
+
+  const body = {
+    query,
+    variables,
+  };
+  return cy.request({
+    method: 'POST',
+    mode: 'cors',
+    url,
+    body,
+  });
+});
