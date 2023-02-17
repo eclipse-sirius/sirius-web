@@ -184,19 +184,22 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
         double width = borderNode.getSize().getWidth();
         double height = borderNode.getSize().getHeight();
-
         elkPort.setDimensions(width, height);
+
+        if (borderNode.getStyle() instanceof RectangularNodeStyle || borderNode.getStyle() instanceof ParametricSVGNodeStyle || borderNode.getStyle() instanceof ImageNodeStyle) {
+            elkNode.setProperty(PROPERTY_CUSTOM_SIZE, true);
+            Size currentSize = borderNode.getSize();
+            double portWidth = Math.max(elkPort.getWidth(), currentSize.getWidth());
+            double portHeight = Math.max(elkPort.getHeight(), currentSize.getHeight());
+            elkPort.setDimensions(portWidth, portHeight);
+        }
+
         elkPort.setParent(elkNode);
         if (borderNode.getState() == ViewModifier.Hidden) {
             elkNode.setProperty(CoreOptions.NO_LAYOUT, true);
         }
 
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
-
-        if (borderNode.getStyle() instanceof ImageNodeStyle imageNodeStyle) {
-            Size imageSize = this.imageNodeStyleSizeProvider.getSize(imageNodeStyle);
-            elkPort.setDimensions(imageSize.getWidth(), imageSize.getHeight());
-        }
 
         boolean hasHeader = this.elkPropertiesService.hasHeader(borderNode);
         this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, hasHeader, null);
