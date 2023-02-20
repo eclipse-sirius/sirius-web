@@ -28,6 +28,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -179,7 +180,7 @@ public class OutgoingTreeProvider {
         } else if (self != null) {
             result = this.objectService.getImagePath(self);
         }
-        return result;
+        return Optional.ofNullable(result).orElse(ImageConstants.DEFAULT_SVG);
     }
 
     private String getNodeKind(VariableManager variableManager) {
