@@ -21,6 +21,8 @@ import java.util.UUID;
 import org.assertj.core.data.Offset;
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.PortLabelPlacement;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkLabel;
@@ -243,6 +245,7 @@ public class DiagramConverterTests {
 
         ElkPort elkPort = elkNode.getPorts().get(0);
         assertThat(elkPort.getIdentifier()).isEqualTo(borderNode.getId().toString());
+        assertThat(elkPort.getLabels().get(0).getProperty(CoreOptions.PORT_LABELS_PLACEMENT)).isEqualTo(PortLabelPlacement.outside());
 
         imageSizeProvider.dispose();
     }

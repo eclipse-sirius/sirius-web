@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.TextBounds;
+import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
@@ -99,6 +100,7 @@ public class BorderNodePositionTests {
     private void checkBorderNodeLabel(LabelLayoutData labelLayoutData, Position borderNodeLabelTextPosition, TextBounds borderNodeLabelTextBounds) {
         assertThat(labelLayoutData.getPosition()).isEqualTo(borderNodeLabelTextPosition);
         assertThat(labelLayoutData.getTextBounds()).isEqualTo(borderNodeLabelTextBounds);
+        assertThat(labelLayoutData.getLabelType()).isEqualTo(LabelType.OUTSIDE.getValue());
     }
 
     @Test
@@ -108,7 +110,7 @@ public class BorderNodePositionTests {
         List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
 
         // add a border node with an non positioned label
-        LabelLayoutData labelLayoutData = this.createLabelLayoutData(Position.at(-1, -1), "any", BORDER_NODE_LABEL_TEXT_BOUNDS);
+        LabelLayoutData labelLayoutData = this.createLabelLayoutData(Position.at(-1, -1), "label:outside", BORDER_NODE_LABEL_TEXT_BOUNDS);
         borderNodes.add(this.createBorderNodeLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, DEFAULT_BORDER_NODE_SIZE, initializeDiagram, NodeType.NODE_RECTANGLE, labelLayoutData));
 
         ImageSizeProvider imageSizeProvider = new ImageSizeProvider();
@@ -387,7 +389,7 @@ public class BorderNodePositionTests {
 
     private NodeLayoutData createBorderNodeLayoutData(Position position, Size size, IContainerLayoutData parent, String nodeType) {
         NodeLayoutData nodeLayoutData = this.createBorderNodeLayoutData(position, size, parent, nodeType,
-                this.createLabelLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, "any", BORDER_NODE_LABEL_TEXT_BOUNDS));
+                this.createLabelLayoutData(BORDER_NODE_LABEL_TEXT_POSITION, "label:outside", BORDER_NODE_LABEL_TEXT_BOUNDS));
         return nodeLayoutData;
     }
 

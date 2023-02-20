@@ -40,6 +40,7 @@ It was not actually used, as tools have long been found in `DiagramDescription.g
 - https://github.com/eclipse-sirius/sirius-components/issues/1686[#1686] [diagram] Fix SVG export of the wrapped labels
 - https://github.com/eclipse-sirius/sirius-components/issues/1692[#1692] [core] JPEG images where previously ignored if using a `.jpg` extension instead of `.jpeg`.
 They are now correctly supported
+- https://github.com/eclipse-sirius/sirius-components/issues/1741[#1741] [diagram] Border node placement specified with ELK configuration not taken into account anymore
 
 === New Features
 

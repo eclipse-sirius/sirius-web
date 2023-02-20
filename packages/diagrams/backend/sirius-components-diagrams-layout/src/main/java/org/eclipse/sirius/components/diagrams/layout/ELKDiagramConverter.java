@@ -121,7 +121,12 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
 
         TextBounds textBounds = null;
         Label label = node.getLabel();
-        String labelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+        String labelType;
+        if (node.isBorderNode()) {
+            labelType = this.elkPropertiesService.getBorderNodeLabelType(node, layoutConfigurator);
+        } else {
+            labelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+        }
         if (labelType.startsWith("label:inside-v")) {
             double maxPadding = this.elkPropertiesService.getMaxPadding(node, layoutConfigurator);
             textBounds = this.textBoundsService.getAutoWrapBounds(label, node.getSize().getWidth() - maxPadding * 2);
