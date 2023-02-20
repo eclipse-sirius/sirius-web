@@ -17,6 +17,7 @@ import java.util.EnumSet;
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
+import org.eclipse.elk.core.options.PortLabelPlacement;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -60,6 +61,19 @@ public class ELKPropertiesService {
             labelType += horizontalAlignment;
         } else {
             labelType += "inside-center";
+        }
+
+        return labelType;
+    }
+
+    public String getBorderNodeLabelType(Node node, ISiriusWebLayoutConfigurator layoutConfigurator) {
+        String labelType = "label:";
+        String nodeType = node.getType();
+        EnumSet<PortLabelPlacement> portLabelPlacementSet = layoutConfigurator.configureByType(nodeType).getProperty(CoreOptions.PORT_LABELS_PLACEMENT);
+        if (portLabelPlacementSet.contains(PortLabelPlacement.OUTSIDE)) {
+            labelType += "outside";
+        } else {
+            labelType += "inside";
         }
 
         return labelType;

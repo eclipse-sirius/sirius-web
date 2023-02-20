@@ -170,7 +170,12 @@ public class IncrementalLayoutDiagramConverter {
         id2LayoutData.put(id, layoutData);
 
         layoutData.setPosition(label.getPosition());
-        String labelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+        String labelType;
+        if (node.isBorderNode()) {
+            labelType = this.elkPropertiesService.getBorderNodeLabelType(node, layoutConfigurator);
+        } else {
+            labelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+        }
         layoutData.setLabelType(labelType);
 
         TextBounds textBounds = null;

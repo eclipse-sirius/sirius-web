@@ -252,7 +252,12 @@ public class ELKLayoutedDiagramProvider {
             ElkLabel elkLabel = optionalElkLabel.get();
 
             Size size = Size.of(elkLabel.getWidth(), elkLabel.getHeight());
-            String nodeLabelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+            String nodeLabelType;
+            if (node.isBorderNode()) {
+                nodeLabelType = this.elkPropertiesService.getBorderNodeLabelType(node, layoutConfigurator);
+            } else {
+                nodeLabelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
+            }
 
             // @formatter:off
             Position position = Optional.of(elkLabel.getParent())
