@@ -17,7 +17,9 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -31,6 +33,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -141,7 +144,11 @@ public class IncomingTreeProvider {
                 if (adapter instanceof ItemProviderAdapter) {
                     ItemProviderAdapter editingDomainItemProvider = (ItemProviderAdapter) adapter;
                     String key = String.format("_UI_%s_%s_feature", eReference.getEContainingClass().getName(), eReference.getName());
-                    result = editingDomainItemProvider.getString(key);
+                    try {
+                        result = editingDomainItemProvider.getString(key);
+                    } catch (MissingResourceException mre) {
+                        // Expected for dynamic instances.
+                    }
                 }
             } else {
                 Adapter adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
@@ -169,7 +176,7 @@ public class IncomingTreeProvider {
         } else if (self != null) {
             result = this.objectService.getImagePath(self);
         }
-        return result;
+        return Optional.ofNullable(result).orElse(ImageConstants.DEFAULT_SVG);
     }
 
     private String getNodeKind(VariableManager variableManager) {
