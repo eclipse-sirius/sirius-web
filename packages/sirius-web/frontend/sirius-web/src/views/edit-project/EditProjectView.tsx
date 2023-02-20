@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { OnboardArea } from '@eclipse-sirius/sirius-components';
 import { Representation, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
@@ -24,8 +23,8 @@ import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import CloseIcon from '@material-ui/icons/Close';
 import Filter from '@material-ui/icons/Filter';
@@ -36,6 +35,7 @@ import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { OnboardArea } from '../../onboarding/OnboardArea';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
@@ -43,12 +43,12 @@ import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariab
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
-  editProjectViewMachine,
   HandleFetchedProjectEvent,
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
   ShowToastEvent,
+  editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 

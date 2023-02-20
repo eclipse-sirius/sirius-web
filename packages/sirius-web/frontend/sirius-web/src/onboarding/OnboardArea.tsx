@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import { NewDocumentArea } from 'onboarding/NewDocumentArea';
-import { NewRepresentationArea } from 'onboarding/NewRepresentationArea';
-import { RepresentationsArea } from 'onboarding/RepresentationsArea';
-import React, { useEffect, useState } from 'react';
-import { MainAreaComponentProps } from '../workbench/Workbench.types';
-import styles from './OnboardArea.module.css';
+import { makeStyles } from '@material-ui/core/styles';
+import { useEffect, useState } from 'react';
+import { MainAreaComponentProps } from '../../../../../core/frontend/sirius-components-core/src/workbench/Workbench.types';
+import { NewDocumentArea } from './NewDocumentArea';
+import { NewRepresentationArea } from './NewRepresentationArea';
+import { RepresentationsArea } from './RepresentationsArea';
 
 const getOnboardDataQuery = gql`
   query getOnboardData($editingContextId: ID!, $objectId: ID!) {
@@ -69,7 +69,25 @@ const INITIAL_STATE = {
   representations: [],
 };
 
+const useOnboardAreaStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    padding: theme.spacing(5),
+    overflowY: 'auto',
+    overflowX: 'auto',
+  },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+    gap: theme.spacing(2),
+  },
+  box: {},
+}));
+
 export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
+  const classes = useOnboardAreaStyles();
   const [state, setState] = useState(INITIAL_STATE);
   const { stereotypeDescriptions, editingContextActions, representationDescriptions, representations } = state;
 
@@ -99,8 +117,8 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   }, [editingContextId, objectId, loading, data, error]);
 
   return (
-    <div className={styles.onboardArea}>
-      <div className={styles.onboardContent}>
+    <div className={classes.container}>
+      <div className={classes.grid}>
         <NewDocumentArea
           editingContextId={editingContextId}
           stereotypeDescriptions={stereotypeDescriptions}

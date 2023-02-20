@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.icon {
-  width: 32px;
-  height: 32px;
+import { Selection } from '@eclipse-sirius/sirius-components-core';
+
+export interface Representation {
+  id: string;
+  label: string;
+  kind: string;
+}
+
+export interface RepresentationAreaProps {
+  representations: Representation[];
+  setSelection: (selection: Selection) => void;
 }

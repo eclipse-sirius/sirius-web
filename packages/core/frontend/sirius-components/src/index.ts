@@ -22,5 +22,4 @@ export * from './modals/new-object/NewObjectModal';
 export * from './modals/new-representation/NewRepresentationModal';
 export * from './modals/new-root-object/NewRootObjectModal';
 export * from './modals/rename-project/RenameProjectModal';
-export * from './onboarding/OnboardArea';
 export * from './views/FormContainer';
