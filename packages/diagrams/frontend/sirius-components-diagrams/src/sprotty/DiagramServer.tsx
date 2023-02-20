@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -306,7 +306,7 @@ export class DiagramServer extends ModelSource {
 
   handleInitializeCanvasBoundsAction(_: InitializeCanvasBoundsAction) {
     if (this.firstOpen && this.currentRoot.id !== INITIAL_ROOT.id) {
-      this.actionDispatcher.dispatch(FitToScreenAction.create([], { padding: 20, maxZoom: 1 }));
+      this.actionDispatcher.dispatch(FitToScreenAction.create([], { padding: 20, maxZoom: 1, animate: false }));
       this.firstOpen = false;
     }
   }
@@ -408,7 +408,7 @@ export class DiagramServer extends ModelSource {
         this.actionDispatcher.dispatchAll(actionsToDispatch);
       });
     } else {
-      this.actionDispatcher.dispatch(UpdateModelAction.create(INITIAL_ROOT));
+      this.actionDispatcher.dispatch(UpdateModelAction.create(INITIAL_ROOT, { animate: false }));
     }
   }
 
