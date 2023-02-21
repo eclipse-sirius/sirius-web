@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,10 +38,8 @@ import { PropertySectionLabel } from './PropertySectionLabel';
 const useStyle = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
   style: {
     color: ({ color }) => (color ? color : theme.palette.primary.light),
-    '&.Mui-checked': {
-      color: ({ color }) => (color ? color : theme.palette.primary.light),
-    },
   },
+  disabled: {},
 }));
 
 export const editCheckboxMutation = gql`
@@ -162,7 +160,7 @@ export const CheckboxPropertySection = ({
           onBlur={onBlur}
           data-testid={widget.label}
           disabled={readOnly}
-          classes={{ root: classes.style }}
+          classes={{ root: classes.style, disabled: classes.disabled }}
         />
       </FormGroup>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
