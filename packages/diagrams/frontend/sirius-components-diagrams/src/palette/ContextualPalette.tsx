@@ -18,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { GQLCollapsingState, GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { Diagram } from '../sprotty/Diagram.types';
 import {
   ContextualPaletteProps,
   ContextualPaletteStyleProps,
@@ -176,6 +177,7 @@ export const ContextualPalette = ({
   const { toolSections, message } = context;
 
   const diagramElementId = diagramElement.id;
+  const isRoot: boolean = diagramElement instanceof Diagram;
 
   const {
     loading: toolSectionsLoading,
@@ -207,8 +209,11 @@ export const ContextualPalette = ({
     toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
   );
 
-  let toolSectionsCount = toolSections.length + 2;
+  let toolSectionsCount = toolSections.length + 1;
   if (atLeastOneSingleClickOnTwoDiagramElementsTool) {
+    toolSectionsCount = toolSectionsCount + 1;
+  }
+  if (!isRoot) {
     toolSectionsCount = toolSectionsCount + 1;
   }
 
@@ -257,9 +262,11 @@ export const ContextualPalette = ({
             </div>
           ) : null}
           {toolSectionElements}
-          <div className={classes.visibilitySection}>
-            <ToolSection toolSection={visibilitySection} onToolClick={invokeVisibilityTool} />
-          </div>
+          {!isRoot ? (
+            <div className={classes.visibilitySection} data-testid="visibilitySection">
+              <ToolSection toolSection={visibilitySection} onToolClick={invokeVisibilityTool} />
+            </div>
+          ) : null}
           <div className={classes.close}>
             <Tool tool={closeTool} thumbnail onClick={() => invokeClose()} />
           </div>
