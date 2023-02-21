@@ -22,7 +22,8 @@
     "build:watch": "rollup -c rollup-dev.config.js -w",
     "test": "jest .*.test.ts .*.test.tsx",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
-    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
   },
   "devDependencies": {
     "@apollo/client": "3.6.9",
