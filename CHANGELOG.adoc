@@ -10,6 +10,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1674[#1674] [diagram] The fade and hide tools were available on the background of the diagram
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1695[#1695] [view] Add a precondition expression to the node description
@@ -59,6 +61,7 @@ It was not actually used, as tools have long been found in `DiagramDescription.g
 They are now correctly supported
 - https://github.com/eclipse-sirius/sirius-components/issues/1741[#1741] [diagram] Border node placement specified with ELK configuration not taken into account anymore
 - https://github.com/eclipse-sirius/sirius-components/issues/1720[#1720] [diagram] Fix the position where newly created views appear on a diagram after a drop
+
 
 === New Features
 
