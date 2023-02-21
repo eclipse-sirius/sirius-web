@@ -17,12 +17,11 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1716[#1716] [workbench] Fixed the "Related Elements" view when activated on dynamic instances
 - https://github.com/eclipse-sirius/sirius-components/issues/1591[#1591] [emf] Creating root elements in a model will now use the EPackages loaded in the package registry of the editing domain
 - https://github.com/eclipse-sirius/sirius-components/issues/1746[#1746] [forms] Rich-text editor toolbar on forms representations are not grayed when read-only
-
+- https://github.com/eclipse-sirius/sirius-components/issues/1744[#1744] [forms] Checkboxes on forms representations are not grayed when read-only
 
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1695[#1695] [view] Add a precondition expression to the node description
-
 
 === Improvements
 
