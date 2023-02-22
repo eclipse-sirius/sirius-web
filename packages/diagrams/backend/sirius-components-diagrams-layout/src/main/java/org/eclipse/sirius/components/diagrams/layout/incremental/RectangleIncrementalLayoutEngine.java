@@ -429,12 +429,12 @@ public class RectangleIncrementalLayoutEngine implements INodeIncrementalLayoutE
                 .build();
         // @formatter:on
 
-        // Updates the position of the node. This update will be used by the children layout engine parent to check if
-        // the parent node has to increase its size because this child has been moved out the children area on top or
-        // left. In fact, instead of updating the node position here, we should return a data structure that will be
-        // used by the children parent layout engine to update the position of this node because it should be the matter
-        // of the parent to position its children, not a child to position itself.
-        if (!nodeContext.getNode().getPosition().equals(newNodePosition)) {
+        // Update the position of the node if it has one. This will be used by the children layout engine parent to
+        // check if the parent node has to increase its size because this child has been moved out the children area on
+        // top or left. In fact, instead of updating the node position here, we should return a data structure that will
+        // be used by the children parent layout engine to update the position of this node because it should be the
+        // matter of the parent to position its children, not a child to position itself.
+        if (!Position.UNDEFINED.equals(nodeContext.getNode().getPosition()) && !nodeContext.getNode().getPosition().equals(newNodePosition)) {
             nodeContext.getNode().setPosition(newNodePosition);
             nodeContext.getNode().setChanged(true);
             for (NodeLayoutData child : nodeContext.getChildrenToLayout()) {
