@@ -459,6 +459,7 @@ exports[`render the bar-chart widget 1`] = `
       <svg
         height="250"
         pointer-events="none"
+        text-decoration="none"
         viewBox="0,0,500,250"
         width="500"
       >
@@ -466,7 +467,7 @@ exports[`render the bar-chart widget 1`] = `
           fill="none"
           font-family="sans-serif"
           font-size="10"
-          style="font-size:14; font-style: normal; text-decoration: none; font-weight: normal"
+          style="font-size:14; font-style: normal; font-weight: normal"
           text-anchor="end"
           transform="translate(50,0)"
         >
@@ -641,7 +642,7 @@ exports[`render the bar-chart widget 1`] = `
           fill="none"
           font-family="sans-serif"
           font-size="10"
-          style="font-size:14; font-style: normal; text-decoration: none; font-weight: normal"
+          style="font-size:14; font-style: normal; font-weight: normal"
           text-anchor="middle"
           transform="translate(0,220)"
         >
@@ -746,6 +747,7 @@ exports[`render the bar-chart widget with empty style 1`] = `
       <svg
         height="250"
         pointer-events="none"
+        text-decoration="none"
         viewBox="0,0,500,250"
         width="500"
       >
@@ -753,7 +755,7 @@ exports[`render the bar-chart widget with empty style 1`] = `
           fill="none"
           font-family="sans-serif"
           font-size="10"
-          style="font-size:12; font-style: normal; text-decoration: none; font-weight: normal"
+          style="font-size:12; font-style: normal; font-weight: normal"
           text-anchor="end"
           transform="translate(50,0)"
         >
@@ -928,7 +930,7 @@ exports[`render the bar-chart widget with empty style 1`] = `
           fill="none"
           font-family="sans-serif"
           font-size="10"
-          style="font-size:12; font-style: normal; text-decoration: none; font-weight: normal"
+          style="font-size:12; font-style: normal; font-weight: normal"
           text-anchor="middle"
           transform="translate(0,220)"
         >
@@ -1033,6 +1035,7 @@ exports[`render the bar-chart widget with style 1`] = `
       <svg
         height="250"
         pointer-events="none"
+        text-decoration="line-through underline"
         viewBox="0,0,500,250"
         width="500"
       >
@@ -1040,7 +1043,7 @@ exports[`render the bar-chart widget with style 1`] = `
           fill="none"
           font-family="sans-serif"
           font-size="10"
-          style="font-size:15; font-style: italic; text-decoration: line-through underline; font-weight: bold"
+          style="font-size:15; font-style: italic; font-weight: bold"
           text-anchor="end"
           transform="translate(50,0)"
         >
@@ -1215,7 +1218,7 @@ exports[`render the bar-chart widget with style 1`] = `
           fill="none"
           font-family="sans-serif"
           font-size="10"
-          style="font-size:15; font-style: italic; text-decoration: line-through underline; font-weight: bold"
+          style="font-size:15; font-style: italic; font-weight: bold"
           text-anchor="middle"
           transform="translate(0,220)"
         >
