@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,15 +69,15 @@ export const BarChart = ({ chart }: BarChartProps) => {
 
       const selection = d3.select(d3Container.current);
       selection.selectAll('*').remove(); // Remove existing content.
-      const svg = selection.attr('viewBox', [0, 0, width, height]).attr('pointer-events', 'none'); // allow selection anywhere in the svg
+      const svg = selection
+        .attr('viewBox', [0, 0, width, height])
+        .attr('text-decoration', textDecoration)
+        .attr('pointer-events', 'none'); // allow selection anywhere in the svg
 
       svg
         .append('g')
         .attr('transform', `translate(${marginLeft},0)`)
-        .attr(
-          'style',
-          `font-size:${fontSize}; font-style: ${fontStyle}; text-decoration: ${textDecoration}; font-weight: ${fontWeight}`
-        )
+        .attr('style', `font-size:${fontSize}; font-style: ${fontStyle}; font-weight: ${fontWeight}`)
         .call(yAxis)
         .call((g) => g.select('.domain').remove())
         .call((g) =>
@@ -115,10 +115,7 @@ export const BarChart = ({ chart }: BarChartProps) => {
       svg
         .append('g')
         .attr('transform', `translate(0,${height - marginBottom})`)
-        .attr(
-          'style',
-          `font-size:${fontSize}; font-style: ${fontStyle}; text-decoration: ${textDecoration}; font-weight: ${fontWeight}`
-        )
+        .attr('style', `font-size:${fontSize}; font-style: ${fontStyle}; font-weight: ${fontWeight}`)
         .call(xAxis);
     }
   }, [chart, d3Container]);
