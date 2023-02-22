@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -122,9 +124,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         Future<?> future = this.executorService.submit(() -> this.inputDispatcher.dispatch(this.executorService, payloadSink, this.canBeDisposedSink, this.changeDescriptionSink, this.editingContext, input));
         try {
             // Block until the event has been processed
-            future.get();
+            future.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException exception) {
             this.logger.warn(exception.getMessage(), exception);
+        } catch (TimeoutException e) {
+            // The handler did not finish, try to cancel it and return an error immeditaly instead of waiting (and
+            // blocking the current thread) indefinitely.
+            future.cancel(true);
+            return Mono.just((IPayload) new ErrorPayload(input.id(), this.messageService.timeout()));
         }
         handleTimer.stop(this.meterRegistry.timer(Monitoring.TIMER_PROCESSING_INPUT, "input", input.getClass().getSimpleName(),
                 "inputId", input.id().toString()));
