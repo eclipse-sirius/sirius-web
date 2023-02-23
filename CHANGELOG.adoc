@@ -45,7 +45,8 @@ They are now correctly supported
 
 === New Features
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1567[#1567] [project] Add support for project templates
+- https://github.com/eclipse-sirius/sirius-components/issues/1567[#1567] [project] Add support for project templates.
+Project templates are defined in the backend using the `IProjectTemplateProvider` (template metadata) and `IProjectTemplateInitializer` (project contents) interfaces.
 - https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [diagram] Add the ability to filter the edge created using some graphical variables
 - https://github.com/eclipse-sirius/sirius-components/issues/1456[#1456] [view] Add a precondition expression to the edge description
 - https://github.com/eclipse-sirius/sirius-components/issues/1463[#1463] [diagram] Add support for the direct edit of the start and end labels of an edge. Two new tools can be defined on an edge in order to specify how the begin and end labels can be edited.
