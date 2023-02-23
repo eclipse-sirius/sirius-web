@@ -15,6 +15,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1674[#1674] [diagram] The fade and hide tools were available on the background of the diagram
 - https://github.com/eclipse-sirius/sirius-components/issues/1710[#1710] [diagram] Ensure that the edit box of an empty edge label is not located at the wrong position
 - https://github.com/eclipse-sirius/sirius-components/issues/1716[#1716] [workbench] Fixed the "Related Elements" view when activated on dynamic instances
+- https://github.com/eclipse-sirius/sirius-components/issues/1591[#1591] [emf] Creating root elements in a model will now use the EPackages loaded in the package registry of the editing domain
 
 === New Features
 
