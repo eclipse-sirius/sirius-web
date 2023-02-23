@@ -40,6 +40,7 @@ import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.CreateChildCommand;
 import org.eclipse.emf.edit.command.CreateChildCommand.Helper;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
@@ -271,7 +272,7 @@ public class EditService implements IEditService {
     public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
         Optional<Object> createdObjectOptional = Optional.empty();
 
-        var optionalEClass = this.getMatchingEClass(editingContext.getId(), domainId, rootObjectCreationDescriptionId);
+        var optionalEClass = this.getMatchingEClass(editingContext, domainId, rootObjectCreationDescriptionId);
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
@@ -303,11 +304,15 @@ public class EditService implements IEditService {
         return createdObjectOptional;
     }
 
-    private Optional<EClass> getMatchingEClass(String editingContextId, String domainId, String rootObjectCreationDescriptionId) {
-        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
-
+    private Optional<EClass> getMatchingEClass(IEditingContext editingContext, String domainId, String rootObjectCreationDescriptionId) {
         // @formatter:off
-        return Optional.ofNullable(ePackageRegistry.getEPackage(domainId))
+        return Optional.of(editingContext)
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
+                .map(EditingDomain::getResourceSet)
+                .map(ResourceSet::getPackageRegistry)
+                .map(packageRegistry -> packageRegistry.getEPackage(domainId))
                 .map(ePackage -> ePackage.getEClassifier(rootObjectCreationDescriptionId))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
