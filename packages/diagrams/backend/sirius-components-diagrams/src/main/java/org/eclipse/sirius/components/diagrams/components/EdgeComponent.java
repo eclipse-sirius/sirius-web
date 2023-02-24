@@ -120,6 +120,7 @@ public class EdgeComponent implements IComponent {
                     edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceNode);
                     edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_TARGET, targetNode);
 
+                    this.props.getOperationValidator().validate("Edge#precondition", edgeInstanceVariableManager.getVariables());
                     var shouldRender = edgeDescription.getShouldRenderPredicate().test(edgeInstanceVariableManager);
                     if (shouldRender) {
                         this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceNode, targetNode, optionalDiagramEvent, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)
@@ -250,8 +251,7 @@ public class EdgeComponent implements IComponent {
      * This state is computed from the modifier set of the current edge and the states of the source and target nodes.
      * If the new state of one of these nodes is {@link ViewModifier#Hidden}, the state of this new edge is
      * {@link ViewModifier#Hidden} too. If these nodes are not hidden, the state of the current edge is the
-     * {@link ViewModifier#getState(Collection) dominant state} of the set or {@link ViewModifier#DEFAULT_MODIFIER} if
-     * empty.
+     * dominant state of the set or the default modifier if empty.
      *
      * @param optionalDiagramEvent
      *            The optional diagram event, it is used to know the new state of the source and target nodes
@@ -259,7 +259,7 @@ public class EdgeComponent implements IComponent {
      *            The source node element
      * @param sourceId
      *            The source node ID
-     * @param sourceTarget
+     * @param targetNode
      *            The target node element
      * @param targetId
      *            The target node ID

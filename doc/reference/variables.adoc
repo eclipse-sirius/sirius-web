@@ -1,0 +1,147 @@
+= Variable
+
+== Node#semanticCandidates
+
+Used to provide the semantic elements that will be rendered as nodes
+
+- `self`: The current element on which the operation is performed
+- `collapsingState`: Indicates if a node is collapsed or expanded
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `semanticElementIds`: The list of the identifiers of all semantic elements which should appear in the diagram with the current description
+- `diagramEvent`: Indicates the potential event which has triggered a new rendering
+- `previousDiagram`: The diagram rendered during the previous refresh
+- `label`: The label of the diagram
+- `ownerId`: The identifier of the node
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Node#precondition
+
+Used to filter the semantic elements which should be rendered as nodes
+
+- `self`: The current element on which the operation is performed
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Node#label
+
+Used to compute the label of a node
+
+- `self`: The current element on which the operation is performed
+- `collapsingState`: Indicates if a node is collapsed or expanded
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Node#widthComputation
+
+Used to provide a requested width for the node
+
+- `self`: The current element on which the operation is performed
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Node#heightComputation
+
+Used to provide a requested height for the node
+
+- `self`: The current element on which the operation is performed
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#semanticCandidates
+
+Used to provide the semantic elements that will be rendered as edges
+
+- `self`: The current element on which the operation is performed
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#precondition
+
+Used to filter the semantic elements which should be rendered as edges
+
+- `self`: The current element on which the operation is performed
+- `semanticEdgeSource`: The semantic element at the source of the edge
+- `semanticEdgeTarget`: The semantic element at the target of the edge
+- `graphicalEdgeSource`: The virtual diagram element at the source of the edge
+- `graphicalEdgeTarget`: The virtual diagram element at the target of the edge
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `diagramEvent`: Indicates the potential event which has triggered a new rendering
+- `previousDiagram`: The diagram rendered during the previous refresh
+- `cache`: An internal cache used to retrieve some internal data during the rendering
+- `label`: The label of the diagram
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#beginLabel
+
+Used to compute the label at the beginning of an edge
+
+- `self`: The current element on which the operation is performed
+- `semanticEdgeSource`: The semantic element at the source of the edge
+- `semanticEdgeTarget`: The semantic element at the target of the edge
+- `graphicalEdgeSource`: The virtual diagram element at the source of the edge
+- `graphicalEdgeTarget`: The virtual diagram element at the target of the edge
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `diagramEvent`: Indicates the potential event which has triggered a new rendering
+- `previousDiagram`: The diagram rendered during the previous refresh
+- `cache`: An internal cache used to retrieve some internal data during the rendering
+- `label`: The label of the diagram
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#label
+
+Used to compute the label at the center of an edge
+
+- `self`: The current element on which the operation is performed
+- `semanticEdgeSource`: The semantic element at the source of the edge
+- `semanticEdgeTarget`: The semantic element at the target of the edge
+- `graphicalEdgeSource`: The virtual diagram element at the source of the edge
+- `graphicalEdgeTarget`: The virtual diagram element at the target of the edge
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `diagramEvent`: Indicates the potential event which has triggered a new rendering
+- `previousDiagram`: The diagram rendered during the previous refresh
+- `cache`: An internal cache used to retrieve some internal data during the rendering
+- `label`: The label of the diagram
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#endLabel
+
+Used to compute the label at the end of an edge
+
+- `self`: The current element on which the operation is performed
+- `semanticEdgeSource`: The semantic element at the source of the edge
+- `semanticEdgeTarget`: The semantic element at the target of the edge
+- `graphicalEdgeSource`: The virtual diagram element at the source of the edge
+- `graphicalEdgeTarget`: The virtual diagram element at the target of the edge
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `diagramEvent`: Indicates the potential event which has triggered a new rendering
+- `previousDiagram`: The diagram rendered during the previous refresh
+- `cache`: An internal cache used to retrieve some internal data during the rendering
+- `label`: The label of the diagram
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#sourceNodes
+
+Used to compute the nodes which should be considered as source of the edge
+
+- `self`: The current element on which the operation is performed
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running
+
+
+== Edge#targetNodes
+
+Used to compute the nodes which should be considered as target of the edge
+
+- `self`: The current element on which the operation is performed
+- `editingContext`: The editing context is an abstraction used to access all the semantic data
+- `environment`: The environment may contain some information on the application currently running

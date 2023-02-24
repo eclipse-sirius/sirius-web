@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -38,6 +39,8 @@ public final class DiagramComponentProps implements IProps {
     private VariableManager variableManager;
 
     private DiagramDescription diagramDescription;
+
+    private IOperationValidator operationValidator;
 
     private Optional<Diagram> previousDiagram;
 
@@ -57,6 +60,10 @@ public final class DiagramComponentProps implements IProps {
 
     public DiagramDescription getDiagramDescription() {
         return this.diagramDescription;
+    }
+
+    public IOperationValidator getOperationValidator() {
+        return this.operationValidator;
     }
 
     public Optional<Diagram> getPreviousDiagram() {
@@ -90,6 +97,8 @@ public final class DiagramComponentProps implements IProps {
 
         private DiagramDescription diagramDescription;
 
+        private IOperationValidator operationValidator;
+
         private Optional<Diagram> previousDiagram;
 
         private List<ViewCreationRequest> viewCreationRequests;
@@ -105,6 +114,11 @@ public final class DiagramComponentProps implements IProps {
 
         public Builder diagramDescription(DiagramDescription diagramDescription) {
             this.diagramDescription = Objects.requireNonNull(diagramDescription);
+            return this;
+        }
+
+        public Builder operationValidator(IOperationValidator operationValidator) {
+            this.operationValidator = Objects.requireNonNull(operationValidator);
             return this;
         }
 
@@ -132,6 +146,7 @@ public final class DiagramComponentProps implements IProps {
             DiagramComponentProps diagramComponentProps = new DiagramComponentProps();
             diagramComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
             diagramComponentProps.diagramDescription = Objects.requireNonNull(this.diagramDescription);
+            diagramComponentProps.operationValidator = Objects.requireNonNull(operationValidator);
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
             diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));

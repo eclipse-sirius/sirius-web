@@ -93,6 +93,7 @@ public class NodeComponent implements IComponent {
         }
 
         List<Element> children = new ArrayList<>();
+        this.props.getOperationValidator().validate("Node#semanticCandidates", nodeComponentVariableManager.getVariables());
         List<?> semanticElements = nodeDescription.getSemanticElementsProvider().apply(nodeComponentVariableManager);
 
         for (Object semanticElement : semanticElements) {
@@ -399,6 +400,7 @@ public class NodeComponent implements IComponent {
                     .previousTargetObjectIds(previousBorderNodesTargetObjectIds)
                     .diagramEvent(this.props.getDiagramEvent().orElse(null))
                     .parentElementState(state)
+                    .operationValidator(this.props.getOperationValidator())
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -434,6 +436,7 @@ public class NodeComponent implements IComponent {
                     .previousTargetObjectIds(previousChildNodesTargetObjectIds)
                     .diagramEvent(this.props.getDiagramEvent().orElse(null))
                     .parentElementState(state)
+                    .operationValidator(this.props.getOperationValidator())
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);

@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.junit.jupiter.api.Test;
@@ -257,6 +258,7 @@ public class UnsynchronizedDiagramTests {
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
+                .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvent(Optional.empty())
                 .build();
         // @formatter:on

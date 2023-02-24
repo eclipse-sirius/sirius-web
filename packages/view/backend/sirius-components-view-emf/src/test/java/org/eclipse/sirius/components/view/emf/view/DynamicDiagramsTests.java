@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
@@ -157,7 +158,7 @@ public class DynamicDiagramsTests {
         IObjectService objectService = new IObjectService.NoOp();
         ILayoutService layoutService = new ILayoutService.NoOp();
         MeterRegistry meterRegistry = new SimpleMeterRegistry();
-        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), objectService, layoutService, meterRegistry);
+        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), objectService, layoutService, new IOperationValidator.NoOp(), meterRegistry);
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 

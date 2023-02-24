@@ -101,9 +101,9 @@ public class DiagramVariableProvider implements IVariableProvider {
     return switch (operation) {
       case "Diagram#canCreate", "Diagram#label", "Diagram#targetObjectId" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF);
       case "Node#semanticElements" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF);
-      case "Edge#shouldRender" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET)
+      case "Edge#shouldRender" -> List.of(ENVIRONMENT, EDITING_CONTEXT, SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET);
       default -> List.of();
-    }
+    };
   }
 }
 ----
