@@ -78,6 +78,7 @@ public class DiagramComponent implements IComponent {
                             .previousTargetObjectIds(previousNodesTargetIds)
                             .diagramEvent(this.props.getDiagramEvent().orElse(null))
                             .parentElementState(ViewModifier.Normal)
+                            .operationValidator(this.props.getOperationValidator())
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).toList();
@@ -87,7 +88,7 @@ public class DiagramComponent implements IComponent {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getDiagramEvent());
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvent());
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .toList();
