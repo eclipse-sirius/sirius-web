@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,10 @@ package org.eclipse.sirius.components.domains.emf;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.emf.common.util.EList;
@@ -42,7 +45,66 @@ public class DomainConverterTests {
     private static final String FIXTURE = "fixture";
 
     private Optional<EPackage> convert(Domain domain) {
-        return new DomainConverter().convert(domain);
+        List<Domain> domains = Collections.singletonList(domain);
+        return new DomainConverter().convert(domains).findAny();
+    }
+
+    private Stream<EPackage> convert(List<Domain> domains) {
+        return new DomainConverter().convert(domains);
+    }
+
+    @Test
+    public void testConvertWithSuperTypeFromAnotherEPackage() {
+        Domain core = DomainFactory.eINSTANCE.createDomain();
+        core.setName("core");
+        Domain extension = DomainFactory.eINSTANCE.createDomain();
+        extension.setName("extension");
+
+        Entity root = DomainFactory.eINSTANCE.createEntity();
+        root.setName("root");
+        core.getTypes().add(root);
+
+        Entity abstractNode = DomainFactory.eINSTANCE.createEntity();
+        abstractNode.setName("abstractNode");
+        core.getTypes().add(abstractNode);
+        abstractNode.setAbstract(true);
+
+        Relation containment = DomainFactory.eINSTANCE.createRelation();
+        containment.setName("containment");
+        containment.setContainment(true);
+        containment.setTargetType(abstractNode);
+        abstractNode.getRelations().add(containment);
+
+        containment = DomainFactory.eINSTANCE.createRelation();
+        containment.setName("containment");
+        containment.setContainment(true);
+        containment.setTargetType(abstractNode);
+        root.getRelations().add(containment);
+
+        Entity basicNode = DomainFactory.eINSTANCE.createEntity();
+        basicNode.setName("basicNode");
+        core.getTypes().add(basicNode);
+        basicNode.getSuperTypes().add(abstractNode);
+
+        Entity complexNode = DomainFactory.eINSTANCE.createEntity();
+        complexNode.setName("complexNode");
+        extension.getTypes().add(complexNode);
+        complexNode.getSuperTypes().add(abstractNode);
+
+        List<EPackage> converted = this.convert(List.of(core, extension)).toList();
+        Optional<EPackage> convertedRoot = converted.stream().filter(epackage -> epackage.getName().equals(core.getName())).findFirst();
+        Optional<EPackage> convertedExtension = converted.stream().filter(epackage -> epackage.getName().equals(extension.getName())).findFirst();
+
+        assertThat(convertedRoot).isPresent();
+        assertThat(convertedExtension).isPresent();
+
+        Optional<EClass> convertedAbstractNode = Optional.of(convertedRoot.get().getEClassifier(abstractNode.getName()).eClass());
+        Optional<EClass> convertedComplexNode = Optional.of(convertedExtension.get().getEClassifier(complexNode.getName()).eClass());
+
+        assertThat(convertedAbstractNode).isPresent();
+        assertThat(convertedComplexNode).isPresent();
+
+        assertThat(convertedComplexNode.get().getEAllSuperTypes().contains(convertedAbstractNode.get()));
     }
 
     @Test
