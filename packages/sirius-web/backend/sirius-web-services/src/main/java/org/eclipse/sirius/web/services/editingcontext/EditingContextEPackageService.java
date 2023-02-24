@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
@@ -74,13 +73,15 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
             }
         });
         if (this.isStudioDefinitionEnabled) {
-            this.findDynamicEPackages(new DomainConverter()::convert).forEach(ePackage -> {
+            this.findDynamicEPackages().forEach(ePackage -> {
                 EPackage previous = allEPackages.put(ePackage.getNsURI(), ePackage);
                 if (previous != null) {
                     this.logger.warn("Duplicate EPackages with nsURI {} found.", ePackage.getNsURI());
                 }
             });
+
         }
+
         return List.copyOf(allEPackages.values());
     }
 
@@ -94,7 +95,7 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
     /**
      * Returns all the EPackages defined by a Domain definition.
      */
-    private Stream<EPackage> findDynamicEPackages(Function<Domain, Optional<EPackage>> domainConverter) {
+    private Stream<EPackage> findDynamicEPackages() {
         ResourceSet resourceSet = new ResourceSetImpl();
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
@@ -102,11 +103,9 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         var domainDocumentEntities = this.documentRepository.findAllByType(DomainPackage.eNAME, DomainPackage.eNS_URI);
-        for (DocumentEntity domainDocumentEntity : domainDocumentEntities) {
-            this.loadDomainDefinitions(resourceSet, domainDocumentEntity);
-        }
+        StreamSupport.stream(domainDocumentEntities.spliterator(), false).distinct().forEach(dp -> this.loadDomainDefinitions(resourceSet, dp));
 
-        return resourceSet.getResources().stream().flatMap(res -> this.convertDomains(res, domainConverter));
+        return this.convertDomains(resourceSet.getResources());
     }
 
     private void loadDomainDefinitions(ResourceSet resourceSet, DocumentEntity domainDocument) {
@@ -119,14 +118,9 @@ public class EditingContextEPackageService implements IEditingContextEPackageSer
         }
     }
 
-    private Stream<EPackage> convertDomains(Resource resource, Function<Domain, Optional<EPackage>> domainConverter) {
-        // @formatter:off
-        return resource.getContents().stream()
-                       .filter(Domain.class::isInstance)
-                       .map(Domain.class::cast)
-                       .map(domainConverter)
-                       .flatMap(Optional::stream);
-        // @formatter:on
+    private Stream<EPackage> convertDomains(List<Resource> resources) {
+        List<Domain> domains = resources.stream().flatMap(r -> r.getContents().stream()).filter(Domain.class::isInstance).map(Domain.class::cast).toList();
+        return new DomainConverter().convert(domains);
     }
 
 }

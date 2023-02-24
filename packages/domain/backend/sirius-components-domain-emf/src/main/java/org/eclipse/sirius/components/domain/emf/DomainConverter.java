@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.domain.emf;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EAttribute;
@@ -42,42 +45,46 @@ public class DomainConverter {
 
     public static final String DOMAIN_SCHEME = "domain";
 
-    public Optional<EPackage> convert(Domain domain) {
-        Optional<EPackage> result = Optional.empty();
-
-        EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
-        ePackage.setName(domain.getName());
-        ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase());
-        ePackage.setNsURI(DOMAIN_SCHEME + "://" + domain.getName());
+    public Stream<EPackage> convert(List<Domain> domains) {
+        List<EPackage> ePackages = new ArrayList<>();
 
         Map<Entity, EClass> convertedTypes = new HashMap<>();
-        // First pass to create the EClasses and EAttributes
-        for (Entity entity : domain.getTypes()) {
-            EClass eClass = this.convertEntity(entity);
-            convertedTypes.put(entity, eClass);
-            ePackage.getEClassifiers().add(eClass);
-        }
-        // Second pass to convert references and resolve super-types.
-        for (Entity entity : domain.getTypes()) {
-            EClass eClass = convertedTypes.get(entity);
-            for (Relation relation : entity.getRelations()) {
-                EReference eReference = this.convertRelation(relation, convertedTypes);
-                eClass.getEStructuralFeatures().add(eReference);
+        for (Domain domain : domains) {
+            EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
+            ePackage.setName(domain.getName());
+            ePackage.setNsPrefix(Optional.ofNullable(domain.getName()).orElse("").toLowerCase());
+            ePackage.setNsURI(DOMAIN_SCHEME + "://" + domain.getName());
+
+            // First pass to create the EClasses and EAttributes
+            for (Entity entity : domain.getTypes()) {
+                EClass eClass = this.convertEntity(entity);
+                convertedTypes.put(entity, eClass);
+                ePackage.getEClassifiers().add(eClass);
             }
-            for (Entity superType : entity.getSuperTypes()) {
-                if (convertedTypes.containsKey(superType)) {
-                    eClass.getESuperTypes().add(convertedTypes.get(superType));
+
+            ePackages.add(ePackage);
+        }
+
+        // Second pass to convert references and resolve super-types.
+        for (Domain domain : domains) {
+            for (Entity entity : domain.getTypes()) {
+                // Convert references
+                EClass eClass = convertedTypes.get(entity);
+                for (Relation relation : entity.getRelations()) {
+                    EReference eReference = this.convertRelation(relation, convertedTypes);
+                    eClass.getEStructuralFeatures().add(eReference);
+                }
+                // Resolve super-types
+                for (Entity superType : entity.getSuperTypes()) {
+                    if (convertedTypes.containsKey(superType)) {
+                        eClass.getESuperTypes().add(convertedTypes.get(superType));
+                    }
                 }
             }
         }
 
         // Only return valid and safe EPackages
-        Diagnostic diagnostic = Diagnostician.INSTANCE.validate(ePackage);
-        if (diagnostic.getSeverity() < Diagnostic.ERROR) {
-            result = Optional.of(ePackage);
-        }
-
-        return result;
+        return ePackages.stream().filter(ePackage -> Diagnostician.INSTANCE.validate(ePackage).getSeverity() < Diagnostic.ERROR);
     }
 
     private EClass convertEntity(Entity entity) {

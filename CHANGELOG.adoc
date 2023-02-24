@@ -26,6 +26,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-components/issues/593[#593] [domain] Add support for referencing and extending other custom domains
+
 
 == v2023.3.0
 
