@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
  * Description of the class.
@@ -34,7 +34,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setLabelColor("white");
         nodeStyle.setWithHeader(false);
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Class");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
         nodeDescription.setLabelExpression("aql:self.name");
@@ -42,7 +42,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.getChildrenDescriptions().add(this.attributesNodeDescription());
         nodeDescription.getChildrenDescriptions().add(this.operationsNodeDescription());
 
-        var newClassNodeTool = new PapayaToolsFactory().createNamedElement("papaya::Class", "types", "Class");
+        var newClassNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Class", "types", "Class");
         newClassNodeTool.setName("New Class");
         nodeDescription.getNodeTools().add(newClassNodeTool);
 
@@ -69,7 +69,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setLabelColor("white");
         nodeStyle.setBorderRadius(0);
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Class");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setName(nodeDescription.getName() + " - Attributes");
         nodeDescription.setSemanticCandidatesExpression("aql:self");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
@@ -97,7 +97,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setBorderColor("");
         nodeStyle.setLabelColor("white");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Attribute");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Attribute");
         nodeDescription.setSemanticCandidatesExpression("aql:self.attributes");
         nodeDescription.setLabelExpression("aql:self.name + ': ' + if self.type = null then 'void' else self.type.name endif");
         nodeDescription.setStyle(nodeStyle);
@@ -112,7 +112,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setLabelColor("white");
         nodeStyle.setBorderRadius(0);
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Class");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setName(nodeDescription.getName() + " - Operations");
         nodeDescription.setSemanticCandidatesExpression("aql:self");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
@@ -140,7 +140,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setBorderColor("");
         nodeStyle.setLabelColor("white");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Operation");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Operation");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
         nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
         nodeDescription.setStyle(nodeStyle);

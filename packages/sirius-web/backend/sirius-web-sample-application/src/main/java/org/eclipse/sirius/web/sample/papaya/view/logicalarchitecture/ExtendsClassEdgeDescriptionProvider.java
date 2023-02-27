@@ -63,7 +63,7 @@ public class ExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionProv
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         var extendsClassEdgeDescription = cache.getEdgeDescription("Edge Extends class");
-        var classNodeDescription = cache.getNodeDescription("Node papaya::Class");
+        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
 
         diagramDescription.getEdgeDescriptions().add(extendsClassEdgeDescription);
         extendsClassEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);

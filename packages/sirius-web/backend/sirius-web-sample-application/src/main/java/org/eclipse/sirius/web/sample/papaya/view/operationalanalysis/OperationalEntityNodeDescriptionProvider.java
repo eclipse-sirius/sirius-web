@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
 import java.util.List;
-
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
@@ -21,8 +20,8 @@ import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
 
 /**
  * Description of the operational entity.
@@ -38,7 +37,7 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
         nodeStyle.setBorderColor("#616161");
         nodeStyle.setLabelColor("#1212121");
 
-        var builder = new PapyaViewBuilder();
+        var builder = new PapayaViewBuilder();
 
         var nodeDescription = builder.createNodeDescription("OperationalEntity");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalEntities");
@@ -92,9 +91,9 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
 
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var operationalEntityNodeDescription = cache.getNodeDescription("Node papaya::OperationalEntity");
-        var operationalPerimeterNodeDescription = cache.getNodeDescription("Node papaya::OperationalPerimeter");
-        var operationalActorNodeDescription = cache.getNodeDescription("Node papaya::OperationalActor");
+        var operationalEntityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalEntity");
+        var operationalPerimeterNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalPerimeter");
+        var operationalActorNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActor");
 
         diagramDescription.getNodeDescriptions().add(operationalEntityNodeDescription);
         operationalEntityNodeDescription.getChildrenDescriptions().add(operationalPerimeterNodeDescription);

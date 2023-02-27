@@ -17,8 +17,8 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
 
 /**
  * Description of depends on.
@@ -35,7 +35,7 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
         dependsOnEdgeStyle.setSourceArrowStyle(ArrowStyle.OUTPUT_FILL_CLOSED_ARROW);
         dependsOnEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);
 
-        var builder = new PapyaViewBuilder();
+        var builder = new PapayaViewBuilder();
 
         var dependsOnEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
         dependsOnEdgeDescription.setName("Edge Depends on");
@@ -50,8 +50,8 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         var dependsOnEdgeDescription = cache.getEdgeDescription("Edge Depends on");
-        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya::ProvidedService");
-        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya::RequiredService");
+        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
 
         diagramDescription.getEdgeDescriptions().add(dependsOnEdgeDescription);
         dependsOnEdgeDescription.getSourceNodeDescriptions().add(requiredServiceNodeDescription);

@@ -17,8 +17,8 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
 
 /**
  * Description of the package.
@@ -34,14 +34,14 @@ public class PackageNodeDescriptionProvider implements INodeDescriptionProvider 
         nodeStyle.setBorderColor("#5e35b1");
         nodeStyle.setLabelColor("#1212121");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Package");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Package");
         nodeDescription.setSemanticCandidatesExpression("aql:self.eContents()");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getReusedChildNodeDescriptions().add(nodeDescription);
 
-        var newPackageNodeTool = new PapayaToolsFactory().createNamedElement("papaya::Package", "packages", "Package");
+        var newPackageNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Package", "packages", "Package");
         newPackageNodeTool.setName("New Package");
         nodeDescription.getNodeTools().add(newPackageNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
@@ -52,11 +52,11 @@ public class PackageNodeDescriptionProvider implements INodeDescriptionProvider 
 
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var packageNodeDescription = cache.getNodeDescription("Node papaya::Package");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya::Interface");
-        var classNodeDescription = cache.getNodeDescription("Node papaya::Class");
-        var dataTypeNodeDescription = cache.getNodeDescription("Node papaya::DataType");
-        var enumNodeDescription = cache.getNodeDescription("Node papaya::Enum");
+        var packageNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Package");
+        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
+        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+        var dataTypeNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::DataType");
+        var enumNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Enum");
 
         packageNodeDescription.getChildrenDescriptions().add(interfaceNodeDescription);
         packageNodeDescription.getChildrenDescriptions().add(classNodeDescription);

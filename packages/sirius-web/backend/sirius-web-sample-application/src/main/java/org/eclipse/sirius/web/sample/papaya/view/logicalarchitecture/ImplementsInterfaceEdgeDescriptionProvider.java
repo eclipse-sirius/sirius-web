@@ -105,8 +105,8 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         var implementsInterfaceEdgeDescription = cache.getEdgeDescription("Edge Implements interface");
-        var classNodeDescription = cache.getNodeDescription("Node papaya::Class");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya::Interface");
+        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
 
         diagramDescription.getEdgeDescriptions().add(implementsInterfaceEdgeDescription);
         implementsInterfaceEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);

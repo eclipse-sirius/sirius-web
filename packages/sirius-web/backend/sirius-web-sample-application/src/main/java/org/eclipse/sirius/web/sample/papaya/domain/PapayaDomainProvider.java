@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya;
+package org.eclipse.sirius.web.sample.papaya.domain;
 
 import java.util.List;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
 import org.eclipse.sirius.components.domain.Domain;
@@ -28,6 +28,12 @@ import org.eclipse.sirius.components.domain.Relation;
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class PapayaDomainProvider {
+    private Domain coreDomain;
+
+    private Domain operationalAnalysisDomain;
+
+    private Domain logicalArchitectureDomain;
+
     private Entity rootEntity;
 
     private Entity modelElementEntity;
@@ -74,43 +80,49 @@ public class PapayaDomainProvider {
 
     private Entity parameterEntity;
 
-    public Domain getDomain() {
-        var domain = DomainFactory.eINSTANCE.createDomain();
-        domain.setName("papaya");
+    public List<EObject> getDomains() {
+        this.coreDomain = DomainFactory.eINSTANCE.createDomain();
+        this.coreDomain.setName("papaya_core");
 
-        this.createEObjects(domain);
+        this.operationalAnalysisDomain = DomainFactory.eINSTANCE.createDomain();
+        this.operationalAnalysisDomain.setName("papaya_operational_analysis");
+
+        this.logicalArchitectureDomain = DomainFactory.eINSTANCE.createDomain();
+        this.logicalArchitectureDomain.setName("papaya_logical_architecture");
+
+        this.createEObjects();
         this.linkEObjects();
 
-        return domain;
+        return List.of(this.coreDomain, this.operationalAnalysisDomain, this.logicalArchitectureDomain);
     }
 
-    private void createEObjects(Domain domain) {
-        this.rootEntity = this.createEntity(domain, "Root", false, List.of());
-        this.modelElementEntity = this.createEntity(domain, "ModelElement", true, List.of());
-        this.namedElementEntity = this.createEntity(domain, "NamedElement", true, List.of(this.modelElementEntity));
+    private void createEObjects() {
+        this.rootEntity = this.createEntity(this.coreDomain, "Root", false, List.of());
+        this.modelElementEntity = this.createEntity(this.coreDomain, "ModelElement", true, List.of());
+        this.namedElementEntity = this.createEntity(this.coreDomain, "NamedElement", true, List.of(this.modelElementEntity));
 
-        this.operationalEntityEntity = this.createEntity(domain, "OperationalEntity", false, List.of(this.namedElementEntity));
-        this.operationalPerimeterEntity = this.createEntity(domain, "OperationalPerimeter", false, List.of(this.namedElementEntity));
-        this.operationalActorEntity = this.createEntity(domain, "OperationalActor", false, List.of(this.namedElementEntity));
-        this.operationalActivityEntity = this.createEntity(domain, "OperationalActivity", false, List.of(this.namedElementEntity));
-        this.interaction = this.createEntity(domain, "Interaction", false, List.of(this.namedElementEntity));
+        this.operationalEntityEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalEntity", false, List.of(this.namedElementEntity));
+        this.operationalPerimeterEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalPerimeter", false, List.of(this.namedElementEntity));
+        this.operationalActorEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalActor", false, List.of(this.namedElementEntity));
+        this.operationalActivityEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalActivity", false, List.of(this.namedElementEntity));
+        this.interaction = this.createEntity(this.operationalAnalysisDomain, "Interaction", false, List.of(this.namedElementEntity));
 
-        this.componentEntity = this.createEntity(domain, "Component", false, List.of(this.namedElementEntity));
-        this.providedServiceEntity = this.createEntity(domain, "ProvidedService", false, List.of(this.modelElementEntity));
-        this.requiredServiceEntity = this.createEntity(domain, "RequiredService", false, List.of(this.modelElementEntity));
+        this.componentEntity = this.createEntity(this.logicalArchitectureDomain, "Component", false, List.of(this.namedElementEntity));
+        this.providedServiceEntity = this.createEntity(this.logicalArchitectureDomain, "ProvidedService", false, List.of(this.modelElementEntity));
+        this.requiredServiceEntity = this.createEntity(this.logicalArchitectureDomain, "RequiredService", false, List.of(this.modelElementEntity));
 
-        this.packageEntity = this.createEntity(domain, "Package", false, List.of(this.namedElementEntity));
-        this.typeEntity = this.createEntity(domain, "Type", true, List.of(this.namedElementEntity));
-        this.typedElementEntity = this.createEntity(domain, "TypedElement", true, List.of(this.namedElementEntity));
-        this.interfaceEntity = this.createEntity(domain, "Interface", false, List.of(this.typeEntity));
-        this.classEntity = this.createEntity(domain, "Class", false, List.of(this.typeEntity));
-        this.dataTypeEntity = this.createEntity(domain, "DataType", false, List.of(this.typeEntity));
-        this.enumEntity = this.createEntity(domain, "Enum", false, List.of(this.dataTypeEntity));
-        this.enumLiteralEntity = this.createEntity(domain, "EnumLiteral", false, List.of(this.namedElementEntity));
-        this.attributeEntity = this.createEntity(domain, "Attribute", false, List.of(this.namedElementEntity));
-        this.referenceEntity = this.createEntity(domain, "Reference", false, List.of(this.typedElementEntity));
-        this.operationEntity = this.createEntity(domain, "Operation", false, List.of(this.typedElementEntity));
-        this.parameterEntity = this.createEntity(domain, "Parameter", false, List.of(this.typedElementEntity));
+        this.packageEntity = this.createEntity(this.logicalArchitectureDomain, "Package", false, List.of(this.namedElementEntity));
+        this.typeEntity = this.createEntity(this.logicalArchitectureDomain, "Type", true, List.of(this.namedElementEntity));
+        this.typedElementEntity = this.createEntity(this.logicalArchitectureDomain, "TypedElement", true, List.of(this.namedElementEntity));
+        this.interfaceEntity = this.createEntity(this.logicalArchitectureDomain, "Interface", false, List.of(this.typeEntity));
+        this.classEntity = this.createEntity(this.logicalArchitectureDomain, "Class", false, List.of(this.typeEntity));
+        this.dataTypeEntity = this.createEntity(this.logicalArchitectureDomain, "DataType", false, List.of(this.typeEntity));
+        this.enumEntity = this.createEntity(this.logicalArchitectureDomain, "Enum", false, List.of(this.dataTypeEntity));
+        this.enumLiteralEntity = this.createEntity(this.logicalArchitectureDomain, "EnumLiteral", false, List.of(this.namedElementEntity));
+        this.attributeEntity = this.createEntity(this.logicalArchitectureDomain, "Attribute", false, List.of(this.namedElementEntity));
+        this.referenceEntity = this.createEntity(this.logicalArchitectureDomain, "Reference", false, List.of(this.typedElementEntity));
+        this.operationEntity = this.createEntity(this.logicalArchitectureDomain, "Operation", false, List.of(this.typedElementEntity));
+        this.parameterEntity = this.createEntity(this.logicalArchitectureDomain, "Parameter", false, List.of(this.typedElementEntity));
     }
 
     private void linkEObjects() {

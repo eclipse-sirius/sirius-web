@@ -17,8 +17,8 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
 
 /**
  * Description of the component.
@@ -34,13 +34,13 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
         nodeStyle.setBorderColor("#455a64");
         nodeStyle.setLabelColor("#1212121");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Component");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Component");
         nodeDescription.setSemanticCandidatesExpression("aql:self.components");
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setStyle(nodeStyle);
 
-        var newComponentNodeTool = new PapayaToolsFactory().createNamedElement("papaya::Component", "components", "Component");
+        var newComponentNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Component", "components", "Component");
         newComponentNodeTool.setName("New Component");
         nodeDescription.getNodeTools().add(newComponentNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
@@ -51,10 +51,10 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
 
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var componentNodeDescription = cache.getNodeDescription("Node papaya::Component");
-        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya::ProvidedService");
-        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya::RequiredService");
-        var packageNodeDescription = cache.getNodeDescription("Node papaya::Package");
+        var componentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
+        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
+        var packageNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Package");
 
         diagramDescription.getNodeDescriptions().add(componentNodeDescription);
         componentNodeDescription.getBorderNodesDescriptions().add(providedServiceNodeDescription);

@@ -63,9 +63,9 @@ public class FulfillsContractEdgeDescriptionProvider implements IEdgeDescription
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         var fulfillsContractEdgeDescription = cache.getEdgeDescription("Edge Fulfills contract");
-        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya::ProvidedService");
-        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya::RequiredService");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya::Interface");
+        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
+        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
 
         diagramDescription.getEdgeDescriptions().add(fulfillsContractEdgeDescription);
         fulfillsContractEdgeDescription.getSourceNodeDescriptions().add(providedServiceNodeDescription);

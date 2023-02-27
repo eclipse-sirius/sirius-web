@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
  * Description of the enum.
@@ -33,14 +33,14 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setLabelColor("white");
         nodeStyle.setWithHeader(true);
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Enum");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Enum");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.enumLiteralNodeDescription());
 
-        var newEnumNodeTool = new PapayaToolsFactory().createNamedElement("papaya::Enum", "types", "Enum");
+        var newEnumNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Enum", "types", "Enum");
         newEnumNodeTool.setName("New Enum");
         nodeDescription.getNodeTools().add(newEnumNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
@@ -55,12 +55,12 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setBorderColor("#00695c");
         nodeStyle.setLabelColor("white");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("EnumLiteral");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("EnumLiteral");
         nodeDescription.setSemanticCandidatesExpression("aql:self.enumLiterals");
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
-        var newEnumLiteralNodeTool = new PapayaToolsFactory().createNamedElement("papaya::EnumLiteral", "enumLiterals", "EnumLiteral");
+        var newEnumLiteralNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::EnumLiteral", "enumLiterals", "EnumLiteral");
         newEnumLiteralNodeTool.setName("New Enum Literal");
         nodeDescription.getNodeTools().add(newEnumLiteralNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());

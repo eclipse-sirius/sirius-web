@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
  * Description of the interface.
@@ -33,14 +33,14 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         nodeStyle.setLabelColor("white");
         nodeStyle.setWithHeader(true);
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("Interface");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("Interface");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.operationNodeDescription());
 
-        var newInterfaceNodeTool = new PapayaToolsFactory().createNamedElement("papaya::Interface", "types", "Interface");
+        var newInterfaceNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Interface", "types", "Interface");
         newInterfaceNodeTool.setName("New Interface");
         nodeDescription.getNodeTools().add(newInterfaceNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
@@ -54,13 +54,13 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         nodeStyle.setColor("#3f51b5");
         nodeStyle.setLabelColor("white");
 
-        var builder = new PapyaViewBuilder();
+        var builder = new PapayaViewBuilder();
         var nodeDescription = builder.createNodeDescription("Operation");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
         nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
 
-        var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya::Operation", "operations", "Operation");
+        var newOperationNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Operation", "operations", "Operation");
         newOperationNodeTool.setName("New Operation");
         nodeDescription.getNodeTools().add(newOperationNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
