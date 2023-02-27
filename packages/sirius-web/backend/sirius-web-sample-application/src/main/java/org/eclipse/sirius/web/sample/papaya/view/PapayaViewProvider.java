@@ -13,12 +13,9 @@
 package org.eclipse.sirius.web.sample.papaya.view;
 
 import java.util.List;
-
-import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ClassNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ComponentNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.DataTypeNodeDescriptionProvider;
@@ -46,7 +43,6 @@ import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.Operational
  * @author sbegaudeau
  */
 public class PapayaViewProvider {
-    private Domain domain = new PapayaDomainProvider().getDomain();
 
     private DiagramDescription diagramDescription;
 
@@ -54,9 +50,9 @@ public class PapayaViewProvider {
         View view = ViewFactory.eINSTANCE.createView();
 
         this.diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        this.diagramDescription.setDomainType("papaya::Root");
+        this.diagramDescription.setDomainType("papaya_core::Root");
         this.diagramDescription.setName("Diagram");
-        this.diagramDescription.setTitleExpression(this.domain.getName() + " Diagram");
+        this.diagramDescription.setTitleExpression("Papaya Diagram");
         this.diagramDescription.setAutoLayout(false);
 
         var dropTool = ViewFactory.eINSTANCE.createDropTool();

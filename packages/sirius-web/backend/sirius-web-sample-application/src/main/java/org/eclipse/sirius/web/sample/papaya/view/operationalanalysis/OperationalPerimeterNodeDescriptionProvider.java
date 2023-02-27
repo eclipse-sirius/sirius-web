@@ -17,8 +17,8 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
 
 /**
  * Description of the operational perimeter.
@@ -34,12 +34,12 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
         nodeStyle.setBorderColor("#424242");
         nodeStyle.setLabelColor("1212121");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("OperationalPerimeter");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalPerimeter");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalPerimeters");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 
-        var newOperationalPerimeterNodeTool = new PapayaToolsFactory().createNamedElement("papaya::OperationalPerimeter", "operationalPerimeters", "Operational Perimeter");
+        var newOperationalPerimeterNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalPerimeter", "operationalPerimeters", "Operational Perimeter");
         newOperationalPerimeterNodeTool.setName("New Operational Perimeter");
         nodeDescription.getNodeTools().add(newOperationalPerimeterNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
@@ -50,8 +50,8 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
 
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var operationalPerimeterNodeDescription = cache.getNodeDescription("Node papaya::OperationalPerimeter");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya::OperationalActivity");
+        var operationalPerimeterNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalPerimeter");
+        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
         operationalPerimeterNodeDescription.getChildrenDescriptions().add(operationalActivityNodeDescription);
     }
 

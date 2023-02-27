@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.sample.configuration;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -223,7 +223,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         this.addAttribute(entity1, "attribute3", DataType.NUMBER);
         this.addAttribute(entity2, "name", DataType.STRING);
 
-        return this.stereotypeBuilder.getStereotypeBody(domain);
+        return this.stereotypeBuilder.getStereotypeBody(List.of(domain));
     }
 
     private void addAttribute(Entity entity, String name, DataType type) {
@@ -299,7 +299,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         edgeStyle.setColor("#002639");
         linkedToEdge.setStyle(edgeStyle);
 
-        return this.stereotypeBuilder.getStereotypeBody(view);
+        return this.stereotypeBuilder.getStereotypeBody(List.of(view));
     }
 
     private DeleteTool createDefaultDeleteTool() {

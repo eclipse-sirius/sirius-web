@@ -41,7 +41,7 @@ public class ReferencesClassEdgeDescriptionProvider implements IEdgeDescriptionP
         extendsClassEdgeDescription.setLabelExpression("aql:self.name");
         extendsClassEdgeDescription.setStyle(extendsClassEdgeStyle);
         extendsClassEdgeDescription.setSemanticCandidatesExpression("aql:self.eAllContents()");
-        extendsClassEdgeDescription.setDomainType("papaya::Reference");
+        extendsClassEdgeDescription.setDomainType("papaya_logical_architecture::Reference");
         extendsClassEdgeDescription.setSourceNodesExpression("aql:self.eContainer()");
         extendsClassEdgeDescription.setTargetNodesExpression("aql:self.type");
         extendsClassEdgeDescription.setIsDomainBasedEdge(true);
@@ -52,7 +52,7 @@ public class ReferencesClassEdgeDescriptionProvider implements IEdgeDescriptionP
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         var referencesClassEdgeDescription = cache.getEdgeDescription("Edge References class");
-        var classNodeDescription = cache.getNodeDescription("Node papaya::Class");
+        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
 
         diagramDescription.getEdgeDescriptions().add(referencesClassEdgeDescription);
         referencesClassEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);

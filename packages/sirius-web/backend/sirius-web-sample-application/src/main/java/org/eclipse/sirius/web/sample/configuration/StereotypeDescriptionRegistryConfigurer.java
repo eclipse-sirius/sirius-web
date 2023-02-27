@@ -13,10 +13,8 @@
 package org.eclipse.sirius.web.sample.configuration;
 
 import fr.obeo.dsl.designer.sample.flow.FlowFactory;
-
+import java.util.List;
 import java.util.UUID;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
@@ -25,7 +23,7 @@ import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.PapayaDomainProvider;
+import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -105,11 +103,11 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         Domain domain = DomainFactory.eINSTANCE.createDomain();
         domain.setName("SampleDomain");
         domain.setName(this.domainNameProvider.getSampleDomainName());
-        return this.stereotypeBuilder.getStereotypeBody(domain);
+        return this.stereotypeBuilder.getStereotypeBody(List.of(domain));
     }
 
     private String getPapayaDomainContent() {
-        return this.stereotypeBuilder.getStereotypeBody(new PapayaDomainProvider().getDomain());
+        return this.stereotypeBuilder.getStereotypeBody(new PapayaDomainProvider().getDomains());
     }
 
     private String getEmptyViewContent() {
@@ -117,19 +115,19 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
-        return this.stereotypeBuilder.getStereotypeBody(newView);
+        return this.stereotypeBuilder.getStereotypeBody(List.of(newView));
     }
 
     private String getPapayaViewContent() {
-        return this.stereotypeBuilder.getStereotypeBody(new PapayaViewProvider().getView());
+        return this.stereotypeBuilder.getStereotypeBody(List.of(new PapayaViewProvider().getView()));
     }
 
     private String getEmptyContent() {
-        return this.stereotypeBuilder.getStereotypeBody((EObject) null);
+        return this.stereotypeBuilder.getStereotypeBody(List.of());
     }
 
     private String getEmptyFlowContent() {
-        return this.stereotypeBuilder.getStereotypeBody(FlowFactory.eINSTANCE.createSystem());
+        return this.stereotypeBuilder.getStereotypeBody(List.of(FlowFactory.eINSTANCE.createSystem()));
     }
 
     private String getRobotFlowContent() {

@@ -12,24 +12,34 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view;
 
+import java.util.List;
 import java.util.Optional;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.PapayaDomainProvider;
+import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 
 /**
  * Used to help creating the Papaya view.
  *
  * @author sbegaudeau
  */
-public class PapyaViewBuilder {
-    private final Domain domain = new PapayaDomainProvider().getDomain();
+public class PapayaViewBuilder {
+    private final List<EObject> domains = new PapayaDomainProvider().getDomains();
 
     public Entity entity(String name) {
-        return this.domain.getTypes().stream().filter(entity -> name.equals(entity.getName())).findFirst().orElse(null);
+        // @formatter:off
+        return this.domains.stream()
+                .filter(Domain.class::isInstance)
+                .map(Domain.class::cast)
+                .map(Domain::getTypes)
+                .flatMap(List::stream)
+                .filter(entity -> name.equals(entity.getName()))
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
     }
 
     public String domainType(Entity entity) {

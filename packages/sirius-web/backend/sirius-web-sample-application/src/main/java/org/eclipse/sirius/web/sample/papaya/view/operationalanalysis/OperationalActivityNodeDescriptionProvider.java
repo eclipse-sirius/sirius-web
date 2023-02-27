@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
  * Description of the operational activity.
@@ -32,12 +32,12 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
         nodeStyle.setBorderColor("#fb8c00");
         nodeStyle.setLabelColor("#212121");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("OperationalActivity");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalActivity");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalActivities");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 
-        var newOperationalActivityNodeTool = new PapayaToolsFactory().createNamedElement("papaya::OperationalActivity", "operationalActivities", "Operational Activity");
+        var newOperationalActivityNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActivity", "operationalActivities", "Operational Activity");
         newOperationalActivityNodeTool.setName("New Operational Activity");
         nodeDescription.getNodeTools().add(newOperationalActivityNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());

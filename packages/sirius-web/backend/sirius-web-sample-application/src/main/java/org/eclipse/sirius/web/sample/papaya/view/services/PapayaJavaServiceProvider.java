@@ -10,14 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.configuration;
+package org.eclipse.sirius.web.sample.papaya.view.services;
 
 import java.util.List;
-
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.sirius.web.sample.papaya.view.services.PapayaService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,7 +24,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class TestJavaServiceProvider implements IJavaServiceProvider {
+public class PapayaJavaServiceProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
@@ -34,7 +32,7 @@ public class TestJavaServiceProvider implements IJavaServiceProvider {
         boolean isTestView = view.getDescriptions().stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
-                .anyMatch(diagramDescription -> diagramDescription.getDomainType().equals("papaya::Root"));
+                .anyMatch(diagramDescription -> diagramDescription.getDomainType().equals("papaya_core::Root"));
         // @formatter:on
         if (isTestView) {
             return List.of(PapayaService.class);

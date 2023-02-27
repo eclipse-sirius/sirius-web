@@ -63,8 +63,8 @@ public class RealizedByEdgeDescriptionProvider implements IEdgeDescriptionProvid
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         var realizedByEdgeDescription = cache.getEdgeDescription("Edge Realized by");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya::OperationalActivity");
-        var componentNodeDescription = cache.getNodeDescription("Node papaya::Component");
+        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+        var componentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
 
         diagramDescription.getEdgeDescriptions().add(realizedByEdgeDescription);
         realizedByEdgeDescription.getSourceNodeDescriptions().add(operationalActivityNodeDescription);

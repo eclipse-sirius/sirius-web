@@ -17,8 +17,8 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
 
 /**
  * Description of the operational actor.
@@ -45,14 +45,14 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         conditionalNodeStyle.setCondition("aql:collapsingState.toString() = 'COLLAPSED'");
         conditionalNodeStyle.setStyle(operationalActorEmptyNodeStyle);
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("OperationalActor");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalActor");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalActors");
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setStyle(operationalActorNodeStyle);
         nodeDescription.getConditionalStyles().add(conditionalNodeStyle);
         nodeDescription.setCollapsible(true);
 
-        var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya::OperationalActor", "operationalActors", "Operational Actor");
+        var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActor", "operationalActors", "Operational Actor");
         newOperationalActorNodeTool.setName("New Operational Actor");
         nodeDescription.getNodeTools().add(newOperationalActorNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
@@ -63,8 +63,8 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
 
     @Override
     public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var operationalActorNodeDescription = cache.getNodeDescription("Node papaya::OperationalActor");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya::OperationalActivity");
+        var operationalActorNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActor");
+        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
 
         diagramDescription.getNodeDescriptions().add(operationalActorNodeDescription);
         operationalActorNodeDescription.getReusedChildNodeDescriptions().add(operationalActivityNodeDescription);

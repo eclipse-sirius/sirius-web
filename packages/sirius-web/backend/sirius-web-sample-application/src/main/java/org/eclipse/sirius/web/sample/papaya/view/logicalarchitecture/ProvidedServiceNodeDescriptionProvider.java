@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
  * Description of provided service.
@@ -33,7 +33,7 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeStyle.setBorderSize(0);
         nodeStyle.setLabelColor("#1212121");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("ProvidedService");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("ProvidedService");
         nodeDescription.setSemanticCandidatesExpression("aql:self.providedServices");
         nodeDescription.setLabelExpression("aql:if self.contract = null then 'undefined' else self.contract.name endif");
         nodeDescription.setStyle(nodeStyle);

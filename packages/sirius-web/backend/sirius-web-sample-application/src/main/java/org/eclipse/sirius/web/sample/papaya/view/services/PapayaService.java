@@ -17,9 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -38,9 +36,7 @@ public class PapayaService {
 
     private final IObjectService objectService;
 
-    private EPackage ePackage;
-
-    private EFactory eFactory;
+    private EPackage.Registry ePackageRegistry;
 
     private EObject eclipseFoundation;
 
@@ -324,8 +320,7 @@ public class PapayaService {
 
     public EObject initialize(EObject eObject, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
-        this.ePackage = eObject.eClass().getEPackage();
-        this.eFactory = this.ePackage.getEFactoryInstance();
+        this.ePackageRegistry = eObject.eResource().getResourceSet().getPackageRegistry();
 
         this.createStandardLibraries();
         this.createOperationalObjects(diagramContext, convertedNodes);
@@ -696,8 +691,22 @@ public class PapayaService {
         this.addMany(this.treeDescription, "implements", List.of(this.iRepresentationDescription));
     }
 
-    private EClass eClass(String name) {
-        return Optional.ofNullable(this.ePackage.getEClassifier(name)).filter(EClass.class::isInstance).map(EClass.class::cast).orElse(null);
+    private EClass eClass(String domainType) {
+        int separatorIndex = domainType.indexOf("::");
+        String domain = domainType.substring(0, separatorIndex);
+        String type = domainType.substring(separatorIndex + "::".length());
+
+        // @formatter:off
+        return this.ePackageRegistry.values().stream()
+                .filter(EPackage.class::isInstance)
+                .map(EPackage.class::cast)
+                .filter(ePackage -> domain.equals(ePackage.getName()))
+                .map(ePackage -> ePackage.getEClassifier(type))
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
     }
 
     private void addMany(EObject parentEObject, String featureName, List<EObject> childEObjects) {
@@ -713,56 +722,56 @@ public class PapayaService {
     }
 
     private EObject operationalEntity(String name) {
-        var operationalEntityEClass = this.eClass("OperationalEntity");
-        var operationalEntity = this.eFactory.create(operationalEntityEClass);
+        var operationalEntityEClass = this.eClass("papaya_operational_analysis::OperationalEntity");
+        var operationalEntity = operationalEntityEClass.getEPackage().getEFactoryInstance().create(operationalEntityEClass);
         operationalEntity.eSet(operationalEntityEClass.getEStructuralFeature("name"), name);
         return operationalEntity;
     }
 
     private EObject operationalPerimeter(String name) {
-        var operationalPerimeterEClass = this.eClass("OperationalPerimeter");
-        var operationalPerimeter = this.eFactory.create(operationalPerimeterEClass);
+        var operationalPerimeterEClass = this.eClass("papaya_operational_analysis::OperationalPerimeter");
+        var operationalPerimeter = operationalPerimeterEClass.getEPackage().getEFactoryInstance().create(operationalPerimeterEClass);
         operationalPerimeter.eSet(operationalPerimeterEClass.getEStructuralFeature("name"), name);
         return operationalPerimeter;
     }
 
     private EObject operationalActor(String name) {
-        var operationalActorEClass = this.eClass("OperationalActor");
-        var operationalActor = this.eFactory.create(operationalActorEClass);
+        var operationalActorEClass = this.eClass("papaya_operational_analysis::OperationalActor");
+        var operationalActor = operationalActorEClass.getEPackage().getEFactoryInstance().create(operationalActorEClass);
         operationalActor.eSet(operationalActorEClass.getEStructuralFeature("name"), name);
         return operationalActor;
     }
 
     private EObject operationalActivity(String name) {
-        var operationalActivityEClass = this.eClass("OperationalActivity");
-        var operationalActivity = this.eFactory.create(operationalActivityEClass);
+        var operationalActivityEClass = this.eClass("papaya_operational_analysis::OperationalActivity");
+        var operationalActivity = operationalActivityEClass.getEPackage().getEFactoryInstance().create(operationalActivityEClass);
         operationalActivity.eSet(operationalActivityEClass.getEStructuralFeature("name"), name);
         return operationalActivity;
     }
 
     private void interactWith(EObject sourceActivity, EObject targetActivity) {
-        var interactionEClass = this.eClass("Interaction");
-        var interaction = this.eFactory.create(interactionEClass);
+        var interactionEClass = this.eClass("papaya_operational_analysis::Interaction");
+        var interaction = interactionEClass.getEPackage().getEFactoryInstance().create(interactionEClass);
         interaction.eSet(interactionEClass.getEStructuralFeature("target"), targetActivity);
         this.addMany(sourceActivity, "interactions", List.of(interaction));
     }
 
     private EObject component(String name) {
-        var componentEClass = this.eClass("Component");
-        var component = this.eFactory.create(componentEClass);
+        var componentEClass = this.eClass("papaya_logical_architecture::Component");
+        var component = componentEClass.getEPackage().getEFactoryInstance().create(componentEClass);
         component.eSet(componentEClass.getEStructuralFeature("name"), name);
         return component;
     }
 
     private EObject providedService() {
-        var providedServiceEClass = this.eClass("ProvidedService");
-        var providedService = this.eFactory.create(providedServiceEClass);
+        var providedServiceEClass = this.eClass("papaya_logical_architecture::ProvidedService");
+        var providedService = providedServiceEClass.getEPackage().getEFactoryInstance().create(providedServiceEClass);
         return providedService;
     }
 
     private EObject requiredService() {
-        var requiredServiceEClass = this.eClass("RequiredService");
-        var requiredService = this.eFactory.create(requiredServiceEClass);
+        var requiredServiceEClass = this.eClass("papaya_logical_architecture::RequiredService");
+        var requiredService = requiredServiceEClass.getEPackage().getEFactoryInstance().create(requiredServiceEClass);
         return requiredService;
     }
 
@@ -771,46 +780,46 @@ public class PapayaService {
     }
 
     private EObject packageEObject(String name) {
-        var packageEClass = this.eClass("Package");
-        var packageEObject = this.eFactory.create(packageEClass);
+        var packageEClass = this.eClass("papaya_logical_architecture::Package");
+        var packageEObject = packageEClass.getEPackage().getEFactoryInstance().create(packageEClass);
         packageEObject.eSet(packageEClass.getEStructuralFeature("name"), name);
         return packageEObject;
     }
 
     private EObject interfaceEObject(String name) {
-        var interfaceEClass = this.eClass("Interface");
-        var interfaceEObject = this.eFactory.create(interfaceEClass);
+        var interfaceEClass = this.eClass("papaya_logical_architecture::Interface");
+        var interfaceEObject = interfaceEClass.getEPackage().getEFactoryInstance().create(interfaceEClass);
         interfaceEObject.eSet(interfaceEClass.getEStructuralFeature("name"), name);
         return interfaceEObject;
     }
 
     private EObject classEObject(String name) {
-        var classEClass = this.eClass("Class");
-        var classEObject = this.eFactory.create(classEClass);
+        var classEClass = this.eClass("papaya_logical_architecture::Class");
+        var classEObject = classEClass.getEPackage().getEFactoryInstance().create(classEClass);
         classEObject.eSet(classEClass.getEStructuralFeature("name"), name);
         return classEObject;
     }
 
     private EObject attributeEObject(String name, EObject type) {
-        var attributeEClass = this.eClass("Attribute");
-        var attribute = this.eFactory.create(attributeEClass);
+        var attributeEClass = this.eClass("papaya_logical_architecture::Attribute");
+        var attribute = attributeEClass.getEPackage().getEFactoryInstance().create(attributeEClass);
         attribute.eSet(attributeEClass.getEStructuralFeature("name"), name);
         attribute.eSet(attributeEClass.getEStructuralFeature("type"), type);
         return attribute;
     }
 
     private EObject operation(String name) {
-        var operationEClass = this.eClass("Operation");
-        var operation = this.eFactory.create(operationEClass);
+        var operationEClass = this.eClass("papaya_logical_architecture::Operation");
+        var operation = operationEClass.getEPackage().getEFactoryInstance().create(operationEClass);
         operation.eSet(operationEClass.getEStructuralFeature("name"), name);
         return operation;
     }
 
     private EObject dataType(String name) {
-        var operationEClass = this.eClass("DataType");
-        var operation = this.eFactory.create(operationEClass);
-        operation.eSet(operationEClass.getEStructuralFeature("name"), name);
-        return operation;
+        var datatypeEClass = this.eClass("papaya_logical_architecture::DataType");
+        var datatype = datatypeEClass.getEPackage().getEFactoryInstance().create(datatypeEClass);
+        datatype.eSet(datatypeEClass.getEStructuralFeature("name"), name);
+        return datatype;
     }
 
     private void realizedBy(EObject sourceActivity, EObject targetComponent) {
@@ -818,8 +827,8 @@ public class PapayaService {
     }
 
     private void reference(EObject parent, String name, boolean isMany, EObject type) {
-        var referenceEClass = this.eClass("Reference");
-        var referenceEObject = this.eFactory.create(referenceEClass);
+        var referenceEClass = this.eClass("papaya_logical_architecture::Reference");
+        var referenceEObject = referenceEClass.getEPackage().getEFactoryInstance().create(referenceEClass);
         referenceEObject.eSet(referenceEClass.getEStructuralFeature("name"), name);
         referenceEObject.eSet(referenceEClass.getEStructuralFeature("many"), isMany);
         referenceEObject.eSet(referenceEClass.getEStructuralFeature("type"), type);

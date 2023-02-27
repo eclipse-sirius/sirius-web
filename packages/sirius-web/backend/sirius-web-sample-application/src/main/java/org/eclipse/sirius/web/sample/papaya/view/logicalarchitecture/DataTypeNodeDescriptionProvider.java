@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
-import org.eclipse.sirius.web.sample.papaya.view.PapyaViewBuilder;
+import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
  * Description of the data type.
@@ -32,12 +32,12 @@ public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider
         nodeStyle.setBorderColor("#006064");
         nodeStyle.setLabelColor("white");
 
-        var nodeDescription = new PapyaViewBuilder().createNodeDescription("DataType");
+        var nodeDescription = new PapayaViewBuilder().createNodeDescription("DataType");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
-        var newDataTypeNodeTool = new PapayaToolsFactory().createNamedElement("papaya::DataType", "types", "DataType");
+        var newDataTypeNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::DataType", "types", "DataType");
         newDataTypeNodeTool.setName("New DataType");
         nodeDescription.getNodeTools().add(newDataTypeNodeTool);
         nodeDescription.setLabelEditTool(new PapayaToolsFactory().editName());
