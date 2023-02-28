@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -37,8 +36,11 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.CHILD_CREATION_DESCRIPTIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "childCreationDescriptions")
 public class EditingContextChildCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<List<ChildCreationDescription>> {
+
+    private static final String KIND_ARGUMENT = "kind";
+
     private final IEditService editService;
 
     public EditingContextChildCreationDescriptionsDataFetcher(IEditService editService) {
@@ -48,7 +50,7 @@ public class EditingContextChildCreationDescriptionsDataFetcher implements IData
     @Override
     public List<ChildCreationDescription> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String kindArgument = environment.getArgument(EditingContextTypeProvider.KIND_ARGUMENT);
+        String kindArgument = environment.getArgument(KIND_ARGUMENT);
         return this.editService.getChildCreationDescriptions(editingContextId, kindArgument);
     }
 }

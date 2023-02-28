@@ -19,7 +19,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 
 import graphql.relay.Connection;
@@ -46,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.STEREOTYPE_DESCRIPTIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "stereotypeDescriptions")
 public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<StereotypeDescription>> {
 
     private final IStereotypeDescriptionService stereotypeDescriptionService;

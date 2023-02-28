@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.IdFieldProvider;
-import org.eclipse.sirius.web.graphql.schema.ObjectTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -36,7 +34,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = ObjectTypeProvider.TYPE, field = IdFieldProvider.ID_FIELD)
+@QueryDataFetcher(type = "Object", field = "id")
 public class ObjectIdDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
 
     private final IObjectService objectService;

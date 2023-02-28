@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.ViewerTypeProvider;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -37,8 +36,10 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.PROJECT_FIELD)
+@QueryDataFetcher(type = "User", field = "project")
 public class UserProjectDataFetcher implements IDataFetcherWithFieldCoordinates<Project> {
+
+    private static final String PROJECT_ID_ARGUMENT = "projectId";
 
     private final IProjectService projectService;
 
@@ -48,7 +49,7 @@ public class UserProjectDataFetcher implements IDataFetcherWithFieldCoordinates<
 
     @Override
     public Project get(DataFetchingEnvironment environment) throws Exception {
-        String projectIdArgument = environment.getArgument(ViewerTypeProvider.PROJECT_ID_ARGUMENT);
+        String projectIdArgument = environment.getArgument(PROJECT_ID_ARGUMENT);
         return new IDParser().parse(projectIdArgument).flatMap(this.projectService::getProject).orElse(null);
     }
 

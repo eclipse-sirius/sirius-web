@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.web.graphql.schema.ObjectTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,13 +37,15 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = ObjectTypeProvider.TYPE, field = ObjectTypeProvider.EXPRESSION_BASED_OBJECT_FIELD)
+@QueryDataFetcher(type = "Object", field = "expressionBasedObject")
 public class ObjectExpressionBasedObjectDataFetcher implements IDataFetcherWithFieldCoordinates<Object> {
+
+    private static final String EXPRESSION_ARGUMENT = "expression";
 
     @Override
     public Object get(DataFetchingEnvironment environment) throws Exception {
         Object object = environment.getSource();
-        String expression = environment.getArgument(ObjectTypeProvider.EXPRESSION_ARGUMENT);
+        String expression = environment.getArgument(EXPRESSION_ARGUMENT);
 
         AQLInterpreter interpreter = new AQLInterpreter(new ArrayList<>(), new ArrayList<>());
         Result result = interpreter.evaluateExpression(Map.of(VariableManager.SELF, object), expression);

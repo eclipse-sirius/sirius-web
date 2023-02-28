@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,11 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 
@@ -39,10 +37,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateProjectDataFetcher.CREATE_PROJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationCreateProjectDataFetcher.CREATE_PROJECT_FIELD)
 public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
     public static final String CREATE_PROJECT_FIELD = "createProject";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -55,7 +55,7 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, CreateProjectInput.class);
         return this.projectService.createProject(input);
     }

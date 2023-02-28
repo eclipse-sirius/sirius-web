@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetc
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.images.ICustomImageImportService;
 
@@ -42,8 +41,10 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = "uploadImage")
+@MutationDataFetcher(type = "Mutation", field = "uploadImage")
 public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private static final String FILE = "file";
 
@@ -61,7 +62,7 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Map<Object, Object> inputArgument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Map<Object, Object> inputArgument = environment.getArgument(INPUT_ARGUMENT);
 
         // We cannot use directly UploadImageInput, the objectMapper cannot handle the file stream.
 

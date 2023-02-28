@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 
@@ -50,7 +49,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author wpiers
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "representations")
 public class EditingContextRepresentationsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<RepresentationMetadata>> {
 
     private final IRepresentationService representationService;

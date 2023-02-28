@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +24,6 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -47,10 +45,12 @@ import reactor.core.publisher.Mono;
  *
  * @author fbarbin
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationRenameDocumentDataFetcher.RENAME_DOCUMENT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationRenameDocumentDataFetcher.RENAME_DOCUMENT_FIELD)
 public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     public static final String RENAME_DOCUMENT_FIELD = "renameDocument";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -70,7 +70,7 @@ public class MutationRenameDocumentDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, RenameDocumentInput.class);
 
         // @formatter:off

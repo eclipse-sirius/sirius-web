@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -37,8 +36,13 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.ROOT_OBJECT_CREATION_DESCRIPTIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "rootObjectCreationDescriptions")
 public class EditingContextRootObjectCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<List<ChildCreationDescription>> {
+
+    private static final String DOMAIN_ID_ARGUMENT = "domainId";
+
+    private static final String SUGGESTED_ARGUMENT = "suggested";
+
     private final IEditService editService;
 
     public EditingContextRootObjectCreationDescriptionsDataFetcher(IEditService editService) {
@@ -48,8 +52,8 @@ public class EditingContextRootObjectCreationDescriptionsDataFetcher implements 
     @Override
     public List<ChildCreationDescription> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String domainId = environment.getArgument(EditingContextTypeProvider.DOMAIN_ID_ARGUMENT);
-        Boolean suggested = environment.getArgument(EditingContextTypeProvider.SUGGESTED_ARGUMENT);
+        String domainId = environment.getArgument(DOMAIN_ID_ARGUMENT);
+        Boolean suggested = environment.getArgument(SUGGESTED_ARGUMENT);
 
         return this.editService.getRootCreationDescriptions(editingContextId, domainId, suggested);
     }

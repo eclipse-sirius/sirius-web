@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -23,7 +22,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.projects.DeleteProjectInput;
 import org.eclipse.sirius.web.services.api.projects.DeleteProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
@@ -45,10 +43,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author fbarbin
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteProjectDataFetcher.DELETE_PROJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationDeleteProjectDataFetcher.DELETE_PROJECT_FIELD)
 public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
     public static final String DELETE_PROJECT_FIELD = "deleteProject";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -71,7 +71,7 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteProjectInput.class);
 
         var optionalViewer = this.viewerProvider.getViewer(environment);

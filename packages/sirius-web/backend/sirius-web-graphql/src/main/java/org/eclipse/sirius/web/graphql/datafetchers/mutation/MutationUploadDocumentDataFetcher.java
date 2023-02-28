@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 
@@ -45,10 +44,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author smonnier
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUploadDocumentDataFetcher.UPLOAD_DOCUMENT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationUploadDocumentDataFetcher.UPLOAD_DOCUMENT_FIELD)
 public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     public static final String UPLOAD_DOCUMENT_FIELD = "uploadDocument";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private static final String EDITING_CONTEXT_ID = "editingContextId";
 
@@ -67,7 +68,7 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Map<Object, Object> inputArgument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Map<Object, Object> inputArgument = environment.getArgument(INPUT_ARGUMENT);
 
         // We cannot use directly UploadDocumentInput, the objectMapper cannot handle the file stream.
 

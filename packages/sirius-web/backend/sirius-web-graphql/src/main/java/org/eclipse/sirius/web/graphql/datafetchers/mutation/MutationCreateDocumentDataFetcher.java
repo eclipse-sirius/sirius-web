@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,12 +23,11 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to create a new {@link IDocument}.
+ * The data fetcher used to create a new document.
  * <p>
  * It will be used to handle the following GraphQL field:
  * </p>
@@ -42,10 +40,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateDocumentDataFetcher.CREATE_DOCUMENT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationCreateDocumentDataFetcher.CREATE_DOCUMENT_FIELD)
 public class MutationCreateDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     public static final String CREATE_DOCUMENT_FIELD = "createDocument";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -61,7 +61,7 @@ public class MutationCreateDocumentDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, CreateDocumentInput.class);
 
         // @formatter:off

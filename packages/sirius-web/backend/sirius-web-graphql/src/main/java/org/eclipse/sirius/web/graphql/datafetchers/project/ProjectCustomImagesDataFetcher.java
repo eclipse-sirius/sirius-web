@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.ProjectTypeProvider;
 import org.eclipse.sirius.web.services.api.images.CustomImageMetadata;
 import org.eclipse.sirius.web.services.api.images.IProjectCustomImageMetadataSearchService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -41,7 +40,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@QueryDataFetcher(type = ProjectTypeProvider.TYPE, field = "customImages")
+@QueryDataFetcher(type = "Project", field = "customImages")
 public class ProjectCustomImagesDataFetcher implements IDataFetcherWithFieldCoordinates<List<CustomImageMetadata>> {
     private final IProjectCustomImageMetadataSearchService customImageMetadataSearchService;
 
