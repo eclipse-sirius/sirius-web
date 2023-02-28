@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.core.api.Domain;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -37,7 +36,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author lfasani
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.DOMAINS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "domains")
 public class EditingContextDomainsDataFetcher implements IDataFetcherWithFieldCoordinates<List<Domain>> {
     private final IEditService editService;
 

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,7 +23,6 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -43,10 +41,12 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  * @author pcdavid
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateChildDataFetcher.CREATE_CHILD_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationCreateChildDataFetcher.CREATE_CHILD_FIELD)
 public class MutationCreateChildDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     public static final String CREATE_CHILD_FIELD = "createChild";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -62,7 +62,7 @@ public class MutationCreateChildDataFetcher implements IDataFetcherWithFieldCoor
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, CreateChildInput.class);
 
         // @formatter:off

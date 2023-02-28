@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 
@@ -46,8 +45,10 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "representation")
 public class EditingContextRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<RepresentationMetadata>> {
+
+    private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
     private final IRepresentationService representationService;
 
@@ -61,7 +62,7 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
     @Override
     public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String representationId = environment.getArgument(EditingContextTypeProvider.REPRESENTATION_ID_ARGUMENT);
+        String representationId = environment.getArgument(REPRESENTATION_ID_ARGUMENT);
 
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);

@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentat
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.pagination.PageInfoWithCount;
-import org.eclipse.sirius.web.graphql.schema.EditingContextTypeProvider;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -44,7 +43,7 @@ import reactor.core.publisher.Mono;
  * @author pcdavid
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_DESCRIPTIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "representationDescriptions")
 public class EditingContextRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<RepresentationDescriptionMetadata>>> {
 
     private static final String OBJECT_ID_ARGUMENT = "objectId";

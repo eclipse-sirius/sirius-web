@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,7 +23,6 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -42,10 +40,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteObjectDataFetcher.DELETE_OBJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationDeleteObjectDataFetcher.DELETE_OBJECT_FIELD)
 public class MutationDeleteObjectDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     public static final String DELETE_OBJECT_FIELD = "deleteObject";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -61,7 +61,7 @@ public class MutationDeleteObjectDataFetcher implements IDataFetcherWithFieldCoo
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteObjectInput.class);
 
         // @formatter:off

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.sirius.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectImportService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -45,10 +44,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author gcoutable
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUploadProjectDataFetcher.UPLOAD_PROJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationUploadProjectDataFetcher.UPLOAD_PROJECT_FIELD)
 public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
     public static final String UPLOAD_PROJECT_FIELD = "uploadProject";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private static final String ID = "id";
 
@@ -65,7 +66,7 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        Map<Object, Object> input = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Map<Object, Object> input = environment.getArgument(INPUT_ARGUMENT);
         // @formatter:off
         UUID id = Optional.ofNullable(input.get(ID))
                 .filter(String.class::isInstance)

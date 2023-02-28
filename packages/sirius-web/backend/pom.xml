@@ -36,7 +36,6 @@
 		<module>sirius-web-persistence</module>
 		<module>sirius-web-services-api</module>
 		<module>sirius-web-services</module>
-		<module>sirius-web-graphql-schema</module>
 		<module>sirius-web-graphql</module>
 		<module>sirius-web-spring</module>
 		<module>sirius-web-sample-application</module>

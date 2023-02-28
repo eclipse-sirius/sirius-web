@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.graphql.datafetchers.subscriptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
@@ -22,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.schema.SubscriptionTypeProvider;
 import org.reactivestreams.Publisher;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -42,10 +40,8 @@ import reactor.core.publisher.Flux;
  *
  * @author arichard
  */
-@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionEditingContextEventDataFetcher.EDITING_CONTEXT_EVENT_FIELD)
+@SubscriptionDataFetcher(type = "Subscription", field = "editingContextEvent")
 public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
-
-    public static final String EDITING_CONTEXT_EVENT_FIELD = "editingContextEvent";
 
     private final ObjectMapper objectMapper;
 
@@ -58,7 +54,7 @@ public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherW
 
     @Override
     public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(SubscriptionTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, EditingContextEventInput.class);
 
         // @formatter:off

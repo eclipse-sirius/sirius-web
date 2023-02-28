@@ -18,8 +18,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.graphql.pagination.PageInfoWithCount;
-import org.eclipse.sirius.web.graphql.schema.ProjectTypeProvider;
-import org.eclipse.sirius.web.graphql.schema.ViewerTypeProvider;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 
@@ -47,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.PROJECTS_FIELD)
+@QueryDataFetcher(type = "User", field = "projects")
 public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<Project>> {
 
     private final IProjectService projectService;
@@ -61,7 +59,7 @@ public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates
         // @formatter:off
         List<Edge<Project>> projectEdges = this.projectService.getProjects().stream()
                 .map(project -> {
-                    String value = new Relay().toGlobalId(ProjectTypeProvider.TYPE, project.getId().toString());
+                    String value = new Relay().toGlobalId("Project", project.getId().toString());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
                     Edge<Project> edge = new DefaultEdge<>(project, cursor);
                     return edge;
