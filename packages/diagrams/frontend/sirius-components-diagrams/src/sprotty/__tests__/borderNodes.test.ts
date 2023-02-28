@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ test('snaps the border node', () => {
     return value instanceof BorderNode;
   })[0];
 
-  // border node position when its center is positionned at the parent upper left corner(origin))
+  // border node position when its center is positioned at the parent upper left corner(origin))
   const borderNodeOrigin: Point = { x: -borderNode.size.width / 2, y: -borderNode.size.height / 2 };
   const parentWidth: number = sprottyNode.size.width;
   const parentHeight: number = sprottyNode.size.height;
