@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,12 @@ const useFormStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    width: 'inherit',
+  },
+  tabLabelText: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
   },
 }));
 
@@ -87,7 +93,11 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
               {...a11yProps(page.id)}
               classes={{ root: classes.tabRoot }}
               value={page.id}
-              label={<div className={classes.tabLabel}>{page.label}</div>}
+              label={
+                <div className={classes.tabLabel}>
+                  <div className={classes.tabLabelText}>{page.label}</div>
+                </div>
+              }
               key={page.id}
             />
           );
