@@ -29,6 +29,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/619[#619] [explorer] Fix order of the models in the explorer
 - https://github.com/eclipse-sirius/sirius-components/issues/1604[#1604] [diagram] Fix fade does not work on border nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1773[#1773] [workbench] Fix editors area tab title may hide close button
+- https://github.com/eclipse-sirius/sirius-components/issues/1541[#1541] [workbench] Editors area can overflow on Details view
 
 === New Features
 
