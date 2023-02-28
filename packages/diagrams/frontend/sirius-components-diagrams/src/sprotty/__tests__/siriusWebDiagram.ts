@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,8 @@ import {
   GQLImageNodeStyle,
   GQLLineStyle,
   GQLRectangularNodeStyle,
-} from '../representation/DiagramRepresentation.types';
+  GQLViewModifier,
+} from '../../representation/DiagramRepresentation.types';
 
 export const siriusWebDiagram: GQLDiagram = {
   id: 'bf6a7cc1-011d-4900-8fa1-16b575a71175',
@@ -31,6 +32,7 @@ export const siriusWebDiagram: GQLDiagram = {
   targetObjectId: 'robot#/',
   autoLayout: false,
   position: {
+    __typename: 'Position',
     x: 0,
     y: 0,
   },
@@ -61,6 +63,7 @@ export const siriusWebDiagram: GQLDiagram = {
           iconURL: '/api/images/image.svg',
         },
         position: {
+          __typename: 'Position',
           x: 19.77734375,
           y: -14.19921875,
         },
@@ -69,6 +72,7 @@ export const siriusWebDiagram: GQLDiagram = {
           height: 9.19921875,
         },
         alignment: {
+          __typename: 'Position',
           x: 0,
           y: 7.2421875,
         },
@@ -82,6 +86,7 @@ export const siriusWebDiagram: GQLDiagram = {
         borderStyle: GQLLineStyle.Solid,
       } as GQLImageNodeStyle,
       position: {
+        __typename: 'Position',
         x: 314,
         y: 416.8601389164557,
       },
@@ -91,6 +96,8 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       borderNodes: [],
       childNodes: [],
+      state: GQLViewModifier.Normal,
+      userResizable: true,
     },
     {
       id: 'robot#//@elements.0',
@@ -114,6 +121,7 @@ export const siriusWebDiagram: GQLDiagram = {
           iconURL: '/api/images/image.svg',
         },
         position: {
+          __typename: 'Position',
           x: 97.38232421875,
           y: 5,
         },
@@ -122,6 +130,7 @@ export const siriusWebDiagram: GQLDiagram = {
           height: 11.4990234375,
         },
         alignment: {
+          __typename: 'Position',
           x: 0,
           y: 9.052734375,
         },
@@ -135,6 +144,7 @@ export const siriusWebDiagram: GQLDiagram = {
         borderRadius: 5,
       } as GQLRectangularNodeStyle,
       position: {
+        __typename: 'Position',
         x: 483,
         y: 64.34101572060084,
       },
@@ -142,6 +152,8 @@ export const siriusWebDiagram: GQLDiagram = {
         width: 280,
         height: 180,
       },
+      state: GQLViewModifier.Normal,
+      userResizable: true,
       borderNodes: [
         {
           id: 'robot#//@elements.0/@powerOutputs.0',
@@ -165,6 +177,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 0,
               y: 0,
             },
@@ -173,6 +186,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 13.798828125,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 10.86328125,
             },
@@ -186,6 +200,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Dash,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: -30,
             y: 139.6982421875,
           },
@@ -195,6 +210,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
       ],
       childNodes: [
@@ -220,6 +237,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 23.775390625,
               y: -14.19921875,
             },
@@ -228,6 +246,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -241,6 +260,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Dash_Dot,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 86,
             y: 97.1982421875,
           },
@@ -250,6 +270,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.0/@elements.1',
@@ -273,6 +295,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 20.314453125,
               y: -14.19921875,
             },
@@ -281,6 +304,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -294,6 +318,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 180,
             y: 58.6982421875,
           },
@@ -303,6 +328,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.0/@elements.2',
@@ -326,6 +353,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 20.326171875,
               y: -14.19921875,
             },
@@ -334,6 +362,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -347,6 +376,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 12,
             y: 65.1982421875,
           },
@@ -356,6 +386,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
       ],
     },
@@ -381,6 +413,7 @@ export const siriusWebDiagram: GQLDiagram = {
           iconURL: '/api/images/image.svg',
         },
         position: {
+          __typename: 'Position',
           x: 105.98583984375,
           y: 5,
         },
@@ -389,6 +422,7 @@ export const siriusWebDiagram: GQLDiagram = {
           height: 11.4990234375,
         },
         alignment: {
+          __typename: 'Position',
           x: 0,
           y: 9.052734375,
         },
@@ -401,6 +435,7 @@ export const siriusWebDiagram: GQLDiagram = {
         borderSize: 1,
       } as GQLRectangularNodeStyle,
       position: {
+        __typename: 'Position',
         x: 42,
         y: 12,
       },
@@ -408,6 +443,8 @@ export const siriusWebDiagram: GQLDiagram = {
         width: 336,
         height: 340.6609201664557,
       },
+      state: GQLViewModifier.Normal,
+      userResizable: true,
       borderNodes: [
         {
           id: 'robot#//@elements.1/@powerInputs.0',
@@ -431,6 +468,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 0,
               y: 0,
             },
@@ -439,6 +477,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 13.798828125,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 10.86328125,
             },
@@ -452,6 +491,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: -30,
             y: 28.4990234375,
           },
@@ -461,6 +501,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
       ],
       childNodes: [
@@ -486,6 +528,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 14.650390625,
               y: -14.19921875,
             },
@@ -494,6 +537,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -507,6 +551,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 136,
             y: 53.34003915810084,
           },
@@ -516,6 +561,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.1/@elements.3',
@@ -539,6 +586,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 29.544921875,
               y: -14.19921875,
             },
@@ -547,6 +595,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -560,6 +609,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 240,
             y: 106.53925790810084,
           },
@@ -569,6 +619,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.1/@elements.4',
@@ -592,6 +644,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 33.33203125,
               y: -14.19921875,
             },
@@ -600,6 +653,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -613,6 +667,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 136,
             y: 184.32137814757868,
           },
@@ -622,6 +677,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.1/@elements.1',
@@ -645,6 +702,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 12.208984375,
               y: -14.19921875,
             },
@@ -653,6 +711,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -666,6 +725,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 32,
             y: 182.18105487870167,
           },
@@ -675,6 +735,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.1/@elements.2',
@@ -698,6 +760,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 36.658203125,
               y: -14.19921875,
             },
@@ -706,6 +769,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -719,6 +783,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 12,
             y: 42.6982421875,
           },
@@ -728,6 +793,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
         {
           id: 'robot#//@elements.1/@elements.5',
@@ -751,6 +818,7 @@ export const siriusWebDiagram: GQLDiagram = {
               iconURL: '/api/images/image.svg',
             },
             position: {
+              __typename: 'Position',
               x: 7.55078125,
               y: -14.19921875,
             },
@@ -759,6 +827,7 @@ export const siriusWebDiagram: GQLDiagram = {
               height: 9.19921875,
             },
             alignment: {
+              __typename: 'Position',
               x: 0,
               y: 7.2421875,
             },
@@ -772,6 +841,7 @@ export const siriusWebDiagram: GQLDiagram = {
             borderStyle: GQLLineStyle.Solid,
           } as GQLImageNodeStyle,
           position: {
+            __typename: 'Position',
             x: 52,
             y: 304.6609201664557,
           },
@@ -781,6 +851,8 @@ export const siriusWebDiagram: GQLDiagram = {
           },
           borderNodes: [],
           childNodes: [],
+          state: GQLViewModifier.Normal,
+          userResizable: true,
         },
       ],
     },
@@ -808,10 +880,12 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 158,
           y: 238.32137814757868,
         },
         {
+          __typename: 'Position',
           x: 178,
           y: 238.32137814757868,
         },
@@ -824,6 +898,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: '21ed0822-c3c6-432f-b6e8-b006e9277e1e',
@@ -847,10 +922,12 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 158,
           y: 107.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 178,
           y: 107.34003915810084,
         },
@@ -863,6 +940,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: '140136fc-aaf2-413f-9a5a-63bba1fbd47a',
@@ -886,18 +964,22 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 378,
           y: 455.769554707484,
         },
         {
+          __typename: 'Position',
           x: 423,
           y: 455.769554707484,
         },
         {
+          __typename: 'Position',
           x: 423,
           y: 193.53925790810084,
         },
         {
+          __typename: 'Position',
           x: 569,
           y: 193.53925790810084,
         },
@@ -910,6 +992,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: 'edf00d10-266e-4047-8a33-061f7e7badd5',
@@ -933,10 +1016,12 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 633,
           y: 193.53925790810084,
         },
         {
+          __typename: 'Position',
           x: 663,
           y: 193.53925790810084,
         },
@@ -949,6 +1034,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: 'd76ffcad-c185-4a44-b04b-645938b9426c',
@@ -972,18 +1058,22 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 262,
           y: 93.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 653,
           y: 93.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 653,
           y: 146.53925790810084,
         },
         {
+          __typename: 'Position',
           x: 663,
           y: 146.53925790810084,
         },
@@ -996,6 +1086,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: '118bc317-88f5-45d1-9c67-5983a5adb53b',
@@ -1019,18 +1110,22 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 262,
           y: 121.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 272,
           y: 121.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 272,
           y: 160.53925790810084,
         },
         {
+          __typename: 'Position',
           x: 282,
           y: 160.53925790810084,
         },
@@ -1043,6 +1138,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: '71a29dfc-3c77-4673-b5e5-ec2996035d9a',
@@ -1066,26 +1162,32 @@ export const siriusWebDiagram: GQLDiagram = {
       },
       routingPoints: [
         {
+          __typename: 'Position',
           x: 262,
           y: 238.32137814757868,
         },
         {
+          __typename: 'Position',
           x: 413,
           y: 238.32137814757868,
         },
         {
+          __typename: 'Position',
           x: 413,
           y: 104.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 643,
           y: 104.34003915810084,
         },
         {
+          __typename: 'Position',
           x: 643,
           y: 170.03925790810084,
         },
         {
+          __typename: 'Position',
           x: 663,
           y: 170.03925790810084,
         },
@@ -1098,6 +1200,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
     {
       id: '61bb606e-89a3-42c4-b80e-8f7627ea1a48',
@@ -1128,6 +1231,7 @@ export const siriusWebDiagram: GQLDiagram = {
         x: 0.5,
         y: 0.5,
       },
+      state: GQLViewModifier.Normal,
     },
   ],
 };

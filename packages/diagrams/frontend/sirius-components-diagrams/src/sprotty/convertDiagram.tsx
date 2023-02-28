@@ -203,6 +203,7 @@ const convertBorderNode = (
   node.size = size;
   node.features = handleNodeFeatures(gqlNode, readOnly, autoLayout, userResizable);
   node.state = ViewModifier[GQLViewModifier[state]];
+  node.style.opacity = node.state === ViewModifier.Faded ? 0.25 : 1;
   return node;
 };
 
