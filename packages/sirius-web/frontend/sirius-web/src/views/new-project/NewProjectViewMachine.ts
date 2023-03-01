@@ -63,7 +63,7 @@ export type NewProjectEvent =
   | HideToastEvent;
 
 const isChangeNameEvent = (event: NewProjectEvent): event is ChangeNameEvent => !!(event as ChangeNameEvent).name;
-const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 20;
+const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 1024;
 const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
   payload.__typename === 'CreateProjectSuccessPayload';
 export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectViewStateSchema, NewProjectEvent>(
@@ -72,7 +72,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
     type: 'parallel',
     context: {
       name: '',
-      nameMessage: 'The name must contain between 3 and 20 characters',
+      nameMessage: 'The name must contain between 3 and 1024 characters',
       nameIsInvalid: false,
       message: null,
       newProjectId: null,

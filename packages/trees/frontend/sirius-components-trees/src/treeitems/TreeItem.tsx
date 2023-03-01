@@ -90,8 +90,12 @@ const useTreeItemStyle = makeStyles((theme) => ({
     gap: '4px',
     alignItems: 'center',
     cursor: 'pointer',
+  },
+  label: {
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    maxWidth: '100ch',
   },
   selectedLabel: {
     fontWeight: 'bold',
@@ -323,7 +327,7 @@ export const TreeItem = ({
     );
   } else {
     text = (
-      <Typography variant="body2" className={selected ? classes.selectedLabel : ''}>
+      <Typography variant="body2" className={`${classes.label} ${selected ? classes.selectedLabel : ''}`}>
         {item.label}
       </Typography>
     );

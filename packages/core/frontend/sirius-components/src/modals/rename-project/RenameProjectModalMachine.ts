@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ export type RenameProjectModalEvent =
   | RequestProjectRenamingEvent
   | HandleResponseEvent;
 
-const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 20;
+const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 1024;
 export const renameProjectModalMachine = Machine<
   RenameProjectModalContext,
   RenameProjectModalStateSchema,
@@ -68,7 +68,7 @@ export const renameProjectModalMachine = Machine<
     type: 'parallel',
     context: {
       name: null,
-      nameMessage: 'The name must contain between 3 and 20 characters',
+      nameMessage: 'The name must contain between 3 and 1024 characters',
       nameIsInvalid: false,
       initialName: null,
       message: null,

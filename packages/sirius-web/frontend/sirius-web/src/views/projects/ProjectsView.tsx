@@ -461,7 +461,10 @@ const ProjectsTable = ({ projects, onMore }: ProjectsTableProps) => {
               <TableRow key={project.id} hover>
                 <TableCell>
                   <Link component={RouterLink} to={`/projects/${project.id}/edit`} color="inherit">
-                    {project.name}
+                    <div
+                      style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100ch' }}>
+                      {project.name}
+                    </div>
                   </Link>
                 </TableCell>
                 <TableCell align="right">
