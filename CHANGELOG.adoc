@@ -44,6 +44,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1632[#1632] [core] Start documenting the variables available for each operation in our various representations
 - https://github.com/eclipse-sirius/sirius-components/issues/1565[1565] [view] The definition of the View DSL now uses richer data types for most attributes.
 This has no visible effect at the moment, but will allow better documentation, validation and configuration later.
+- [studio] Add a project template for the Papaya domains and view
 
 == v2023.3.0
 
