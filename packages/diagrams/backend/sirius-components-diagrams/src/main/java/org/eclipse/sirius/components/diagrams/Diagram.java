@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,11 @@ package org.eclipse.sirius.components.diagrams;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
@@ -46,6 +48,8 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
     private List<Node> nodes;
 
     private List<Edge> edges;
+
+    private DiagramLayoutData layoutData;
 
     private Diagram() {
         // Prevent instantiation
@@ -92,6 +96,10 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
         return this.edges;
     }
 
+    public DiagramLayoutData getLayoutData() {
+        return this.layoutData;
+    }
+
     public static Builder newDiagram(String id) {
         return new Builder(id);
     }
@@ -131,6 +139,8 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
 
         private List<Edge> edges;
 
+        private DiagramLayoutData layoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of());
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -144,6 +154,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
             this.size = diagram.getSize();
             this.nodes = diagram.getNodes();
             this.edges = diagram.getEdges();
+            this.layoutData = diagram.getLayoutData();
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -181,6 +192,11 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
             return this;
         }
 
+        public Builder layoutData(DiagramLayoutData layoutData) {
+            this.layoutData = Objects.requireNonNull(layoutData);
+            return this;
+        }
+
         public Diagram build() {
             Diagram diagram = new Diagram();
             diagram.id = Objects.requireNonNull(this.id);
@@ -192,6 +208,7 @@ public final class Diagram implements IRepresentation, ISemanticRepresentation {
             diagram.size = Objects.requireNonNull(this.size);
             diagram.nodes = Objects.requireNonNull(this.nodes);
             diagram.edges = Objects.requireNonNull(this.edges);
+            diagram.layoutData = Objects.requireNonNull(this.layoutData);
             return diagram;
         }
     }

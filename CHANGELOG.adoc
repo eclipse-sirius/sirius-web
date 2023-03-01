@@ -40,6 +40,9 @@
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1695[#1695] [view] Add a precondition expression to the node description
+- https://github.com/eclipse-sirius/sirius-components/issues/1527[#1527] [diagram] Add the new layout data structure which will be used by the new version of our layout algorithm.
+This new data structure will be used by the frontend if the name of a diagram ends with `__EXPERIMENTAL`.
+This will allow us to easily compare the current layout algorithm and the new one.
 
 === Improvements
 
