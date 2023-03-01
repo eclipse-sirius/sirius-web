@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public interface BorderStyle extends EObject {
      * @return the value of the '<em>Border Color</em>' attribute.
      * @see #setBorderColor(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getBorderStyle_BorderColor()
-     * @model default="#33B0C3" required="true"
+     * @model default="#33B0C3" dataType="org.eclipse.sirius.components.view.Color" required="true"
      * @generated
      */
     String getBorderColor();

@@ -302,10 +302,16 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createGroupDisplayModeFromString(eDataType, initialValue);
             case ViewPackage.FLEX_DIRECTION:
                 return this.createFlexDirectionFromString(eDataType, initialValue);
+            case ViewPackage.IDENTIFIER:
+                return this.createIdentifierFromString(eDataType, initialValue);
             case ViewPackage.INTERPRETED_EXPRESSION:
                 return this.createInterpretedExpressionFromString(eDataType, initialValue);
             case ViewPackage.DOMAIN_TYPE:
                 return this.createDomainTypeFromString(eDataType, initialValue);
+            case ViewPackage.COLOR:
+                return this.createColorFromString(eDataType, initialValue);
+            case ViewPackage.LENGTH:
+                return this.createLengthFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -331,10 +337,16 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.convertGroupDisplayModeToString(eDataType, instanceValue);
             case ViewPackage.FLEX_DIRECTION:
                 return this.convertFlexDirectionToString(eDataType, instanceValue);
+            case ViewPackage.IDENTIFIER:
+                return this.convertIdentifierToString(eDataType, instanceValue);
             case ViewPackage.INTERPRETED_EXPRESSION:
                 return this.convertInterpretedExpressionToString(eDataType, instanceValue);
             case ViewPackage.DOMAIN_TYPE:
                 return this.convertDomainTypeToString(eDataType, instanceValue);
+            case ViewPackage.COLOR:
+                return this.convertColorToString(eDataType, instanceValue);
+            case ViewPackage.LENGTH:
+                return this.convertLengthToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -1241,6 +1253,24 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      *
      * @generated
      */
+    public String createIdentifierFromString(EDataType eDataType, String initialValue) {
+        return (String) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertIdentifierToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public String createInterpretedExpressionFromString(EDataType eDataType, String initialValue) {
         return (String) super.createFromString(eDataType, initialValue);
     }
@@ -1269,6 +1299,42 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     public String convertDomainTypeToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String createColorFromString(EDataType eDataType, String initialValue) {
+        return (String) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertColorToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public Integer createLengthFromString(EDataType eDataType, String initialValue) {
+        return (Integer) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertLengthToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

@@ -37,6 +37,8 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/593[#593] [domain] Add support for referencing and extending other custom domains
 - https://github.com/eclipse-sirius/sirius-components/issues/1518[#1518] [project] Remove the "format all code" save action in order to let us write code without having to specify "@formatter:off" everywhere. It will also make it easier for us to use IDEs other than Eclipse to contribute to Sirius Web
 - https://github.com/eclipse-sirius/sirius-components/issues/1632[#1632] [core] Start documenting the variables available for each operation in our various representations
+- https://github.com/eclipse-sirius/sirius-components/issues/1565[1565] [view] The definition of the View DSL now uses richer data types for most attributes.
+This has no visible effect at the moment, but will allow better documentation, validation and configuration later.
 
 == v2023.3.0
 

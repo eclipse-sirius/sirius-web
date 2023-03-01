@@ -6359,6 +6359,15 @@ public interface ViewPackage extends EPackage {
     int FLEX_DIRECTION = 88;
 
     /**
+     * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see java.lang.String
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
+     * @generated
+     */
+    int IDENTIFIER = 89;
+
+    /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -6366,7 +6375,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 89;
+    int INTERPRETED_EXPRESSION = 90;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6375,7 +6384,24 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 90;
+    int DOMAIN_TYPE = 91;
+
+    /**
+     * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see java.lang.String
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
+     * @generated
+     */
+    int COLOR = 92;
+
+    /**
+     * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
+     * @generated
+     */
+    int LENGTH = 93;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -9381,6 +9407,17 @@ public interface ViewPackage extends EPackage {
     EEnum getFlexDirection();
 
     /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Identifier</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Identifier</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     * @generated
+     */
+    EDataType getIdentifier();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Interpreted Expression</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9401,6 +9438,26 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EDataType getDomainType();
+
+    /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Color</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Color</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     * @generated
+     */
+    EDataType getColor();
+
+    /**
+     * Returns the meta object for data type '<em>Length</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Length</em>'.
+     * @model instanceClass="int"
+     * @generated
+     */
+    EDataType getLength();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -11775,6 +11832,16 @@ public interface ViewPackage extends EPackage {
         EEnum FLEX_DIRECTION = eINSTANCE.getFlexDirection();
 
         /**
+         * The meta object literal for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
+         * -->
+         *
+         * @see java.lang.String
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
+         * @generated
+         */
+        EDataType IDENTIFIER = eINSTANCE.getIdentifier();
+
+        /**
          * The meta object literal for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
@@ -11793,6 +11860,23 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EDataType DOMAIN_TYPE = eINSTANCE.getDomainType();
+
+        /**
+         * The meta object literal for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see java.lang.String
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
+         * @generated
+         */
+        EDataType COLOR = eINSTANCE.getColor();
+
+        /**
+         * The meta object literal for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
+         * @generated
+         */
+        EDataType LENGTH = eINSTANCE.getLength();
 
     }
 

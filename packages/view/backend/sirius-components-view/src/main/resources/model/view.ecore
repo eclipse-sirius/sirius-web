@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="view" nsURI="http://www.eclipse.org/sirius-web/view" nsPrefix="view">
+  <eClassifiers xsi:type="ecore:EDataType" name="Identifier" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="InterpretedExpression" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DomainType" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Color" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Length" instanceClassName="int"/>
   <eClassifiers xsi:type="ecore:EClass" name="View">
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptions" upperBound="-1"
         eType="#//RepresentationDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RepresentationDescription" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"
         defaultValueLiteral="NewRepresentationDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"
         defaultValueLiteral=""/>
@@ -26,7 +31,7 @@
         eType="#//EdgeDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"
         defaultValueLiteral="NewRepresentationDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
@@ -82,7 +87,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelStyle" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="14"/>
+        eType="#//Length" defaultValueLiteral="14"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="italic" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bold" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -94,20 +99,20 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BorderStyle" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderColor" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="#33B0C3"/>
+        eType="#//Color" defaultValueLiteral="#33B0C3"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderRadius" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="3"/>
+        eType="#//Length" defaultValueLiteral="3"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderSize" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+        eType="#//Length" defaultValueLiteral="1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderLineStyle" eType="#//LineStyle"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"
         defaultValueLiteral="#E5F5F8"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
       interface="true" eSuperTypes="#//Style #//LabelStyle #//BorderStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="#//Color"
         defaultValueLiteral="black"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="widthComputationExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="1"/>
@@ -137,7 +142,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetArrowStyle" lowerBound="1"
         eType="#//ArrowStyle" defaultValueLiteral="InputArrow"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="edgeWidth" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+        eType="#//Length" defaultValueLiteral="1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
@@ -164,7 +169,7 @@
     <eLiterals name="Dash_Dot" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Tool" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"
         defaultValueLiteral="Tool"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
         containment="true"/>
@@ -243,7 +248,7 @@
         eType="#//GroupDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GroupDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayMode" lowerBound="1"
         eType="#//GroupDisplayMode" defaultValueLiteral="LIST"/>
@@ -259,7 +264,7 @@
     <eLiterals name="TOGGLEABLE_AREAS" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescription" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescription" eSuperTypes="#//WidgetDescription">
@@ -338,10 +343,10 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalBarChartDescriptionStyle" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" lowerBound="1" eType="#//Length"
         defaultValueLiteral="500"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="250"/>
+        eType="#//Length" defaultValueLiteral="250"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PieChartDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="#//InterpretedExpression"/>
@@ -380,40 +385,40 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescriptionStyle" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextfieldDescriptionStyle"
       eSuperTypes="#//Conditional #//TextfieldDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalCheckboxDescriptionStyle"
       eSuperTypes="#//Conditional #//CheckboxDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalSelectDescriptionStyle" eSuperTypes="#//Conditional #//SelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalMultiSelectDescriptionStyle"
       eSuperTypes="#//Conditional #//MultiSelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextareaDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextareaDescriptionStyle"
       eSuperTypes="#//Conditional #//TextareaDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="RadioDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalRadioDescriptionStyle" eSuperTypes="#//Conditional #//RadioDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="ButtonDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalButtonDescriptionStyle" eSuperTypes="#//Conditional #//ButtonDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="BarChartDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
@@ -423,8 +428,8 @@
       eSuperTypes="#//Conditional #//BarChartDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="PieChartDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="colors" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strokeWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strokeColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strokeWidth" eType="#//Length"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strokeColor" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalPieChartDescriptionStyle"
       eSuperTypes="#//Conditional #//PieChartDescriptionStyle"/>
@@ -436,7 +441,7 @@
         eType="#//ConditionalLabelDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLabelDescriptionStyle" eSuperTypes="#//Conditional #//LabelDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="LinkDescription" eSuperTypes="#//WidgetDescription">
@@ -447,7 +452,7 @@
         eType="#//ConditionalLinkDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinkDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLinkDescriptionStyle" eSuperTypes="#//Conditional #//LinkDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListDescription" eSuperTypes="#//WidgetDescription">
@@ -463,11 +468,9 @@
         eType="#//ConditionalListDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalListDescriptionStyle" eSuperTypes="#//Conditional #//ListDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="InterpretedExpression" instanceClassName="java.lang.String"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="DomainType" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="dropTool" eType="#//DropTool"
         containment="true"/>

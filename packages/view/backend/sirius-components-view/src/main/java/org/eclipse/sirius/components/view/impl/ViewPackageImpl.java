@@ -745,6 +745,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EDataType identifierEDataType = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EDataType interpretedExpressionEDataType = null;
 
     /**
@@ -753,6 +760,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EDataType domainTypeEDataType = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EDataType colorEDataType = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EDataType lengthEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -3511,6 +3532,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EDataType getIdentifier() {
+        return this.identifierEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EDataType getInterpretedExpression() {
         return this.interpretedExpressionEDataType;
     }
@@ -3523,6 +3554,26 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EDataType getDomainType() {
         return this.domainTypeEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EDataType getColor() {
+        return this.colorEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EDataType getLength() {
+        return this.lengthEDataType;
     }
 
     /**
@@ -3909,8 +3960,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
 
         // Create data types
+        this.identifierEDataType = this.createEDataType(IDENTIFIER);
         this.interpretedExpressionEDataType = this.createEDataType(INTERPRETED_EXPRESSION);
         this.domainTypeEDataType = this.createEDataType(DOMAIN_TYPE);
+        this.colorEDataType = this.createEDataType(COLOR);
+        this.lengthEDataType = this.createEDataType(LENGTH);
     }
 
     /**
@@ -4042,8 +4096,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.representationDescriptionEClass, RepresentationDescription.class, "RepresentationDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getRepresentationDescription_Name(), this.ecorePackage.getEString(), "name", "NewRepresentationDescription", 0, 1, RepresentationDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRepresentationDescription_Name(), this.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRepresentationDescription_DomainType(), this.getDomainType(), "domainType", "", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRepresentationDescription_PreconditionExpression(), this.getInterpretedExpression(), "preconditionExpression", "", 0, 1, RepresentationDescription.class,
@@ -4062,8 +4116,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getDiagramElementDescription_Name(), this.ecorePackage.getEString(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDiagramElementDescription_Name(), this.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_DomainType(), this.getDomainType(), "domainType", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_SemanticCandidatesExpression(), this.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self.eContents()", 0, 1,
@@ -4120,8 +4174,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.labelStyleEClass, LabelStyle.class, "LabelStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLabelStyle_FontSize(), this.ecorePackage.getEInt(), "fontSize", "14", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelStyle_FontSize(), this.getLength(), "fontSize", "14", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getLabelStyle_Italic(), this.ecorePackage.getEBoolean(), "italic", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getLabelStyle_Bold(), this.ecorePackage.getEBoolean(), "bold", "false", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
@@ -4132,22 +4186,22 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.borderStyleEClass, BorderStyle.class, "BorderStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getBorderStyle_BorderColor(), this.ecorePackage.getEString(), "borderColor", "#33B0C3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBorderStyle_BorderRadius(), this.ecorePackage.getEInt(), "borderRadius", "3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBorderStyle_BorderSize(), this.ecorePackage.getEInt(), "borderSize", "1", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBorderStyle_BorderColor(), this.getColor(), "borderColor", "#33B0C3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBorderStyle_BorderRadius(), this.getLength(), "borderRadius", "3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBorderStyle_BorderSize(), this.getLength(), "borderSize", "1", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getBorderStyle_BorderLineStyle(), this.getLineStyle(), "borderLineStyle", null, 0, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getStyle_Color(), this.ecorePackage.getEString(), "color", "#E5F5F8", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getStyle_Color(), this.getColor(), "color", "#E5F5F8", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
 
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getNodeStyleDescription_LabelColor(), this.ecorePackage.getEString(), "labelColor", "black", 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeStyleDescription_LabelColor(), this.getColor(), "labelColor", "black", 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyleDescription_WidthComputationExpression(), this.getInterpretedExpression(), "widthComputationExpression", "1", 0, 1, NodeStyleDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyleDescription_HeightComputationExpression(), this.getInterpretedExpression(), "heightComputationExpression", "1", 0, 1, NodeStyleDescription.class,
@@ -4179,14 +4233,14 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeStyle_TargetArrowStyle(), this.getArrowStyle(), "targetArrowStyle", "InputArrow", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_EdgeWidth(), this.ecorePackage.getEInt(), "edgeWidth", "1", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeStyle_EdgeWidth(), this.getLength(), "edgeWidth", "1", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeStyle_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolEClass, Tool.class, "Tool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTool_Name(), this.ecorePackage.getEString(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTool_Name(), this.getIdentifier(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
         this.initEReference(this.getTool_Body(), this.getOperation(), null, "body", null, 0, -1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -4269,8 +4323,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.groupDescriptionEClass, GroupDescription.class, "GroupDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getGroupDescription_Name(), this.ecorePackage.getEString(), "name", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getGroupDescription_Name(), this.getIdentifier(), "name", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getGroupDescription_LabelExpression(), this.getInterpretedExpression(), "labelExpression", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getGroupDescription_DisplayMode(), this.getGroupDisplayMode(), "displayMode", "LIST", 1, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -4283,8 +4337,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.widgetDescriptionEClass, WidgetDescription.class, "WidgetDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getWidgetDescription_Name(), this.ecorePackage.getEString(), "name", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetDescription_Name(), this.getIdentifier(), "name", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getWidgetDescription_LabelExpression(), this.getInterpretedExpression(), "labelExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -4377,10 +4431,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getBarChartDescription_ConditionalStyles(), this.getConditionalBarChartDescriptionStyle(), null, "conditionalStyles", null, 0, -1, BarChartDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBarChartDescription_Width(), this.ecorePackage.getEInt(), "width", "500", 1, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBarChartDescription_Height(), this.ecorePackage.getEInt(), "height", "250", 1, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBarChartDescription_Width(), this.getLength(), "width", "500", 1, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getBarChartDescription_Height(), this.getLength(), "height", "250", 1, 1, BarChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pieChartDescriptionEClass, PieChartDescription.class, "PieChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPieChartDescription_ValuesExpression(), this.getInterpretedExpression(), "valuesExpression", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -4419,60 +4473,60 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.textfieldDescriptionStyleEClass, TextfieldDescriptionStyle.class, "TextfieldDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTextfieldDescriptionStyle_BackgroundColor(), this.ecorePackage.getEString(), "backgroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextfieldDescriptionStyle_ForegroundColor(), this.ecorePackage.getEString(), "foregroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextfieldDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextfieldDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalTextfieldDescriptionStyleEClass, ConditionalTextfieldDescriptionStyle.class, "ConditionalTextfieldDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.checkboxDescriptionStyleEClass, CheckboxDescriptionStyle.class, "CheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getCheckboxDescriptionStyle_Color(), this.ecorePackage.getEString(), "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCheckboxDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalCheckboxDescriptionStyleEClass, ConditionalCheckboxDescriptionStyle.class, "ConditionalCheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.selectDescriptionStyleEClass, SelectDescriptionStyle.class, "SelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectDescriptionStyle_BackgroundColor(), this.ecorePackage.getEString(), "backgroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectDescriptionStyle_ForegroundColor(), this.ecorePackage.getEString(), "foregroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalSelectDescriptionStyleEClass, ConditionalSelectDescriptionStyle.class, "ConditionalSelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.multiSelectDescriptionStyleEClass, MultiSelectDescriptionStyle.class, "MultiSelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getMultiSelectDescriptionStyle_BackgroundColor(), this.ecorePackage.getEString(), "backgroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getMultiSelectDescriptionStyle_ForegroundColor(), this.ecorePackage.getEString(), "foregroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getMultiSelectDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getMultiSelectDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalMultiSelectDescriptionStyleEClass, ConditionalMultiSelectDescriptionStyle.class, "ConditionalMultiSelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.textareaDescriptionStyleEClass, TextareaDescriptionStyle.class, "TextareaDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTextareaDescriptionStyle_BackgroundColor(), this.ecorePackage.getEString(), "backgroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextareaDescriptionStyle_ForegroundColor(), this.ecorePackage.getEString(), "foregroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextareaDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextareaDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalTextareaDescriptionStyleEClass, ConditionalTextareaDescriptionStyle.class, "ConditionalTextareaDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.radioDescriptionStyleEClass, RadioDescriptionStyle.class, "RadioDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getRadioDescriptionStyle_Color(), this.ecorePackage.getEString(), "color", null, 0, 1, RadioDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRadioDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, RadioDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalRadioDescriptionStyleEClass, ConditionalRadioDescriptionStyle.class, "ConditionalRadioDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.buttonDescriptionStyleEClass, ButtonDescriptionStyle.class, "ButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getButtonDescriptionStyle_BackgroundColor(), this.ecorePackage.getEString(), "backgroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getButtonDescriptionStyle_ForegroundColor(), this.ecorePackage.getEString(), "foregroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getButtonDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getButtonDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalButtonDescriptionStyleEClass, ConditionalButtonDescriptionStyle.class, "ConditionalButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -4487,10 +4541,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.pieChartDescriptionStyleEClass, PieChartDescriptionStyle.class, "PieChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPieChartDescriptionStyle_Colors(), this.ecorePackage.getEString(), "colors", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeWidth(), this.ecorePackage.getEString(), "strokeWidth", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeColor(), this.ecorePackage.getEString(), "strokeColor", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeWidth(), this.getLength(), "strokeWidth", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeColor(), this.getColor(), "strokeColor", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalPieChartDescriptionStyleEClass, ConditionalPieChartDescriptionStyle.class, "ConditionalPieChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -4504,8 +4558,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.labelDescriptionStyleEClass, LabelDescriptionStyle.class, "LabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLabelDescriptionStyle_Color(), this.ecorePackage.getEString(), "color", null, 0, 1, LabelDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, LabelDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalLabelDescriptionStyleEClass, ConditionalLabelDescriptionStyle.class, "ConditionalLabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -4519,8 +4573,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.linkDescriptionStyleEClass, LinkDescriptionStyle.class, "LinkDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLinkDescriptionStyle_Color(), this.ecorePackage.getEString(), "color", null, 0, 1, LinkDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLinkDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, LinkDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalLinkDescriptionStyleEClass, ConditionalLinkDescriptionStyle.class, "ConditionalLinkDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -4539,8 +4593,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.listDescriptionStyleEClass, ListDescriptionStyle.class, "ListDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getListDescriptionStyle_Color(), this.getInterpretedExpression(), "color", null, 0, 1, ListDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getListDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, ListDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalListDescriptionStyleEClass, ConditionalListDescriptionStyle.class, "ConditionalListDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -4615,8 +4669,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.addEEnumLiteral(this.flexDirectionEEnum, FlexDirection.COLUMN_REVERSE);
 
         // Initialize data types
+        this.initEDataType(this.identifierEDataType, String.class, "Identifier", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         this.initEDataType(this.interpretedExpressionEDataType, String.class, "InterpretedExpression", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         this.initEDataType(this.domainTypeEDataType, String.class, "DomainType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        this.initEDataType(this.colorEDataType, String.class, "Color", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        this.initEDataType(this.lengthEDataType, int.class, "Length", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

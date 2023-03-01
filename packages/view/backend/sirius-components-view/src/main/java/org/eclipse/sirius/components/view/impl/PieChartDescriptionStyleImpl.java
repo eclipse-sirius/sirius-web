@@ -170,7 +170,7 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
      * @generated
      * @ordered
      */
-    protected static final String STROKE_WIDTH_EDEFAULT = null;
+    protected static final int STROKE_WIDTH_EDEFAULT = 0;
 
     /**
      * The cached value of the '{@link #getStrokeWidth() <em>Stroke Width</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -180,7 +180,7 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
      * @generated
      * @ordered
      */
-    protected String strokeWidth = STROKE_WIDTH_EDEFAULT;
+    protected int strokeWidth = STROKE_WIDTH_EDEFAULT;
 
     /**
      * The default value of the '{@link #getStrokeColor() <em>Stroke Color</em>}' attribute. <!-- begin-user-doc -->
@@ -365,7 +365,7 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
      * @generated
      */
     @Override
-    public String getStrokeWidth() {
+    public int getStrokeWidth() {
         return this.strokeWidth;
     }
 
@@ -375,8 +375,8 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
      * @generated
      */
     @Override
-    public void setStrokeWidth(String newStrokeWidth) {
-        String oldStrokeWidth = this.strokeWidth;
+    public void setStrokeWidth(int newStrokeWidth) {
+        int oldStrokeWidth = this.strokeWidth;
         this.strokeWidth = newStrokeWidth;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH, oldStrokeWidth, this.strokeWidth));
@@ -460,7 +460,7 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
                 this.setColors((String) newValue);
                 return;
             case ViewPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
-                this.setStrokeWidth((String) newValue);
+                this.setStrokeWidth((Integer) newValue);
                 return;
             case ViewPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
                 this.setStrokeColor((String) newValue);
@@ -526,7 +526,7 @@ public class PieChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
             case ViewPackage.PIE_CHART_DESCRIPTION_STYLE__COLORS:
                 return COLORS_EDEFAULT == null ? this.colors != null : !COLORS_EDEFAULT.equals(this.colors);
             case ViewPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
-                return STROKE_WIDTH_EDEFAULT == null ? this.strokeWidth != null : !STROKE_WIDTH_EDEFAULT.equals(this.strokeWidth);
+                return this.strokeWidth != STROKE_WIDTH_EDEFAULT;
             case ViewPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
                 return STROKE_COLOR_EDEFAULT == null ? this.strokeColor != null : !STROKE_COLOR_EDEFAULT.equals(this.strokeColor);
         }

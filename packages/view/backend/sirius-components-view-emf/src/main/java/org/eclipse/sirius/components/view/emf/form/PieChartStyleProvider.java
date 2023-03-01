@@ -46,10 +46,10 @@ public class PieChartStyleProvider implements Function<VariableManager, PieChart
             Builder pieChartStyleBuilder = PieChartStyle.newPieChartStyle();
             String colors = effectiveStyle.getColors();
             String strokeColor = effectiveStyle.getStrokeColor();
-            String strokeWidth = effectiveStyle.getStrokeWidth();
+            int strokeWidth = effectiveStyle.getStrokeWidth();
             this.handleColors(variableManager, pieChartStyleBuilder, colors);
             this.handleStrokeColor(pieChartStyleBuilder, strokeColor);
-            this.handleStrokeWidth(pieChartStyleBuilder, strokeWidth);
+            pieChartStyleBuilder.strokeWidth(strokeWidth);
             this.handleLabelStyle(pieChartStyleBuilder, effectiveStyle);
             return pieChartStyleBuilder.build();
         }
@@ -64,17 +64,6 @@ public class PieChartStyleProvider implements Function<VariableManager, PieChart
             .strikeThrough(effectiveStyle.isStrikeThrough())
             .underline(effectiveStyle.isUnderline());
         // @formatter:on
-    }
-
-    private void handleStrokeWidth(Builder pieChartStyleBuilder, String strokeWidth) {
-        if (strokeWidth != null && !strokeWidth.isBlank()) {
-            try {
-                int width = Integer.parseInt(strokeWidth);
-                pieChartStyleBuilder.strokeWidth(width);
-            } catch (NullPointerException | NumberFormatException e) {
-                // unexpected value.
-            }
-        }
     }
 
     private void handleStrokeColor(Builder pieChartStyleBuilder, String strokeColor) {

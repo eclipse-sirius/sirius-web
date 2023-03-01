@@ -673,7 +673,7 @@ public class DynamicFormsTests {
             PieChartDescriptionStyle style = ViewFactory.eINSTANCE.createPieChartDescriptionStyle();
             style.setColors("aql:Sequence{'AliceBlue','AntiqueWhite','DarkMagenta','DarkGreen'}");
             style.setStrokeColor("Orchid");
-            style.setStrokeWidth("3");
+            style.setStrokeWidth(3);
             this.setFontStyle(style);
             pieChartDescription.setStyle(style);
         }
@@ -682,7 +682,7 @@ public class DynamicFormsTests {
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColors("aql:Sequence{'CadetBlue','AntiqueWhite','DarkMagenta','Coral'}");
             conditionalStyle.setStrokeColor("PaleGoldenRod");
-            conditionalStyle.setStrokeWidth("2");
+            conditionalStyle.setStrokeWidth(2);
             this.setConditionalFontStyle(conditionalStyle);
             pieChartDescription.getConditionalStyles().add(conditionalStyle);
         }
