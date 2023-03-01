@@ -5,7 +5,7 @@ CREATE TABLE document (
     project_id uuid NOT NULL,
     name text NOT NULL,
     content text NOT NULL,
-    CONSTRAINT document_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 50)))
+    CONSTRAINT document_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 1024)))
 );
 
 CREATE TABLE idmapping (
@@ -16,7 +16,7 @@ CREATE TABLE idmapping (
 CREATE TABLE project (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text NOT NULL,
-    CONSTRAINT project_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 50)))
+    CONSTRAINT project_name_length CHECK (((char_length(name) > 0) AND (char_length(name) <= 1024)))
 );
 
 CREATE TABLE representation (
@@ -27,7 +27,7 @@ CREATE TABLE representation (
     kind text NOT NULL,
     descriptionId TEXT NOT NULL,
     content text NOT NULL,
-    CONSTRAINT representation_label_length CHECK (((char_length(label) > 0) AND (char_length(label) <= 50)))
+    CONSTRAINT representation_label_length CHECK (((char_length(label) > 0) AND (char_length(label) <= 1024)))
 );
 
 ALTER TABLE ONLY idmapping

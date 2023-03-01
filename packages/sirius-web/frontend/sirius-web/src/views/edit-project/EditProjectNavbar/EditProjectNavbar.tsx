@@ -48,6 +48,10 @@ const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
   },
   title: {
     marginRight: theme.spacing(2),
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    maxWidth: '100ch',
   },
   onDarkBackground: {
     '&:hover': {

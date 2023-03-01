@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,10 @@ export const clickListItemMutation = gql`
 `;
 
 const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
+  table: {
+    tableLayout: 'fixed',
+    width: '100%',
+  },
   cell: {
     display: 'flex',
     flexDirection: 'row',
@@ -84,6 +88,10 @@ const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) =
     fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
     fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    flexGrow: 1,
   },
 }));
 
@@ -235,36 +243,36 @@ export const ListPropertySection = ({
 
   const getTableCellContent = (item: GQLListItem): JSX.Element => {
     return (
-      <Typography
-        className={`${classes.canBeSelectedItem} ${classes.style}`}
-        onClick={() => clickHandler(item)}
-        color="textPrimary"
-        data-testid={`representation-${item.id}`}>
+      <>
         {item.imageURL ? (
-          <img className={classes.icon} width="16" height="16" alt={item.label} src={httpOrigin + item.imageURL} />
+          <img className={classes.icon} width="16" height="16" alt={''} src={httpOrigin + item.imageURL} />
         ) : null}
-        {item.label}
-      </Typography>
+        <Typography
+          className={`${classes.canBeSelectedItem} ${classes.style}`}
+          onClick={() => clickHandler(item)}
+          color="textPrimary"
+          data-testid={`representation-${item.id}`}>
+          {item.label}
+        </Typography>
+        <IconButton
+          aria-label="deleteListItem"
+          onClick={(event) => onDelete(event, item)}
+          disabled={readOnly || !item.deletable}
+          data-testid={`delete-representation-${item.id}`}>
+          <DeleteIcon />
+        </IconButton>
+      </>
     );
   };
 
   return (
     <FormControl error={widget.diagnostics.length > 0} fullWidth>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Table size="small">
+      <Table size="small" className={classes.table}>
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{getTableCellContent(item)}</TableCell>
-              <TableCell align="right">
-                <IconButton
-                  aria-label="deleteListItem"
-                  onClick={(event) => onDelete(event, item)}
-                  disabled={readOnly || !item.deletable}
-                  data-testid={`delete-representation-${item.id}`}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
+              <TableCell className={classes.cell}>{getTableCellContent(item)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -146,7 +146,7 @@ public class ProjectService implements IProjectService {
     }
 
     private boolean isValidProjectName(String name) {
-        return 3 <= name.length() && name.length() <= 20;
+        return 3 <= name.length() && name.length() <= 1024;
     }
 
     @Override

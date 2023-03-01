@@ -6,7 +6,7 @@ exports[`render list widget 1`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-6"
+      class="makeStyles-propertySectionLabel-7"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -14,11 +14,11 @@ exports[`render list widget 1`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-7"
+        class="makeStyles-subscribers-8"
       />
     </div>
     <table
-      class="MuiTable-root"
+      class="MuiTable-root makeStyles-table-1"
     >
       <tbody
         class="MuiTableBody-root"
@@ -27,18 +27,14 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-2 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-4 makeStyles-style-5 makeStyles-style-6 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -70,18 +66,14 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-2 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-4 makeStyles-style-5 makeStyles-style-6 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -113,18 +105,14 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-2 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-4 makeStyles-style-5 makeStyles-style-6 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -167,7 +155,7 @@ exports[`render list widget with style 1`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-14"
+      class="makeStyles-propertySectionLabel-16"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -175,11 +163,11 @@ exports[`render list widget with style 1`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-15"
+        class="makeStyles-subscribers-17"
       />
     </div>
     <table
-      class="MuiTable-root"
+      class="MuiTable-root makeStyles-table-10"
     >
       <tbody
         class="MuiTableBody-root"
@@ -188,18 +176,14 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-11 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-13 makeStyles-style-14 makeStyles-style-15 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -231,18 +215,14 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-11 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-13 makeStyles-style-14 makeStyles-style-15 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -274,18 +254,14 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-11 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-13 makeStyles-style-14 makeStyles-style-15 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -328,7 +304,7 @@ exports[`should the click event sent on item click 1`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-22"
+      class="makeStyles-propertySectionLabel-25"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -336,11 +312,11 @@ exports[`should the click event sent on item click 1`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-23"
+        class="makeStyles-subscribers-26"
       />
     </div>
     <table
-      class="MuiTable-root"
+      class="MuiTable-root makeStyles-table-19"
     >
       <tbody
         class="MuiTableBody-root"
@@ -349,18 +325,14 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -392,18 +364,14 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -435,18 +403,14 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -489,7 +453,7 @@ exports[`should the click event sent on item click 2`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-22"
+      class="makeStyles-propertySectionLabel-25"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -497,11 +461,11 @@ exports[`should the click event sent on item click 2`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-23"
+        class="makeStyles-subscribers-26"
       />
     </div>
     <table
-      class="MuiTable-root"
+      class="MuiTable-root makeStyles-table-19"
     >
       <tbody
         class="MuiTableBody-root"
@@ -510,18 +474,14 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -553,18 +513,14 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
@@ -596,18 +552,14 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
             </p>
-          </td>
-          <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
-          >
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
