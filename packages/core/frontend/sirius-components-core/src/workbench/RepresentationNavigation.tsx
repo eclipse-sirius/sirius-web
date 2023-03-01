@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,12 @@ const useRepresentationNavigationStyles = makeStyles((theme) => ({
     '& > *:nth-child(2)': {
       marginLeft: theme.spacing(1),
     },
+    width: 'inherit',
+  },
+  tabLabelText: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
   },
 }));
 
@@ -83,7 +89,7 @@ export const RepresentationNavigation = ({
             value={representation.id}
             label={
               <div className={classes.tabLabel}>
-                {representation.label}
+                <div className={classes.tabLabelText}>{representation.label}</div>
                 <CloseIcon
                   fontSize="small"
                   onClick={(event) => onRepresentationClose(event, representation)}
