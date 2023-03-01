@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,9 @@ import { TreeItemArrowProps } from './TreeItemArrow.types';
 const useTreeItemArrowStyle = makeStyles(() => ({
   arrow: {
     cursor: 'pointer',
+  },
+  noChildren: {
+    paddingLeft: '20px',
   },
 }));
 
@@ -41,5 +44,5 @@ export const TreeItemArrow = ({ item, depth, onExpand, 'data-testid': dataTestid
       );
     }
   }
-  return <div />;
+  return <div className={classes.noChildren} />;
 };

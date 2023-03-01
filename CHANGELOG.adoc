@@ -23,6 +23,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1744[#1744] [forms] Checkboxes on forms representations are not grayed when read-only
 - https://github.com/eclipse-sirius/sirius-components/issues/1639[#1639] [core] Support schemaLocation and extendedMetaData for JSON resource
 - https://github.com/eclipse-sirius/sirius-components/issues/1760[#1760] [project] Remove an invalid attribute from our pom.xml
+- https://github.com/eclipse-sirius/sirius-components/issues/1675[#1675] [explorer] Align tree items without children with their siblings
 
 === New Features
 
