@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public interface WidgetDescription extends EObject {
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getWidgetDescription_Name()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
      * @generated
      */
     String getName();

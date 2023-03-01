@@ -46,7 +46,7 @@ public interface DiagramElementDescription extends EObject {
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getDiagramElementDescription_Name()
-     * @model default="NewRepresentationDescription"
+     * @model default="NewRepresentationDescription" dataType="org.eclipse.sirius.components.view.Identifier"
      * @generated
      */
     String getName();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,12 +56,12 @@ public interface PieChartDescriptionStyle extends WidgetDescriptionStyle, LabelS
      * Returns the value of the '<em><b>Stroke Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Stroke Width</em>' attribute.
-     * @see #setStrokeWidth(String)
+     * @see #setStrokeWidth(int)
      * @see org.eclipse.sirius.components.view.ViewPackage#getPieChartDescriptionStyle_StrokeWidth()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.Length"
      * @generated
      */
-    String getStrokeWidth();
+    int getStrokeWidth();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.PieChartDescriptionStyle#getStrokeWidth
@@ -72,7 +72,7 @@ public interface PieChartDescriptionStyle extends WidgetDescriptionStyle, LabelS
      * @see #getStrokeWidth()
      * @generated
      */
-    void setStrokeWidth(String value);
+    void setStrokeWidth(int value);
 
     /**
      * Returns the value of the '<em><b>Stroke Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -80,7 +80,7 @@ public interface PieChartDescriptionStyle extends WidgetDescriptionStyle, LabelS
      * @return the value of the '<em>Stroke Color</em>' attribute.
      * @see #setStrokeColor(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getPieChartDescriptionStyle_StrokeColor()
-     * @model
+     * @model dataType="org.eclipse.sirius.components.view.Color"
      * @generated
      */
     String getStrokeColor();

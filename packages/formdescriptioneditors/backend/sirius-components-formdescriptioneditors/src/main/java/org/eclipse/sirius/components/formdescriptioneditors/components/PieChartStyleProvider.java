@@ -36,10 +36,10 @@ public class PieChartStyleProvider {
     public PieChartStyle build() {
         Builder pieChartStyleBuilder = PieChartStyle.newPieChartStyle();
         String strokeColor = this.viewPieChartDescriptionStyle.getStrokeColor();
-        String strokeWidth = this.viewPieChartDescriptionStyle.getStrokeWidth();
+        int strokeWidth = this.viewPieChartDescriptionStyle.getStrokeWidth();
         pieChartStyleBuilder.colors(List.of());
         this.handleStrokeColor(pieChartStyleBuilder, strokeColor);
-        this.handleStrokeWidth(pieChartStyleBuilder, strokeWidth);
+        pieChartStyleBuilder.strokeWidth(strokeWidth);
         this.handleLabelStyle(pieChartStyleBuilder, this.viewPieChartDescriptionStyle);
         return pieChartStyleBuilder.build();
     }
@@ -52,17 +52,6 @@ public class PieChartStyleProvider {
             .strikeThrough(effectiveStyle.isStrikeThrough())
             .underline(effectiveStyle.isUnderline());
         // @formatter:on
-    }
-
-    private void handleStrokeWidth(Builder pieChartStyleBuilder, String strokeWidth) {
-        if (strokeWidth != null && !strokeWidth.isBlank()) {
-            try {
-                int width = Integer.parseInt(strokeWidth);
-                pieChartStyleBuilder.strokeWidth(width);
-            } catch (NullPointerException | NumberFormatException e) {
-                // unexpected value.
-            }
-        }
     }
 
     private void handleStrokeColor(Builder pieChartStyleBuilder, String strokeColor) {
