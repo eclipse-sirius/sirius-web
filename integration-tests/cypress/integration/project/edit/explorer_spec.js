@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,5 +157,35 @@ describe('/projects/:projectId/edit - Explorer', () => {
     // 5. CHECK that is is visible and selected again
     cy.getByTestId('Topography').should('exist');
     cy.getByTestId('selected').findByTestId('Topography').should('exist');
+  });
+
+  it('documents are alphabetically ordered (case insensitive order)', () => {
+    // Create Flow Model
+    cy.getByTestId('08e5c635-7d98-37e9-847c-df286e3b2f16').click();
+    // Check documents order
+    cy.getByTestId('tree-root-elements').children().first().contains('Flow').should('exist');
+    cy.getByTestId('tree-root-elements').children().last().contains('robot').should('exist');
+    cy.getByTestId('tree-root-elements').children().first().contains('robot').should('not.exist');
+    cy.getByTestId('tree-root-elements').children().last().contains('Flow').should('not.exist');
+    // Rename Flow Model to sFlow
+    cy.getByTestId('Flow').click();
+    cy.getByTestId('Flow-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').type('sFlow{enter}');
+    // Check documents order
+    cy.getByTestId('tree-root-elements').children().first().contains('robot').should('exist');
+    cy.getByTestId('tree-root-elements').children().last().contains('sFlow').should('exist');
+    cy.getByTestId('tree-root-elements').children().first().contains('sFlow').should('not.exist');
+    cy.getByTestId('tree-root-elements').children().last().contains('robot').should('not.exist');
+    // Rename sFlow Model to ROBOT
+    cy.getByTestId('sFlow').click();
+    cy.getByTestId('sFlow-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').type('ROBOT{enter}');
+    // Check documents order
+    cy.getByTestId('tree-root-elements').children().first().contains('robot').should('exist');
+    cy.getByTestId('tree-root-elements').children().last().contains('ROBOT').should('exist');
+    cy.getByTestId('tree-root-elements').children().first().contains('ROBOT').should('not.exist');
+    cy.getByTestId('tree-root-elements').children().last().contains('robot').should('not.exist');
   });
 });

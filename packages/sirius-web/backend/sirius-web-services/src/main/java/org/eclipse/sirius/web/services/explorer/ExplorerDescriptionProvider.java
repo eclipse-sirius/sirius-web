@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.services.explorer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -143,12 +144,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         } else if (self instanceof Resource) {
             Resource resource = (Resource) self;
             // @formatter:off
-            label = resource.eAdapters().stream()
-                    .filter(DocumentMetadataAdapter.class::isInstance)
-                    .map(DocumentMetadataAdapter.class::cast)
-                    .findFirst()
-                    .map(DocumentMetadataAdapter::getName)
-                    .orElse(resource.getURI().lastSegment());
+            label = this.getResourceLabel(resource);
             // @formatter:on
         } else if (self instanceof EObject) {
             label = this.objectService.getLabel(self);
@@ -158,6 +154,17 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
             }
         }
         return label;
+    }
+
+    private String getResourceLabel(Resource resource) {
+        // @formatter:off
+        return resource.eAdapters().stream()
+                .filter(DocumentMetadataAdapter.class::isInstance)
+                .map(DocumentMetadataAdapter.class::cast)
+                .findFirst()
+                .map(DocumentMetadataAdapter::getName)
+                .orElse(resource.getURI().lastSegment());
+        // @formatter:on
     }
 
     private boolean isEditable(VariableManager variableManager) {
@@ -219,6 +226,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                         }
                         return false;
                     })
+                    .sorted(Comparator.nullsLast(Comparator.comparing(res -> this.getResourceLabel(res), String.CASE_INSENSITIVE_ORDER)))
                     .toList();
                 // @formatter:on
             return resources;
