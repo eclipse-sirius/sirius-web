@@ -1,0 +1,30 @@
+= ADR-095 - Use richer data types in the View DSL definition
+
+== Context
+
+The View DSL definition (in `view.ecore`) tends to use only primitive types like `EString`, `EInt` and `EBoolean` to model all kinds of attributes.
+It is not always clear from just the type of an attribute how it will be used an interpreted.
+
+To support completion of interpreted expressions and domain types we already introduced `InterpretedExpression` and `DomainType` for some attributes, but there are other opportunities to improve things.
+
+== Decision
+
+We will introduce the following data types in the View DSL and use them to model more precisely the existing attributes:
+
+- `Identifier`: a `String` which should uniquely identify the owner element inside the while `View` model/document.
+- `Color`: a `String` which represents a [CSS Color](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
+- `InterpretedExpression` (already exists): a `String` which can be either a constant value or, if starting with `aql:`, an AQL expression which will be interpreted dynamically.
+Note that at the moment the actual "signature" of the expression (which variables of which types it expects to be available, what type of value if can return) can not be modeled.
+See https://github.com/eclipse-sirius/sirius-components/issues/1632 for this.
+- `DomainType` (already exists): a `String` of the form `domain::Type` which denotes a type (either from an EMF metamodel or a custom Domain).
+- `Length`: a CSS Length in pixels.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+It will become easier to understand and document what 
+Later on (but not as part of this specific change), we will be able to introduce richer behaviors like validation rules and custom widgets for attributes which uses these data types.
+For example use a proper color picker widget for attributes of type `Color`.

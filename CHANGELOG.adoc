@@ -5,6 +5,7 @@
 === Architectural decision records
 
 - [ADR-094] Provide better control on contextual palette's content
+- [ADR-095] Use richer data types in the View DSL definition
 
 === Breaking changes
 
