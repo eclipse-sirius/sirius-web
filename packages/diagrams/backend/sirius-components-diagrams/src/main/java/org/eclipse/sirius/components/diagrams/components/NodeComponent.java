@@ -450,8 +450,7 @@ public class NodeComponent implements IComponent {
         String parentElementId = this.props.getParentElementId();
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-        String rawIdentifier = parentElementId + containmentKind.toString() + nodeDescription.getId().toString() + targetObjectId;
-        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
+        return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), containmentKind, targetObjectId);
     }
 
 }

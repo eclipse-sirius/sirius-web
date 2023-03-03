@@ -12,19 +12,31 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
+import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
+import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -101,10 +113,20 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
                 .map(EObject.class::cast);
         // @formatter:on
 
+        Optional<VariableManager> optionalVariableManager = Optional.empty();
         if (optionalSemanticElement.isPresent()) {
-            this.createView(optionalParentNode, this.convertedNodes.get(createViewOperation.getElementDescription()), optionalSemanticElement.get(), createViewOperation.getContainmentKind());
+            var newNode = this.createView(optionalParentNode, this.convertedNodes.get(createViewOperation.getElementDescription()), optionalSemanticElement.get(), createViewOperation.getContainmentKind());
+
+            var childVariableManager = this.variableManager;
+            if (createViewOperation.getVariableName() != null && createViewOperation.getVariableName().trim().length() > 0) {
+                childVariableManager = this.variableManager.createChild();
+                childVariableManager.put(createViewOperation.getVariableName(), newNode);
+            }
+            optionalVariableManager = this.operationInterpreter.executeOperations(createViewOperation.getChildren(), childVariableManager);
+        } else {
+            optionalVariableManager = this.operationInterpreter.executeOperations(createViewOperation.getChildren(), this.variableManager);
         }
-        return this.operationInterpreter.executeOperations(createViewOperation.getChildren(), this.variableManager);
+        return optionalVariableManager;
     }
 
     @Override
@@ -121,7 +143,7 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
         return this.operationInterpreterViewSwitch.doSwitch(object);
     }
 
-    private void createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.NodeContainmentKind containmentKind) {
+    private Node createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.NodeContainmentKind containmentKind) {
         String parentElementId = optionalParentNode.map(Node::getId).orElse(this.diagramContext.getDiagram().getId());
 
         NodeContainmentKind nodeContainmentKind = NodeContainmentKind.CHILD_NODE;
@@ -129,15 +151,67 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
             nodeContainmentKind = NodeContainmentKind.BORDER_NODE;
         }
 
+        var targetObjectId = this.objectService.getId(semanticElement);
+        var targetObjectKind = this.objectService.getKind(semanticElement);
+        var targetObjectLabel = this.objectService.getLabel(semanticElement);
+
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)
-                .targetObjectId(this.objectService.getId(semanticElement))
+                .targetObjectId(targetObjectId)
                 .descriptionId(nodeDescription.getId())
                 .containmentKind(nodeContainmentKind)
                 .build();
         // @formatter:on
         this.diagramContext.getViewCreationRequests().add(viewCreationRequest);
+
+        // Since we have everything to compute the identifier of the node which will be created in the
+        // future, we can create a fake node which will have the proper id in order to let the specifier
+        // use nested create view model operations. The specifier should not try to do anything else
+        // than that with this returned node.
+        var nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), nodeContainmentKind, targetObjectId);
+
+        var labelStyle = LabelStyle.newLabelStyle()
+                .color("")
+                .fontSize(14)
+                .iconURL("")
+                .build();
+
+        var label = Label.newLabel("")
+                .type("")
+                .text("")
+                .position(Position.UNDEFINED)
+                .size(Size.UNDEFINED)
+                .alignment(Position.UNDEFINED)
+                .style(labelStyle)
+                .build();
+
+        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                .color("")
+                .borderColor("")
+                .borderStyle(LineStyle.Solid)
+                .build();
+
+        return Node.newNode(nodeId)
+                .type("")
+                .targetObjectId(targetObjectId)
+                .targetObjectKind(targetObjectKind)
+                .targetObjectLabel(targetObjectLabel)
+                .descriptionId(nodeDescription.getId())
+                .borderNode(nodeContainmentKind == NodeContainmentKind.BORDER_NODE)
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
+                .collapsingState(CollapsingState.EXPANDED)
+                .label(label)
+                .style(nodeStyle)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
+                .position(Position.UNDEFINED)
+                .size(Size.UNDEFINED)
+                .userResizable(true)
+                .borderNodes(List.of())
+                .childNodes(List.of())
+                .customizedProperties(Set.of())
+                .build();
     }
 
     private void deleteView(Object element) {

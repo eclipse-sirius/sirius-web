@@ -39,6 +39,9 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1688[#1688] [form] The title of the Details view will not be wrapped on multiple lines anymore
 - https://github.com/eclipse-sirius/sirius-components/issues/1602[#1602] [diagram] The connector tool does not work with descriptions from the View DSL
 - https://github.com/eclipse-sirius/sirius-components/issues/1833[#1833] [explorer] Fix Explorer toolbar and selected item background color width
+- https://github.com/eclipse-sirius/sirius-components/issues/840[#840] [view] Add the ability to create multiple nested views for unsynchronized node descriptions.
+For that, specifiers will be able to use properly the variable name property of the create view model operation.
+The result returned and captured in this variable name will not be the real node since it will be rendered later but it is a placeholder which contains some properties of the real node such as its id which can be used to created the nested views.
 
 === New Features
 
