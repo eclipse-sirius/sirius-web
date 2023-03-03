@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,12 @@ import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchServi
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.diagram.description.DescriptionPackage;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
 import org.eclipse.sirius.diagram.description.tool.CreateView;
 import org.eclipse.sirius.viewpoint.description.tool.ModelOperation;
@@ -72,7 +74,8 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
     public IStatus handle(Map<String, Object> variables) {
         String containerViewExpression = this.createView.getContainerViewExpression();
 
-        var optionalParentElementId = this.interpreter.evaluateExpression(variables, containerViewExpression).asObject().flatMap(parentElement -> {
+        var optionalParentElement = this.interpreter.evaluateExpression(variables, containerViewExpression).asObject();
+        var optionalParentElementId = optionalParentElement.flatMap(parentElement -> {
             Optional<String> optionalElementId = Optional.empty();
             if (parentElement instanceof Diagram) {
                 Diagram diagram = (Diagram) parentElement;
@@ -94,11 +97,17 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
 
         // @formatter:off
         try {
+            var containmentKind = NodeContainmentKind.CHILD_NODE;
+            if (diagramElementMapping != null && DescriptionPackage.eINSTANCE.getAbstractNodeMapping_BorderedNodeMappings().equals(diagramElementMapping.eContainmentFeature())) {
+                containmentKind = NodeContainmentKind.BORDER_NODE;
+            }
+
             UUID descriptionId = UUID.fromString(diagramElementMappingId);
             ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                     .parentElementId(optionalParentElementId.get())
                     .descriptionId(descriptionId)
                     .targetObjectId(targetObjectId)
+                    .containmentKind(containmentKind)
                     .build();
 
             Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.CreateView;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.NodeContainmentKind;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getSemanticElementExpression <em>Semantic Element
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getVariableName <em>Variable Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.CreateViewImpl#getContainmentKind <em>Containment Kind</em>}</li>
  * </ul>
  *
  * @generated
@@ -107,6 +109,26 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
      * @ordered
      */
     protected String variableName = VARIABLE_NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getContainmentKind() <em>Containment Kind</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getContainmentKind()
+     * @generated
+     * @ordered
+     */
+    protected static final NodeContainmentKind CONTAINMENT_KIND_EDEFAULT = NodeContainmentKind.CHILD_NODE;
+
+    /**
+     * The cached value of the '{@link #getContainmentKind() <em>Containment Kind</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getContainmentKind()
+     * @generated
+     * @ordered
+     */
+    protected NodeContainmentKind containmentKind = CONTAINMENT_KIND_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -242,6 +264,29 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
      * @generated
      */
     @Override
+    public NodeContainmentKind getContainmentKind() {
+        return this.containmentKind;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setContainmentKind(NodeContainmentKind newContainmentKind) {
+        NodeContainmentKind oldContainmentKind = this.containmentKind;
+        this.containmentKind = newContainmentKind == null ? CONTAINMENT_KIND_EDEFAULT : newContainmentKind;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CREATE_VIEW__CONTAINMENT_KIND, oldContainmentKind, this.containmentKind));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
@@ -254,6 +299,8 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
                 return this.getSemanticElementExpression();
             case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
                 return this.getVariableName();
+            case ViewPackage.CREATE_VIEW__CONTAINMENT_KIND:
+                return this.getContainmentKind();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -277,6 +324,9 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
                 return;
             case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
                 this.setVariableName((String) newValue);
+                return;
+            case ViewPackage.CREATE_VIEW__CONTAINMENT_KIND:
+                this.setContainmentKind((NodeContainmentKind) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -302,6 +352,9 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
             case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
                 this.setVariableName(VARIABLE_NAME_EDEFAULT);
                 return;
+            case ViewPackage.CREATE_VIEW__CONTAINMENT_KIND:
+                this.setContainmentKind(CONTAINMENT_KIND_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -322,6 +375,8 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
                 return SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT == null ? this.semanticElementExpression != null : !SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT.equals(this.semanticElementExpression);
             case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
                 return VARIABLE_NAME_EDEFAULT == null ? this.variableName != null : !VARIABLE_NAME_EDEFAULT.equals(this.variableName);
+            case ViewPackage.CREATE_VIEW__CONTAINMENT_KIND:
+                return this.containmentKind != CONTAINMENT_KIND_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -343,6 +398,8 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
         result.append(this.semanticElementExpression);
         result.append(", variableName: ");
         result.append(this.variableName);
+        result.append(", containmentKind: ");
+        result.append(this.containmentKind);
         result.append(')');
         return result.toString();
     }

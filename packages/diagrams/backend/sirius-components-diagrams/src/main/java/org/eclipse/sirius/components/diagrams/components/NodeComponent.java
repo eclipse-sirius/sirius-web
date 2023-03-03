@@ -139,10 +139,12 @@ public class NodeComponent implements IComponent {
     private boolean existsViewCreationRequested(String targetObjectId) {
         String parentElementId = this.props.getParentElementId();
         UUID nodeDescriptionId = this.props.getNodeDescription().getId();
+        NodeContainmentKind containmentKind = this.props.getContainmentKind();
         // @formatter:off
         return this.props.getViewCreationRequests().stream()
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescriptionId))
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getTargetObjectId(), targetObjectId))
+                .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getContainmentKind(), containmentKind))
                 .anyMatch(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), parentElementId));
         // @formatter:on
     }

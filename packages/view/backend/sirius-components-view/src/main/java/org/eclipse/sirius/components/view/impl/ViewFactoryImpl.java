@@ -73,6 +73,7 @@ import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.NodeContainmentKind;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeTool;
@@ -296,6 +297,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createArrowStyleFromString(eDataType, initialValue);
             case ViewPackage.LINE_STYLE:
                 return this.createLineStyleFromString(eDataType, initialValue);
+            case ViewPackage.NODE_CONTAINMENT_KIND:
+                return this.createNodeContainmentKindFromString(eDataType, initialValue);
             case ViewPackage.SYNCHRONIZATION_POLICY:
                 return this.createSynchronizationPolicyFromString(eDataType, initialValue);
             case ViewPackage.GROUP_DISPLAY_MODE:
@@ -331,6 +334,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.convertArrowStyleToString(eDataType, instanceValue);
             case ViewPackage.LINE_STYLE:
                 return this.convertLineStyleToString(eDataType, instanceValue);
+            case ViewPackage.NODE_CONTAINMENT_KIND:
+                return this.convertNodeContainmentKindToString(eDataType, instanceValue);
             case ViewPackage.SYNCHRONIZATION_POLICY:
                 return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
             case ViewPackage.GROUP_DISPLAY_MODE:
@@ -1182,6 +1187,27 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     public String convertLineStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NodeContainmentKind createNodeContainmentKindFromString(EDataType eDataType, String initialValue) {
+        NodeContainmentKind result = NodeContainmentKind.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertNodeContainmentKindToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

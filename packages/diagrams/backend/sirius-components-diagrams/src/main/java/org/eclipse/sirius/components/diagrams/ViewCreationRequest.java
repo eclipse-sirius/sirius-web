@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 
 /**
  * A view creation request.
@@ -31,6 +32,8 @@ public final class ViewCreationRequest {
     private UUID descriptionId;
 
     private String targetObjectId;
+
+    private NodeContainmentKind containmentKind;
 
     private ViewCreationRequest() {
         // Prevent instantiation
@@ -63,14 +66,23 @@ public final class ViewCreationRequest {
         return this.targetObjectId;
     }
 
+    /**
+     * Specify the containment of the node to create.
+     *
+     * @return The containment kind to use
+     */
+    public NodeContainmentKind getContainmentKind() {
+        return this.containmentKind;
+    }
+
     public static Builder newViewCreationRequest() {
         return new Builder();
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'parentElementId: {1}, descriptionId: {2}, targetObjectId: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.parentElementId, this.descriptionId, this.targetObjectId);
+        String pattern = "{0} '{'parentElementId: {1}, descriptionId: {2}, targetObjectId: {3}, containmentKind: {4}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.parentElementId, this.descriptionId, this.targetObjectId, this.containmentKind);
     }
 
     /**
@@ -85,6 +97,8 @@ public final class ViewCreationRequest {
         private UUID descriptionId;
 
         private String targetObjectId;
+
+        private NodeContainmentKind containmentKind;
 
         private Builder() {
             // Prevent instantiation
@@ -105,11 +119,18 @@ public final class ViewCreationRequest {
             return this;
         }
 
+        public Builder containmentKind(NodeContainmentKind containmentKind) {
+            this.containmentKind = Objects.requireNonNull(containmentKind);
+            return this;
+        }
+
+
         public ViewCreationRequest build() {
             ViewCreationRequest viewCreationRequest = new ViewCreationRequest();
             viewCreationRequest.parentElementId = Objects.requireNonNull(this.parentElementId);
             viewCreationRequest.descriptionId = Objects.requireNonNull(this.descriptionId);
             viewCreationRequest.targetObjectId = Objects.requireNonNull(this.targetObjectId);
+            viewCreationRequest.containmentKind = Objects.requireNonNull(this.containmentKind);
             return viewCreationRequest;
         }
     }

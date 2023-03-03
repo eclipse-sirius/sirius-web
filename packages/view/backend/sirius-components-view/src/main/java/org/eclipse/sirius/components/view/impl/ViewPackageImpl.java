@@ -80,6 +80,7 @@ import org.eclipse.sirius.components.view.ListDescriptionStyle;
 import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescription;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.NodeContainmentKind;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
@@ -718,6 +719,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EEnum lineStyleEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum nodeContainmentKindEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1894,6 +1902,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EAttribute getCreateView_VariableName() {
         return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCreateView_ContainmentKind() {
+        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -3502,6 +3520,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EEnum getNodeContainmentKind() {
+        return this.nodeContainmentKindEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getSynchronizationPolicy() {
         return this.synchronizationPolicyEEnum;
     }
@@ -3743,6 +3771,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.createViewEClass, CREATE_VIEW__ELEMENT_DESCRIPTION);
         this.createEAttribute(this.createViewEClass, CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION);
         this.createEAttribute(this.createViewEClass, CREATE_VIEW__VARIABLE_NAME);
+        this.createEAttribute(this.createViewEClass, CREATE_VIEW__CONTAINMENT_KIND);
 
         this.deleteViewEClass = this.createEClass(DELETE_VIEW);
         this.createEAttribute(this.deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
@@ -3955,6 +3984,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
+        this.nodeContainmentKindEEnum = this.createEEnum(NODE_CONTAINMENT_KIND);
         this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
@@ -4303,6 +4333,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCreateView_VariableName(), this.ecorePackage.getEString(), "variableName", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCreateView_ContainmentKind(), this.getNodeContainmentKind(), "containmentKind", "CHILD_NODE", 1, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.deleteViewEClass, DeleteView.class, "DeleteView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDeleteView_ViewExpression(), this.getInterpretedExpression(), "viewExpression", "aql:selectedNode", 1, 1, DeleteView.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -4653,6 +4685,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DASH);
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DOT);
         this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DASH_DOT);
+
+        this.initEEnum(this.nodeContainmentKindEEnum, NodeContainmentKind.class, "NodeContainmentKind");
+        this.addEEnumLiteral(this.nodeContainmentKindEEnum, NodeContainmentKind.CHILD_NODE);
+        this.addEEnumLiteral(this.nodeContainmentKindEEnum, NodeContainmentKind.BORDER_NODE);
 
         this.initEEnum(this.synchronizationPolicyEEnum, SynchronizationPolicy.class, "SynchronizationPolicy");
         this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.SYNCHRONIZED);

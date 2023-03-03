@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -24,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.view.NodeDescription;
 
 /**
@@ -859,6 +861,7 @@ public class PapayaService {
                     .parentElementId(parentElementId)
                     .targetObjectId(targetObjectId)
                     .descriptionId(descriptionId)
+                    .containmentKind(NodeContainmentKind.CHILD_NODE)
                     .build();
             diagramContext.getViewCreationRequests().add(viewCreationRequest);
         }
