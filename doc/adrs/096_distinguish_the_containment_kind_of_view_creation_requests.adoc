@@ -1,0 +1,32 @@
+= ADR-095 - Distinguish the containment kind of view creation requests
+
+== Context
+
+Let's consider an unsynchronized node description A which reuses an unsynchronized node description B as both its child node and its border node.
+Using a view creation request, one would have to provide the following data to create a node with the description B inside a node with the description A:
+
+- The parent node
+- The description of B
+- The semantic element used by the description of B
+
+The specifier is never asked to specify the containment kind.
+In simple use cases which do not involve reuse mapping a node description can either be a child node description or a border node description but not both.
+We need to ask the specifier to distinguish both use cases.
+
+
+== Decision
+
+The field `containmentKind: NodeContainmentKind` will be added to the `ViewCreationRequest`.
+It will be used to distinguish ambiguous view creation requests.
+
+A similar field will be added to the "Create View" operation of the view DSL.
+If a node description is reused as both a child node description and a border node description in the Sirius Desktop compatibility layer.
+We will default to `NodeContainmentKind#CHILD_NODE` since we can't distinguish both use cases in the Sirius Desktop "Create View" model operation.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Users of `ViewCreationRequest` will have to adapt their code to this API break.

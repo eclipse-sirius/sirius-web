@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ package org.eclipse.sirius.components.view;
  * <li>{@link org.eclipse.sirius.components.view.CreateView#getSemanticElementExpression <em>Semantic Element
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.CreateView#getVariableName <em>Variable Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.CreateView#getContainmentKind <em>Containment Kind</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getCreateView()
@@ -123,5 +124,31 @@ public interface CreateView extends Operation {
      * @generated
      */
     void setVariableName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Containment Kind</b></em>' attribute. The default value is
+     * <code>"CHILD_NODE"</code>. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.NodeContainmentKind}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Containment Kind</em>' attribute.
+     * @see org.eclipse.sirius.components.view.NodeContainmentKind
+     * @see #setContainmentKind(NodeContainmentKind)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getCreateView_ContainmentKind()
+     * @model default="CHILD_NODE" required="true"
+     * @generated
+     */
+    NodeContainmentKind getContainmentKind();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.CreateView#getContainmentKind <em>Containment
+     * Kind</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Containment Kind</em>' attribute.
+     * @see org.eclipse.sirius.components.view.NodeContainmentKind
+     * @see #getContainmentKind()
+     * @generated
+     */
+    void setContainmentKind(NodeContainmentKind value);
 
 } // CreateView

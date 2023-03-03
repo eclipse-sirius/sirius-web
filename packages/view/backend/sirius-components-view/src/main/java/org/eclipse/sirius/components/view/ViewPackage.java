@@ -2403,13 +2403,22 @@ public interface ViewPackage extends EPackage {
     int CREATE_VIEW__VARIABLE_NAME = OPERATION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Containment Kind</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CREATE_VIEW__CONTAINMENT_KIND = OPERATION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Create View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CREATE_VIEW_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 4;
+    int CREATE_VIEW_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Create View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6329,6 +6338,16 @@ public interface ViewPackage extends EPackage {
     int LINE_STYLE = 85;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.NodeContainmentKind <em>Node Containment
+     * Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.NodeContainmentKind
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeContainmentKind()
+     * @generated
+     */
+    int NODE_CONTAINMENT_KIND = 86;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
      * Policy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6336,7 +6355,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 86;
+    int SYNCHRONIZATION_POLICY = 87;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
@@ -6346,7 +6365,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 87;
+    int GROUP_DISPLAY_MODE = 88;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -6356,7 +6375,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 88;
+    int FLEX_DIRECTION = 89;
 
     /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6365,7 +6384,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 89;
+    int IDENTIFIER = 90;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -6375,7 +6394,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 90;
+    int INTERPRETED_EXPRESSION = 91;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6384,7 +6403,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 91;
+    int DOMAIN_TYPE = 92;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6393,7 +6412,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 92;
+    int COLOR = 93;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6401,7 +6420,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 93;
+    int LENGTH = 94;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -7565,6 +7584,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EAttribute getCreateView_VariableName();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.CreateView#getContainmentKind <em>Containment Kind</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Containment Kind</em>'.
+     * @see org.eclipse.sirius.components.view.CreateView#getContainmentKind()
+     * @see #getCreateView()
+     * @generated
+     */
+    EAttribute getCreateView_ContainmentKind();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DeleteView <em>Delete View</em>}'.
@@ -9377,6 +9408,16 @@ public interface ViewPackage extends EPackage {
     EEnum getLineStyle();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.NodeContainmentKind <em>Node
+     * Containment Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Node Containment Kind</em>'.
+     * @see org.eclipse.sirius.components.view.NodeContainmentKind
+     * @generated
+     */
+    EEnum getNodeContainmentKind();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.SynchronizationPolicy
      * <em>Synchronization Policy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -10400,6 +10441,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute CREATE_VIEW__VARIABLE_NAME = eINSTANCE.getCreateView_VariableName();
+
+        /**
+         * The meta object literal for the '<em><b>Containment Kind</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CREATE_VIEW__CONTAINMENT_KIND = eINSTANCE.getCreateView_ContainmentKind();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DeleteViewImpl <em>Delete
@@ -11800,6 +11849,16 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EEnum LINE_STYLE = eINSTANCE.getLineStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.NodeContainmentKind <em>Node
+         * Containment Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.NodeContainmentKind
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeContainmentKind()
+         * @generated
+         */
+        EEnum NODE_CONTAINMENT_KIND = eINSTANCE.getNodeContainmentKind();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy

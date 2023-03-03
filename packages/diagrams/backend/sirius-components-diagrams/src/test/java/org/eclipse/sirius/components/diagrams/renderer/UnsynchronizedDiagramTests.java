@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -93,13 +94,13 @@ public class UnsynchronizedDiagramTests {
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
 
-        // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
-            .targetObjectId(TARGET_OBJECT_ID)
-            .build();
-        // @formatter:on
+                .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+                .parentElementId(initialDiagram.getId())
+                .targetObjectId(TARGET_OBJECT_ID)
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
         Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         assertThat(refreshedDiagramAfterNodeCreation.getNodes()).hasSize(2);
     }
@@ -123,13 +124,13 @@ public class UnsynchronizedDiagramTests {
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
 
-        // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
-            .targetObjectId(TARGET_OBJECT_ID)
-            .build();
-        // @formatter:on
+                .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+                .parentElementId(initialDiagram.getId())
+                .targetObjectId(TARGET_OBJECT_ID)
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
         Diagram refreshedDiagramAfterNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         assertThat(refreshedDiagramAfterNodeCreation.getNodes()).hasSize(2);
 
@@ -167,23 +168,25 @@ public class UnsynchronizedDiagramTests {
         DiagramDescription diagramDescription = this.getDiagramDescription(semanticElementsProvider);
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
-        // @formatter:off
+
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
-            .targetObjectId(TARGET_OBJECT_ID)
-            .build();
-        // @formatter:on
+                .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+                .parentElementId(initialDiagram.getId())
+                .targetObjectId(TARGET_OBJECT_ID)
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
-        // @formatter:off
+
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-            .descriptionId(descriptionId)
-            .parentElementId(parentNodeId)
-            .targetObjectId(TARGET_OBJECT_ID)
-            .build();
-        // @formatter:on
+                .descriptionId(descriptionId)
+                .parentElementId(parentNodeId)
+                .targetObjectId(TARGET_OBJECT_ID)
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
         Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), List.of(), Optional.of(diagramAfterFirstNodeCreation));
 
         assertThat(diagramAfterSecondNodeCreation.getNodes()).hasSize(2);
@@ -212,23 +215,25 @@ public class UnsynchronizedDiagramTests {
         DiagramDescription diagramDescription = this.getDiagramDescription(variableManager -> List.of(new Object()));
 
         Diagram initialDiagram = this.render(diagramDescription, List.of(), List.of(), Optional.empty());
-        // @formatter:off
+
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-            .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
-            .parentElementId(initialDiagram.getId())
-            .targetObjectId(TARGET_OBJECT_ID)
-            .build();
-        // @formatter:on
+                .descriptionId(diagramDescription.getNodeDescriptions().get(0).getId())
+                .parentElementId(initialDiagram.getId())
+                .targetObjectId(TARGET_OBJECT_ID)
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
         UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
-        // @formatter:off
+
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-            .descriptionId(descriptionId)
-            .parentElementId(parentNodeId)
-            .targetObjectId(TARGET_OBJECT_ID)
-            .build();
-        // @formatter:on
+                .descriptionId(descriptionId)
+                .parentElementId(parentNodeId)
+                .targetObjectId(TARGET_OBJECT_ID)
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .build();
+
         Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), List.of(), Optional.of(diagramAfterFirstNodeCreation));
         String nodeIdToDelete = diagramAfterSecondNodeCreation.getNodes().get(0).getChildNodes().get(0).getId();
         // @formatter:off
@@ -314,6 +319,7 @@ public class UnsynchronizedDiagramTests {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
+
         NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes()))
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)

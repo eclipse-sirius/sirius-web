@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -101,7 +102,7 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
         // @formatter:on
 
         if (optionalSemanticElement.isPresent()) {
-            this.createView(optionalParentNode, this.convertedNodes.get(createViewOperation.getElementDescription()), optionalSemanticElement.get());
+            this.createView(optionalParentNode, this.convertedNodes.get(createViewOperation.getElementDescription()), optionalSemanticElement.get(), createViewOperation.getContainmentKind());
         }
         return this.operationInterpreter.executeOperations(createViewOperation.getChildren(), this.variableManager);
     }
@@ -120,13 +121,20 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
         return this.operationInterpreterViewSwitch.doSwitch(object);
     }
 
-    private void createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement) {
+    private void createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.NodeContainmentKind containmentKind) {
         String parentElementId = optionalParentNode.map(Node::getId).orElse(this.diagramContext.getDiagram().getId());
+
+        NodeContainmentKind nodeContainmentKind = NodeContainmentKind.CHILD_NODE;
+        if (containmentKind == org.eclipse.sirius.components.view.NodeContainmentKind.BORDER_NODE) {
+            nodeContainmentKind = NodeContainmentKind.BORDER_NODE;
+        }
+
         // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)
                 .targetObjectId(this.objectService.getId(semanticElement))
                 .descriptionId(nodeDescription.getId())
+                .containmentKind(nodeContainmentKind)
                 .build();
         // @formatter:on
         this.diagramContext.getViewCreationRequests().add(viewCreationRequest);

@@ -54,6 +54,7 @@ public class CreateViewItemProvider extends OperationItemProvider {
             this.addElementDescriptionPropertyDescriptor(object);
             this.addSemanticElementExpressionPropertyDescriptor(object);
             this.addVariableNamePropertyDescriptor(object);
+            this.addContainmentKindPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -108,6 +109,17 @@ public class CreateViewItemProvider extends OperationItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Containment Kind feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addContainmentKindPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CreateView_containmentKind_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_containmentKind_feature", "_UI_CreateView_type"),
+                ViewPackage.Literals.CREATE_VIEW__CONTAINMENT_KIND, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns CreateView.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -153,6 +165,7 @@ public class CreateViewItemProvider extends OperationItemProvider {
             case ViewPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
             case ViewPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
             case ViewPackage.CREATE_VIEW__VARIABLE_NAME:
+            case ViewPackage.CREATE_VIEW__CONTAINMENT_KIND:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

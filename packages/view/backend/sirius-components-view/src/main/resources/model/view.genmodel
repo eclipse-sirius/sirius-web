@@ -37,6 +37,10 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dot"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//LineStyle/Dash_Dot"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//NodeContainmentKind">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//NodeContainmentKind/CHILD_NODE"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//NodeContainmentKind/BORDER_NODE"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//SynchronizationPolicy">
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/SYNCHRONIZED"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//SynchronizationPolicy/UNSYNCHRONIZED"/>
@@ -183,6 +187,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//CreateView/elementDescription"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateView/semanticElementExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateView/variableName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CreateView/containmentKind"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DeleteView">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DeleteView/viewExpression"/>

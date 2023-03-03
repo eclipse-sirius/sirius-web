@@ -225,6 +225,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticElementExpression"
         lowerBound="1" eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="containmentKind" lowerBound="1"
+        eType="#//NodeContainmentKind" defaultValueLiteral="CHILD_NODE"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="NodeContainmentKind">
+    <eLiterals name="CHILD_NODE"/>
+    <eLiterals name="BORDER_NODE" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteView" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewExpression" lowerBound="1"
