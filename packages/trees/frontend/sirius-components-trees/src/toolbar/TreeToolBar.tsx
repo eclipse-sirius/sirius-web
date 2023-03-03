@@ -22,6 +22,7 @@ const useTreeToolbarStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
+    overflow: 'hidden',
     height: theme.spacing(4),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),

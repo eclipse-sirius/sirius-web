@@ -77,6 +77,7 @@ const useSiteStyles = makeStyles((theme) => ({
     borderBottomColor: theme.palette.divider,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
+    overflow: 'hidden',
   },
   viewHeaderIcon: {
     margin: theme.spacing(1),
@@ -89,6 +90,8 @@ const useSiteStyles = makeStyles((theme) => ({
   viewContent: {
     flexGrow: 1,
     overflow: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 

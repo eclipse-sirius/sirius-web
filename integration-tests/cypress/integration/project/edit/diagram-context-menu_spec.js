@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -32,7 +32,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('name').type('diagram');
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('explorer').contains('diagram');
+    cy.getByTestId('explorerTree').contains('diagram');
 
     cy.getByTestId('diagram-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();

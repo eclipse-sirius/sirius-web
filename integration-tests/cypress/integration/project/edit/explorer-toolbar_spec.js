@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -86,7 +86,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     cy.getByTestId('create-document').click();
 
     cy.get('.MuiDialog-container').should('not.exist');
-    cy.getByTestId('explorer').contains('nobel');
+    cy.getByTestId('explorerTree').contains('nobel');
   });
 
   it('can open the upload document modal', () => {
@@ -114,6 +114,6 @@ it.skip('can upload an existing document', () => {
     cy.getByTestId('upload-document').click();
 
     cy.get('.MuiDialog-container').should('not.exist');
-    cy.getByTestId('explorer').contains('robot');
+    cy.getByTestId('explorerTree').contains('robot');
   });
 });
