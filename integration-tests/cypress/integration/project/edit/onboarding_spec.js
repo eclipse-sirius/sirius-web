@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -23,6 +23,6 @@ describe('/projects/:projectId/edit - Onboarding', () => {
   it('Create a new model', () => {
     const empty_flow_id = '08e5c635-7d98-37e9-847c-df286e3b2f16';
     cy.getByTestId(empty_flow_id).click();
-    cy.getByTestId('explorer').contains('Flow');
+    cy.getByTestId('explorerTree').contains('Flow');
   });
 });

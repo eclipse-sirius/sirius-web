@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -58,8 +58,8 @@ describe('/projects/:projectId/edit - Representation Context Menu', () => {
     cy.getByTestId('representation-tab-A02').should('exist');
     cy.getByTestId('representation-tab-B01').should('not.exist');
     */
-    cy.getByTestId('explorer').contains('A02');
-    cy.getByTestId('explorer').contains('B01');
+    cy.getByTestId('explorerTree').contains('A02');
+    cy.getByTestId('explorerTree').contains('B01');
   });
 
   it('can rename an opened focused representation', () => {
@@ -76,7 +76,7 @@ describe('/projects/:projectId/edit - Representation Context Menu', () => {
     cy.getByTestId('representation-tab-A02').should('exist');
     cy.getByTestId('representation-tab-B01').should('not.exist');
     */
-    cy.getByTestId('explorer').contains('A02');
-    cy.getByTestId('explorer').contains('B01');
+    cy.getByTestId('explorerTree').contains('A02');
+    cy.getByTestId('explorerTree').contains('B01');
   });
 });

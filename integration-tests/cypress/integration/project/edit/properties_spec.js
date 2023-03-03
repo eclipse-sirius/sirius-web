@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -52,7 +52,7 @@ describe('/projects/:projectId/edit - Details', () => {
 
     cy.getByTestId('Name').clear();
     cy.getByTestId('Name').type('NewName{enter}');
-    cy.getByTestId('explorer').contains('NewName');
+    cy.getByTestId('explorerTree').contains('NewName');
     cy.getByTestId('form').contains('NewName');
   });
 
@@ -63,9 +63,9 @@ describe('/projects/:projectId/edit - Details', () => {
     cy.getByTestId('Name').clear();
     cy.getByTestId('Name').type('NewName');
 
-    cy.getByTestId('explorer').click({ force: true });
+    cy.getByTestId('explorerTree').click({ force: true });
 
-    cy.getByTestId('explorer').contains('NewName');
+    cy.getByTestId('explorerTree').contains('NewName');
     cy.getByTestId('NewName').click();
     cy.getByTestId('form').contains('NewName');
   });

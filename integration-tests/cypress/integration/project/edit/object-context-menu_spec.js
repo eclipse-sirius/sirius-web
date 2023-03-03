@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -75,7 +75,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.get('[data-value="Power Input"]').click();
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorer').contains('PowerInput');
+    cy.getByTestId('explorerTree').contains('PowerInput');
   });
 
   it('can select the created child object', () => {
@@ -90,7 +90,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.get('[data-value="Power Input"]').click();
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorer').contains('PowerInput');
+    cy.getByTestId('explorerTree').contains('PowerInput');
     cy.getByTestId('selected').contains('PowerInput');
   });
 
@@ -114,7 +114,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
 
     cy.get('.MuiDialog-container').should('not.exist');
 
-    cy.getByTestId('explorer').contains('diagram');
+    cy.getByTestId('explorerTree').contains('diagram');
   });
 
   it('can create a new representation by clicking on the create button', () => {
@@ -128,7 +128,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
 
     cy.get('.MuiDialog-container').should('not.exist');
 
-    cy.getByTestId('explorer').contains('diagram');
+    cy.getByTestId('explorerTree').contains('diagram');
   });
 
   it('can expand the node in which the representation is created and open the representation', () => {
@@ -142,7 +142,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
 
     cy.get('.MuiDialog-container').should('not.exist');
 
-    cy.getByTestId('explorer').contains('Topography');
+    cy.getByTestId('explorerTree').contains('Topography');
     cy.getByTestId('representation-tab-Topography').should('exist');
   });
 

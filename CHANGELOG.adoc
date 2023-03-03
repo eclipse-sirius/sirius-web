@@ -38,6 +38,7 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/1748[#1748] [chart] Underline and strike-through style options are not taken into account for BarCharts.
 - https://github.com/eclipse-sirius/sirius-components/issues/1688[#1688] [form] The title of the Details view will not be wrapped on multiple lines anymore
 - https://github.com/eclipse-sirius/sirius-components/issues/1602[#1602] [diagram] The connector tool does not work with descriptions from the View DSL
+- https://github.com/eclipse-sirius/sirius-components/issues/1833[#1833] [explorer] Fix Explorer toolbar and selected item background color width
 
 === New Features
 

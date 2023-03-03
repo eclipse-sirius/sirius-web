@@ -57,7 +57,14 @@ const getTreePathQuery = gql`
 
 const useExplorerViewStyles = makeStyles((theme) => ({
   explorerView: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  explorerTree: {
     paddingTop: theme.spacing(1),
+    flexGrow: 1,
+    overflow: 'auto',
   },
 }));
 
@@ -156,15 +163,13 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
     dispatch(synchronizeWithRepresentationEvent);
   };
   return (
-    <>
-      <div className="explorerToolBar">
-        <TreeToolBar
-          editingContextId={editingContextId}
-          onSynchronizedClick={onSynchronizedClick}
-          synchronized={synchronizedWithRepresentation}
-          readOnly={readOnly}></TreeToolBar>
-      </div>
-      <div className={styles.explorerView} data-testid="explorer">
+    <div className={styles.explorerView}>
+      <TreeToolBar
+        editingContextId={editingContextId}
+        onSynchronizedClick={onSynchronizedClick}
+        synchronized={synchronizedWithRepresentation}
+        readOnly={readOnly}></TreeToolBar>
+      <div className={styles.explorerTree} data-testid="explorerTree">
         {tree ? (
           <Tree
             editingContextId={editingContextId}
@@ -196,6 +201,6 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
         }
         data-testid="error"
       />
-    </>
+    </div>
   );
 };
