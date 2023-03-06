@@ -54,6 +54,7 @@ This will allow us to easily compare the current layout algorithm and the new on
 - https://github.com/eclipse-sirius/sirius-components/issues/1565[1565] [view] The definition of the View DSL now uses richer data types for most attributes.
 This has no visible effect at the moment, but will allow better documentation, validation and configuration later.
 - [studio] Add a project template for the Papaya domains and view
+- https://github.com/eclipse-sirius/sirius-components/issues/1667[#1667] [diagram] Make the contextual palette self contained 
 
 == v2023.3.0
 

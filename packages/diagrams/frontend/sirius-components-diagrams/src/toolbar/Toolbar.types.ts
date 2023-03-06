@@ -10,15 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Subscriber } from '../representation/DiagramRepresentation.types';
+import { GQLDiagram, Subscriber } from '../representation/DiagramRepresentation.types';
 
 export interface ToolbarProps {
+  editingContextId: string;
+  representationId: string;
+  diagram: GQLDiagram;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onFitToScreen: () => void;
   onArrangeAll: () => void;
-  onUnhideAll: () => void;
-  onUnfadeAll: () => void;
   setZoomLevel: (zoomLevel: string) => void;
   autoLayout: boolean;
   zoomLevel: string;
@@ -26,7 +27,44 @@ export interface ToolbarProps {
   subscribers: Subscriber[];
 }
 
-export interface ToolbarState {
-  modal: string | null;
-  currentZoomLevel: string;
+export interface GQLHideDiagramElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  elementIds: string[];
+  hide: boolean;
+}
+
+export interface GQLHideDiagramElementVariables {
+  input: GQLHideDiagramElementInput;
+}
+
+export interface GQLHideDiagramElementPayload {
+  __typename: string;
+}
+export interface GQLHideDiagramElementData {
+  hideDiagramElement: GQLHideDiagramElementPayload;
+}
+
+export interface GQLFadeDiagramElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  elementIds: string[];
+  fade: boolean;
+}
+
+export interface GQLFadeDiagramElementVariables {
+  input: GQLFadeDiagramElementInput;
+}
+
+export interface GQLFadeDiagramElementPayload {
+  __typename: string;
+}
+export interface GQLFadeDiagramElementData {
+  fadeDiagramElement: GQLFadeDiagramElementPayload;
+}
+
+export interface GQLErrorPayload extends GQLFadeDiagramElementPayload, GQLHideDiagramElementPayload {
+  message: string;
 }

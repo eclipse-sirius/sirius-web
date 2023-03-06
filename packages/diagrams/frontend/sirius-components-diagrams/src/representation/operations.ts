@@ -237,48 +237,6 @@ export const deleteFromDiagramMutation = gql`
   }
 `;
 
-export const hideDiagramElementMutation = gql`
-  mutation hideDiagramElement($input: HideDiagramElementInput!) {
-    hideDiagramElement(input: $input) {
-      __typename
-      ... on SuccessPayload {
-        id
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
-export const fadeDiagramElementMutation = gql`
-  mutation fadeDiagramElement($input: FadeDiagramElementInput!) {
-    fadeDiagramElement(input: $input) {
-      __typename
-      ... on SuccessPayload {
-        id
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
-export const updateCollapsingStateMutation = gql`
-  mutation updateCollapsingState($input: UpdateCollapsingStateInput!) {
-    updateCollapsingState(input: $input) {
-      __typename
-      ... on SuccessPayload {
-        id
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
 export const editLabelMutation = gql`
   mutation editLabel($input: EditLabelInput!) {
     editLabel(input: $input) {

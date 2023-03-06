@@ -429,10 +429,7 @@ export interface GQLErrorPayload
     GQLEditLabelPayload,
     GQLUpdateNodePositionPayload,
     GQLUpdateNodeBoundsPayload,
-    GQLArrangeAllPayload,
-    GQLFadeDiagramElementPayload,
-    GQLHideDiagramElementPayload,
-    GQLUpdateCollapsingStatePayload {
+    GQLArrangeAllPayload {
   message: string;
 }
 export interface GQLWorkbenchSelection {
@@ -524,68 +521,5 @@ export interface GQLArrangeAllData {
 }
 
 export interface GQLArrangeAllPayload {
-  __typename: string;
-}
-
-export interface GQLHideDiagramElementInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  elementIds: string[];
-  hide: boolean;
-}
-
-export interface GQLHideDiagramElementVariables {
-  input: GQLHideDiagramElementInput;
-}
-
-export interface GQLHideDiagramElementPayload {
-  __typename: string;
-}
-export interface GQLHideDiagramElementData {
-  hideDiagramElement: GQLHideDiagramElementPayload;
-}
-
-export interface GQLFadeDiagramElementInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  elementIds: string[];
-  fade: boolean;
-}
-
-export interface GQLFadeDiagramElementVariables {
-  input: GQLFadeDiagramElementInput;
-}
-
-export interface GQLFadeDiagramElementPayload {
-  __typename: string;
-}
-export interface GQLFadeDiagramElementData {
-  fadeDiagramElement: GQLFadeDiagramElementPayload;
-}
-
-export enum GQLCollapsingState {
-  EXPANDED = 'EXPANDED',
-  COLLAPSED = 'COLLAPSED',
-}
-
-export interface GQLUpdateCollapsingStateVariables {
-  input: GQLUpdateCollapsingStateInput;
-}
-
-export interface GQLUpdateCollapsingStateInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  diagramElementId: string;
-  collapsingState: GQLCollapsingState;
-}
-
-export interface GQLUpdateCollapsingStateData {
-  collapseExpandDiagramElement: GQLUpdateCollapsingStatePayload;
-}
-
-export interface GQLUpdateCollapsingStatePayload {
   __typename: string;
 }
