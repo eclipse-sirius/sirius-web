@@ -10,22 +10,36 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useQuery } from '@apollo/client';
+import { ApolloError, gql, useMutation, useQuery } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
-import { GQLCollapsingState, GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
-import { Diagram } from '../sprotty/Diagram.types';
+import { useCallback, useEffect } from 'react';
+import { EditLabelAction, isWithEditableLabel, SModelElement } from 'sprotty';
+import { v4 as uuid } from 'uuid';
+import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { BorderNode, Diagram, Edge, Node, ViewModifier } from '../sprotty/Diagram.types';
+import { HIDE_CONTEXTUAL_TOOLBAR_ACTION } from '../sprotty/DiagramServer';
 import {
   ContextualPaletteProps,
   ContextualPaletteStyleProps,
+  GQLCollapsingState,
+  GQLErrorPayload,
+  GQLFadeDiagramElementData,
+  GQLFadeDiagramElementInput,
+  GQLFadeDiagramElementVariables,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
+  GQLHideDiagramElementData,
+  GQLHideDiagramElementInput,
+  GQLHideDiagramElementVariables,
   GQLTool,
   GQLToolSection,
+  GQLUpdateCollapsingStateData,
+  GQLUpdateCollapsingStateInput,
+  GQLUpdateCollapsingStateVariables,
 } from './ContextualPalette.types';
 import {
   ContextualPaletteContext,
@@ -81,6 +95,48 @@ export const getToolSectionsQuery = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+const hideDiagramElementMutation = gql`
+  mutation hideDiagramElement($input: HideDiagramElementInput!) {
+    hideDiagramElement(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+const fadeDiagramElementMutation = gql`
+  mutation fadeDiagramElement($input: FadeDiagramElementInput!) {
+    fadeDiagramElement(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+const updateCollapsingStateMutation = gql`
+  mutation updateCollapsingState($input: UpdateCollapsingStateInput!) {
+    updateCollapsingState(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
       }
     }
   }
@@ -161,14 +217,12 @@ export const ContextualPalette = ({
   editingContextId,
   representationId,
   diagramElement,
+  diagramServer,
+  renameable,
   invokeTool,
   invokeConnectorTool,
-  invokeLabelEdit,
   invokeDelete,
   invokeClose,
-  invokeHide,
-  invokeFade,
-  updateCollapsingState,
 }: ContextualPaletteProps) => {
   const [{ value, context }, dispatch] = useMachine<ContextualPaletteContext, ContextualPaletteEvent>(
     contextualPaletteMachine
@@ -209,6 +263,99 @@ export const ContextualPalette = ({
     toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
   );
 
+  let invokeLabelEdit;
+  if (renameable && isWithEditableLabel(diagramElement)) {
+    invokeLabelEdit = () =>
+      diagramServer.actionDispatcher.dispatchAll([
+        { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
+        EditLabelAction.create(diagramElement.editableLabel.id),
+      ]);
+  }
+
+  const [
+    hideElementMutation,
+    { loading: hideDiagramElementLoading, data: hideDiagramElementData, error: hideDiagramElementError },
+  ] = useMutation<GQLHideDiagramElementData, GQLHideDiagramElementVariables>(hideDiagramElementMutation);
+
+  const hideElements = useCallback(
+    (diagramElements: SModelElement[]): void => {
+      const elements: Array<Edge | Node | BorderNode> = diagramElements
+        .filter((elem) => elem instanceof Edge || elem instanceof Node || elem instanceof BorderNode)
+        .map((elem) => elem as Edge | Node | BorderNode);
+      const elementIds = elements.map((elt) => elt.id);
+      // If at least one selected element is not hidden, we hide all selected elements
+      const hide = elements.some((elem) => elem.state !== ViewModifier.Hidden);
+
+      const input: GQLHideDiagramElementInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        elementIds,
+        hide,
+      };
+      hideElementMutation({ variables: { input } });
+      invokeClose();
+    },
+    [editingContextId, representationId, hideElementMutation, invokeClose]
+  );
+
+  const [
+    fadeElementMutation,
+    { loading: fadeDiagramElementLoading, data: fadeDiagramElementData, error: fadeDiagramElementError },
+  ] = useMutation<GQLFadeDiagramElementData, GQLFadeDiagramElementVariables>(fadeDiagramElementMutation);
+
+  const fadeElements = useCallback(
+    (diagramElements: SModelElement[]): void => {
+      const elements: Array<Edge | Node | BorderNode> = diagramElements
+        .filter((elem) => elem instanceof Edge || elem instanceof Node || elem instanceof BorderNode)
+        .map((elem) => elem as Edge | Node | BorderNode);
+      const elementIds = elements.map((elt) => elt.id);
+      // If at least one selected element is not hidden, we fade all selected elements
+      const fade = elements.some((elem) => elem.state !== ViewModifier.Hidden);
+
+      const input: GQLFadeDiagramElementInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        elementIds,
+        fade,
+      };
+      fadeElementMutation({ variables: { input } });
+      invokeClose();
+    },
+    [editingContextId, representationId, fadeElementMutation, invokeClose]
+  );
+
+  const invokeHide = () => hideElements([diagramElement]);
+  const invokeFade = () => fadeElements([diagramElement]);
+
+  const [
+    collapseExpandMutation,
+    {
+      loading: collapseExpandDiagramElementLoading,
+      data: collapseExpandDiagramElementData,
+      error: collapseExpandDiagramElementError,
+    },
+  ] = useMutation<GQLUpdateCollapsingStateData, GQLUpdateCollapsingStateVariables>(updateCollapsingStateMutation);
+
+  const collapseExpandElement = useCallback(
+    (nodeId: string, collapsingState: GQLCollapsingState) => {
+      const input: GQLUpdateCollapsingStateInput = {
+        id: uuid(),
+        editingContextId,
+        representationId,
+        diagramElementId: nodeId,
+        collapsingState,
+      };
+      collapseExpandMutation({ variables: { input } });
+      invokeClose();
+    },
+    [editingContextId, representationId, collapseExpandMutation]
+  );
+
+  const updateCollapsingState = (collapsingState: GQLCollapsingState) =>
+    collapseExpandElement(diagramElement.id, collapsingState);
+
   let toolSectionsCount = toolSections.length + 1;
   if (atLeastOneSingleClickOnTwoDiagramElementsTool) {
     toolSectionsCount = toolSectionsCount + 1;
@@ -216,6 +363,57 @@ export const ContextualPalette = ({
   if (!isRoot) {
     toolSectionsCount = toolSectionsCount + 1;
   }
+
+  const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+
+  const handleError = useCallback(
+    (loading: boolean, data, error: ApolloError) => {
+      if (!loading) {
+        if (error) {
+          const showToastEvent: ShowToastEvent = {
+            type: 'SHOW_TOAST',
+            message: 'An error has occurred while executing this action, please contact the server administrator',
+          };
+          dispatch(showToastEvent);
+        }
+        if (data) {
+          const keys = Object.keys(data);
+          if (keys.length > 0) {
+            const firstKey = keys[0];
+            const firstField = data[firstKey];
+            if (isErrorPayload(firstField)) {
+              const { message } = firstField;
+              const showToastEvent: ShowToastEvent = {
+                type: 'SHOW_TOAST',
+                message,
+              };
+              dispatch(showToastEvent);
+            }
+          }
+        }
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    handleError(hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError);
+  }, [hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError, handleError]);
+  useEffect(() => {
+    handleError(fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError);
+  }, [fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError, handleError]);
+  useEffect(() => {
+    handleError(
+      collapseExpandDiagramElementLoading,
+      collapseExpandDiagramElementData,
+      collapseExpandDiagramElementError
+    );
+  }, [
+    collapseExpandDiagramElementLoading,
+    collapseExpandDiagramElementData,
+    collapseExpandDiagramElementError,
+    handleError,
+  ]);
 
   const props: ContextualPaletteStyleProps = { toolSectionsCount };
   const classes = useContextualPaletteStyle(props);

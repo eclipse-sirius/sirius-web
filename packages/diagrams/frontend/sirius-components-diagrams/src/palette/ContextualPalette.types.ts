@@ -11,20 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SModelElement } from 'sprotty';
-import { GQLCollapsingState, GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { DiagramServer } from '../sprotty/DiagramServer';
 
 export interface ContextualPaletteProps {
   editingContextId: string;
   representationId: string;
   diagramElement: SModelElement;
+  diagramServer: DiagramServer;
+  renameable: boolean;
   invokeTool: (tool: GQLTool) => void;
   invokeConnectorTool: (toolSections: GQLToolSection[]) => void;
-  invokeLabelEdit: () => void | null;
   invokeDelete: (deletionPolicy: GQLDeletionPolicy) => void | null;
   invokeClose: () => void;
-  invokeHide: () => void;
-  invokeFade: () => void;
-  updateCollapsingState: (collapsingState: GQLCollapsingState) => void;
 }
 
 export interface ContextualPaletteStyleProps {
@@ -94,4 +93,73 @@ export interface GQLSingleClickOnTwoDiagramElementsCandidate {
 
 export interface GQLNodeDescription {
   id: string;
+}
+
+export interface GQLHideDiagramElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  elementIds: string[];
+  hide: boolean;
+}
+
+export interface GQLHideDiagramElementVariables {
+  input: GQLHideDiagramElementInput;
+}
+
+export interface GQLHideDiagramElementPayload {
+  __typename: string;
+}
+export interface GQLHideDiagramElementData {
+  hideDiagramElement: GQLHideDiagramElementPayload;
+}
+
+export interface GQLFadeDiagramElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  elementIds: string[];
+  fade: boolean;
+}
+
+export interface GQLFadeDiagramElementVariables {
+  input: GQLFadeDiagramElementInput;
+}
+
+export interface GQLFadeDiagramElementPayload {
+  __typename: string;
+}
+export interface GQLFadeDiagramElementData {
+  fadeDiagramElement: GQLFadeDiagramElementPayload;
+}
+export enum GQLCollapsingState {
+  EXPANDED = 'EXPANDED',
+  COLLAPSED = 'COLLAPSED',
+}
+
+export interface GQLUpdateCollapsingStateVariables {
+  input: GQLUpdateCollapsingStateInput;
+}
+
+export interface GQLUpdateCollapsingStateInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramElementId: string;
+  collapsingState: GQLCollapsingState;
+}
+
+export interface GQLUpdateCollapsingStateData {
+  collapseExpandDiagramElement: GQLUpdateCollapsingStatePayload;
+}
+
+export interface GQLUpdateCollapsingStatePayload {
+  __typename: string;
+}
+
+export interface GQLErrorPayload
+  extends GQLFadeDiagramElementPayload,
+    GQLHideDiagramElementPayload,
+    GQLUpdateCollapsingStatePayload {
+  message: string;
 }

@@ -10,23 +10,77 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ApolloError, gql, useMutation } from '@apollo/client';
 import Avatar from '@material-ui/core/Avatar';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
+import CloseIcon from '@material-ui/icons/Close';
 import ShareIcon from '@material-ui/icons/Share';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import React, { useEffect, useState } from 'react';
+import { useMachine } from '@xstate/react';
+import React, { useCallback, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
+import { GQLDiagram, GQLNode } from '../representation/DiagramRepresentation.types';
 import { ShareDiagramModal } from '../share-diagram/ShareDiagramModal';
-import { ToolbarProps, ToolbarState } from './Toolbar.types';
+import {
+  GQLErrorPayload,
+  GQLFadeDiagramElementData,
+  GQLFadeDiagramElementInput,
+  GQLFadeDiagramElementVariables,
+  GQLHideDiagramElementData,
+  GQLHideDiagramElementInput,
+  GQLHideDiagramElementVariables,
+  ToolbarProps,
+} from './Toolbar.types';
+import {
+  CloseModalEvent,
+  HideToastEvent,
+  SchemaValue,
+  SetZoomLevelEvent,
+  ShareDiagramModalEvent,
+  ShowToastEvent,
+  ToolbarContext,
+  ToolbarEvent,
+  toolbarMachine,
+} from './ToolbarMachine';
+
+const hideDiagramElementMutation = gql`
+  mutation hideDiagramElement($input: HideDiagramElementInput!) {
+    hideDiagramElement(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+const fadeDiagramElementMutation = gql`
+  mutation fadeDiagramElement($input: FadeDiagramElementInput!) {
+    fadeDiagramElement(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
 
 const useToolbarStyles = makeStyles((theme) => ({
   toolbar: {
@@ -60,33 +114,136 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 export const Toolbar = ({
+  editingContextId,
+  representationId,
+  diagram,
   onZoomIn,
   onZoomOut,
   onFitToScreen,
   onArrangeAll,
-  onUnhideAll,
-  onUnfadeAll,
   readOnly,
   setZoomLevel,
   autoLayout,
   zoomLevel,
   subscribers,
 }: ToolbarProps) => {
-  const classes = useToolbarStyles();
-  const [state, setState] = useState<ToolbarState>({ modal: null, currentZoomLevel: zoomLevel });
-  const onShare = () => setState({ modal: 'ShareDiagramModal', currentZoomLevel: state.currentZoomLevel });
-  const closeModal = () => setState({ modal: null, currentZoomLevel: state.currentZoomLevel });
+  const [{ value, context }, dispatch] = useMachine<ToolbarContext, ToolbarEvent>(toolbarMachine);
+  const { toast } = value as SchemaValue;
+  const { modal, currentZoomLevel, message } = context;
 
-  const { modal, currentZoomLevel } = state;
+  const classes = useToolbarStyles();
+
+  const onShare = () => {
+    const shareDiagramModalEvent: ShareDiagramModalEvent = {
+      type: 'SHARE_DIAGRAM_MODAL',
+      modal: 'ShareDiagramModal',
+    };
+    dispatch(shareDiagramModalEvent);
+  };
+
+  const closeModal = () => {
+    const closeModalEvent: CloseModalEvent = {
+      type: 'CLOSE_MODAL',
+    };
+    dispatch(closeModalEvent);
+  };
 
   useEffect(() => {
-    setState({ modal: null, currentZoomLevel: zoomLevel });
-  }, [zoomLevel]);
+    const setZoomLevelEvent: SetZoomLevelEvent = {
+      type: 'SET_ZOOM_LEVEL',
+      currentZoomLevel: zoomLevel,
+    };
+    dispatch(setZoomLevelEvent);
+  }, [zoomLevel, dispatch]);
 
   const updateZoomLevel = (event) => {
     const newZoomLevel = event.target.value;
-    setState({ modal: state.modal, currentZoomLevel: newZoomLevel.toString() });
+    const setZoomLevelEvent: SetZoomLevelEvent = {
+      type: 'SET_ZOOM_LEVEL',
+      currentZoomLevel: newZoomLevel.toString(),
+    };
+    dispatch(setZoomLevelEvent);
     setZoomLevel(newZoomLevel.toString());
+  };
+
+  const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+
+  const handleError = useCallback(
+    (loading: boolean, data, error: ApolloError) => {
+      if (!loading) {
+        if (error) {
+          const showToastEvent: ShowToastEvent = {
+            type: 'SHOW_TOAST',
+            message: 'An error has occurred while executing this action, please contact the server administrator',
+          };
+          dispatch(showToastEvent);
+        }
+        if (data) {
+          const keys = Object.keys(data);
+          if (keys.length > 0) {
+            const firstKey = keys[0];
+            const firstField = data[firstKey];
+            if (isErrorPayload(firstField)) {
+              const { message } = firstField;
+              const showToastEvent: ShowToastEvent = {
+                type: 'SHOW_TOAST',
+                message,
+              };
+              dispatch(showToastEvent);
+            }
+          }
+        }
+      }
+    },
+    [dispatch]
+  );
+
+  const getAllNodes = (diagram: GQLDiagram): GQLNode[] => {
+    const getAllNodesRec = (node: GQLNode) => [
+      node,
+      ...[...(node.borderNodes || []), ...(node.childNodes || [])].flatMap(getAllNodesRec),
+    ];
+    return diagram.nodes.flatMap(getAllNodesRec);
+  };
+
+  const [
+    hideElementMutation,
+    { loading: hideDiagramElementLoading, data: hideDiagramElementData, error: hideDiagramElementError },
+  ] = useMutation<GQLHideDiagramElementData, GQLHideDiagramElementVariables>(hideDiagramElementMutation);
+
+  useEffect(() => {
+    handleError(hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError);
+  }, [hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError, handleError]);
+
+  const onUnhideAll = () => {
+    const input: GQLHideDiagramElementInput = {
+      id: uuid(),
+      editingContextId,
+      representationId,
+      elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
+      hide: false,
+    };
+    hideElementMutation({ variables: { input } });
+  };
+
+  const [
+    fadeElementMutation,
+    { loading: fadeDiagramElementLoading, data: fadeDiagramElementData, error: fadeDiagramElementError },
+  ] = useMutation<GQLFadeDiagramElementData, GQLFadeDiagramElementVariables>(fadeDiagramElementMutation);
+
+  useEffect(() => {
+    handleError(fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError);
+  }, [fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError, handleError]);
+
+  const onUnfadeAll = () => {
+    const input: GQLFadeDiagramElementInput = {
+      id: uuid(),
+      editingContextId,
+      representationId,
+      elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
+      fade: false,
+    };
+    fadeElementMutation({ variables: { input } });
   };
 
   let modalElement: React.ReactElement | null = null;
@@ -187,6 +344,26 @@ export const Toolbar = ({
         </div>
       </div>
       {modalElement}
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={toast === 'visible'}
+        autoHideDuration={3000}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        message={message}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+        data-testid="error"
+      />
     </>
   );
 };

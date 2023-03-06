@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ export type HandleSelectedObjectInSelectionDialogEvent = {
   selectedObjectId: string;
 };
 export type ResetSelectedObjectInSelectionDialogEvent = { type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG' };
-export type SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
+export type SwitchRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
 export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
 export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: GQLDiagram };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
@@ -151,7 +151,7 @@ export type DiagramRepresentationEvent =
   | CloseSelectionDialogEvent
   | HandleSelectedObjectInSelectionDialogEvent
   | ResetSelectedObjectInSelectionDialogEvent
-  | SwithRepresentationEvent
+  | SwitchRepresentationEvent
   | InitializeRepresentationEvent
   | SetDefaultToolEvent
   | DiagramRefreshedEvent
@@ -377,7 +377,7 @@ export const diagramRepresentationMachine = Machine<
   {
     actions: {
       switchRepresentation: assign((_, event) => {
-        const { representationId } = event as SwithRepresentationEvent;
+        const { representationId } = event as SwitchRepresentationEvent;
         return { id: uuid(), displayedRepresentationId: representationId };
       }),
       initialize: assign((_, event) => {

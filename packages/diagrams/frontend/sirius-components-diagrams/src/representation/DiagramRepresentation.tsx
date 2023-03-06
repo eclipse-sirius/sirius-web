@@ -25,7 +25,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
-import { EditLabelAction, HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
+import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
 import { FitToScreenAction, Point } from 'sprotty-protocol';
 import { v4 as uuid } from 'uuid';
 import { DropArea } from '../droparea/DropArea';
@@ -36,14 +36,8 @@ import {
   GQLSingleClickOnTwoDiagramElementsTool,
   GQLToolSection,
 } from '../palette/ContextualPalette.types';
-import { BorderNode, Diagram, Edge, Node, ViewModifier } from '../sprotty/Diagram.types';
-import {
-  DiagramServer,
-  HIDE_CONTEXTUAL_TOOLBAR_ACTION,
-  SOURCE_ELEMENT_ACTION,
-  ZOOM_IN_ACTION,
-  ZOOM_OUT_ACTION,
-} from '../sprotty/DiagramServer';
+import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
+import { DiagramServer, SOURCE_ELEMENT_ACTION, ZOOM_IN_ACTION, ZOOM_OUT_ACTION } from '../sprotty/DiagramServer';
 import {
   SetActiveConnectorToolsAction,
   SetActiveToolAction,
@@ -60,12 +54,10 @@ import {
   GQLArrangeAllData,
   GQLArrangeAllInput,
   GQLArrangeAllVariables,
-  GQLCollapsingState,
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
   GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
-  GQLDiagram,
   GQLDiagramEventPayload,
   GQLDiagramEventSubscription,
   GQLDiagramRefreshedEventPayload,
@@ -73,12 +65,6 @@ import {
   GQLEditLabelInput,
   GQLEditLabelVariables,
   GQLErrorPayload,
-  GQLFadeDiagramElementData,
-  GQLFadeDiagramElementInput,
-  GQLFadeDiagramElementVariables,
-  GQLHideDiagramElementData,
-  GQLHideDiagramElementInput,
-  GQLHideDiagramElementVariables,
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
   GQLInvokeSingleClickOnDiagramElementToolPayload,
@@ -89,15 +75,11 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
-  GQLNode,
   GQLReconnectEdgeData,
   GQLReconnectEdgeInput,
   GQLReconnectEdgeVariables,
   GQLReconnectKind,
   GQLSubscribersUpdatedEventPayload,
-  GQLUpdateCollapsingStateData,
-  GQLUpdateCollapsingStateInput,
-  GQLUpdateCollapsingStateVariables,
   GQLUpdateEdgeRoutingPointsData,
   GQLUpdateEdgeRoutingPointsInput,
   GQLUpdateEdgeRoutingPointsVariables,
@@ -134,19 +116,16 @@ import {
   ShowSelectionDialogEvent,
   ShowToastEvent,
   SubscribersUpdatedEvent,
-  SwithRepresentationEvent,
+  SwitchRepresentationEvent,
 } from './DiagramRepresentationMachine';
 import {
   arrangeAllOp,
   deleteFromDiagramMutation,
   diagramEventSubscription,
   editLabelMutation as editLabelMutationOp,
-  fadeDiagramElementMutation,
-  hideDiagramElementMutation,
   invokeSingleClickOnDiagramElementToolMutation,
   invokeSingleClickOnTwoDiagramElementsToolMutation,
   reconnectEdgeMutation,
-  updateCollapsingStateMutation,
   updateEdgeRoutingPointsOp,
   updateNodeBoundsOp,
   updateNodePositionOp,
@@ -387,24 +366,8 @@ export const DiagramRepresentation = ({
     deleteElementsMutation,
     { loading: deleteFromDiagramLoading, data: deleteFromDiagramData, error: deleteFromDiagramError },
   ] = useMutation<GQLDeleteFromDiagramData, GQLDeleteFromDiagramVariables>(deleteFromDiagramMutation);
-  const [
-    hideElementMutation,
-    { loading: hideDiagramElementLoading, data: hideDiagramElementData, error: hideDiagramElementError },
-  ] = useMutation<GQLHideDiagramElementData, GQLHideDiagramElementVariables>(hideDiagramElementMutation);
-  const [
-    fadeElementMutation,
-    { loading: fadeDiagramElementLoading, data: fadeDiagramElementData, error: fadeDiagramElementError },
-  ] = useMutation<GQLFadeDiagramElementData, GQLFadeDiagramElementVariables>(fadeDiagramElementMutation);
   const [updateEdgeEnd, { loading: reconnectEdgeLoading, data: reconnectEdgeData, error: reconnectEdgeError }] =
     useMutation<GQLReconnectEdgeData, GQLReconnectEdgeVariables>(reconnectEdgeMutation);
-  const [
-    collapseExpandMutation,
-    {
-      loading: collapseExpandDiagramElementLoading,
-      data: collapseExpandDiagramElementData,
-      error: collapseExpandDiagramElementError,
-    },
-  ] = useMutation<GQLUpdateCollapsingStateData, GQLUpdateCollapsingStateVariables>(updateCollapsingStateMutation);
   const [
     invokeSingleClickOnDiagramElementTool,
     {
@@ -504,7 +467,7 @@ export const DiagramRepresentation = ({
    */
   useEffect(() => {
     if (displayedRepresentationId !== representationId) {
-      const switchRepresentationEvent: SwithRepresentationEvent = { type: 'SWITCH_REPRESENTATION', representationId };
+      const switchRepresentationEvent: SwitchRepresentationEvent = { type: 'SWITCH_REPRESENTATION', representationId };
       dispatch(switchRepresentationEvent);
     }
   }, [displayedRepresentationId, representationId, dispatch]);
@@ -534,65 +497,6 @@ export const DiagramRepresentation = ({
       resetTools();
     },
     [editingContextId, representationId, deleteElementsMutation, resetTools]
-  );
-
-  const hideElements = useCallback(
-    (diagramElements: SModelElement[]): void => {
-      const elements: Array<Edge | Node | BorderNode> = diagramElements
-        .filter((elem) => elem instanceof Edge || elem instanceof Node || elem instanceof BorderNode)
-        .map((elem) => elem as Edge | Node | BorderNode);
-      const elementIds = elements.map((elt) => elt.id);
-      // If at least one selected element is not hidden, we hide all selected elements
-      const hide = elements.some((elem) => elem.state !== ViewModifier.Hidden);
-
-      const input: GQLHideDiagramElementInput = {
-        id: uuid(),
-        editingContextId,
-        representationId,
-        elementIds,
-        hide,
-      };
-      hideElementMutation({ variables: { input } });
-      resetTools();
-    },
-    [editingContextId, representationId, hideElementMutation, resetTools]
-  );
-
-  const fadeElements = useCallback(
-    (diagramElements: SModelElement[]): void => {
-      const elements: Array<Edge | Node | BorderNode> = diagramElements
-        .filter((elem) => elem instanceof Edge || elem instanceof Node || elem instanceof BorderNode)
-        .map((elem) => elem as Edge | Node | BorderNode);
-      const elementIds = elements.map((elt) => elt.id);
-      // If at least one selected element is not hidden, we fade all selected elements
-      const fade = elements.some((elem) => elem.state !== ViewModifier.Hidden);
-
-      const input: GQLFadeDiagramElementInput = {
-        id: uuid(),
-        editingContextId,
-        representationId,
-        elementIds,
-        fade,
-      };
-      fadeElementMutation({ variables: { input } });
-      resetTools();
-    },
-    [editingContextId, representationId, fadeElementMutation, resetTools]
-  );
-
-  const collapseExpandElement = useCallback(
-    (nodeId: string, collapsingState: GQLCollapsingState) => {
-      const input: GQLUpdateCollapsingStateInput = {
-        id: uuid(),
-        editingContextId,
-        representationId,
-        diagramElementId: nodeId,
-        collapsingState,
-      };
-      collapseExpandMutation({ variables: { input } });
-      resetTools();
-    },
-    [editingContextId, representationId, collapseExpandMutation, resetTools]
   );
 
   const reconnectEdge = useCallback(
@@ -958,36 +862,6 @@ export const DiagramRepresentation = ({
     arrangeAllMutation({ variables: { input } });
   };
 
-  const getAllNodes = (diagram: GQLDiagram): GQLNode[] => {
-    const getAllNodesRec = (node: GQLNode) => [
-      node,
-      ...[...(node.borderNodes || []), ...(node.childNodes || [])].flatMap(getAllNodesRec),
-    ];
-    return diagram.nodes.flatMap(getAllNodesRec);
-  };
-
-  const onUnhideAll = () => {
-    const input: GQLHideDiagramElementInput = {
-      id: uuid(),
-      editingContextId,
-      representationId,
-      elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
-      hide: false,
-    };
-    hideElementMutation({ variables: { input } });
-  };
-
-  const onUnfadeAll = () => {
-    const input: GQLFadeDiagramElementInput = {
-      id: uuid(),
-      editingContextId,
-      representationId,
-      elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
-      fade: false,
-    };
-    fadeElementMutation({ variables: { input } });
-  };
-
   const setZoomLevel = (level) => {
     if (diagramServer) {
       const action: ZoomToAction = { kind: 'zoomTo', level };
@@ -1052,24 +926,6 @@ export const DiagramRepresentation = ({
   useEffect(() => {
     handleError(deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError);
   }, [deleteFromDiagramLoading, deleteFromDiagramData, deleteFromDiagramError, handleError]);
-  useEffect(() => {
-    handleError(hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError);
-  }, [hideDiagramElementLoading, hideDiagramElementData, hideDiagramElementError, handleError]);
-  useEffect(() => {
-    handleError(fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError);
-  }, [fadeDiagramElementLoading, fadeDiagramElementData, fadeDiagramElementError, handleError]);
-  useEffect(() => {
-    handleError(
-      collapseExpandDiagramElementLoading,
-      collapseExpandDiagramElementData,
-      collapseExpandDiagramElementError
-    );
-  }, [
-    collapseExpandDiagramElementLoading,
-    collapseExpandDiagramElementData,
-    collapseExpandDiagramElementError,
-    handleError,
-  ]);
   useEffect(() => {
     handleError(reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError);
   }, [reconnectEdgeLoading, reconnectEdgeData, reconnectEdgeError, handleError]);
@@ -1145,7 +1001,7 @@ export const DiagramRepresentation = ({
    *
    * In order to fix this issue, two intermediary divs have been introduced with the id "diagram-container"
    * and "diagram-wrapper". The goal of diagram container is to act as the stable React parent div from which
-   * we will remove some content. The diagram wapper will act as the stable child div which will be removed
+   * we will remove some content. The diagram wrapper will act as the stable child div which will be removed
    * when the content is not available anymore. React does not seems to care that under this div there are
    * some content which is not under its control anymore. Telling React to delete the diagram wrapper will
    * make it drop the whole DOM subtree without looking precisely at its content. It's faster for React and
@@ -1163,21 +1019,13 @@ export const DiagramRepresentation = ({
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
     };
-    let invokeLabelEditFromContextualPalette;
-    if (renameable) {
-      invokeLabelEditFromContextualPalette = () =>
-        diagramServer.actionDispatcher.dispatchAll([
-          { kind: HIDE_CONTEXTUAL_TOOLBAR_ACTION },
-          EditLabelAction.create(element.editableLabel.id),
-        ]);
-    }
+
     let invokeDeleteFromContextualPalette;
     if (deletable) {
       invokeDeleteFromContextualPalette = (deletionPolicy: GQLDeletionPolicy) =>
         deleteElements([element], deletionPolicy);
     }
-    const invokeCollapseExpandElement = (collapsingState: GQLCollapsingState) =>
-      collapseExpandElement(element.id, collapsingState);
+
     const invokeToolFromContextualPalette = (tool) => {
       if (tool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
         const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
@@ -1235,22 +1083,18 @@ export const DiagramRepresentation = ({
       };
       diagramServer.actionDispatcher.dispatch(action);
     };
-    const invokeHideDiagramElement = () => hideElements([element]);
-    const invokeFadeDiagramElement = () => fadeElements([element]);
     contextualPaletteContent = (
       <div className={classes.contextualPalette} style={style}>
         <ContextualPalette
           editingContextId={editingContextId}
           representationId={representationId}
           diagramElement={element}
+          diagramServer={diagramServer}
+          renameable={renameable}
           invokeTool={invokeToolFromContextualPalette}
           invokeConnectorTool={invokeConnectorToolFromContextualPalette}
-          invokeLabelEdit={invokeLabelEditFromContextualPalette}
           invokeDelete={invokeDeleteFromContextualPalette}
           invokeClose={resetTools}
-          invokeHide={invokeHideDiagramElement}
-          invokeFade={invokeFadeDiagramElement}
-          updateCollapsingState={invokeCollapseExpandElement}
         />
       </div>
     );
@@ -1327,12 +1171,13 @@ export const DiagramRepresentation = ({
   return (
     <div className={classes.container}>
       <Toolbar
+        editingContextId={editingContextId}
+        representationId={representationId}
+        diagram={diagram}
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
         onFitToScreen={onFitToScreen}
         onArrangeAll={onArrangeAll}
-        onUnhideAll={onUnhideAll}
-        onUnfadeAll={onUnfadeAll}
         readOnly={readOnly}
         setZoomLevel={setZoomLevel}
         autoLayout={diagram?.autoLayout}
