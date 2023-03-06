@@ -224,3 +224,11 @@ jobs:
         run: |
           sed -e "s|IMAGE_NAME|$REGISTRY/$REPOSITORY:$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
           aws s3 cp Dockerrun.aws.json s3://sirius-web-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
+
+      - name: Create a new ElasticBeanstalk Application Version for Sirius Web Staging
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: aws elasticbeanstalk create-application-version --application-name "Sirius Web" --source-bundle S3Bucket="sirius-web-deployment",S3Key="integration/${{ env.git_describe }}/Dockerrun.aws.json" --version-label "${{ env.git_describe }}" --description "${{ github.sha }}"
+
+      - name: Deploy a new ElasticBeanstalk Application Version for Sirius Web Staging
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: aws elasticbeanstalk update-environment --environment-name "sirius-web-staging" --version-label "${{ env.git_describe }}"
