@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.classdiagram.ClassDiagramDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ClassNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ComponentNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.DataTypeNodeDescriptionProvider;
@@ -114,6 +115,9 @@ public class PapayaViewProvider {
         var newOperationalActorNodeTool = new PapayaToolsFactory().createNamedElement("papaya_operational_analysis::OperationalActor", "operationalActors", "Operational Actor");
         newOperationalActorNodeTool.setName("New Operational Actor");
         palette.getNodeTools().add(newOperationalActorNodeTool);
+
+        var classDiagramDescription = new ClassDiagramDescriptionProvider().create();
+        view.getDescriptions().add(classDiagramDescription);
 
         return view;
     }

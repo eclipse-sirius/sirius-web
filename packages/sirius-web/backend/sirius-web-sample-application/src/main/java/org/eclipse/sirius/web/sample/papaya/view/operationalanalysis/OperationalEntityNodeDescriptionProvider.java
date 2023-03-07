@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
@@ -41,7 +40,6 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalEntities");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        nodeDescription.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
 
         var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
