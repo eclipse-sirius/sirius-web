@@ -14,6 +14,10 @@ import { Node } from '../sprotty/Diagram.types';
 
 export type CursorValue = 'pointer' | 'copy' | 'not-allowed';
 
+export interface DiagramDescription {
+  autoLayout: boolean;
+}
+
 export interface GQLDiagramEventSubscription {
   diagramEvent: GQLDiagramEventPayload;
 }
@@ -124,6 +128,7 @@ export interface GQLRepresentationMetadata {
 }
 
 export interface GQLRepresentationDescription {
+  __typename: string;
   id: string;
 }
 
@@ -140,7 +145,6 @@ export interface GQLDiagram extends GQLRepresentation {
   id: string;
   metadata: GQLRepresentationMetadata;
   targetObjectId: string;
-  autoLayout: boolean;
   size: GQLSize;
   position: GQLPosition;
   nodes: GQLNode[];

@@ -19,7 +19,6 @@ type Diagram implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
   targetObjectId: ID!
-  autoLayout: Boolean!
   size: Size!
   position: Position!
   nodes: [Node!]!

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -378,10 +378,10 @@ export class DiagramServer extends ModelSource {
     }
   }
 
-  handleSiriusUpdateModelAction(action) {
-    const { diagram, readOnly } = action;
+  handleSiriusUpdateModelAction(action: SiriusUpdateModelAction) {
+    const { diagram, diagramDescription, readOnly } = action;
     if (diagram) {
-      const convertedDiagram = convertDiagram(diagram, this.httpOrigin, readOnly);
+      const convertedDiagram = convertDiagram(diagram, diagramDescription, this.httpOrigin, readOnly);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
       this.actionDispatcher.request<SelectionResult>(GetSelectionAction.create()).then((selectionResult) => {
         (sprottyModel as any).cursor = 'pointer';

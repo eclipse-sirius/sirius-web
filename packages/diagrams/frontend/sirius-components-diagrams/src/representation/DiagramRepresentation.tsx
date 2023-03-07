@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloError, useMutation, useSubscription } from '@apollo/client';
+import { ApolloError, useMutation, useQuery, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   Selection,
@@ -99,6 +99,7 @@ import {
   DiagramRepresentationContext,
   DiagramRepresentationEvent,
   diagramRepresentationMachine,
+  HandleDiagramDescriptionResultEvent,
   HandleSelectedObjectInSelectionDialogEvent,
   HideToastEvent,
   InitializeRepresentationEvent,
@@ -118,6 +119,8 @@ import {
   SubscribersUpdatedEvent,
   SwitchRepresentationEvent,
 } from './DiagramRepresentationMachine';
+import { getDiagramDescriptionQuery } from './GetDiagramDescriptionQuery';
+import { GQLGetDiagramDescriptionData, GQLGetDiagramDescriptionVariables } from './GetDiagramDescriptionQuery.types';
 import {
   arrangeAllOp,
   deleteFromDiagramMutation,
@@ -350,6 +353,7 @@ export const DiagramRepresentation = ({
     displayedRepresentationId,
     diagramServer,
     diagram,
+    diagramDescription,
     toolSections,
     contextualPalette,
     contextualMenu,
@@ -361,6 +365,34 @@ export const DiagramRepresentation = ({
     message,
     selectedObjectId,
   } = context;
+
+  const {
+    loading: diagramDescriptionLoading,
+    data: diagramDescriptionData,
+    error: diagramDescriptionError,
+  } = useQuery<GQLGetDiagramDescriptionData, GQLGetDiagramDescriptionVariables>(getDiagramDescriptionQuery, {
+    variables: {
+      editingContextId,
+      diagramId: representationId,
+    },
+  });
+
+  useEffect(() => {
+    if (diagramRepresentation === 'loadingDiagramDescription' && !diagramDescriptionLoading) {
+      if (diagramDescriptionError) {
+        const { message } = diagramDescriptionError;
+        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+        dispatch(showToastEvent);
+      }
+      if (diagramDescriptionData) {
+        const event: HandleDiagramDescriptionResultEvent = {
+          type: 'HANDLE_DIAGRAM_DESCRIPTION_RESULT',
+          result: diagramDescriptionData,
+        };
+        dispatch(event);
+      }
+    }
+  }, [diagramRepresentation, diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError, dispatch]);
 
   const [
     deleteElementsMutation,
@@ -412,11 +444,11 @@ export const DiagramRepresentation = ({
    * Dispatch the diagram to the diagramServer if our state indicate that diagram has changed.
    */
   useEffect(() => {
-    if (diagramServer) {
-      const action: SiriusUpdateModelAction = { kind: 'siriusUpdateModel', diagram, readOnly };
+    if (diagramServer && diagramDescription) {
+      const action: SiriusUpdateModelAction = { kind: 'siriusUpdateModel', diagram, diagramDescription, readOnly };
       diagramServer.actionDispatcher.dispatch(action);
     }
-  }, [diagram, diagramServer, readOnly]);
+  }, [diagram, diagramDescription, diagramServer, readOnly]);
 
   /**
    * Dispatch the activeTool to the diagramServer if our state indicate that activeTool has changed.
@@ -735,7 +767,7 @@ export const DiagramRepresentation = ({
       }
     };
 
-    if (diagramRepresentation === 'loading' && diagramDomElement.current) {
+    if (diagramRepresentation === 'diagramDescriptionRetrieved' && diagramDomElement.current) {
       const initializeRepresentationEvent: InitializeRepresentationEvent = {
         type: 'INITIALIZE',
         diagramDomElement,
@@ -1180,7 +1212,7 @@ export const DiagramRepresentation = ({
         onArrangeAll={onArrangeAll}
         readOnly={readOnly}
         setZoomLevel={setZoomLevel}
-        autoLayout={diagram?.autoLayout}
+        autoLayout={diagramDescription ? diagramDescription.autoLayout : true}
         zoomLevel={zoomLevel}
         subscribers={subscribers}
       />

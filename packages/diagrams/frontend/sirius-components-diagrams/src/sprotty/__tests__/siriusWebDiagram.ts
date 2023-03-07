@@ -27,10 +27,10 @@ export const siriusWebDiagram: GQLDiagram = {
     kind: 'siriusComponents://representation?type=DiagramDiagram',
     description: {
       id: "inmemory.odesign#//@ownedViewpoints[name='Exchanges']/@ownedRepresentations[name='Topography']",
+      __typename: 'DiagramDescription',
     },
   },
   targetObjectId: 'robot#/',
-  autoLayout: false,
   position: {
     __typename: 'Position',
     x: 0,
