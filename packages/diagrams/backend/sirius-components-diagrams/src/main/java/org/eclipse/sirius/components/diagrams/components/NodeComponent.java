@@ -178,10 +178,13 @@ public class NodeComponent implements IComponent {
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
 
         var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
-        List<Element> childNodes = List.of();
-        if (CollapsingState.EXPANDED.equals(collapsingState) || !nodeDescription.isCollapsible()) {
-            childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
+
+
+        var parentState = state;
+        if (collapsingState == CollapsingState.COLLAPSED) {
+            parentState = ViewModifier.Hidden;
         }
+        List<Element> childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor);
 
         LabelDescription labelDescription = nodeDescription.getLabelDescription();
         nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
