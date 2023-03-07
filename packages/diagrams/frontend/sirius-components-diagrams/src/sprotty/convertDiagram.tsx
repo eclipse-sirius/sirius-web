@@ -30,6 +30,7 @@ import {
   withEditLabelFeature,
 } from 'sprotty';
 import {
+  DiagramDescription,
   GQLArrowStyle,
   GQLDiagram,
   GQLEdge,
@@ -77,16 +78,21 @@ const isIconLabelNodeStyle = (style: GQLINodeStyle): style is GQLIconLabelNodeSt
  * This converter will ensure the creation of a proper Sprotty diagram from a given Sirius Web diagram..
  *
  * @param gqlDiagram the diagram object to convert
+ * @param diagramDescription The description of the diagram
  * @param httpOrigin the URL of the server hosting the images
  * @param readOnly Whether the diagram is readonly
  * @return a Sprotty diagram object
  */
-export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readOnly: boolean): Diagram => {
+export const convertDiagram = (
+  gqlDiagram: GQLDiagram,
+  diagramDescription: DiagramDescription,
+  httpOrigin: string,
+  readOnly: boolean
+): Diagram => {
   const {
     id,
     metadata: { label, kind, description },
     targetObjectId,
-    autoLayout,
     nodes,
     edges,
   } = gqlDiagram;
@@ -100,6 +106,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram, httpOrigin: string, readO
   diagram.targetObjectId = targetObjectId;
   diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
 
+  const { autoLayout } = diagramDescription;
   nodes
     .filter((node) => node.state !== GQLViewModifier.Hidden)
     .map((node) => convertNode(diagram, node, httpOrigin, readOnly, autoLayout));

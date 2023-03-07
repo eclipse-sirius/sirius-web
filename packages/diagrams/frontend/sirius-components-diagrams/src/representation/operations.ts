@@ -46,7 +46,6 @@ export const diagramEventSubscription = gql`
             width
             height
           }
-          autoLayout
           nodes {
             ...nodeFields
             borderNodes {

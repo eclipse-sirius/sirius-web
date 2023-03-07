@@ -22,7 +22,7 @@ import { siriusWebDiagram } from './siriusWebDiagram';
 const httpOrigin = 'http://localhost';
 
 test('snaps the border node', () => {
-  const sprottyDiagram = convertDiagram(siriusWebDiagram, httpOrigin, false);
+  const sprottyDiagram = convertDiagram(siriusWebDiagram, { autoLayout: false }, httpOrigin, false);
 
   const sprottyNode: SNode = <SNode>sprottyDiagram.children[1];
 

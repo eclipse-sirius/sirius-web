@@ -21,6 +21,7 @@ import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
 import { DiagramServer } from '../sprotty/DiagramServer';
 import {
   CursorValue,
+  DiagramDescription,
   GQLDeletionPolicy,
   GQLDiagram,
   GQLReconnectKind,
@@ -32,6 +33,11 @@ import {
   Tool,
   ToolSection,
 } from './DiagramRepresentation.types';
+import {
+  GQLGetDiagramDescriptionData,
+  GQLGetDiagramDescriptionDiagramDescription,
+  GQLGetDiagramDescriptionRepresentationDescription,
+} from './GetDiagramDescriptionQuery.types';
 
 export interface DiagramRepresentationStateSchema {
   states: {
@@ -44,7 +50,8 @@ export interface DiagramRepresentationStateSchema {
     diagramRepresentation: {
       states: {
         empty: {};
-        loading: {};
+        loadingDiagramDescription: {};
+        diagramDescriptionRetrieved: {};
         ready: {};
         complete: {};
       };
@@ -60,7 +67,7 @@ export interface DiagramRepresentationStateSchema {
 
 export type SchemaValue = {
   toast: 'visible' | 'hidden';
-  diagramRepresentation: 'loading' | 'ready' | 'empty' | 'complete';
+  diagramRepresentation: 'empty' | 'loadingDiagramDescription' | 'diagramDescriptionRetrieved' | 'ready' | 'complete';
   selectionDialog: 'visible' | 'hidden';
 };
 
@@ -69,6 +76,7 @@ export interface DiagramRepresentationContext {
   displayedRepresentationId: string | null;
   diagramServer: DiagramServer;
   diagram: GQLDiagram;
+  diagramDescription: DiagramDescription | null;
   toolSections: ToolSection[];
   activeTool: Tool | null;
   activeConnectorTools: SingleClickOnTwoDiagramElementsTool[];
@@ -86,6 +94,10 @@ export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type ShowSelectionDialogEvent = { type: 'SHOW_SELECTION_DIALOG'; activeTool: Tool };
 export type CloseSelectionDialogEvent = { type: 'CLOSE_SELECTION_DIALOG' };
+export type HandleDiagramDescriptionResultEvent = {
+  type: 'HANDLE_DIAGRAM_DESCRIPTION_RESULT';
+  result: GQLGetDiagramDescriptionData;
+};
 export type HandleSelectedObjectInSelectionDialogEvent = {
   type: 'HANDLE_SELECTED_OBJECT_IN_SELECTION_DIALOG';
   selectedObjectId: string;
@@ -149,6 +161,7 @@ export type DiagramRepresentationEvent =
   | HideToastEvent
   | ShowSelectionDialogEvent
   | CloseSelectionDialogEvent
+  | HandleDiagramDescriptionResultEvent
   | HandleSelectedObjectInSelectionDialogEvent
   | ResetSelectedObjectInSelectionDialogEvent
   | SwitchRepresentationEvent
@@ -172,6 +185,10 @@ const isSetActiveConnectorToolsEvent = (event: DiagramRepresentationEvent): even
   event.type === 'SET_ACTIVE_CONNECTOR_TOOLS';
 const isShowSelectionDialogEvent = (event: DiagramRepresentationEvent): event is ShowSelectionDialogEvent =>
   event.type === 'SHOW_SELECTION_DIALOG';
+const isDiagramDescription = (
+  representationDescription: GQLGetDiagramDescriptionRepresentationDescription
+): representationDescription is GQLGetDiagramDescriptionDiagramDescription =>
+  representationDescription.__typename === 'DiagramDescription';
 
 export const diagramRepresentationMachine = Machine<
   DiagramRepresentationContext,
@@ -185,6 +202,7 @@ export const diagramRepresentationMachine = Machine<
       displayedRepresentationId: null,
       diagramServer: null,
       diagram: null,
+      diagramDescription: null,
       toolSections: [],
       activeTool: null,
       activeConnectorTools: [],
@@ -226,13 +244,23 @@ export const diagramRepresentationMachine = Machine<
             on: {
               SWITCH_REPRESENTATION: [
                 {
-                  target: 'loading',
+                  target: 'loadingDiagramDescription',
                   actions: 'switchRepresentation',
                 },
               ],
             },
           },
-          loading: {
+          loadingDiagramDescription: {
+            on: {
+              HANDLE_DIAGRAM_DESCRIPTION_RESULT: [
+                {
+                  target: 'diagramDescriptionRetrieved',
+                  actions: 'setDiagramDescription',
+                },
+              ],
+            },
+          },
+          diagramDescriptionRetrieved: {
             on: {
               INITIALIZE: [
                 {
@@ -242,7 +270,7 @@ export const diagramRepresentationMachine = Machine<
               ],
               SWITCH_REPRESENTATION: [
                 {
-                  target: 'loading',
+                  target: 'loadingDiagramDescription',
                   actions: 'switchRepresentation',
                 },
               ],
@@ -252,7 +280,7 @@ export const diagramRepresentationMachine = Machine<
             on: {
               SWITCH_REPRESENTATION: [
                 {
-                  target: 'loading',
+                  target: 'loadingDiagramDescription',
                   actions: 'switchRepresentation',
                 },
               ],
@@ -323,7 +351,7 @@ export const diagramRepresentationMachine = Machine<
             on: {
               SWITCH_REPRESENTATION: [
                 {
-                  target: 'loading',
+                  target: 'loadingDiagramDescription',
                   actions: 'switchRepresentation',
                 },
               ],
@@ -544,10 +572,21 @@ export const diagramRepresentationMachine = Machine<
       closeSelectionDialog: assign((_, _event) => {
         return { activeTool: null, selectedObjectId: null };
       }),
+      setDiagramDescription: assign((_, event) => {
+        const { result } = event as HandleDiagramDescriptionResultEvent;
+        let diagramDescription = null;
+
+        const representationDescription = result.viewer?.editingContext?.representation?.description;
+        if (isDiagramDescription(representationDescription)) {
+          diagramDescription = representationDescription;
+        }
+        return { diagramDescription };
+      }),
       handleComplete: assign((_) => {
         return {
           diagramServer: undefined,
           diagram: undefined,
+          diagramDescription: null,
           toolSections: [],
           contextualPalette: undefined,
           contextualMenu: undefined,
