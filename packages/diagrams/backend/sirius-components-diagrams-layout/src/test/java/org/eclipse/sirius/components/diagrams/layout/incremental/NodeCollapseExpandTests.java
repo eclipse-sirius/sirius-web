@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Ratio;
 import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
@@ -135,8 +136,8 @@ public class NodeCollapseExpandTests {
         assertThat(refreshedDiagram.getNodes()).hasSize(2);
         Node container = refreshedDiagram.getNodes().get(1);
         assertThat(container.getCollapsingState()).isEqualByComparingTo(CollapsingState.COLLAPSED);
-        assertThat(container.getChildNodes()).isEmpty();
-        assertThat(refreshedDiagram.getEdges()).isEmpty();
+        assertThat(container.getChildNodes()).allMatch(node -> node.getState() == ViewModifier.Hidden);
+        assertThat(refreshedDiagram.getEdges()).allMatch(edge -> edge.getState() == ViewModifier.Hidden);
 
         Diagram laidOutDiagram = diagramCreationService.performLayout(jsonBasedEditingContext, refreshedDiagram, updateCollapsingStateEvent);
         assertThat(laidOutDiagram.getNodes()).hasSize(2);
