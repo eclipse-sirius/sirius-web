@@ -121,7 +121,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, AQLInterpreter interpreter) {
+    public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         final org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
         ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
         // Nodes must be fully converted first.
@@ -347,10 +347,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         // @formatter:off
         return Optional.of(LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + labelSuffix)
-                             .idProvider(labelIdProvider)
-                             .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, labelExpression))
-                             .styleDescriptionProvider(styleDescriptionProvider)
-                             .build());
+                .idProvider(labelIdProvider)
+                .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, labelExpression))
+                .styleDescriptionProvider(styleDescriptionProvider)
+                .build());
         // @formatter:on
     }
 

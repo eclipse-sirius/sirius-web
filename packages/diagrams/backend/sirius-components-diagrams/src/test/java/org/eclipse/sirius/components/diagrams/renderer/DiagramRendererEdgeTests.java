@@ -154,6 +154,7 @@ public class DiagramRendererEdgeTests {
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
+                .allDiagramDescriptions(List.of(diagramDescription))
                 .viewCreationRequests(List.of())
                 .viewDeletionRequests(List.of())
                 .previousDiagram(Optional.empty())

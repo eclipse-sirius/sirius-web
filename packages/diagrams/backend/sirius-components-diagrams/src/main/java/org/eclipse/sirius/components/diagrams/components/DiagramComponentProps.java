@@ -40,6 +40,8 @@ public final class DiagramComponentProps implements IProps {
 
     private DiagramDescription diagramDescription;
 
+    private List<DiagramDescription> allDiagramDescriptions;
+
     private IOperationValidator operationValidator;
 
     private Optional<Diagram> previousDiagram;
@@ -60,6 +62,10 @@ public final class DiagramComponentProps implements IProps {
 
     public DiagramDescription getDiagramDescription() {
         return this.diagramDescription;
+    }
+
+    public List<DiagramDescription> getAllDiagramDescriptions() {
+        return this.allDiagramDescriptions;
     }
 
     public IOperationValidator getOperationValidator() {
@@ -97,6 +103,8 @@ public final class DiagramComponentProps implements IProps {
 
         private DiagramDescription diagramDescription;
 
+        private List<DiagramDescription> allDiagramDescriptions;
+
         private IOperationValidator operationValidator;
 
         private Optional<Diagram> previousDiagram;
@@ -114,6 +122,11 @@ public final class DiagramComponentProps implements IProps {
 
         public Builder diagramDescription(DiagramDescription diagramDescription) {
             this.diagramDescription = Objects.requireNonNull(diagramDescription);
+            return this;
+        }
+
+        public Builder allDiagramDescriptions(List<DiagramDescription> allDiagramDescriptions) {
+            this.allDiagramDescriptions = Objects.requireNonNull(allDiagramDescriptions);
             return this;
         }
 
@@ -146,7 +159,8 @@ public final class DiagramComponentProps implements IProps {
             DiagramComponentProps diagramComponentProps = new DiagramComponentProps();
             diagramComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
             diagramComponentProps.diagramDescription = Objects.requireNonNull(this.diagramDescription);
-            diagramComponentProps.operationValidator = Objects.requireNonNull(operationValidator);
+            diagramComponentProps.allDiagramDescriptions = Objects.requireNonNull(this.allDiagramDescriptions);
+            diagramComponentProps.operationValidator = Objects.requireNonNull(this.operationValidator);
             diagramComponentProps.previousDiagram = Objects.requireNonNull(this.previousDiagram);
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
             diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));

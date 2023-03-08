@@ -204,6 +204,7 @@ public class DiagramElementChangeVisibilityTests {
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
+                .allDiagramDescriptions(List.of(diagramDescription))
                 .viewCreationRequests(List.of())
                 .viewDeletionRequests(List.of())
                 .previousDiagram(previousDiagram)
@@ -293,7 +294,7 @@ public class DiagramElementChangeVisibilityTests {
         assertThat(newDiagram.getNodes()).filteredOn(n -> n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Hidden);
         assertThat(newDiagram.getNodes()).filteredOn(n -> !n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Normal);
         assertThat(newDiagram.getEdges()).filteredOn(e -> e.getSourceId().equals(modifiedNodeId) || e.getTargetId().equals(modifiedNodeId)).extracting(Edge::getState)
-                .allMatch(s -> s == ViewModifier.Hidden);
+        .allMatch(s -> s == ViewModifier.Hidden);
 
         var node2 = Node.newNode(diagram.getNodes().get(1))
                 .modifiers(Set.of(ViewModifier.Hidden))
@@ -316,7 +317,7 @@ public class DiagramElementChangeVisibilityTests {
         assertThat(newDiagram2.getNodes()).filteredOn(n -> modifiedNodeId.contains(n.getId())).extracting(Node::getState).allMatch(s -> s == ViewModifier.Hidden);
         assertThat(newDiagram2.getNodes()).filteredOn(n -> !modifiedNodeIds.contains(n.getId())).extracting(Node::getState).allMatch(s -> s == ViewModifier.Normal);
         assertThat(newDiagram2.getEdges()).filteredOn(e -> modifiedNodeIds.contains(e.getSourceId()) || modifiedNodeIds.contains(e.getTargetId())).extracting(Edge::getState)
-                .allMatch(s -> s == ViewModifier.Hidden);
+        .allMatch(s -> s == ViewModifier.Hidden);
 
         return new DiagramTestData(diagram, nodeDescriptions, List.of(edgeDescription, edge2Description));
     }

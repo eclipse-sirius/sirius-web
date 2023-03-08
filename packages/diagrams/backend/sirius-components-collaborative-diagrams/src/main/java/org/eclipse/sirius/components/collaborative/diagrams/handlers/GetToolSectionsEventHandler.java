@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,7 +30,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsPro
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionsInput;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -94,8 +94,8 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
+        List<ToolSection> toolSections = new ArrayList<>();
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
-        IPayload payload = null;
 
         if (diagramInput instanceof GetToolSectionsInput) {
             GetToolSectionsInput toolSectionsInput = (GetToolSectionsInput) diagramInput;
@@ -116,18 +116,13 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
 
                 if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
                     IToolSectionsProvider toolSectionsProvider = optionalToolSectionsProvider.get();
-                    List<ToolSection> toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
+                    toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
                             diagramDescription);
-                    payload = new GetToolSectionSuccessPayload(diagramInput.id(), toolSections);
                 }
-            } else {
-                String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetToolSectionsInput.class.getSimpleName());
-                payload = new ErrorPayload(diagramInput.id(), message);
             }
-
-            payloadSink.tryEmitValue(payload);
-            changeDescriptionSink.tryEmitNext(changeDescription);
         }
+        payloadSink.tryEmitValue(new GetToolSectionSuccessPayload(diagramInput.id(), toolSections));
+        changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
     private Optional<Object> findDiagramElement(Diagram diagram, String diagramElementId) {

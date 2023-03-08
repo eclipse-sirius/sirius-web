@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,8 +30,8 @@ public class NodeDescriptionRequestor implements INodeDescriptionRequestor {
 
     private final Map<UUID, NodeDescription> id2nodeDescription = new HashMap<>();
 
-    public NodeDescriptionRequestor(DiagramDescription diagramDescription) {
-        diagramDescription.getNodeDescriptions().forEach(this::cache);
+    public NodeDescriptionRequestor(List<DiagramDescription> diagramDescriptions) {
+        diagramDescriptions.stream().flatMap(description -> description.getNodeDescriptions().stream()).forEach(this::cache);
     }
 
     private void cache(NodeDescription nodeDescription) {

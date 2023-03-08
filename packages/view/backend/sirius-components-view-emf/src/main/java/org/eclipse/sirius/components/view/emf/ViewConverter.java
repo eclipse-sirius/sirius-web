@@ -54,33 +54,36 @@ public class ViewConverter implements IViewConverter {
     }
 
     /**
-     * Extract and convert the {@link IRepresentationDescription} from a {@link View} model by delegating to provided
+     * Extract and convert the {@link IRepresentationDescription} from a list of {@link View} models by delegating to provided
      * {@link IRepresentationDescriptionConverter}.
      */
     @Override
-    public List<IRepresentationDescription> convert(View view, List<EPackage> visibleEPackages) {
-        List<IRepresentationDescription> result = List.of();
-        AQLInterpreter interpreter = this.createInterpreter(view, visibleEPackages);
-        try {
-            // @formatter:off
-            result = view.getDescriptions().stream()
-                    .map(representationDescription -> this.convert(representationDescription, interpreter))
-                    .flatMap(Optional::stream)
-                    .toList();
+    public List<IRepresentationDescription> convert(List<View> views, List<EPackage> visibleEPackages) {
+        List<IRepresentationDescription> result = new ArrayList<>();
+        List<RepresentationDescription> allViewsRepresentationDescriptions = views.stream().flatMap(v -> v.getDescriptions().stream()).toList();
+        views.forEach(view -> {
+            AQLInterpreter interpreter = this.createInterpreter(view, visibleEPackages);
+            try {
+                // @formatter:off
+                result.addAll(view.getDescriptions().stream()
+                        .map(representationDescription -> this.convert(representationDescription, allViewsRepresentationDescriptions, interpreter))
+                        .flatMap(Optional::stream)
+                        .toList());
 
-            // @formatter:on
-        } catch (NullPointerException e) {
-            // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
-            // currently being created or edited.
-        }
+                // @formatter:on
+            } catch (NullPointerException e) {
+                // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
+                // currently being created or edited.
+            }
+        });
         return result;
     }
 
-    private Optional<IRepresentationDescription> convert(RepresentationDescription representationDescription, AQLInterpreter aqlInterpreter) {
+    private Optional<IRepresentationDescription> convert(RepresentationDescription representationDescription, List<RepresentationDescription> allViewsRepresentationDescriptions, AQLInterpreter aqlInterpreter) {
         // @formatter:off
         return this.representationDescriptionConverters.stream()
                 .filter(converter -> converter.canConvert(representationDescription))
-                .map(converter -> converter.convert(representationDescription, aqlInterpreter))
+                .map(converter -> converter.convert(representationDescription, allViewsRepresentationDescriptions, aqlInterpreter))
                 .findFirst();
         // @formatter:on
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.view.View;
 public interface IViewConverter {
 
     /**
-     * Extract and convert the {@link IRepresentationDescription} from a {@link View} model.
+     * Extract and convert the {@link IRepresentationDescription} from a list of {@link View} models.
      */
-    List<IRepresentationDescription> convert(View view, List<EPackage> visibleEPackages);
+    List<IRepresentationDescription> convert(List<View> views, List<EPackage> visibleEPackages);
 }

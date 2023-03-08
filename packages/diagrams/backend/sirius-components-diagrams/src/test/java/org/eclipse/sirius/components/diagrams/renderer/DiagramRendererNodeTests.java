@@ -224,12 +224,12 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof ImageNodeStyle);
         // @formatter:off
         assertThat(diagram.getNodes())
-            .extracting(n -> (ImageNodeStyle) n.getStyle())
-            .extracting(ImageNodeStyle::getImageURL).noneMatch(String::isBlank);
+                .extracting(n -> (ImageNodeStyle) n.getStyle())
+                .extracting(ImageNodeStyle::getImageURL).noneMatch(String::isBlank);
 
         assertThat(diagram.getNodes())
-            .extracting(n -> (ImageNodeStyle) n.getStyle())
-            .extracting(ImageNodeStyle::getScalingFactor).allMatch(scalingFactor -> scalingFactor == 1);
+                .extracting(n -> (ImageNodeStyle) n.getStyle())
+                .extracting(ImageNodeStyle::getScalingFactor).allMatch(scalingFactor -> scalingFactor == 1);
         // @formatter:on
     }
 
@@ -288,6 +288,7 @@ public class DiagramRendererNodeTests {
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
+                .allDiagramDescriptions(List.of(diagramDescription))
                 .viewCreationRequests(List.of())
                 .viewDeletionRequests(List.of())
                 .previousDiagram(previousDiagram)

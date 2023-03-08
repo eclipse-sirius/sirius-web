@@ -138,8 +138,8 @@ public class UnsynchronizedDiagramTests {
 
         // @formatter:off
         ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
-            .elementId(nodeIdToDelete)
-            .build();
+                .elementId(nodeIdToDelete)
+                .build();
         // @formatter:on
         Diagram refreshedDiagramAfterNodeDeletion = this.render(diagramDescription, List.of(), List.of(viewDeletionRequest), Optional.of(refreshedDiagramAfterNodeCreation));
         assertThat(refreshedDiagramAfterNodeDeletion.getNodes()).hasSize(1);
@@ -238,8 +238,8 @@ public class UnsynchronizedDiagramTests {
         String nodeIdToDelete = diagramAfterSecondNodeCreation.getNodes().get(0).getChildNodes().get(0).getId();
         // @formatter:off
         ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
-            .elementId(nodeIdToDelete)
-            .build();
+                .elementId(nodeIdToDelete)
+                .build();
         // @formatter:on
         Diagram diagramAfterSecondNodeDeletion = this.render(diagramDescription, List.of(), List.of(viewDeletionRequest), Optional.of(diagramAfterFirstNodeCreation));
 
@@ -260,6 +260,7 @@ public class UnsynchronizedDiagramTests {
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
+                .allDiagramDescriptions(List.of(diagramDescription))
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)

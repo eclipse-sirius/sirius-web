@@ -84,7 +84,16 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     @Override
     public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
-        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, Optional.empty());
+        // @formatter:off
+        var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
+                .values()
+                .stream()
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .toList();
+        // @formatter:on
+
+        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, allDiagramDescriptions, Optional.empty());
         return newDiagram;
     }
 
@@ -97,18 +106,25 @@ public class DiagramCreationService implements IDiagramCreationService {
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
+
+        var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
+                .values()
+                .stream()
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .toList();
         // @formatter:on
 
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, Optional.of(diagramContext));
+            Diagram diagram = this.doRender(previousDiagram.getLabel(), object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, Optional<IDiagramContext> optionalDiagramContext) {
+    private Diagram doRender(String label, Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<IDiagramContext> optionalDiagramContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
@@ -126,6 +142,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
+                .allDiagramDescriptions(allDiagramDescriptions)
                 .operationValidator(this.operationValidator)
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
@@ -176,8 +193,8 @@ public class DiagramCreationService implements IDiagramCreationService {
         return optionalDiagramContext.isEmpty()
                 || diagramDescription.isAutoLayout()
                 || optionalDiagramContext.map(IDiagramContext::getDiagramEvent)
-                        .filter(ArrangeAllEvent.class::isInstance)
-                        .isPresent();
+                .filter(ArrangeAllEvent.class::isInstance)
+                .isPresent();
         // @formatter:on
     }
 

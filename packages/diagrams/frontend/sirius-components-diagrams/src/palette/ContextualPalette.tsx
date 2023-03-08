@@ -259,9 +259,9 @@ export const ContextualPalette = ({
     }
   }, [toolSectionsLoading, toolSectionsData, toolSectionsError, dispatch]);
 
-  const atLeastOneSingleClickOnTwoDiagramElementsTool = toolSections.some((toolSection) =>
-    toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
-  );
+  const atLeastOneSingleClickOnTwoDiagramElementsTool = toolSections.some((toolSection) => {
+    return toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool');
+  });
 
   let invokeLabelEdit;
   if (renameable && isWithEditableLabel(diagramElement)) {
