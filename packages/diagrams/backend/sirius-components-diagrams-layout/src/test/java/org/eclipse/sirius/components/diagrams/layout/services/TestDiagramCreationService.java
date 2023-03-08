@@ -81,6 +81,7 @@ public class TestDiagramCreationService {
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
+                .allDiagramDescriptions(List.of(diagramDescription))
                 .viewCreationRequests(List.of())
                 .viewDeletionRequests(List.of())
                 .previousDiagram(optionalPreviousDiagram)

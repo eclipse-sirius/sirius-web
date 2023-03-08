@@ -45,6 +45,8 @@ public class DiagramComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         DiagramDescription diagramDescription = this.props.getDiagramDescription();
+        List<DiagramDescription> allDiagramDescriptions = this.props.getAllDiagramDescriptions();
+
         var optionalPreviousDiagram = this.props.getPreviousDiagram();
         variableManager.put(DiagramComponentProps.PREVIOUS_DIAGRAM, optionalPreviousDiagram.orElse(null));
         variableManager.put(IDiagramEvent.DIAGRAM_EVENT, this.props.getDiagramEvent().orElse(null));
@@ -57,7 +59,7 @@ public class DiagramComponent implements IComponent {
         DiagramRenderingCache cache = new DiagramRenderingCache();
 
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
-        INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(diagramDescription);
+        INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
         // @formatter:off
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {

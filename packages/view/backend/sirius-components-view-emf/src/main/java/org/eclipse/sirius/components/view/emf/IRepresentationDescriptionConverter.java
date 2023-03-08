@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
+
+import java.util.List;
 
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -25,5 +27,5 @@ public interface IRepresentationDescriptionConverter {
 
     boolean canConvert(RepresentationDescription representationDescription);
 
-    IRepresentationDescription convert(RepresentationDescription representationDescription, AQLInterpreter interpreter);
+    IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter);
 }

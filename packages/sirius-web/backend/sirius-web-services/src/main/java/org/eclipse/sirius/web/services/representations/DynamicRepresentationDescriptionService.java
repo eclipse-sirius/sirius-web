@@ -71,15 +71,18 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     public List<IRepresentationDescription> findDynamicRepresentationDescriptions(IEditingContext editingContext) {
         List<IRepresentationDescription> dynamicRepresentationDescriptions = new ArrayList<>();
         if (this.isStudioDefinitionEnabled) {
+            List<View> views = new ArrayList<>();
             List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);
+            ResourceSet resourceSet = this.createResourceSet(this.ePackageRegistry);
             this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
-                Resource resource = this.loadDocumentAsEMF(documentEntity);
-                // @formatter:off
-                this.getViewDefinitions(resource).forEach(view -> this.viewConverter.convert(view, accessibleEPackages).stream()
-                        .filter(Objects::nonNull)
-                        .forEach(dynamicRepresentationDescriptions::add));
-                // @formatter:on
+                Resource resource = this.loadDocumentAsEMF(documentEntity, resourceSet);
+                views.addAll(this.getViewDefinitions(resource).toList());
             });
+            // @formatter:off
+            views.forEach(view -> this.viewConverter.convert(views, accessibleEPackages).stream()
+                    .filter(Objects::nonNull)
+                    .forEach(dynamicRepresentationDescriptions::add));
+            // @formatter:on
         }
         return dynamicRepresentationDescriptions;
     }
@@ -87,20 +90,21 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
     @Override
     public Optional<IRepresentationDescription> findDynamicRepresentationDescriptionById(IEditingContext editingContext, String representationDescriptionId) {
         if (this.isStudioDefinitionEnabled) {
+            List<View> views = new ArrayList<>();
             List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingContext);
-            for (DocumentEntity documentEntity : this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI)) {
-                Resource resource = this.loadDocumentAsEMF(documentEntity);
-                for (View view : this.getViewDefinitions(resource).toList()) {
-                    // @formatter:off
-                    var candidate = this.viewConverter.convert(view, accessibleEPackages).stream()
-                                        .filter(Objects::nonNull)
-                                        .filter(representationDescription -> Objects.equals(representationDescriptionId, representationDescription.getId()))
-                                        .findFirst();
-                    // @formatter:on
-                    if (candidate.isPresent()) {
-                        return candidate;
-                    }
-                }
+            ResourceSet resourceSet = this.createResourceSet(this.ePackageRegistry);
+            this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
+                Resource resource = this.loadDocumentAsEMF(documentEntity, resourceSet);
+                views.addAll(this.getViewDefinitions(resource).toList());
+            });
+            // @formatter:off
+            var candidate = this.viewConverter.convert(views, accessibleEPackages).stream()
+                    .filter(Objects::nonNull)
+                    .filter(representationDescription -> Objects.equals(representationDescriptionId, representationDescription.getId()))
+                    .findFirst();
+            // @formatter:on
+            if (candidate.isPresent()) {
+                return candidate;
             }
         }
         return Optional.empty();
@@ -111,9 +115,9 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
             Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
             // @formatter:off
             return packageRegistry.values().stream()
-                                  .filter(EPackage.class::isInstance)
-                                  .map(EPackage.class::cast)
-                                  .toList();
+                    .filter(EPackage.class::isInstance)
+                    .map(EPackage.class::cast)
+                    .toList();
             // @formatter:on
         } else {
             return List.of();
@@ -124,11 +128,7 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
         return resource.getContents().stream().filter(View.class::isInstance).map(View.class::cast);
     }
 
-    private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
-        ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
-        resourceSet.setPackageRegistry(this.ePackageRegistry);
-
+    private Resource loadDocumentAsEMF(DocumentEntity documentEntity, ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
         resourceSet.getResources().add(resource);
         try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
@@ -137,5 +137,12 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
             this.logger.warn(exception.getMessage(), exception);
         }
         return resource;
+    }
+
+    private ResourceSet createResourceSet(EPackage.Registry packageRegistry) {
+        ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
+        resourceSet.setPackageRegistry(packageRegistry);
+        return resourceSet;
     }
 }

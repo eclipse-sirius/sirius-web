@@ -143,7 +143,7 @@ public class DynamicDiagramsTests {
         ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of(),
                 new IViewToolImageProvider.NoOp());
         var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext());
-        List<IRepresentationDescription> conversionResult = viewConverter.convert(view, List.of(EcorePackage.eINSTANCE));
+        List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class);
         org.eclipse.sirius.components.diagrams.description.DiagramDescription convertedDiagramDescription = (org.eclipse.sirius.components.diagrams.description.DiagramDescription) conversionResult

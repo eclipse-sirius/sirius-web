@@ -68,7 +68,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription representationDescription, AQLInterpreter interpreter) {
+    public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
         ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
         // @formatter:off
@@ -95,11 +95,11 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         // @formatter:off
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             return this.self(variableManager)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
-                .map(this.objectService::getId)
-                .orElse(null);
+                    .filter(self -> self instanceof List<?>)
+                    .map(self -> (List<?>) self)
+                    .flatMap(self -> self.stream().findFirst())
+                    .map(this.objectService::getId)
+                    .orElse(null);
         };
 
         return FormDescription.newFormDescription(descriptionId)
