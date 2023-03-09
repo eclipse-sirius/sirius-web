@@ -1,0 +1,461 @@
+:imagesdir: images/layout
+= Layout specification
+
+== Context
+
+When the project was first started a couple years ago, we only used ELK and a fully automatic layout.
+After that, we wanted to let end users move nodes by themselves and so we introduced the incremental layout.
+
+This incremental layout works by having an existing layout and the current event in order to compute a new layout.
+It was a very simple approach which produced good results for a low cost.
+
+It does not really know how to layout everything from scratch, which is why everything is layouted with ELK first, it simply determines how an event impact the current layout.
+One of the issue with this approach is that since we have more and more complex diagrams, we need to handle a very complex set of interactions between an existing layout and all the possible events.
+On top of that, we also had to deal with complex unsynchronized diagrams which can start with a blank state.
+In those case, ELK will just layout an empty diagram and the incremental layout will have to handle everything by itself.
+We also have to deal with the fact that the incremental layout is sometimes getting better than ELK at computing the internal layout of a node so in some use cases, we can't simply ask ELK to layout everything and take over from there since using ELK would break the existing diagram.
+
+The incremental layout does not really produce a deterministic result since the order of the events has a lot of impact in creating the final layout.
+
+WARNING: The incremental layout does not really know how to compute the size of a node.
+It just has various ways to update the size of a node given a specific event.
+This can create use cases where the size of a node is not stable
+
+WARNING: Some of the features that we introduced over the years can also contradict one another making node change sizes during a refresh even if they should not.
+
+We currently do not have a clear and precise specification on the internal layouting of the nodes.
+We are vaguely following some principles from a box model but they are not set in stone so we have tons of hardcoded use cases.
+Since we had to build support for complex use cases in parallel very quickly we also do not cover all the possible interactions from all of those use cases together.
+
+Given the fact that we have a couple of layouting strategies which define how nodes should be managed by their container:
+
+- List
+- Free form
+- Border nodes
+
+and various types of nodes which are each treated differently such as:
+
+- Rectangle
+- Image
+- Parametric SVG
+- Icon and label
+
+and a lot of events with no, one or multiple set of coordinates, it creates a lot of complexity and tons of edges cases where some features do not have a defined behavior.
+As a result, since there are conflicting sets of rules vaguely defined, we don't know how to compute the size of a node.
+
+== Decision
+
+=== Box model
+
+We will switch to a diagram box model similar to the ones available in CSS.
+As a result, the type and style of a node will not have any impact on the way it is layouted.
+We will instead details rules based on our box model on the way those boxes are organized and each style will be mapped on those rules.
+
+For example, the size of image nodes will not depend anymore on the size of the original image.
+This did not make much sense since, to have a good appearance, we ask specifiers to use SVG images which can scale without issues.
+With our box model, everything will be treated as a box represented by a rectangle.
+Even a node with a circle image as its style will be considered as a set of rectangles.
+
+WARNING: Edges will not in any way influence the size and thus the footprint of the box model of a node.
+When edges are defined between descendants of a node, their own footprint will not count in the content of said node.
+Think about a parent node containing two child nodes related by an edge with various routing points.
+The edges may go outside of the node without any impact.
+Think of it this way, edges are defined on the diagram and are not contained in any node.
+Which is exactly how they are really defined, computed and how they are rendered.
+
+WARNING: Contrary to any other style, parametric SVG have been introduced in order to let a specifier customize anything in a node style.
+It currently allows a specifier to select exactly where a label will be displayed, where the child nodes will be appear, etc.
+Technically, parametric SVGs have been introduced to let a specifier provide an alternate box model to create new default mapping styles.
+With this new approach, parametric SVGs will not exist anymore.
+There won't be a way to escape the generic rules of our box model anymore.
+Everyone will have to abide by the same rules.
+Instead we will have to introduce an API in order to let providers of images compute the image dynamically.
+For example to give different images depending on the dimensions of the node, its color, its background color etc.
+This would have to be specified in an entirely different architectural decision record.
+
+WARNING: This document details the various options of the layout algorithm and the diagram description.
+It does not mean that those concepts will all be visible to the specifiers or end users.
+Some of those concepts may be presented in the View DSL but they may be integrated there using high level concepts.
+
+
+=== The state of the art, the CSS Box model
+
+CSS has a box model which is based on four boxes embedded one into the other:
+
+- The content box
+- The padding box
+- The border box
+- The margin box
+
+image:box_model_css.png[The CSS box model]
+
+In CSS, there are two box models, the standard one and the alternate one.
+The standard box model considers that the size of an element is the size of its content box while the alternate one consider that the size of an element is the size of its content + padding + border.
+This alternate box model makes it easier to organize elements since everything is included in the size directly.
+The margin is never included in the size of an element but it is used to find out the footprint of the element when its parent needs to layout it.
+An element can have a size of 50x50 but with a margin of 25 on each side it can end up with a footprint of 100x100 in its container.
+If a parent is not able to display all the content of its child elements, it triggers an overflow vertically, horizontally or both.
+
+While historically, the standard box model was mainly used it has been more and more replaced by the alternate one in order to simplify the layouting of the DOM elements.
+It has almost become one the key best practices in modern web development to switch everything to the alternate box model from the very beginning of a new project.
+
+In the Sirius Components frontend, we have always relied on the alternate box model since we are using `<CssBaseline />` from MaterialUI which, in a similar manner as the project `normalize.css`, which we used before with our custom `reset.css`, is setting the alternate box model for every elements by default.
+We can still find a reference to this practice in the soon-to-be-deprecated `reset.css` file of `sirius-web`:
+
+```
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+```
+
+This is how the documentation of MaterialUI describes the impact on the layout of `<CssBaseline />`:
+
+NOTE: `box-sizing` is set globally on the `<html>` element to `border-box`. Every element—including `*::before` and `*::after` are declared to inherit this property, which ensures that the declared width of the element is never exceeded due to padding or border.
+
+
+=== Our node box model
+
+Our box model needs to take care of uses cases which are a bit more complex than the CSS box models.
+On the other hand, we don't need to let specifiers parameterize our layouting algorithm with as many options as web developers are using in CSS.
+We will also never in any way support elements overflowing from their container.
+Every single element should have enough space to be displayed at all time.
+
+WARNING: To be even more specific, a node will always be resized to display its label, all its border nodes and all of its children.
+If a specifier configures the size of a node to be 50x50 and at the same time the node must contain a label provided by the end user which requires 80x80 to be displayed then the size of the node will grow to display the label.
+
+Our diagram box model will thus contain the following boxes:
+
+- The content box
+- The inside label box
+- The border box
+- The border nodes box
+- The outside label box
+- The margin box
+
+Each box mentioned in this list includes all the previous ones.
+As such, this is a list of expanding boxes.
+
+image:box_model_sample.png[A node with an inside label and a small border. On this node, there are two border nodes which each an image as the content and an outside label. The node also has a large margin box to prevent other nodes from being too close.]
+
+The content box may be empty with a minimal size of 0px x 0px and all the others can be equal to the previous one.
+No box is required to add anything to the footprint of the node.
+We can have a node with no border or no margin or no label.
+Creating a very small box prove challenging to work with in the frontend but there are no specific layout issue with small nodes.
+
+WARNING: Each box will handle one specific concern and its content will never in any way overlap another box.
+
+In a similar manner as in CSS, each box will have its dedicated color to be able to identify them in the specification:
+
+- Blue for the content box
+- Green for the inside label box
+- Orange for the border box
+- Purple for the border nodes box
+- Teal for the outside label box
+- White with a dashed border for the margin box
+
+==== Size
+
+The `size` of a node, specified using a `width` and a `height`, will thus be determined by the size of its:
+
+- content box
+- inside label box
+- border box
+
+Since the border box contains the inside label box which in turns contains the content box, the size of a node is the size of its border box.
+
+Just like in CSS some the other boxes specified before will not count toward the size of the node.
+As a result, if a specifier tell us that a node must have a size of 100x100, it will only be used to influence the size of those boxes.
+A node with a size of 100x100 can have a 10x500 border node.
+This has no impact on its size.
+
+The following nodes all have the same size:
+
+image:box_model_node_size.png[Various nodes with the same size]
+
+===== Size and contraints
+
+Nodes will have multiple types of sizes, such as:
+
+- a current size
+- a prefered size
+- a minimal size
+
+The current size is, of course, the size affected to a node at a given time.
+It may be null if the size of the node has not been computed yet.
+
+The prefered size of a node is the size of the node without any constraint.
+It can be configured by a specifier or by default in the application.
+You can think of it as the size the node should take if its parent has a free form layout strategy.
+For example, one could expect all its empty nodes associated with a specific node description to have a size of 150x70.
+
+The minimal size is the smallest size a node can take at any moment.
+It is directly influenced by the size of its content and its child layout strategy.
+As an example, image that the node described before with a prefered size of 150x70 has a minimal size of 10x10.
+On the other hand, let's consider that this node now has a large label, multiple children and large number of border nodes.
+This forces it to have a minimal size of 250x120.
+
+
+==== Footprint
+
+The following boxes will count toward the footprint of the node, specified also using a `width` and a `height`, when layouted in a parent but they will not be part of the size of the node.
+
+- border nodes box
+- outside label box
+- margin box
+
+As a result, our node of 100x100 could have a footprint of 200x150 because of its border nodes, outside label and margin.
+We would thus have to consider this footprint of 200x150 in order to find out how this node would overlap its siblings.
+In the example below, we can see various nodes of the same size but various footprints.
+
+image:box_model_node_footprint.png[Various nodes with the same size but different footprints]
+
+The child layouting strategy of the parent may impose a specific footprint for our node.
+The requested footprint will always have to be at least the minimal footprint of our node.
+If the requested footprint is bigger than our current footprint, then we will have to ask the child to render itself with a bigger footprint.
+For example, if a child node is located in a large parent node with a list layout, this will not change the size of the border of the child node.
+
+
+==== Footprint and constraints
+
+In some use case, to match a footprint requested by our parent, we will have to compute another footprint for a node.
+The configuration of a node should indicate which boxes should be resized in order to match the newly requested footprint.
+
+For example, if we consider a node with a list layout in a column, it may ask some of its children to occupy a larger footprint than necessary.
+In one case, the specifier may want those children to expand their outside label box to occupy this larger footprint, for example for the attributes of a class diagram.
+
+image:box_model_expected_footprint_outside_label.png[Expanding the outside label box to match a requested footprint]
+
+In another case, the specifier may want those children to expand their content box to occupy this larger footprint, for example for the regions of a state machine.
+
+image:box_model_expected_footprint_content.png[Expanding the content box to match a requested footprint]
+
+=== Content box
+
+The size of the content box will depend on the child layout strategy used by the node (think `display:` in CSS) and the footprint of its children.
+The footprint of the children will be necessary to avoid any overlap between the various children.
+
+The size of the content box will not depend in any way on the internal structure of its children.
+It will only depend on the footprint of its children to avoid overlap but will not behave differently if the children are using an image vs rectangle style or if they have border nodes or not.
+The internal structure of the child nodes is a black box for the layouting of the content box.
+
+WARNING: This is one of our biggest pain point today.
+We have a lot of corner case specifying how the layout of the parent should behave if the children are laid out in a specific way.
+As a result, it creates a combinatorial explosion of use cases that we have to handle.
+
+==== Child layout strategies
+
+We will support two child layout strategies for the moment:
+
+- List
+- Free form
+
+The list layout strategy is similar to the grid algorithm with one column or one row while the free form one does not really exist in CSS.
+It would be something like child nodes with a specific position policy like `position: relative`.
+
+==== List layout strategy
+
+This child layout strategy will be a bit similar to some use cases of the grid CSS algorithm.
+In a list child layout strategy, child nodes will be rendered as a vertical or horizontal list using the order they have in their parent node.
+
+Given the various use cases for a list layout that we have encountered, the specifier will have to be able to specify not only the direction of the list but also how the child nodes should occupy the content box of their parent both vertically and horizontally.
+
+As a result, the list child layout strategy will support the following rules:
+
+- `direction`: Used to define the direction of the main axis, the only possible values will be `row` or `column`.
+- `align-items`: Used to define how the child nodes are laid out on the column axis. The only possible values for now will be `start` or `stretch`.
+- `justify-items`: Used to define how the child nodes are laid out on the row axis. The only possible values for now will be `start` or `stretch`.
+
+A list layout with the direction `row` will have to use the rule `align-items: stretch`.
+As a result, all the children will have the same height which will be the height of the content box of their parent.
+In a similar manner, in a list layout with the direction `column`, the rule `justify-items: stretch` will have to be used.
+In this case, all the children will have the same width which will be the width of the content box of their parent.
+
+Here are some examples use cases from various projects:
+
+The following configuration could be used to create a class from a class diagram for example:
+
+```
+direction: column
+align-items: start
+justify-items: stretch
+```
+
+NOTE: Insert a demo
+
+In this case, the footprint of all the children will have the same width, since they will be stretched on the row axis, using the width of the footprint of the largest child, but they will each keep their own height.
+They will simply be laid out from the top of the content box since the option `align-items` is using the value `start`.
+
+
+On the other hand, the following configuration could be use for an UML state machine which would require child nodes occupying all the available space of the parent at all time:
+
+```
+direction: column
+align-items: stretch
+justify-items: stretch
+```
+
+NOTE: Insert a demo
+
+In this situation, all the child nodes will have the same width, the width of the footprint of the larget child, but the content box of their parent will have for height, the sum of the height of the children.
+
+
+In order to support a vertical layout of the children the following configuration could instead be used:
+
+```
+direction: row
+align-items: stretch
+justify-items: stretch
+```
+
+NOTE: Insert a demo
+
+
+==== Free form layout strategy
+
+===== Overlap
+
+If a new node were to overlap existing nodes, we will move the existing nodes in one direction and one direction only to have enough space to insert the new node.
+This direction can only be verticaly or horizontaly.
+As such, moving a node to make room for another one will be done with a transalation changing either the parameter `x` or `y` of its position.
+
+If the newly moved nodes are also overlapping other nodes, we will move these nodes in one direction to have enough space.
+We will continue to do so recursively.
+Since a diagram has no bounds in any direction and since a node can be as big as necessary, moving existing nodes in this way can be done recursively without issues.
+
+NOTE: Insert a demo
+
+=== Inside label box
+
+The inside label box is a place where labels can be put inside of the node.
+These labels will count torward the size and thus the footprint of the node.
+Child nodes can only be layouted with a position inside the content box.
+After child nodes have been layouted, the full size of the content box will be known.
+Then we will compute the size of the label box, as a result a child node will never be able to be placed in the inside label box.
+
+Like any box surrounding the content box, the inside label box may expand the size of the content box in all directions (top, right, bottom, left).
+There are no requirements to expand the size of the node in all directions at once.
+Think of it like a `padding: 0 0 0 10px` which does not expand a DOM element in all directions.
+As such a node with only an inside label on the top of the node would expand the size of the node on top but not on the left, bottom or right.
+
+WARNING: Technically nothing would prevent a node description with both a top and a bottom labels but we may not expose to the specifier a way to do this.
+
+The inside label box will contain both the label and an optional icon.
+The size of the inside label box depends on:
+
+- the font
+- the size of the font
+- the styling of the font (bold and/or italic)
+- the gap between the font and the icon
+- the size of the icon
+- the text of the label (number of characters, monoline or multiline)
+- the padding of the inside label box
+
+The inside label box will also have a dedicated layout strategy since the label can be aligned in different directions (top left vs top right for example).
+
+The impact of the label box may change depending on the configuration of the label.
+
+- TOP_{LEFT|CENTER|RIGHT} and BOTTOM_{LEFT|CENTER|RIGHT} labels -> expand the size of the node vertically
+- LEFT_{TOP|CENTER|BOTTOM} and RIGHT_{TOP|CENTER|BOTTOM} labels -> expand the size of the node horizontally
+- CENTER Label -> stretch in both direction
+
+NOTE: Insert a demo of every label position and the consequences on the size of the inside label box
+
+A TOP_LEFT label would thus be located at the same position as a LEFT_TOP label but they would not expand the size of the node the same way.
+The TOP_LEFT label would expand the node on the top and the content box of the node would be located below the label.
+On the other hand, a LEFT_TOP label would expand the node on the left and the content box of the node would be located on the right of the label.
+
+As a result, with a center label a node cannot have any child nodes.
+In this case, the inside label box would replace entirely the content box.
+
+
+=== Border box
+
+The border box is placed around the inside label box.
+Its size is determined by the requested size of the border.
+Technically each size of the border could have a different size like in CSS with `border-width: 0px 1px 2px 3px`.
+
+
+=== Border nodes box
+
+Border nodes will be placed in the border nodes box.
+It will not count torward the size of the node.
+If a specifier requires a node to have a size of 100x100, then the border nodes would still stick outside of this area.
+
+WARNING: They will not overlap the content box, inside label box nor the border box.
+
+While resizing a node, the border nodes will not be resized or modified in any way.
+They would just be moved to stay at the same location proportionnaly.
+For example, if a border node is located on the left of a node at 40% from the top, resizing the node would still keep the border node at 40% from the top if possible.
+
+The border nodes box cannot be modified by a request from a minimal footprint.
+
+
+=== Outside label box
+
+It does not count in the size of the node.
+It cannot be wrapped in the same way that border nodes cannot be impacted by a request for a smaller node footprint.
+
+WARNING: Strictly outside of the border nodes box, if we have border nodes on the bottom, the label is pushed further
+
+=== Margin box
+
+It is used to force nodes not be stuck one next to the others.
+
+
+
+
+=== Resizing
+
+The specifier may give us a prefered size for a node and we will try to use it as the current size of the node.
+The end user may also try to resize a node to their prefered size.
+We will also try to fulfill this request.
+
+==== Free form layout strategy
+
+Regardless of the request, resizing a node cannot change in any way the footprint of its children.
+The children of a node are a black box with regards to the parent.
+Resizing a node in this case will keep the border node proportionaly at their location if possible.
+
+
+==== List layout strategy
+
+
+- Content box and free form layout strategy
+- Content box and list layout strategy
+- min size horizontally?
+- min size vertically?
+- both?
+
+
+We will not wrap the labels of a child to let a parent be resized.
+
+
+==== Wrapped labels
+
+If the size of the node is not constrained (by its parent or by a size given by the specifier / the end user) then its label cannot be wrapped.
+The node will thus consider the place necessary to display the label.
+
+Labels can only be wrapped in their own inside label box.
+A wrapped label will thus increase the height of its inside label box.
+
+We will have to be able to compute the minimal size of the node using a wrapped label and not only using a non-wrapped label.
+
+
+
+== Status
+
+Work in progress
+
+
+== Consequences
+
+This work will only be done using the new layout data structures.
+A flag will be introduced from the very beginning in order to switch between the existing algorithm and this new one.
+It will allow us to compare both algorithm very quickly.
+
+The ELK configuration will not be used anymore by the new box model.
+The endgame is to have everything configurable thanks to the view DSL, not only by Java.
