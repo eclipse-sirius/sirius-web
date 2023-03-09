@@ -594,7 +594,7 @@ export const diagramRepresentationMachine = Machine<
           activeConnectorTools: [],
           latestSelection: { entries: [] },
           newSelection: { entries: [] },
-          zoomLevel: undefined,
+          zoomLevel: '1',
           selectedObjectId: undefined,
         };
       }),

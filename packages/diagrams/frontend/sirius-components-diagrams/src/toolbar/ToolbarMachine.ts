@@ -36,7 +36,7 @@ export type SchemaValue = {
 
 export interface ToolbarContext {
   modal: string | null;
-  currentZoomLevel: string | null;
+  currentZoomLevel: string;
   message: string | null;
 }
 
@@ -118,14 +118,14 @@ export const toolbarMachine = Machine<ToolbarContext, ToolbarStateSchema, Toolba
         const { modal } = event as ShareDiagramModalEvent;
         return { modal };
       }),
-      closeModal: assign((_, event) => {
+      closeModal: assign((_, _event) => {
         return { modal: null };
       }),
       setMessage: assign((_, event) => {
         const { message } = event as ShowToastEvent;
         return { message };
       }),
-      clearMessage: assign((_, event) => {
+      clearMessage: assign((_, _event) => {
         return { message: null };
       }),
     },
