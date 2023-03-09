@@ -1,0 +1,103 @@
+= ADR-097 - Separate the layout data structures from the diagram data structures
+
+== Context
+
+Our core diagram data structures (`Diagram`, `Node`, `Edge`, `Label`) contains a lot of layouting information.
+There presence require the diagram rendering algorithm to have an opinion on how elements will be layouted.
+As a result, we sometime have to initialize some of those values with placeholders which do not make much sense.
+This creates some complexity in the layout algorithm.
+
+On top of that, it is quite difficult to find out some layouting information in the diagram since we have to navigate in the diagram data structure which is not optimized for our needs.
+We also have some attributes which do not make much sense like `Diagram#size` and `Diagram#position`.
+
+Finally, we have several key improvements to the layout algorithm that we want to deliver soon.
+
+== Decision
+
+We will mark as deprecated all attributes related to the layout from the diagram data structures such as:
+
+- `Diagram#size`
+- `Diagram#position`
+- `Node#size`
+- `Node#position`
+- `Node#customizedProperties` for size
+- `Label#size`
+- `Label#position`
+- `Label#alignment`
+- `Edge#routingPoints`
+- `Edge#sourceAnchorRelativeRatio`
+- `Edge#targetAnchorRelativeRadio`
+
+Instead, a new data structure used to hold the layout data while the diagram is persisted will be used.
+This layout data structure will live alongside the diagram data structure.
+Both will be loaded simultaneously and both will be persisted simultaneously.
+The new data structures will be organized as such:
+
+```
+public record DiagramLayoutData (
+  Map<String, NodeLayoutData> nodesLayoutData,
+  Map<String, EdgeLayoutData> edgesLayoutData
+  Map<String, LabelLayoutData> labelsLayoutData
+) {}
+
+public record NodeLayoutData (
+  Position position,
+  Size size
+) {}
+
+public record EdgeLayoutData (
+  Ratio sourceAnchorRelativePosition,
+  Ratio targetAnchorRelativePosition,
+  List<Position> routingPoints
+) {}
+
+public record LabelLayoutData (
+  Position position,
+  Size size,
+  Position alignment
+) {}
+```
+
+We may simply store the `DiagramLayoutData` in a field `Diagram#layoutData` which would contain everything related to the layout information in one place.
+
+Using this, we will be able to access much more quickly to the layout data of any diagram elements.
+On top of that, modifing the layout of the diagram should not involve recreating every single diagram elements from scratch.
+We would simply have to copy the diagram with its new layout data:
+
+```
+var layoutedDiagram = Diagram.newDiagram(nonLayoutedDiagram)
+    .layoutData(layoutData)
+    .build();
+```
+
+These new data structures will simply allow us to manipulate more easily all the layout data of a diagram.
+If new nodes or new edges have been created during a new rendering, then they should not have any associated layout data.
+This will give us the ability to remove `Size#UNDEFINED` and `Position#UNDEFINED` which were creating a lot of problems.
+
+In a similar fashion, straightening an edge could be done very easily by removing its routing points:
+
+```
+var edgeLayoutData = diagram.layoutData().edgesLayoutData().get(edgeId);
+var straightenedEdgeLayoutData = new EdgeLayoutData(edgeLayoutData.sourceAnchorRelativePosition, edgeLayoutData.targetAnchorRelativePosition, List.of());
+
+var newEdgeLayoutData = new HashMap<String, EdgeLayoutData>(diagram.layoutData().edgesLayoutData());
+newEdgeLayoutData.put(edgeId, straightenedEdgeLayoutData);
+
+var layoutedDiagram = Diagram.newDiagram(diagram)
+    .layoutData(new DiagramLayoutData(diagram.layoutData().nodesLayoutData(), edgesLayoutData, diagram.layoutData().labelsLayoutData()))
+    .build();
+```
+
+Those new layout data structures will give us a more efficient input and output of the layout algorithm but they will not be the only data structure of the layout algorithm itself.
+The layout algorithm does not even have to use those data structure internally.
+
+== Status
+
+Accepted
+
+== Consequences
+
+For the moment both data structure will remain in the diagram.
+When the code will not depend on the old data structures, they will be removed.
+
+No pieces of code should rely on both kind of data structures.
