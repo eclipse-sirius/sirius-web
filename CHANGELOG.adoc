@@ -64,6 +64,7 @@ This will allow us to easily compare the current layout algorithm and the new on
 This has no visible effect at the moment, but will allow better documentation, validation and configuration later.
 - [studio] Add a project template for the Papaya domains and view
 - https://github.com/eclipse-sirius/sirius-components/issues/1667[#1667] [diagram] Make the contextual palette self contained 
+- https://github.com/eclipse-sirius/sirius-components/issues/1858[#1858] [project] Improve project template cards layout
 
 == v2023.3.0
 

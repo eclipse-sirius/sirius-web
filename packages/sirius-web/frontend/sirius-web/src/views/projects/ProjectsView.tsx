@@ -159,8 +159,9 @@ const useProjectsViewStyles = makeStyles((theme) => ({
     },
   },
   projectCardsContainer: {
-    display: 'flex',
-    gap: theme.spacing(6),
+    display: 'grid',
+    gap: theme.spacing(1),
+    gridTemplateColumns: 'repeat(6, 1fr)',
   },
   projectCard: {
     width: theme.spacing(30),
@@ -172,6 +173,9 @@ const useProjectsViewStyles = makeStyles((theme) => ({
     textTransform: 'none',
     fontWeight: 400,
     fontSize: theme.spacing(2),
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
   projectCardIcon: {
     fontSize: theme.spacing(8),
@@ -188,11 +192,14 @@ const useProjectsViewStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  showAlltemplatesCard: {
+  showAllTemplatesCardContent: {
     backgroundColor: theme.palette.divider,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  showAllTemplatesCardActions: {
+    minWidth: 0,
   },
 }));
 
@@ -377,13 +384,15 @@ export const ProjectsView = () => {
                       }}
                       data-testid="show-all-templates">
                       <Card className={classes.projectCard}>
-                        <CardContent className={classes.showAlltemplatesCard}>
+                        <CardContent className={classes.showAllTemplatesCardContent}>
                           <MoreHorizIcon className={classes.projectCardIcon} htmlColor="white" />
                         </CardContent>
-                        <CardActions>
-                          <Typography variant="h5" className={classes.projectCardLabel}>
-                            Show all templates
-                          </Typography>
+                        <CardActions className={classes.showAllTemplatesCardActions}>
+                          <Tooltip title={'Show all templates'}>
+                            <Typography variant="h5" className={classes.projectCardLabel}>
+                              Show all templates
+                            </Typography>
+                          </Tooltip>
                         </CardActions>
                       </Card>
                     </Button>
