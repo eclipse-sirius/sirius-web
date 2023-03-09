@@ -7,6 +7,7 @@
 - [ADR-094] Provide better control on contextual palette's content
 - [ADR-095] Use richer data types in the View DSL definition
 - [ADR-096] Distinguish the containment kind of view creation requests
+- [ADR-097] Separate the layout data structures from the diagram data structures
 
 === Breaking changes
 
