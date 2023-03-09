@@ -78,6 +78,7 @@ This has no visible effect at the moment, but will allow better documentation, v
 It was not actually used, as tools have long been found in `DiagramDescription.getToolSections()` instead.
 - https://github.com/eclipse-sirius/sirius-components/issues/1588[#1588] [project] Moved the action "New Model" and "Upload model" in a new tree toolbar
 - https://github.com/eclipse-sirius/sirius-components/issues/1614[#1614] [graphql] Add a SuccessPayload to replace most basic payloads, add GQLWidgetOperationPayload to replace most basic Operation
+- https://github.com/eclipse-sirius/sirius-components/issues/1647[#1647] [layout] Restore the same behavior in the computation of the text bounds between the frontend and backend
 
 === Dependency update
 

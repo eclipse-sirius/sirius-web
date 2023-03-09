@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.LabelBoundsProvider;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -87,11 +88,15 @@ public class TextBoundsService {
     }
 
     public TextBounds getBounds(Label label) {
-        return this.textBoundsProvider.computeBounds(label.getStyle(), label.getText());
+        Position alignment =  Position.newPosition().x(0).y(0).build();
+        Size size = LabelBoundsProvider.getLabelBounds(label.getStyle(), label.getText());
+        return new TextBounds(size, alignment);
     }
 
     public TextBounds getAutoWrapBounds(Label label, double maxWidth) {
-        return this.textBoundsProvider.computeAutoWrapBounds(label.getStyle(), label.getText(), maxWidth);
+        Position alignment =  Position.newPosition().x(0).y(0).build();
+        Size size = LabelBoundsProvider.getLabelBoundsWrapped(label.getStyle(), label.getText(), maxWidth);
+        return new TextBounds(size, alignment);
     }
 
 }

@@ -18,28 +18,34 @@ const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 const Text = (props) => {
   const { attrs } = props;
-  const { text, fontSize } = attrs;
+  const { text, size, iconSize } = attrs;
 
+  //Look for the index of the longest string
   const lines = text.split('\n');
-  if (lines.length == 1) {
-    return text;
-  } else {
-    return lines.map((line, index) => {
-      if (index === 0) {
-        return <tspan x="0">{line}</tspan>;
-      } else {
-        if (line.length == 0) {
-          // avoid tspan to be ignored if there is only a line return
-          line = ' '; //$NON-NLS-1$
-        }
-        return (
-          <tspan x="0" dy={fontSize}>
-            {line}
-          </tspan>
-        );
-      }
-    });
-  }
+  const getLongestText = (arr) =>
+    arr.reduce((savedText, text) => (text.length > savedText.length ? text : savedText), '');
+  const indexLongestText = lines.indexOf(getLongestText(lines));
+
+  const ratioLinesHeight = size.height / lines.length;
+
+  //The length of the text minus the icon size, minus the icon size again if it's not the first line
+  let textLength = size.width - iconSize;
+  console.log(textLength);
+  if (indexLongestText > 0) textLength -= iconSize;
+  console.log(textLength);
+
+  // avoid tspan to be ignored if there is only a line return
+  return lines.map((line: string, index: number) => {
+    return (
+      <tspan
+        x={index === 0 ? iconSize : 0}
+        dy={ratioLinesHeight}
+        lengthAdjust="spacing"
+        {...(indexLongestText === index ? { textLength: textLength } : {})}>
+        {line.length == 0 ? ' ' : line}
+      </tspan>
+    );
+  });
 };
 
 /**
@@ -51,46 +57,39 @@ export class LabelView extends SLabelView {
   // @ts-ignore
   render(label) {
     const { color, bold, underline, strikeThrough, italic, fontSize, iconURL, opacity } = label.style;
+    const size = label.size;
     // The font-family is hardcoded to match with the backend compute bounds algo.
     const styleObject = {
       fill: color,
       'font-size': fontSize + 'px',
       'font-family': 'Arial, Helvetica, sans-serif',
-      'font-weight': 'normal',
+      ...(bold ? { 'font-weight': 'bold' } : { 'font-weight': 'normal' }),
+      ...(italic ? { 'font-style': 'italic' } : { 'font-style': 'normal' }),
       'font-style': 'normal',
       'text-decoration': 'none',
       'text-anchor': 'start',
+      'letter-spacing': 'normal',
       opacity: opacity,
     };
-    if (bold) {
-      styleObject['font-weight'] = 'bold';
-    }
-    if (italic) {
-      styleObject['font-style'] = 'italic';
-    }
-    if (underline) {
-      styleObject['text-decoration'] = 'underline';
-    }
-    if (strikeThrough) {
-      if (styleObject['text-decoration'] === 'none') {
-        styleObject['text-decoration'] = 'line-through';
-      } else {
-        styleObject['text-decoration'] += ' line-through';
-      }
-    }
+
+    if (underline) styleObject['text-decoration'] = 'underline';
+
+    if (strikeThrough)
+      if (styleObject['text-decoration'] === 'none') styleObject['text-decoration'] = 'line-through';
+      else styleObject['text-decoration'] += ' line-through';
 
     const styleIcon = {
       opacity: styleObject.opacity,
     };
 
-    const iconVerticalOffset = -14;
     const text = label.text;
+    const iconSize = iconURL ? 20 : 0;
 
     const vnode = (
       <g attrs-data-testid={`Label - ${label.text}`}>
-        {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" style={styleIcon} /> : ''}
+        {iconURL ? <image href={iconURL} style={styleIcon} /> : ''}
         <text class-sprotty-label={true} style={styleObject}>
-          <Text text={text} fontSize={fontSize} />
+          <Text text={text} fontSize={fontSize} size={size} iconSize={iconSize} />
         </text>
       </g>
     );

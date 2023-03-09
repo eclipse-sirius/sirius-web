@@ -26,8 +26,8 @@ export class InsideLabelView extends SLabelView {
   render(label) {
     const { color, bold, underline, strikeThrough, italic, fontSize, iconURL, opacity } = label.style;
 
-    const width: number = label.parent.size.width - label.position.x * 2;
-    const height: number = label.parent.size.height - label.position.y * 2;
+    const width: number = label.size.width;
+    const height: number = label.size.height;
 
     // The font-family is hardcoded to match with the backend compute bounds algo.
     const textStyle = {
@@ -41,6 +41,8 @@ export class InsideLabelView extends SLabelView {
       'font-style': 'normal',
       'overflow-wrap': 'anywhere',
       'white-space': 'break-spaces',
+      'letter-spacing': 'normal',
+      'line-height': '1',
       display: 'flex',
       'flex-wrap': 'no-wrap',
     };
