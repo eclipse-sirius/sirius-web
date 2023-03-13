@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,27 +105,27 @@ public final class LabelStyle {
         }
 
         public Builder fontSize(int fontSize) {
-            this.fontSize = Objects.requireNonNull(fontSize);
+            this.fontSize = fontSize;
             return this;
         }
 
         public Builder bold(boolean bold) {
-            this.bold = Objects.requireNonNull(bold);
+            this.bold = bold;
             return this;
         }
 
         public Builder italic(boolean italic) {
-            this.italic = Objects.requireNonNull(italic);
+            this.italic = italic;
             return this;
         }
 
         public Builder underline(boolean underline) {
-            this.underline = Objects.requireNonNull(underline);
+            this.underline = underline;
             return this;
         }
 
         public Builder strikeThrough(boolean strikeThrough) {
-            this.strikeThrough = Objects.requireNonNull(strikeThrough);
+            this.strikeThrough = strikeThrough;
             return this;
         }
 
@@ -137,7 +137,7 @@ public final class LabelStyle {
         public LabelStyle build() {
             LabelStyle labelDescription = new LabelStyle();
             labelDescription.color = Objects.requireNonNull(this.color);
-            labelDescription.fontSize = Objects.requireNonNull(this.fontSize);
+            labelDescription.fontSize = this.fontSize;
             labelDescription.bold = this.bold;
             labelDescription.italic = this.italic;
             labelDescription.strikeThrough = this.strikeThrough;
