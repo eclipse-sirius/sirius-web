@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
 /** @jsxRuntime classic */
 import { RectangularNodeView, RenderingContext, SLabel, svg } from 'sprotty';
 import { Node, ParametricSVGNodeStyle } from '../Diagram.types';
+import { debugInfos } from './debugInfos';
 import { createResizeHandles } from './ViewUtils';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
@@ -41,7 +42,7 @@ export class ParametricSVGImageView extends RectangularNodeView {
       styleObject['outline'] = 'var(--blue-lagoon) solid 2px';
     }
 
-    let borderStyle;
+    let borderStyle: string;
     switch (style.borderStyle) {
       case 'Dash':
         borderStyle = '4,4';
@@ -111,6 +112,7 @@ export class ParametricSVGImageView extends RectangularNodeView {
         />
         {selectedHandles}
         {context.renderChildren(node)}
+        {debugInfos(node, rectangleSize)}
       </g>
     );
   }

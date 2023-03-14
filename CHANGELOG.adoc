@@ -70,6 +70,10 @@ The result returned and captured in this variable name will not be the real node
 - https://github.com/eclipse-sirius/sirius-components/issues/1527[#1527] [diagram] Add the new layout data structure which will be used by the new version of our layout algorithm.
 This new data structure will be used by the frontend if the name of a diagram ends with `__EXPERIMENTAL`.
 This will allow us to easily compare the current layout algorithm and the new one.
+- https://github.com/eclipse-sirius/sirius-components/issues/1846[#1846] [diagram] A debug mode has been added for diagrams.
+This debug mode can be activated by setting the configuration property `sirius.components.diagram.debug` to `true`.
+Once activated, this debug mode will display additional information on diagram elements to help debug what has been computed by the backend.
+image:doc/images/Debug_info.png[]
 
 === Improvements
 

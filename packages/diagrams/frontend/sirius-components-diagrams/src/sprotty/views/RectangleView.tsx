@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@
 import { VNode } from 'snabbdom';
 import { RectangularNodeView, RenderingContext, SLabel, svg } from 'sprotty';
 import { Node, RectangularNodeStyle } from '../Diagram.types';
+import { debugInfos } from './debugInfos';
 import { createResizeHandles } from './ViewUtils';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
@@ -99,6 +100,7 @@ export class RectangleView extends RectangularNodeView {
           height={size.height}
           style={styleObject}
         />
+        {debugInfos(node, size)}
         {selectedHandles}
         {renderedNodeLabel}
         {headerSeparator}

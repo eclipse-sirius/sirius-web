@@ -21,6 +21,7 @@ export const getDiagramDescriptionQuery = gql`
             ... on DiagramDescription {
               id
               autoLayout
+              debug
             }
           }
         }

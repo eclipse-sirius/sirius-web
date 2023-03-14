@@ -200,6 +200,7 @@ type DiagramDescription implements RepresentationDescription {
   toolSections(diagramElementId: ID!): [ToolSection!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   initialDirectEditElementLabel(labelId: ID!): String!
+  debug: Boolean
 }
 
 interface DiagramElementDescription {
@@ -442,3 +443,5 @@ enum CollapsingState {
 }
 
 union UpdateCollapsingStatePayload = ErrorPayload | SuccessPayload
+
+

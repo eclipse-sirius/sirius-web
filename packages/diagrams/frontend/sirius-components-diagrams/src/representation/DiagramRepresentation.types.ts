@@ -17,6 +17,7 @@ export type CursorValue = 'pointer' | 'copy' | 'not-allowed';
 export interface DiagramDescription {
   id: string;
   autoLayout: boolean;
+  debug: boolean;
 }
 
 export interface GQLDiagramEventSubscription {
@@ -134,10 +135,12 @@ export enum GQLSynchronizationPolicy {
 
 export interface GQLRepresentation {
   id: string;
+  debug: boolean;
 }
 
 export interface GQLDiagram extends GQLRepresentation {
   id: string;
+  debug: boolean;
   metadata: GQLRepresentationMetadata;
   targetObjectId: string;
   size: GQLSize;
