@@ -1,0 +1,112 @@
+= Lifecycle
+Stéphane Bégaudeau; Pierre-Charles David
+0.1, 2023-03-14: First working draft
+
+== Authors
+
+- {author}
+- {author_2}
+
+== Abstract
+
+The lifecycle of the layout algorithm will require some very specific rules.
+Since a tool can both have a user interaction and an optional semantic behavior, we need to define how and when we will use both sources of information to update the layout.
+This document will define the global lifecycle of the algorithm, the source of changes that can trigger a new layout and how it will use those data to create the new layout.
+
+== Introduction
+
+In order to compute the layout a diagram, we will have to retrieve information from multiple locations and process them to create a configuration of the layout algorithm.
+This configuration will include details from the diagram data structure, the descriptions used to create it and the previous layout data.
+Using this configuration and the optional current events, we will compute the layout data of the new diagram.
+
+== Configuration
+
+[%linenums,java]
+----
+public class DiagramLayoutConfiguration implements IParentLayoutConfiguration {
+    private String id;
+    private String displayName;
+    private List<NodeLayoutConfiguration> childNodesLayoutConfigurations;
+    private List<EdgeLayoutConfiguration> edgeLayoutConfigurations;
+    private DiagramLayoutData previousDiagramLayoutData;
+}
+----
+
+[%linenums,java]
+----
+public class NodeLayoutConfiguration implements IParentLayoutConfiguration {
+    private String id;
+    private String displayName;
+    private IParentLayoutConfiguration parentLayoutConfiguration;
+    private Size requestedSize;
+    private Border border;
+    private Margin margin;
+    private NodeLabelPosition labelPosition;
+    private LabelLayoutConfiguration labelLayoutConfiguration;
+    private List<NodeLayoutConfiguration> childNodeLayoutConfigurations;
+    private List<NodeLayoutConfiguration> borderNodeLayoutConfigurations;
+    private NodeLayoutData previousNodeLayoutData;
+}
+----
+
+[%linenums,java]
+----
+public final class EdgeLayoutConfiguration {
+    private String id;
+    private String displayName;
+    private DiagramLayoutConfiguration parentLayoutConfiguration;
+    private int width;
+    private LabelLayoutConfiguration startLabelLayoutConfiguration;
+    private LabelLayoutConfiguration centerLabelLayoutConfiguration;
+    private LabelLayoutConfiguration endLabelLayoutConfiguration;
+    private EdgeLayoutData previousEdgeLayoutData;
+}
+----
+
+[%linenums,java]
+----
+public class LabelLayoutConfiguration {
+    private String id;
+    private String text;
+    private int fontSize;
+    private LabelStyle style;
+    private LabelAlignment alignment;
+    private Padding padding;
+    private Size iconSize;
+    private int gapBetweenIconAndText;
+    private LabelLayoutData previousLabelLayoutData;
+}
+----
+
+
+=== Event
+
+- ArrangeAllEvent
+- DoublePositionEvent
+- FadeDiagramElementEvent
+- HideDiagramElementEvent
+- MoveEvent
+- ReconnectEdgeEvent
+- RemoveEdgeEvent
+- ResizeEvent
+- SinglePositionEvent
+- UpdateCollapsingStateEvent
+- UpdateEdgeRoutingPointsEvent
+
+
+== Internal data structure and behavior
+
+
+
+== Behavior in action
+
+- What happen if we receive a double position event, and we go from this diagram to this one?
+- What happen if we receive a double position event, and we have the exact same diagram as before?
+- What happen if we receive an event to resize an element outside its bounds?
+
+Which new or existing element consumes the event?
+
+
+== Output
+
+box model to layout data

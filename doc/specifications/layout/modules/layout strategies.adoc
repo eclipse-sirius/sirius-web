@@ -1,0 +1,96 @@
+= Layout strategies
+Stéphane Bégaudeau; Pierre-Charles David
+0.1, 2023-03-14: First working draft
+
+== Authors
+
+- {author}
+- {author_2}
+
+== Abstract
+
+
+== Introduction
+
+
+== Child layout strategies
+
+We will support two child layout strategies for the moment:
+
+- List
+- Free form
+
+The list layout strategy is similar to the grid algorithm with one column or one row while the free form one does not really exist in CSS.
+It would be something like child nodes with a specific position policy like `position: relative`.
+
+== List layout strategy
+
+This child layout strategy will be a bit similar to some use cases of the grid CSS algorithm.
+In a list child layout strategy, child nodes will be rendered as a vertical or horizontal list using the order they have in their parent node.
+
+Given the various use cases for a list layout that we have encountered, the specifier will have to be able to specify not only the direction of the list but also how the child nodes should occupy the content box of their parent both vertically and horizontally.
+
+As a result, the list child layout strategy will support the following rules:
+
+- `direction`: Used to define the direction of the main axis, the only possible values will be `row` or `column`.
+- `align-items`: Used to define how the child nodes are laid out on the column axis. The only possible values for now will be `start` or `stretch`.
+- `justify-items`: Used to define how the child nodes are laid out on the row axis. The only possible values for now will be `start` or `stretch`.
+
+A list layout with the direction `row` will have to use the rule `align-items: stretch`.
+As a result, all the children will have the same height which will be the height of the content box of their parent.
+In a similar manner, in a list layout with the direction `column`, the rule `justify-items: stretch` will have to be used.
+In this case, all the children will have the same width which will be the width of the content box of their parent.
+
+Here are some examples use cases from various projects:
+
+The following configuration could be used to create a class from a class diagram for example:
+
+```
+direction: column
+align-items: start
+justify-items: stretch
+```
+
+NOTE: Insert a demo
+
+In this case, the footprint of all the children will have the same width, since they will be stretched on the row axis, using the width of the footprint of the largest child, but they will each keep their own height.
+They will simply be laid out from the top of the content box since the option `align-items` is using the value `start`.
+
+
+On the other hand, the following configuration could be use for an UML state machine which would require child nodes occupying all the available space of the parent at all time:
+
+```
+direction: column
+align-items: stretch
+justify-items: stretch
+```
+
+NOTE: Insert a demo
+
+In this situation, all the child nodes will have the same width, the width of the footprint of the larget child, but the content box of their parent will have for height, the sum of the height of the children.
+
+
+In order to support a vertical layout of the children the following configuration could instead be used:
+
+```
+direction: row
+align-items: stretch
+justify-items: stretch
+```
+
+NOTE: Insert a demo
+
+
+== Free form layout strategy
+
+=== Overlap
+
+If a new node were to overlap existing nodes, we will move the existing nodes in one direction and one direction only to have enough space to insert the new node.
+This direction can only be vertically or horizontally.
+As such, moving a node to make room for another one will be done with a translation changing either the parameter `x` or `y` of its position.
+
+If the newly moved nodes are also overlapping other nodes, we will move these nodes in one direction to have enough space.
+We will continue to do so recursively.
+Since a diagram has no bounds in any direction and since a node can be as big as necessary, moving existing nodes in this way can be done recursively without issues.
+
+NOTE: Insert a demo

@@ -1,0 +1,201 @@
+= Label
+Stéphane Bégaudeau; Pierre-Charles David
+0.1, 2023-03-14: First working draft
+
+== Authors
+
+- {author}
+- {author_2}
+
+== Abstract
+
+There are multiple kinds of labels which can appear in a diagram.
+We need to define the structure and behavior of the various kinds of labels.
+This document will thus define what is a label, how it behaves and how it can be configured.
+
+== Introduction
+
+A label designates any pieces of text which can appear in the diagram.
+All labels may come with an optional icon.
+They will also have a style defining options such as the color, font and size of the label.
+
+Labels can be linked to a node or an edge with a role.
+Multiple labels may be associated with a single element.
+Node labels will come with additional options in order to place them at specific locations inside or outside the node.
+
+A label can have multiple lines, and it can also be soft-wrapped on multiple lines if it does not have enough room to be displayed in one line.
+
+== Style
+
+All labels will come with the following styling options:
+
+- Color
+- Font size
+- Bold
+- Italic
+- Underline
+- Strikethrough
+
+Some of those options will have an impact on the size of the label.
+
+== Roles
+
+There are five possible roles for a label:
+
+- inside label of a node
+- outside label of a node
+- begin label of an edge
+- center label of an edge
+- end label of an edge
+
+It is only possible to have one label with a given role for an element.
+As such, an edge can have one begin label, one center label and an end label but not more than that.
+
+All the various roles will share some common structure and behavior but the inside and outside labels of a node will offer additional options.
+
+== Core structure and behavior
+
+All labels will be composed of the text with its style, an optional icon and a gap between the two.
+The icon will always be on the left of the text.
+
+The size of the icon will have to be specified as an input.
+
+This core structure will thus be composed of:
+
+- the optional icon
+- the optional gap
+- the raw text with its style
+
+If the icon is present then it needs to be aligned with the text.
+
+CAUTION: The center of the text will always be aligned with the center of the icon vertically.
+
+== Inside label of a node
+
+The inside label of a node is a role used to place a label inside the node.
+It is defined thanks to a box, the inside label box which will be placed in the node.
+As a result, it will impact the size and the footprint of the node.
+
+Child nodes can only be layouted with a position inside the content box.
+After child nodes have been layouted, the full size of the content box will be known.
+Then we will compute the size of the label box, as a result a child node will never be able to be placed in the inside label box.
+
+CAUTION: The inside label of a node will only expand the size of the node in one direction only.
+For example, let's consider a node with an inside label at the top.
+In this case, the width of the inside label box will always be equal to the width of the content box.
+Anything larger than that should trigger a soft-wrapping of the text inside.
+
+An inside label may be surrounded by a given padding and a border.
+The size of the padding and the border may be configurable along with the color of the border.
+The padding and border may not expand the inside label in all directions equally.
+For example, an inside label on top of a node may only have a border at the bottom with a width of 1px to create a header.
+
+CAUTION: There is a difference between the lack of a label and the presence of a label which would have an empty string as its content.
+An inside label will have an impact on the layout of the node since it will change its size.
+As such, an inside label with a border will still display the border and enough room for an empty line while the absence of a label would not have any impact on the size of the node.
+If an empty label is present, this empty area of the node will be the location to double-click in order to trigger a the direct edit of the label.
+
+=== Position
+
+The inside label box must be positioned relative to the content box using one of those four possible values:
+
+- TOP
+- RIGHT
+- BOTTOM
+- LEFT
+- CENTER
+
+The inside label box will thus expand the size of the node horizontally for a label on the left or the right and vertically for a label on the top or bottom.
+If the label box is on the top or bottom or the node, its width will be the width of the content box.
+If on the other hand, it is on the left or the right of the node, its height will be the height of the content box.
+
+CAUTION: If a label is defined as the center of the node, it will then replace its content.
+As a result, the node will not display any children.
+The label will have to respect the width computed for the content box, but it may expand its height.
+
+=== Alignment
+
+The inside label box may specify how the label and its icon are aligned with regard to the node.
+As such, there are three possible alignment in the inside label box:
+
+- START
+- CENTER
+- END
+
+== Outside label of a node
+
+The outside label of a node will be located outside its border.
+As a result, it will not count toward the size of the node but only its footprint.
+
+CAUTION: It may be overlapped by border nodes since it will not prevent them from being located at the same position.
+If a specifier does not want to have its border nodes and outside label overlapping one another, then some preferred side for the border nodes will be required.
+
+The label outside a node will also share the concept of position and alignment with the inside label.
+On top of that, an outside label will have the ability to indicate how it fills the outside label box.
+For example, the label could be stretched or not in the outside label box.
+
+
+WARNING: We need to define how to treat a label that would be bigger than the node vs a label that would be used to create a small tab next to a node.
+
+
+== Labels of an edge
+
+While there are three roles for the label of an edge, they are all organized in a similar fashion.
+The begin and end labels should be located near the source and target of the node.
+
+On the other hand, the center label should be located near the middle of the edge.
+For that, if we have an odd number of segments, the label should be near the middle of the middle segment.
+Otherwise, the label should be in the middle of the segment before the middle.
+
+
+== Configuration
+
+Here are the options that can be provided to configure a label:
+
+* Raw text
+* Style
+** Color
+** Font size
+** Bold
+** Italic
+** Underline
+** Strikethrough
+* Icon
+** Path
+** Size
+** Gap
+
+Here are the options specific to a node inside label:
+
+* Padding
+** Top
+** Right
+** Bottom
+** Left
+* Border
+** Color
+** Width
+*** Top
+*** Right
+*** Bottom
+*** Left
+* Position
+* Alignment
+
+Here are the options specific to a node outside label:
+
+* Padding
+** Top
+** Right
+** Bottom
+** Left
+* Border
+** Color
+** Width
+*** Top
+*** Right
+*** Bottom
+*** Left
+* Position
+* Alignment
+* Fill Strategy?

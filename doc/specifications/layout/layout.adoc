@@ -319,8 +319,8 @@ NOTE: Insert a demo
 ===== Overlap
 
 If a new node were to overlap existing nodes, we will move the existing nodes in one direction and one direction only to have enough space to insert the new node.
-This direction can only be verticaly or horizontaly.
-As such, moving a node to make room for another one will be done with a transalation changing either the parameter `x` or `y` of its position.
+This direction can only be vertically or horizontally.
+As such, moving a node to make room for another one will be done with a translation changing either the parameter `x` or `y` of its position.
 
 If the newly moved nodes are also overlapping other nodes, we will move these nodes in one direction to have enough space.
 We will continue to do so recursively.
@@ -331,7 +331,7 @@ NOTE: Insert a demo
 === Inside label box
 
 The inside label box is a place where labels can be put inside of the node.
-These labels will count torward the size and thus the footprint of the node.
+These labels will count toward the size and thus the footprint of the node.
 Child nodes can only be layouted with a position inside the content box.
 After child nodes have been layouted, the full size of the content box will be known.
 Then we will compute the size of the label box, as a result a child node will never be able to be placed in the inside label box.
@@ -382,7 +382,7 @@ Technically each size of the border could have a different size like in CSS with
 === Border nodes box
 
 Border nodes will be placed in the border nodes box.
-It will not count torward the size of the node.
+It will not count toward the size of the node.
 If a specifier requires a node to have a size of 100x100, then the border nodes would still stick outside of this area.
 
 WARNING: They will not overlap the content box, inside label box nor the border box.
@@ -399,7 +399,7 @@ The border nodes box cannot be modified by a request from a minimal footprint.
 It does not count in the size of the node.
 It cannot be wrapped in the same way that border nodes cannot be impacted by a request for a smaller node footprint.
 
-WARNING: Strictly outside of the border nodes box, if we have border nodes on the bottom, the label is pushed further
+WARNING: Strictly outside the border nodes box, if we have border nodes on the bottom, the label is pushed further
 
 === Margin box
 
