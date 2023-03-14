@@ -84,6 +84,7 @@ export class InsideLabelView extends SLabelView {
         {label.text}
       </div>
     );
+
     const vnode = (
       <foreignObject
         requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"

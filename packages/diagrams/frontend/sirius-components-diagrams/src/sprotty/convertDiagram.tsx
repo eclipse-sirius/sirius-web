@@ -104,6 +104,7 @@ export const convertDiagram = (
   diagram.label = label;
   diagram.descriptionId = diagramDescription.id;
   diagram.targetObjectId = targetObjectId;
+  diagram.debug = diagramDescription.debug;
   diagram.features = createFeatureSet([hoverFeedbackFeature, viewportFeature]);
 
   const { autoLayout } = diagramDescription;

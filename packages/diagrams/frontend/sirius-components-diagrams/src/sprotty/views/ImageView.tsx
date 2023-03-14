@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 /** @jsx svg */
 /** @jsxRuntime classic */
 import { RectangularNodeView, svg } from 'sprotty';
+import { debugInfos } from './debugInfos';
 import { createResizeHandles } from './ViewUtils';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
@@ -98,6 +99,7 @@ export class ImageView extends RectangularNodeView {
         />
         {selectedHandles}
         {context.renderChildren(node)}
+        {debugInfos(node, rectangleSize)}
       </g>
     );
   }
