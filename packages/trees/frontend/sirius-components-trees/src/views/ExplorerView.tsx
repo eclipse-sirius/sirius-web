@@ -28,6 +28,7 @@ import {
   GQLGetTreePathVariables,
 } from './ExplorerView.types';
 import {
+  AutoExpandToRevealSelectionEvent,
   ExplorerViewContext,
   ExplorerViewEvent,
   explorerViewMachine,
@@ -38,8 +39,7 @@ import {
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
-  SynchronizeSelectionEvent,
-  SynchronizeWithRepresentationEvent,
+  SynchronizeWithSelectionEvent,
 } from './ExplorerViewMachine';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
 const getTreePathQuery = gql`
@@ -73,25 +73,24 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
 
   const [{ value, context }, dispatch] = useMachine<ExplorerViewContext, ExplorerViewEvent>(explorerViewMachine);
   const { toast, explorerView } = value as SchemaValue;
-  const { id, tree, expanded, maxDepth, synchronizedSelection, synchronizedWithRepresentation, message } = context;
+  const { id, tree, expanded, maxDepth, autoExpandToRevealSelection, synchronizedWithSelection, message } = context;
 
   const [getTreePath, { loading: treePathLoading, data: treePathData, error: treePathError }] = useLazyQuery<
     GQLGetTreePathData,
     GQLGetTreePathVariables
   >(getTreePathQuery);
 
+  // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
   useEffect(() => {
-    if (tree && synchronizedSelection) {
+    if (tree && autoExpandToRevealSelection) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: tree.id,
-        selectionEntryIds: synchronizedSelection ? selection.entries.map((entry) => entry.id) : [],
+        selectionEntryIds: selection.entries.map((entry) => entry.id),
       };
-      getTreePath({
-        variables,
-      });
+      getTreePath({ variables });
     }
-  }, [editingContextId, tree, selection, synchronizedSelection, getTreePath]);
+  }, [editingContextId, tree, selection, autoExpandToRevealSelection, getTreePath]);
 
   useEffect(() => {
     if (!treePathLoading) {
@@ -141,13 +140,11 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
   }, [error, dispatch]);
 
   useEffect(() => {
-    if (synchronizedWithRepresentation) {
-      const synchronizeSelectionEvent: SynchronizeSelectionEvent = {
-        type: 'SYNCHRONIZE_SELECTION',
-        synchronizedSelection: true,
-      };
-      dispatch(synchronizeSelectionEvent);
-    }
+    const autoExpandToRevealSelectionEvent: AutoExpandToRevealSelectionEvent = {
+      type: 'AUTO_EXPAND_TO_REVEAL_SELECTION',
+      autoExpandToRevealSelection: true,
+    };
+    dispatch(autoExpandToRevealSelectionEvent);
   }, [selection]);
 
   const onExpand = (id: string, depth: number) => {
@@ -156,19 +153,20 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
   };
 
   const onSynchronizedClick = () => {
-    const synchronizeWithRepresentationEvent: SynchronizeWithRepresentationEvent = {
-      type: 'SYNCHRONISE_WITH_REPRESENTATION',
-      synchronizedWithRepresentation: !synchronizedWithRepresentation,
+    const synchronizeWithSelectionEvent: SynchronizeWithSelectionEvent = {
+      type: 'SYNCHRONIZE_WITH_SELECTION',
+      synchronizedWithSelection: !synchronizedWithSelection,
     };
-    dispatch(synchronizeWithRepresentationEvent);
+    dispatch(synchronizeWithSelectionEvent);
   };
   return (
     <div className={styles.explorerView}>
       <TreeToolBar
         editingContextId={editingContextId}
         onSynchronizedClick={onSynchronizedClick}
-        synchronized={synchronizedWithRepresentation}
-        readOnly={readOnly}></TreeToolBar>
+        synchronized={synchronizedWithSelection}
+        readOnly={readOnly}
+      />
       <div className={styles.explorerTree} data-testid="explorerTree">
         {tree ? (
           <Tree

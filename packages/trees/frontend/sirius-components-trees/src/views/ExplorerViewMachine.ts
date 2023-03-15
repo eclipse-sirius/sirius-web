@@ -49,8 +49,8 @@ export interface ExplorerViewContext {
   tree: GQLTree | null;
   expanded: string[];
   maxDepth: number;
-  synchronizedSelection: boolean;
-  synchronizedWithRepresentation: boolean;
+  autoExpandToRevealSelection: boolean;
+  synchronizedWithSelection: boolean;
   message: string | null;
 }
 
@@ -61,10 +61,13 @@ export type HandleSubscriptionResultEvent = {
   result: SubscriptionResult<GQLExplorerEventData>;
 };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-export type SynchronizeSelectionEvent = { type: 'SYNCHRONIZE_SELECTION'; synchronizedSelection: boolean };
-export type SynchronizeWithRepresentationEvent = {
-  type: 'SYNCHRONISE_WITH_REPRESENTATION';
-  synchronizedWithRepresentation: boolean;
+export type AutoExpandToRevealSelectionEvent = {
+  type: 'AUTO_EXPAND_TO_REVEAL_SELECTION';
+  autoExpandToRevealSelection: boolean;
+};
+export type SynchronizeWithSelectionEvent = {
+  type: 'SYNCHRONIZE_WITH_SELECTION';
+  synchronizedWithSelection: boolean;
 };
 export type HandleExpandedEvent = { type: 'HANDLE_EXPANDED'; id: string; depth: number };
 export type HandleTreePathEvent = { type: 'HANDLE_TREE_PATH'; treePathData: GQLGetTreePathData };
@@ -73,10 +76,10 @@ export type ExplorerViewEvent =
   | HandleCompleteEvent
   | ShowToastEvent
   | HideToastEvent
-  | SynchronizeSelectionEvent
+  | AutoExpandToRevealSelectionEvent
   | HandleExpandedEvent
   | HandleTreePathEvent
-  | SynchronizeWithRepresentationEvent;
+  | SynchronizeWithSelectionEvent;
 
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload.__typename === 'TreeRefreshedEventPayload';
@@ -89,8 +92,8 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
       tree: null,
       expanded: [],
       maxDepth: 1,
-      synchronizedSelection: true,
-      synchronizedWithRepresentation: true,
+      autoExpandToRevealSelection: true,
+      synchronizedWithSelection: true,
       message: null,
     },
     states: {
@@ -139,8 +142,8 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
                 target: 'ready',
                 actions: 'handleSubscriptionResult',
               },
-              SYNCHRONIZE_SELECTION: {
-                actions: 'synchronizeSelection',
+              AUTO_EXPAND_TO_REVEAL_SELECTION: {
+                actions: 'autoExpandToRevealSelection',
               },
               HANDLE_EXPANDED: {
                 actions: 'expand',
@@ -151,8 +154,8 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
               HANDLE_COMPLETE: {
                 target: 'complete',
               },
-              SYNCHRONISE_WITH_REPRESENTATION: {
-                actions: 'synchronizeWithRepresentation',
+              SYNCHRONIZE_WITH_SELECTION: {
+                actions: 'synchronizeWithSelection',
               },
             },
           },
@@ -182,16 +185,20 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
         }
         return {};
       }),
-      synchronizeWithRepresentation: assign((_, event) => {
-        const { synchronizedWithRepresentation } = event as SynchronizeWithRepresentationEvent;
-        return {
-          synchronizedWithRepresentation: synchronizedWithRepresentation,
-          synchronized: synchronizedWithRepresentation,
-        };
+      synchronizeWithSelection: assign((_, event) => {
+        const { synchronizedWithSelection } = event as SynchronizeWithSelectionEvent;
+        if (synchronizedWithSelection) {
+          return { synchronizedWithSelection, autoExpandToRevealSelection: true };
+        }
+        return { synchronizedWithSelection, autoExpandToRevealSelection: false };
       }),
-      synchronizeSelection: assign((_, event) => {
-        const { synchronizedSelection } = event as SynchronizeSelectionEvent;
-        return { synchronizedSelection };
+      autoExpandToRevealSelection: assign((context, event) => {
+        const { autoExpandToRevealSelection } = event as AutoExpandToRevealSelectionEvent;
+        const { synchronizedWithSelection } = context;
+        if (synchronizedWithSelection) {
+          return { autoExpandToRevealSelection };
+        }
+        return {};
       }),
       expand: assign((context, event) => {
         const { expanded, maxDepth } = context;
@@ -202,7 +209,7 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
           newExpanded.splice(newExpanded.indexOf(id), 1);
 
           // Disable synchronize mode on collapse
-          return { expanded: newExpanded, synchronizedSelection: false, maxDepth: Math.max(maxDepth, depth) };
+          return { expanded: newExpanded, autoExpandToRevealSelection: false, maxDepth: Math.max(maxDepth, depth) };
         }
         return { expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) };
       }),

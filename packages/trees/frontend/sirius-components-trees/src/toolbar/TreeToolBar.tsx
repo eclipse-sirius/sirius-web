@@ -52,7 +52,7 @@ export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronize
           color="inherit"
           aria-label="New model"
           title="New model"
-          onClick={() => openNewDocumentModal()}
+          onClick={openNewDocumentModal}
           data-testid="new-model">
           <AddIcon />
         </IconButton>
@@ -62,7 +62,7 @@ export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronize
           color="inherit"
           aria-label="Upload model"
           title="Upload model"
-          onClick={() => openUploadDocumentModal()}
+          onClick={openUploadDocumentModal}
           data-testid="upload-document">
           <PublishIcon />
         </IconButton>
@@ -71,7 +71,7 @@ export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronize
           size="small"
           aria-label={preferenceButtonSynchroniseTitle}
           title={preferenceButtonSynchroniseTitle}
-          onClick={() => onSynchronizedClick()}
+          onClick={onSynchronizedClick}
           data-testid="tree-synchronise">
           <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
         </IconButton>

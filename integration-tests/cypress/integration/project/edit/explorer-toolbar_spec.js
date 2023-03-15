@@ -56,7 +56,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     // 6. Activate the synchronisation mode
     cy.getByTestId('tree-synchronise').click();
 
-    // 5. CHECK that the 'GPU' node is visible and selected
+    // 5. CHECK that the 'DSP' node is visible and selected
     cy.getByTestId('DSP').should('exist');
     cy.getByTestId('selected').findByTestId('DSP').should('exist');
   });
