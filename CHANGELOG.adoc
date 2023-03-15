@@ -60,6 +60,7 @@ The result returned and captured in this variable name will not be the real node
 - https://github.com/eclipse-sirius/sirius-components/issues/1838[#1838] [diagram] Collapsing and expanding a node with unsynchronized child nodes will now properly restore the child nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1775[#1775] [core] Handle representation/document/project label length in UI (by adding ellipsis) and in sirius-web SQL schema (up to 1024 characters)
 - https://github.com/eclipse-sirius/sirius-components/issues/1829[#1829] [diagram] Node descriptions from the view DSL can now reference concepts outside of their containing diagram description
+- https://github.com/eclipse-sirius/sirius-components/issues/1851[#1851] Fix an issue where the explorer could be expanded while not synchronized
 
 === New Features
 
@@ -77,6 +78,7 @@ This will allow us to easily compare the current layout algorithm and the new on
 This has no visible effect at the moment, but will allow better documentation, validation and configuration later.
 - [studio] Add a project template for the Papaya domains and view
 - https://github.com/eclipse-sirius/sirius-components/issues/1667[#1667] [diagram] Make the contextual palette self contained 
+
 
 == v2023.3.0
 
