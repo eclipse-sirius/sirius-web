@@ -12,7 +12,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "vite --host",
+    "start:specification": "vite --host",
     "build": "vite build",
     "test": "vitest --run --config vite.config.js",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
