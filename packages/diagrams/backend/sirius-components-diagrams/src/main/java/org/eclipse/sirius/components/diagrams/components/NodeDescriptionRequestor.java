@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -28,7 +27,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
  */
 public class NodeDescriptionRequestor implements INodeDescriptionRequestor {
 
-    private final Map<UUID, NodeDescription> id2nodeDescription = new HashMap<>();
+    private final Map<String, NodeDescription> id2nodeDescription = new HashMap<>();
 
     public NodeDescriptionRequestor(List<DiagramDescription> diagramDescriptions) {
         diagramDescriptions.stream().flatMap(description -> description.getNodeDescriptions().stream()).forEach(this::cache);
@@ -41,7 +40,7 @@ public class NodeDescriptionRequestor implements INodeDescriptionRequestor {
     }
 
     @Override
-    public Optional<NodeDescription> findById(UUID nodeDescriptionId) {
+    public Optional<NodeDescription> findById(String nodeDescriptionId) {
         return Optional.ofNullable(this.id2nodeDescription.get(nodeDescriptionId));
     }
 

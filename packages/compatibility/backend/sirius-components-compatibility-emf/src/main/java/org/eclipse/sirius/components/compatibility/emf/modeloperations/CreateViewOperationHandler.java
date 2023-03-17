@@ -102,7 +102,7 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
                 containmentKind = NodeContainmentKind.BORDER_NODE;
             }
 
-            UUID descriptionId = UUID.fromString(diagramElementMappingId);
+            String descriptionId = UUID.fromString(diagramElementMappingId).toString();
             ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                     .parentElementId(optionalParentElementId.get())
                     .descriptionId(descriptionId)
@@ -111,9 +111,9 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
                     .build();
 
             Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
-                    .filter(IDiagramContext.class::isInstance)
-                    .map(IDiagramContext.class::cast)
-                    .ifPresent(diagramContext -> diagramContext.getViewCreationRequests().add(viewCreationRequest));
+            .filter(IDiagramContext.class::isInstance)
+            .map(IDiagramContext.class::cast)
+                .ifPresent(diagramContext -> diagramContext.getViewCreationRequests().add(viewCreationRequest));
         } catch (IllegalArgumentException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }

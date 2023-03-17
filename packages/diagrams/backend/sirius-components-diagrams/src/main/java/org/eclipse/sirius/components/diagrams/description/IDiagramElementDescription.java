@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.description;
 
-import java.util.UUID;
-
 /**
  * The description of a diagram element.
  *
@@ -21,6 +19,6 @@ import java.util.UUID;
  */
 public interface IDiagramElementDescription {
 
-    UUID getId();
+    String getId();
 
 }

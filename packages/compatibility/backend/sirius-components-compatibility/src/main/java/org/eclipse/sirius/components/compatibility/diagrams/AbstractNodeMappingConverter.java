@@ -75,7 +75,7 @@ public class AbstractNodeMappingConverter {
         this.imageSizeProvider = Objects.requireNonNull(imageSizeService);
     }
 
-    public NodeDescription convert(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
+    public NodeDescription convert(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<String, NodeDescription> id2NodeDescriptions) {
         LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, this.objectService);
         Function<VariableManager, org.eclipse.sirius.viewpoint.description.style.LabelStyleDescription> abstractNodeMappingDescriptionProvider = new LabelStyleDescriptionProvider(interpreter,
                 abstractNodeMapping);
@@ -146,7 +146,7 @@ public class AbstractNodeMappingConverter {
         }
 
         // @formatter:off
-        NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(abstractNodeMapping)))
+        NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(abstractNodeMapping)).toString())
                 .typeProvider(typeProvider)
                 .targetObjectIdProvider(semanticTargetIdProvider)
                 .targetObjectKindProvider(semanticTargetKindProvider)
@@ -195,7 +195,7 @@ public class AbstractNodeMappingConverter {
         };
     }
 
-    private List<NodeDescription> getChildNodeDescriptions(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
+    private List<NodeDescription> getChildNodeDescriptions(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<String, NodeDescription> id2NodeDescriptions) {
         // @formatter:off
         List<NodeDescription> childNodeDescriptions = new ArrayList<>();
 

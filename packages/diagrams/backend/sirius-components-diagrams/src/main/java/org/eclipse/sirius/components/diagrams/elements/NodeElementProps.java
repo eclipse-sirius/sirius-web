@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -49,7 +48,7 @@ public final class NodeElementProps implements IProps {
 
     private String targetObjectLabel;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private boolean borderNode;
 
@@ -97,7 +96,7 @@ public final class NodeElementProps implements IProps {
         return this.targetObjectLabel;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -173,7 +172,7 @@ public final class NodeElementProps implements IProps {
 
         private String targetObjectLabel;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private boolean borderNode;
 
@@ -221,7 +220,7 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

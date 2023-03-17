@@ -68,7 +68,7 @@ public class EdgeMappingConverter {
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
     }
 
-    public EdgeDescription convert(EdgeMapping edgeMapping, AQLInterpreter interpreter, Map<UUID, NodeDescription> id2NodeDescriptions) {
+    public EdgeDescription convert(EdgeMapping edgeMapping, AQLInterpreter interpreter, Map<String, NodeDescription> id2NodeDescriptions) {
         Function<VariableManager, String> targetIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
         };
@@ -115,7 +115,7 @@ public class EdgeMappingConverter {
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createEdgeDirectEditToolHandler(edgeMapping.getLabelDirectEdit());
 
-        Builder builder = EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)))
+        Builder builder = EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)).toString())
                 .targetObjectIdProvider(targetIdProvider)
                 .targetObjectKindProvider(targetKindProvider)
                 .targetObjectLabelProvider(targetLabelProvider)
@@ -166,12 +166,12 @@ public class EdgeMappingConverter {
      *            The mappings referenced by the edge description (source or target)
      * @return The relevant node descriptions created by the node and container description converters
      */
-    private List<NodeDescription> getNodeDescriptions(List<DiagramElementMapping> mappings, Map<UUID, NodeDescription> id2NodeDescriptions) {
+    private List<NodeDescription> getNodeDescriptions(List<DiagramElementMapping> mappings, Map<String, NodeDescription> id2NodeDescriptions) {
         // @formatter:off
         return mappings.stream()
                 .filter(AbstractNodeMapping.class::isInstance)
                 .map(AbstractNodeMapping.class::cast)
-                .map(mapping -> UUID.fromString(this.identifierProvider.getIdentifier(mapping)))
+                .map(mapping -> UUID.fromString(this.identifierProvider.getIdentifier(mapping)).toString())
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .toList();
@@ -188,7 +188,7 @@ public class EdgeMappingConverter {
             semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
             // @formatter:off
-            List<UUID> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
+            List<String> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
                     .map(NodeDescription::getId)
                     .toList();
             // @formatter:on

@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
@@ -89,8 +88,8 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
         return result;
     }
 
-    private Optional<UUID> mapDiagramElementToDescriptionId(Object object) {
-        Optional<UUID> descriptionId = Optional.empty();
+    private Optional<String> mapDiagramElementToDescriptionId(Object object) {
+        Optional<String> descriptionId = Optional.empty();
         if (object instanceof Node) {
             descriptionId = Optional.of(((Node) object).getDescriptionId());
         } else if (object instanceof Edge) {
@@ -99,7 +98,7 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
         return descriptionId;
     }
 
-    private Optional<Object> mapDescriptionIdToDescription(UUID descriptionId, DiagramDescription diagramDescription, Object diagramElement) {
+    private Optional<Object> mapDescriptionIdToDescription(String descriptionId, DiagramDescription diagramDescription, Object diagramElement) {
         Optional<Object> result = Optional.empty();
         if (diagramElement instanceof Node) {
             var description = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, descriptionId);
