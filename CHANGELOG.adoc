@@ -29,6 +29,7 @@ By loading representation descriptions from the View DSL when the editing contex
 As a result, any datafetcher requiring a representation description will now have to use the editing context event processor registry to find the requested representation description.
 We previously had some datafetcher which were using the `IRepresentationDescriptionSearchService`` with `null` as a value for the editing context.
 Such calls will not work anymore since `null` will not be an acceptable value anymore by our implementation of this interface.
+- [diagram] Changed the type of `Node#descriptionId` and `Edge#descriptionId` from `UUID` to `String`
 
 === Dependency update
 

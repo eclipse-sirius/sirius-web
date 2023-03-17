@@ -108,12 +108,12 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
             Optional<Object> semanticElement = Optional.empty();
 
             if (diagramElement instanceof Node node) {
-                UUID descriptionId = node.getDescriptionId();
+                String descriptionId = node.getDescriptionId();
                 optionalLabelEditTool = this.getNodeDescription(diagramDescription.getNodeDescriptions(), descriptionId).map(NodeDescription::getPalette).map(NodePalette::getLabelEditTool);
                 semanticElement = this.objectService.getObject(editingContext, node.getTargetObjectId());
                 initialDirectEditElementLabel = node.getLabel().getText();
             } else if (diagramElement instanceof Edge edge) {
-                UUID descriptionId = edge.getDescriptionId();
+                String descriptionId = edge.getDescriptionId();
                 semanticElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());
 
                 var optionalEdgeDescription = this.getEdgeDescription(diagramDescription.getEdgeDescriptions(), descriptionId);
@@ -171,7 +171,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
         });
     }
 
-    private Optional<NodeDescription> getNodeDescription(List<NodeDescription> nodeDescriptions, UUID descriptionId) {
+    private Optional<NodeDescription> getNodeDescription(List<NodeDescription> nodeDescriptions, String descriptionId) {
         var optionalNodeDescription = nodeDescriptions.stream().filter(nodeDescription -> descriptionId.equals(this.idProvider.apply(nodeDescription))).findFirst();
 
         if (optionalNodeDescription.isEmpty()) {
@@ -184,7 +184,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
         return optionalNodeDescription;
     }
 
-    private Optional<EdgeDescription> getEdgeDescription(List<EdgeDescription> edgeDescriptions, UUID descriptionId) {
+    private Optional<EdgeDescription> getEdgeDescription(List<EdgeDescription> edgeDescriptions, String descriptionId) {
         // @formatter:off
         return edgeDescriptions.stream()
                 .filter(edgeDescription -> descriptionId.equals(this.idProvider.apply(edgeDescription)))
@@ -195,12 +195,10 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext) {
             Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            // @formatter:off
             return packageRegistry.values().stream()
-                                  .filter(EPackage.class::isInstance)
-                                  .map(EPackage.class::cast)
-                                  .toList();
-            // @formatter:on
+                    .filter(EPackage.class::isInstance)
+                    .map(EPackage.class::cast)
+                    .toList();
         } else {
             return List.of();
         }

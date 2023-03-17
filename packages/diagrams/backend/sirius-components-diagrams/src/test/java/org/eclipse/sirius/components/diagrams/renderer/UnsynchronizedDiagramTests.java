@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -177,7 +176,7 @@ public class UnsynchronizedDiagramTests {
                 .build();
 
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
-        UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
+        String descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
 
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
@@ -224,7 +223,7 @@ public class UnsynchronizedDiagramTests {
                 .build();
 
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
-        UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
+        String descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
 
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
@@ -304,7 +303,7 @@ public class UnsynchronizedDiagramTests {
             return new FreeFormLayoutStrategy();
         };
 
-        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes()))
+        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription("subUnsynchronized")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
@@ -321,7 +320,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes()))
+        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription("unsynchronized")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
@@ -338,7 +337,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes()))
+        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription("synchronized")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
@@ -355,7 +354,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes("diagram".getBytes()).toString())
+        DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription("diagram")
                 .label("")
                 .canCreatePredicate(variableManager -> true)
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")

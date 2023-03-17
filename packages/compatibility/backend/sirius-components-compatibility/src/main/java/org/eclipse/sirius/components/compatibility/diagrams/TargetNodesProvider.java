@@ -49,7 +49,6 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
 
     @Override
     public List<Element> apply(VariableManager variableManager) {
-
         var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
         if (optionalCache.isEmpty()) {
             return List.of();
@@ -68,9 +67,8 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
     }
 
     private Predicate<Element> isFromCompatibleTargetMapping() {
-        return nodeElement -> {
-            return this.edgeMapping.getTargetMapping().stream().anyMatch(targetMapping -> this.isFromMapping(nodeElement, targetMapping));
-        };
+        return nodeElement -> this.edgeMapping.getTargetMapping().stream()
+                .anyMatch(targetMapping -> this.isFromMapping(nodeElement, targetMapping));
     }
 
     private boolean isFromMapping(Element nodeElement, DiagramElementMapping mapping) {

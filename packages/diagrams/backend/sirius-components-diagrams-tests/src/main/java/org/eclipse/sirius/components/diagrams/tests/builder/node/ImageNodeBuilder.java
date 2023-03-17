@@ -110,30 +110,28 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
         String nodeId = UUID.randomUUID().toString();
         targetObjectIdToNodeId.put(labelText, nodeId);
 
-        UUID descriptionId = TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID;
+        String descriptionId = TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID;
         if (this.nodesBuilder.and() instanceof NodeBuilder) {
             descriptionId = TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID;
         }
 
-        // @formatter:off
         return Node.newNode(nodeId)
-               .type(NodeType.NODE_IMAGE)
-               .label(this.label)
-               .position(Objects.requireNonNull(this.position))
-               .size(Objects.requireNonNull(this.size))
-               .borderNode(this.isBorderNode)
-               .borderNodes(borderNodes)
-               .childNodes(childNodes)
-               .customizedProperties(this.customizedProperties)
-               .descriptionId(descriptionId)
-               .targetObjectId(labelText)
-               .targetObjectKind("")
-               .targetObjectLabel(labelText)
-               .style(Objects.requireNonNull(style))
-               .modifiers(Set.of())
-               .state(ViewModifier.Normal)
-               .collapsingState(CollapsingState.EXPANDED)
-               .build();
-        // @formatter:on
+                .type(NodeType.NODE_IMAGE)
+                .label(this.label)
+                .position(Objects.requireNonNull(this.position))
+                .size(Objects.requireNonNull(this.size))
+                .borderNode(this.isBorderNode)
+                .borderNodes(borderNodes)
+                .childNodes(childNodes)
+                .customizedProperties(this.customizedProperties)
+                .descriptionId(descriptionId)
+                .targetObjectId(labelText)
+                .targetObjectKind("")
+                .targetObjectLabel(labelText)
+                .style(Objects.requireNonNull(style))
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
+                .collapsingState(CollapsingState.EXPANDED)
+                .build();
     }
 }

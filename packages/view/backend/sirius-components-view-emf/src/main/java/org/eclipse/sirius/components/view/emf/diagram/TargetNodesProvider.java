@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -39,13 +38,13 @@ import org.eclipse.sirius.components.view.EdgeDescription;
  */
 public class TargetNodesProvider implements Function<VariableManager, List<Element>> {
 
-    private final Function<DiagramElementDescription, UUID> idProvider;
+    private final Function<DiagramElementDescription, String> idProvider;
 
     private final EdgeDescription edgeDescription;
 
     private final AQLInterpreter interpreter;
 
-    public TargetNodesProvider(Function<DiagramElementDescription, UUID> idProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
+    public TargetNodesProvider(Function<DiagramElementDescription, String> idProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
         this.idProvider = Objects.requireNonNull(idProvider);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.interpreter = Objects.requireNonNull(interpreter);
@@ -53,7 +52,6 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
 
     @Override
     public List<Element> apply(VariableManager variableManager) {
-
         var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
         if (optionalCache.isEmpty()) {
             return List.of();
@@ -73,10 +71,8 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
     }
 
     private boolean isFromCompatibleTargetMapping(Element nodeElement) {
-        // @formatter:off
         return this.edgeDescription.getTargetNodeDescriptions().stream()
-                   .anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
-        // @formatter:on
+                .anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {

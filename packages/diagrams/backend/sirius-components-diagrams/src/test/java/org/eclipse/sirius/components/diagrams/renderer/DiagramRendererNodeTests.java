@@ -52,7 +52,7 @@ import org.junit.jupiter.api.Test;
  */
 public class DiagramRendererNodeTests {
 
-    private static final UUID NODE_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String NODE_DESCRIPTION_ID = UUID.randomUUID().toString();
 
     private static final String LABEL_TEXT = "Node";
 
@@ -222,7 +222,7 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(t -> NODE_IMAGE.equals(t));
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof ImageNodeStyle);
-        // @formatter:off
+
         assertThat(diagram.getNodes())
                 .extracting(n -> (ImageNodeStyle) n.getStyle())
                 .extracting(ImageNodeStyle::getImageURL).noneMatch(String::isBlank);
@@ -230,7 +230,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes())
                 .extracting(n -> (ImageNodeStyle) n.getStyle())
                 .extracting(ImageNodeStyle::getScalingFactor).allMatch(scalingFactor -> scalingFactor == 1);
-        // @formatter:on
     }
 
     /**

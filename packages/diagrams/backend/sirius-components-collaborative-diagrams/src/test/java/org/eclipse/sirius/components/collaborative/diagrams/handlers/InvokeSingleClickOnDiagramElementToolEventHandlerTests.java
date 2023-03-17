@@ -152,9 +152,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var nodeDescriptionId = UUID.nameUUIDFromBytes(NODE_DESCRIPTION_ID.getBytes());
-        var nodeDescription = this.createNodeDescription(nodeDescriptionId);
-        var node1 = this.createNode(NODE_1_ID, nodeDescriptionId, OBJECT_1_ID);
+        var nodeDescription = this.createNodeDescription(NODE_DESCRIPTION_ID);
+        var node1 = this.createNode(NODE_1_ID, NODE_DESCRIPTION_ID, OBJECT_1_ID);
 
         var diagramQueryService = new IDiagramQueryService.NoOp() {
             @Override
@@ -206,9 +205,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var nodeDescriptionId = UUID.nameUUIDFromBytes(NODE_DESCRIPTION_ID.getBytes());
-        var nodeDescription = this.createNodeDescription(nodeDescriptionId);
-        var node1 = this.createNode(NODE_1_ID, nodeDescriptionId, OBJECT_1_ID);
+        var nodeDescription = this.createNodeDescription(NODE_DESCRIPTION_ID);
+        var node1 = this.createNode(NODE_1_ID, NODE_DESCRIPTION_ID, OBJECT_1_ID);
 
         var diagramQueryService = new IDiagramQueryService.NoOp() {
             @Override
@@ -263,9 +261,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var edgeDescriptionId = UUID.nameUUIDFromBytes(EDGE_DESCRIPTION_ID.getBytes());
-        var edgeDescription = this.createEdgeDescription(edgeDescriptionId);
-        var edge1 = this.createEdge(EDGE_1_ID, edgeDescriptionId, LINK_1_ID);
+        var edgeDescription = this.createEdgeDescription(EDGE_DESCRIPTION_ID);
+        var edge1 = this.createEdge(EDGE_1_ID, EDGE_DESCRIPTION_ID, LINK_1_ID);
 
         var diagramQueryService = new IDiagramQueryService.NoOp() {
             @Override
@@ -320,9 +317,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var edgeDescriptionId = UUID.nameUUIDFromBytes(EDGE_DESCRIPTION_ID.getBytes());
-        var edgeDescription = this.createEdgeDescription(edgeDescriptionId);
-        var edge1 = this.createEdge(EDGE_1_ID, edgeDescriptionId, LINK_1_ID);
+        var edgeDescription = this.createEdgeDescription(EDGE_DESCRIPTION_ID);
+        var edge1 = this.createEdge(EDGE_1_ID, EDGE_DESCRIPTION_ID, LINK_1_ID);
 
         var diagramQueryService = new IDiagramQueryService.NoOp() {
             @Override
@@ -379,7 +375,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         // @formatter:on
     }
 
-    private Node createNode(String nodeId, UUID nodeDescriptionId, String targetObjectId) {
+    private Node createNode(String nodeId, String nodeDescriptionId, String targetObjectId) {
         // @formatter:off
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("#000001")
@@ -415,7 +411,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         // @formatter:on
     }
 
-    private NodeDescription createNodeDescription(UUID nodeDescriptionId) {
+    private NodeDescription createNodeDescription(String nodeDescriptionId) {
         // @formatter:off
         var styleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "")
@@ -453,7 +449,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         // @formatter:on
     }
 
-    private Edge createEdge(String edgeId, UUID edgeDescriptionId, String targetObjectId) {
+    private Edge createEdge(String edgeId, String edgeDescriptionId, String targetObjectId) {
         // @formatter:off
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("#000002")
@@ -499,7 +495,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         // @formatter:on
     }
 
-    private EdgeDescription createEdgeDescription(UUID edgeDescriptionId) {
+    private EdgeDescription createEdgeDescription(String edgeDescriptionId) {
         // @formatter:off
         var edgeStyle = EdgeStyle.newEdgeStyle()
                 .color("#000003")

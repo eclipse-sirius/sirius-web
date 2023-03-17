@@ -90,7 +90,6 @@ public class DefaultTestDiagramDescriptionProvider {
         INodeStyle nodeStyle = null;
         switch (prefix) {
             case NODE_RECT_PREFIX:
-                // @formatter:off
                 nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
                         .withHeader(false)
                         .borderSize(1)
@@ -99,18 +98,14 @@ public class DefaultTestDiagramDescriptionProvider {
                         .color("#E5F5F8")
                         .borderColor("#33B0C3")
                         .build();
-                // @formatter:on
                 break;
             case NODE_IMG_PREFIX:
-                // @formatter:off
                 nodeStyle = ImageNodeStyle.newImageNodeStyle()
                         .imageURL("")
                         .scalingFactor(1)
                         .build();
-                // @formatter:on
                 break;
             case NODE_LIST_PREFIX:
-                // @formatter:off
                 nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
                         .withHeader(true)
                         .borderColor("black")
@@ -119,14 +114,11 @@ public class DefaultTestDiagramDescriptionProvider {
                         .borderStyle(LineStyle.Solid)
                         .color("white")
                         .build();
-                // @formatter:on
                 break;
             case NODE_LIST_ITEM_PREFIX:
-                // @formatter:off
                 nodeStyle = IconLabelNodeStyle.newIconLabelNodeStyle()
                         .backgroundColor("white")
                         .build();
-                // @formatter:on
                 break;
             default:
                 break;
@@ -208,16 +200,12 @@ public class DefaultTestDiagramDescriptionProvider {
     };
 
     private Function<VariableManager, List<?>> nodeSemanticElementProvider = variableManager -> {
-        // @formatter:off
-        List<Object> children = new ArrayList<>();
-        variableManager.get(VariableManager.SELF, Element.class)
+        return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getChildren)
                 .orElse(List.of())
                 .stream()
                 .filter(element -> !element.getName().startsWith("edge:"))
-                .forEach(children::add);
-        return children;
-        // @formatter:on
+                .toList();
     };
 
     public DefaultTestDiagramDescriptionProvider(IObjectService objectService) {
@@ -252,11 +240,9 @@ public class DefaultTestDiagramDescriptionProvider {
             }
             DiagramRenderingCache cache = optionalCache.get();
 
-            // @formatter:off
             variableManager.get(VariableManager.SELF, Element.class)
                     .map(this.objectService::getId)
                     .ifPresent(id -> targetObjectIdToNodeId.computeIfAbsent(id, k -> UUID.randomUUID().toString()));
-            // @formatter:on
 
             // @formatter:off
             Map<String, Element> idToElement = cache.getObjectToNodes().keySet().stream()
@@ -270,16 +256,16 @@ public class DefaultTestDiagramDescriptionProvider {
 
             // @formatter:off
             return variableManager.get(VariableManager.SELF, Element.class)
-                .map(Element::getChildren)
-                .orElseGet(List::of)
-                .stream()
-                .filter(element -> element.getName().startsWith("edge:"))
-                .map(this.objectService::getId)
-                .map(targetObjectIdToNodeId::get)
-                .map(idToElement::get)
-                .map(cache::getElementsRepresenting)
-                .flatMap(Collection::stream)
-                .toList();
+                    .map(Element::getChildren)
+                    .orElseGet(List::of)
+                    .stream()
+                    .filter(element -> element.getName().startsWith("edge:"))
+                    .map(this.objectService::getId)
+                    .map(targetObjectIdToNodeId::get)
+                    .map(idToElement::get)
+                    .map(cache::getElementsRepresenting)
+                    .flatMap(Collection::stream)
+                    .toList();
             // @formatter:on
         };
     }
@@ -295,23 +281,23 @@ public class DefaultTestDiagramDescriptionProvider {
 
         // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(TestLayoutDiagramBuilder.DIAGRAM_DESCRIPTION_ID)
-                 .label("")
-                 .autoLayout(false)
-                 .targetObjectIdProvider(this.targetObjectIdProvider)
-                 .canCreatePredicate(variableManager -> false)
-                 .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse(""))
-                 .toolSections(List.of())
-                 .nodeDescriptions(List.of(nodeDescription))
-                 .edgeDescriptions(List.of(edgeDescription))
-                 .dropHandler(variableManager -> new Failure(""))
-                 .build();
+                .label("")
+                .autoLayout(false)
+                .targetObjectIdProvider(this.targetObjectIdProvider)
+                .canCreatePredicate(variableManager -> false)
+                .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse(""))
+                .toolSections(List.of())
+                .nodeDescriptions(List.of(nodeDescription))
+                .edgeDescriptions(List.of(edgeDescription))
+                .dropHandler(variableManager -> new Failure(""))
+                .build();
         // @formatter:on
 
         return diagramDescription;
     }
 
     private EdgeDescription getDefaultEdgeDescription(Diagram diagram, LabelDescription labelDescription, NodeDescription nodeDescription) {
-        List<UUID> nodeDescriptionIds = List.of(TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID, TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID);
+        List<String> nodeDescriptionIds = List.of(TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID, TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID);
 
         // @formatter:off
         return EdgeDescription.newEdgeDescription(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)

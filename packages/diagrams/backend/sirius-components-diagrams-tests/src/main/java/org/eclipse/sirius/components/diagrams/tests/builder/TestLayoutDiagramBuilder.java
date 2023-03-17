@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -34,13 +33,13 @@ import org.eclipse.sirius.components.diagrams.tests.builder.node.NodesBuilder;
  */
 public final class TestLayoutDiagramBuilder {
 
-    public static final UUID NODE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("NODE_DESCRIPTION_ID".getBytes());
+    public static final String NODE_DESCRIPTION_ID = "NODE_DESCRIPTION_ID";
 
-    public static final UUID CHILD_NODE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("CHILD_NODE_DESCRIPTION_ID".getBytes());
+    public static final String CHILD_NODE_DESCRIPTION_ID = "CHILD_NODE_DESCRIPTION_ID";
 
-    public static final UUID EDGE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("EDGE_DESCRIPTION_ID".getBytes());
+    public static final String EDGE_DESCRIPTION_ID = "EDGE_DESCRIPTION_ID";
 
-    public static final String DIAGRAM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("DIAGRAM_DESCRIPTION_ID".getBytes()).toString();
+    public static final String DIAGRAM_DESCRIPTION_ID = "DIAGRAM_DESCRIPTION_ID";
 
     private String diagramId;
 

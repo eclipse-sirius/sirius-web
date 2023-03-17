@@ -95,14 +95,13 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
         String diagramElementMappingId = this.identifierProvider.getIdentifier(diagramElementMapping);
         String targetObjectId = this.objectService.getId(variables.get(VariableManager.SELF));
 
-        // @formatter:off
         try {
             var containmentKind = NodeContainmentKind.CHILD_NODE;
             if (diagramElementMapping != null && DescriptionPackage.eINSTANCE.getAbstractNodeMapping_BorderedNodeMappings().equals(diagramElementMapping.eContainmentFeature())) {
                 containmentKind = NodeContainmentKind.BORDER_NODE;
             }
 
-            UUID descriptionId = UUID.fromString(diagramElementMappingId);
+            String descriptionId = UUID.fromString(diagramElementMappingId).toString();
             ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                     .parentElementId(optionalParentElementId.get())
                     .descriptionId(descriptionId)
@@ -117,7 +116,6 @@ public class CreateViewOperationHandler implements IModelOperationHandler {
         } catch (IllegalArgumentException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-        // @formatter:on
 
         Map<String, Object> childVariables = new HashMap<>(variables);
         List<ModelOperation> subModelOperations = this.createView.getSubModelOperations();
