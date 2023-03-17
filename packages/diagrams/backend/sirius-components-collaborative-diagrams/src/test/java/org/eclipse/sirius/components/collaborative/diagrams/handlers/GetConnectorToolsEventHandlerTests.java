@@ -65,7 +65,7 @@ import reactor.core.publisher.Sinks.One;
  */
 public class GetConnectorToolsEventHandlerTests {
 
-    private static final UUID NODE_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String NODE_DESCRIPTION_ID = UUID.randomUUID().toString();
 
     private static final UUID DIAGRAM_DESCRIPTION_ID = UUID.randomUUID();
 

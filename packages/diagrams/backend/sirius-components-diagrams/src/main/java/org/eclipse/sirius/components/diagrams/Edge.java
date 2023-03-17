@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 
@@ -49,7 +48,7 @@ public final class Edge {
 
     private String targetObjectLabel;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private Label beginLabel;
 
@@ -97,7 +96,7 @@ public final class Edge {
         return this.targetObjectLabel;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -177,7 +176,7 @@ public final class Edge {
 
         private String targetObjectLabel;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private Label beginLabel;
 
@@ -245,7 +244,7 @@ public final class Edge {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

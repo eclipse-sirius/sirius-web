@@ -55,13 +55,13 @@ import org.junit.jupiter.api.Test;
  */
 public class DiagramRendererEdgeTests {
 
-    private static final UUID EDGE_DESCRIPTION_ID = UUID.randomUUID();
+    private static final String EDGE_DESCRIPTION_ID = UUID.randomUUID().toString();
 
     private static final String DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
-    private static final UUID NODE_DESCRIPTION_ID1 = UUID.randomUUID();
+    private static final String NODE_DESCRIPTION_ID1 = UUID.randomUUID().toString();
 
-    private static final UUID NODE_DESCRIPTION_ID2 = UUID.randomUUID();
+    private static final String NODE_DESCRIPTION_ID2 = UUID.randomUUID().toString();
 
     private static final String FIRST_OBJECT_ID = "First";
 
@@ -126,8 +126,8 @@ public class DiagramRendererEdgeTests {
     public void testNoDuplicateEdgeId() {
         NodeDescription nodeDescription1 = this.getNodeDescription(NODE_DESCRIPTION_ID1);
         NodeDescription nodeDescription2 = this.getNodeDescription(NODE_DESCRIPTION_ID2);
-        EdgeDescription edgeDescription1 = this.getEdgeDescription(nodeDescription1, UUID.randomUUID());
-        EdgeDescription edgeDescription2 = this.getEdgeDescription(nodeDescription1, UUID.randomUUID());
+        EdgeDescription edgeDescription1 = this.getEdgeDescription(nodeDescription1, UUID.randomUUID().toString());
+        EdgeDescription edgeDescription2 = this.getEdgeDescription(nodeDescription1, UUID.randomUUID().toString());
 
         Diagram diagram = this.renderDiagram(List.of(nodeDescription1, nodeDescription2), List.of(edgeDescription1, edgeDescription2));
 
@@ -167,7 +167,7 @@ public class DiagramRendererEdgeTests {
         return diagram;
     }
 
-    private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
+    private NodeDescription getNodeDescription(String nodeDescriptionId) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")
@@ -220,7 +220,7 @@ public class DiagramRendererEdgeTests {
         // @formatter:on
     }
 
-    private EdgeDescription getEdgeDescription(NodeDescription nodeDescription, UUID id) {
+    private EdgeDescription getEdgeDescription(NodeDescription nodeDescription, String id) {
         // @formatter:off
         Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);

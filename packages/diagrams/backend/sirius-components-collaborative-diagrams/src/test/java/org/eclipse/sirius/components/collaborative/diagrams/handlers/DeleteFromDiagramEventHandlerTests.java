@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,13 +82,13 @@ public class DeleteFromDiagramEventHandlerTests {
 
     private final IDiagramDescriptionService diagramDescriptionService = new IDiagramDescriptionService.NoOp() {
         @Override
-        public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, UUID nodeDescriptionId) {
-            return Optional.of(new TestDiagramDescriptionBuilder().getNodeDescription(UUID.randomUUID(), variableManager -> List.of()));
+        public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, String nodeDescriptionId) {
+            return Optional.of(new TestDiagramDescriptionBuilder().getNodeDescription(UUID.randomUUID().toString(), variableManager -> List.of()));
         }
 
         @Override
-        public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, UUID edgeDescriptionId) {
-            return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID()).get()));
+        public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, String edgeDescriptionId) {
+            return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID().toString(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID().toString()).get()));
         }
     };
 

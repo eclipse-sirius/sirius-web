@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
@@ -29,7 +28,7 @@ public final class ViewCreationRequest {
 
     private String parentElementId;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private String targetObjectId;
 
@@ -53,7 +52,7 @@ public final class ViewCreationRequest {
      *
      * @return the description identifier
      */
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -94,7 +93,7 @@ public final class ViewCreationRequest {
     public static final class Builder {
         private String parentElementId;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String targetObjectId;
 
@@ -109,7 +108,7 @@ public final class ViewCreationRequest {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

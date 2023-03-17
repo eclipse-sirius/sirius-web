@@ -72,12 +72,11 @@ public class ReconnectEdgeEventHandlerTests {
         Node newEdgeEnd = new TestDiagramBuilder().getNode(newEdgeEndId);
 
         Diagram initialDiagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
-        // @formatter:off
+
         Diagram diagram = Diagram.newDiagram(initialDiagram)
-            .edges(List.of(edge))
-            .nodes(List.of(sourceEdgeEnd, previousEdgeEnd, newEdgeEnd))
-            .build();
-        // @formatter:on
+                .edges(List.of(edge))
+                .nodes(List.of(sourceEdgeEnd, previousEdgeEnd, newEdgeEnd))
+                .build();
 
         var diagramQueryService = new IDiagramQueryService.NoOp() {
 
@@ -90,13 +89,13 @@ public class ReconnectEdgeEventHandlerTests {
         var diagramDescriptionService = new IDiagramDescriptionService.NoOp() {
 
             @Override
-            public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, UUID nodeDescriptionId) {
-                return Optional.of(new TestDiagramDescriptionBuilder().getNodeDescription(UUID.randomUUID(), variableManager -> List.of()));
+            public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, String nodeDescriptionId) {
+                return Optional.of(new TestDiagramDescriptionBuilder().getNodeDescription(UUID.randomUUID().toString(), variableManager -> List.of()));
             }
 
             @Override
-            public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, UUID edgeDescriptionId) {
-                return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID()).get()));
+            public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, String edgeDescriptionId) {
+                return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID().toString(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID().toString()).get()));
             }
         };
 

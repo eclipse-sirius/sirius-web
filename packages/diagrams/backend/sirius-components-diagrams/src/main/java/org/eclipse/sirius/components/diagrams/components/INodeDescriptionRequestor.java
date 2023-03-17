@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 
@@ -23,5 +22,5 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
  * @author sbegaudeau
  */
 public interface INodeDescriptionRequestor {
-    Optional<NodeDescription> findById(UUID nodeDescriptionId);
+    Optional<NodeDescription> findById(String nodeDescriptionId);
 }

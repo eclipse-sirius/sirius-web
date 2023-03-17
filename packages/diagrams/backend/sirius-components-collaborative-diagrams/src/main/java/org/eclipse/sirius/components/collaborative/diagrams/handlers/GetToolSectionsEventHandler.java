@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -152,13 +151,13 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
         if (appliesToRootDiagram) {
             diagramElementDescription = diagramDescription;
         } else if (diagramElement instanceof Node) {
-            UUID descriptionId = ((Node) diagramElement).getDescriptionId();
+            String descriptionId = ((Node) diagramElement).getDescriptionId();
             var optionalNodeDescription = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, descriptionId);
             if (optionalNodeDescription.isPresent()) {
                 diagramElementDescription = optionalNodeDescription.get();
             }
         } else if (diagramElement instanceof Edge) {
-            UUID descriptionId = ((Edge) diagramElement).getDescriptionId();
+            String descriptionId = ((Edge) diagramElement).getDescriptionId();
             var optionalEdgeDescription = this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, descriptionId);
             if (optionalEdgeDescription.isPresent()) {
                 diagramElementDescription = optionalEdgeDescription.get();

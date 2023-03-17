@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,14 +63,13 @@ public class EdgeMappingConverterTests {
         edgeMapping.getSourceMapping().add(nodeMapping);
         edgeMapping.getTargetMapping().add(containerMapping);
 
-        // @formatter:off
-        UUID nodeMappingUUID = UUID.nameUUIDFromBytes(nodeMapping.getName().getBytes());
-        UUID containerMappingUUID = UUID.nameUUIDFromBytes(containerMapping.getName().getBytes());
-        Map<UUID, NodeDescription> id2NodeDescriptions = Map.of(
+
+        String nodeMappingUUID = UUID.nameUUIDFromBytes(nodeMapping.getName().getBytes()).toString();
+        String containerMappingUUID = UUID.nameUUIDFromBytes(containerMapping.getName().getBytes()).toString();
+        Map<String, NodeDescription> id2NodeDescriptions = Map.of(
                 nodeMappingUUID, this.createNodeDescription(nodeMappingUUID),
                 containerMappingUUID, this.createNodeDescription(containerMappingUUID)
         );
-        // @formatter:on
 
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
@@ -90,7 +89,7 @@ public class EdgeMappingConverterTests {
         assertThat(edgeDescription.getTargetNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
     }
 
-    private NodeDescription createNodeDescription(UUID id) {
+    private NodeDescription createNodeDescription(String id) {
         // @formatter:off
         LabelStyleDescription styleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "")
@@ -140,14 +139,13 @@ public class EdgeMappingConverterTests {
         edgeMapping.getSourceMapping().add(containerMapping);
         edgeMapping.getTargetMapping().add(nodeMapping);
 
-        // @formatter:off
-        UUID nodeMappingUUID = UUID.nameUUIDFromBytes(nodeMapping.getName().getBytes());
-        UUID containerMappingUUID = UUID.nameUUIDFromBytes(containerMapping.getName().getBytes());
-        Map<UUID, NodeDescription> id2NodeDescriptions = Map.of(
+        String nodeMappingUUID = UUID.nameUUIDFromBytes(nodeMapping.getName().getBytes()).toString();
+        String containerMappingUUID = UUID.nameUUIDFromBytes(containerMapping.getName().getBytes()).toString();
+        Map<String, NodeDescription> id2NodeDescriptions = Map.of(
                 nodeMappingUUID, this.createNodeDescription(nodeMappingUUID),
                 containerMappingUUID, this.createNodeDescription(containerMappingUUID)
         );
-        // @formatter:on
+
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
@@ -181,14 +179,13 @@ public class EdgeMappingConverterTests {
         edgeMapping.getSourceMapping().add(sourceContainerMapping);
         edgeMapping.getTargetMapping().add(targetContainerMapping);
 
-        // @formatter:off
-        UUID sourceContainerMappingUUID = UUID.nameUUIDFromBytes(sourceContainerMapping.getName().getBytes());
-        UUID targetContainerMappingUUID = UUID.nameUUIDFromBytes(targetContainerMapping.getName().getBytes());
-        Map<UUID, NodeDescription> id2NodeDescriptions = Map.of(
+        String sourceContainerMappingUUID = UUID.nameUUIDFromBytes(sourceContainerMapping.getName().getBytes()).toString();
+        String targetContainerMappingUUID = UUID.nameUUIDFromBytes(targetContainerMapping.getName().getBytes()).toString();
+        Map<String, NodeDescription> id2NodeDescriptions = Map.of(
                 sourceContainerMappingUUID, this.createNodeDescription(sourceContainerMappingUUID),
                 targetContainerMappingUUID, this.createNodeDescription(targetContainerMappingUUID)
         );
-        // @formatter:on
+
         IObjectService objectService = new IObjectService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp();
         IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {

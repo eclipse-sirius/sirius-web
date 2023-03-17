@@ -123,17 +123,16 @@ public class ToolProvider implements IToolProvider {
     }
 
     @Override
-    public List<ToolSection> getToolSections(Map<UUID, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, DiagramDescription siriusDiagramDescription, List<Layer> layers) {
+    public List<ToolSection> getToolSections(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, DiagramDescription siriusDiagramDescription, List<Layer> layers) {
 
         List<ToolSection> result = new ArrayList<>();
-        // @formatter:off
         var siriusToolSections = layers
-            .stream()
-            .flatMap(layer -> layer.getToolSections().stream())
-            .filter(org.eclipse.sirius.diagram.description.tool.ToolSection.class::isInstance)
-            .map(org.eclipse.sirius.diagram.description.tool.ToolSection.class::cast)
-            .toList();
-        // @formatter:on
+                .stream()
+                .flatMap(layer -> layer.getToolSections().stream())
+                .filter(org.eclipse.sirius.diagram.description.tool.ToolSection.class::isInstance)
+                .map(org.eclipse.sirius.diagram.description.tool.ToolSection.class::cast)
+                .toList();
+
         AQLInterpreter interpreter = this.interpreterFactory.create(siriusDiagramDescription);
         for (var siriusToolSection : siriusToolSections) {
             // @formatter:off
@@ -173,11 +172,7 @@ public class ToolProvider implements IToolProvider {
     }
 
     private List<AbstractToolDescription> getToolDescriptions(org.eclipse.sirius.diagram.description.tool.ToolSection toolSection) {
-        //@formatter:off
-        return Stream.concat(
-                    toolSection.getOwnedTools().stream(),
-                    toolSection.getReusedTools().stream()
-                )
+        return Stream.concat(toolSection.getOwnedTools().stream(), toolSection.getReusedTools().stream())
                 .flatMap(toolEntry -> {
                     if (toolEntry instanceof ToolGroup) {
                         return ((ToolGroup) toolEntry).getTools().stream();
@@ -187,11 +182,9 @@ public class ToolProvider implements IToolProvider {
                 .filter(AbstractToolDescription.class::isInstance)
                 .map(AbstractToolDescription.class::cast)
                 .toList();
-
-        //@formatter:on
     }
 
-    private List<IDiagramElementDescription> getParentNodeDescriptions(List<? extends AbstractNodeMapping> nodeMappings, Map<UUID, NodeDescription> id2NodeDescriptions) {
+    private List<IDiagramElementDescription> getParentNodeDescriptions(List<? extends AbstractNodeMapping> nodeMappings, Map<String, NodeDescription> id2NodeDescriptions) {
         //@formatter:off
         return nodeMappings.stream()
                 .map(AbstractNodeMapping::eContainer)
@@ -199,6 +192,7 @@ public class ToolProvider implements IToolProvider {
                 .map(AbstractNodeMapping.class::cast)
                 .map(this.identifierProvider::getIdentifier)
                 .map(UUID::fromString)
+                .map(UUID::toString)
                 .map(id2NodeDescriptions::get)
                 .filter(IDiagramElementDescription.class::isInstance)
                 .map(IDiagramElementDescription.class::cast)
@@ -214,7 +208,7 @@ public class ToolProvider implements IToolProvider {
         //@formatter:on
     }
 
-    private Optional<ITool> convertTool(Map<UUID, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions,
+    private Optional<ITool> convertTool(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions,
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription, AbstractToolDescription siriusTool, AQLInterpreter interpreter) {
         Optional<ITool> result = Optional.empty();
         if (siriusTool instanceof NodeCreationDescription) {
@@ -240,7 +234,7 @@ public class ToolProvider implements IToolProvider {
         return result;
     }
 
-    private SingleClickOnDiagramElementTool convertNodeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
+    private SingleClickOnDiagramElementTool convertNodeCreationDescription(Map<String, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
         String id = this.identifierProvider.getIdentifier(nodeCreationTool);
         String label = new IdentifiedElementQuery(nodeCreationTool).getLabel();
         String imagePath = this.toolImageProvider.getImage(nodeCreationTool);
@@ -262,7 +256,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private SingleClickOnDiagramElementTool convertContainerCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
+    private SingleClickOnDiagramElementTool convertContainerCreationDescription(Map<String, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
             ContainerCreationDescription containerCreationDescription) {
         String id = this.identifierProvider.getIdentifier(containerCreationDescription);
         String label = new IdentifiedElementQuery(containerCreationDescription).getLabel();
@@ -285,7 +279,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private SingleClickOnDiagramElementTool convertToolDescription(Map<UUID, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, AQLInterpreter interpreter,
+    private SingleClickOnDiagramElementTool convertToolDescription(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, AQLInterpreter interpreter,
             DiagramDescription siriusDiagramDescription, ToolDescription toolDescription) {
         String id = this.identifierProvider.getIdentifier(toolDescription);
         String label = new IdentifiedElementQuery(toolDescription).getLabel();
@@ -300,6 +294,7 @@ public class ToolProvider implements IToolProvider {
 
         List<IDiagramElementDescription> targetNodeDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
+                .map(UUID::toString)
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .filter(IDiagramElementDescription.class::isInstance)
@@ -308,6 +303,7 @@ public class ToolProvider implements IToolProvider {
 
         List<IDiagramElementDescription> targetEdgeDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
+                .map(UUID::toString)
                 .flatMap(targetDescriptionUUID -> edgeDescriptions.stream().filter(edgeDescription -> edgeDescription.getId().equals(targetDescriptionUUID)))
                 .filter(Objects::nonNull)
                 .filter(IDiagramElementDescription.class::isInstance)
@@ -326,7 +322,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private SingleClickOnDiagramElementTool convertOperationAction(Map<UUID, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, AQLInterpreter interpreter,
+    private SingleClickOnDiagramElementTool convertOperationAction(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, AQLInterpreter interpreter,
             DiagramDescription siriusDiagramDescription, OperationAction operationAction) {
         String id = this.identifierProvider.getIdentifier(operationAction);
         String label = new IdentifiedElementQuery(operationAction).getLabel();
@@ -341,6 +337,7 @@ public class ToolProvider implements IToolProvider {
 
         List<IDiagramElementDescription> targetNodeDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
+                .map(UUID::toString)
                 .map(id2NodeDescriptions::get)
                 .filter(IDiagramElementDescription.class::isInstance)
                 .map(IDiagramElementDescription.class::cast)
@@ -348,6 +345,7 @@ public class ToolProvider implements IToolProvider {
 
         List<IDiagramElementDescription> targetEdgeDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
+                .map(UUID::toString)
                 .flatMap(targetDescriptionUUID -> edgeDescriptions.stream().filter(edgeDescription -> edgeDescription.getId().equals(targetDescriptionUUID)))
                 .filter(IDiagramElementDescription.class::isInstance)
                 .map(IDiagramElementDescription.class::cast)
@@ -390,42 +388,44 @@ public class ToolProvider implements IToolProvider {
         return result;
     }
 
-    private SingleClickOnTwoDiagramElementsTool convertEdgeCreationDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
+    private SingleClickOnTwoDiagramElementsTool convertEdgeCreationDescription(Map<String, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
             EdgeCreationDescription edgeCreationDescription) {
         String id = this.identifierProvider.getIdentifier(edgeCreationDescription);
         String label = new IdentifiedElementQuery(edgeCreationDescription).getLabel();
         String imagePath = this.toolImageProvider.getImage(edgeCreationDescription);
-        // @formatter:off
+
         List<SingleClickOnTwoDiagramElementsCandidate> edgeCandidates = new ArrayList<>();
         for (EdgeMapping edgeMapping : edgeCreationDescription.getEdgeMappings()) {
             List<NodeDescription> sources = edgeMapping.getSourceMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
                     .map(this.identifierProvider::getIdentifier)
                     .map(UUID::fromString)
+                    .map(UUID::toString)
                     .map(id2NodeDescriptions::get)
                     .toList();
             List<NodeDescription> targets = edgeMapping.getTargetMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
                     .map(this.identifierProvider::getIdentifier)
                     .map(UUID::fromString)
+                    .map(UUID::toString)
                     .map(id2NodeDescriptions::get)
                     .toList();
             SingleClickOnTwoDiagramElementsCandidate edgeCandidate = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                .sources(sources)
-                .targets(targets)
-                .build();
+                    .sources(sources)
+                    .targets(targets)
+                    .build();
             edgeCandidates.add(edgeCandidate);
         }
+
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(id)
                 .label(label)
                 .imageURL(imagePath)
                 .handler(this.createEdgeCreationHandler(interpreter, edgeCreationDescription))
                 .candidates(edgeCandidates)
                 .build();
-        // @formatter:on
     }
 
-    private SingleClickOnDiagramElementTool convertDeleteElementDescription(Map<UUID, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
+    private SingleClickOnDiagramElementTool convertDeleteElementDescription(Map<String, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter,
             DeleteElementDescription deleteElementDescription) {
         String id = this.identifierProvider.getIdentifier(deleteElementDescription);
         String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
@@ -439,6 +439,7 @@ public class ToolProvider implements IToolProvider {
                 .toList();
         List<IDiagramElementDescription> targetDescriptions = targetDescriptionIds.stream()
                 .map(UUID::fromString)
+                .map(UUID::toString)
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .filter(IDiagramElementDescription.class::isInstance)
@@ -464,23 +465,19 @@ public class ToolProvider implements IToolProvider {
                 if (variables.get(Node.SELECTED_NODE) != null) {
                     variables.put(CONTAINER_VIEW, variables.get(Node.SELECTED_NODE));
                 } else {
-                    // @formatter:off
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
                             .filter(IDiagramContext.class::isInstance)
                             .map(IDiagramContext.class::cast)
-                            .ifPresent(diagramContext -> {
-                                variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
-                            });
-                    // @formatter:on
+                            .ifPresent(diagramContext ->  variables.put(CONTAINER_VIEW, diagramContext.getDiagram()));
                 }
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {
                     variables.put(selectModelelementVariableOpt.get().getName(), variables.get(SingleClickOnDiagramElementTool.SELECTED_OBJECT));
                 }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
-                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
-                    return handler.handle(variables);
-                }).orElse(new Failure(""));
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations())
+                        .map(handler -> handler.handle(variables))
+                        .orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -497,14 +494,10 @@ public class ToolProvider implements IToolProvider {
                 if (variables.get(Node.SELECTED_NODE) != null) {
                     variables.put(CONTAINER_VIEW, variables.get(Node.SELECTED_NODE));
                 } else {
-                    // @formatter:off
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
                             .filter(IDiagramContext.class::isInstance)
                             .map(IDiagramContext.class::cast)
-                            .ifPresent(diagramContext -> {
-                                variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
-                            });
-                    // @formatter:on
+                            .ifPresent(diagramContext -> variables.put(CONTAINER_VIEW, diagramContext.getDiagram()));
                 }
 
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
@@ -512,9 +505,9 @@ public class ToolProvider implements IToolProvider {
                     variables.put(selectModelelementVariableOpt.get().getName(), variables.get(SingleClickOnDiagramElementTool.SELECTED_OBJECT));
                 }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
-                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
-                    return handler.handle(variables);
-                }).orElse(new Failure(""));
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations())
+                        .map(handler -> handler.handle(variables))
+                        .orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -529,9 +522,9 @@ public class ToolProvider implements IToolProvider {
                 // Provide compatibility aliases for this variable
                 variables.put(ELEMENT, variables.get(VariableManager.SELF));
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
-                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
-                    return handler.handle(variables);
-                }).orElse(new Failure(""));
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations())
+                        .map(handler -> handler.handle(variables))
+                        .orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -546,9 +539,9 @@ public class ToolProvider implements IToolProvider {
                 // Provide compatibility aliases for this variable
                 variables.put(ELEMENT, variables.get(VariableManager.SELF));
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
-                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
-                    return handler.handle(variables);
-                }).orElse(new Failure(""));
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations())
+                        .map(handler -> handler.handle(variables))
+                        .orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -565,9 +558,9 @@ public class ToolProvider implements IToolProvider {
                 variables.put(EDGE_SOURCE, variables.get(EdgeDescription.SEMANTIC_EDGE_SOURCE));
                 variables.put(EDGE_TARGET, variables.get(EdgeDescription.SEMANTIC_EDGE_TARGET));
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
-                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {
-                    return handler.handle(variables);
-                }).orElse(new Failure(""));
+                return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations())
+                        .map(handler -> handler.handle(variables))
+                        .orElse(new Failure(""));
             };
         } else {
             return variableManager -> new Success();
@@ -584,14 +577,11 @@ public class ToolProvider implements IToolProvider {
                 Object selectedNode = variables.get(Node.SELECTED_NODE);
                 if (selectedNode instanceof Node) {
                     variables.put(ELEMENT_VIEW, selectedNode);
-                    // @formatter:off
+
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
                             .filter(IDiagramContext.class::isInstance)
                             .map(IDiagramContext.class::cast)
-                            .ifPresent(diagramContext -> {
-                                variables.put(CONTAINER_VIEW, this.getParentNode((Node) selectedNode, diagramContext.getDiagram()));
-                            });
-                    // @formatter:on
+                            .ifPresent(diagramContext -> variables.put(CONTAINER_VIEW, this.getParentNode((Node) selectedNode, diagramContext.getDiagram())));
                 }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);
                 return modelOperationHandlerSwitch.apply(initialOperation.getFirstModelOperations()).map(handler -> {

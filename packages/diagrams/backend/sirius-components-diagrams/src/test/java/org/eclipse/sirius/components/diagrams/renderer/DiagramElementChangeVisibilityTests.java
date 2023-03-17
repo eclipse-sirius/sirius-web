@@ -99,7 +99,7 @@ public class DiagramElementChangeVisibilityTests {
     };
 
     private NodeDescription createNodeDescription(String elementId, List<NodeDescription> borderNodes, List<NodeDescription> children) {
-        final var id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
@@ -169,7 +169,7 @@ public class DiagramElementChangeVisibilityTests {
             return targetNodes;
         };
 
-        EdgeDescription edgeDescription = EdgeDescription.newEdgeDescription(UUID.randomUUID())
+        EdgeDescription edgeDescription = EdgeDescription.newEdgeDescription(UUID.randomUUID().toString())
                 .styleProvider(STYLE_EDGE_PROVIDER)
                 .sourceNodeDescriptions(List.of(sourceDescription))
                 .targetNodeDescriptions(List.of(targetDescription))
@@ -221,7 +221,7 @@ public class DiagramElementChangeVisibilityTests {
         // @formatter:off
         List<NodeDescription> nodeDescriptions = IntStream.range(0, 3)
                 .mapToObj(i -> this.createNodeDescription(OBJECT_IDS.get(i), List.of(), List.of()))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         var edgeDescription = this.createEdgeDescription(nodeDescriptions.get(1), OBJECT_IDS.get(1), nodeDescriptions.get(2), OBJECT_IDS.get(2));
         var diagram = this.createDiagram(Optional.empty(), nodeDescriptions, List.of(edgeDescription));

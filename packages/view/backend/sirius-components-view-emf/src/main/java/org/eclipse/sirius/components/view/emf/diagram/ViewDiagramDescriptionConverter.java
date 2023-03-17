@@ -98,9 +98,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final Function<VariableManager, String> semanticTargetLabelProvider;
 
-    private final Function<DiagramElementDescription, UUID> idProvider = (diagramElementDescription) -> {
+    private final Function<DiagramElementDescription, String> idProvider = (diagramElementDescription) -> {
         // DiagramElementDescription should have a proper id.
-        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes()).toString();
     };
 
     private final IViewToolImageProvider viewToolImageProvider;
@@ -236,10 +236,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
 
         // @formatter:off
-        List<UUID> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
+        List<String> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
                 .map(this.idProvider)
                 .toList();
-        List<UUID> reusedBorderNodeDescriptionIds = viewNodeDescription.getReusedBorderNodeDescriptions().stream()
+        List<String> reusedBorderNodeDescriptionIds = viewNodeDescription.getReusedBorderNodeDescriptions().stream()
                 .map(this.idProvider)
                 .toList();
 
