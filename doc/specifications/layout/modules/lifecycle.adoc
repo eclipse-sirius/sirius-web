@@ -19,6 +19,72 @@ In order to compute the layout a diagram, we will have to retrieve information f
 This configuration will include details from the diagram data structure, the descriptions used to create it and the previous layout data.
 Using this configuration and the optional current events, we will compute the layout data of the new diagram.
 
+== API
+
+More precisely, the input information taken by a diagram layout algorithm are:
+
+* the raw diagram structure, i.e. an instance of `Diagram` as computed by `DiagramComponent.render()`;
+* the style information for all the elements in that diagram.
+In practive we only need the sub-set of style information which have an impact on the geometry of the elements, i.e. we do not care about colors for example or the actual pixels inside an image.
+See the <<Configuration>> section below for details.
+* layout information from the previous version of the diagram.
+This information may be partial: for example elements which did not exist or were not visible in the previous version of the diagram will not have previous layout information.
+This previous layout data may also contain information for elements which do not exist on the diagram, typically because the element existed in the previous version of the diagram but does not exist anymore.
+* if the layout was triggered by a user operation (e.g. the invocation of a tool at a specific position) the corresponding event with the information relevant for the layout will be available here.
+
+From all these input elements, a diagram layout algorithm computes a new `DiagramLayoutData` instance which includes complete layout data for every _visible_ element in the diagram, and only for them.
+The result layout data should not contain "stale" layout information for elements which no longer exist in the diagram or are not visible at this point.
+
+Translated into a very explicit Java interface this gives something like:
+
+[%linenums,java]
+----
+public interface IDiagramLayoutEngine {
+    DiagramLayoutData layout(Diagram diagram,
+                             DiagramLayoutData previousLayoutData,
+                             DiagramLayoutConfiguration diagramLayoutConfiguration,
+                             Optional<IDiagramEvent> optionalDiagramEvent);
+}
+----
+
+Note however `diagramLayoutConfiguration` can be derived from the `diagram` itself with the use of the appropriate services (to resolve the node description and edge description).
+
+There are two main modes to invoke the layout API shown above:
+
+* _Incremental Layout_: the `previousLayoutData` passed is taken from the `Diagram#getLayoutData` of the previous state of the diagram.
+Depending on the user interaction which triggered the layout, `optionalDiagramEvent` _may_ include information relevant for the layout (e.g. the position where a tool was invoked).
+* _Full Layout_ (aka _Arrange All_): the `previousLayoutData` passed is empty.
+If the previous state of the diagram contained some layout data, it is dropped/ignored.
+`optionalDiagramEvent` may still include information relevant for the layout in this case.
+This is the case for diagrams which are in "Auto-Layout" mode, where a full layout is used after every user interaction which refreshes the diagram.
+
+== Output
+
+The layout algorithm returns an instance of `DiagramLayoutData` which only describes the _size_ and _position_ of the various elements of a diagram.
+It is not concerned with colors, images contents, edge decorations or line style for example.
+
+The `DiagramLayoutData` contains layout information for all nodes, edges and labels visible on the diagram, indexed by their ids.
+
+[java]
+---
+public record DiagramLayoutData(
+        Map<String, NodeLayoutData> nodeLayoutData,
+        Map<String, EdgeLayoutData> edgeLayoutData,
+        Map<String, LabelLayoutData> labelLayoutData) {
+}
+---
+
+This structure is not recursive: for a node with id `id1` with a sub-node `id2` and a label with id `id3`, the layout data for the sub-node and the label are directly accessible `diagramLayoutData.nodeLayoutData().get(id2)` and `diagramLayoutData.labelLayoutData().get(id3)`, not from inside the `NodeLayoutData` for `id1`.
+
+The position of a top-level node is relative to the diagram's origin (0×0).
+For sub-nodes, border nodes and labels, the position stored in their `NodeLayoutData` or `LabelLayoutData` should be interpreted relative to the position of their parent node or edge.
+
+The `DiagramLayoutData` instance returned by the layout algorithm must validate the following constraints:
+
+* All elements *must* have a well-defined layout.
+* The layout engine *must* be deterministic: from identical `diagram`, `previousLayoutData`, `diagramLayoutConfiguration` and `optionalDiagramEvent` it should always return identical `DiagramLayoutData`.
+In particular, invoking a full layout repeatedly on the same `diagram` (same layout configuration, same empty `previousLayoutData`, no diagram event) should always produce the exact same result.
+
 == Configuration
 
 [%linenums,java]
@@ -39,8 +105,9 @@ public class NodeLayoutConfiguration implements IParentLayoutConfiguration {
     private String displayName;
     private IParentLayoutConfiguration parentLayoutConfiguration;
     private Size requestedSize;
-    private Border border;
     private Margin margin;
+    private Border border;
+    private Padding padding;
     private NodeLabelPosition labelPosition;
     private LabelLayoutConfiguration labelLayoutConfiguration;
     private List<NodeLayoutConfiguration> childNodeLayoutConfigurations;
@@ -97,6 +164,32 @@ public class LabelLayoutConfiguration {
 == Internal data structure and behavior
 
 
+=== "Cascade"
+
+In CSS, the cascade https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade[refers to] "an algorithm that defines how user agents combine property values originating from different sources."
+In the case of a browser, the different sources correspond to: the browser's defaults, the author stylesheets, and the 
+
+There are up to four layers of information to consider when computing the layout of an element:
+
+. **Layer 1 (core)**: the general constraints and default values defined by the core layout rules.
+This is fixed once and for all, and stable over successive render/layout of a given diagram.
+Example: no node can have a width or height smaller than 50px but there is no maximum size.
+. **Layer 2 (studio)**: the values requested by the studio maker in the element's (style) description, and possibly the constraints imposed to how the user can change the values.
+This level is always present and can change between layouts, either because the values are dynamically computed (AQL expressions) or because a different conditional style is selected.
+Example: the node's style requests a (computed) size of 200×100px and allows the end-user to resize the node but only vertically.
+. **Layer 3 (previous layout)**: the actual values used in the previous version of the diagram.
+As mentioned above, they may not be present for a given element.
+Even when present, it may be inconsistent with the constraints from level 2 (if the previous value is incompatible with the new effective style's constraints).
+For example, a node's size could have been computed to fit the label's text at a given font size, but on the next render even if the text has not changed, if the font size to use has increased (because a different conditional style has been selected), the previous node size is now invalid.
+. **Layer 4 (user input)**: the user-requested value for a given layout property (e.g. size of position of a node).
+When present it is transient to a single execution of the layout, and represented by the `optionalDiagramEvent`.
+It becomes integrated (as much as possible) into the new layout and becomes part of Level 3 information in the next layout of the same diagram.
+
+The rule is that layer N information, if present, takes priority over Layer N-1 information, but only in so far as it is compatible with the constraints from layer N-1.
+In other words:
+
+As much as possible, the frontend should prevent the end-user to ask for layout changes which would be rejected by the backend-controled layout.
+In practice this is not always possible, and the backend has the last word.
 
 == Behavior in action
 
