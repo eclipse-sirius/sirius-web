@@ -94,4 +94,7 @@ public class TextBoundsService {
         return this.textBoundsProvider.computeAutoWrapBounds(label.getStyle(), label.getText(), maxWidth);
     }
 
+    public long getAutoWrapLines(Label label, double maxWidth) {
+        return this.textBoundsProvider.computeAutoWrapLines(label.getStyle(), label.getText(), maxWidth);
+    }
 }
