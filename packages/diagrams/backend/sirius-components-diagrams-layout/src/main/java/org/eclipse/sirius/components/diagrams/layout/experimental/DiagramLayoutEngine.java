@@ -19,6 +19,9 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -28,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.layout.api.IDiagramLayoutConfigura
 import org.eclipse.sirius.components.diagrams.layout.api.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.api.configuration.DiagramLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
@@ -55,9 +59,48 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
 
     private DiagramLayoutData doLayout(Diagram diagram, DiagramLayoutConfiguration diagramLayoutConfiguration, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
         Map<String, NodeLayoutData> nodeLayoutData = new HashMap<>();
-        this.layoutNodes(diagram.getNodes(), previousLayoutData, nodeLayoutData);
+        this.layoutDiagram(diagram.getNodes(), previousLayoutData, nodeLayoutData);
         this.applyEvent(optionalDiagramEvent, nodeLayoutData);
-        return new DiagramLayoutData(nodeLayoutData, previousLayoutData.edgeLayoutData(), previousLayoutData.labelLayoutData());
+        Map<String, LabelLayoutData> labelLayoutData = this.createDefaultLabelLayoutData(diagram);
+        return new DiagramLayoutData(nodeLayoutData, previousLayoutData.edgeLayoutData(), labelLayoutData);
+    }
+
+    private Map<String, LabelLayoutData> createDefaultLabelLayoutData(Diagram diagram) {
+        Map<String, LabelLayoutData> labelLayoutData = new HashMap<>();
+        for (Node node : diagram.getNodes()) {
+            this.addDefaultLabelLayoutData(node, labelLayoutData);
+        }
+        for (Edge edge : diagram.getEdges()) {
+            this.addDefaultLabelLayoutData(edge, labelLayoutData);
+        }
+        return labelLayoutData;
+    }
+
+    private void addDefaultLabelLayoutData(Node node, Map<String, LabelLayoutData> labelLayoutData) {
+        if (this.isVisible(node)) {
+            Label label = node.getLabel();
+            labelLayoutData.put(label.getId(), new LabelLayoutData(new Position(5, 5), new Size(70, 20), new Position(0, 0)));
+            for (Node child : node.getChildNodes()) {
+                this.addDefaultLabelLayoutData(child, labelLayoutData);
+            }
+            for (Node borderNode : node.getBorderNodes()) {
+                this.addDefaultLabelLayoutData(borderNode, labelLayoutData);
+            }
+        }
+    }
+
+    private void addDefaultLabelLayoutData(Edge edge, Map<String, LabelLayoutData> labelLayoutData) {
+        if (this.isVisible(edge)) {
+            Optional.ofNullable(edge.getBeginLabel()).ifPresent(beginLabel -> {
+                labelLayoutData.put(beginLabel.getId(), new LabelLayoutData(new Position(5, 5), new Size(70, 20), new Position(0, 0)));
+            });
+            Optional.ofNullable(edge.getCenterLabel()).ifPresent(centerLabel -> {
+                labelLayoutData.put(centerLabel.getId(), new LabelLayoutData(new Position(5, 5), new Size(70, 20), new Position(0, 0)));
+            });
+            Optional.ofNullable(edge.getEndLabel()).ifPresent(edgeLabel -> {
+                labelLayoutData.put(edgeLabel.getId(), new LabelLayoutData(new Position(5, 5), new Size(70, 20), new Position(0, 0)));
+            });
+        }
     }
 
     private void applyEvent(Optional<IDiagramEvent> optionalDiagramEvent, Map<String, NodeLayoutData> nodeLayoutData) {
@@ -87,16 +130,15 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
         return new Rectangle(position.x(), position.y(), size.width(), size.height());
     }
 
-    private void layoutNodes(List<Node> nodes, DiagramLayoutData previousLayoutData, Map<String, NodeLayoutData> nodeLayoutData) {
+    private void layoutDiagram(List<Node> nodes, DiagramLayoutData previousLayoutData, Map<String, NodeLayoutData> nodeLayoutData) {
         // Distribute the top-level nodes horizontally from (0,0)
         Position nextChildPosition = new Position(0.0, 0.0);
         for (Node child : nodes) {
-            if (child.getState() == ViewModifier.Hidden) {
+            if (!this.isVisible(child)) {
                 continue;
             }
-            NodeBox childBox = this.layoutContents(child).moveTo(nextChildPosition);
-            nextChildPosition = childBox.getFootprint().topRight();
-            nextChildPosition = new Position(nextChildPosition.x(), nextChildPosition.y() + childBox.getMargin().top());
+            NodeBox childBox = this.layoutContents(child, false).moveTo(nextChildPosition);
+            nextChildPosition = childBox.getFootprint().topRight().translate(0, childBox.getMargin().top());
             this.fillLayoutData(childBox, nodeLayoutData, previousLayoutData);
         }
     }
@@ -109,17 +151,23 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
         }
     }
 
-    private NodeBox layoutContents(Node node) {
-        NodeBox box = new NodeBox(node, new Rectangle(0.0, 0.0, 150.0, 70.0));
+    private NodeBox layoutContents(Node node, boolean listItem) {
+        NodeBox box;
+        if (listItem) {
+            box = new NodeBox(node, new Rectangle(0.0, 0.0, 100.0, 20.0), Offsets.empty());
+        } else {
+            box = new NodeBox(node, new Rectangle(0.0, 0.0, 150.0, 70.0), Offsets.of(10));
+        }
 
-        // Distribute the children horizontally inside the children area
+        // Distribute the children horizontally inside the children area if freeform, or vertically with no margin if list layout
+        boolean listLayout = node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy;
         var nextChildPosition = box.getContentArea().topLeft();
         boolean isFirstChild = true;
         for (Node child : node.getChildNodes()) {
-            if (child.getState() == ViewModifier.Hidden) {
+            if (!this.isVisible(child)) {
                 continue;
             }
-            NodeBox childBox = this.layoutContents(child);
+            NodeBox childBox = this.layoutContents(child, listLayout);
             if (isFirstChild) {
                 childBox = childBox.moveTo(nextChildPosition).moveBy(childBox.getMargin().left(), 0);
                 isFirstChild = false;
@@ -128,11 +176,22 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
             }
 
             box.setSubNodeBox(child.getId(), childBox);
-            nextChildPosition = childBox.getFootprint().topRight();
-            nextChildPosition = new Position(nextChildPosition.x(), nextChildPosition.y() + childBox.getMargin().top());
+            if (listLayout) {
+                nextChildPosition = childBox.getFootprint().bottomLeft().translate(childBox.getMargin().left(), 0);
+            } else {
+                nextChildPosition = childBox.getFootprint().topRight().translate(0, childBox.getMargin().top());
+            }
         }
 
         return box.expandToFitContent();
+    }
+
+    private boolean isVisible(Node node) {
+        return node.getState() != ViewModifier.Hidden;
+    }
+
+    private boolean isVisible(Edge edge) {
+        return edge.getState() != ViewModifier.Hidden;
     }
 
 }

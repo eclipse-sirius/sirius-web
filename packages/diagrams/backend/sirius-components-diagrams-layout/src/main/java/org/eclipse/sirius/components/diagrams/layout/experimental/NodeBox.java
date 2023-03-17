@@ -37,16 +37,18 @@ public class NodeBox {
     // These should be taken from the style
     private final Offsets border = Offsets.empty();
 
-    private final Offsets margin = Offsets.of(10.0);
+    private final Offsets margin;
 
-    public NodeBox(Node node, Rectangle nodeArea) {
+    public NodeBox(Node node, Rectangle nodeArea, Offsets margin) {
         this.node = Objects.requireNonNull(node);
         this.nodeArea = Objects.requireNonNull(nodeArea);
+        this.margin = Objects.requireNonNull(margin);
     }
 
-    private NodeBox(Node node, Rectangle nodeArea, Map<String, NodeBox> subNodeBoxes) {
+    private NodeBox(Node node, Rectangle nodeArea, Offsets margin, Map<String, NodeBox> subNodeBoxes) {
         this.node = Objects.requireNonNull(node);
         this.nodeArea = Objects.requireNonNull(nodeArea);
+        this.margin = Objects.requireNonNull(margin);
         this.subNodeBoxes.putAll(subNodeBoxes);
     }
 
@@ -89,7 +91,7 @@ public class NodeBox {
     }
 
     public NodeBox moveTo(Position newPosition) {
-        return new NodeBox(this.node, this.nodeArea.moveTo(newPosition), this.subNodeBoxes);
+        return new NodeBox(this.node, this.nodeArea.moveTo(newPosition), this.margin, this.subNodeBoxes);
     }
 
     public NodeBox moveBy(double dx, double dy) {
@@ -109,7 +111,7 @@ public class NodeBox {
         Rectangle newContentArea = this.subNodeBoxes.values().stream().map(NodeBox::getFootprint).reduce(this.getContentArea(), Rectangle::union);
         Offsets insideLabelOffsets = new Offsets(this.labelHeight, 0.0, 0.0, 0.0);
         Rectangle newNodeArea = newContentArea.expand(insideLabelOffsets).expand(this.border);
-        return new NodeBox(this.node, newNodeArea, this.subNodeBoxes);
+        return new NodeBox(this.node, newNodeArea, this.margin, this.subNodeBoxes);
     }
 
     public NodeLayoutData toNodeLayoutData() {
