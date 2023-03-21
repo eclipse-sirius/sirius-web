@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -88,6 +87,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final IObjectService objectService;
 
+    private final IIdDiagramProvider idProvider;
+
     private final IEditService editService;
 
     private final StylesFactory stylesFactory;
@@ -98,20 +99,19 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final Function<VariableManager, String> semanticTargetLabelProvider;
 
-    private final Function<DiagramElementDescription, String> idProvider = (diagramElementDescription) -> {
-        // DiagramElementDescription should have a proper id.
-        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes()).toString();
-    };
+    private final Function<org.eclipse.sirius.components.view.DiagramElementDescription, String> idDiagramElementProvider;
 
     private final IViewToolImageProvider viewToolImageProvider;
 
-    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IViewToolImageProvider viewToolImageProvider) {
+    public ViewDiagramDescriptionConverter(IIdDiagramProvider idProvider, IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IViewToolImageProvider viewToolImageProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.idProvider = Objects.requireNonNull(idProvider);
         this.editService = Objects.requireNonNull(editService);
         this.stylesFactory = new StylesFactory(Objects.requireNonNull(iNodeStyleProviders), this.objectService);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
+        this.idDiagramElementProvider = (diagramElementDescription) -> this.idProvider.getIdElementDescription(diagramElementDescription);
         this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
     }
 
@@ -128,9 +128,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).toList();
         List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).toList();
         // @formatter:off
-        String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
         var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider);
-        return DiagramDescription.newDiagramDescription(UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString())
+
+        return DiagramDescription.newDiagramDescription(this.idProvider.getIdDiagramDescription(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
                 .canCreatePredicate(new IViewDiagramCreationPredicate() {
@@ -237,10 +237,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         // @formatter:off
         List<String> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
-                .map(this.idProvider)
+                .map(this.idDiagramElementProvider)
                 .toList();
         List<String> reusedBorderNodeDescriptionIds = viewNodeDescription.getReusedBorderNodeDescriptions().stream()
-                .map(this.idProvider)
+                .map(this.idDiagramElementProvider)
                 .toList();
 
         Predicate<VariableManager> shouldRenderPredicate = variableManager -> {
@@ -248,7 +248,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return result.asBoolean().orElse(true);
         };
 
-        NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.apply(viewNodeDescription))
+        NodeDescription result = NodeDescription.newNodeDescription(this.idProvider.getIdElementDescription(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
@@ -426,7 +426,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             };
         }
 
-        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.idProvider, viewEdgeDescription, interpreter);
+        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.idDiagramElementProvider, viewEdgeDescription, interpreter);
 
         Function<VariableManager, EdgeStyle> styleProvider = variableManager -> {
             // @formatter:off
@@ -442,7 +442,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewEdgeDescription.getSynchronizationPolicy().getName());
 
         // @formatter:off
-        var builder = EdgeDescription.newEdgeDescription(this.idProvider.apply(viewEdgeDescription))
+        var builder = EdgeDescription.newEdgeDescription(this.idProvider.getIdElementDescription(viewEdgeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
@@ -587,7 +587,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {
         if (nodeElement.getProps() instanceof NodeElementProps props) {
-            return Objects.equals(this.idProvider.apply(diagramElementDescription), props.getDescriptionId());
+            return Objects.equals(this.idProvider.getIdElementDescription(diagramElementDescription), props.getDescriptionId());
         }
         return false;
     }

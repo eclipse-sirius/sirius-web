@@ -12,6 +12,15 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1860[1860] [view] Changed the type of descriptionId of Node and Edge from UUID to String
++
+Changed values of descriptionId from string uuid to URL with theses syntaxes : 
++
+DiagramDescription#descriptionId to siriusComponents://diagramDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT
++
+NodeDescription#descriptionId to siriusComponents://nodeDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT
++
+EdgeDescription#descriptionId to vers siriusComponents://edgeDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT
+
 - https://github.com/eclipse-sirius/sirius-components/issues/1643[1643] [core] Removed our dependencies to Spring Security
 - https://github.com/eclipse-sirius/sirius-components/issues/1592[#1592] [view] In View-based diagram definition, all tools applicable on a given element are now configured inside the new _Palette_ element directly inside the element (diagram, node or edge) description.
 - https://github.com/eclipse-sirius/sirius-components/issues/1761[#1761] [core] Remove `sirius-web-graphql-schema` since it was not really used anymore

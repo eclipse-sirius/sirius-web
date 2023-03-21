@@ -26,10 +26,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.IViewService;
+import org.eclipse.sirius.components.view.emf.diagram.IdDiagramProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -53,7 +55,10 @@ public class ViewService implements IViewService {
 
     private final EPackage.Registry ePackageRegistry;
 
-    public ViewService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry) {
+    private final IdDiagramProvider idProvider;
+
+    public ViewService(IdDiagramProvider idProvider, IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry) {
+        this.idProvider = Objects.requireNonNull(idProvider);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
     }
@@ -96,6 +101,10 @@ public class ViewService implements IViewService {
     }
 
     private String getDescriptionId(EObject description) {
+        if (description instanceof DiagramDescription diagramDescription) {
+            return this.idProvider.getIdDiagramDescription(diagramDescription);
+        }
+
         String descriptionURI = EcoreUtil.getURI(description).toString();
         return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
     }
