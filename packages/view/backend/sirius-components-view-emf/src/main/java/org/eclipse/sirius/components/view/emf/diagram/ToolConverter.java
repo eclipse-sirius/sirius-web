@@ -73,8 +73,7 @@ public class ToolConverter {
         var allToolSections = new ArrayList<ToolSection>();
 
         // Palette for the diagram itself
-        String diagramDescriptionURI = EcoreUtil.getURI(viewDiagramDescription).toString();
-        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + UUID.nameUUIDFromBytes(diagramDescriptionURI.getBytes()).toString();
+        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + this.objectService.getId(viewDiagramDescription);
         // @formatter:off
         var diagramPalette = ToolSection.newToolSection(diagramPaletteId)
                 .label(viewDiagramDescription.getName())
@@ -86,8 +85,7 @@ public class ToolConverter {
 
         // One palette for each NodeDescription
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
-            String nodeDescriptionURI = EcoreUtil.getURI(nodeDescription).toString();
-            String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + UUID.nameUUIDFromBytes(nodeDescriptionURI.getBytes()).toString();
+            String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + this.objectService.getId(nodeDescription);
             // @formatter:off
             var nodePalette = ToolSection.newToolSection(nodePaletteId)
                     .label(nodeDescription.getName())
@@ -100,8 +98,7 @@ public class ToolConverter {
 
         // One palette for each EdgeDescription
         for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
-            String edgeDescriptionURI = EcoreUtil.getURI(edgeDescription).toString();
-            String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + UUID.nameUUIDFromBytes(edgeDescriptionURI.getBytes()).toString();
+            String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + this.objectService.getId(edgeDescription);
             // @formatter:off
             var edgeToolSection = ToolSection.newToolSection(edgePaletteId)
                     .label(edgeDescription.getName())

@@ -39,13 +39,13 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
 
     private final IIdentifierProvider identifierProvider;
 
-    private final IViewService viewService;
+    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    public ViewRepresentationDescriptionsProvider(IIdentifierProvider identifierProvider, IViewService viewService, List<IJavaServiceProvider> javaServiceProviders) {
+    public ViewRepresentationDescriptionsProvider(IIdentifierProvider identifierProvider, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
-        this.viewService = Objects.requireNonNull(viewService);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
     }
 
@@ -57,7 +57,7 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
     @Override
     public List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
         List<RepresentationDescriptionMetadata> result = new ArrayList<>();
-        var viewRepresentationDescription = this.viewService.getRepresentationDescription(representationDescription.getId());
+        var viewRepresentationDescription = this.viewRepresentationDescriptionSearchService.findById(representationDescription.getId());
         if (viewRepresentationDescription.isPresent()) {
             String defaultName = viewRepresentationDescription.map(view -> this.getDefaultName(view, editingContext, object)).orElse(representationDescription.getLabel());
             result.add(new RepresentationDescriptionMetadata(representationDescription.getId(), representationDescription.getLabel(), defaultName));

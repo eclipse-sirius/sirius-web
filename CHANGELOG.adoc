@@ -30,6 +30,10 @@ As a result, any datafetcher requiring a representation description will now hav
 We previously had some datafetcher which were using the `IRepresentationDescriptionSearchService`` with `null` as a value for the editing context.
 Such calls will not work anymore since `null` will not be an acceptable value anymore by our implementation of this interface.
 - [diagram] Changed the type of `Node#descriptionId` and `Edge#descriptionId` from `UUID` to `String`
+- [view] Changed the values of {Diagram|Node|Edge}descriptionId computed by the view converter:
+** `siriusComponents://diagramDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT`
+** `siriusComponents://nodeDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT`
+** `siriusComponents://edgeDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT`
 
 === Dependency update
 

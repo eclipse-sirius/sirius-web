@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,13 @@ package org.eclipse.sirius.components.view.emf;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.View;
 
 /**
- * Get a {@link View} from its representation description Id.
+ * Get a View representation description from its representation description Id.
  *
  * @author arichard
  */
-public interface IViewService {
+public interface IViewRepresentationDescriptionSearchService {
 
-    Optional<RepresentationDescription> getRepresentationDescription(String representationDescriptionId);
+    Optional<RepresentationDescription> findById(String representationDescriptionId);
 }
