@@ -38,14 +38,14 @@ import org.eclipse.sirius.components.view.EdgeDescription;
  */
 public class TargetNodesProvider implements Function<VariableManager, List<Element>> {
 
-    private final Function<DiagramElementDescription, String> idProvider;
+    private final IDiagramIdProvider diagramIdProvider;
 
     private final EdgeDescription edgeDescription;
 
     private final AQLInterpreter interpreter;
 
-    public TargetNodesProvider(Function<DiagramElementDescription, String> idProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
-        this.idProvider = Objects.requireNonNull(idProvider);
+    public TargetNodesProvider(IDiagramIdProvider diagramIdProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.interpreter = Objects.requireNonNull(interpreter);
     }
@@ -78,7 +78,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {
         if (nodeElement.getProps() instanceof NodeElementProps) {
             NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-            return Objects.equals(this.idProvider.apply(description), props.getDescriptionId());
+            return Objects.equals(this.diagramIdProvider.getId(description), props.getDescriptionId());
         }
         return false;
     }

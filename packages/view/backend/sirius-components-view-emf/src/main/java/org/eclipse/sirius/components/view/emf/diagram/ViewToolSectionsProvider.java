@@ -91,18 +91,25 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
     }
 
     private List<ToolSection> getDiagramPalette(DiagramDescription diagramDescription) {
-        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + diagramDescription.getId();
+        String sourceElementId = this.getSourceElementId(diagramDescription.getId());
+        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + sourceElementId;
         return this.findToolSectionById(diagramDescription, diagramPaletteId).stream().toList();
     }
 
     private List<ToolSection> getNodeToolSections(DiagramDescription diagramDescription, NodeDescription nodeDescription) {
-        String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + nodeDescription.getId().toString();
+        String sourceElementId = this.getSourceElementId(nodeDescription.getId());
+        String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId;
         return this.findToolSectionById(diagramDescription, nodePaletteId).stream().toList();
     }
 
     private List<ToolSection> getEdgeToolSections(DiagramDescription diagramDescription, EdgeDescription edgeDescription) {
-        String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + edgeDescription.getId().toString();
+        String sourceElementId = this.getSourceElementId(edgeDescription.getId());
+        String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
         return this.findToolSectionById(diagramDescription, edgePaletteId).stream().toList();
+    }
+
+    private String getSourceElementId(String id) {
+        return id.split("sourceElementId=")[1];
     }
 
     private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {

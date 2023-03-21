@@ -46,7 +46,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.sirius.components.view.emf.IViewService;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -68,7 +68,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final IDiagramQueryService diagramQueryService;
 
-    private final IViewService viewService;
+    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final IObjectService objectService;
 
@@ -81,11 +81,11 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
     };
 
-    public ViewInitialDirectEditElementLabelProvider(IIdentifierProvider identifierProvider, IDiagramQueryService diagramQueryService, IViewService viewService, IObjectService objectService,
-            List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
+    public ViewInitialDirectEditElementLabelProvider(IIdentifierProvider identifierProvider, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
+                                                     List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-        this.viewService = Objects.requireNonNull(viewService);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.applicationContext = Objects.requireNonNull(applicationContext);
@@ -100,7 +100,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     public String getInitialDirectEditElementLabel(Object diagramElement, String labelId, Diagram diagram, IEditingContext editingContext) {
         String initialDirectEditElementLabel = "";
         String diagramDescriptionId = diagram.getDescriptionId();
-        var optionalDiagramDescription = this.viewService.getRepresentationDescription(diagramDescriptionId).filter(DiagramDescription.class::isInstance).map(DiagramDescription.class::cast);
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescriptionId).filter(DiagramDescription.class::isInstance).map(DiagramDescription.class::cast);
 
         if (optionalDiagramDescription.isPresent()) {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();

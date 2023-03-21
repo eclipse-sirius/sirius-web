@@ -38,7 +38,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.sirius.components.view.emf.IViewService;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -60,7 +60,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IIdentifierProvider identifierProvider;
 
-    private final IViewService viewService;
+    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
@@ -68,12 +68,12 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
-    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider, IViewService viewService,
+    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
             List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
-        this.viewService = Objects.requireNonNull(viewService);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
@@ -89,7 +89,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         IStatus status = new Failure("");
 
         // @formatter:off
-        var optionalDiagramDescription = this.viewService.getRepresentationDescription(diagramDescription.getId())
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescription.getId())
                 .filter(org.eclipse.sirius.components.view.DiagramDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast);
         // @formatter:on
