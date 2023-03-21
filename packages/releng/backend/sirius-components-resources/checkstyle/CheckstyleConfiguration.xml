@@ -11,6 +11,10 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
+    <module name="MissingJavadocType">
+      <property name="severity" value="error"/>
+      <property name="scope" value="private"/>
+    </module>
     <module name="Indentation">
       <property name="severity" value="error"/>
     </module>

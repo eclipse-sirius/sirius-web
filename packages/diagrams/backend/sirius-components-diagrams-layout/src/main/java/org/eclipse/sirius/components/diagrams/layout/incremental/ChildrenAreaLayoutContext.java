@@ -111,6 +111,11 @@ public final class ChildrenAreaLayoutContext {
         return new Builder(parentId);
     }
 
+    /**
+     * The builder used to create a ChildrenAreaLayoutContext.
+     *
+     * @author gcoutable
+     */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
         private String parentId;
