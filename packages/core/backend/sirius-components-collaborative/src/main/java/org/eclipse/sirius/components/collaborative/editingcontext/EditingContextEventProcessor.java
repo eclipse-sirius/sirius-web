@@ -104,14 +104,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private final Disposable changeDescriptionDisposable;
 
     public EditingContextEventProcessor(EditingContextEventProcessorParameters parameters) {
-        this.messageService = parameters.getMessageService();
-        this.editingContext = parameters.getEditingContext();
-        this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
-        this.applicationEventPublisher = parameters.getApplicationEventPublisher();
-        this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
-        this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
-        this.danglingRepresentationDeletionService = parameters.getDanglingRepresentationDeletionService();
-        this.executorService = parameters.getExecutorServiceProvider().getExecutorService(this.editingContext);
+        this.messageService = parameters.messageService();
+        this.editingContext = parameters.editingContext();
+        this.editingContextPersistenceService = parameters.editingContextPersistenceService();
+        this.applicationEventPublisher = parameters.applicationEventPublisher();
+        this.editingContextEventHandlers = parameters.editingContextEventHandlers();
+        this.representationEventProcessorComposedFactory = parameters.representationEventProcessorComposedFactory();
+        this.danglingRepresentationDeletionService = parameters.danglingRepresentationDeletionService();
+        this.executorService = parameters.executorServiceProvider().getExecutorService(this.editingContext);
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 

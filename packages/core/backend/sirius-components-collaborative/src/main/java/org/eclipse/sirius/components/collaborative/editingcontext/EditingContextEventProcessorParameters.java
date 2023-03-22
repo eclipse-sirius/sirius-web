@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.annotations.Builder;
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
@@ -30,62 +30,29 @@ import org.springframework.context.ApplicationEventPublisher;
  *
  * @author sbegaudeau
  */
-@Immutable
-public final class EditingContextEventProcessorParameters {
-    private ICollaborativeMessageService messageService;
-
-    private IEditingContext editingContext;
-
-    private IEditingContextPersistenceService editingContextPersistenceService;
-
-    private ApplicationEventPublisher applicationEventPublisher;
-
-    private List<IEditingContextEventHandler> editingContextEventHandlers;
-
-    private IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
-
-    private IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
-
-    private IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
-
-    private EditingContextEventProcessorParameters() {
-        // Prevent instantiation
+public record EditingContextEventProcessorParameters(
+        ICollaborativeMessageService messageService,
+        IEditingContext editingContext,
+        IEditingContextPersistenceService editingContextPersistenceService,
+        ApplicationEventPublisher applicationEventPublisher,
+        List<IEditingContextEventHandler> editingContextEventHandlers,
+        IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
+        IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
+        IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider
+) {
+    public EditingContextEventProcessorParameters {
+        Objects.requireNonNull(messageService);
+        Objects.requireNonNull(editingContext);
+        Objects.requireNonNull(editingContextPersistenceService);
+        Objects.requireNonNull(applicationEventPublisher);
+        Objects.requireNonNull(editingContextEventHandlers);
+        Objects.requireNonNull(representationEventProcessorComposedFactory);
+        Objects.requireNonNull(danglingRepresentationDeletionService);
+        Objects.requireNonNull(executorServiceProvider);
     }
 
-    public ICollaborativeMessageService getMessageService() {
-        return this.messageService;
-    }
-
-    public IEditingContext getEditingContext() {
-        return this.editingContext;
-    }
-
-    public IEditingContextPersistenceService getEditingContextPersistenceService() {
-        return this.editingContextPersistenceService;
-    }
-
-    public ApplicationEventPublisher getApplicationEventPublisher() {
-        return this.applicationEventPublisher;
-    }
-
-    public List<IEditingContextEventHandler> getEditingContextEventHandlers() {
-        return this.editingContextEventHandlers;
-    }
-
-    public IRepresentationEventProcessorComposedFactory getRepresentationEventProcessorComposedFactory() {
-        return this.representationEventProcessorComposedFactory;
-    }
-
-    public IDanglingRepresentationDeletionService getDanglingRepresentationDeletionService() {
-        return this.danglingRepresentationDeletionService;
-    }
-
-    public IEditingContextEventProcessorExecutorServiceProvider getExecutorServiceProvider() {
-        return this.executorServiceProvider;
-    }
-
-    public static Builder newEditingContextEventProcessorParameters() {
-        return new Builder();
+    public static EditingContextEventProcessorParametersBuilder newEditingContextEventProcessorParameters() {
+        return new EditingContextEventProcessorParametersBuilder();
     }
 
     /**
@@ -93,8 +60,9 @@ public final class EditingContextEventProcessorParameters {
      *
      * @author sbegaudeau
      */
+    @Builder
     @SuppressWarnings("checkstyle:HiddenField")
-    public static final class Builder {
+    public static final class EditingContextEventProcessorParametersBuilder {
         private ICollaborativeMessageService messageService;
 
         private IEditingContext editingContext;
@@ -111,61 +79,61 @@ public final class EditingContextEventProcessorParameters {
 
         private IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
 
-        private Builder() {
+        private EditingContextEventProcessorParametersBuilder() {
             // Prevent instantiation
         }
 
-        public Builder messageService(ICollaborativeMessageService messageService) {
+        public EditingContextEventProcessorParametersBuilder messageService(ICollaborativeMessageService messageService) {
             this.messageService = Objects.requireNonNull(messageService);
             return this;
         }
 
-        public Builder editingContext(IEditingContext editingContext) {
+        public EditingContextEventProcessorParametersBuilder editingContext(IEditingContext editingContext) {
             this.editingContext = Objects.requireNonNull(editingContext);
             return this;
         }
 
-        public Builder editingContextPersistenceService(IEditingContextPersistenceService editingContextPersistenceService) {
+        public EditingContextEventProcessorParametersBuilder editingContextPersistenceService(IEditingContextPersistenceService editingContextPersistenceService) {
             this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
             return this;
         }
 
-        public Builder applicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        public EditingContextEventProcessorParametersBuilder applicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
             this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
             return this;
         }
 
-        public Builder editingContextEventHandlers(List<IEditingContextEventHandler> editingContextEventHandlers) {
+        public EditingContextEventProcessorParametersBuilder editingContextEventHandlers(List<IEditingContextEventHandler> editingContextEventHandlers) {
             this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
             return this;
         }
 
-        public Builder representationEventProcessorComposedFactory(IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
+        public EditingContextEventProcessorParametersBuilder representationEventProcessorComposedFactory(IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
             this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
             return this;
         }
 
-        public Builder danglingRepresentationDeletionService(IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
+        public EditingContextEventProcessorParametersBuilder danglingRepresentationDeletionService(IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
             this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
             return this;
         }
 
-        public Builder executorServiceProvider(IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider) {
+        public EditingContextEventProcessorParametersBuilder executorServiceProvider(IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider) {
             this.executorServiceProvider = Objects.requireNonNull(executorServiceProvider);
             return this;
         }
 
         public EditingContextEventProcessorParameters build() {
-            EditingContextEventProcessorParameters parameters = new EditingContextEventProcessorParameters();
-            parameters.messageService = Objects.requireNonNull(this.messageService);
-            parameters.editingContext = Objects.requireNonNull(this.editingContext);
-            parameters.editingContextPersistenceService = Objects.requireNonNull(this.editingContextPersistenceService);
-            parameters.applicationEventPublisher = Objects.requireNonNull(this.applicationEventPublisher);
-            parameters.editingContextEventHandlers = Objects.requireNonNull(this.editingContextEventHandlers);
-            parameters.representationEventProcessorComposedFactory = Objects.requireNonNull(this.representationEventProcessorComposedFactory);
-            parameters.danglingRepresentationDeletionService = Objects.requireNonNull(this.danglingRepresentationDeletionService);
-            parameters.executorServiceProvider = Objects.requireNonNull(this.executorServiceProvider);
-            return parameters;
+            return new EditingContextEventProcessorParameters(
+                    this.messageService,
+                    this.editingContext,
+                    this.editingContextPersistenceService,
+                    this.applicationEventPublisher,
+                    this.editingContextEventHandlers,
+                    this.representationEventProcessorComposedFactory,
+                    this.danglingRepresentationDeletionService,
+                    this.executorServiceProvider
+            );
         }
     }
 }
