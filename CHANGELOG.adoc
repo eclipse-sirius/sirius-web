@@ -81,6 +81,8 @@ This has no visible effect at the moment, but will allow better documentation, v
 - [studio] Add a project template for the Papaya domains and view
 - https://github.com/eclipse-sirius/sirius-components/issues/1667[#1667] [diagram] Make the contextual palette self contained 
 - https://github.com/eclipse-sirius/sirius-components/issues/1858[#1858] [project] Improve project template cards layout
+- https://github.com/eclipse-sirius/sirius-components/issues/1879[#1879] [core] Add an annotation `@Builder` to identify builders and simplify some use cases involving the builder pattern.
+It is now possible to use builders in records and it is a first step toward the deprecation of the `@Immutable` annotation in favor of more records.
 
 
 == v2023.3.0

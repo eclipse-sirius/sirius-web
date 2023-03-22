@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,12 +25,12 @@ import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.tngtech.archunit.library.GeneralCodingRules;
-
 import java.lang.annotation.Target;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.sirius.components.annotations.Builder;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.junit.jupiter.api.Test;
 
@@ -376,16 +376,19 @@ public abstract class AbstractCodingRulesTests {
      * </ul>
      *
      * With the introduction of this test, it appears that apart from some utility constructors like in the @Immutable
-     * classes, we do not have a single static method with a real behavior. Thus nothing of value will be lost.
+     * classes, we do not have a single static method with a real behavior. Thus, nothing of value will be lost.
      *
-     * In this test, we will ignore the following use cases:
+     * In this test, we will ensure that static methods are either used to return a builder or they act as a builder
+     * directly and are thus used to return a new instance. We will prevent the introduction of any static method in
+     * the code apart from the following use cases:
      *
      * <ul>
      * <li>Enum since Java enum are considered as extending java.lang.Enum which comes with static methods</li>
      * <li>Java 8+ lambdas which are compiled to hidden static methods (to make it short)</li>
      * <li>@Parameters methods used by JUnit test cases</li>
      * <li>@Immutable classes which are using a static method to create the builder</li>
-     * <li>@Constructor methods which are used as alternate constructors</li>
+     * <li>Static methods defined on records returning the record on which they are defined</li>
+     * <li>Static methods returning a class annotated with @Builder</li>
      * </ul>
      */
     @Test
@@ -405,6 +408,8 @@ public abstract class AbstractCodingRulesTests {
                 .areDeclaredInClassesThat(this.isNotTestCase())
                 .and(this.isNotLambda())
                 .and(this.isNotSwitchTable())
+                .and(this.isNotRecordStaticBuilder())
+                .and(this.isNotReturningAnnotatedBuilder())
                 .should()
                 .beStatic();
         // @formatter:on
@@ -446,6 +451,34 @@ public abstract class AbstractCodingRulesTests {
             @Override
             public boolean apply(JavaMethod javaMethod) {
                 return !javaMethod.getFullName().contains("$SWITCH_TABLE$");
+            }
+        };
+    }
+
+    /**
+     * Used to detect that the static method is not defined in a record and does not return the same record.
+     *
+     * @return A predicate used to ignore some static methods
+     */
+    private DescribedPredicate<JavaMethod> isNotRecordStaticBuilder() {
+        return new DescribedPredicate<>("is not an alternate builder in a record") {
+            @Override
+            public boolean apply(JavaMethod javaMethod) {
+                return !(javaMethod.getOwner().isRecord() && javaMethod.getRawReturnType().equals(javaMethod.getOwner()));
+            }
+        };
+    }
+
+    /**
+     * Used to detect that the static method is not returning a type annotated with @Builder.
+     *
+     * @return A predicate used to ignore some static methods
+     */
+    private DescribedPredicate<JavaMethod> isNotReturningAnnotatedBuilder() {
+        return new DescribedPredicate<>("is not returning a type annotated with @Builder") {
+            @Override
+            public boolean apply(JavaMethod javaMethod) {
+                return !javaMethod.getRawReturnType().isAnnotatedWith(Builder.class);
             }
         };
     }
