@@ -377,17 +377,6 @@ export const FormDescriptionEditorRepresentation = ({
             </Typography>
           </div>
           <div
-            id="List"
-            data-testid="FormDescriptionEditor-List"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStart}>
-            <FormatListBulletedIcon />
-            <Typography variant="caption" gutterBottom>
-              List
-            </Typography>
-          </div>
-          <div
             id="Image"
             data-testid="FormDescriptionEditor-Image"
             draggable="true"
