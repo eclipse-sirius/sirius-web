@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author sbegaudeau
  */
 @Immutable
-public final class Node {
+public final class Node implements IDiagramElement {
     public static final String SELECTED_NODE = "selectedNode";
 
     private String id;
@@ -71,6 +71,7 @@ public final class Node {
         // Prevent instantiation
     }
 
+    @Override
     public String getId() {
         return this.id;
     }
@@ -91,6 +92,7 @@ public final class Node {
         return this.targetObjectLabel;
     }
 
+    @Override
     public String getDescriptionId() {
         return this.descriptionId;
     }
