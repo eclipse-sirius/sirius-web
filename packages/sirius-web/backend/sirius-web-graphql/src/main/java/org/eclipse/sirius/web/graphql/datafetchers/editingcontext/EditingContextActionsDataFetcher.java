@@ -71,8 +71,7 @@ public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCo
                 .map(representationDescription -> {
                     String value = Base64.getEncoder().encodeToString(representationDescription.getId().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    Edge<EditingContextAction> edge = new DefaultEdge<>(representationDescription, cursor);
-                    return edge;
+                    return (Edge<EditingContextAction>) new DefaultEdge<>(representationDescription, cursor);
                 })
                 .toList();
         // @formatter:on

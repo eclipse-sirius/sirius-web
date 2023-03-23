@@ -31,6 +31,7 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.documents.EditingDomainFactory;
 import org.junit.jupiter.api.Test;
@@ -46,28 +47,15 @@ public class EditingContextPersistenceServiceTests {
     @Test
     public void testDocumentPersistence() {
         UUID projectId = UUID.randomUUID();
-
         String name = "New Document";
         UUID id = UUID.randomUUID();
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath(id.toString());
-        resource.eAdapters().add(new DocumentMetadataAdapter(name));
-
-        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-        eClass.setName("Concept");
-        resource.getContents().add(eClass);
-
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        editingDomain.getResourceSet().getResources().add(resource);
 
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setId(projectId);
         projectEntity.setName("");
 
-        DocumentEntity existingEntity = new DocumentEntity();
-        existingEntity.setId(id);
-        existingEntity.setProject(projectEntity);
-        existingEntity.setName(name);
-        existingEntity.setContent("");
+        var existingEntity = this.createFakeDocument(name, id, projectEntity, editingDomain);
 
         List<DocumentEntity> entities = new ArrayList<>();
         IDocumentRepository documentRepository = new NoOpDocumentRepository() {
@@ -82,7 +70,12 @@ public class EditingContextPersistenceServiceTests {
                 return Optional.of(existingEntity);
             }
         };
-        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
+        IProjectRepository projectRepository = new NoOpProjectRepository();
+
+        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository,
+                                                                                                                  projectRepository,
+                                                                                                                  new NoOpApplicationEventPublisher(),
+                                                                                                                  new SimpleMeterRegistry());
         assertThat(entities).hasSize(0);
 
         IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
@@ -94,5 +87,77 @@ public class EditingContextPersistenceServiceTests {
         assertThat(documentEntity.getId()).isEqualTo(id);
         assertThat(documentEntity.getName()).isEqualTo(name);
         assertThat(documentEntity.getProject().getId()).isEqualTo(projectId);
+    }
+
+
+    @Test
+    public void testUnkownDocumentPersistence() {
+
+        UUID projectId = UUID.randomUUID();
+        String name = "New Document";
+        UUID id = UUID.randomUUID();
+        AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
+
+        ProjectEntity existingProject = new ProjectEntity();
+        existingProject.setId(projectId);
+        existingProject.setName("Existing project");
+
+
+        this.createFakeDocument(name, id, existingProject, editingDomain);
+
+        List<DocumentEntity> entities = new ArrayList<>();
+        IDocumentRepository documentRepository = new NoOpDocumentRepository() {
+            @Override
+            public <S extends DocumentEntity> S save(S entity) {
+                entities.add(entity);
+                return entity;
+            }
+
+        };
+
+
+        IProjectRepository projectRepository = new NoOpProjectRepository() {
+            @Override
+            public Optional<ProjectEntity> findById(UUID id) {
+                return Optional.of(existingProject);
+            }
+        };
+
+        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository,
+                                                                                                                  projectRepository,
+                                                                                                                  new NoOpApplicationEventPublisher(),
+                                                                                                                  new SimpleMeterRegistry());
+
+        assertThat(entities).hasSize(0);
+
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+
+        editingContextPersistenceService.persist(editingContext);
+        assertThat(entities).hasSize(1);
+
+        DocumentEntity documentEntity = entities.get(0);
+        assertThat(documentEntity.getId()).isEqualTo(id);
+        assertThat(documentEntity.getName()).isEqualTo(name);
+        assertThat(documentEntity.getProject().getId()).isEqualTo(projectId);
+
+    }
+
+    private DocumentEntity createFakeDocument(String documentName, UUID documentId, ProjectEntity projectEntity, AdapterFactoryEditingDomain editingDomain) {
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
+        resource.eAdapters().add(new DocumentMetadataAdapter(documentName));
+
+        EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+        eClass.setName("Concept");
+        resource.getContents().add(eClass);
+
+        editingDomain.getResourceSet().getResources().add(resource);
+
+        DocumentEntity existingEntity = new DocumentEntity();
+        existingEntity.setId(documentId);
+        existingEntity.setProject(projectEntity);
+        existingEntity.setName(documentName);
+        existingEntity.setContent("");
+
+        return existingEntity;
     }
 }

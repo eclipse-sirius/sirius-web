@@ -13,8 +13,8 @@
 describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
-      const projectId = res.body.data.createProject.project.id;
+    cy.createProjectFromTemplate('studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
       const view_document_id = 'ea57f74d-bc7b-3a7a-81e0-8aef4ee85770';
       cy.createDocument(projectId, view_document_id, 'ViewDocument').then(() => {
         cy.visit(`/projects/${projectId}/edit`);

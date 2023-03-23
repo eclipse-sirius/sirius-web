@@ -36,6 +36,8 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
+import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
+import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -46,6 +48,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  * @author sbegaudeau
  */
 public class EditingContextSearchServiceTests {
+
     // @formatter:off
     private static final String CONTENT = """
         {
@@ -90,7 +93,10 @@ public class EditingContextSearchServiceTests {
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
 
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty());
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+
+        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
                 new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
@@ -133,7 +139,11 @@ public class EditingContextSearchServiceTests {
         ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty());
+
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+
+        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
                 new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();

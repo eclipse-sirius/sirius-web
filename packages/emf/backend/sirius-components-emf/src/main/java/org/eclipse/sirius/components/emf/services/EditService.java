@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.emf.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,7 +30,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -44,7 +42,6 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
-import org.eclipse.sirius.components.core.api.Domain;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -60,22 +57,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditService implements IEditService {
 
-    private final IEditingContextEPackageService editingContextEPackageService;
-
     private final IEMFKindService emfKindService;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final EPackage.Registry globalEPackageRegistry;
-
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
-    public EditService(IEditingContextEPackageService editingContextEPackageService, IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory,
-            EPackage.Registry globalEPackageRegistry, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
-        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
+    public EditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
     }
 
@@ -91,59 +81,59 @@ public class EditService implements IEditService {
         // @formatter:on
     }
 
-    private EPackage.Registry getPackageRegistry(String editingContextId) {
-        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
-        this.globalEPackageRegistry.forEach(ePackageRegistry::put);
-        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
-        additionalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
-        return ePackageRegistry;
+    private Optional<EPackage.Registry> getPackageRegistry(IEditingContext editingContext) {
+        return Optional.of(editingContext)
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
+                .map(EditingDomain::getResourceSet)
+                .map(ResourceSet::getPackageRegistry);
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String kind) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
-        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
+        this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
 
-        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
-        ResourceSet resourceSet = editingDomain.getResourceSet();
-        resourceSet.setPackageRegistry(ePackageRegistry);
-        Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of());
-        resourceSet.getResources().add(resource);
-
-        // @formatter:off
-        var optionalEClass = this.getEClass(ePackageRegistry, kind)
-                .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
-        // @formatter:on
-
-        if (optionalEClass.isPresent()) {
-            EClass eClass = optionalEClass.get();
-            EObject eObject = EcoreUtil.create(eClass);
-            resource.getContents().add(eObject);
-
-            Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
+            AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
+            ResourceSet resourceSet = editingDomain.getResourceSet();
+            resourceSet.setPackageRegistry(ePackageRegistry);
+            Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of());
+            resourceSet.getResources().add(resource);
 
             // @formatter:off
-            List<CommandParameter> commandParameters = newChildDescriptors.stream()
-                    .filter(CommandParameter.class::isInstance)
-                    .map(CommandParameter.class::cast)
-                    .toList();
+            var optionalEClass = this.getEClass(ePackageRegistry, kind)
+                    .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
             // @formatter:on
 
-            Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
+            if (optionalEClass.isPresent()) {
+                EClass eClass = optionalEClass.get();
+                EObject eObject = EcoreUtil.create(eClass);
+                resource.getContents().add(eObject);
 
-            if (adapter instanceof IEditingDomainItemProvider) {
-                IEditingDomainItemProvider editingDomainItemProvider = (IEditingDomainItemProvider) adapter;
-                if (editingDomainItemProvider instanceof Helper) {
-                    Helper helper = (Helper) editingDomainItemProvider;
-                    for (CommandParameter commandParameter : commandParameters) {
-                        String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
-                        ChildCreationDescription childCreationDescription = new ChildCreationDescription(text, text);
-                        childCreationDescriptions.add(childCreationDescription);
+                Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
+
+                // @formatter:off
+                List<CommandParameter> commandParameters = newChildDescriptors.stream()
+                        .filter(CommandParameter.class::isInstance)
+                        .map(CommandParameter.class::cast)
+                        .toList();
+                // @formatter:on
+
+                Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
+
+                if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider) {
+                    if (editingDomainItemProvider instanceof Helper helper) {
+                        for (CommandParameter commandParameter : commandParameters) {
+                            String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
+                            ChildCreationDescription childCreationDescription = new ChildCreationDescription(text, text);
+                            childCreationDescriptions.add(childCreationDescription);
+                        }
                     }
                 }
             }
-        }
+        });
 
         return childCreationDescriptions;
     }
@@ -175,10 +165,8 @@ public class EditService implements IEditService {
             // @formatter:on
 
             Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
-            if (adapter instanceof IEditingDomainItemProvider) {
-                IEditingDomainItemProvider editingDomainItemProvider = (IEditingDomainItemProvider) adapter;
-                if (editingDomainItemProvider instanceof Helper) {
-                    Helper helper = (Helper) editingDomainItemProvider;
+            if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider) {
+                if (editingDomainItemProvider instanceof Helper helper) {
                     for (CommandParameter commandParameter : commandParameters) {
                         String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
 
@@ -218,43 +206,27 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<Domain> getDomains(String editingContextId) {
-        Map<String, EPackage> nsURI2EPackages = new LinkedHashMap<>();
-
-        this.globalEPackageRegistry.keySet().forEach(nsURI -> nsURI2EPackages.put(nsURI, this.globalEPackageRegistry.getEPackage(nsURI)));
-
-        // @formatter:off
-        this.editingContextEPackageService.getEPackages(editingContextId).stream()
-            .forEach(ePackage -> nsURI2EPackages.put(ePackage.getNsURI(), ePackage));
-
-        return nsURI2EPackages.values().stream()
-                .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
-                .sorted()
-                .toList();
-        // @formatter:on
-    }
-
-    @Override
-    public List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested) {
+    public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested) {
         List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
 
-        EPackage.Registry ePackageRegistry = this.getPackageRegistry(editingContextId);
+        this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
 
-        EPackage ePackage = ePackageRegistry.getEPackage(domainId);
-        if (ePackage != null) {
-            List<EClass> classes = new ArrayList<>();
-            if (suggested) {
-                classes = this.suggestedRootObjectTypesProvider.getSuggestedRootObjectTypes(ePackage);
-                if (classes.isEmpty()) {
+            EPackage ePackage = ePackageRegistry.getEPackage(domainId);
+            if (ePackage != null) {
+                List<EClass> classes;
+                if (suggested) {
+                    classes = this.suggestedRootObjectTypesProvider.getSuggestedRootObjectTypes(ePackage);
+                    if (classes.isEmpty()) {
+                        classes = this.getConcreteClasses(ePackage);
+                    }
+                } else {
                     classes = this.getConcreteClasses(ePackage);
                 }
-            } else {
-                classes = this.getConcreteClasses(ePackage);
+                for (EClass suggestedClass : classes) {
+                    rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName()));
+                }
             }
-            for (EClass suggestedClass : classes) {
-                rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName()));
-            }
-        }
+        });
         return rootObjectCreationDescription;
     }
 

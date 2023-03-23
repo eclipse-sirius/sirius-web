@@ -161,7 +161,7 @@ describe('/projects/:projectId/edit - Explorer', () => {
 
   it('documents are alphabetically ordered (case insensitive order)', () => {
     // Create Flow Model
-    cy.getByTestId('08e5c635-7d98-37e9-847c-df286e3b2f16').click();
+    cy.getByTestId('empty_flow').click();
     // Check documents order
     cy.getByTestId('tree-root-elements').children().first().contains('Flow').should('exist');
     cy.getByTestId('tree-root-elements').children().last().contains('robot').should('exist');

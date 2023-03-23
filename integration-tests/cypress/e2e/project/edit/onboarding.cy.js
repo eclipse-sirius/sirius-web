@@ -20,9 +20,8 @@ describe('/projects/:projectId/edit - Onboarding', () => {
     });
   });
 
-  it('Create a new model', () => {
-    const empty_flow_id = '08e5c635-7d98-37e9-847c-df286e3b2f16';
-    cy.getByTestId(empty_flow_id).click();
+  it('Create a new model', () => {    
+    cy.getByTestId('empty_flow').click();
     cy.getByTestId('explorerTree').contains('Flow');
   });
 });

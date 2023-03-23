@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
@@ -30,10 +30,12 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.events.DocumentsModifiedEvent;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.documents.DocumentMapper;
+import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -56,12 +58,15 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final IDocumentRepository documentRepository;
 
+    private final IProjectRepository projectRepository;
+
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private final Timer timer;
 
-    public EditingContextPersistenceService(IDocumentRepository documentRepository, ApplicationEventPublisher applicationEventPublisher, MeterRegistry meterRegistry) {
+    public EditingContextPersistenceService(IDocumentRepository documentRepository, IProjectRepository projectRepository, ApplicationEventPublisher applicationEventPublisher, MeterRegistry meterRegistry) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
+        this.projectRepository = Objects.requireNonNull(projectRepository);
         this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
@@ -72,8 +77,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         long start = System.currentTimeMillis();
 
         if (editingContext instanceof EditingContext) {
-            EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
-            List<DocumentEntity> documentEntities = this.persist(editingDomain);
+            List<DocumentEntity> documentEntities = this.persistResources((EditingContext) editingContext);
             List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).toList();
             // @formatter:off
             new IDParser().parse(editingContext.getId())
@@ -86,11 +90,11 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
-    private List<DocumentEntity> persist(EditingDomain editingDomain) {
+    private List<DocumentEntity> persistResources(EditingContext editingContext) {
         List<DocumentEntity> result = new ArrayList<>();
 
         // @formatter:off
-        List<Resource> resources = editingDomain.getResourceSet().getResources().stream()
+        List<Resource> resources = editingContext.getDomain().getResourceSet().getResources().stream()
             .filter(res -> {
                 if (res.getURI() != null) {
                     return EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme());
@@ -101,12 +105,12 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         // @formatter:on
 
         for (Resource resource : resources) {
-            this.save(resource).ifPresent(result::add);
+            this.save(resource, editingContext.getId()).ifPresent(result::add);
         }
         return result;
     }
 
-    private Optional<DocumentEntity> save(Resource resource) {
+    private Optional<DocumentEntity> save(Resource resource, String editingContextId) {
         Optional<DocumentEntity> result = Optional.empty();
         HashMap<Object, Object> options = new HashMap<>();
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
@@ -122,12 +126,14 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                 this.logger.warn(error.getMessage());
             }
 
-            byte[] bytes = outputStream.toByteArray();
-            String content = new String(bytes);
+            String content = outputStream.toString();
+
+            var optionalResourceUUID = new IDParser().parse(resource.getURI().path().substring(1));
 
             // @formatter:off
-            result = new IDParser().parse(resource.getURI().path().substring(1))
+            result = optionalResourceUUID
                     .flatMap(this.documentRepository::findById)
+                    .or(() -> createNewDocumentEntityWithoutContent(resource, editingContextId, optionalResourceUUID))
                     .map(entity -> {
                         entity.setContent(content);
                         return this.documentRepository.save(entity);
@@ -138,5 +144,25 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
             this.logger.warn(exception.getMessage(), exception);
         }
         return result;
+    }
+
+    private Optional<DocumentEntity> createNewDocumentEntityWithoutContent(Resource resource, String editingContextId, Optional<UUID> optionalResourceUUID) {
+        return new IDParser().parse(editingContextId)
+                             .flatMap(this.projectRepository::findById)
+                             .map(projectEntity -> {
+                                 var name = resource.eAdapters().stream()
+                                         .filter(DocumentMetadataAdapter.class::isInstance)
+                                         .map(DocumentMetadataAdapter.class::cast)
+                                         .findFirst().map(DocumentMetadataAdapter::getName)
+                                         .orElse("");
+
+                                 DocumentEntity documentEntity = new DocumentEntity();
+                                 documentEntity.setId(optionalResourceUUID.orElseGet(UUID::randomUUID));
+                                 documentEntity.setProject(projectEntity);
+                                 documentEntity.setName(name);
+                                 return documentEntity;
+                             });
+
+
     }
 }

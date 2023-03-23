@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
+import org.eclipse.sirius.web.persistence.entities.ProjectNatureEntity;
+import org.eclipse.sirius.web.persistence.repositories.IProjectNatureRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectFromTemplateSuccessPayload;
@@ -49,6 +51,8 @@ public class ProjectService implements IProjectService {
 
     private final IProjectRepository projectRepository;
 
+    private final IProjectNatureRepository projectNatureRepository;
+
     private final IProjectTemplateService projectTemplateService;
 
     private final IEditingContextSearchService editingContextSearchService;
@@ -57,10 +61,12 @@ public class ProjectService implements IProjectService {
 
     private final ProjectMapper projectMapper;
 
-    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IProjectTemplateService projectTemplateService,
+    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IProjectNatureRepository projectNatureRepository,
+            IProjectTemplateService projectTemplateService,
             IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
+        this.projectNatureRepository = Objects.requireNonNull(projectNatureRepository);
         this.projectTemplateService = Objects.requireNonNull(projectTemplateService);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
@@ -123,6 +129,10 @@ public class ProjectService implements IProjectService {
             if (payload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
                 var projectId = createProjectSuccessPayload.project().getId();
 
+                template.getNatures().stream()
+                        .map(nature -> this.createProjectNatureEntity(projectId, nature.natureId()))
+                        .forEach(this.projectNatureRepository::save);
+
                 var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
                 if (optionalEditingContext.isPresent()) {
                     var editingContext = optionalEditingContext.get();
@@ -136,6 +146,15 @@ public class ProjectService implements IProjectService {
             }
         }
         return result;
+    }
+
+    private ProjectNatureEntity createProjectNatureEntity(UUID projectId, String natureName) {
+        ProjectNatureEntity projectNatureEntity = new ProjectNatureEntity();
+        projectNatureEntity.setName(natureName);
+        var projectEntity = new ProjectEntity();
+        projectEntity.setId(projectId);
+        projectNatureEntity.setProject(projectEntity);
+        return projectNatureEntity;
     }
 
     private ProjectEntity createProjectEntity(String projectName) {

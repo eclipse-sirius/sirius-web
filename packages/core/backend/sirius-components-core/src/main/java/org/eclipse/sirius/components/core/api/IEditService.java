@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,11 +23,9 @@ import java.util.UUID;
  */
 public interface IEditService {
 
-    List<Domain> getDomains(String editingContextId);
+    List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested);
 
-    List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested);
-
-    List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String kind);
+    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
 
@@ -45,17 +43,12 @@ public interface IEditService {
     class NoOp implements IEditService {
 
         @Override
-        public List<Domain> getDomains(String editingContextId) {
+        public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested) {
             return List.of();
         }
 
         @Override
-        public List<ChildCreationDescription> getRootCreationDescriptions(String editingContextId, String domainId, boolean suggested) {
-            return List.of();
-        }
-
-        @Override
-        public List<ChildCreationDescription> getChildCreationDescriptions(String editingContextId, String classId) {
+        public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String classId) {
             return List.of();
         }
 
