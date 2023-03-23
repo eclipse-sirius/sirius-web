@@ -37,4 +37,12 @@ describe('/projects/:projectId/edit - Studio', () => {
         .then((value) => expect(value).to.match(/translate\(.*, .*\) translate\(.*, .*\)/));
     });
   });
+
+  it('Check the new object domain list', () => {
+    cy.getByTestId('DomainNewModel-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('domain').click().get('[data-value="http://www.eclipse.org/sirius-web/domain"]').should('exist');
+    cy.getByTestId('domain').get('[data-value="http://www.eclipse.org/sirius-web/view"]').should('exist');
+    cy.getByTestId('domain').get('[data-value="http://www.obeo.fr/dsl/designer/sample/flow"]').should('exist');
+  });
 });

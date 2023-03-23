@@ -14,10 +14,14 @@ package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextRootObjectCreationDescriptionsInput;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextRootObjectCreationDescriptionsPayload;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -37,24 +41,30 @@ import graphql.schema.DataFetchingEnvironment;
  * @author hmarchadour
  */
 @QueryDataFetcher(type = "EditingContext", field = "rootObjectCreationDescriptions")
-public class EditingContextRootObjectCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<List<ChildCreationDescription>> {
+public class EditingContextRootObjectCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ChildCreationDescription>>> {
 
     private static final String DOMAIN_ID_ARGUMENT = "domainId";
 
     private static final String SUGGESTED_ARGUMENT = "suggested";
 
-    private final IEditService editService;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public EditingContextRootObjectCreationDescriptionsDataFetcher(IEditService editService) {
-        this.editService = Objects.requireNonNull(editService);
+    public EditingContextRootObjectCreationDescriptionsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
-    public List<ChildCreationDescription> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<List<ChildCreationDescription>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
         String domainId = environment.getArgument(DOMAIN_ID_ARGUMENT);
         Boolean suggested = environment.getArgument(SUGGESTED_ARGUMENT);
 
-        return this.editService.getRootCreationDescriptions(editingContextId, domainId, suggested);
+        EditingContextRootObjectCreationDescriptionsInput input = new EditingContextRootObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, domainId, suggested);
+
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+                .filter(EditingContextRootObjectCreationDescriptionsPayload.class::isInstance)
+                .map(EditingContextRootObjectCreationDescriptionsPayload.class::cast)
+                .map(EditingContextRootObjectCreationDescriptionsPayload::childCreationDescriptions)
+                .toFuture();
     }
 }

@@ -24,8 +24,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Close as CloseIcon, NoteAdd } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
 import {
-  GQLCreateDocumentMutationInput,
-  GQLCreateDocumentMutationVariables,
   GQLInvokeEditingContextActionInput,
   GQLInvokeEditingContextActionVariables,
   NewDocumentAreaProps,
@@ -42,17 +40,6 @@ const useNewDocumentAreaStyles = makeStyles((theme) => ({
   },
 }));
 
-const createDocumentMutation = gql`
-  mutation createDocument($input: CreateDocumentInput!) {
-    createDocument(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
 const invokeEditingContextActionMutation = gql`
   mutation invokeEditingContextAction($input: InvokeEditingContextActionInput!) {
     invokeEditingContextAction(input: $input) {
@@ -64,46 +51,11 @@ const invokeEditingContextActionMutation = gql`
   }
 `;
 
-export const NewDocumentArea = ({
-  editingContextId,
-  stereotypeDescriptions,
-  editingContextActions,
-  readOnly,
-}: NewDocumentAreaProps) => {
+export const NewDocumentArea = ({ editingContextId, editingContextActions, readOnly }: NewDocumentAreaProps) => {
   const classes = useNewDocumentAreaStyles();
   const [state, setState] = useState<NewDocumentAreaState>({
     message: null,
   });
-
-  // Document creation
-  const [createDocument, { loading, data, error }] = useMutation(createDocumentMutation);
-  const onCreateDocument = (stereotypeDescriptionId: string) => {
-    const selected = stereotypeDescriptions.find((candidate) => candidate.id === stereotypeDescriptionId);
-    const input: GQLCreateDocumentMutationInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      name: selected.documentName,
-      stereotypeDescriptionId,
-    };
-    const variables: GQLCreateDocumentMutationVariables = {
-      input,
-    };
-    createDocument({ variables });
-  };
-
-  useEffect(() => {
-    if (!loading) {
-      if (error) {
-        setState({ message: 'An unexpected error has occurred, please refresh the page' });
-      }
-      if (data) {
-        const { createDocument } = data;
-        if (createDocument.__typename === 'ErrorPayload') {
-          setState({ message: createDocument.message });
-        }
-      }
-    }
-  }, [loading, error, data]);
 
   // EditingContext Action invocation
   const [
@@ -146,26 +98,6 @@ export const NewDocumentArea = ({
             {readOnly ? 'You need edit access to create models' : 'Select the model to create'}
           </Typography>
           <List dense={true}>
-            {readOnly
-              ? null
-              : stereotypeDescriptions.map((stereotypeDescription) => {
-                  return (
-                    <ListItem
-                      className={classes.item}
-                      disableGutters
-                      button
-                      key={stereotypeDescription.id}
-                      data-testid={stereotypeDescription.id}
-                      onClick={() => {
-                        onCreateDocument(stereotypeDescription.id);
-                      }}>
-                      <ListItemIcon>
-                        <NoteAdd htmlColor="primary" fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText primary={stereotypeDescription.label} />
-                    </ListItem>
-                  );
-                })}
             {readOnly
               ? null
               : editingContextActions.map((editingContextAction) => {

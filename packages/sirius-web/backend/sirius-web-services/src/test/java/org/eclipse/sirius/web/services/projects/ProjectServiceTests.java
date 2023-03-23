@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
+import org.eclipse.sirius.web.persistence.repositories.IProjectNatureRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
@@ -62,7 +63,9 @@ public class ProjectServiceTests {
         }
     };
 
-    private ProjectService projectService = new ProjectService(this.noOpMessageService, this.noOpProjectRepository, new IProjectTemplateService.NoOp(), this.noOpEditingContextSearchService,
+    private IProjectNatureRepository noOpProjectNatureRepository = new NoOpProjectNatureRepository();
+
+    private ProjectService projectService = new ProjectService(this.noOpMessageService, this.noOpProjectRepository, this.noOpProjectNatureRepository, new IProjectTemplateService.NoOp(), this.noOpEditingContextSearchService,
             new IEditingContextPersistenceService.NoOp());
 
     @Test

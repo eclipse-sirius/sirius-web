@@ -34,6 +34,7 @@ public class PapayaStudioTemplateProvider implements IProjectTemplateProvider {
         var studioTemplate = ProjectTemplate.newProjectTemplate(STUDIO_TEMPLATE_ID)
                 .label("Papaya Studio")
                 .imageURL("/images/Papaya-Template.svg")
+                .natures(List.of())
                 .build();
         // @formatter:on
         return List.of(studioTemplate);

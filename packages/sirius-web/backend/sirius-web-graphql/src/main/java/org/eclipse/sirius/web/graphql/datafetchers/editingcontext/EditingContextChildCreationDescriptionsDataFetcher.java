@@ -14,10 +14,14 @@ package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextChildObjectCreationDescriptionsInput;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextChildObjectCreationDescriptionsPayload;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -37,20 +41,26 @@ import graphql.schema.DataFetchingEnvironment;
  * @author hmarchadour
  */
 @QueryDataFetcher(type = "EditingContext", field = "childCreationDescriptions")
-public class EditingContextChildCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<List<ChildCreationDescription>> {
+public class EditingContextChildCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ChildCreationDescription>>> {
 
     private static final String KIND_ARGUMENT = "kind";
 
-    private final IEditService editService;
+    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public EditingContextChildCreationDescriptionsDataFetcher(IEditService editService) {
-        this.editService = Objects.requireNonNull(editService);
+    public EditingContextChildCreationDescriptionsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
     @Override
-    public List<ChildCreationDescription> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<List<ChildCreationDescription>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
         String kindArgument = environment.getArgument(KIND_ARGUMENT);
-        return this.editService.getChildCreationDescriptions(editingContextId, kindArgument);
+        EditingContextChildObjectCreationDescriptionsInput input = new EditingContextChildObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, kindArgument);
+
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+                .filter(EditingContextChildObjectCreationDescriptionsPayload.class::isInstance)
+                .map(EditingContextChildObjectCreationDescriptionsPayload.class::cast)
+                .map(EditingContextChildObjectCreationDescriptionsPayload::childCreationDescriptions)
+                .toFuture();
     }
 }

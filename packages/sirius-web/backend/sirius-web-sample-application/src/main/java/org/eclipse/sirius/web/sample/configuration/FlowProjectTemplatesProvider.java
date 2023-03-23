@@ -34,6 +34,7 @@ public class FlowProjectTemplatesProvider implements IProjectTemplateProvider {
         var flowTemplate = ProjectTemplate.newProjectTemplate(FLOW_TEMPLATE_ID)
                 .label("Flow")
                 .imageURL("/images/Flow-Template.png")
+                .natures(List.of())
                 .build();
         // @formatter:on
         return List.of(flowTemplate);

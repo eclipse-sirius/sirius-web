@@ -38,7 +38,7 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
 
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorerTree').contains('Domain');
+    cy.getByTestId('explorerTree').contains('System');
   });
 
   //fails during build
@@ -49,8 +49,8 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
 
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorerTree').contains('Domain');
-    cy.getByTestId('selected').contains('Domain');
+    cy.getByTestId('explorerTree').contains('System');
+    cy.getByTestId('selected').contains('System');
   });
 
   it('can delete a document', () => {

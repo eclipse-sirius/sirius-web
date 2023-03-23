@@ -1,0 +1,28 @@
+= ADR-098 - Use the editing context to compute the metamodels
+
+== Context
+
+Up until now, in Sirius Web, the metamodels available for an editing context were a mix of global metamodels available all the time and the domains converted when the editing context was loaded.
+
+There are no specific features related to the metamodels converted from a domain.
+Only the global metamodels have some dedicated features such as the creation of dedicated resources (robot flow, domain and view sample etc)
+
+If we ever want to consider specific features for any metamodel, we should embrace the fact that, all the editing contexts do not have the same metamodels.
+
+== Decision
+
+In Sirius Web, we will only use the `EPackage.Registry` of the editing context in order to find the available metamodels.
+Sirius Components will stop considering a set of global EPackages as special and available everywhere.
+
+In order to force ourselves to properly consider the impact of this use case, some metadata will be added to Sirius Web projects.
+We will only keep a list of natures in these project metadata for now.
+A nature will be defined as an identifier.
+
+We will introduce the nature `siriusWeb://nature?kind=studio` in order to identify Sirius Web projects created using the studio template.
+
+Those projects will be the only one with all metamodels, view and domain included.
+No other project should be able to create domains or views.
+
+== Status
+
+Accepted

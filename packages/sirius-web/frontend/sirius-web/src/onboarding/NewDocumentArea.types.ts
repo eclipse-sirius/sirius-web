@@ -15,11 +15,6 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 export interface NewDocumentAreaState {
   message: string;
 }
-export interface StereotypeDescription {
-  id: string;
-  label: string;
-  documentName: string;
-}
 
 export interface EditingContextAction {
   id: string;
@@ -28,7 +23,6 @@ export interface EditingContextAction {
 
 export interface NewDocumentAreaProps {
   editingContextId: string;
-  stereotypeDescriptions: StereotypeDescription[];
   editingContextActions: EditingContextAction[];
   setSelection: (selection: Selection) => void;
   readOnly: boolean;

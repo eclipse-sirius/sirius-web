@@ -22,15 +22,6 @@ const getOnboardDataQuery = gql`
   query getOnboardData($editingContextId: ID!, $objectId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        stereotypeDescriptions {
-          edges {
-            node {
-              id
-              label
-              documentName
-            }
-          }
-        }
         representationDescriptions(objectId: $objectId) {
           edges {
             node {
@@ -63,7 +54,6 @@ const getOnboardDataQuery = gql`
 `;
 
 const INITIAL_STATE = {
-  stereotypeDescriptions: [],
   editingContextActions: [],
   representationDescriptions: [],
   representations: [],
@@ -89,7 +79,7 @@ const useOnboardAreaStyles = makeStyles((theme) => ({
 export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
   const classes = useOnboardAreaStyles();
   const [state, setState] = useState(INITIAL_STATE);
-  const { stereotypeDescriptions, editingContextActions, representationDescriptions, representations } = state;
+  const { editingContextActions, representationDescriptions, representations } = state;
 
   const objectId = selection.entries.length > 0 ? selection.entries[0].id : '';
 
@@ -101,7 +91,6 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
       const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
-      const stereotypeDescriptions = viewer.editingContext.stereotypeDescriptions.edges.map((edge) => edge.node);
       const editingContextActions = viewer.editingContext.actions.edges.map((edge) => edge.node);
       const representationDescriptions = viewer.editingContext.representationDescriptions.edges.map(
         (edge) => edge.node
@@ -109,7 +98,6 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
 
       setState({
         representations,
-        stereotypeDescriptions,
         editingContextActions,
         representationDescriptions,
       });
@@ -121,7 +109,6 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
       <div className={classes.grid}>
         <NewDocumentArea
           editingContextId={editingContextId}
-          stereotypeDescriptions={stereotypeDescriptions}
           editingContextActions={editingContextActions}
           setSelection={setSelection}
           readOnly={readOnly}

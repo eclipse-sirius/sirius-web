@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,27 +15,25 @@ package org.eclipse.sirius.web.persistence.entities;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
- * Document entity used by the persistence layer.
+ * Project's nature entity used by the persistence layer.
  *
- * @author sbegaudeau
+ * @author frouene
  */
 @Entity
-@Table(name = "Document")
-public class DocumentEntity {
+@Table(name = "ProjectNature")
+public class ProjectNatureEntity {
 
     @Id
-    @GenericGenerator(name = "customReuseIdIfSetUUIDGenerator", strategy = "org.eclipse.sirius.web.persistence.generators.CustomReuseIdIfSetUUIDGenerator")
-    @GeneratedValue(generator = "customReuseIdIfSetUUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
@@ -43,8 +41,6 @@ public class DocumentEntity {
     private ProjectEntity project;
 
     private String name;
-
-    private String content;
 
     public UUID getId() {
         return this.id;
@@ -70,17 +66,10 @@ public class DocumentEntity {
         this.name = name;
     }
 
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, name: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.name);
     }
+
 }

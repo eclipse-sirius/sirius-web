@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.handlers;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,13 +73,12 @@ public class GetEditingContextActionsEventHandler implements IEditingContextEven
         IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof GetEditingContextActionsInput) {
-            GetEditingContextActionsInput editingContextActionsInput = (GetEditingContextActionsInput) input;
+        if (input instanceof GetEditingContextActionsInput editingContextActionsInput) {
 
             // @formatter:off
             List<EditingContextAction> editingContextActions = this.editingContextActionProviders.stream()
                 .flatMap(provider -> provider.getEditingContextAction(editingContext).stream())
-                .sorted((a1, a2) -> a1.getLabel().compareTo(a2.getLabel()))
+                .sorted(Comparator.comparing(EditingContextAction::getLabel))
                 .toList();
             // @formatter:on
 
