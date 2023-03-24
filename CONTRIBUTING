@@ -1,6 +1,8 @@
 # Contributing to Sirius
 
 Thanks for your interest in this project.
+In this document, you will find the various rules to contribute to this project.
+The project will be maintained in english and everything will reside in a single Git repository.
 
 ## Project description
 
@@ -8,29 +10,83 @@ Eclipse Sirius enables the specification of a modeling workbench in terms of
 graphical, table or tree editors with validation rules and actions using
 declarative descriptions.
 
-* http://www.eclipse.org/sirius
-* https://projects.eclipse.org/projects/modeling.sirius
-* http://wiki.eclipse.org/Sirius
+- http://www.eclipse.org/sirius
+- https://projects.eclipse.org/projects/modeling.sirius
+- http://wiki.eclipse.org/Sirius
+
+## Planning
+
+We are working in iteration of 8 weeks.
+The first six weeks are used to improve the product with new features and bug fixes.
+After that, we have a period of two weeks during which we work on non-technical details of the release (documentation, communication, etc) and some technical debts.
+
+## Git
+
+Development is done on the branch master, and all changes must first go through a pull request.
+Obviously, contributors are free to do whatever they want on their local clone(s) and Github forks, the rules above only apply to commits and branches pushed into the official repository.
+
+The work in progress from the official contributors can be visible on their dedicated branches.
+These branches are named using the following naming convention:
+
+```
+three_letters_identifying_the_contributor/kind_of_work/description
+```
+
+You could thus find in our repository branches such as:
+
+- `sbe/fix/diagram-related-issue`
+- `pcd/enh/new-feature-the-view-dsl`
+- `gco/doc/architectural-documentation`
+
+We are working with a linear history and all pull requests are rebased on top of the master branch in order to be integrated.
+Contributors are free to create as many commits as they want in the branch of their pull requests, the contributions will be squashed to one or two commits when it will be integrated.
+
+## Commit messages formatting
+
+We are using the following format for all our Git messages:
+
+```
+[XXXX] Short description
+
+Longer description if needed, explaining the reasons of the change and its
+impact, not paraphrasing the patch. The description should use wrapped line.
+
+Bug: https://github.com/eclipse-sirius/sirius-components/issues/XXXX
+Signed-off-by: Author name <author email>
+```
+
+You should always mention the numeric bug id at the start of the first line (e.g. [1247]).
+For the few cases where a commit is not directly related to an issue, use a tag like [releng], [doc] or [cleanup]...
+Look for previously used tag before creating a new one.
+
+## Changelog
+
+All contributions should be mentioned in the file `CHANGELOG.adoc`.
+If a long description is necessary to provide additional details for a commit, it is necessary to provide those details in the changelog.
+Most of our commit messages do not contain a long description since those details are written in the changelog.
+
+Contributions which have a visual impact should try to provide screenshots showing the changes.
+These images referenced from the changelog should be added in `doc/images`, not in the top-level directory.
 
 ## Developer resources
 
 Information regarding source code management, builds, coding standards, and
 more.
 
-* https://projects.eclipse.org/projects/modeling.sirius/developer
+- https://projects.eclipse.org/projects/modeling.sirius/developer
 
 The project as a whole maintains the following source code repositories
 
-* https://git.eclipse.org/c/sirius/org.eclipse.sirius.git
-* https://git.eclipse.org/c/sirius/org.eclipse.sirius.legacy.git
-* https://github.com/eclipse-sirius/sirius-emf-json
-* https://github.com/eclipse-sirius/sirius-components
-* https://github.com/eclipse-sirius/sirius-web
+- https://github.com/eclipse-sirius/sirius-web
+- https://github.com/eclipse-sirius/sirius-components
+- https://github.com/eclipse-sirius/sirius-emf-json
+- https://git.eclipse.org/c/sirius/org.eclipse.sirius.git
+- https://git.eclipse.org/c/sirius/org.eclipse.sirius.legacy.git
 
 This particular sub-project of Sirius, uses GitHub Issues to track ongoing development and issues.
 
-* Search for issues: https://github.com/eclipse-sirius/sirius-components/issues
-* Create a new report: https://github.com/eclipse-sirius/sirius-components/issues/new/choose
+- Search for issues: https://github.com/eclipse-sirius/sirius-components/issues
+- Create a new report: https://github.com/eclipse-sirius/sirius-components/issues/new/choose
 
 Be sure to search for existing bugs before you create another one.
 Remember that contributions are always welcome! There are many ways to
@@ -45,7 +101,7 @@ please send a mail to sirius-dev@eclipse.org.
 Before your contribution can be accepted by the project team contributors must
 electronically sign the Eclipse Contributor Agreement (ECA).
 
-* http://www.eclipse.org/legal/ECA.php
+- http://www.eclipse.org/legal/ECA.php
 
 Commits that are provided by non-committers must have a Signed-off-by field in
 the footer indicating that the author is aware of the terms by which the
@@ -60,4 +116,4 @@ https://www.eclipse.org/projects/handbook/#resources-commit
 
 Contact the project developers via the project's "dev" list.
 
-* https://accounts.eclipse.org/mailing-list/sirius-dev
+- https://accounts.eclipse.org/mailing-list/sirius-dev

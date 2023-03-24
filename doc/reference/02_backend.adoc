@@ -1,13 +1,12 @@
-= Reference
+= Backend
 
-Sirius Components is composed of both backend and frontend components which can be reused in various applications to build a modeling workbench based on representations.
-
-== Backend
+In this repository, you will find all the backend components used to create Sirius Web.
+They can be reused to integrate a modeling workbench using our representations in other applications.
 
 Our backend components are mostly used in https://spring.io[Spring] applications and as such they depend on Spring Boot.
 Nevertheless, they have been successfully reused in non Spring applications in the past.
 
-=== Technologies
+== Technologies
 
 Our backend relies on the following frameworks and libraries:
 
@@ -23,14 +22,12 @@ In a similar fashion as an Eclipse Release Train, using a specific version of Sp
 As a result, the versions of Spring Framework, Spring MVC, Spring Security or even Reactor that we are using are all derived from our version of Spring Boot.
 Have a look at the Spring Boot release notes to find more about the versions of the other components of the Spring ecosystem.
 
-=== Architecture
-
 Sirius Components provides some backend components for various layers of a Spring application.
 You do not need to use everything in order to start integrating Sirius Components in your application.
 
-==== GraphQL layer
+== GraphQL layer
 
-===== Spring and GraphQL Java
+=== Spring and GraphQL Java
 
 Our GraphQL layer is in charge of the integration of GraphQL Java in Spring.
 There are multiple solutions today to use GraphQL Java in a Spring application such as Netflix DGS or Spring GraphQL but when we started our work on Sirius Components, most of those solutions did not exist.
@@ -55,7 +52,7 @@ A significant part of this code could be moved to Sirius Web in the future.
 The main project of our GraphQL layer is `sirius-components-graphql` which contains the integration of GraphQL Java to both the HTTP API and WebSockets API of Spring using respectively the `GraphQLController` and `GraphQLWebSocketHandler`.
 If you want to debug how a GraphQL request is processed on the HTTP API or the WebSocket API, these are the relevant entry point.
 
-===== Schema
+=== Schema
 
 The GraphQL schema of Sirius Components is defined using several distinct `.graphqls` files.
 This allow an application to only integrate the parts that it requires.
