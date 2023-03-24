@@ -198,7 +198,7 @@ export const newDocumentModalMachine = Machine<
       },
       isResponseSuccessful: (_, event) => {
         const { data } = event as HandleResponseEvent;
-        return data.createDocument.__typename === 'SuccessPayload';
+        return data.createDocument.__typename === 'CreateDocumentSuccessPayload';
       },
     },
     actions: {

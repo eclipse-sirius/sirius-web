@@ -59,9 +59,11 @@ extend type Mutation {
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
   renameProject(input: RenameProjectInput!): RenameProjectPayload!
   uploadProject(input: UploadProjectInput!): UploadProjectPayload!
+  createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
+  renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
+  uploadDocument(input: UploadDocumentInput!): UploadDocumentPayload!
   deleteDocument(input: DeleteDocumentInput!): DeleteDocumentPayload!
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
-  renameDocument(input: RenameDocumentInput!): RenameDocumentPayload!
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
   uploadImage(input: UploadImageInput!): UploadImagePayload!
   renameImage(input: RenameImageInput!): RenameImagePayload!
@@ -130,6 +132,47 @@ type UploadProjectSuccessPayload {
   project: Project!
 }
 
+
+
+input CreateDocumentInput {
+  editingContextId: ID!
+  id: ID!
+  name: String!
+  stereotypeDescriptionId: ID!
+}
+
+union CreateDocumentPayload = ErrorPayload | CreateDocumentSuccessPayload
+
+type CreateDocumentSuccessPayload {
+  id: ID!
+  document: Document!
+}
+
+type Document {
+  id: ID!
+  name: String!
+}
+
+input RenameDocumentInput {
+  id: ID!
+  documentId: ID!
+  newName: String!
+}
+
+union RenameDocumentPayload = ErrorPayload | SuccessPayload
+
+input UploadDocumentInput {
+  editingContextId: ID!
+  file: Upload!
+  id: ID!
+}
+
+union UploadDocumentPayload = ErrorPayload | UploadDocumentSuccessPayload
+
+type UploadDocumentSuccessPayload {
+  id: ID!
+}
+
 input DeleteDocumentInput {
   id: ID!
   documentId: ID!
@@ -148,14 +191,6 @@ type DeleteRepresentationSuccessPayload {
   id: ID!
   representationId: ID!
 }
-
-input RenameDocumentInput {
-  id: ID!
-  documentId: ID!
-  newName: String!
-}
-
-union RenameDocumentPayload = ErrorPayload | SuccessPayload
 
 input RenameRepresentationInput {
   id: ID!

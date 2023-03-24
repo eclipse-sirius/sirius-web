@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.dto;
+package org.eclipse.sirius.web.services.api.document;
 
 import java.util.UUID;
 
