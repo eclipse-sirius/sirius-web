@@ -165,18 +165,11 @@ type RepresentationRenamedEventPayload {
 
 type Mutation {
   createChild(input: CreateChildInput!): CreateChildPayload!
-  createDocument(input: CreateDocumentInput!): CreateDocumentPayload!
   createRepresentation(input: CreateRepresentationInput!): CreateRepresentationPayload!
   createRootObject(input: CreateRootObjectInput!): CreateRootObjectPayload!
   deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
   renameObject(input: RenameObjectInput!): RenameObjectPayload!
-  uploadDocument(input: UploadDocumentInput!): UploadDocumentPayload!
   invokeEditingContextAction(input: InvokeEditingContextActionInput!): InvokeEditingContextActionPayload!
-}
-
-type Document {
-  id: ID!
-  name: String!
 }
 
 type Object {
@@ -203,15 +196,6 @@ type CreateChildSuccessPayload {
   id: ID!
   object: Object
 }
-
-input CreateDocumentInput {
-  editingContextId: ID!
-  id: ID!
-  name: String!
-  stereotypeDescriptionId: ID!
-}
-
-union CreateDocumentPayload = ErrorPayload | SuccessPayload
 
 input CreateRepresentationInput {
   id: ID!
@@ -264,18 +248,6 @@ type RenameObjectSuccessPayload {
   id: ID!
   newName: String!
   objectId: String!
-}
-
-input UploadDocumentInput {
-  editingContextId: ID!
-  file: Upload!
-  id: ID!
-}
-
-union UploadDocumentPayload = ErrorPayload | UploadDocumentSuccessPayload
-
-type UploadDocumentSuccessPayload {
-  id: ID!
 }
 
 type WorkbenchSelection {

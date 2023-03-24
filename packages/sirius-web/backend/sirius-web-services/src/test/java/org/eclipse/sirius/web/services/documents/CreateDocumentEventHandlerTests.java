@@ -22,11 +22,11 @@ import org.assertj.core.api.Condition;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.dto.CreateDocumentInput;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
+import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.projects.Project;
@@ -46,36 +46,35 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public class CreateDocumentEventHandlerTests {
-
-    // @formatter:off
-    private static final String CONTENT = "{" + System.lineSeparator()
-        + "    \"json\": {" + System.lineSeparator()
-        + "      \"version\": \"1.0\"," + System.lineSeparator()
-        + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
-        + "  }," + System.lineSeparator()
-        + "  \"ns\": {" + System.lineSeparator()
-        + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
-        + "  }," + System.lineSeparator()
-        + "  \"content\": [" + System.lineSeparator()
-        + "      {" + System.lineSeparator()
-        + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
-        + "      \"data\": {" + System.lineSeparator()
-        + "          \"name\": \"ecore\"," + System.lineSeparator()
-        + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
-        + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
-        + "        \"eClassifiers\": [" + System.lineSeparator()
-        + "            {" + System.lineSeparator()
-        + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
-        + "            \"data\": {" + System.lineSeparator()
-        + "                \"name\": \"AClass\"" + System.lineSeparator()
-        + "            }" + System.lineSeparator()
-        + "          }" + System.lineSeparator()
-        + "        ]" + System.lineSeparator()
-        + "      }" + System.lineSeparator()
-        + "    }" + System.lineSeparator()
-        + "  ]" + System.lineSeparator()
-        + "}" + System.lineSeparator();
-    // @formatter:on
+    private static final String CONTENT = """
+            {
+              "json": {
+                "version": "1.0",
+                "encoding": "utf-8"
+              },
+              "ns": {
+                "ecore": "http://www.eclipse.org/emf/2002/Ecore"
+              },
+              "content": [
+                {
+                  "eClass": "ecore::EPackage",
+                  "data": {
+                    "name": "ecore",
+                    "nsURI": "http://www.eclipse.org/emf/2002/Ecore",
+                    "nsPrefix": "ecore",
+                    "eClassifiers": [
+                      {
+                        "eClass": "ecore::EClass",
+                        "data": {
+                          "name": "AClass"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+            """;
 
     private static final String DOCUMENT_NAME = "name";
 
@@ -114,7 +113,7 @@ public class CreateDocumentEventHandlerTests {
         assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(SuccessPayload.class);
+        assertThat(payload).isInstanceOf(CreateDocumentSuccessPayload.class);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         Condition<Object> condition = new Condition<>(adapter -> adapter instanceof DocumentMetadataAdapter, "has an DocumentMetadataAdapter");
@@ -152,7 +151,7 @@ public class CreateDocumentEventHandlerTests {
         handler.handle(firstPayloadSink, changeDescriptionSink, editingContext, firstCreateInput);
 
         IPayload firstPayload = firstPayloadSink.asMono().block();
-        assertThat(firstPayload).isInstanceOf(SuccessPayload.class);
+        assertThat(firstPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
 
         var secondCreatedInput = new CreateDocumentInput(UUID.randomUUID(), editingContext.getId(), DOCUMENT_NAME, STEREOTYPE_DESCRIPTION_ID);
         assertThat(handler.canHandle(editingContext, secondCreatedInput)).isTrue();
@@ -160,6 +159,6 @@ public class CreateDocumentEventHandlerTests {
         handler.handle(secondPayloadSink, changeDescriptionSink, editingContext, secondCreatedInput);
 
         IPayload secondPayload = firstPayloadSink.asMono().block();
-        assertThat(secondPayload).isInstanceOf(SuccessPayload.class);
+        assertThat(secondPayload).isInstanceOf(CreateDocumentSuccessPayload.class);
     }
 }

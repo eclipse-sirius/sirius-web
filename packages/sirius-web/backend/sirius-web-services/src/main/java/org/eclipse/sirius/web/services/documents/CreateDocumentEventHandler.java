@@ -24,16 +24,16 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.dto.CreateDocumentInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
+import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
@@ -146,7 +146,7 @@ public class CreateDocumentEventHandler implements IEditingContextEventHandler {
 
                 resourceSet.getResources().add(resource);
 
-                payload = new SuccessPayload(input.id());
+                payload = new CreateDocumentSuccessPayload(input.id(), document);
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
         }

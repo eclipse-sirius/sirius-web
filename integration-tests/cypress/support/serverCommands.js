@@ -97,7 +97,7 @@ Cypress.Commands.add('createDocument', (editingContextId, stereotypeDescriptionI
   mutation createDocument($input: CreateDocumentInput!) {
     createDocument(input: $input) {
       __typename
-      ... on SuccessPayload {
+      ... on CreateDocumentSuccessPayload {
         id
       }
     }
