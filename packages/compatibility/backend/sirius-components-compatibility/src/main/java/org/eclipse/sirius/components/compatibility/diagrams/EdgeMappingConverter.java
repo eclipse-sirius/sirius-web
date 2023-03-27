@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.compatibility.api.IIdOdesignElementsProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
@@ -59,8 +59,11 @@ public class EdgeMappingConverter {
 
     private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
-    public EdgeMappingConverter(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider, ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory,
+    private final IIdOdesignElementsProvider idOdesignElementsProvider;
+
+    public EdgeMappingConverter(IIdOdesignElementsProvider idOdesignElementsProvider, IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider, ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory,
             IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
+        this.idOdesignElementsProvider = Objects.requireNonNull(idOdesignElementsProvider);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
@@ -115,7 +118,7 @@ public class EdgeMappingConverter {
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
         var labelEditHandler = toolConverter.createEdgeDirectEditToolHandler(edgeMapping.getLabelDirectEdit());
 
-        Builder builder = EdgeDescription.newEdgeDescription(UUID.fromString(this.identifierProvider.getIdentifier(edgeMapping)).toString())
+        Builder builder = EdgeDescription.newEdgeDescription(this.idOdesignElementsProvider.getIdEdgeMapping(edgeMapping))
                 .targetObjectIdProvider(targetIdProvider)
                 .targetObjectKindProvider(targetKindProvider)
                 .targetObjectLabelProvider(targetLabelProvider)
@@ -130,6 +133,15 @@ public class EdgeMappingConverter {
         optionalBeginLabelDescription.ifPresent(builder::beginLabelDescription);
         optionalCenterLabelDescription.ifPresent(builder::centerLabelDescription);
         optionalEndLabelDescription.ifPresent(builder::endLabelDescription);
+
+        System.out.println(builder.build().getId());
+        EdgeDescription ed = builder.build();
+        System.out.println("///////////////////////////////////////");
+        System.out.println("SOURCE / TARGET");
+        System.out.println(ed.getId().toString());
+        System.out.println(ed.getTargetNodeDescriptions());
+        System.out.println(ed.getSourceNodeDescriptions());
+        System.out.println("///////////////////////////////////////");
         return builder.build();
         // @formatter:on
     }
@@ -171,7 +183,7 @@ public class EdgeMappingConverter {
         return mappings.stream()
                 .filter(AbstractNodeMapping.class::isInstance)
                 .map(AbstractNodeMapping.class::cast)
-                .map(mapping -> UUID.fromString(this.identifierProvider.getIdentifier(mapping)).toString())
+                .map(mapping -> this.idOdesignElementsProvider.getIdElementDescription(mapping))
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .toList();

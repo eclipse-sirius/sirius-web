@@ -110,7 +110,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
             Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
+            var optionalTool = this.toolService.findToolById(editingContext, input.toolId())
                     .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                     .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                     .or(this.findConnectorToolById(input.diagramSourceElementId(), input.diagramTargetElementId(), editingContext, diagram, input.toolId()));

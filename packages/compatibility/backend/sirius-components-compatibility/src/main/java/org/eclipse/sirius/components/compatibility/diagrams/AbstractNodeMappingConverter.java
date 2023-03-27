@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.compatibility.api.IIdOdesignElementsProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
@@ -65,8 +65,11 @@ public class AbstractNodeMappingConverter {
 
     private final ImageSizeProvider imageSizeProvider;
 
-    public AbstractNodeMappingConverter(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
+    private final IIdOdesignElementsProvider idOdesignElementsProvider;
+
+    public AbstractNodeMappingConverter(IIdOdesignElementsProvider idOdesignElementsProvider, IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
             ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider, ImageSizeProvider imageSizeService) {
+        this.idOdesignElementsProvider = Objects.requireNonNull(idOdesignElementsProvider);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
@@ -146,7 +149,7 @@ public class AbstractNodeMappingConverter {
         }
 
         // @formatter:off
-        NodeDescription description = NodeDescription.newNodeDescription(UUID.fromString(this.identifierProvider.getIdentifier(abstractNodeMapping)).toString())
+        NodeDescription description = NodeDescription.newNodeDescription(this.idOdesignElementsProvider.getIdElementDescription(abstractNodeMapping))
                 .typeProvider(typeProvider)
                 .targetObjectIdProvider(semanticTargetIdProvider)
                 .targetObjectKindProvider(semanticTargetKindProvider)
@@ -166,7 +169,7 @@ public class AbstractNodeMappingConverter {
         // @formatter:on
 
         id2NodeDescriptions.put(description.getId(), description);
-
+        //   System.out.println(description.getId());
         return description;
     }
 

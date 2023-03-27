@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.compatibility.services.diagrams;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -23,12 +24,19 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.services.api.IODesignRegistry;
 import org.eclipse.sirius.components.core.api.Environment;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -66,52 +74,139 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompatibilityToolSectionsProvider implements IToolSectionsProvider {
 
+    private static final String SIRIUS_PROTOCOL = "siriusComponents://";
+
+    private static final String SOURCE_ID = "sourceId";
+
+    private static final String SOURCE_ELEMENT_ID = "sourceElementId";
+
     private final IIdentifierProvider identifierProvider;
 
     private final IODesignRegistry odesignRegistry;
 
     private final IAQLInterpreterFactory interpreterFactory;
 
-    public CompatibilityToolSectionsProvider(IIdentifierProvider identifierProvider, IODesignRegistry odesignRegistry, IAQLInterpreterFactory interpreterFactory) {
+    private final IKindParser urlIdPaser;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final IDiagramDescriptionService diagramDescriptionService;
+
+    public CompatibilityToolSectionsProvider(IDiagramDescriptionService diagramDescriptionService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IKindParser urlIdPaser, IObjectService objectService, IIdentifierProvider identifierProvider, IODesignRegistry odesignRegistry, IAQLInterpreterFactory interpreterFactory) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.odesignRegistry = Objects.requireNonNull(odesignRegistry);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
+        this.urlIdPaser = Objects.requireNonNull(urlIdPaser);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
     }
 
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
-        return this.identifierProvider.findVsmElementId(diagramDescription.getId()).isPresent();
+        Map<String, List<String>> urlAttributes = this.urlIdPaser.getParameterValues(diagramDescription.getId());
+        Optional<String> sourceId = urlAttributes.get(SOURCE_ID).stream().findAny();
+        if (sourceId.isPresent()) {
+            return this.identifierProvider.findVsmElementId(sourceId.get()).isPresent();
+        }
+        return false;
     }
 
     @Override
-    public List<ToolSection> handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription) {
-        var optionalVsmElementId = this.identifierProvider.findVsmElementId(diagramDescription.getId());
+    public List<ToolSection> handle(Object targetElement, IEditingContext editingContext, Object diagramElementOrDiagram) {
+        String diagramElementOrDiagramId = "";
+        if (diagramElementOrDiagram instanceof Diagram diagram) {
+            diagramElementOrDiagramId = diagram.getDescriptionId();
+        }
+        else if (diagramElementOrDiagram instanceof IDiagramElement diagramElement) {
+            diagramElementOrDiagramId = diagramElement.getDescriptionId();
+        }
 
-        // @formatter:off
-        var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()
-                .map(EObject::eResource)
-                .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
-                .filter(Objects::nonNull)
-                .filter(org.eclipse.sirius.diagram.description.DiagramDescription.class::isInstance)
-                .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
-                .findFirst();
-        // @formatter:on
+        Optional<DiagramDescription> diagramDescription = Optional.empty();
 
+        Map<String, List<String>> urlAttributes = this.urlIdPaser.getParameterValues(diagramElementOrDiagramId);
+        Optional<String> sourceId = urlAttributes.get(SOURCE_ID).stream().findAny();
         List<ToolSection> toolSections = new ArrayList<>();
-        if (optionalSiriusDiagramDescription.isPresent()) {
-            org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription = optionalSiriusDiagramDescription.get();
+        if (sourceId.isPresent()) {
+            diagramDescription = this.getDiagramDescriptionFromSourceElementId(editingContext, sourceId.get());
+            Optional<String> optionalVsmElementId = this.identifierProvider.findVsmElementId(sourceId.get());
 
-            // @formatter:off
-            List<ToolSection> filteredToolSections = diagramDescription.getToolSections().stream()
-                    .map(toolSection -> this.filteredTools(targetElement, diagramElement, toolSection, siriusDiagramDescription, diagramElementDescription))
-                    .filter(toolSection -> !toolSection.getTools().isEmpty())
-                    .toList();
-            // @formatter:on
+            if (diagramElementOrDiagram instanceof Diagram diagram && diagramDescription.isPresent()) {
+                Optional<Object> diagramElementDescription = Optional.of(diagramDescription.get());
+                var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()
+                        .map(EObject::eResource)
+                        .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
+                        .filter(Objects::nonNull)
+                        .filter(org.eclipse.sirius.diagram.description.DiagramDescription.class::isInstance)
+                        .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
+                        .findFirst();
 
-            toolSections.addAll(filteredToolSections);
-            toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
+                List<ToolSection> filteredToolSections = ((DiagramDescription) diagramElementDescription.get()).getToolSections().stream()
+                        .map(toolSection -> this.filteredTools(targetElement, diagramElementOrDiagram, toolSection, optionalSiriusDiagramDescription.get(), diagramElementDescription.get()))
+                        .filter(toolSection -> !toolSection.getTools().isEmpty())
+                        .toList();
+
+                toolSections.addAll(filteredToolSections);
+                toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
+
+
+            } else if (diagramElementOrDiagram instanceof Node node && diagramDescription.isPresent()) {
+                if (diagramDescription.isPresent()) {
+                    Optional<Object> diagramElementDescription = Optional.of(this.diagramDescriptionService.findNodeDescriptionById(diagramDescription.get(), node.getDescriptionId()).get());
+                    var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()
+                            .map(EObject::eResource)
+                            .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
+                            .filter(Objects::nonNull)
+                            .filter(org.eclipse.sirius.diagram.description.DiagramDescription.class::isInstance)
+                            .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
+                            .findFirst();
+
+                    List<ToolSection> filteredToolSections = diagramDescription.get().getToolSections().stream()
+                            .map(toolSection -> this.filteredTools(targetElement, diagramElementOrDiagram, toolSection, optionalSiriusDiagramDescription.get(), diagramElementDescription.get()))
+                            .filter(toolSection -> !toolSection.getTools().isEmpty())
+                            .toList();
+
+                    toolSections.addAll(filteredToolSections);
+                    toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
+
+                }
+            } else if (diagramElementOrDiagram instanceof Edge edge && diagramDescription.isPresent()) {
+                if (diagramDescription.isPresent()) {
+                    Optional<Object>  diagramElementDescription = Optional.of(this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription.get(), edge.getDescriptionId()).get());
+                    var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()
+                            .map(EObject::eResource)
+                            .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
+                            .filter(Objects::nonNull)
+                            .filter(org.eclipse.sirius.diagram.description.DiagramDescription.class::isInstance)
+                            .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
+                            .findFirst();
+
+                    List<ToolSection> filteredToolSections = diagramDescription.get().getToolSections().stream()
+                            .map(toolSection -> this.filteredTools(targetElement, diagramElementOrDiagram, toolSection, optionalSiriusDiagramDescription.get(), diagramElementDescription.get()))
+                            .filter(toolSection -> !toolSection.getTools().isEmpty())
+                            .toList();
+
+                    toolSections.addAll(filteredToolSections);
+                    toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
+                }
+            }
+
+
         }
         return toolSections;
+    }
+
+
+    private boolean isDiagramDescriptionEqualSourceElementId(DiagramDescription diagramDescription, String diagramElementOrDiagramSourceId) {
+        if (!diagramDescription.getId().startsWith(SIRIUS_PROTOCOL)) {
+            return false;
+        }
+        Optional<String> diagramDescriptionSourceId = this.urlIdPaser.getParameterValues(diagramDescription.getId()).get(SOURCE_ID).stream().findAny();
+        return diagramDescriptionSourceId.isPresent() && diagramDescriptionSourceId.get().equals(diagramElementOrDiagramSourceId);
+    }
+
+    private Optional<DiagramDescription> getDiagramDescriptionFromSourceElementId(IEditingContext editingContext, String sourceElementId) {
+        return this.representationDescriptionSearchService.findAll(editingContext).values().stream().filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast).filter(diagramDescription -> this.isDiagramDescriptionEqualSourceElementId(diagramDescription, sourceElementId)).findAny();
     }
 
     private ToolSection filteredTools(Object targetElement, Object diagramElement, ToolSection toolSection, org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription,
@@ -167,14 +262,24 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
 
     private Optional<EObject> getDiagramElementMapping(Object diagramElementDescription) {
         String descriptionId = this.getDescriptionId(diagramElementDescription);
-        var optionalVsmElementId = this.identifierProvider.findVsmElementId(descriptionId);
-        if (optionalVsmElementId.isPresent()) {
-            // @formatter:off
-            return this.odesignRegistry.getODesigns().stream()
-                    .map(EObject::eResource).map(r -> r.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
-                    .filter(Objects::nonNull)
-                    .findFirst();
-            // @formatter:on
+        Map<String, List<String>> urlAttributes = this.urlIdPaser.getParameterValues(descriptionId);
+        Optional<String> diagramElementDescriptionId = Optional.empty();
+        if (diagramElementDescription instanceof DiagramDescription) {
+            diagramElementDescriptionId = urlAttributes.get(SOURCE_ID).stream().findAny();
+        }
+        else {
+            diagramElementDescriptionId = urlAttributes.get(SOURCE_ELEMENT_ID).stream().findAny();
+        }
+        if (diagramElementDescriptionId.isPresent()) {
+            var optionalVsmElementId = this.identifierProvider.findVsmElementId(diagramElementDescriptionId.get());
+            if (optionalVsmElementId.isPresent()) {
+                // @formatter:off
+                return this.odesignRegistry.getODesigns().stream()
+                        .map(EObject::eResource).map(r -> r.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
+                        .filter(Objects::nonNull)
+                        .findFirst();
+                // @formatter:on
+            }
         }
         return Optional.empty();
     }

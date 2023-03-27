@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.compatibility.api.IIdOdesignElementsProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
@@ -83,7 +84,7 @@ public class EdgeMappingConverterTests {
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
                 List.of(), interpeter);
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
@@ -160,7 +161,7 @@ public class EdgeMappingConverterTests {
 
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
                 List.of(), interpeter);
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(objectService, new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new IIdOdesignElementsProvider.NoOp(), objectService, new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
@@ -200,7 +201,7 @@ public class EdgeMappingConverterTests {
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpeter -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider,
                 List.of(), interpeter);
-        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(objectService, new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
+        EdgeMappingConverter edgeMappingConverter = new EdgeMappingConverter(new IIdOdesignElementsProvider.NoOp(), objectService, new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory,
                 modelOperationHandlerSwitchProvider);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);

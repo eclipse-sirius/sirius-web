@@ -104,11 +104,11 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            Diagram diagram = diagramContext.getDiagram();
             // @formatter:off
-            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
+            var optionalTool = this.toolService.findToolById(editingContext, input.toolId())
                     .filter(SingleClickOnDiagramElementTool.class::isInstance)
                     .map(SingleClickOnDiagramElementTool.class::cast);
+
             // @formatter:on
             if (optionalTool.isPresent()) {
                 IStatus status = this.executeTool(editingContext, diagramContext, input.diagramElementId(), optionalTool.get(), input.startingPositionX(), input.startingPositionY(),

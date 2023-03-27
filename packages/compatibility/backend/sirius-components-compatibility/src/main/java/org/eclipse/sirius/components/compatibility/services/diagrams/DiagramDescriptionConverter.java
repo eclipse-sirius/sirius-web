@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.ICanCreateDiagramPredicateFactory;
-import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
+import org.eclipse.sirius.components.compatibility.api.IIdOdesignElementsProvider;
 import org.eclipse.sirius.components.compatibility.diagrams.DiagramLabelProvider;
 import org.eclipse.sirius.components.compatibility.services.diagrams.api.IDiagramDescriptionConverter;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -44,16 +44,16 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
 
     private final IAQLInterpreterFactory interpreterFactory;
 
-    private final IIdentifierProvider identifierProvider;
-
     private final ICanCreateDiagramPredicateFactory canCreateDiagramPredicateFactory;
 
-    public DiagramDescriptionConverter(List<IDiagramDescriptionPopulator> diagramDescriptionPopulators, IAQLInterpreterFactory interpreterFactory, IIdentifierProvider identifierProvider,
+    private final IIdOdesignElementsProvider idOdesignElementsProvider;
+
+    public DiagramDescriptionConverter(IIdOdesignElementsProvider idDiagramProvider, List<IDiagramDescriptionPopulator> diagramDescriptionPopulators, IAQLInterpreterFactory interpreterFactory,
             ICanCreateDiagramPredicateFactory canCreateDiagramPredicateFactory) {
         this.diagramDescriptionPopulators = Objects.requireNonNull(diagramDescriptionPopulators);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
-        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.canCreateDiagramPredicateFactory = Objects.requireNonNull(canCreateDiagramPredicateFactory);
+        this.idOdesignElementsProvider = Objects.requireNonNull(idDiagramProvider);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         Predicate<VariableManager> canCreatePredicate = this.canCreateDiagramPredicateFactory.getCanCreateDiagramPredicate(siriusDiagramDescription, interpreter);
 
         // @formatter:off
-        Builder builder = DiagramDescription.newDiagramDescription(this.identifierProvider.getIdentifier(siriusDiagramDescription))
+        Builder builder = DiagramDescription.newDiagramDescription(this.idOdesignElementsProvider.getIdDiagramDescription(siriusDiagramDescription))
                 .canCreatePredicate(canCreatePredicate)
                 .labelProvider(labelProvider)
                 .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription));

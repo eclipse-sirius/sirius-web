@@ -111,12 +111,10 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
                 var optionalToolSectionsProvider = this.toolSectionsProviders.stream().filter(toolSectionProvider -> toolSectionProvider.canHandle(diagramDescription)).findFirst();
                 var optionalTargetElement = this.findTargetElement(diagram, diagramElementId, editingContext);
                 var optionalDiagramElement = this.findDiagramElement(diagram, diagramElementId);
-                var optionalDiagramElementDescription = this.findDiagramElementDescription(diagram, diagramElementId, diagramDescription, optionalDiagramElement.orElse(null));
 
-                if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
+                if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent()) {
                     IToolSectionsProvider toolSectionsProvider = optionalToolSectionsProvider.get();
-                    toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
-                            diagramDescription);
+                    toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), editingContext, optionalDiagramElement.orElse(null));
                 }
             }
         }

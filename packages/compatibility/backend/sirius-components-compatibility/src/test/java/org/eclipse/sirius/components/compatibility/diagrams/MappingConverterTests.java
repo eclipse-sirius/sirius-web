@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.sirius.components.compatibility.api.IIdOdesignElementsProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
@@ -112,7 +113,7 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
+        var converter = new AbstractNodeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
 
         NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<String, NodeDescription>());
@@ -172,7 +173,7 @@ public class MappingConverterTests {
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
 
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
+        var converter = new AbstractNodeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
         NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<String, NodeDescription>());
 
@@ -240,7 +241,7 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
+        var converter = new AbstractNodeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
 
         NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<String, NodeDescription>());

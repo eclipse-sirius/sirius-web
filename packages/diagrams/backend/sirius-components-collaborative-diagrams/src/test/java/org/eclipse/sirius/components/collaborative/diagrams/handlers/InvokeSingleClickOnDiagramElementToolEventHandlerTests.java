@@ -113,7 +113,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         var toolService = new IToolService.NoOp() {
             @Override
-            public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+            public Optional<ITool> findToolById(IEditingContext editingContext, String toolId) {
                 return Optional.of(tool);
             }
         };
@@ -167,7 +167,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         var toolService = new IToolService.NoOp() {
             @Override
-            public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+            public Optional<ITool> findToolById(IEditingContext editingContext, String toolId) {
                 return Optional.of(tool);
             }
         };
@@ -224,7 +224,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         var toolService = new IToolService.NoOp() {
             @Override
-            public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+            public Optional<ITool> findToolById(IEditingContext editingContext, String toolId) {
                 return Optional.of(tool);
             }
         };
@@ -281,7 +281,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         var toolService = new IToolService.NoOp() {
             @Override
-            public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+            public Optional<ITool> findToolById(IEditingContext editingContext, String toolId) {
                 return Optional.of(tool);
             }
         };
@@ -338,7 +338,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
         var toolService = new IToolService.NoOp() {
             @Override
-            public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+            public Optional<ITool> findToolById(IEditingContext editingContext, String toolId) {
                 return Optional.of(tool);
             }
         };

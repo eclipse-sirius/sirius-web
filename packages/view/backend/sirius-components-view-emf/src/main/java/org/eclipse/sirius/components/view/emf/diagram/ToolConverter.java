@@ -138,7 +138,6 @@ public class ToolConverter {
     private List<ITool> createNodePaletteTools(NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         List<ITool> tools = new ArrayList<>();
-
         for (NodeTool nodeTool : new ToolFinder().findNodeTools(nodeDescription)) {
             // @formatter:off
             String toolId = this.idProvider.apply(nodeTool).toString();

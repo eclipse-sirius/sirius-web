@@ -410,6 +410,15 @@ public class ToolProvider implements IToolProvider {
                     .map(UUID::toString)
                     .map(id2NodeDescriptions::get)
                     .toList();
+
+            System.out.println("LIST TARGETS");
+            edgeMapping.getTargetMapping().stream()
+            .filter(AbstractNodeMapping.class::isInstance).forEach(a -> System.out.println(a.toString()));
+
+            edgeMapping.getTargetMapping().stream()
+
+            .filter(AbstractNodeMapping.class::isInstance).map(this.identifierProvider::getIdentifier).forEach(a -> System.out.println(a.toString()));
+
             List<NodeDescription> targets = edgeMapping.getTargetMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
                     .map(this.identifierProvider::getIdentifier)
@@ -474,11 +483,11 @@ public class ToolProvider implements IToolProvider {
                 } else {
                     // @formatter:off
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
-                        .filter(IDiagramContext.class::isInstance)
-                        .map(IDiagramContext.class::cast)
-                        .ifPresent(diagramContext -> {
-                            variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
-                        });
+                    .filter(IDiagramContext.class::isInstance)
+                    .map(IDiagramContext.class::cast)
+                    .ifPresent(diagramContext -> {
+                        variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
+                    });
                     // @formatter:on
                 }
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
@@ -507,11 +516,11 @@ public class ToolProvider implements IToolProvider {
                 } else {
                     // @formatter:off
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
-                        .filter(IDiagramContext.class::isInstance)
-                        .map(IDiagramContext.class::cast)
-                        .ifPresent(diagramContext -> {
-                            variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
-                        });
+                    .filter(IDiagramContext.class::isInstance)
+                    .map(IDiagramContext.class::cast)
+                    .ifPresent(diagramContext -> {
+                        variables.put(CONTAINER_VIEW, diagramContext.getDiagram());
+                    });
                     // @formatter:on
                 }
 
@@ -594,11 +603,11 @@ public class ToolProvider implements IToolProvider {
                     variables.put(ELEMENT_VIEW, selectedNode);
                     // @formatter:off
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
-                        .filter(IDiagramContext.class::isInstance)
-                        .map(IDiagramContext.class::cast)
-                        .ifPresent(diagramContext -> {
-                            variables.put(CONTAINER_VIEW, this.getParentNode((Node) selectedNode, diagramContext.getDiagram()));
-                        });
+                    .filter(IDiagramContext.class::isInstance)
+                    .map(IDiagramContext.class::cast)
+                    .ifPresent(diagramContext -> {
+                        variables.put(CONTAINER_VIEW, this.getParentNode((Node) selectedNode, diagramContext.getDiagram()));
+                    });
                     // @formatter:on
                 }
                 var modelOperationHandlerSwitch = this.modelOperationHandlerSwitchProvider.getModelOperationHandlerSwitch(interpreter);

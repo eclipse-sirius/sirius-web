@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.sirius.components.diagrams.tools.ITool;
  */
 public interface IToolService {
 
-    Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId);
+    Optional<ITool> findToolById(IEditingContext editingContext, String toolId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -34,7 +33,7 @@ public interface IToolService {
      */
     class NoOp implements IToolService {
         @Override
-        public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
+        public Optional<ITool> findToolById(IEditingContext editingContext, String toolId) {
             return Optional.empty();
         }
     }

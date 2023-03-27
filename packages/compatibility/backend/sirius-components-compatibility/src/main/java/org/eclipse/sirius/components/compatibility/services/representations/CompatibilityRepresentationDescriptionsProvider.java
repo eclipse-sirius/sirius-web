@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -53,6 +54,7 @@ public class CompatibilityRepresentationDescriptionsProvider implements IReprese
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
+        String id = UUID.nameUUIDFromBytes(representationDescription.getId().getBytes()).toString();
         return this.identifierProvider.findVsmElementId(representationDescription.getId()).isPresent();
     }
 
