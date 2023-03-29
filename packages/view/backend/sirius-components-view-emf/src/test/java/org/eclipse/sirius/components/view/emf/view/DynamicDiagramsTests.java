@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.layout.api.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -164,7 +165,7 @@ public class DynamicDiagramsTests {
         IObjectService objectService = new IObjectService.NoOp();
         ILayoutService layoutService = new ILayoutService.NoOp();
         MeterRegistry meterRegistry = new SimpleMeterRegistry();
-        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), objectService, layoutService, new IOperationValidator.NoOp(), meterRegistry);
+        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), objectService, layoutService, new IDiagramLayoutEngine.NoOp(), new IOperationValidator.NoOp(), meterRegistry);
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 

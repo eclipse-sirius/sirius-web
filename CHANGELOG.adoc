@@ -62,6 +62,8 @@ The filter button inside the filter bar allows to filter (hide) all visible tree
 +
 image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%]
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name. The new algorithm does the minimum possible to place node without overlap.
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1869[#1869] [tree] Navigate to the first child with the right arrow if a node is expanded.
