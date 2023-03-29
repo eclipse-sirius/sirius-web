@@ -10,19 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+package org.eclipse.sirius.components.diagrams.layout.api;
+
+import java.util.Optional;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.layout.api.configuration.DiagramLayoutConfiguration;
 
 /**
- * The position of an element.
+ * Used to provide the diagram layout configuration.
  *
  * @author sbegaudeau
  */
-public record Position(double x, double y) {
-    public Position translate(double dx, double dy) {
-        return new Position(this.x + dx, this.y + dy);
-    }
-
-    public Position midPoint(Position other) {
-        return new Position((this.x + other.x) / 2.0, (this.y + other.y) / 2.0);
-    }
+public interface IDiagramLayoutConfigurationProvider {
+    Optional<DiagramLayoutConfiguration> getDiagramLayoutConfiguration(IEditingContext editingContext, Diagram diagram);
 }
