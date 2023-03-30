@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EPackage;
@@ -22,9 +23,9 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
-import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IKindParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -58,8 +59,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IEditService editService;
 
-    private final IIdentifierProvider identifierProvider;
-
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
@@ -68,19 +67,23 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
-    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
-            List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
+    private final IKindParser urlParser;
+
+    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
+            List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext, IKindParser urlParser) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
-        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.applicationContext = Objects.requireNonNull(applicationContext);
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
     public boolean canExecute(DiagramDescription diagramDescription) {
-        return this.identifierProvider.findVsmElementId(diagramDescription.getId()).isEmpty();
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
+        List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
+        return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
     }
 
     @Override
@@ -138,9 +141,9 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
             // @formatter:off
             return packageRegistry.values().stream()
-                                  .filter(EPackage.class::isInstance)
-                                  .map(EPackage.class::cast)
-                                  .toList();
+                    .filter(EPackage.class::isInstance)
+                    .map(EPackage.class::cast)
+                    .toList();
             // @formatter:on
         } else {
             return List.of();

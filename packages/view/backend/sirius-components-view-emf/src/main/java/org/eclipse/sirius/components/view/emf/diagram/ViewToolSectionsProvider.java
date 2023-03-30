@@ -14,12 +14,14 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
+import org.eclipse.sirius.components.core.api.IKindParser;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -56,9 +58,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
+    private final IKindParser urlParser;
+
+    public ViewToolSectionsProvider(IKindParser urlParser) {
+        this.urlParser = Objects.requireNonNull(urlParser);
+    }
+
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
-        return this.getSourceDiagramDescription(diagramDescription).isPresent();
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
+        List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
+        return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
     }
 
     @Override
@@ -76,14 +86,6 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         }
 
         return toolSections.stream().filter(toolSection -> !toolSection.getTools().isEmpty()).toList();
-    }
-
-    private Optional<org.eclipse.sirius.components.view.DiagramDescription> getSourceDiagramDescription(DiagramDescription diagramDescription) {
-        if (diagramDescription != null && diagramDescription.getCanCreatePredicate() instanceof IViewDiagramCreationPredicate viewCreationPredicate) {
-            return Optional.of(viewCreationPredicate.getSourceDiagramDescription());
-        } else {
-            return Optional.empty();
-        }
     }
 
     private Optional<ToolSection> findToolSectionById(DiagramDescription diagramDescription, String id) {
