@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -150,8 +149,8 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
         return targetObjectId;
     }
 
-    private Optional<UUID> mapDiagramElementToDescriptionId(Object object) {
-        Optional<UUID> descriptionId = Optional.empty();
+    private Optional<String> mapDiagramElementToDescriptionId(Object object) {
+        Optional<String> descriptionId = Optional.empty();
         if (object instanceof Node) {
             descriptionId = Optional.of(((Node) object).getDescriptionId());
         } else if (object instanceof Edge) {
@@ -160,7 +159,7 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
         return descriptionId;
     }
 
-    private Optional<Object> mapDescriptionIdToDescription(UUID descriptionId, DiagramDescription diagramDescription, Object diagramElement) {
+    private Optional<Object> mapDescriptionIdToDescription(String descriptionId, DiagramDescription diagramDescription, Object diagramElement) {
         Optional<Object> result = Optional.empty();
         if (diagramElement instanceof Node) {
             var description = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, descriptionId);

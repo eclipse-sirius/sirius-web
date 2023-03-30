@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.description;
+package org.eclipse.sirius.components.diagrams;
 
 /**
- * The description of a diagram element.
+ * Common interface for Node & Edge.
  *
- * @author arichard
+ * @author mcharfadi
  */
-public interface IDiagramElementDescription {
-
+public interface IDiagramElement {
     String getId();
-
+    String getDescriptionId();
 }

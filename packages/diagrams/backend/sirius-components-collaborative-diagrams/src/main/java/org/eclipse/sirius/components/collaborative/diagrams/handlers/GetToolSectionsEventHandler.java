@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -112,12 +111,10 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
                 var optionalToolSectionsProvider = this.toolSectionsProviders.stream().filter(toolSectionProvider -> toolSectionProvider.canHandle(diagramDescription)).findFirst();
                 var optionalTargetElement = this.findTargetElement(diagram, diagramElementId, editingContext);
                 var optionalDiagramElement = this.findDiagramElement(diagram, diagramElementId);
-                var optionalDiagramElementDescription = this.findDiagramElementDescription(diagram, diagramElementId, diagramDescription, optionalDiagramElement.orElse(null));
 
-                if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
+                if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent()) {
                     IToolSectionsProvider toolSectionsProvider = optionalToolSectionsProvider.get();
-                    toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
-                            diagramDescription);
+                    toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), editingContext, optionalDiagramElement.orElse(null));
                 }
             }
         }
@@ -152,13 +149,13 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
         if (appliesToRootDiagram) {
             diagramElementDescription = diagramDescription;
         } else if (diagramElement instanceof Node) {
-            UUID descriptionId = ((Node) diagramElement).getDescriptionId();
+            String descriptionId = ((Node) diagramElement).getDescriptionId();
             var optionalNodeDescription = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, descriptionId);
             if (optionalNodeDescription.isPresent()) {
                 diagramElementDescription = optionalNodeDescription.get();
             }
         } else if (diagramElement instanceof Edge) {
-            UUID descriptionId = ((Edge) diagramElement).getDescriptionId();
+            String descriptionId = ((Edge) diagramElement).getDescriptionId();
             var optionalEdgeDescription = this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, descriptionId);
             if (optionalEdgeDescription.isPresent()) {
                 diagramElementDescription = optionalEdgeDescription.get();

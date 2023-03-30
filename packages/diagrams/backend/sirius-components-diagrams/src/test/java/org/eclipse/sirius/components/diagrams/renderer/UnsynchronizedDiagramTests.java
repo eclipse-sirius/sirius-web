@@ -177,7 +177,7 @@ public class UnsynchronizedDiagramTests {
                 .build();
 
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
-        UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
+        String descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
 
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
@@ -224,7 +224,7 @@ public class UnsynchronizedDiagramTests {
                 .build();
 
         Diagram diagramAfterFirstNodeCreation = this.render(diagramDescription, List.of(viewCreationRequest), List.of(), Optional.of(initialDiagram));
-        UUID descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
+        String descriptionId = diagramDescription.getNodeDescriptions().get(0).getChildNodeDescriptions().get(0).getId();
         String parentNodeId = diagramAfterFirstNodeCreation.getNodes().get(0).getId();
 
         ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
@@ -304,7 +304,7 @@ public class UnsynchronizedDiagramTests {
             return new FreeFormLayoutStrategy();
         };
 
-        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes()))
+        NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("subUnsynchronized".getBytes()).toString())
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
@@ -321,7 +321,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes()))
+        NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("unsynchronized".getBytes()).toString())
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(semanticElementsProvider)
@@ -338,7 +338,7 @@ public class UnsynchronizedDiagramTests {
                 .deleteHandler(variableManager -> new Success())
                 .build();
 
-        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes()))
+        NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription(UUID.nameUUIDFromBytes("synchronized".getBytes()).toString())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .typeProvider(variableManager -> NODE_TYPE)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))

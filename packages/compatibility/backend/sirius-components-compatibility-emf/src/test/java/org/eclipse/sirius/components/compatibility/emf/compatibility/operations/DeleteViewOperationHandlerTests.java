@@ -86,13 +86,13 @@ public class DeleteViewOperationHandlerTests {
                 .canCreatePredicate(variableManager -> true)
                 .labelProvider(variableManager -> "Diagram")
                 .toolSections(List.of())
-                .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
+                .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID().toString())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
 
         Node node = Node.newNode(UUID.randomUUID().toString())
-                .descriptionId(UUID.randomUUID())
+                .descriptionId(UUID.randomUUID().toString())
                 .type("Node")
                 .targetObjectId(UUID.randomUUID().toString())
                 .targetObjectKind("ecore::EPackage")
@@ -158,7 +158,7 @@ public class DeleteViewOperationHandlerTests {
         assertTrue(handleResult instanceof Success);
     }
 
-    private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
+    private NodeDescription getNodeDescription(String nodeDescriptionId) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")

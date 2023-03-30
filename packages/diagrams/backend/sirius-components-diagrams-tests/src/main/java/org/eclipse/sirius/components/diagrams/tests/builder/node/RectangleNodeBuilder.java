@@ -141,30 +141,30 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         String nodeId = UUID.randomUUID().toString();
         targetObjectIdToNodeId.put(labeltext, nodeId);
 
-        UUID descriptionId = TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID;
+        String descriptionId = TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID;
         if (this.nodesBuilder.and() instanceof NodeBuilder) {
             descriptionId = TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID;
         }
 
         // @formatter:off
         Builder nodeBuilder = Node.newNode(nodeId)
-               .type(NodeType.NODE_RECTANGLE)
-               .label(this.label)
-               .position(Objects.requireNonNull(this.position))
-               .size(Objects.requireNonNull(this.size))
-               .borderNode(this.isBorderNode)
-               .borderNodes(borderNodes)
-               .childNodes(childNodes)
-               .customizedProperties(this.customizedProperties)
-               .descriptionId(descriptionId)
-               .targetObjectId(labeltext)
-               .targetObjectKind("")
-               .targetObjectLabel(this.label.getText())
-               .style(Objects.requireNonNull(style))
-               .modifiers(Set.of())
-               .state(ViewModifier.Normal)
-               .userResizable(this.userResizable)
-               .collapsingState(this.collapsingState);
+                .type(NodeType.NODE_RECTANGLE)
+                .label(this.label)
+                .position(Objects.requireNonNull(this.position))
+                .size(Objects.requireNonNull(this.size))
+                .borderNode(this.isBorderNode)
+                .borderNodes(borderNodes)
+                .childNodes(childNodes)
+                .customizedProperties(this.customizedProperties)
+                .descriptionId(descriptionId)
+                .targetObjectId(labeltext)
+                .targetObjectKind("")
+                .targetObjectLabel(this.label.getText())
+                .style(Objects.requireNonNull(style))
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
+                .userResizable(this.userResizable)
+                .collapsingState(this.collapsingState);
 
         if (this.childrenLayoutStrategy != null) {
             nodeBuilder.childrenLayoutStrategy(this.childrenLayoutStrategy);

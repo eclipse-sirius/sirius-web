@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -35,7 +34,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class NodeDescription implements IDiagramElementDescription {
-    private UUID id;
+    private String id;
 
     private SynchronizationPolicy synchronizationPolicy;
 
@@ -67,9 +66,9 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private boolean collapsible;
 
-    private List<UUID> reusedBorderNodeDescriptionIds;
+    private List<String> reusedBorderNodeDescriptionIds;
 
-    private List<UUID> reusedChildNodeDescriptionIds;
+    private List<String> reusedChildNodeDescriptionIds;
 
     private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
@@ -80,7 +79,7 @@ public final class NodeDescription implements IDiagramElementDescription {
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -144,11 +143,11 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.collapsible;
     }
 
-    public List<UUID> getReusedBorderNodeDescriptionIds() {
+    public List<String> getReusedBorderNodeDescriptionIds() {
         return this.reusedBorderNodeDescriptionIds;
     }
 
-    public List<UUID> getReusedChildNodeDescriptionIds() {
+    public List<String> getReusedChildNodeDescriptionIds() {
         return this.reusedChildNodeDescriptionIds;
     }
 
@@ -160,8 +159,8 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.labelEditHandler;
     }
 
-    public static Builder newNodeDescription(UUID id) {
-        return new Builder(id);
+    public static Builder newNodeDescription(String nodeDescriptionId) {
+        return new Builder(nodeDescriptionId);
     }
 
     public static Builder newNodeDescription(NodeDescription nodeDescription) {
@@ -181,7 +180,7 @@ public final class NodeDescription implements IDiagramElementDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
@@ -213,16 +212,16 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private boolean collapsible;
 
-        private List<UUID> reusedBorderNodeDescriptionIds = new ArrayList<>();
+        private List<String> reusedBorderNodeDescriptionIds = new ArrayList<>();
 
-        private List<UUID> reusedChildNodeDescriptionIds = new ArrayList<>();
+        private List<String> reusedChildNodeDescriptionIds = new ArrayList<>();
 
         private BiFunction<VariableManager, String, IStatus> labelEditHandler;
 
         private Function<VariableManager, IStatus> deleteHandler;
 
-        public Builder(UUID id) {
-            this.id = Objects.requireNonNull(id);
+        public Builder(String nodeDescriptionId) {
+            this.id = Objects.requireNonNull(nodeDescriptionId);
         }
 
         private Builder(NodeDescription nodeDescription) {
@@ -322,12 +321,12 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
-        public Builder reusedBorderNodeDescriptionIds(List<UUID> reusedBorderNodeDescriptionIds) {
+        public Builder reusedBorderNodeDescriptionIds(List<String> reusedBorderNodeDescriptionIds) {
             this.reusedBorderNodeDescriptionIds = Objects.requireNonNull(reusedBorderNodeDescriptionIds);
             return this;
         }
 
-        public Builder reusedChildNodeDescriptionIds(List<UUID> reusedChildNodeDescriptionIds) {
+        public Builder reusedChildNodeDescriptionIds(List<String> reusedChildNodeDescriptionIds) {
             this.reusedChildNodeDescriptionIds = Objects.requireNonNull(reusedChildNodeDescriptionIds);
             return this;
         }

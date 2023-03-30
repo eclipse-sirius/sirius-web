@@ -57,7 +57,7 @@ public class DomainBasedSourceNodesProviderTests {
         variableManager.put(VariableManager.SELF, object);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
-        Element nodeElement = this.createNodeElement(UUID.fromString(nodeMapping.getName()));
+        Element nodeElement = this.createNodeElement(UUID.fromString(nodeMapping.getName()).toString());
         cache.put(object, nodeElement);
 
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
@@ -75,7 +75,7 @@ public class DomainBasedSourceNodesProviderTests {
         assertThat(sourceNodes).contains(nodeElement);
     }
 
-    private Element createNodeElement(UUID descriptionId) {
+    private Element createNodeElement(String descriptionId) {
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
                 .imageURL("")

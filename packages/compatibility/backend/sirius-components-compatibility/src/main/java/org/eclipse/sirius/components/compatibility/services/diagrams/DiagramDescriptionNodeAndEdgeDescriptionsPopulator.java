@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
@@ -86,7 +85,7 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
 
     @Override
     public Builder populate(Builder builder, DiagramDescription siriusDiagramDescription, AQLInterpreter interpreter) {
-        Map<UUID, NodeDescription> id2NodeDescriptions = new LinkedHashMap<>();
+        Map<String, NodeDescription> id2NodeDescriptions = new LinkedHashMap<>();
 
         // @formatter:off
         List<Layer> layers = LayerModelHelper.getAllLayers(siriusDiagramDescription).stream()

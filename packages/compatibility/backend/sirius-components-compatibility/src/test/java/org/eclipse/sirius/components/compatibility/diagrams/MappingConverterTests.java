@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.sirius.components.compatibility.api.IIdOdesignElementsProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
@@ -72,32 +73,28 @@ public class MappingConverterTests {
         // @formatter:off
         ContainerStyleDescription defaultStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(defaultStyle)
-                .labelExpression("aql: defaultStyle")
-                .labelSize(10)
-                .labelColor(this.getColor(1, 1, 1));
+        .labelExpression("aql: defaultStyle")
+        .labelSize(10).labelColor(this.getColor(1, 1, 1));
 
         ContainerStyleDescription firstConditionalStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(firstConditionalStyle)
-                .labelExpression("aql:'firstConditionalStyle'")
-                .labelSize(4)
-                .labelColor(this.getColor(3, 3, 3));
+        .labelExpression("aql:'firstConditionalStyle'")
+        .labelSize(4).labelColor(this.getColor(3, 3, 3));
 
         ContainerStyleDescription secondConditionalStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(secondConditionalStyle)
-                .labelExpression("aql:'secondConditionalStyle'")
-                .labelSize(6)
-                .bold()
-                .italic()
-                .underline()
-                .strikeThrough()
-                .labelColor(this.getColor(2, 2, 2))
-                .iconPath(PLUGIN_ID + ICON_PATH);
+        .labelExpression("aql:'secondConditionalStyle'")
+        .labelSize(6)
+        .bold()
+        .italic()
+        .underline()
+        .strikeThrough()
+        .labelColor(this.getColor(2, 2, 2)).iconPath(PLUGIN_ID + ICON_PATH);
 
         ContainerStyleDescription thirdConditionalStyle = StyleFactory.eINSTANCE.createFlatContainerStyleDescription();
         new BasicLabelStyleDescriptionPopulator(thirdConditionalStyle)
-                .labelExpression("aql:'thirdConditionalStyle'")
-                .labelSize(8)
-                .labelColor(this.getColor(4, 4, 4));
+        .labelExpression("aql:'thirdConditionalStyle'")
+        .labelSize(8).labelColor(this.getColor(4, 4, 4));
         // @formatter:on
 
         containerMapping.setStyle(defaultStyle);
@@ -116,10 +113,10 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
+        var converter = new AbstractNodeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
 
-        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<UUID, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<String, NodeDescription>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
 
         String text = labelDescription.getTextProvider().apply(variableManager);
@@ -176,9 +173,9 @@ public class MappingConverterTests {
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
 
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
+        var converter = new AbstractNodeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
-        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<UUID, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<String, NodeDescription>());
 
         VariableManager variableManager = new VariableManager();
 
@@ -186,7 +183,7 @@ public class MappingConverterTests {
         assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_RECTANGLE);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(RectangularNodeStyle.class);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class))
-                .matches(RectangularNodeStyle::isWithHeader);
+        .matches(RectangularNodeStyle::isWithHeader);
 
         assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
         NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
@@ -204,32 +201,28 @@ public class MappingConverterTests {
         // @formatter:off
         NodeStyleDescription defaultStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(defaultStyle)
-                .labelExpression("aql:'defaultStyle'")
-                .labelSize(10)
-                .labelColor(this.getColor(1, 1, 1));
+        .labelExpression("aql:'defaultStyle'")
+        .labelSize(10).labelColor(this.getColor(1, 1, 1));
 
         NodeStyleDescription firstConditionalStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(firstConditionalStyle)
-                .labelExpression("aql:'firstConditionalStyle'")
-                .labelSize(4)
-                .labelColor(this.getColor(3, 3, 3));
+        .labelExpression("aql:'firstConditionalStyle'")
+        .labelSize(4).labelColor(this.getColor(3, 3, 3));
 
         NodeStyleDescription secondConditionalStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(secondConditionalStyle)
-                .labelExpression("aql:'secondConditionalStyle'")
-                .labelSize(6)
-                .bold()
-                .italic()
-                .underline()
-                .strikeThrough()
-                .labelColor(this.getColor(2, 2, 2))
-                .iconPath(PLUGIN_ID + ICON_PATH);
+        .labelExpression("aql:'secondConditionalStyle'")
+        .labelSize(6)
+        .bold()
+        .italic()
+        .underline()
+        .strikeThrough()
+        .labelColor(this.getColor(2, 2, 2)).iconPath(PLUGIN_ID + ICON_PATH);
 
         NodeStyleDescription thirdConditionalStyle = StyleFactory.eINSTANCE.createSquareDescription();
         new BasicLabelStyleDescriptionPopulator(thirdConditionalStyle)
-                .labelExpression("aql:'thirdConditionalStyle'")
-                .labelSize(8)
-                .labelColor(this.getColor(4, 4, 4));
+        .labelExpression("aql:'thirdConditionalStyle'")
+        .labelSize(8).labelColor(this.getColor(4, 4, 4));
         // @formatter:on
 
         nodeMapping.setStyle(defaultStyle);
@@ -248,10 +241,10 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
+        var converter = new AbstractNodeMappingConverter(new IIdOdesignElementsProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
 
-        NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<UUID, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<String, NodeDescription>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
 
         String text = labelDescription.getTextProvider().apply(variableManager);

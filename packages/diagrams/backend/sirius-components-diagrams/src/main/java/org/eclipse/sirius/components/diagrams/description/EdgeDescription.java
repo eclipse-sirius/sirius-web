@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.diagrams.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -57,7 +56,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     public static final String GRAPHICAL_EDGE_TARGET = "graphicalEdgeTarget";
 
-    private UUID id;
+    private String id;
 
     private SynchronizationPolicy synchronizationPolicy;
 
@@ -96,7 +95,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -164,8 +163,8 @@ public final class EdgeDescription implements IDiagramElementDescription {
         return this.labelEditHandler;
     }
 
-    public static Builder newEdgeDescription(UUID id) {
-        return new Builder(id);
+    public static Builder newEdgeDescription(String edgeDescriptionId) {
+        return new Builder(edgeDescriptionId);
     }
 
     @Override
@@ -181,7 +180,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+        private String id;
 
         private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
@@ -215,8 +214,8 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
         private IEdgeEditLabelHandler labelEditHandler;
 
-        private Builder(UUID id) {
-            this.id = Objects.requireNonNull(id);
+        private Builder(String edgeDescriptionId) {
+            this.id = Objects.requireNonNull(edgeDescriptionId);
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {

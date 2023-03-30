@@ -54,7 +54,7 @@ public class RelationBasedSourceNodesProviderTests {
         variableManager.put(VariableManager.SELF, object);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
-        Element nodeElement = this.createNodeElement(UUID.fromString(nodeMapping.getName()));
+        Element nodeElement = this.createNodeElement(UUID.fromString(nodeMapping.getName()).toString());
         cache.put(object, nodeElement);
 
         variableManager.put(DiagramDescription.CACHE, cache);
@@ -69,7 +69,7 @@ public class RelationBasedSourceNodesProviderTests {
         assertThat(sourceNodes).hasSize(1).contains(nodeElement);
     }
 
-    private Element createNodeElement(UUID descriptionId) {
+    private Element createNodeElement(String descriptionId) {
         // @formatter:off
         INodeStyle style = ImageNodeStyle.newImageNodeStyle()
                 .imageURL("")

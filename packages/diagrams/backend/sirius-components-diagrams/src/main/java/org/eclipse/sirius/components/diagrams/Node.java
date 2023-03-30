@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 
@@ -27,7 +26,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author sbegaudeau
  */
 @Immutable
-public final class Node {
+public final class Node implements IDiagramElement {
     public static final String SELECTED_NODE = "selectedNode";
 
     private String id;
@@ -40,7 +39,7 @@ public final class Node {
 
     private String targetObjectLabel;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private boolean borderNode;
 
@@ -72,6 +71,7 @@ public final class Node {
         // Prevent instantiation
     }
 
+    @Override
     public String getId() {
         return this.id;
     }
@@ -92,7 +92,8 @@ public final class Node {
         return this.targetObjectLabel;
     }
 
-    public UUID getDescriptionId() {
+    @Override
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -180,7 +181,7 @@ public final class Node {
 
         private String targetObjectLabel;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private boolean borderNode;
 
@@ -254,7 +255,7 @@ public final class Node {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
+import org.eclipse.sirius.components.view.emf.diagram.IIdDiagramProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -140,7 +141,7 @@ public class DynamicDiagramsTests {
         res.getContents().add(view);
         new ResourceSetImpl().getResources().add(res);
 
-        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of(),
+        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IIdDiagramProvider.NoOp(), new IObjectService.NoOp(), new IEditService.NoOp(), List.of(),
                 new IViewToolImageProvider.NoOp());
         var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
@@ -155,6 +156,7 @@ public class DynamicDiagramsTests {
                 return Optional.of(convertedDiagramDescription);
             }
         };
+
         IObjectService objectService = new IObjectService.NoOp();
         ILayoutService layoutService = new ILayoutService.NoOp();
         MeterRegistry meterRegistry = new SimpleMeterRegistry();

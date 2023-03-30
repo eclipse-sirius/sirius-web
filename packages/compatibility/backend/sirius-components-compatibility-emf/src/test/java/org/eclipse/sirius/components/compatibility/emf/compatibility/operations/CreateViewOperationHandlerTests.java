@@ -85,7 +85,7 @@ public class CreateViewOperationHandlerTests {
                 .canCreatePredicate(variableManager -> true)
                 .labelProvider(variableManager -> "Diagram")
                 .toolSections(List.of())
-                .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID())))
+                .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID().toString())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
@@ -184,7 +184,7 @@ public class CreateViewOperationHandlerTests {
         assertEquals(newName, renamedElement.getName());
     }
 
-    private NodeDescription getNodeDescription(UUID nodeDescriptionId) {
+    private NodeDescription getNodeDescription(String nodeDescriptionId) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")

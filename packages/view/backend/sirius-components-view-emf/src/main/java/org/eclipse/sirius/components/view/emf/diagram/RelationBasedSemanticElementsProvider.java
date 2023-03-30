@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -31,9 +30,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class RelationBasedSemanticElementsProvider implements Function<VariableManager, List<?>> {
 
-    private final List<UUID> sourceNodeDescriptionIds;
+    private final List<String> sourceNodeDescriptionIds;
 
-    public RelationBasedSemanticElementsProvider(List<UUID> sourceNodeDescriptionIds) {
+    public RelationBasedSemanticElementsProvider(List<String> sourceNodeDescriptionIds) {
         this.sourceNodeDescriptionIds = Objects.requireNonNull(sourceNodeDescriptionIds);
     }
 

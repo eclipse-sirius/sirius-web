@@ -34,11 +34,11 @@ import org.eclipse.sirius.components.diagrams.tests.builder.node.NodesBuilder;
  */
 public final class TestLayoutDiagramBuilder {
 
-    public static final UUID NODE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("NODE_DESCRIPTION_ID".getBytes());
+    public static final String NODE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("NODE_DESCRIPTION_ID".getBytes()).toString();
 
-    public static final UUID CHILD_NODE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("CHILD_NODE_DESCRIPTION_ID".getBytes());
+    public static final String CHILD_NODE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("CHILD_NODE_DESCRIPTION_ID".getBytes()).toString();
 
-    public static final UUID EDGE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("EDGE_DESCRIPTION_ID".getBytes());
+    public static final String EDGE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("EDGE_DESCRIPTION_ID".getBytes()).toString();
 
     public static final String DIAGRAM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("DIAGRAM_DESCRIPTION_ID".getBytes()).toString();
 

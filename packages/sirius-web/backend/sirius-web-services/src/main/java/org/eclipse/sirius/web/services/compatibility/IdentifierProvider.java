@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,10 +64,13 @@ public class IdentifierProvider implements IIdentifierProvider {
                 .map(Object::toString)
                 .orElse("");
 
+        //System.out.println(vsmElementId);
+
+
         Optional<IdMappingEntity> optional = this.getOrFetchByExternalId(vsmElementId);
         return optional.orElseGet(() -> this.newIdMapping(vsmElementId))
-               .getId()
-               .toString();
+                .getId()
+                .toString();
         // @formatter:on
     }
 
@@ -90,6 +93,7 @@ public class IdentifierProvider implements IIdentifierProvider {
     }
 
     private Optional<IdMappingEntity> getOrFetchById(String id) {
+        //System.out.println(id);
         try {
             Callable<? extends IdMappingEntity> loader = () -> {
                 return this.repository.findById(id).orElseThrow(() -> this.loadingError(id.toString()));
@@ -115,6 +119,8 @@ public class IdentifierProvider implements IIdentifierProvider {
     private IdMappingEntity newIdMapping(String vsmElementId) {
         IdMappingEntity idMappingEntity = new IdMappingEntity();
         idMappingEntity.setId(UUID.nameUUIDFromBytes(vsmElementId.getBytes()).toString());
+        //System.out.println("newIdMapping");
+        //System.out.println(UUID.nameUUIDFromBytes(vsmElementId.getBytes()).toString());
         idMappingEntity.setExternalId(vsmElementId);
         idMappingEntity = this.repository.save(idMappingEntity);
         return this.cached(idMappingEntity);

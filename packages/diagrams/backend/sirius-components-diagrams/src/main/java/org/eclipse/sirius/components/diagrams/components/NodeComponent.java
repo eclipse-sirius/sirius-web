@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
@@ -138,7 +137,7 @@ public class NodeComponent implements IComponent {
 
     private boolean existsViewCreationRequested(String targetObjectId) {
         String parentElementId = this.props.getParentElementId();
-        UUID nodeDescriptionId = this.props.getNodeDescription().getId();
+        String nodeDescriptionId = this.props.getNodeDescription().getId();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
         // @formatter:off
         return this.props.getViewCreationRequests().stream()
@@ -384,9 +383,9 @@ public class NodeComponent implements IComponent {
         //@formatter:off
         var borderNodeDescriptions = new ArrayList<>(nodeDescription.getBorderNodeDescriptions());
         nodeDescription.getReusedBorderNodeDescriptionIds().stream()
-            .map(nodeDescriptionRequestor::findById)
-            .flatMap(Optional::stream)
-            .forEach(borderNodeDescriptions::add);
+        .map(nodeDescriptionRequestor::findById)
+        .flatMap(Optional::stream)
+        .forEach(borderNodeDescriptions::add);
 
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
@@ -420,9 +419,9 @@ public class NodeComponent implements IComponent {
         //@formatter:off
         var childNodeDescriptions = new ArrayList<>(nodeDescription.getChildNodeDescriptions());
         nodeDescription.getReusedChildNodeDescriptionIds().stream()
-            .map(nodeDescriptionRequestor::findById)
-            .flatMap(Optional::stream)
-            .forEach(childNodeDescriptions::add);
+        .map(nodeDescriptionRequestor::findById)
+        .flatMap(Optional::stream)
+        .forEach(childNodeDescriptions::add);
 
         return childNodeDescriptions.stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());

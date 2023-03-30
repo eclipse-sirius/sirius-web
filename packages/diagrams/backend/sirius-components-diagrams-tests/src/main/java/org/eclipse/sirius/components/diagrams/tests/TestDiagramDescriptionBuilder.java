@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.tests;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
@@ -45,19 +44,19 @@ public class TestDiagramDescriptionBuilder {
     public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions, List<ToolSection> toolSections) {
         // @formatter:off
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
-            .label("")
-            .canCreatePredicate(variableManager -> Boolean.TRUE)
-            .targetObjectIdProvider(variableManager -> "targetObjectId")
-            .labelProvider(variableManager -> "Diagram")
-            .nodeDescriptions(nodeDescriptions)
-            .edgeDescriptions(edgeDescriptions)
-            .toolSections(toolSections)
-            .dropHandler(variableManager -> new Failure(""))
-            .build();
+                .label("")
+                .canCreatePredicate(variableManager -> Boolean.TRUE)
+                .targetObjectIdProvider(variableManager -> "targetObjectId")
+                .labelProvider(variableManager -> "Diagram")
+                .nodeDescriptions(nodeDescriptions)
+                .edgeDescriptions(edgeDescriptions)
+                .toolSections(toolSections)
+                .dropHandler(variableManager -> new Failure(""))
+                .build();
         // @formatter:on
     }
 
-    public EdgeDescription getEdgeDescription(UUID edgeDescriptionId, NodeDescription nodeDescription) {
+    public EdgeDescription getEdgeDescription(String edgeDescriptionId, NodeDescription nodeDescription) {
         // @formatter:off
         Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> List.of();
         Function<VariableManager, List<Element>> targetNodesProvider = variableManager -> List.of();
@@ -92,7 +91,7 @@ public class TestDiagramDescriptionBuilder {
         // @formatter:on
     }
 
-    public NodeDescription getNodeDescription(UUID nodeDescriptionId, Function<VariableManager, List<?>> semanticElementsProvider) {
+    public NodeDescription getNodeDescription(String nodeDescriptionId, Function<VariableManager, List<?>> semanticElementsProvider) {
         // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")
@@ -145,7 +144,7 @@ public class TestDiagramDescriptionBuilder {
         // @formatter:on
     }
 
-    private String getNodeId(UUID nodeDescriptionId, String objectId) {
+    private String getNodeId(String nodeDescriptionId, String objectId) {
         return nodeDescriptionId + "_" + objectId;
     }
 }

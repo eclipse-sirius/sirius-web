@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -30,7 +29,7 @@ import org.eclipse.sirius.components.representations.Element;
  */
 public class DiagramRenderingCache {
 
-    private final Map<UUID, List<Element>> nodeDescriptionIdToNodes = new LinkedHashMap<>();
+    private final Map<String, List<Element>> nodeDescriptionIdToNodes = new LinkedHashMap<>();
 
     private final Map<String, Element> nodeIdToNode = new LinkedHashMap<>();
 
@@ -42,7 +41,7 @@ public class DiagramRenderingCache {
 
     private final Map<String, List<Element>> nodeIdToChildren = new LinkedHashMap<>();
 
-    public void put(UUID nodeDescriptionId, Element nodeElement) {
+    public void put(String nodeDescriptionId, Element nodeElement) {
         this.nodeDescriptionIdToNodes.computeIfAbsent(nodeDescriptionId, id -> new ArrayList<>()).add(nodeElement);
     }
 
@@ -62,7 +61,7 @@ public class DiagramRenderingCache {
         }
     }
 
-    public Map<UUID, List<Element>> getNodeDescriptionIdToNodes() {
+    public Map<String, List<Element>> getNodeDescriptionIdToNodes() {
         return this.nodeDescriptionIdToNodes;
     }
 

@@ -13,15 +13,22 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -56,23 +63,84 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
+    private static final String SIRIUS_PROTOCOL = "siriusComponents://";
+
+    private static final String SOURCE_ID = "sourceId";
+
+    private static final String SOURCE_ELEMENT_ID = "sourceElementId";
+
+    private final IDiagramDescriptionService diagramDescriptionService;
+
+    private final IKindParser urlIdPaser;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    public ViewToolSectionsProvider(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IKindParser urlIdPaser) {
+        this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
+        this.urlIdPaser = Objects.requireNonNull(urlIdPaser);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    }
+
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
         return this.getSourceDiagramDescription(diagramDescription).isPresent();
     }
 
+    private boolean isDiagramDescriptionEqualSourceElementId(DiagramDescription diagramDescription, String diagramElementOrDiagramSourceId) {
+        if (!diagramDescription.getId().startsWith(SIRIUS_PROTOCOL)) {
+            return false;
+        }
+        Optional<String> diagramDescriptionSourceId = this.urlIdPaser.getParameterValues(diagramDescription.getId()).get(SOURCE_ID).stream().findAny();
+        return diagramDescriptionSourceId.isPresent() && diagramDescriptionSourceId.get().equals(diagramElementOrDiagramSourceId);
+    }
+
+    private Optional<DiagramDescription> getDiagramDescriptionFromSourceElementId(IEditingContext editingContext, String sourceElementId) {
+        return this.representationDescriptionSearchService.findAll(editingContext).values().stream().filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast).filter(diagramDescription -> this.isDiagramDescriptionEqualSourceElementId(diagramDescription, sourceElementId)).findAny();
+    }
+
+    private Optional<DiagramDescription> getDiagramDescriptionFromDiagramOrDiagramElement(IEditingContext editingContext, Object diagramElementOrDiagram) {
+        Map<String, List<String>> urlAttributes = new HashMap<>();
+        if (diagramElementOrDiagram instanceof Diagram diagram) {
+            urlAttributes =  this.urlIdPaser.getParameterValues(diagram.getDescriptionId());
+        }
+        else if (diagramElementOrDiagram instanceof IDiagramElement diagramElement) {
+            urlAttributes =  this.urlIdPaser.getParameterValues(diagramElement.getDescriptionId());
+        }
+        Optional<String> sourceId = urlAttributes.get(SOURCE_ID).stream().findAny();
+        if (sourceId.isPresent()) {
+            return this.getDiagramDescriptionFromSourceElementId(editingContext, sourceId.get());
+        }
+        return Optional.empty();
+    }
+
     @Override
-    public List<ToolSection> handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription) {
+    public List<ToolSection> handle(Object targetElement, IEditingContext editingContext, Object diagramElementOrDiagram) {
         List<ToolSection> toolSections = new ArrayList<>();
 
-        if (diagramElement instanceof Diagram) {
-            toolSections.addAll(this.getDiagramPalette(diagramDescription));
-        } else if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription nodeDescription) {
-            toolSections.addAll(this.getNodeToolSections(diagramDescription, nodeDescription));
-            toolSections.addAll(this.createExtraToolSections(diagramElementDescription, diagramElement));
-        } else if (diagramElement instanceof Edge && diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            toolSections.addAll(this.getEdgeToolSections(diagramDescription, edgeDescription));
-            toolSections.addAll(this.createExtraToolSections(diagramElementDescription, diagramElement));
+        if (diagramElementOrDiagram instanceof Diagram diagram) {
+            Optional<DiagramDescription> diagramDescription = this.getDiagramDescriptionFromDiagramOrDiagramElement(editingContext, diagram);
+            if (diagramDescription.isPresent()) {
+                toolSections.addAll(this.getDiagramPalette(diagramDescription.get()));
+            }
+        } else if (diagramElementOrDiagram instanceof Node node) {
+            Optional<DiagramDescription> diagramDescription = this.getDiagramDescriptionFromDiagramOrDiagramElement(editingContext, node);
+            if (diagramDescription.isPresent()) {
+                Optional<NodeDescription> nodeDescription = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription.get(), node.getDescriptionId());
+                if (nodeDescription.isPresent()) {
+                    toolSections.addAll(this.getNodeToolSections(diagramDescription.get(), nodeDescription.get()));
+                    toolSections.addAll(this.createExtraToolSections(nodeDescription.get(), node));
+                }
+            }
+        } else if (diagramElementOrDiagram instanceof Edge edge) {
+            Optional<DiagramDescription> diagramDescription = this.getDiagramDescriptionFromDiagramOrDiagramElement(editingContext, edge);
+            if (diagramDescription.isPresent()) {
+                Optional<EdgeDescription> edgeDescription = this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription.get(), edge.getDescriptionId());
+                if (edgeDescription.isPresent()) {
+                    toolSections.addAll(this.getEdgeToolSections(diagramDescription.get(), edgeDescription.get()));
+                    toolSections.addAll(this.createExtraToolSections(edgeDescription.get(), edge));
+                }
+            }
         }
 
         return toolSections.stream().filter(toolSection -> !toolSection.getTools().isEmpty()).toList();
@@ -91,19 +159,38 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
     }
 
     private List<ToolSection> getDiagramPalette(DiagramDescription diagramDescription) {
-        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + diagramDescription.getId();
-        return this.findToolSectionById(diagramDescription, diagramPaletteId).stream().toList();
+        Optional<String> sourceElementId = this.urlIdPaser.getParameterValues(diagramDescription.getId()).get(SOURCE_ELEMENT_ID).stream().findAny();
+        if (sourceElementId.isPresent()) {
+            String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + sourceElementId.get();
+            return this.findToolSectionById(diagramDescription, diagramPaletteId).stream().toList();
+        }
+        else {
+            return List.of();
+        }
     }
 
     private List<ToolSection> getNodeToolSections(DiagramDescription diagramDescription, NodeDescription nodeDescription) {
-        String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + nodeDescription.getId().toString();
-        return this.findToolSectionById(diagramDescription, nodePaletteId).stream().toList();
+        Optional<String> sourceElementId = this.urlIdPaser.getParameterValues(nodeDescription.getId()).get(SOURCE_ELEMENT_ID).stream().findAny();
+        if (sourceElementId.isPresent()) {
+            String diagramPaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
+            return this.findToolSectionById(diagramDescription, diagramPaletteId).stream().toList();
+        }
+        else {
+            return List.of();
+        }
     }
 
     private List<ToolSection> getEdgeToolSections(DiagramDescription diagramDescription, EdgeDescription edgeDescription) {
-        String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + edgeDescription.getId().toString();
-        return this.findToolSectionById(diagramDescription, edgePaletteId).stream().toList();
+        Optional<String> sourceElementId = this.urlIdPaser.getParameterValues(edgeDescription.getId()).get(SOURCE_ELEMENT_ID).stream().findAny();
+        if (sourceElementId.isPresent()) {
+            String diagramPaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId.get();
+            return this.findToolSectionById(diagramDescription, diagramPaletteId).stream().toList();
+        }
+        else {
+            return List.of();
+        }
     }
+
 
     private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
         List<ToolSection> extraToolSections = new ArrayList<>();
