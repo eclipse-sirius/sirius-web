@@ -14,19 +14,22 @@ package org.eclipse.sirius.components.view.emf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
-import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IKindParser;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,21 +40,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewRepresentationDescriptionsProvider implements IRepresentationDescriptionsProvider {
 
-    private final IIdentifierProvider identifierProvider;
-
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    public ViewRepresentationDescriptionsProvider(IIdentifierProvider identifierProvider, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders) {
-        this.identifierProvider = Objects.requireNonNull(identifierProvider);
+    private final IKindParser urlParser;
+
+    public ViewRepresentationDescriptionsProvider(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders,  IKindParser urlParser) {
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
-        return this.identifierProvider.findVsmElementId(representationDescription.getId()).isEmpty();
+        if (representationDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationDescription.getId());
+            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
+            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
+        }
+        return false;
     }
 
     @Override
@@ -68,12 +76,10 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext) {
             Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            // @formatter:off
             return packageRegistry.values().stream()
-                                  .filter(EPackage.class::isInstance)
-                                  .map(EPackage.class::cast)
-                                  .toList();
-            // @formatter:on
+                    .filter(EPackage.class::isInstance)
+                    .map(EPackage.class::cast)
+                    .toList();
         } else {
             return List.of();
         }
@@ -92,11 +98,9 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
     }
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
-        // @formatter:off
         List<Class<?>> serviceClasses = this.javaServiceProviders.stream()
-                                            .flatMap(provider -> provider.getServiceClasses(view).stream())
-                                            .toList();
-        // @formatter:on
+                .flatMap(provider -> provider.getServiceClasses(view).stream())
+                .toList();
         return new AQLInterpreter(serviceClasses, visibleEPackages);
     }
 }

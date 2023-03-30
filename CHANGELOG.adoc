@@ -34,6 +34,9 @@ Such calls will not work anymore since `null` will not be an acceptable value an
 ** `siriusComponents://diagramDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT`
 ** `siriusComponents://nodeDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT`
 ** `siriusComponents://edgeDescription?sourceKind=view&sourceId=UUID_OF_DOCUMENT&sourceElementId=UUID_OF_SOURCE_ELEMENT`
+- https://github.com/eclipse-sirius/sirius-components/issues/1890[1890]  [view] Tools are now retrieved from their corresponding View Description
++
+Removing dependencies from sirius-components-compatibility-emf in the canHandle methods of sirius-components-view-emf services
 
 === Dependency update
 

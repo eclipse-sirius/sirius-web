@@ -40,7 +40,7 @@ public class DiagramIdProvider implements IDiagramIdProvider {
     public String getId(DiagramDescription diagramDescription) {
         String sourceId = this.getSourceIdFromElementDescription(diagramDescription);
         String sourceElementId = this.objectService.getId(diagramDescription);
-        return DIAGRAM_DESCRIPTION_KIND + "?sourceKind=view&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+        return DIAGRAM_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
 
     @Override
@@ -48,9 +48,9 @@ public class DiagramIdProvider implements IDiagramIdProvider {
         String sourceId = this.getSourceIdFromElementDescription(diagramElementDescription);
         String sourceElementId = this.objectService.getId(diagramElementDescription);
         if (diagramElementDescription instanceof NodeDescription) {
-            return NODE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=view&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+            return NODE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
         } else {
-            return EDGE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=view&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+            return EDGE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
         }
     }
 
