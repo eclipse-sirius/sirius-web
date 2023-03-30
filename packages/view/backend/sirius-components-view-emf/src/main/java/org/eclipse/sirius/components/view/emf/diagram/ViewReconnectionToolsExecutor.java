@@ -58,8 +58,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IEditService editService;
 
-    private final IIdentifierProvider identifierProvider;
-
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
@@ -74,7 +72,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext, IKindParser urlParser) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
-        this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.applicationContext = Objects.requireNonNull(applicationContext);
@@ -83,7 +80,12 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     @Override
     public boolean canExecute(DiagramDescription diagramDescription) {
-        return this.identifierProvider.findVsmElementId(diagramDescription.getId()).isEmpty();
+        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
+            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
+            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
+        }
+        return false;
     }
 
     @Override
@@ -91,21 +93,19 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             DiagramDescription diagramDescription) {
         IStatus status = new Failure("");
 
-        // @formatter:off
         var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescription.getId())
                 .filter(org.eclipse.sirius.components.view.DiagramDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast);
-        // @formatter:on
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
             var optionalViewEdgeDescription = viewDiagramDescription.getEdgeDescriptions().stream().filter(viewEdgeDescription -> {
                 Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
                 List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ID)).orElse(List.of());
-                Optional<String> sourceId = values.stream().findAny();
+                Optional<String> sourceId = values.stream().findFirst();
 
                 if (sourceId.isPresent()) {
                     String sourceElementId = this.objectService.getId(viewEdgeDescription);
-                    String formattedEdgeDescriptionId = IDiagramIdProvider.EDGE_DESCRIPTION_KIND + "?" + IDiagramIdProvider.SOURCE_KIND + "=view&" + IDiagramIdProvider.SOURCE_ID + "=" + sourceId.get() + "&" + IDiagramIdProvider.SOURCE_ELEMENT_ID + "=" + sourceElementId;
+                    String formattedEdgeDescriptionId = IDiagramIdProvider.EDGE_DESCRIPTION_KIND + '?' + IDiagramIdProvider.SOURCE_KIND + '=' + IDiagramIdProvider.VIEW_SOURCE_KIND + '&' + IDiagramIdProvider.SOURCE_ID + '=' + sourceId.get() + '&' + IDiagramIdProvider.SOURCE_ELEMENT_ID + '=' + sourceElementId;
                     return edge.getDescriptionId().equals(formattedEdgeDescriptionId);
                 } else {
                     return false;
@@ -148,12 +148,10 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext) {
             Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
-            // @formatter:off
             return packageRegistry.values().stream()
                     .filter(EPackage.class::isInstance)
                     .map(EPackage.class::cast)
                     .toList();
-            // @formatter:on
         } else {
             return List.of();
         }
@@ -161,7 +159,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        // @formatter:off
         List<Object> serviceInstances = this.javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(view).stream())
                 .map(serviceClass -> {
@@ -175,7 +172,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                 .filter(Objects::nonNull)
                 .map(Object.class::cast)
                 .toList();
-        // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 

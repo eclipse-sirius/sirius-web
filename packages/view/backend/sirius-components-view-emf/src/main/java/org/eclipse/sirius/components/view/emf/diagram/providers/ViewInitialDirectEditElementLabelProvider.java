@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.emf.diagram.providers;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -22,8 +23,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IInitialDirectEditElementLabelProvider;
-import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IKindParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -61,7 +62,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final Logger logger = LoggerFactory.getLogger(ViewInitialDirectEditElementLabelProvider.class);
 
-    private final IIdentifierProvider identifierProvider;
+    private final IKindParser urlParser;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -75,9 +76,9 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final ApplicationContext applicationContext;
 
-    public ViewInitialDirectEditElementLabelProvider(IIdentifierProvider identifierProvider, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
+    public ViewInitialDirectEditElementLabelProvider(IKindParser urlParser, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
             List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
-        this.identifierProvider = Objects.requireNonNull(identifierProvider);
+        this.urlParser = Objects.requireNonNull(urlParser);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -88,7 +89,12 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     @Override
     public boolean canHandle(org.eclipse.sirius.components.diagrams.description.DiagramDescription diagramDescription) {
-        return this.identifierProvider.findVsmElementId(diagramDescription.getId()).isEmpty();
+        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
+            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
+            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
+        }
+        return false;
     }
 
     @Override
@@ -134,7 +140,6 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                     variableManager.put("view", diagramElement);
                     variableManager.put("diagram", diagram);
                     if (diagramElement instanceof Edge edge) {
-                        // @formatter:off
                         var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
                                 .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
                                 .orElse(null);
@@ -143,7 +148,6 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                                 .orElse(null);
                         variableManager.put("semanticEdgeSource", semanticEdgeSource);
                         variableManager.put("semanticEdgeTarget", semanticEdgeTarget);
-                        // @formatter:on
                     }
 
                     Result result = interpreter.evaluateExpression(variableManager.getVariables(), labelEditTool.getInitialDirectEditLabelExpression());
@@ -183,11 +187,9 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     }
 
     private Optional<EdgeDescription> getEdgeDescription(List<EdgeDescription> edgeDescriptions, String descriptionId) {
-        // @formatter:off
         return edgeDescriptions.stream()
                 .filter(edgeDescription -> descriptionId.equals(this.idProvider.getId(edgeDescription)))
                 .findFirst();
-        // @formatter:on
     }
 
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
@@ -205,7 +207,6 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     private AQLInterpreter createInterpreter(View view, IEditingContext editingContext) {
         List<EPackage> visibleEPackages = this.getAccessibleEPackages(editingContext);
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        // @formatter:off
         List<Object> serviceInstances = this.javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(view).stream())
                 .map(serviceClass -> {
@@ -219,7 +220,6 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                 .filter(Objects::nonNull)
                 .map(Object.class::cast)
                 .toList();
-        // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 
