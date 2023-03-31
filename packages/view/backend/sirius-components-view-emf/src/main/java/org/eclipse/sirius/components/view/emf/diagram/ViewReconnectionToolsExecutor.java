@@ -81,9 +81,12 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     @Override
     public boolean canExecute(DiagramDescription diagramDescription) {
-        Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
-        List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
-        return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
+        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
+            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
+            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
+        }
+        return false;
     }
 
     @Override
