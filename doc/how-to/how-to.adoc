@@ -125,3 +125,67 @@ On the frontend (`packages/formdescriptioneditors/frontend/sirius-components-for
     }
 ```
 - In `ViewFormDescriptionConverterSwitch`, add the new `caseMyNewWidgetDesciption` to convert the View model element into the actual WidgetDescription.
+
+
+== Add new concepts to the Domain or View DSL
+
+In order to add new concepts to our Domain or View DSL, you will need to use the Eclipse IDE in order to have the necessary tooling.
+To get started, you will have to import the code of the backend components in Eclipse.
+In this instance of Eclipse, you will have to install the `EMF - Eclipse Modeling Framework SDK` in order to have access to the Eclipse EMF tooling.
+
+In Eclipse, you will have to import at least the following projects:
+
+- `sirius-components-domain`
+- `sirius-components-domain-edit`
+- `sirius-components-view`
+- `sirius-components-view-edit`
+
+In the project `sirius-components-domain` and `sirius-components-view`, you will find the `ecore` definition of the Domain and View DSL respectively.
+Those files can be used with the `Sample Ecore Model Editor` in order to view and edit them.
+
+Our Ecore files contain one EPackage at the root describing the namespace of the metamodel.
+The main goal of the EPackage is to define the `nsURI` which should be unique in the application.
+Using the editor, you can edit the Ecore files to change existing concepts and add new ones.
+
+For example, let's say we want to add new concepts in our ecore file.
+You will have to create the new EClasses at an appropriate location (try to create new concepts next to their related concepts).
+After that, you will have to specify their properties to indicate the name of the EClasses and wether they are abstract EClasses or even interfaces.
+
+Once this is done, you will have to add their attributes.
+For each attribute, you will have to define their name, their upper bound (-1 if you want to have many elements in the attribute and thus a list in the generated code) and their type (please consider existing data type such as Identifier, Color, InterpretedExpression, etc).
+
+After that, you can connect the new EClasses together and to existing EClasses.
+you will have to create references between EClasses.
+For each EReference, you will have to consider their name, their upper bound, their type and also if they are a containment EReference.
+All the EClasses should be referenced by a containment EReference expect our root EClass.
+
+You can validate the ecore model to ensure that you do not have any error.
+Once your improvements are done, you can open the `genmodel` file in its dedicated editor and generate both the code of the model and the edit part.
+
+Since the Eclipse EMF code generator have been created to build Eclipse plugins, they will generate artifacts that are not needed in our case or that should be moved.
+
+After the generation of the model code, here is how you will have to treat the generated code in `sirius-components-{domain|view}`:
+
+- `src/main/java`: contribute it to the Git repository but be careful about what you have changed
+- `src/main/resources/{domain|view}.{ecore|genmodel}`: contribute it to the Git repository but be careful too
+- `.classpath`: do not contribute the changes done by the EMF generator
+- `.project`: do not contribute the changes done by the EMF generator
+- `plugin.properties`: delete this file
+- `plugin.xml`: delete this file
+
+After the generation of the edit code, here is how you will have to treat the generated code in `sirius-components-{domain|view}-edit`:
+
+- `src/main/java`: contribute it to the Git repository but be careful about what you have changed
+- `icons`: compare it with `src/main/resources/icons` to detect newly created icons (one gif icon for each new EClass) and retrieve relevant SVG icons for MaterialUI which should be placed in `src/main/resources/icons/{EClassName}.svg`
+- `.classpath`: do not contribute the changes done by the EMF generator
+- `.project`: do not contribute the changes done by the EMF generator
+- `plugin.properties`: replace `src/main/resources/plugin.properties` with the new version that has been generated and then use Git to see what has been changed in order to restore the manual changes that have been done in the past. Some concepts have been manually renamed in the past and we want to keep our changes.
+- `plugin.xml`: delete this file
+
+Once this is done, have a look at the code of the project to evaluate the impact of your changes.
+
+
+For more information on EMF, please have a look at those two tutorials:
+
+- https://eclipsesource.com/blogs/tutorials/emf-tutorial/
+- https://www.vogella.com/tutorials/EclipseEMF/article.html
