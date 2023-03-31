@@ -170,6 +170,16 @@ export const projectsViewMachine = Machine<ProjectsViewContext, ProjectsViewStat
                   actions: 'invokeTemplate',
                 },
               ],
+              OPEN_MODAL: [
+                {
+                  actions: 'openModal',
+                },
+              ],
+              CLOSE_MODAL: [
+                {
+                  actions: 'closeModal',
+                },
+              ],
               REDIRECT: [{ actions: 'redirect' }],
             },
           },
