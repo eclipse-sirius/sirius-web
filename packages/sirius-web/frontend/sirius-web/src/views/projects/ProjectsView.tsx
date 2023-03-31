@@ -27,7 +27,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -36,6 +35,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -43,7 +43,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
-import { Link as RouterLink, Redirect } from 'react-router-dom';
+import { Redirect, Link as RouterLink } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Footer } from '../../footer/Footer';
 import { ProjectTemplatesModal } from '../../modals/project-templates/ProjectTemplatesModal';
@@ -62,8 +62,8 @@ import {
   GQLGetProjectsQueryVariables,
   Project,
   ProjectContextMenuProps,
-  ProjectsTableProps,
   ProjectTemplate,
+  ProjectsTableProps,
 } from './ProjectsView.types';
 import {
   CloseMenuEvent,
@@ -75,9 +75,9 @@ import {
   OpenModalEvent,
   ProjectsViewContext,
   ProjectsViewEvent,
-  projectsViewMachine,
   SchemaValue,
   ShowToastEvent,
+  projectsViewMachine,
 } from './ProjectsViewMachine';
 
 const getProjectsQuery = gql`
@@ -334,7 +334,22 @@ export const ProjectsView = () => {
       </>
     );
   } else if (projectsView === 'empty') {
-    main = <Message content="No projects available, start by creating one" />;
+    let modal: JSX.Element | null = null;
+    if (modalToDisplay === 'ProjectTemplates') {
+      modal = (
+        <ProjectTemplatesModal
+          onClose={() => {
+            dispatch({ type: 'CLOSE_MODAL' } as CloseModalEvent);
+          }}
+        />
+      );
+    }
+    main = (
+      <>
+        <Message content="No projects available, start by creating one" />
+        {modal}
+      </>
+    );
   }
 
   const onCreateProject = (template: ProjectTemplate) => {

@@ -69,6 +69,7 @@ The result returned and captured in this variable name will not be the real node
 - https://github.com/eclipse-sirius/sirius-components/issues/1785[#1785] [form] Fix name collision on labelFields GraphQL fragment
 - https://github.com/eclipse-sirius/sirius-components/issues/1908[#1908] [workbench] Fix an issue where the Explorer and Details Views titles could be overflowed
 - https://github.com/eclipse-sirius/sirius-components/issues/1929[#1929] [view] Fix an issue where direct edit on View based diagram elements could lead to infinite loop
+- https://github.com/eclipse-sirius/sirius-components/issues/1891[#1891] [projects] The 'Show all templates' dialog was not functional from an empty state (with no existing project)
 
 === New Features
 
