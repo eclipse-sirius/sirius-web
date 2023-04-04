@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 
@@ -30,6 +30,6 @@ public class SingleClickOnDiagramElementToolImageURLDataFetcher implements IData
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         ITool tool = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + tool.getImageURL();
+        return URLConstants.IMAGE_BASE_PATH + tool.imageURL();
     }
 }

@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -44,9 +44,9 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    private final IKindParser urlParser;
+    private final IURLParser urlParser;
 
-    public ViewRepresentationDescriptionsProvider(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders,  IKindParser urlParser) {
+    public ViewRepresentationDescriptionsProvider(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders,  IURLParser urlParser) {
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.urlParser = Objects.requireNonNull(urlParser);

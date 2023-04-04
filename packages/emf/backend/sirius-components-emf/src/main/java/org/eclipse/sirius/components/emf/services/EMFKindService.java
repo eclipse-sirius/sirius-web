@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class EMFKindService implements IEMFKindService {
 
-    private final IKindParser kindParser;
+    private final IURLParser urlParser;
 
-    public EMFKindService(IKindParser kindParser) {
-        this.kindParser = Objects.requireNonNull(kindParser);
+    public EMFKindService(IURLParser urlParser) {
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class EMFKindService implements IEMFKindService {
 
     @Override
     public String getEPackageName(String kind) {
-        return this.kindParser.getParameterValues(kind).get(SemanticKindConstants.DOMAIN_ARGUMENT).get(0);
+        return this.urlParser.getParameterValues(kind).get(SemanticKindConstants.DOMAIN_ARGUMENT).get(0);
     }
 
     @Override
     public String getEClassName(String kind) {
-        return this.kindParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
+        return this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
     }
 
     @Override

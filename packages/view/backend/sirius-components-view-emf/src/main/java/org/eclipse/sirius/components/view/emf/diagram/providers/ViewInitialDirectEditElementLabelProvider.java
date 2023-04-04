@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IInitialDirectEditElementLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -62,7 +62,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final Logger logger = LoggerFactory.getLogger(ViewInitialDirectEditElementLabelProvider.class);
 
-    private final IKindParser urlParser;
+    private final IURLParser urlParser;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -76,8 +76,8 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final ApplicationContext applicationContext;
 
-    public ViewInitialDirectEditElementLabelProvider(IKindParser urlParser, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
-            List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
+    public ViewInitialDirectEditElementLabelProvider(IURLParser urlParser, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
+                                                     List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);

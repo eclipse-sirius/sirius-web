@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionTool
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -64,12 +64,12 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final ApplicationContext applicationContext;
 
-    private final IKindParser urlParser;
+    private final IURLParser urlParser;
 
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
     public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext, IKindParser urlParser) {
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext, IURLParser urlParser) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
