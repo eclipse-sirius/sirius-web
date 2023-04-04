@@ -43,18 +43,27 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
           const treeItemDomElements = document.querySelectorAll<HTMLElement>('[data-treeitemid]');
           const index = Array.from(treeItemDomElements).indexOf(previousItem);
           const id = dataset.treeitemid;
-          const hasChildren = dataset.haschildren;
-          const expanded = dataset.expanded;
+          const hasChildren = dataset.haschildren === 'true';
+          const isExpanded = dataset.expanded === 'true';
 
           switch (event.key) {
             case 'ArrowLeft':
-              if (hasChildren && expanded === 'true') {
+              if (hasChildren && isExpanded) {
                 onExpand(id, dataset.depth);
+              } else if (index > 0) {
+                const parentDepth = (dataset.depth - 1).toString();
+                let positionFromParent = 0;
+                while (!(treeItemDomElements[index - positionFromParent].dataset.depth === parentDepth)) {
+                  positionFromParent++;
+                }
+                treeItemDomElements[index - positionFromParent].click();
               }
               break;
             case 'ArrowRight':
-              if (hasChildren && expanded === 'false') {
+              if (hasChildren && !isExpanded) {
                 onExpand(id, dataset.depth);
+              } else if (index < treeItemDomElements.length - 1) {
+                treeItemDomElements[index + 1].click();
               }
               break;
             case 'ArrowUp':

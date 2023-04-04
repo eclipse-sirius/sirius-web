@@ -16,6 +16,9 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1869[#1869] [tree] Navigate to the first child with the right arrow if a node is expanded.
+Navigate to the parent with the left arrow if a node is collapsed
+
 
 == v2023.4.0
 
