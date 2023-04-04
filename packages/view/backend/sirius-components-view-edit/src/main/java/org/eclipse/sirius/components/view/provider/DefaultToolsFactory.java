@@ -54,18 +54,12 @@ public class DefaultToolsFactory {
     public NodeTool createDefaultNodeCreationTool() {
         NodeTool newNodeTool = ViewFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Create Node");
-        ChangeContext newNodeBody = ViewFactory.eINSTANCE.createChangeContext();
-        newNodeBody.setExpression("aql:self.defaultCreateNode(nodeDescription)");
-        newNodeTool.getBody().add(newNodeBody);
         return newNodeTool;
     }
 
     public EdgeTool createDefaultEdgeTool() {
         EdgeTool newEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
         newEdgeTool.setName("Create Edge");
-        ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:semanticEdgeSource.defaultCreateEdge(edgeDescription, semanticEdgeTarget)");
-        newEdgeTool.getBody().add(body);
         return newEdgeTool;
     }
 

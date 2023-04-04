@@ -11,6 +11,8 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1304[#1304] [tree] Fix an issue where dropping an element from the tree to a diagram used the current selection instead of the dragged tree item.
+- https://github.com/eclipse-sirius/sirius-components/issues/1839[#1839] [view] Remove default AQL expression on Create Edge and Create Node since they did not work anymore.
+
 
 === New Features
 
