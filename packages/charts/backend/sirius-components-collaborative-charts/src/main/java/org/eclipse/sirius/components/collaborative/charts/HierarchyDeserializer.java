@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDeserializer;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +38,10 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
 
     private final Logger logger = LoggerFactory.getLogger(HierarchyDeserializer.class);
 
-    private final IKindParser kindParser;
+    private final IURLParser urlParser;
 
-    public HierarchyDeserializer(IKindParser kindParser) {
-        this.kindParser = Objects.requireNonNull(kindParser);
+    public HierarchyDeserializer(IURLParser urlParser) {
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
     }
 
     private boolean isHierarchyRepresentation(String kind) {
-        String type = this.kindParser.getParameterValues(kind).get("type").get(0);
+        String type = this.urlParser.getParameterValues(kind).get("type").get(0);
         return type.equals("ForceDirectedTree") || type.equals("TreeMap") || type.equals("ZoomableCirclePacking");
     }
 

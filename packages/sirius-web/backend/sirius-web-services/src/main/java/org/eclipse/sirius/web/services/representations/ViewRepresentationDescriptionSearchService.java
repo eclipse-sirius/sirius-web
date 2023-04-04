@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.DiagramDescription;
@@ -62,11 +62,11 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    private final IKindParser urlParser;
+    private final IURLParser urlParser;
 
     private final IObjectService objectService;
 
-    public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IKindParser urlParser, IObjectService objectService) {
+    public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser, IObjectService objectService) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);

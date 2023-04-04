@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,21 +16,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Used to parse the kind of an object.
+ * Used to parse URLs.
  *
  * @author sbegaudeau
  */
-public interface IKindParser {
-    Map<String, List<String>> getParameterValues(String kind);
+public interface IURLParser {
+    Map<String, List<String>> getParameterValues(String url);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
      * @author sbegaudeau
      */
-    class NoOp implements IKindParser {
+    class NoOp implements IURLParser {
         @Override
-        public Map<String, List<String>> getParameterValues(String kind) {
+        public Map<String, List<String>> getParameterValues(String url) {
             return Map.of();
         }
     }

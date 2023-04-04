@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionsInput;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 

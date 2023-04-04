@@ -36,7 +36,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.core.KindParser;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
@@ -98,7 +98,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
         this.view = this.loadFixture("ViewCompletionFixture.xmi");
 
-        IObjectService objectService = new ObjectService(new EMFKindService(new KindParser()), composedAdapterFactory, new LabelFeatureProviderRegistry());
+        IObjectService objectService = new ObjectService(new EMFKindService(new URLParser()), composedAdapterFactory, new LabelFeatureProviderRegistry());
 
         // @formatter:off
         List<ITextfieldCustomizer> customizers = List.of(

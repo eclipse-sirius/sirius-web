@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -44,9 +44,9 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
-    private final IKindParser urlParser;
+    private final IURLParser urlParser;
 
-    public ConnectorToolsProviderDiagram(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IKindParser urlParser) {
+    public ConnectorToolsProviderDiagram(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IURLParser urlParser) {
         this.representationDescriptionSearchService = representationDescriptionSearchService;
         this.diagramDescriptionService = diagramDescriptionService;
         this.urlParser = Objects.requireNonNull(urlParser);

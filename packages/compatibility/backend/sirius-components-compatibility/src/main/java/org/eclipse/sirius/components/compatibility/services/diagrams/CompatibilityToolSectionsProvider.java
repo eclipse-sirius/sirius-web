@@ -17,13 +17,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.services.api.IODesignRegistry;
@@ -35,14 +39,9 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
-import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.DiagramElementMapping;
@@ -100,11 +99,10 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         List<ToolSection> toolSections = new ArrayList<>();
         if (optionalSiriusDiagramDescription.isPresent()) {
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription = optionalSiriusDiagramDescription.get();
-
             // @formatter:off
-            List<ToolSection> filteredToolSections = diagramDescription.getToolSections().stream()
+            List<ToolSection> filteredToolSections = this.getToolSectionFromDiagramDescriptionToolSection(diagramDescription).stream()
                     .map(toolSection -> this.filteredTools(targetElement, diagramElement, toolSection, siriusDiagramDescription, diagramElementDescription))
-                    .filter(toolSection -> !toolSection.getTools().isEmpty())
+                    .filter(toolSection -> !toolSection.tools().isEmpty())
                     .toList();
             // @formatter:on
 
@@ -114,13 +112,38 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         return toolSections;
     }
 
+    private List<ToolSection> getToolSectionFromDiagramDescriptionToolSection(DiagramDescription diagramDescription) {
+        List<ToolSection> toolSections = new ArrayList<>();
+        diagramDescription.getToolSections().forEach(toolSection -> {
+            List<ITool> tools = new ArrayList<>();
+            toolSection.getTools().forEach(tool -> {
+                if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool singleClickOnDiagramElementTool) {
+                    SingleClickOnDiagramElementTool convertedTool = new SingleClickOnDiagramElementTool(singleClickOnDiagramElementTool.getId(), singleClickOnDiagramElementTool.getLabel(), singleClickOnDiagramElementTool.getImageURL(), singleClickOnDiagramElementTool.getTargetDescriptions(), singleClickOnDiagramElementTool.getSelectionDescriptionId(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot());
+                    tools.add(convertedTool);
+                }
+                if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool singleClickOnTwoDiagramElementsTool) {
+                    List<SingleClickOnTwoDiagramElementsCandidate> candidates = new ArrayList<>();
+                    singleClickOnTwoDiagramElementsTool.getCandidates().forEach(candidate -> {
+                        SingleClickOnTwoDiagramElementsCandidate convertedCandidate = new SingleClickOnTwoDiagramElementsCandidate(candidate.getSources(), candidate.getTargets());
+                        candidates.add(convertedCandidate);
+                    });
+                    SingleClickOnTwoDiagramElementsTool convertedTool = new SingleClickOnTwoDiagramElementsTool(singleClickOnTwoDiagramElementsTool.getId(), singleClickOnTwoDiagramElementsTool.getLabel(), singleClickOnTwoDiagramElementsTool.getImageURL(), candidates);
+                    tools.add(convertedTool);
+                }
+            });
+            ToolSection convertedToolSection = new ToolSection(toolSection.getId(), toolSection.getLabel(), toolSection.getImageURL(), tools);
+            toolSections.add(convertedToolSection);
+        });
+        return toolSections;
+    }
+
     private ToolSection filteredTools(Object targetElement, Object diagramElement, ToolSection toolSection, org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription,
             Object diagramElementDescription) {
         // @formatter:off
-        List<ITool> tools = toolSection.getTools().stream()
+        List<ITool> tools = toolSection.tools().stream()
                 .filter(tool -> {
                     boolean keepTool = false;
-                    var optionalVsmElementId = this.identifierProvider.findVsmElementId(tool.getId());
+                    var optionalVsmElementId = this.identifierProvider.findVsmElementId(tool.id());
                     if (optionalVsmElementId.isPresent()) {
                         var optionalSiriusTool = this.odesignRegistry.getODesigns().stream()
                                 .map(EObject::eResource)
@@ -145,8 +168,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
                 })
                 .toList();
         // @formatter:on
-
-        return ToolSection.newToolSection(toolSection).tools(tools).build();
+        return new ToolSection(toolSection.id(), toolSection.label(), toolSection.imageURL(), tools);
     }
 
     private boolean matchMapping(Object diagramElementDescription, AbstractToolDescription siriusTool, org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription) {
@@ -279,55 +301,23 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((EdgeDescription) diagramElementDescription).getSynchronizationPolicy());
         }
 
-        Function<VariableManager, IStatus> fakeHandler = variableManager -> new Success();
-
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             // Edit Tool (the handler is never called)
-            SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
-                    .label("Edit")
-                    .imageURL(DiagramImageConstants.EDIT_SVG)
-                    .targetDescriptions(targetDescriptions)
-                    .handler(fakeHandler)
-                    .appliesToDiagramRoot(false)
-                    .build();
-            var editToolSection = ToolSection.newToolSection("edit-section")
-                    .label("")
-                    .imageURL("")
-                    .tools(List.of(editTool))
-                    .build();
+            SingleClickOnDiagramElementTool editTool = new SingleClickOnDiagramElementTool("edit", "Edit", DiagramImageConstants.EDIT_SVG, targetDescriptions, "", false);
+            var editToolSection = new ToolSection("edit-section", "", "", List.of(editTool));
             extraToolSections.add(editToolSection);
 
             if (unsynchronizedMapping) {
-                SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
-                        .label("Delete from diagram")
-                        .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
-                        .targetDescriptions(targetDescriptions)
-                        .handler(fakeHandler)
-                        .appliesToDiagramRoot(false)
-                        .build();
-                var graphicalDeleteToolSection = ToolSection.newToolSection("graphical-delete-section")
-                        .label("")
-                        .imageURL("")
-                        .tools(List.of(graphicalDeleteTool))
-                        .build();
+                SingleClickOnDiagramElementTool graphicalDeleteTool = new SingleClickOnDiagramElementTool("graphical-delete", "Delete from diagram", DiagramImageConstants.GRAPHICAL_DELETE_SVG, targetDescriptions, "", false);
+                var graphicalDeleteToolSection = new ToolSection("graphical-delete-section", "", "", List.of(graphicalDeleteTool));
                 extraToolSections.add(graphicalDeleteToolSection);
             }
 
             // Semantic Delete Tool (the handler is never called)
-            SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
-                    .label("Delete from model")
-                    .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
-                    .targetDescriptions(targetDescriptions)
-                    .handler(fakeHandler)
-                    .appliesToDiagramRoot(false)
-                    .build();
-            var semanticDeleteToolSection = ToolSection.newToolSection("semantic-delete-section")
-                    .label("")
-                    .imageURL("")
-                    .tools(List.of(semanticDeleteTool))
-                    .build();
-            extraToolSections.add(semanticDeleteToolSection);
+            SingleClickOnDiagramElementTool semanticDeleteTool = new SingleClickOnDiagramElementTool("semantic-delete", "Delete from model", DiagramImageConstants.SEMANTIC_DELETE_SVG, targetDescriptions, "", false);
+            var graphicalDeleteToolSection = new ToolSection("semantic-delete-section", "", "", List.of(semanticDeleteTool));
+            extraToolSections.add(graphicalDeleteToolSection);
         }
         return extraToolSections;
         //@formatter:on

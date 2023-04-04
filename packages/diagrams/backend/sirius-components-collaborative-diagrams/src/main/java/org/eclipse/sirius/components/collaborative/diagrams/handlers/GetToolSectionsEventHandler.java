@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQuerySer
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionsInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -37,7 +38,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;

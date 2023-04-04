@@ -25,7 +25,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -36,15 +41,6 @@ import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
-import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Success;
-import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeTool;
@@ -71,7 +67,7 @@ import org.springframework.stereotype.Service;
 public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
 
-    private final IKindParser urlParser;
+    private final IURLParser urlParser;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
@@ -83,7 +79,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    public ViewToolSectionsProvider(IKindParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectService objectService) {
+    public ViewToolSectionsProvider(IURLParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectService objectService) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
@@ -114,7 +110,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             toolSections.addAll(this.createExtraToolSections(diagramElementDescription, diagramElement));
         }
 
-        return toolSections.stream().filter(toolSection -> !toolSection.getTools().isEmpty()).toList();
+        return toolSections.stream().filter(toolSection -> !toolSection.tools().isEmpty()).toList();
     }
 
     private List<ToolSection> getDiagramPalette(DiagramDescription diagramDescription) {
@@ -132,8 +128,8 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
                 var diagramPalette = ToolSection.newToolSection(diagramPaletteId)
                         .label(viewDiagramDescription.getName())
-                        .tools(this.createDiagramPaletteTools(viewDiagramDescription))
                         .imageURL("")
+                        .tools(this.createDiagramPaletteTools(viewDiagramDescription))
                         .build();
                 allToolSections.add(diagramPalette);
             }
@@ -148,9 +144,6 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                     .label(nodeTool.getName())
                     .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> {
-                        return new Failure("");
-                    })
                     .targetDescriptions(List.of())
                     .appliesToDiagramRoot(true)
                     .build();
@@ -185,9 +178,6 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                     .label(nodeTool.getName())
                     .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> {
-                        return new Failure("");
-                    })
                     .targetDescriptions(List.of())
                     .appliesToDiagramRoot(false)
                     .build();
@@ -218,10 +208,8 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                             .sources(List.of(nodeDescription))
                             .targets(targetNodeDescriptionCandidates)
                             .build()))
-                    .handler(variableManager -> {
-                        return new Failure("");
-                    })
                     .build();
+
             tools.add(tool);
         }
         return tools;
@@ -235,25 +223,26 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                     .label(nodeTool.getName())
                     .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> {
-                        return new Failure("");
-                    })
                     .targetDescriptions(List.of())
                     .appliesToDiagramRoot(false)
                     .build();
+
             tools.add(tool);
         }
         return tools;
     }
 
     private List<ToolSection> getEdgePalette(EdgeDescription edgeDescription) {
-        Optional<String> sourceElementId = this.getSourceElementId(edgeDescription.getId());
-        String nodePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId.get();
+        Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
         var allToolSections = new ArrayList<ToolSection>();
-        if (sourceElementId.isPresent()) {
+        if (optionalSourceElementId.isPresent()) {
+            var sourceElementId = optionalSourceElementId.get();
+
             var optionalEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
                 org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
+
+                String nodePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
                 var nodePalette = ToolSection.newToolSection(nodePaletteId)
                         .label(viewEdgeDescription.getName())
                         .tools(this.createEdgePaletteTools(viewEdgeDescription))
@@ -315,7 +304,6 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
     }
 
     private ToolSection createExtraExpandCollapseTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
-        Function<VariableManager, IStatus> fakeHandler = variableManager -> new Success();
         var expandCollapseToolSectionBuilder = ToolSection.newToolSection("expand-collapse-section")
                 .label("")
                 .imageURL("")
@@ -327,25 +315,22 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                     .label("Collapse")
                     .imageURL(DiagramImageConstants.COLLAPSE_SVG)
                     .targetDescriptions(targetDescriptions)
-                    .handler(fakeHandler)
                     .appliesToDiagramRoot(false)
                     .build();
+
             SingleClickOnDiagramElementTool expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
                     .label("Expand")
                     .imageURL(DiagramImageConstants.EXPAND_SVG)
                     .targetDescriptions(targetDescriptions)
-                    .handler(fakeHandler)
                     .appliesToDiagramRoot(false)
                     .build();
+
             switch (node.getCollapsingState()) {
-                case EXPANDED:
-                    collapsingTools.add(collapseTool);
-                    break;
-                case COLLAPSED:
-                    collapsingTools.add(expandTool);
-                    break;
-                default:
-                    break;
+                case EXPANDED -> collapsingTools.add(collapseTool);
+                case COLLAPSED -> collapsingTools.add(expandTool);
+                default -> {
+                    // Nothing on purpose
+                }
             }
             expandCollapseToolSectionBuilder.tools(collapsingTools);
         }
@@ -357,9 +342,9 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                 .label("Delete from model")
                 .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
                 .targetDescriptions(targetDescriptions)
-                .handler(variableManager -> new Success())
                 .appliesToDiagramRoot(false)
                 .build();
+
         return ToolSection.newToolSection("semantic-delete-section")
                 .label("")
                 .imageURL("")
@@ -372,9 +357,9 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                 .label("Delete from diagram")
                 .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
                 .targetDescriptions(targetDescriptions)
-                .handler(variableManager -> new Success())
                 .appliesToDiagramRoot(false)
                 .build();
+
         return ToolSection.newToolSection("graphical-delete-section")
                 .label("")
                 .imageURL("")
@@ -408,9 +393,9 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
                 .label("Edit")
                 .imageURL(DiagramImageConstants.EDIT_SVG)
                 .targetDescriptions(targetDescriptions)
-                .handler(variableManager -> new Success())
                 .appliesToDiagramRoot(false)
                 .build();
+
         return ToolSection.newToolSection("edit-section")
                 .label("")
                 .imageURL("")

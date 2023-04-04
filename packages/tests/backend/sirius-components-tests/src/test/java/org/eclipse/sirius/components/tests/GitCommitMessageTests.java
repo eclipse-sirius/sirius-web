@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
@@ -142,12 +144,18 @@ public class GitCommitMessageTests {
         assumeTrue(this.runningOnCI());
         List<String> lines = this.runCommand();
         assertThat(lines).filteredOn(line -> line.trim().startsWith(SIGNED_OFF_BY_PREFIX)).isNotEmpty();
+
+        Predicate<Integer> isSignedOffLine = (index) -> lines.get(index).trim().startsWith(SIGNED_OFF_BY_PREFIX);
+        var indexOfSignedOff = IntStream.range(0, lines.size()).filter(isSignedOffLine::test).findFirst().orElse(0);
+        Predicate<Integer> isIssueUrlLine = (index) -> lines.get(index).trim().startsWith(ISSUE_URL_PREFIX);
+        var indexOfIssueURL = IntStream.range(0, lines.size()).filter(isIssueUrlLine::test).findFirst().orElse(0);
+
+        assertThat(Math.abs(indexOfSignedOff - indexOfIssueURL))
+                .withFailMessage("The line 'Signed-off-by: ...' and 'Bug: ...' are not next to each other")
+                .isEqualTo(1);
     }
 
     private boolean runningOnCI() {
-        String event = System.getenv("GITHUB_EVENT_NAME");
-        System.out.println(event);
-
-        return System.getenv("CI") != null && event.equals("push");
+        return System.getenv("CI") != null;
     }
 }

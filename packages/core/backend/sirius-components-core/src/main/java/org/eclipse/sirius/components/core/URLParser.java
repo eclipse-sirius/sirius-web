@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,16 +21,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.components.core.api.IKindParser;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to parse the kind of an object.
+ * Used to parse URLs.
  *
  * @author sbegaudeau
  */
 @Service
-public class KindParser implements IKindParser {
+public class URLParser implements IURLParser {
 
     @Override
     public Map<String, List<String>> getParameterValues(String kind) {
