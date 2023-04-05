@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,22 +34,21 @@ public interface Style extends EObject {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Color</em>' attribute.
-     * @see #setColor(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getStyle_Color()
      * @model default="#a590df"
      * @generated
+     * @see #setColor(UserColor)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getStyle_Color()
      */
-    String getColor();
+    UserColor getColor();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.Style#getColor <em>Color</em>}' attribute. <!--
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.Style#getColor <em>Color</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Color</em>' attribute.
-     * @see #getColor()
+     * @param value the new value of the '<em>Color</em>' reference.
      * @generated
+     * @see #getColor()
      */
-    void setColor(String value);
+    void setColor(UserColor value);
 
 } // Style

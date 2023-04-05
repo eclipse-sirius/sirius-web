@@ -14,10 +14,12 @@ package org.eclipse.sirius.components.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
@@ -143,16 +145,6 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String COLOR_EDEFAULT = null;
-
-    /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -160,7 +152,7 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
      * @generated
      * @ordered
      */
-    protected String color = COLOR_EDEFAULT;
+    protected UserColor color;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -302,7 +294,24 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
      * @generated
      */
     @Override
-    public String getColor() {
+    public UserColor getColor() {
+        if (this.color != null && this.color.eIsProxy()) {
+            InternalEObject oldColor = (InternalEObject) this.color;
+            this.color = (UserColor) this.eResolveProxy(oldColor);
+            if (this.color != oldColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__COLOR, oldColor, this.color));
+            }
+        }
+        return this.color;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetColor() {
         return this.color;
     }
 
@@ -312,8 +321,8 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
      * @generated
      */
     @Override
-    public void setColor(String newColor) {
-        String oldColor = this.color;
+    public void setColor(UserColor newColor) {
+        UserColor oldColor = this.color;
         this.color = newColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__COLOR, oldColor, this.color));
@@ -338,7 +347,9 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 return this.isStrikeThrough();
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__COLOR:
-                return this.getColor();
+                if (resolve)
+                    return this.getColor();
+                return this.basicGetColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -367,7 +378,7 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
                 this.setStrikeThrough((Boolean) newValue);
                 return;
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__COLOR:
-                this.setColor((String) newValue);
+                this.setColor((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -397,7 +408,7 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__COLOR:
-                this.setColor(COLOR_EDEFAULT);
+                this.setColor((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -422,7 +433,7 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
             case ViewPackage.CONDITIONAL_LIST_DESCRIPTION_STYLE__COLOR:
-                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+                return this.color != null;
         }
         return super.eIsSet(featureID);
     }
@@ -528,8 +539,6 @@ public class ConditionalListDescriptionStyleImpl extends ConditionalImpl impleme
         result.append(this.underline);
         result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", color: ");
-        result.append(this.color);
         result.append(')');
         return result.toString();
     }

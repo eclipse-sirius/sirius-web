@@ -71,9 +71,9 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
      * @generated
      */
     protected void addColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Style_color_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), ViewPackage.Literals.STYLE__COLOR, true,
-                false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_color_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), ViewPackage.Literals.STYLE__COLOR, true, false, false, null, null, null));
     }
 
     /**

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.sample.papaya.view;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;

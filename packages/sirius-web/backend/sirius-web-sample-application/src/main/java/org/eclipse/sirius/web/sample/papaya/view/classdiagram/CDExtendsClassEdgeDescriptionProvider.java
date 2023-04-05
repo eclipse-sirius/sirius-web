@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
@@ -29,10 +32,16 @@ public class CDExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionPr
 
     public static final String NAME = "CD Edge Extends Class";
 
+    private final IColorProvider colorProvider;
+
+    public CDExtendsClassEdgeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
-    public EObject create() {
+    public EdgeDescription create() {
         var extendsClassEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        extendsClassEdgeStyle.setColor("#0d47a1");
+        extendsClassEdgeStyle.setColor(this.colorProvider.getColor("color_blue"));
         extendsClassEdgeStyle.setEdgeWidth(1);
         extendsClassEdgeStyle.setLineStyle(LineStyle.SOLID);
         extendsClassEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);

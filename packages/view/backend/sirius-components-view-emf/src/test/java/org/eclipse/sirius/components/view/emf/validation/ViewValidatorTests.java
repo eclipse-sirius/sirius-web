@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -52,6 +53,7 @@ public class ViewValidatorTests {
 
     private static final String SIRIUS_COMPONENTS_EMF_PACKAGE = "org.eclipse.sirius.components.emf";
 
+    @Disabled("There is no default value anymore")
     @Test
     public void testNodeStyleDefaultValuesAreValid() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
@@ -116,7 +118,6 @@ public class ViewValidatorTests {
     public void testNodeStyleColorIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
         RectangularNodeStyleDescription conditionalNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        conditionalNodeStyle.setColor("");
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
         // @formatter:off

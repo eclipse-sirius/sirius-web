@@ -14,10 +14,12 @@ package org.eclipse.sirius.components.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
@@ -189,24 +191,14 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
     protected int strokeWidth = STROKE_WIDTH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getStrokeColor() <em>Stroke Color</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getStrokeColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String STROKE_COLOR_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getStrokeColor() <em>Stroke Color</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The cached value of the '{@link #getStrokeColor() <em>Stroke Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @see #getStrokeColor()
      * @generated
      * @ordered
      */
-    protected String strokeColor = STROKE_COLOR_EDEFAULT;
+    protected UserColor strokeColor;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -394,7 +386,24 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
      * @generated
      */
     @Override
-    public String getStrokeColor() {
+    public UserColor getStrokeColor() {
+        if (this.strokeColor != null && this.strokeColor.eIsProxy()) {
+            InternalEObject oldStrokeColor = (InternalEObject) this.strokeColor;
+            this.strokeColor = (UserColor) this.eResolveProxy(oldStrokeColor);
+            if (this.strokeColor != oldStrokeColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR, oldStrokeColor, this.strokeColor));
+            }
+        }
+        return this.strokeColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetStrokeColor() {
         return this.strokeColor;
     }
 
@@ -404,8 +413,8 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
      * @generated
      */
     @Override
-    public void setStrokeColor(String newStrokeColor) {
-        String oldStrokeColor = this.strokeColor;
+    public void setStrokeColor(UserColor newStrokeColor) {
+        UserColor oldStrokeColor = this.strokeColor;
         this.strokeColor = newStrokeColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR, oldStrokeColor, this.strokeColor));
@@ -434,7 +443,9 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
             case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
                 return this.getStrokeWidth();
             case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
-                return this.getStrokeColor();
+                if (resolve)
+                    return this.getStrokeColor();
+                return this.basicGetStrokeColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -469,7 +480,7 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
                 this.setStrokeWidth((Integer) newValue);
                 return;
             case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
-                this.setStrokeColor((String) newValue);
+                this.setStrokeColor((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -505,7 +516,7 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
                 this.setStrokeWidth(STROKE_WIDTH_EDEFAULT);
                 return;
             case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
-                this.setStrokeColor(STROKE_COLOR_EDEFAULT);
+                this.setStrokeColor((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -534,7 +545,7 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
             case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
                 return this.strokeWidth != STROKE_WIDTH_EDEFAULT;
             case ViewPackage.CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
-                return STROKE_COLOR_EDEFAULT == null ? this.strokeColor != null : !STROKE_COLOR_EDEFAULT.equals(this.strokeColor);
+                return this.strokeColor != null;
         }
         return super.eIsSet(featureID);
     }
@@ -652,8 +663,6 @@ public class ConditionalPieChartDescriptionStyleImpl extends ConditionalImpl imp
         result.append(this.colors);
         result.append(", strokeWidth: ");
         result.append(this.strokeWidth);
-        result.append(", strokeColor: ");
-        result.append(this.strokeColor);
         result.append(')');
         return result.toString();
     }

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
@@ -57,6 +58,7 @@ import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
@@ -106,6 +108,7 @@ import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -124,6 +127,27 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass viewEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass colorPaletteEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass fixedColorEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass userColorEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -870,6 +894,86 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EReference getView_ColorPalettes() {
+        return (EReference) this.viewEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getColorPalette() {
+        return this.colorPaletteEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getColorPalette_Name() {
+        return (EAttribute) this.colorPaletteEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getColorPalette_Colors() {
+        return (EReference) this.colorPaletteEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFixedColor() {
+        return this.fixedColorEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFixedColor_Value() {
+        return (EAttribute) this.fixedColorEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getUserColor() {
+        return this.userColorEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getUserColor_Name() {
+        return (EAttribute) this.userColorEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getRepresentationDescription() {
         return this.representationDescriptionEClass;
     }
@@ -1330,8 +1434,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getBorderStyle_BorderColor() {
-        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getBorderStyle_BorderColor() {
+        return (EReference) this.borderStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1380,8 +1484,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getStyle_Color() {
-        return (EAttribute) this.styleEClass.getEStructuralFeatures().get(0);
+    public EReference getStyle_Color() {
+        return (EReference) this.styleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1400,8 +1504,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeStyleDescription_LabelColor() {
-        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    public EReference getNodeStyleDescription_LabelColor() {
+        return (EReference) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2520,8 +2624,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getTextfieldDescriptionStyle_BackgroundColor() {
-        return (EAttribute) this.textfieldDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getTextfieldDescriptionStyle_BackgroundColor() {
+        return (EReference) this.textfieldDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2530,8 +2634,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getTextfieldDescriptionStyle_ForegroundColor() {
-        return (EAttribute) this.textfieldDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    public EReference getTextfieldDescriptionStyle_ForegroundColor() {
+        return (EReference) this.textfieldDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2560,8 +2664,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getCheckboxDescriptionStyle_Color() {
-        return (EAttribute) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getCheckboxDescriptionStyle_Color() {
+        return (EReference) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2590,8 +2694,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectDescriptionStyle_BackgroundColor() {
-        return (EAttribute) this.selectDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getSelectDescriptionStyle_BackgroundColor() {
+        return (EReference) this.selectDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2600,8 +2704,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectDescriptionStyle_ForegroundColor() {
-        return (EAttribute) this.selectDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    public EReference getSelectDescriptionStyle_ForegroundColor() {
+        return (EReference) this.selectDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2630,8 +2734,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getMultiSelectDescriptionStyle_BackgroundColor() {
-        return (EAttribute) this.multiSelectDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getMultiSelectDescriptionStyle_BackgroundColor() {
+        return (EReference) this.multiSelectDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2640,8 +2744,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getMultiSelectDescriptionStyle_ForegroundColor() {
-        return (EAttribute) this.multiSelectDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    public EReference getMultiSelectDescriptionStyle_ForegroundColor() {
+        return (EReference) this.multiSelectDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2670,8 +2774,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getTextareaDescriptionStyle_BackgroundColor() {
-        return (EAttribute) this.textareaDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getTextareaDescriptionStyle_BackgroundColor() {
+        return (EReference) this.textareaDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2680,8 +2784,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getTextareaDescriptionStyle_ForegroundColor() {
-        return (EAttribute) this.textareaDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    public EReference getTextareaDescriptionStyle_ForegroundColor() {
+        return (EReference) this.textareaDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2710,8 +2814,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getRadioDescriptionStyle_Color() {
-        return (EAttribute) this.radioDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getRadioDescriptionStyle_Color() {
+        return (EReference) this.radioDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2740,8 +2844,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getButtonDescriptionStyle_BackgroundColor() {
-        return (EAttribute) this.buttonDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getButtonDescriptionStyle_BackgroundColor() {
+        return (EReference) this.buttonDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2750,8 +2854,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getButtonDescriptionStyle_ForegroundColor() {
-        return (EAttribute) this.buttonDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    public EReference getButtonDescriptionStyle_ForegroundColor() {
+        return (EReference) this.buttonDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2830,8 +2934,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getPieChartDescriptionStyle_StrokeColor() {
-        return (EAttribute) this.pieChartDescriptionStyleEClass.getEStructuralFeatures().get(2);
+    public EReference getPieChartDescriptionStyle_StrokeColor() {
+        return (EReference) this.pieChartDescriptionStyleEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -2900,8 +3004,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getLabelDescriptionStyle_Color() {
-        return (EAttribute) this.labelDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getLabelDescriptionStyle_Color() {
+        return (EReference) this.labelDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2970,8 +3074,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getLinkDescriptionStyle_Color() {
-        return (EAttribute) this.linkDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getLinkDescriptionStyle_Color() {
+        return (EReference) this.linkDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -3070,8 +3174,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getListDescriptionStyle_Color() {
-        return (EAttribute) this.listDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    public EReference getListDescriptionStyle_Color() {
+        return (EReference) this.listDescriptionStyleEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -3635,6 +3739,17 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         // Create classes and their features
         this.viewEClass = this.createEClass(VIEW);
         this.createEReference(this.viewEClass, VIEW__DESCRIPTIONS);
+        this.createEReference(this.viewEClass, VIEW__COLOR_PALETTES);
+
+        this.colorPaletteEClass = this.createEClass(COLOR_PALETTE);
+        this.createEAttribute(this.colorPaletteEClass, COLOR_PALETTE__NAME);
+        this.createEReference(this.colorPaletteEClass, COLOR_PALETTE__COLORS);
+
+        this.fixedColorEClass = this.createEClass(FIXED_COLOR);
+        this.createEAttribute(this.fixedColorEClass, FIXED_COLOR__VALUE);
+
+        this.userColorEClass = this.createEClass(USER_COLOR);
+        this.createEAttribute(this.userColorEClass, USER_COLOR__NAME);
 
         this.representationDescriptionEClass = this.createEClass(REPRESENTATION_DESCRIPTION);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__NAME);
@@ -3688,16 +3803,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__STRIKE_THROUGH);
 
         this.borderStyleEClass = this.createEClass(BORDER_STYLE);
-        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_COLOR);
+        this.createEReference(this.borderStyleEClass, BORDER_STYLE__BORDER_COLOR);
         this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_RADIUS);
         this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_SIZE);
         this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_LINE_STYLE);
 
         this.styleEClass = this.createEClass(STYLE);
-        this.createEAttribute(this.styleEClass, STYLE__COLOR);
+        this.createEReference(this.styleEClass, STYLE__COLOR);
 
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
-        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_COLOR);
+        this.createEReference(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_COLOR);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__SHOW_ICON);
@@ -3878,42 +3993,42 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.widgetDescriptionStyleEClass = this.createEClass(WIDGET_DESCRIPTION_STYLE);
 
         this.textfieldDescriptionStyleEClass = this.createEClass(TEXTFIELD_DESCRIPTION_STYLE);
-        this.createEAttribute(this.textfieldDescriptionStyleEClass, TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR);
-        this.createEAttribute(this.textfieldDescriptionStyleEClass, TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+        this.createEReference(this.textfieldDescriptionStyleEClass, TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEReference(this.textfieldDescriptionStyleEClass, TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR);
 
         this.conditionalTextfieldDescriptionStyleEClass = this.createEClass(CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE);
 
         this.checkboxDescriptionStyleEClass = this.createEClass(CHECKBOX_DESCRIPTION_STYLE);
-        this.createEAttribute(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__COLOR);
+        this.createEReference(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__COLOR);
 
         this.conditionalCheckboxDescriptionStyleEClass = this.createEClass(CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE);
 
         this.selectDescriptionStyleEClass = this.createEClass(SELECT_DESCRIPTION_STYLE);
-        this.createEAttribute(this.selectDescriptionStyleEClass, SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR);
-        this.createEAttribute(this.selectDescriptionStyleEClass, SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+        this.createEReference(this.selectDescriptionStyleEClass, SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEReference(this.selectDescriptionStyleEClass, SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR);
 
         this.conditionalSelectDescriptionStyleEClass = this.createEClass(CONDITIONAL_SELECT_DESCRIPTION_STYLE);
 
         this.multiSelectDescriptionStyleEClass = this.createEClass(MULTI_SELECT_DESCRIPTION_STYLE);
-        this.createEAttribute(this.multiSelectDescriptionStyleEClass, MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR);
-        this.createEAttribute(this.multiSelectDescriptionStyleEClass, MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+        this.createEReference(this.multiSelectDescriptionStyleEClass, MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEReference(this.multiSelectDescriptionStyleEClass, MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR);
 
         this.conditionalMultiSelectDescriptionStyleEClass = this.createEClass(CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE);
 
         this.textareaDescriptionStyleEClass = this.createEClass(TEXTAREA_DESCRIPTION_STYLE);
-        this.createEAttribute(this.textareaDescriptionStyleEClass, TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR);
-        this.createEAttribute(this.textareaDescriptionStyleEClass, TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+        this.createEReference(this.textareaDescriptionStyleEClass, TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEReference(this.textareaDescriptionStyleEClass, TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR);
 
         this.conditionalTextareaDescriptionStyleEClass = this.createEClass(CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE);
 
         this.radioDescriptionStyleEClass = this.createEClass(RADIO_DESCRIPTION_STYLE);
-        this.createEAttribute(this.radioDescriptionStyleEClass, RADIO_DESCRIPTION_STYLE__COLOR);
+        this.createEReference(this.radioDescriptionStyleEClass, RADIO_DESCRIPTION_STYLE__COLOR);
 
         this.conditionalRadioDescriptionStyleEClass = this.createEClass(CONDITIONAL_RADIO_DESCRIPTION_STYLE);
 
         this.buttonDescriptionStyleEClass = this.createEClass(BUTTON_DESCRIPTION_STYLE);
-        this.createEAttribute(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR);
-        this.createEAttribute(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR);
+        this.createEReference(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR);
+        this.createEReference(this.buttonDescriptionStyleEClass, BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR);
 
         this.conditionalButtonDescriptionStyleEClass = this.createEClass(CONDITIONAL_BUTTON_DESCRIPTION_STYLE);
 
@@ -3925,7 +4040,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.pieChartDescriptionStyleEClass = this.createEClass(PIE_CHART_DESCRIPTION_STYLE);
         this.createEAttribute(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__COLORS);
         this.createEAttribute(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH);
-        this.createEAttribute(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR);
+        this.createEReference(this.pieChartDescriptionStyleEClass, PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR);
 
         this.conditionalPieChartDescriptionStyleEClass = this.createEClass(CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE);
 
@@ -3935,7 +4050,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.labelDescriptionEClass, LABEL_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.labelDescriptionStyleEClass = this.createEClass(LABEL_DESCRIPTION_STYLE);
-        this.createEAttribute(this.labelDescriptionStyleEClass, LABEL_DESCRIPTION_STYLE__COLOR);
+        this.createEReference(this.labelDescriptionStyleEClass, LABEL_DESCRIPTION_STYLE__COLOR);
 
         this.conditionalLabelDescriptionStyleEClass = this.createEClass(CONDITIONAL_LABEL_DESCRIPTION_STYLE);
 
@@ -3945,7 +4060,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.linkDescriptionEClass, LINK_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.linkDescriptionStyleEClass = this.createEClass(LINK_DESCRIPTION_STYLE);
-        this.createEAttribute(this.linkDescriptionStyleEClass, LINK_DESCRIPTION_STYLE__COLOR);
+        this.createEReference(this.linkDescriptionStyleEClass, LINK_DESCRIPTION_STYLE__COLOR);
 
         this.conditionalLinkDescriptionStyleEClass = this.createEClass(CONDITIONAL_LINK_DESCRIPTION_STYLE);
 
@@ -3958,7 +4073,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.listDescriptionStyleEClass = this.createEClass(LIST_DESCRIPTION_STYLE);
-        this.createEAttribute(this.listDescriptionStyleEClass, LIST_DESCRIPTION_STYLE__COLOR);
+        this.createEReference(this.listDescriptionStyleEClass, LIST_DESCRIPTION_STYLE__COLOR);
 
         this.conditionalListDescriptionStyleEClass = this.createEClass(CONDITIONAL_LIST_DESCRIPTION_STYLE);
 
@@ -4025,6 +4140,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        this.fixedColorEClass.getESuperTypes().add(this.getUserColor());
         this.diagramDescriptionEClass.getESuperTypes().add(this.getRepresentationDescription());
         this.nodeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
         this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
@@ -4124,6 +4240,22 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getView_Descriptions(), this.getRepresentationDescription(), null, "descriptions", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getView_ColorPalettes(), this.getColorPalette(), null, "colorPalettes", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.colorPaletteEClass, ColorPalette.class, "ColorPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getColorPalette_Name(), this.getIdentifier(), "name", null, 1, 1, ColorPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getColorPalette_Colors(), this.getUserColor(), null, "colors", null, 0, -1, ColorPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.fixedColorEClass, FixedColor.class, "FixedColor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFixedColor_Value(), this.getColor(), "value", null, 1, 1, FixedColor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.userColorEClass, UserColor.class, "UserColor", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getUserColor_Name(), this.getIdentifier(), "name", null, 0, 1, UserColor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.representationDescriptionEClass, RepresentationDescription.class, "RepresentationDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getRepresentationDescription_Name(), this.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -4216,8 +4348,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.borderStyleEClass, BorderStyle.class, "BorderStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getBorderStyle_BorderColor(), this.getColor(), "borderColor", "#33B0C3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getBorderStyle_BorderColor(), this.getUserColor(), null, "borderColor", null, 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getBorderStyle_BorderRadius(), this.getLength(), "borderRadius", "3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getBorderStyle_BorderSize(), this.getLength(), "borderSize", "1", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
@@ -4226,12 +4358,12 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getStyle_Color(), this.getColor(), "color", "#E5F5F8", 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-                IS_ORDERED);
+        this.initEReference(this.getStyle_Color(), this.getUserColor(), null, "color", null, 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getNodeStyleDescription_LabelColor(), this.getColor(), "labelColor", "black", 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeStyleDescription_LabelColor(), this.getUserColor(), null, "labelColor", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyleDescription_WidthComputationExpression(), this.getInterpretedExpression(), "widthComputationExpression", "1", 0, 1, NodeStyleDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyleDescription_HeightComputationExpression(), this.getInterpretedExpression(), "heightComputationExpression", "1", 0, 1, NodeStyleDescription.class,
@@ -4505,60 +4637,60 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.textfieldDescriptionStyleEClass, TextfieldDescriptionStyle.class, "TextfieldDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTextfieldDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextfieldDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTextfieldDescriptionStyle_BackgroundColor(), this.getUserColor(), null, "backgroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTextfieldDescriptionStyle_ForegroundColor(), this.getUserColor(), null, "foregroundColor", null, 0, 1, TextfieldDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalTextfieldDescriptionStyleEClass, ConditionalTextfieldDescriptionStyle.class, "ConditionalTextfieldDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.checkboxDescriptionStyleEClass, CheckboxDescriptionStyle.class, "CheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getCheckboxDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getCheckboxDescriptionStyle_Color(), this.getUserColor(), null, "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalCheckboxDescriptionStyleEClass, ConditionalCheckboxDescriptionStyle.class, "ConditionalCheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.selectDescriptionStyleEClass, SelectDescriptionStyle.class, "SelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getSelectDescriptionStyle_BackgroundColor(), this.getUserColor(), null, "backgroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getSelectDescriptionStyle_ForegroundColor(), this.getUserColor(), null, "foregroundColor", null, 0, 1, SelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalSelectDescriptionStyleEClass, ConditionalSelectDescriptionStyle.class, "ConditionalSelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.multiSelectDescriptionStyleEClass, MultiSelectDescriptionStyle.class, "MultiSelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getMultiSelectDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getMultiSelectDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMultiSelectDescriptionStyle_BackgroundColor(), this.getUserColor(), null, "backgroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMultiSelectDescriptionStyle_ForegroundColor(), this.getUserColor(), null, "foregroundColor", null, 0, 1, MultiSelectDescriptionStyle.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalMultiSelectDescriptionStyleEClass, ConditionalMultiSelectDescriptionStyle.class, "ConditionalMultiSelectDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.textareaDescriptionStyleEClass, TextareaDescriptionStyle.class, "TextareaDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTextareaDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextareaDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTextareaDescriptionStyle_BackgroundColor(), this.getUserColor(), null, "backgroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTextareaDescriptionStyle_ForegroundColor(), this.getUserColor(), null, "foregroundColor", null, 0, 1, TextareaDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalTextareaDescriptionStyleEClass, ConditionalTextareaDescriptionStyle.class, "ConditionalTextareaDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.radioDescriptionStyleEClass, RadioDescriptionStyle.class, "RadioDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getRadioDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, RadioDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getRadioDescriptionStyle_Color(), this.getUserColor(), null, "color", null, 0, 1, RadioDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalRadioDescriptionStyleEClass, ConditionalRadioDescriptionStyle.class, "ConditionalRadioDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.buttonDescriptionStyleEClass, ButtonDescriptionStyle.class, "ButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getButtonDescriptionStyle_BackgroundColor(), this.getColor(), "backgroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getButtonDescriptionStyle_ForegroundColor(), this.getColor(), "foregroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getButtonDescriptionStyle_BackgroundColor(), this.getUserColor(), null, "backgroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getButtonDescriptionStyle_ForegroundColor(), this.getUserColor(), null, "foregroundColor", null, 0, 1, ButtonDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalButtonDescriptionStyleEClass, ConditionalButtonDescriptionStyle.class, "ConditionalButtonDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -4575,8 +4707,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPieChartDescriptionStyle_StrokeWidth(), this.getLength(), "strokeWidth", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getPieChartDescriptionStyle_StrokeColor(), this.getColor(), "strokeColor", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPieChartDescriptionStyle_StrokeColor(), this.getUserColor(), null, "strokeColor", null, 0, 1, PieChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalPieChartDescriptionStyleEClass, ConditionalPieChartDescriptionStyle.class, "ConditionalPieChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -4590,8 +4722,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.labelDescriptionStyleEClass, LabelDescriptionStyle.class, "LabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLabelDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, LabelDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLabelDescriptionStyle_Color(), this.getUserColor(), null, "color", null, 0, 1, LabelDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalLabelDescriptionStyleEClass, ConditionalLabelDescriptionStyle.class, "ConditionalLabelDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -4605,8 +4737,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.linkDescriptionStyleEClass, LinkDescriptionStyle.class, "LinkDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLinkDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, LinkDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLinkDescriptionStyle_Color(), this.getUserColor(), null, "color", null, 0, 1, LinkDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalLinkDescriptionStyleEClass, ConditionalLinkDescriptionStyle.class, "ConditionalLinkDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -4625,8 +4757,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.listDescriptionStyleEClass, ListDescriptionStyle.class, "ListDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getListDescriptionStyle_Color(), this.getColor(), "color", null, 0, 1, ListDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getListDescriptionStyle_Color(), this.getUserColor(), null, "color", null, 0, 1, ListDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalListDescriptionStyleEClass, ConditionalListDescriptionStyle.class, "ConditionalListDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

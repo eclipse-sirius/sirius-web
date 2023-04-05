@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.RadioStyle.Builder;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 
 /**
@@ -35,9 +36,11 @@ public class RadioStyleProvider {
     public RadioStyle build() {
         Builder radioStyleBuilder = RadioStyle.newRadioStyle();
 
-        String color = this.viewStyle.getColor();
-        if (color != null && !color.isBlank()) {
-            radioStyleBuilder.color(color);
+        if (this.viewStyle.getColor() instanceof FixedColor fixedColor) {
+            String color = fixedColor.getValue();
+            if (color != null && !color.isBlank()) {
+                radioStyleBuilder.color(color);
+            }
         }
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();

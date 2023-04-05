@@ -14,10 +14,12 @@ package org.eclipse.sirius.web.sample.configuration;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -35,15 +37,18 @@ import org.eclipse.sirius.components.domain.Relation;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.provider.DefaultToolsFactory;
@@ -250,13 +255,15 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.setPalette(defaultToolsFactory.createDefaultDiagramPalette());
         view.getDescriptions().add(viewDiagramDescription);
 
+        view.getColorPalettes().add(this.createColorPalette());
+
         NodeDescription entity1Node = ViewFactory.eINSTANCE.createNodeDescription();
         entity1Node.setName("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
         entity1Node.setSemanticCandidatesExpression("aql:self.eContents()");
         entity1Node.setLabelExpression("aql:self.name");
         entity1Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
-        entity1Node.setStyle(this.createRectangularNodeStyle("#E5F5F8", "#33B0C3"));
+        entity1Node.setStyle(this.createRectangularNodeStyle(view, "color_blue", "border_blue"));
         entity1Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
 
         viewDiagramDescription.getNodeDescriptions().add(entity1Node);
@@ -268,7 +275,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         entity2Node.setSemanticCandidatesExpression("aql:self.eContents()");
         entity2Node.setLabelExpression("aql:self.name");
         entity2Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
-        entity2Node.setStyle(this.createRectangularNodeStyle("#B1D8B7", "#76B947"));
+        entity2Node.setStyle(this.createRectangularNodeStyle(view, "color_green", "border_green"));
         entity2Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
 
         viewDiagramDescription.getNodeDescriptions().add(entity2Node);
@@ -298,18 +305,18 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 
         EdgeStyle edgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        edgeStyle.setColor("#002639");
+        edgeStyle.setColor(this.getColorFromPalette(view, "color_dark"));
         linkedToEdge.setStyle(edgeStyle);
 
         return this.stereotypeBuilder.getStereotypeBody(List.of(view));
     }
 
-    private RectangularNodeStyleDescription createRectangularNodeStyle(String colod, String borderColor) {
+    private RectangularNodeStyleDescription createRectangularNodeStyle(View view, String color, String borderColor) {
         RectangularNodeStyleDescription entity2Style = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
         entity2Style.setWidthComputationExpression("1");
         entity2Style.setHeightComputationExpression("1");
-        entity2Style.setColor(colod);
-        entity2Style.setBorderColor(borderColor);
+        entity2Style.setColor(this.getColorFromPalette(view, color));
+        entity2Style.setBorderColor(this.getColorFromPalette(view, borderColor));
         entity2Style.setBorderRadius(3);
         return entity2Style;
     }
@@ -342,9 +349,40 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         return this.representationDescriptionSearchService.findAll(editingContext).values().stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
-                .filter(diagramDescrpition -> Objects.equals(label, diagramDescrpition.getLabel()))
+                .filter(diagramDescription -> Objects.equals(label, diagramDescription.getLabel()))
                 .findFirst();
         // @formatter:on
+    }
+
+    private ColorPalette createColorPalette() {
+        var colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+
+        colorPalette.getColors().add(this.createFixedColor("color_dark", "#002639"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue", "#E5F5F8"));
+        colorPalette.getColors().add(this.createFixedColor("color_green", "#B1D8B7"));
+        colorPalette.getColors().add(this.createFixedColor("border_blue", "#33B0C3"));
+        colorPalette.getColors().add(this.createFixedColor("border_green", "#76B947"));
+
+        return colorPalette;
+    }
+
+    private FixedColor createFixedColor(String name, String value) {
+        var fixedColor = ViewFactory.eINSTANCE.createFixedColor();
+        fixedColor.setName(name);
+        fixedColor.setValue(value);
+        return fixedColor;
+    }
+
+    private UserColor getColorFromPalette(View view, String colorName) {
+        return view.getColorPalettes()
+                   .stream()
+                   .findFirst()
+                   .map(ColorPalette::getColors)
+                   .stream()
+                   .flatMap(Collection::stream)
+                   .filter(userColor -> userColor.getName().equals(colorName))
+                   .findFirst()
+                   .orElse(null);
     }
 
 }

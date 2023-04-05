@@ -13,6 +13,10 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1897[1897] [diagram] ToolSection are not using records
 - https://github.com/eclipse-sirius/sirius-components/issues/1616[#1616] [core] Use Java records for all our payloads
+- https://github.com/eclipse-sirius/sirius-components/issues/1907[#1907] [view] The management of colors is changing, it is not possible anymore to use color directly represented by a string in the _styleDescription_.
+All the colors are now defined in a new palette object _ColorPalette_ with the properties _name_ and _value_.
+A view can define as many _ColorPalette_ as desired.
+In the _styleDescription_, the definition of a color are now a select list of all the colors contained in the _ColorPalette_ of the view.
 
 === Dependency update
 - https://github.com/eclipse-sirius/sirius-components/issues/1936[#1936] [releng] Switch to Cypress 12.11.0

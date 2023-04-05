@@ -207,8 +207,7 @@ public class TextAreaDescriptionImpl extends WidgetDescriptionImpl implements Te
     @Override
     public EList<ConditionalTextareaDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalTextareaDescriptionStyle.class, this,
-                    ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalTextareaDescriptionStyle.class, this, ViewPackage.TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

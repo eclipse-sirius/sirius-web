@@ -14,11 +14,13 @@ package org.eclipse.sirius.components.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -158,24 +160,14 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String BORDER_COLOR_EDEFAULT = "#33B0C3";
-
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @see #getBorderColor()
      * @generated
      * @ordered
      */
-    protected String borderColor = BORDER_COLOR_EDEFAULT;
+    protected UserColor borderColor;
 
     /**
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
@@ -238,24 +230,14 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getLabelColor() <em>Label Color</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @see #getLabelColor()
      * @generated
      * @ordered
      */
-    protected static final String LABEL_COLOR_EDEFAULT = "black";
-
-    /**
-     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getLabelColor()
-     * @generated
-     * @ordered
-     */
-    protected String labelColor = LABEL_COLOR_EDEFAULT;
+    protected UserColor labelColor;
 
     /**
      * The default value of the '{@link #getWidthComputationExpression() <em>Width Computation Expression</em>}'
@@ -457,7 +439,24 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      */
     @Override
-    public String getBorderColor() {
+    public UserColor getBorderColor() {
+        if (this.borderColor != null && this.borderColor.eIsProxy()) {
+            InternalEObject oldBorderColor = (InternalEObject) this.borderColor;
+            this.borderColor = (UserColor) this.eResolveProxy(oldBorderColor);
+            if (this.borderColor != oldBorderColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR, oldBorderColor, this.borderColor));
+            }
+        }
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBorderColor() {
         return this.borderColor;
     }
 
@@ -467,8 +466,8 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      */
     @Override
-    public void setBorderColor(String newBorderColor) {
-        String oldBorderColor = this.borderColor;
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
         this.borderColor = newBorderColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR, oldBorderColor, this.borderColor));
@@ -549,7 +548,24 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      */
     @Override
-    public String getLabelColor() {
+    public UserColor getLabelColor() {
+        if (this.labelColor != null && this.labelColor.eIsProxy()) {
+            InternalEObject oldLabelColor = (InternalEObject) this.labelColor;
+            this.labelColor = (UserColor) this.eResolveProxy(oldLabelColor);
+            if (this.labelColor != oldLabelColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR, oldLabelColor, this.labelColor));
+            }
+        }
+        return this.labelColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetLabelColor() {
         return this.labelColor;
     }
 
@@ -559,8 +575,8 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      */
     @Override
-    public void setLabelColor(String newLabelColor) {
-        String oldLabelColor = this.labelColor;
+    public void setLabelColor(UserColor newLabelColor) {
+        UserColor oldLabelColor = this.labelColor;
         this.labelColor = newLabelColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR, oldLabelColor, this.labelColor));
@@ -656,7 +672,9 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 return this.isStrikeThrough();
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                return this.getBorderColor();
+                if (resolve)
+                    return this.getBorderColor();
+                return this.basicGetBorderColor();
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 return this.getBorderRadius();
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
@@ -664,7 +682,9 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.getBorderLineStyle();
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                return this.getLabelColor();
+                if (resolve)
+                    return this.getLabelColor();
+                return this.basicGetLabelColor();
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
                 return this.getWidthComputationExpression();
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
@@ -699,7 +719,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 this.setStrikeThrough((Boolean) newValue);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                this.setBorderColor((String) newValue);
+                this.setBorderColor((UserColor) newValue);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius((Integer) newValue);
@@ -711,7 +731,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 this.setBorderLineStyle((LineStyle) newValue);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                this.setLabelColor((String) newValue);
+                this.setLabelColor((UserColor) newValue);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
                 this.setWidthComputationExpression((String) newValue);
@@ -750,7 +770,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                this.setBorderColor(BORDER_COLOR_EDEFAULT);
+                this.setBorderColor((UserColor) null);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -762,7 +782,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                this.setLabelColor(LABEL_COLOR_EDEFAULT);
+                this.setLabelColor((UserColor) null);
                 return;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
                 this.setWidthComputationExpression(WIDTH_COMPUTATION_EXPRESSION_EDEFAULT);
@@ -796,7 +816,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                return BORDER_COLOR_EDEFAULT == null ? this.borderColor != null : !BORDER_COLOR_EDEFAULT.equals(this.borderColor);
+                return this.borderColor != null;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 return this.borderRadius != BORDER_RADIUS_EDEFAULT;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
@@ -804,7 +824,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                return LABEL_COLOR_EDEFAULT == null ? this.labelColor != null : !LABEL_COLOR_EDEFAULT.equals(this.labelColor);
+                return this.labelColor != null;
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
                 return WIDTH_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.widthComputationExpression != null : !WIDTH_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.widthComputationExpression);
             case ViewPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
@@ -916,16 +936,12 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
         result.append(this.underline);
         result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", borderColor: ");
-        result.append(this.borderColor);
         result.append(", borderRadius: ");
         result.append(this.borderRadius);
         result.append(", borderSize: ");
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
-        result.append(", labelColor: ");
-        result.append(this.labelColor);
         result.append(", widthComputationExpression: ");
         result.append(this.widthComputationExpression);
         result.append(", heightComputationExpression: ");

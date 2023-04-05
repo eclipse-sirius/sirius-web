@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
@@ -53,6 +54,7 @@ import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
@@ -96,6 +98,7 @@ import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
@@ -155,6 +158,21 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseView(View object) {
             return ViewAdapterFactory.this.createViewAdapter();
+        }
+
+        @Override
+        public Adapter caseColorPalette(ColorPalette object) {
+            return ViewAdapterFactory.this.createColorPaletteAdapter();
+        }
+
+        @Override
+        public Adapter caseFixedColor(FixedColor object) {
+            return ViewAdapterFactory.this.createFixedColorAdapter();
+        }
+
+        @Override
+        public Adapter caseUserColor(UserColor object) {
+            return ViewAdapterFactory.this.createUserColorAdapter();
         }
 
         @Override
@@ -596,6 +614,45 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createViewAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ColorPalette <em>Color
+     * Palette</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.ColorPalette
+     * @generated
+     */
+    public Adapter createColorPaletteAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.FixedColor <em>Fixed
+     * Color</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.FixedColor
+     * @generated
+     */
+    public Adapter createFixedColorAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.UserColor <em>User
+     * Color</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.UserColor
+     * @generated
+     */
+    public Adapter createUserColorAdapter() {
         return null;
     }
 

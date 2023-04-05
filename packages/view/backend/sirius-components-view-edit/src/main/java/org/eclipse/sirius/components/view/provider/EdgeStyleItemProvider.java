@@ -201,8 +201,8 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     @Override
     public String getText(Object object) {
-        String label = ((EdgeStyle) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_EdgeStyle_type") : this.getString("_UI_EdgeStyle_type") + " " + label;
+        EdgeStyle edgeStyle = (EdgeStyle) object;
+        return this.getString("_UI_EdgeStyle_type") + " " + edgeStyle.getFontSize();
     }
 
     /**

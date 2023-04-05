@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
@@ -52,6 +53,7 @@ import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
@@ -95,6 +97,7 @@ import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.UnsetValue;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescription;
@@ -154,6 +157,29 @@ public class ViewSwitch<T> extends Switch<T> {
             case ViewPackage.VIEW: {
                 View view = (View) theEObject;
                 T result = this.caseView(view);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.COLOR_PALETTE: {
+                ColorPalette colorPalette = (ColorPalette) theEObject;
+                T result = this.caseColorPalette(colorPalette);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.FIXED_COLOR: {
+                FixedColor fixedColor = (FixedColor) theEObject;
+                T result = this.caseFixedColor(fixedColor);
+                if (result == null)
+                    result = this.caseUserColor(fixedColor);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.USER_COLOR: {
+                UserColor userColor = (UserColor) theEObject;
+                T result = this.caseUserColor(userColor);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1008,6 +1034,48 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseView(View object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Color Palette</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Color Palette</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseColorPalette(ColorPalette object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Fixed Color</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Fixed Color</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFixedColor(FixedColor object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>User Color</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>User Color</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseUserColor(UserColor object) {
         return null;
     }
 

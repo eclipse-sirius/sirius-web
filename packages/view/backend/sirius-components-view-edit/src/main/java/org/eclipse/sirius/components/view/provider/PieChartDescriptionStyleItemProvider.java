@@ -150,7 +150,7 @@ public class PieChartDescriptionStyleItemProvider extends WidgetDescriptionStyle
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_PieChartDescriptionStyle_strokeColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeColor_feature", "_UI_PieChartDescriptionStyle_type"),
-                ViewPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR, true, false, false, null, null, null));
     }
 
     /**

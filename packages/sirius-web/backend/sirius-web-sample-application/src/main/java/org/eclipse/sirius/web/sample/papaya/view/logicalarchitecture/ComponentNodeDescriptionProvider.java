@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -27,12 +30,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class ComponentNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public ComponentNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#b0bec5");
-        nodeStyle.setBorderColor("#455a64");
-        nodeStyle.setLabelColor("#1212121");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue_4"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_4"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Component");
         nodeDescription.setSemanticCandidatesExpression("aql:self.components");

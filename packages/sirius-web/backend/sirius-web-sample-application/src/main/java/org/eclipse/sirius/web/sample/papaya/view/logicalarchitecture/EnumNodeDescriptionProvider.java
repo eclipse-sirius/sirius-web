@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -25,12 +28,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
  */
 public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public EnumNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#26a69a");
-        nodeStyle.setBorderColor("#00695c");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_green_3"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_green_2"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Enum");
@@ -54,9 +63,9 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription enumLiteralNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("#26a69a");
-        nodeStyle.setBorderColor("#00695c");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_green_3"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_green_2"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("EnumLiteral");
         nodeDescription.setSemanticCandidatesExpression("aql:self.enumLiterals");

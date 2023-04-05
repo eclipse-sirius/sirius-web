@@ -131,7 +131,7 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
     protected void addBorderColorPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_BorderStyle_borderColor_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
-                ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, null, null, null));
     }
 
     /**
@@ -176,7 +176,7 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_NodeStyleDescription_labelColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelColor_feature", "_UI_NodeStyleDescription_type"),
-                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR, true, false, false, null, null, null));
     }
 
     /**

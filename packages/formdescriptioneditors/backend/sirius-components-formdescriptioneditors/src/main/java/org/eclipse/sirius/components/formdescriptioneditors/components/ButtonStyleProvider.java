@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.ButtonStyle.Builder;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
+import org.eclipse.sirius.components.view.FixedColor;
 
 /**
  * The style provider for the Button Description widget of the View DSL. This only handles "static" or "preview" styles
@@ -35,14 +36,20 @@ public class ButtonStyleProvider {
     public ButtonStyle build() {
         Builder buttonStyleBuilder = ButtonStyle.newButtonStyle();
 
-        String backgroundColor = this.viewStyle.getBackgroundColor();
-        if (backgroundColor != null && !backgroundColor.isBlank()) {
-            buttonStyleBuilder.backgroundColor(backgroundColor);
+        if (this.viewStyle.getBackgroundColor() instanceof FixedColor fixedColor) {
+            String backgroundColor = fixedColor.getValue();
+            if (backgroundColor != null && !backgroundColor.isBlank()) {
+                buttonStyleBuilder.backgroundColor(backgroundColor);
+            }
         }
-        String foregroundColor = this.viewStyle.getForegroundColor();
-        if (foregroundColor != null && !foregroundColor.isBlank()) {
-            buttonStyleBuilder.foregroundColor(foregroundColor);
+
+        if (this.viewStyle.getForegroundColor() instanceof FixedColor fixedColor) {
+            String foregroundColor = fixedColor.getValue();
+            if (foregroundColor != null && !foregroundColor.isBlank()) {
+                buttonStyleBuilder.foregroundColor(foregroundColor);
+            }
         }
+
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();

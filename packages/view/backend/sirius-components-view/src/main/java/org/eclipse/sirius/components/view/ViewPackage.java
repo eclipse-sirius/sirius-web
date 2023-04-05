@@ -83,12 +83,21 @@ public interface ViewPackage extends EPackage {
     int VIEW__DESCRIPTIONS = 0;
 
     /**
+     * The feature id for the '<em><b>Color Palettes</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int VIEW__COLOR_PALETTES = 1;
+
+    /**
      * The number of structural features of the '<em>View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int VIEW_FEATURE_COUNT = 1;
+    int VIEW_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -99,6 +108,128 @@ public interface ViewPackage extends EPackage {
     int VIEW_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl <em>Color
+     * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.ColorPaletteImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColorPalette()
+     * @generated
+     */
+    int COLOR_PALETTE = 1;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COLOR_PALETTE__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Colors</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COLOR_PALETTE__COLORS = 1;
+
+    /**
+     * The number of structural features of the '<em>Color Palette</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COLOR_PALETTE_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Color Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COLOR_PALETTE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.UserColorImpl <em>User Color</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.UserColorImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getUserColor()
+     * @generated
+     */
+    int USER_COLOR = 3;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int USER_COLOR__NAME = 0;
+
+    /**
+     * The number of structural features of the '<em>User Color</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int USER_COLOR_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>User Color</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int USER_COLOR_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.FixedColorImpl <em>Fixed Color</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.FixedColorImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFixedColor()
+     * @generated
+     */
+    int FIXED_COLOR = 2;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FIXED_COLOR__NAME = USER_COLOR__NAME;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FIXED_COLOR__VALUE = USER_COLOR_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Fixed Color</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FIXED_COLOR_FEATURE_COUNT = USER_COLOR_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Fixed Color</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FIXED_COLOR_OPERATION_COUNT = USER_COLOR_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl
      * <em>Representation Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -106,7 +237,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRepresentationDescription()
      * @generated
      */
-    int REPRESENTATION_DESCRIPTION = 1;
+    int REPRESENTATION_DESCRIPTION = 4;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -168,7 +299,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramDescription()
      * @generated
      */
-    int DIAGRAM_DESCRIPTION = 2;
+    int DIAGRAM_DESCRIPTION = 5;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -265,7 +396,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramElementDescription()
      * @generated
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION = 3;
+    int DIAGRAM_ELEMENT_DESCRIPTION = 6;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -345,7 +476,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeDescription()
      * @generated
      */
-    int NODE_DESCRIPTION = 4;
+    int NODE_DESCRIPTION = 7;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -512,7 +643,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeDescription()
      * @generated
      */
-    int EDGE_DESCRIPTION = 5;
+    int EDGE_DESCRIPTION = 8;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -681,7 +812,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelStyle()
      * @generated
      */
-    int LABEL_STYLE = 6;
+    int LABEL_STYLE = 9;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -748,10 +879,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBorderStyle()
      * @generated
      */
-    int BORDER_STYLE = 7;
+    int BORDER_STYLE = 10;
 
     /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -808,10 +939,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getStyle()
      * @generated
      */
-    int STYLE = 8;
+    int STYLE = 11;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -842,10 +973,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeStyleDescription()
      * @generated
      */
-    int NODE_STYLE_DESCRIPTION = 9;
+    int NODE_STYLE_DESCRIPTION = 12;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -893,7 +1024,7 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -926,7 +1057,7 @@ public interface ViewPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
 
     /**
-     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -985,10 +1116,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRectangularNodeStyleDescription()
      * @generated
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION = 10;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION = 13;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1036,7 +1167,7 @@ public interface ViewPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
 
     /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1069,7 +1200,7 @@ public interface ViewPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
-     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1136,10 +1267,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getImageNodeStyleDescription()
      * @generated
      */
-    int IMAGE_NODE_STYLE_DESCRIPTION = 11;
+    int IMAGE_NODE_STYLE_DESCRIPTION = 14;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1187,7 +1318,7 @@ public interface ViewPackage extends EPackage {
     int IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
 
     /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1220,7 +1351,7 @@ public interface ViewPackage extends EPackage {
     int IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
-     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1287,10 +1418,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIconLabelNodeStyleDescription()
      * @generated
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION = 12;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION = 15;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1338,7 +1469,7 @@ public interface ViewPackage extends EPackage {
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
 
     /**
-     * The feature id for the '<em><b>Border Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1371,7 +1502,7 @@ public interface ViewPackage extends EPackage {
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
-     * The feature id for the '<em><b>Label Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1430,7 +1561,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutStrategyDescription()
      * @generated
      */
-    int LAYOUT_STRATEGY_DESCRIPTION = 13;
+    int LAYOUT_STRATEGY_DESCRIPTION = 16;
 
     /**
      * The number of structural features of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc -->
@@ -1458,7 +1589,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFreeFormLayoutStrategyDescription()
      * @generated
      */
-    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = 14;
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = 17;
 
     /**
      * The number of structural features of the '<em>Free Form Layout Strategy Description</em>' class. <!--
@@ -1486,7 +1617,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListLayoutStrategyDescription()
      * @generated
      */
-    int LIST_LAYOUT_STRATEGY_DESCRIPTION = 15;
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION = 18;
 
     /**
      * The number of structural features of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc
@@ -1514,10 +1645,10 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeStyle()
      * @generated
      */
-    int EDGE_STYLE = 16;
+    int EDGE_STYLE = 19;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -1631,7 +1762,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTool()
      * @generated
      */
-    int TOOL = 17;
+    int TOOL = 20;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1674,7 +1805,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelEditTool()
      * @generated
      */
-    int LABEL_EDIT_TOOL = 18;
+    int LABEL_EDIT_TOOL = 21;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1754,7 +1885,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteTool()
      * @generated
      */
-    int DELETE_TOOL = 19;
+    int DELETE_TOOL = 22;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1798,7 +1929,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeTool()
      * @generated
      */
-    int NODE_TOOL = 20;
+    int NODE_TOOL = 23;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1842,7 +1973,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeTool()
      * @generated
      */
-    int EDGE_TOOL = 21;
+    int EDGE_TOOL = 24;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1895,7 +2026,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgeReconnectionTool()
      * @generated
      */
-    int EDGE_RECONNECTION_TOOL = 22;
+    int EDGE_RECONNECTION_TOOL = 25;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1940,7 +2071,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSourceEdgeEndReconnectionTool()
      * @generated
      */
-    int SOURCE_EDGE_END_RECONNECTION_TOOL = 23;
+    int SOURCE_EDGE_END_RECONNECTION_TOOL = 26;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1985,7 +2116,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTargetEdgeEndReconnectionTool()
      * @generated
      */
-    int TARGET_EDGE_END_RECONNECTION_TOOL = 24;
+    int TARGET_EDGE_END_RECONNECTION_TOOL = 27;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2030,7 +2161,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDropTool()
      * @generated
      */
-    int DROP_TOOL = 25;
+    int DROP_TOOL = 28;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2074,7 +2205,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 26;
+    int OPERATION = 29;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2110,7 +2241,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getChangeContext()
      * @generated
      */
-    int CHANGE_CONTEXT = 27;
+    int CHANGE_CONTEXT = 30;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2154,7 +2285,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateInstance()
      * @generated
      */
-    int CREATE_INSTANCE = 28;
+    int CREATE_INSTANCE = 31;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2214,7 +2345,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSetValue()
      * @generated
      */
-    int SET_VALUE = 29;
+    int SET_VALUE = 32;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2267,7 +2398,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getUnsetValue()
      * @generated
      */
-    int UNSET_VALUE = 30;
+    int UNSET_VALUE = 33;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2320,7 +2451,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteElement()
      * @generated
      */
-    int DELETE_ELEMENT = 31;
+    int DELETE_ELEMENT = 34;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2356,7 +2487,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCreateView()
      * @generated
      */
-    int CREATE_VIEW = 32;
+    int CREATE_VIEW = 35;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2436,7 +2567,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDeleteView()
      * @generated
      */
-    int DELETE_VIEW = 33;
+    int DELETE_VIEW = 36;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2480,7 +2611,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditional()
      * @generated
      */
-    int CONDITIONAL = 34;
+    int CONDITIONAL = 37;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2515,7 +2646,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalNodeStyle()
      * @generated
      */
-    int CONDITIONAL_NODE_STYLE = 35;
+    int CONDITIONAL_NODE_STYLE = 38;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2560,7 +2691,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalEdgeStyle()
      * @generated
      */
-    int CONDITIONAL_EDGE_STYLE = 36;
+    int CONDITIONAL_EDGE_STYLE = 39;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2571,7 +2702,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__CONDITION = CONDITIONAL__CONDITION;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -2686,7 +2817,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFormDescription()
      * @generated
      */
-    int FORM_DESCRIPTION = 37;
+    int FORM_DESCRIPTION = 40;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2756,7 +2887,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDescription()
      * @generated
      */
-    int GROUP_DESCRIPTION = 38;
+    int GROUP_DESCRIPTION = 41;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2835,7 +2966,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescription()
      * @generated
      */
-    int WIDGET_DESCRIPTION = 39;
+    int WIDGET_DESCRIPTION = 42;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2880,7 +3011,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescription()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION = 40;
+    int TEXTFIELD_DESCRIPTION = 43;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2961,7 +3092,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescription()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION = 41;
+    int CHECKBOX_DESCRIPTION = 44;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3042,7 +3173,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescription()
      * @generated
      */
-    int SELECT_DESCRIPTION = 42;
+    int SELECT_DESCRIPTION = 45;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3141,7 +3272,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescription()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION = 43;
+    int MULTI_SELECT_DESCRIPTION = 46;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3240,7 +3371,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextAreaDescription()
      * @generated
      */
-    int TEXT_AREA_DESCRIPTION = 44;
+    int TEXT_AREA_DESCRIPTION = 47;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3321,7 +3452,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRichTextDescription()
      * @generated
      */
-    int RICH_TEXT_DESCRIPTION = 45;
+    int RICH_TEXT_DESCRIPTION = 48;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3384,7 +3515,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescription()
      * @generated
      */
-    int RADIO_DESCRIPTION = 46;
+    int RADIO_DESCRIPTION = 49;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3482,7 +3613,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getWidgetDescriptionStyle()
      * @generated
      */
-    int WIDGET_DESCRIPTION_STYLE = 52;
+    int WIDGET_DESCRIPTION_STYLE = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextfieldDescriptionStyleImpl
@@ -3492,7 +3623,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 53;
+    int TEXTFIELD_DESCRIPTION_STYLE = 56;
 
     /**
      * The meta object id for the
@@ -3503,7 +3634,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 54;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.CheckboxDescriptionStyleImpl
@@ -3513,7 +3644,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 55;
+    int CHECKBOX_DESCRIPTION_STYLE = 58;
 
     /**
      * The meta object id for the
@@ -3524,7 +3655,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 56;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 59;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl <em>Select
@@ -3534,7 +3665,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 57;
+    int SELECT_DESCRIPTION_STYLE = 60;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl
@@ -3544,7 +3675,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 58;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 61;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.MultiSelectDescriptionStyleImpl
@@ -3554,7 +3685,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 59;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 62;
 
     /**
      * The meta object id for the
@@ -3565,7 +3696,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 60;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 63;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.TextareaDescriptionStyleImpl
@@ -3575,7 +3706,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 61;
+    int TEXTAREA_DESCRIPTION_STYLE = 64;
 
     /**
      * The meta object id for the
@@ -3586,7 +3717,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 62;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 65;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.RadioDescriptionStyleImpl <em>Radio
@@ -3596,7 +3727,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 63;
+    int RADIO_DESCRIPTION_STYLE = 66;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalRadioDescriptionStyleImpl
@@ -3606,7 +3737,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 64;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 67;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.BarChartDescriptionImpl <em>Bar Chart
@@ -3616,7 +3747,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescription()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION = 47;
+    int BAR_CHART_DESCRIPTION = 50;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3721,7 +3852,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescription()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION = 48;
+    int PIE_CHART_DESCRIPTION = 51;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3801,7 +3932,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexboxContainerDescription()
      * @generated
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION = 49;
+    int FLEXBOX_CONTAINER_DESCRIPTION = 52;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3863,7 +3994,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescription()
      * @generated
      */
-    int BUTTON_DESCRIPTION = 50;
+    int BUTTON_DESCRIPTION = 53;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3953,7 +4084,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getImageDescription()
      * @generated
      */
-    int IMAGE_DESCRIPTION = 51;
+    int IMAGE_DESCRIPTION = 54;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4185,7 +4316,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE_OPERATION_COUNT = CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -4219,7 +4350,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__CONDITION = CONDITIONAL__CONDITION;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -4765,7 +4896,7 @@ public interface ViewPackage extends EPackage {
     int RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -4839,7 +4970,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_RADIO_DESCRIPTION_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -4872,7 +5003,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 65;
+    int BUTTON_DESCRIPTION_STYLE = 68;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4958,7 +5089,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 66;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 69;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5052,7 +5183,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getBarChartDescriptionStyle()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION_STYLE = 67;
+    int BAR_CHART_DESCRIPTION_STYLE = 70;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5129,7 +5260,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalBarChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 68;
+    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 71;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5213,7 +5344,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getPieChartDescriptionStyle()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION_STYLE = 69;
+    int PIE_CHART_DESCRIPTION_STYLE = 72;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5272,7 +5403,7 @@ public interface ViewPackage extends EPackage {
     int PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
 
     /**
-     * The feature id for the '<em><b>Stroke Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Stroke Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -5306,7 +5437,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalPieChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 70;
+    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 73;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5373,7 +5504,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH = CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
-     * The feature id for the '<em><b>Stroke Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Stroke Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -5406,7 +5537,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelDescription()
      * @generated
      */
-    int LABEL_DESCRIPTION = 71;
+    int LABEL_DESCRIPTION = 74;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5477,7 +5608,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLabelDescriptionStyle()
      * @generated
      */
-    int LABEL_DESCRIPTION_STYLE = 72;
+    int LABEL_DESCRIPTION_STYLE = 75;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5520,7 +5651,7 @@ public interface ViewPackage extends EPackage {
     int LABEL_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -5553,7 +5684,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLabelDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 73;
+    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 76;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5604,7 +5735,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_LABEL_DESCRIPTION_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -5637,7 +5768,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescription()
      * @generated
      */
-    int LINK_DESCRIPTION = 74;
+    int LINK_DESCRIPTION = 77;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5708,7 +5839,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLinkDescriptionStyle()
      * @generated
      */
-    int LINK_DESCRIPTION_STYLE = 75;
+    int LINK_DESCRIPTION_STYLE = 78;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5751,7 +5882,7 @@ public interface ViewPackage extends EPackage {
     int LINK_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -5784,7 +5915,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalLinkDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 76;
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 79;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5835,7 +5966,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_LINK_DESCRIPTION_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -5868,7 +5999,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListDescription()
      * @generated
      */
-    int LIST_DESCRIPTION = 77;
+    int LIST_DESCRIPTION = 80;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5966,7 +6097,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getListDescriptionStyle()
      * @generated
      */
-    int LIST_DESCRIPTION_STYLE = 78;
+    int LIST_DESCRIPTION_STYLE = 81;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6009,7 +6140,7 @@ public interface ViewPackage extends EPackage {
     int LIST_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -6042,7 +6173,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditionalListDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 79;
+    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 82;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6093,7 +6224,7 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_LIST_DESCRIPTION_STYLE__STRIKE_THROUGH = CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -6126,7 +6257,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDiagramPalette()
      * @generated
      */
-    int DIAGRAM_PALETTE = 80;
+    int DIAGRAM_PALETTE = 83;
 
     /**
      * The feature id for the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -6171,7 +6302,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodePalette()
      * @generated
      */
-    int NODE_PALETTE = 81;
+    int NODE_PALETTE = 84;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -6234,7 +6365,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getEdgePalette()
      * @generated
      */
-    int EDGE_PALETTE = 82;
+    int EDGE_PALETTE = 85;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -6315,7 +6446,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 83;
+    int LAYOUT_DIRECTION = 86;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
@@ -6325,7 +6456,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 84;
+    int ARROW_STYLE = 87;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -6335,7 +6466,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 85;
+    int LINE_STYLE = 88;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.NodeContainmentKind <em>Node Containment
@@ -6345,7 +6476,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 86;
+    int NODE_CONTAINMENT_KIND = 89;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -6355,7 +6486,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 87;
+    int SYNCHRONIZATION_POLICY = 90;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
@@ -6365,7 +6496,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 88;
+    int GROUP_DISPLAY_MODE = 91;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -6375,7 +6506,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 89;
+    int FLEX_DIRECTION = 92;
 
     /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6384,7 +6515,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 90;
+    int IDENTIFIER = 93;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -6394,7 +6525,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 91;
+    int INTERPRETED_EXPRESSION = 94;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6403,7 +6534,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 92;
+    int DOMAIN_TYPE = 95;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6412,7 +6543,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 93;
+    int COLOR = 96;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6420,7 +6551,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 94;
+    int LENGTH = 97;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -6443,6 +6574,93 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getView_Descriptions();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.View#getColorPalettes <em>Color Palettes</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Color Palettes</em>'.
+     * @see org.eclipse.sirius.components.view.View#getColorPalettes()
+     * @see #getView()
+     * @generated
+     */
+    EReference getView_ColorPalettes();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ColorPalette <em>Color
+     * Palette</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Color Palette</em>'.
+     * @see org.eclipse.sirius.components.view.ColorPalette
+     * @generated
+     */
+    EClass getColorPalette();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.ColorPalette#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.ColorPalette#getName()
+     * @see #getColorPalette()
+     * @generated
+     */
+    EAttribute getColorPalette_Name();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.ColorPalette#getColors <em>Colors</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Colors</em>'.
+     * @see org.eclipse.sirius.components.view.ColorPalette#getColors()
+     * @see #getColorPalette()
+     * @generated
+     */
+    EReference getColorPalette_Colors();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.FixedColor <em>Fixed Color</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Fixed Color</em>'.
+     * @see org.eclipse.sirius.components.view.FixedColor
+     * @generated
+     */
+    EClass getFixedColor();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.FixedColor#getValue
+     * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value</em>'.
+     * @see org.eclipse.sirius.components.view.FixedColor#getValue()
+     * @see #getFixedColor()
+     * @generated
+     */
+    EAttribute getFixedColor_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.UserColor <em>User Color</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>User Color</em>'.
+     * @see org.eclipse.sirius.components.view.UserColor
+     * @generated
+     */
+    EClass getUserColor();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.UserColor#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.UserColor#getName()
+     * @see #getUserColor()
+     * @generated
+     */
+    EAttribute getUserColor_Name();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.RepresentationDescription
@@ -6954,15 +7172,15 @@ public interface ViewPackage extends EPackage {
     EClass getBorderStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderColor
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderColor
      * <em>Border Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Border Color</em>'.
+     * @return the meta object for the reference '<em>Border Color</em>'.
      * @see org.eclipse.sirius.components.view.BorderStyle#getBorderColor()
      * @see #getBorderStyle()
      * @generated
      */
-    EAttribute getBorderStyle_BorderColor();
+    EReference getBorderStyle_BorderColor();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderRadius
@@ -7009,15 +7227,15 @@ public interface ViewPackage extends EPackage {
     EClass getStyle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Style#getColor
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.view.Style#getColor
      * <em>Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Color</em>'.
+     * @return the meta object for the reference '<em>Color</em>'.
      * @see org.eclipse.sirius.components.view.Style#getColor()
      * @see #getStyle()
      * @generated
      */
-    EAttribute getStyle_Color();
+    EReference getStyle_Color();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.NodeStyleDescription <em>Node Style
@@ -7039,7 +7257,7 @@ public interface ViewPackage extends EPackage {
      * @see #getNodeStyleDescription()
      * @generated
      */
-    EAttribute getNodeStyleDescription_LabelColor();
+    EReference getNodeStyleDescription_LabelColor();
 
     /**
      * Returns the meta object for the attribute
@@ -8282,28 +8500,28 @@ public interface ViewPackage extends EPackage {
     EClass getTextfieldDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle#getBackgroundColor <em>Background
      * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @return the meta object for the reference '<em>Background Color</em>'.
      * @see org.eclipse.sirius.components.view.TextfieldDescriptionStyle#getBackgroundColor()
      * @see #getTextfieldDescriptionStyle()
      * @generated
      */
-    EAttribute getTextfieldDescriptionStyle_BackgroundColor();
+    EReference getTextfieldDescriptionStyle_BackgroundColor();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle#getForegroundColor <em>Foreground
      * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @return the meta object for the reference '<em>Foreground Color</em>'.
      * @see org.eclipse.sirius.components.view.TextfieldDescriptionStyle#getForegroundColor()
      * @see #getTextfieldDescriptionStyle()
      * @generated
      */
-    EAttribute getTextfieldDescriptionStyle_ForegroundColor();
+    EReference getTextfieldDescriptionStyle_ForegroundColor();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle
@@ -8335,7 +8553,7 @@ public interface ViewPackage extends EPackage {
      * @see #getCheckboxDescriptionStyle()
      * @generated
      */
-    EAttribute getCheckboxDescriptionStyle_Color();
+    EReference getCheckboxDescriptionStyle_Color();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle
@@ -8358,28 +8576,28 @@ public interface ViewPackage extends EPackage {
     EClass getSelectDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getBackgroundColor <em>Background Color</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @return the meta object for the reference '<em>Background Color</em>'.
      * @see org.eclipse.sirius.components.view.SelectDescriptionStyle#getBackgroundColor()
      * @see #getSelectDescriptionStyle()
      * @generated
      */
-    EAttribute getSelectDescriptionStyle_BackgroundColor();
+    EReference getSelectDescriptionStyle_BackgroundColor();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getForegroundColor <em>Foreground Color</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @return the meta object for the reference '<em>Foreground Color</em>'.
      * @see org.eclipse.sirius.components.view.SelectDescriptionStyle#getForegroundColor()
      * @see #getSelectDescriptionStyle()
      * @generated
      */
-    EAttribute getSelectDescriptionStyle_ForegroundColor();
+    EReference getSelectDescriptionStyle_ForegroundColor();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle
@@ -8402,28 +8620,28 @@ public interface ViewPackage extends EPackage {
     EClass getMultiSelectDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getBackgroundColor <em>Background
      * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @return the meta object for the reference '<em>Background Color</em>'.
      * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getBackgroundColor()
      * @see #getMultiSelectDescriptionStyle()
      * @generated
      */
-    EAttribute getMultiSelectDescriptionStyle_BackgroundColor();
+    EReference getMultiSelectDescriptionStyle_BackgroundColor();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getForegroundColor <em>Foreground
      * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @return the meta object for the reference '<em>Foreground Color</em>'.
      * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getForegroundColor()
      * @see #getMultiSelectDescriptionStyle()
      * @generated
      */
-    EAttribute getMultiSelectDescriptionStyle_ForegroundColor();
+    EReference getMultiSelectDescriptionStyle_ForegroundColor();
 
     /**
      * Returns the meta object for class
@@ -8447,28 +8665,28 @@ public interface ViewPackage extends EPackage {
     EClass getTextareaDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.TextareaDescriptionStyle#getBackgroundColor <em>Background
      * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @return the meta object for the reference '<em>Background Color</em>'.
      * @see org.eclipse.sirius.components.view.TextareaDescriptionStyle#getBackgroundColor()
      * @see #getTextareaDescriptionStyle()
      * @generated
      */
-    EAttribute getTextareaDescriptionStyle_BackgroundColor();
+    EReference getTextareaDescriptionStyle_BackgroundColor();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.TextareaDescriptionStyle#getForegroundColor <em>Foreground
      * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @return the meta object for the reference '<em>Foreground Color</em>'.
      * @see org.eclipse.sirius.components.view.TextareaDescriptionStyle#getForegroundColor()
      * @see #getTextareaDescriptionStyle()
      * @generated
      */
-    EAttribute getTextareaDescriptionStyle_ForegroundColor();
+    EReference getTextareaDescriptionStyle_ForegroundColor();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle
@@ -8491,16 +8709,16 @@ public interface ViewPackage extends EPackage {
     EClass getRadioDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.RadioDescriptionStyle#getColor <em>Color</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Color</em>'.
+     * @return the meta object for the reference '<em>Color</em>'.
      * @see org.eclipse.sirius.components.view.RadioDescriptionStyle#getColor()
      * @see #getRadioDescriptionStyle()
      * @generated
      */
-    EAttribute getRadioDescriptionStyle_Color();
+    EReference getRadioDescriptionStyle_Color();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle
@@ -8523,28 +8741,28 @@ public interface ViewPackage extends EPackage {
     EClass getButtonDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle#getBackgroundColor <em>Background Color</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Background Color</em>'.
+     * @return the meta object for the reference '<em>Background Color</em>'.
      * @see org.eclipse.sirius.components.view.ButtonDescriptionStyle#getBackgroundColor()
      * @see #getButtonDescriptionStyle()
      * @generated
      */
-    EAttribute getButtonDescriptionStyle_BackgroundColor();
+    EReference getButtonDescriptionStyle_BackgroundColor();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle#getForegroundColor <em>Foreground Color</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Foreground Color</em>'.
+     * @return the meta object for the reference '<em>Foreground Color</em>'.
      * @see org.eclipse.sirius.components.view.ButtonDescriptionStyle#getForegroundColor()
      * @see #getButtonDescriptionStyle()
      * @generated
      */
-    EAttribute getButtonDescriptionStyle_ForegroundColor();
+    EReference getButtonDescriptionStyle_ForegroundColor();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle
@@ -8632,7 +8850,7 @@ public interface ViewPackage extends EPackage {
      * @see #getPieChartDescriptionStyle()
      * @generated
      */
-    EAttribute getPieChartDescriptionStyle_StrokeColor();
+    EReference getPieChartDescriptionStyle_StrokeColor();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle
@@ -8701,16 +8919,16 @@ public interface ViewPackage extends EPackage {
     EClass getLabelDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.LabelDescriptionStyle#getColor <em>Color</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Color</em>'.
+     * @return the meta object for the reference '<em>Color</em>'.
      * @see org.eclipse.sirius.components.view.LabelDescriptionStyle#getColor()
      * @see #getLabelDescriptionStyle()
      * @generated
      */
-    EAttribute getLabelDescriptionStyle_Color();
+    EReference getLabelDescriptionStyle_Color();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle
@@ -8779,16 +8997,16 @@ public interface ViewPackage extends EPackage {
     EClass getLinkDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.LinkDescriptionStyle#getColor <em>Color</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Color</em>'.
+     * @return the meta object for the reference '<em>Color</em>'.
      * @see org.eclipse.sirius.components.view.LinkDescriptionStyle#getColor()
      * @see #getLinkDescriptionStyle()
      * @generated
      */
-    EAttribute getLinkDescriptionStyle_Color();
+    EReference getLinkDescriptionStyle_Color();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle
@@ -8893,16 +9111,16 @@ public interface ViewPackage extends EPackage {
     EClass getListDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
+     * Returns the meta object for the reference
      * '{@link org.eclipse.sirius.components.view.ListDescriptionStyle#getColor <em>Color</em>}'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Color</em>'.
+     * @return the meta object for the reference '<em>Color</em>'.
      * @see org.eclipse.sirius.components.view.ListDescriptionStyle#getColor()
      * @see #getListDescriptionStyle()
      * @generated
      */
-    EAttribute getListDescriptionStyle_Color();
+    EReference getListDescriptionStyle_Color();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalListDescriptionStyle
@@ -9541,6 +9759,76 @@ public interface ViewPackage extends EPackage {
         EReference VIEW__DESCRIPTIONS = eINSTANCE.getView_Descriptions();
 
         /**
+         * The meta object literal for the '<em><b>Color Palettes</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference VIEW__COLOR_PALETTES = eINSTANCE.getView_ColorPalettes();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl <em>Color
+         * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.ColorPaletteImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColorPalette()
+         * @generated
+         */
+        EClass COLOR_PALETTE = eINSTANCE.getColorPalette();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute COLOR_PALETTE__NAME = eINSTANCE.getColorPalette_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Colors</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference COLOR_PALETTE__COLORS = eINSTANCE.getColorPalette_Colors();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.FixedColorImpl <em>Fixed
+         * Color</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.FixedColorImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFixedColor()
+         * @generated
+         */
+        EClass FIXED_COLOR = eINSTANCE.getFixedColor();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FIXED_COLOR__VALUE = eINSTANCE.getFixedColor_Value();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.UserColorImpl <em>User
+         * Color</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.UserColorImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getUserColor()
+         * @generated
+         */
+        EClass USER_COLOR = eINSTANCE.getUserColor();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute USER_COLOR__NAME = eINSTANCE.getUserColor_Name();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl
          * <em>Representation Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -9923,12 +10211,12 @@ public interface ViewPackage extends EPackage {
         EClass BORDER_STYLE = eINSTANCE.getBorderStyle();
 
         /**
-         * The meta object literal for the '<em><b>Border Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Border Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute BORDER_STYLE__BORDER_COLOR = eINSTANCE.getBorderStyle_BorderColor();
+        EReference BORDER_STYLE__BORDER_COLOR = eINSTANCE.getBorderStyle_BorderColor();
 
         /**
          * The meta object literal for the '<em><b>Border Radius</b></em>' attribute feature. <!-- begin-user-doc -->
@@ -9965,12 +10253,12 @@ public interface ViewPackage extends EPackage {
         EClass STYLE = eINSTANCE.getStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute STYLE__COLOR = eINSTANCE.getStyle_Color();
+        EReference STYLE__COLOR = eINSTANCE.getStyle_Color();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.NodeStyleDescription <em>Node
@@ -9983,12 +10271,12 @@ public interface ViewPackage extends EPackage {
         EClass NODE_STYLE_DESCRIPTION = eINSTANCE.getNodeStyleDescription();
 
         /**
-         * The meta object literal for the '<em><b>Label Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Label Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute NODE_STYLE_DESCRIPTION__LABEL_COLOR = eINSTANCE.getNodeStyleDescription_LabelColor();
+        EReference NODE_STYLE_DESCRIPTION__LABEL_COLOR = eINSTANCE.getNodeStyleDescription_LabelColor();
 
         /**
          * The meta object literal for the '<em><b>Width Computation Expression</b></em>' attribute feature. <!--
@@ -10963,20 +11251,20 @@ public interface ViewPackage extends EPackage {
         EClass TEXTFIELD_DESCRIPTION_STYLE = eINSTANCE.getTextfieldDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getTextfieldDescriptionStyle_BackgroundColor();
+        EReference TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getTextfieldDescriptionStyle_BackgroundColor();
 
         /**
-         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getTextfieldDescriptionStyle_ForegroundColor();
+        EReference TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getTextfieldDescriptionStyle_ForegroundColor();
 
         /**
          * The meta object literal for the
@@ -11000,12 +11288,12 @@ public interface ViewPackage extends EPackage {
         EClass CHECKBOX_DESCRIPTION_STYLE = eINSTANCE.getCheckboxDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute CHECKBOX_DESCRIPTION_STYLE__COLOR = eINSTANCE.getCheckboxDescriptionStyle_Color();
+        EReference CHECKBOX_DESCRIPTION_STYLE__COLOR = eINSTANCE.getCheckboxDescriptionStyle_Color();
 
         /**
          * The meta object literal for the
@@ -11029,20 +11317,20 @@ public interface ViewPackage extends EPackage {
         EClass SELECT_DESCRIPTION_STYLE = eINSTANCE.getSelectDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_BackgroundColor();
+        EReference SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_BackgroundColor();
 
         /**
-         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_ForegroundColor();
+        EReference SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_ForegroundColor();
 
         /**
          * The meta object literal for the
@@ -11067,20 +11355,20 @@ public interface ViewPackage extends EPackage {
         EClass MULTI_SELECT_DESCRIPTION_STYLE = eINSTANCE.getMultiSelectDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_BackgroundColor();
+        EReference MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_BackgroundColor();
 
         /**
-         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_ForegroundColor();
+        EReference MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_ForegroundColor();
 
         /**
          * The meta object literal for the
@@ -11104,20 +11392,20 @@ public interface ViewPackage extends EPackage {
         EClass TEXTAREA_DESCRIPTION_STYLE = eINSTANCE.getTextareaDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getTextareaDescriptionStyle_BackgroundColor();
+        EReference TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getTextareaDescriptionStyle_BackgroundColor();
 
         /**
-         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getTextareaDescriptionStyle_ForegroundColor();
+        EReference TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getTextareaDescriptionStyle_ForegroundColor();
 
         /**
          * The meta object literal for the
@@ -11141,12 +11429,12 @@ public interface ViewPackage extends EPackage {
         EClass RADIO_DESCRIPTION_STYLE = eINSTANCE.getRadioDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute RADIO_DESCRIPTION_STYLE__COLOR = eINSTANCE.getRadioDescriptionStyle_Color();
+        EReference RADIO_DESCRIPTION_STYLE__COLOR = eINSTANCE.getRadioDescriptionStyle_Color();
 
         /**
          * The meta object literal for the
@@ -11170,20 +11458,20 @@ public interface ViewPackage extends EPackage {
         EClass BUTTON_DESCRIPTION_STYLE = eINSTANCE.getButtonDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Background Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getButtonDescriptionStyle_BackgroundColor();
+        EReference BUTTON_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getButtonDescriptionStyle_BackgroundColor();
 
         /**
-         * The meta object literal for the '<em><b>Foreground Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Foreground Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getButtonDescriptionStyle_ForegroundColor();
+        EReference BUTTON_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getButtonDescriptionStyle_ForegroundColor();
 
         /**
          * The meta object literal for the
@@ -11252,12 +11540,12 @@ public interface ViewPackage extends EPackage {
         EAttribute PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH = eINSTANCE.getPieChartDescriptionStyle_StrokeWidth();
 
         /**
-         * The meta object literal for the '<em><b>Stroke Color</b></em>' attribute feature. <!-- begin-user-doc -->
+         * The meta object literal for the '<em><b>Stroke Color</b></em>' reference feature. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR = eINSTANCE.getPieChartDescriptionStyle_StrokeColor();
+        EReference PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR = eINSTANCE.getPieChartDescriptionStyle_StrokeColor();
 
         /**
          * The meta object literal for the
@@ -11315,12 +11603,12 @@ public interface ViewPackage extends EPackage {
         EClass LABEL_DESCRIPTION_STYLE = eINSTANCE.getLabelDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute LABEL_DESCRIPTION_STYLE__COLOR = eINSTANCE.getLabelDescriptionStyle_Color();
+        EReference LABEL_DESCRIPTION_STYLE__COLOR = eINSTANCE.getLabelDescriptionStyle_Color();
 
         /**
          * The meta object literal for the
@@ -11378,12 +11666,12 @@ public interface ViewPackage extends EPackage {
         EClass LINK_DESCRIPTION_STYLE = eINSTANCE.getLinkDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute LINK_DESCRIPTION_STYLE__COLOR = eINSTANCE.getLinkDescriptionStyle_Color();
+        EReference LINK_DESCRIPTION_STYLE__COLOR = eINSTANCE.getLinkDescriptionStyle_Color();
 
         /**
          * The meta object literal for the
@@ -11465,12 +11753,12 @@ public interface ViewPackage extends EPackage {
         EClass LIST_DESCRIPTION_STYLE = eINSTANCE.getListDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute LIST_DESCRIPTION_STYLE__COLOR = eINSTANCE.getListDescriptionStyle_Color();
+        EReference LIST_DESCRIPTION_STYLE__COLOR = eINSTANCE.getListDescriptionStyle_Color();
 
         /**
          * The meta object literal for the

@@ -125,7 +125,7 @@ public class SelectDescriptionStyleItemProvider extends WidgetDescriptionStyleIt
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_SelectDescriptionStyle_backgroundColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SelectDescriptionStyle_backgroundColor_feature", "_UI_SelectDescriptionStyle_type"),
-                ViewPackage.Literals.SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, true, false, false, null, null, null));
     }
 
     /**
@@ -137,7 +137,7 @@ public class SelectDescriptionStyleItemProvider extends WidgetDescriptionStyleIt
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_SelectDescriptionStyle_foregroundColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SelectDescriptionStyle_foregroundColor_feature", "_UI_SelectDescriptionStyle_type"),
-                ViewPackage.Literals.SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, true, false, false, null, null, null));
     }
 
     /**

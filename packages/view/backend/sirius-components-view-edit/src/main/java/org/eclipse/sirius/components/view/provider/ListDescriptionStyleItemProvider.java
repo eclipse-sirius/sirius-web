@@ -124,7 +124,7 @@ public class ListDescriptionStyleItemProvider extends WidgetDescriptionStyleItem
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_ListDescriptionStyle_color_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_ListDescriptionStyle_color_feature", "_UI_ListDescriptionStyle_type"), ViewPackage.Literals.LIST_DESCRIPTION_STYLE__COLOR,
-                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                true, false, false, null, null, null));
     }
 
     /**

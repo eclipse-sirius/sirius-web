@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -27,12 +30,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class OperationalPerimeterNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public OperationalPerimeterNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#bdbdbd");
-        nodeStyle.setBorderColor("#424242");
-        nodeStyle.setLabelColor("1212121");
+        nodeStyle.setColor(this.colorProvider.getColor("color_gray_2"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray_2"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalPerimeter");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalPerimeters");

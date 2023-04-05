@@ -38,23 +38,22 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Color</em>' attribute.
-     * @see #setLabelColor(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyleDescription_LabelColor()
      * @model default="black"
      * @generated
+     * @see #setLabelColor(UserColor)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getNodeStyleDescription_LabelColor()
      */
-    String getLabelColor();
+    UserColor getLabelColor();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getLabelColor <em>Label
-     * Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Label Color</em>' attribute.
-     * @see #getLabelColor()
+     * @param value the new value of the '<em>Label Color</em>' reference.
      * @generated
+     * @see #getLabelColor()
      */
-    void setLabelColor(String value);
+    void setLabelColor(UserColor value);
 
     /**
      * Returns the value of the '<em><b>Width Computation Expression</b></em>' attribute. The default value is

@@ -125,7 +125,7 @@ public class MultiSelectDescriptionStyleItemProvider extends WidgetDescriptionSt
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_MultiSelectDescriptionStyle_backgroundColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescriptionStyle_backgroundColor_feature", "_UI_MultiSelectDescriptionStyle_type"),
-                ViewPackage.Literals.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, true, false, false, null, null, null));
     }
 
     /**
@@ -137,7 +137,7 @@ public class MultiSelectDescriptionStyleItemProvider extends WidgetDescriptionSt
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_MultiSelectDescriptionStyle_foregroundColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescriptionStyle_foregroundColor_feature", "_UI_MultiSelectDescriptionStyle_type"),
-                ViewPackage.Literals.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, true, false, false, null, null, null));
     }
 
     /**

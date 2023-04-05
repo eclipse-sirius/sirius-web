@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 
@@ -25,7 +24,7 @@ import org.eclipse.sirius.components.view.DiagramElementDescription;
  * @author sbegaudeau
  */
 public interface IDiagramElementDescriptionProvider<T extends DiagramElementDescription> {
-    EObject create();
+    T create();
 
     default void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
         // Do nothing by default

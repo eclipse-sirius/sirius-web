@@ -14,9 +14,11 @@ package org.eclipse.sirius.components.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
@@ -35,16 +37,6 @@ import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
  */
 public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl implements ConditionalCheckboxDescriptionStyle {
     /**
-     * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String COLOR_EDEFAULT = null;
-
-    /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -52,7 +44,7 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
      * @generated
      * @ordered
      */
-    protected String color = COLOR_EDEFAULT;
+    protected UserColor color;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -79,7 +71,24 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
      * @generated
      */
     @Override
-    public String getColor() {
+    public UserColor getColor() {
+        if (this.color != null && this.color.eIsProxy()) {
+            InternalEObject oldColor = (InternalEObject) this.color;
+            this.color = (UserColor) this.eResolveProxy(oldColor);
+            if (this.color != oldColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR, oldColor, this.color));
+            }
+        }
+        return this.color;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetColor() {
         return this.color;
     }
 
@@ -89,8 +98,8 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
      * @generated
      */
     @Override
-    public void setColor(String newColor) {
-        String oldColor = this.color;
+    public void setColor(UserColor newColor) {
+        UserColor oldColor = this.color;
         this.color = newColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR, oldColor, this.color));
@@ -105,7 +114,9 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                return this.getColor();
+                if (resolve)
+                    return this.getColor();
+                return this.basicGetColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -119,7 +130,7 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                this.setColor((String) newValue);
+                this.setColor((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -134,7 +145,7 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                this.setColor(COLOR_EDEFAULT);
+                this.setColor((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -149,7 +160,7 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+                return this.color != null;
         }
         return super.eIsSet(featureID);
     }
@@ -200,23 +211,6 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
-
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: ");
-        result.append(this.color);
-        result.append(')');
-        return result.toString();
     }
 
 } // ConditionalCheckboxDescriptionStyleImpl

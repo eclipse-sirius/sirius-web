@@ -20,5 +20,5 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * @author sbegaudeau
  */
 public interface IRepresentationDescriptionProvider {
-    RepresentationDescription create();
+    RepresentationDescription create(IColorProvider colorProvider);
 }

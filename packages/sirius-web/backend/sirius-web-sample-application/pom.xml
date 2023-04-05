@@ -196,6 +196,12 @@
 			<version>1.15.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tests</artifactId>
+			<version>2023.4.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

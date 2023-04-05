@@ -25,13 +25,18 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
@@ -48,12 +53,16 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.BorderStyle;
+import org.eclipse.sirius.components.view.ColorPalette;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
@@ -144,7 +153,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("IconLabel Node Style")
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getColor).orElse(UNNAMED))
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class)
+                                                                 .map(NodeStyleDescription::getColor)
+                                                                 .filter(FixedColor.class::isInstance)
+                                                                 .map(FixedColor.class::cast)
+                                                                 .map(FixedColor::getValue)
+                                                                 .orElse(UNNAMED))
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(this.getTargetObjectIdProvider())
@@ -176,7 +190,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         return FormDescription.newFormDescription(formDescriptionId)
                 .label("Rectangular Node Style")
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getColor).orElse(UNNAMED))
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class)
+                                                                 .map(NodeStyleDescription::getColor)
+                                                                 .filter(FixedColor.class::isInstance)
+                                                                 .map(FixedColor.class::cast)
+                                                                 .map(FixedColor::getValue)
+                                                                 .orElse(UNNAMED))
                 .canCreatePredicate(variableManager -> true)
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(this.getTargetObjectIdProvider())
@@ -187,81 +206,80 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private List<AbstractControlDescription> getGeneralControlDescription() {
-        // @formatter:off
-        List<AbstractControlDescription> controls = List.of(
+        return List.of(
                 this.createExpressionField("nodestyle.widthExpression", "Width Expression",
-                    style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
-                    (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
-                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
+                                           style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
+                                           (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
+                                           ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
                 this.createExpressionField("nodestyle.heightExpression", "Height Expression",
-                        style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
-                        (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
-                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION),
+                                           style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
+                                           (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
+                                           ViewPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION),
                 this.createCheckbox("nodestyle.showIcon", "Show Icon",
-                    style -> ((NodeStyleDescription) style).isShowIcon(),
-                    (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
-                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
-                this.createTextField("nodestyle.labelColor", "Label Color",
-                    style -> ((NodeStyleDescription) style).getLabelColor(),
-                    (style, newLabelColor) -> ((NodeStyleDescription) style).setLabelColor(newLabelColor),
-                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
-                this.createTextField("nodestyle.color", "Color",
-                    style -> ((NodeStyleDescription) style).getColor(),
-                    (style, newColor) -> ((NodeStyleDescription) style).setColor(newColor),
-                    ViewPackage.Literals.STYLE__COLOR),
-                this.createTextField("nodestyle.borderColor", "Border Color",
-                    style -> ((NodeStyleDescription) style).getBorderColor(),
-                    (style, newColor) -> ((NodeStyleDescription) style).setBorderColor(newColor),
-                    ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR),
+                                    style -> ((NodeStyleDescription) style).isShowIcon(),
+                                    (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
+                                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
+                this.createUserColorSelectionField("nodestyle.labelColor", "Label Color", ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR
+                        , NodeStyleDescription.class
+                        , NodeStyleDescription::getLabelColor
+                        , NodeStyleDescription::setLabelColor),
+                this.createUserColorSelectionField("nodestyle.color", "Color", ViewPackage.Literals.STYLE__COLOR
+                        , NodeStyleDescription.class
+                        , NodeStyleDescription::getColor
+                        , NodeStyleDescription::setColor),
+                this.createUserColorSelectionField("nodestyle.borderColor"
+                        , "Border Color"
+                        , ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR
+                        , BorderStyle.class
+                        , BorderStyle::getBorderColor
+                        , BorderStyle::setBorderColor),
                 this.createTextField("nodestyle.borderRadius", "Border Radius",
-                    style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
-                    (style, newBorderRadius) -> {
-                        try {
-                            ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
-                        } catch (NumberFormatException nfe) {
-                            // Ignore.
-                        }
-                    },
-                    ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
+                                     style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
+                                     (style, newBorderRadius) -> {
+                                         try {
+                                             ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                                         } catch (NumberFormatException nfe) {
+                                             // Ignore.
+                                         }
+                                     },
+                                     ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("nodestyle.borderSize", "Border Size",
-                    style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
-                    (style, newBorderSize) -> {
-                        try {
-                            ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
-                        } catch (NumberFormatException nfe) {
-                            // Ignore.
-                        }
-                    },
-                    ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
+                                     style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
+                                     (style, newBorderSize) -> {
+                                         try {
+                                             ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
+                                         } catch (NumberFormatException nfe) {
+                                             // Ignore.
+                                         }
+                                     },
+                                     ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
                 this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE),
                 this.createTextField("nodestyle.fontSize", "Font Size",
-                    style -> String.valueOf(((LabelStyle) style).getFontSize()),
-                    (style, newColor) -> {
-                        try {
-                            ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
-                        } catch (NumberFormatException nfe) {
-                            // Ignore.
-                        }
-                    },
-                    ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
+                                     style -> String.valueOf(((LabelStyle) style).getFontSize()),
+                                     (style, newColor) -> {
+                                         try {
+                                             ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
+                                         } catch (NumberFormatException nfe) {
+                                             // Ignore.
+                                         }
+                                     },
+                                     ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
                 this.createCheckbox("nodestyle.italic", "Italic",
-                    style -> ((LabelStyle) style).isItalic(),
-                    (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
-                    ViewPackage.Literals.LABEL_STYLE__ITALIC),
+                                    style -> ((LabelStyle) style).isItalic(),
+                                    (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
+                                    ViewPackage.Literals.LABEL_STYLE__ITALIC),
                 this.createCheckbox("nodestyle.bold", "Bold",
-                    style -> ((LabelStyle) style).isBold(),
-                    (style, newBold) -> ((LabelStyle) style).setBold(newBold),
-                    ViewPackage.Literals.LABEL_STYLE__BOLD),
+                                    style -> ((LabelStyle) style).isBold(),
+                                    (style, newBold) -> ((LabelStyle) style).setBold(newBold),
+                                    ViewPackage.Literals.LABEL_STYLE__BOLD),
                 this.createCheckbox("nodestyle.underline", "Underline",
-                    style -> ((LabelStyle) style).isUnderline(),
-                    (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
-                    ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
+                                    style -> ((LabelStyle) style).isUnderline(),
+                                    (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
+                                    ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
                 this.createCheckbox("nodestyle.strikeThrough", "Strike Through",
-                    style -> ((LabelStyle) style).isStrikeThrough(),
-                    (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
-                    ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
-        // @formatter:on
-        return controls;
+                                    style -> ((LabelStyle) style).isStrikeThrough(),
+                                    (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
+                                    ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
     }
 
     private Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -402,6 +420,59 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .messageProvider(this::messageProvider)
                                 .build();
         // @formatter:on
+    }
+
+    private <T> SelectDescription createUserColorSelectionField(String id, String label, Object feature, Class<T> styleType
+            , Function<T, UserColor> colorGetter, BiConsumer<T, UserColor> colorSetter) {
+        return SelectDescription.newSelectDescription(id)
+                                .idProvider(variableManager -> id)
+                                .labelProvider(variableManager -> label)
+                                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, styleType)
+                                                                                 .map(colorGetter)
+                                                                                 .map(UserColor::getName)
+                                                                                 .orElse(EMPTY))
+                                .optionsProvider(variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList())
+                                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, UserColor.class)
+                                                                                    .map(UserColor::getName)
+                                                                                    .orElse(EMPTY))
+                                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, UserColor.class)
+                                                                                       .map(UserColor::getName)
+                                                                                       .orElse(EMPTY))
+                                .newValueHandler((variableManager, newValue) ->
+                                                         variableManager.get(VariableManager.SELF, styleType)
+                                                                        .<IStatus>map((style) -> {
+                                                                            if (newValue != null) {
+                                                                                this.getColorsFromColorPalettesStream(variableManager)
+                                                                                    .filter(userColor -> newValue.equals(userColor.getName()))
+                                                                                    .findFirst()
+                                                                                    .ifPresent(userColor -> colorSetter.accept(style, userColor));
+                                                                            }
+                                                                            return new Success();
+                                                                        }).orElseGet(() -> new Failure(""))
+                                )
+                                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                                .kindProvider(this::kindProvider)
+                                .messageProvider(this::messageProvider)
+                                .build();
+    }
+
+    private Stream<UserColor> getColorsFromColorPalettesStream(VariableManager variableManager) {
+        return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                              .filter(EditingContext.class::isInstance)
+                              .map(EditingContext.class::cast)
+                              .map(EditingContext::getDomain)
+                              .map(EditingDomain::getResourceSet)
+                              .map(ResourceSet::getResources)
+                              .stream()
+                              .flatMap(EList::stream)
+                              .map(Resource::getContents)
+                              .flatMap(EList::stream)
+                              .filter(View.class::isInstance)
+                              .map(View.class::cast)
+                              .map(View::getColorPalettes)
+                              .flatMap(EList::stream)
+                              .map(ColorPalette::getColors)
+                              .flatMap(EList::stream);
     }
 
     private SelectDescription createShapeSelectionField(Object feature) {

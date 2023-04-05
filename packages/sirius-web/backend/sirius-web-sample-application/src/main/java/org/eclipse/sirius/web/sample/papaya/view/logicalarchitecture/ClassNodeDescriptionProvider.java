@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -30,12 +33,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public ClassNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#1976D2");
-        nodeStyle.setBorderColor("#0d47a1");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(false);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
@@ -56,9 +65,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodePalette.getNodeTools().add(newOperationNodeTool);
 
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor("#00796B");
-        abstractNodeStyle.setBorderColor("#004D40");
-        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
+        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         abstractNodeStyle.setWithHeader(false);
 
         var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
@@ -103,9 +112,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription attributesNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#1976D2");
-        nodeStyle.setBorderColor("#0d47a1");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setBorderRadius(0);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
@@ -123,9 +132,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setPalette(nodePalette);
 
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor("#00796B");
-        abstractNodeStyle.setBorderColor("#004D40");
-        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
+        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         abstractNodeStyle.setWithHeader(false);
 
         var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
@@ -138,9 +147,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription attributeNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("");
-        nodeStyle.setBorderColor("");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Attribute");
         nodeDescription.setSemanticCandidatesExpression("aql:self.attributes");
@@ -152,9 +161,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription operationsNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#1976D2");
-        nodeStyle.setBorderColor("#0d47a1");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setBorderRadius(0);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
@@ -172,9 +181,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setPalette(nodePalette);
 
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor("#00796B");
-        abstractNodeStyle.setBorderColor("#004D40");
-        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
+        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         abstractNodeStyle.setWithHeader(false);
 
         var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
@@ -187,9 +196,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeDescription operationNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("");
-        nodeStyle.setBorderColor("");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Operation");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");

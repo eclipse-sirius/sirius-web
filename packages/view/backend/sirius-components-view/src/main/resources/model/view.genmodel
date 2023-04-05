@@ -62,6 +62,17 @@
     <genDataTypes ecoreDataType="view.ecore#//Length"/>
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/colorPalettes"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//ColorPalette">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ColorPalette/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ColorPalette/colors"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//FixedColor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//FixedColor/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//UserColor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//UserColor/name"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//RepresentationDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/name"/>
@@ -115,16 +126,16 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelStyle/strikeThrough"/>
     </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//BorderStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//BorderStyle/borderColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderRadius"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderSize"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//BorderStyle/borderLineStyle"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//Style">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Style/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//Style/color"/>
     </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//NodeStyleDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyleDescription/labelColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//NodeStyleDescription/labelColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyleDescription/widthComputationExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyleDescription/heightComputationExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//NodeStyleDescription/showIcon"/>
@@ -292,36 +303,36 @@
     </genClasses>
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextfieldDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/backgroundColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescriptionStyle/backgroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//TextfieldDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalTextfieldDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//CheckboxDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//CheckboxDescriptionStyle/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//CheckboxDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalCheckboxDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//SelectDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescriptionStyle/backgroundColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//SelectDescriptionStyle/backgroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//SelectDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalSelectDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//MultiSelectDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescriptionStyle/backgroundColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescriptionStyle/backgroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalMultiSelectDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextareaDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextareaDescriptionStyle/backgroundColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextareaDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//TextareaDescriptionStyle/backgroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//TextareaDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalTextareaDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//RadioDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RadioDescriptionStyle/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//RadioDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalRadioDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//ButtonDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ButtonDescriptionStyle/backgroundColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ButtonDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//ButtonDescriptionStyle/backgroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//ButtonDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalButtonDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//BarChartDescriptionStyle">
@@ -331,7 +342,7 @@
     <genClasses ecoreClass="view.ecore#//PieChartDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescriptionStyle/colors"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescriptionStyle/strokeWidth"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PieChartDescriptionStyle/strokeColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//PieChartDescriptionStyle/strokeColor"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalPieChartDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//LabelDescription">
@@ -340,7 +351,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//LabelDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//LabelDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelDescriptionStyle/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//LabelDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalLabelDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//LinkDescription">
@@ -349,7 +360,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//LinkDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//LinkDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LinkDescriptionStyle/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//LinkDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalLinkDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//ListDescription">
@@ -361,7 +372,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//ListDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ListDescriptionStyle">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ListDescriptionStyle/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//ListDescriptionStyle/color"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalListDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//DiagramPalette">

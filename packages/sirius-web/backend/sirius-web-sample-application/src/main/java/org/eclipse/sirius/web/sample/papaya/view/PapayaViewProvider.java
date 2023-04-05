@@ -14,8 +14,10 @@ package org.eclipse.sirius.web.sample.papaya.view;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramPalette;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.View;
@@ -71,30 +73,34 @@ public class PapayaViewProvider {
 
         view.getDescriptions().add(this.diagramDescription);
 
+        view.getColorPalettes().add(this.createColorPalette());
+
+        IColorProvider colorProvider = new ColorProvider(view);
+
         var cache = new PapayaViewCache();
         // @formatter:off
         var diagramElementDescriptionProviders = List.of(
-                new OperationalEntityNodeDescriptionProvider(),
-                new OperationalPerimeterNodeDescriptionProvider(),
-                new OperationalActorNodeDescriptionProvider(),
-                new OperationalActivityNodeDescriptionProvider(),
-                new InteractionEdgeDescriptionProvider(),
-                new RealizedByEdgeDescriptionProvider(),
-                new ComponentNodeDescriptionProvider(),
-                new ProvidedServiceNodeDescriptionProvider(),
-                new RequiredServiceNodeDescriptionProvider(),
-                new PackageNodeDescriptionProvider(),
-                new ClassNodeDescriptionProvider(),
-                new InterfaceNodeDescriptionProvider(),
-                new EnumNodeDescriptionProvider(),
-                new DataTypeNodeDescriptionProvider(),
-                new DependsOnEdgeDescriptionProvider(),
-                new FulfillsContractEdgeDescriptionProvider(),
-                new ExtendsClassEdgeDescriptionProvider(),
-                new ReferencesClassEdgeDescriptionProvider(),
-                new ImplementsInterfaceEdgeDescriptionProvider(),
-                new ExtendsInterfaceEdgeDescriptionProvider(),
-                new ImplementsInterfaceEdgeDescriptionProvider()
+                new OperationalEntityNodeDescriptionProvider(colorProvider),
+                new OperationalPerimeterNodeDescriptionProvider(colorProvider),
+                new OperationalActorNodeDescriptionProvider(colorProvider),
+                new OperationalActivityNodeDescriptionProvider(colorProvider),
+                new InteractionEdgeDescriptionProvider(colorProvider),
+                new RealizedByEdgeDescriptionProvider(colorProvider),
+                new ComponentNodeDescriptionProvider(colorProvider),
+                new ProvidedServiceNodeDescriptionProvider(colorProvider),
+                new RequiredServiceNodeDescriptionProvider(colorProvider),
+                new PackageNodeDescriptionProvider(colorProvider),
+                new ClassNodeDescriptionProvider(colorProvider),
+                new InterfaceNodeDescriptionProvider(colorProvider),
+                new EnumNodeDescriptionProvider(colorProvider),
+                new DataTypeNodeDescriptionProvider(colorProvider),
+                new DependsOnEdgeDescriptionProvider(colorProvider),
+                new FulfillsContractEdgeDescriptionProvider(colorProvider),
+                new ExtendsClassEdgeDescriptionProvider(colorProvider),
+                new ReferencesClassEdgeDescriptionProvider(colorProvider),
+                new ImplementsInterfaceEdgeDescriptionProvider(colorProvider),
+                new ExtendsInterfaceEdgeDescriptionProvider(colorProvider),
+                new ImplementsInterfaceEdgeDescriptionProvider(colorProvider)
         );
         // @formatter:on
 
@@ -116,10 +122,60 @@ public class PapayaViewProvider {
         newOperationalActorNodeTool.setName("New Operational Actor");
         palette.getNodeTools().add(newOperationalActorNodeTool);
 
-        var classDiagramDescription = new ClassDiagramDescriptionProvider().create();
+        var classDiagramDescription = new ClassDiagramDescriptionProvider().create(colorProvider);
         view.getDescriptions().add(classDiagramDescription);
 
         return view;
+    }
+
+    private ColorPalette createColorPalette() {
+        var colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+
+        colorPalette.getColors().add(this.createFixedColor("color_empty", ""));
+        colorPalette.getColors().add(this.createFixedColor("color_white", "white"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue", "#1976D2"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue_2", "#1a237e"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue_3", "#3f51b5"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue_4", "#b0bec5"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue_5", "#0097a7"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue_6", "#0d47a1"));
+        colorPalette.getColors().add(this.createFixedColor("color_blue_7", "#d1c4e9"));
+        colorPalette.getColors().add(this.createFixedColor("color_green", "#00796B"));
+        colorPalette.getColors().add(this.createFixedColor("color_green_2", "#1b5e20"));
+        colorPalette.getColors().add(this.createFixedColor("color_green_3", "#26a69a"));
+        colorPalette.getColors().add(this.createFixedColor("color_black", "#212121"));
+        colorPalette.getColors().add(this.createFixedColor("color_orange", "#ffcc80"));
+        colorPalette.getColors().add(this.createFixedColor("color_gray", "#e0e0e0"));
+        colorPalette.getColors().add(this.createFixedColor("color_gray_2", "#bdbdbd"));
+        colorPalette.getColors().add(this.createFixedColor("color_red", "#fb8c00"));
+
+
+        colorPalette.getColors().add(this.createFixedColor("background_green", "#004D40"));
+
+        colorPalette.getColors().add(this.createFixedColor("border_empty", ""));
+        colorPalette.getColors().add(this.createFixedColor("border_gray", "#616161"));
+        colorPalette.getColors().add(this.createFixedColor("border_gray_2", "#424242"));
+        colorPalette.getColors().add(this.createFixedColor("border_blue", "#0d47a1"));
+        colorPalette.getColors().add(this.createFixedColor("border_blue_2", "#1a237e"));
+        colorPalette.getColors().add(this.createFixedColor("border_blue_3", "#5e35b1"));
+        colorPalette.getColors().add(this.createFixedColor("border_blue_4", "#455a64"));
+        colorPalette.getColors().add(this.createFixedColor("border_blue_5", "#006064"));
+        colorPalette.getColors().add(this.createFixedColor("border_orange", "#fb8c00"));
+        colorPalette.getColors().add(this.createFixedColor("border_green", "#004D40"));
+        colorPalette.getColors().add(this.createFixedColor("border_green_2", "#00695c"));
+
+        colorPalette.getColors().add(this.createFixedColor("label_white", "white"));
+        colorPalette.getColors().add(this.createFixedColor("label_black", "#212121"));
+
+        return colorPalette;
+    }
+
+    private FixedColor createFixedColor(String name, String value) {
+        var fixedColor = ViewFactory.eINSTANCE.createFixedColor();
+        fixedColor.setName(name);
+        fixedColor.setValue(value);
+
+        return fixedColor;
     }
 
     private NodeTool createNewOperationalEntityTool(PapayaViewBuilder builder, NodeDescription nodeDescription) {

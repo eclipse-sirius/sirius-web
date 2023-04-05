@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getDescriptions <em>Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getColorPalettes <em>Color Palettes</em>}</li>
  * </ul>
  *
  * @generated
@@ -46,6 +48,16 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
      * @ordered
      */
     protected EList<RepresentationDescription> descriptions;
+
+    /**
+     * The cached value of the '{@link #getColorPalettes() <em>Color Palettes</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getColorPalettes()
+     * @generated
+     * @ordered
+     */
+    protected EList<ColorPalette> colorPalettes;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -85,10 +97,25 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
      * @generated
      */
     @Override
+    public EList<ColorPalette> getColorPalettes() {
+        if (this.colorPalettes == null) {
+            this.colorPalettes = new EObjectContainmentEList<>(ColorPalette.class, this, ViewPackage.VIEW__COLOR_PALETTES);
+        }
+        return this.colorPalettes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ViewPackage.VIEW__DESCRIPTIONS:
                 return ((InternalEList<?>) this.getDescriptions()).basicRemove(otherEnd, msgs);
+            case ViewPackage.VIEW__COLOR_PALETTES:
+                return ((InternalEList<?>) this.getColorPalettes()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -103,6 +130,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
         switch (featureID) {
             case ViewPackage.VIEW__DESCRIPTIONS:
                 return this.getDescriptions();
+            case ViewPackage.VIEW__COLOR_PALETTES:
+                return this.getColorPalettes();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -120,6 +149,10 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
                 this.getDescriptions().clear();
                 this.getDescriptions().addAll((Collection<? extends RepresentationDescription>) newValue);
                 return;
+            case ViewPackage.VIEW__COLOR_PALETTES:
+                this.getColorPalettes().clear();
+                this.getColorPalettes().addAll((Collection<? extends ColorPalette>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -135,6 +168,9 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
             case ViewPackage.VIEW__DESCRIPTIONS:
                 this.getDescriptions().clear();
                 return;
+            case ViewPackage.VIEW__COLOR_PALETTES:
+                this.getColorPalettes().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -149,6 +185,8 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
         switch (featureID) {
             case ViewPackage.VIEW__DESCRIPTIONS:
                 return this.descriptions != null && !this.descriptions.isEmpty();
+            case ViewPackage.VIEW__COLOR_PALETTES:
+                return this.colorPalettes != null && !this.colorPalettes.isEmpty();
         }
         return super.eIsSet(featureID);
     }

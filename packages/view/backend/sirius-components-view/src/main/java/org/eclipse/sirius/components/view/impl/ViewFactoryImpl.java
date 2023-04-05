@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CheckboxDescription;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
@@ -52,6 +53,7 @@ import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.FormDescription;
@@ -140,6 +142,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
         switch (eClass.getClassifierID()) {
             case ViewPackage.VIEW:
                 return this.createView();
+            case ViewPackage.COLOR_PALETTE:
+                return this.createColorPalette();
+            case ViewPackage.FIXED_COLOR:
+                return this.createFixedColor();
             case ViewPackage.DIAGRAM_DESCRIPTION:
                 return this.createDiagramDescription();
             case ViewPackage.NODE_DESCRIPTION:
@@ -366,6 +372,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public View createView() {
         ViewImpl view = new ViewImpl();
         return view;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ColorPalette createColorPalette() {
+        ColorPaletteImpl colorPalette = new ColorPaletteImpl();
+        return colorPalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FixedColor createFixedColor() {
+        FixedColorImpl fixedColor = new FixedColorImpl();
+        return fixedColor;
     }
 
     /**
