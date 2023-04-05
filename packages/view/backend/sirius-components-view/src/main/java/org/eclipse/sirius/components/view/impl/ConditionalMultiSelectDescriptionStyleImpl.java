@@ -14,10 +14,12 @@ package org.eclipse.sirius.components.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
 
@@ -148,44 +150,24 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getBackgroundColor() <em>Background Color</em>}' attribute. <!-- begin-user-doc
+     * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @see #getBackgroundColor()
      * @generated
      * @ordered
      */
-    protected static final String BACKGROUND_COLOR_EDEFAULT = null;
+    protected UserColor backgroundColor;
 
     /**
-     * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getBackgroundColor()
-     * @generated
-     * @ordered
-     */
-    protected String backgroundColor = BACKGROUND_COLOR_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getForegroundColor() <em>Foreground Color</em>}' attribute. <!-- begin-user-doc
+     * The cached value of the '{@link #getForegroundColor() <em>Foreground Color</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @see #getForegroundColor()
      * @generated
      * @ordered
      */
-    protected static final String FOREGROUND_COLOR_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getForegroundColor() <em>Foreground Color</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getForegroundColor()
-     * @generated
-     * @ordered
-     */
-    protected String foregroundColor = FOREGROUND_COLOR_EDEFAULT;
+    protected UserColor foregroundColor;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -327,7 +309,24 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
      * @generated
      */
     @Override
-    public String getBackgroundColor() {
+    public UserColor getBackgroundColor() {
+        if (this.backgroundColor != null && this.backgroundColor.eIsProxy()) {
+            InternalEObject oldBackgroundColor = (InternalEObject) this.backgroundColor;
+            this.backgroundColor = (UserColor) this.eResolveProxy(oldBackgroundColor);
+            if (this.backgroundColor != oldBackgroundColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, this.backgroundColor));
+            }
+        }
+        return this.backgroundColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackgroundColor() {
         return this.backgroundColor;
     }
 
@@ -337,8 +336,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
      * @generated
      */
     @Override
-    public void setBackgroundColor(String newBackgroundColor) {
-        String oldBackgroundColor = this.backgroundColor;
+    public void setBackgroundColor(UserColor newBackgroundColor) {
+        UserColor oldBackgroundColor = this.backgroundColor;
         this.backgroundColor = newBackgroundColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, this.backgroundColor));
@@ -350,7 +349,24 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
      * @generated
      */
     @Override
-    public String getForegroundColor() {
+    public UserColor getForegroundColor() {
+        if (this.foregroundColor != null && this.foregroundColor.eIsProxy()) {
+            InternalEObject oldForegroundColor = (InternalEObject) this.foregroundColor;
+            this.foregroundColor = (UserColor) this.eResolveProxy(oldForegroundColor);
+            if (this.foregroundColor != oldForegroundColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, oldForegroundColor, this.foregroundColor));
+            }
+        }
+        return this.foregroundColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetForegroundColor() {
         return this.foregroundColor;
     }
 
@@ -360,8 +376,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
      * @generated
      */
     @Override
-    public void setForegroundColor(String newForegroundColor) {
-        String oldForegroundColor = this.foregroundColor;
+    public void setForegroundColor(UserColor newForegroundColor) {
+        UserColor oldForegroundColor = this.foregroundColor;
         this.foregroundColor = newForegroundColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, oldForegroundColor, this.foregroundColor));
@@ -386,9 +402,13 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 return this.isStrikeThrough();
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                return this.getBackgroundColor();
+                if (resolve)
+                    return this.getBackgroundColor();
+                return this.basicGetBackgroundColor();
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                return this.getForegroundColor();
+                if (resolve)
+                    return this.getForegroundColor();
+                return this.basicGetForegroundColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -417,10 +437,10 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                 this.setStrikeThrough((Boolean) newValue);
                 return;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                this.setBackgroundColor((String) newValue);
+                this.setBackgroundColor((UserColor) newValue);
                 return;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                this.setForegroundColor((String) newValue);
+                this.setForegroundColor((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -450,10 +470,10 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                this.setBackgroundColor(BACKGROUND_COLOR_EDEFAULT);
+                this.setBackgroundColor((UserColor) null);
                 return;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                this.setForegroundColor(FOREGROUND_COLOR_EDEFAULT);
+                this.setForegroundColor((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -478,9 +498,9 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                return BACKGROUND_COLOR_EDEFAULT == null ? this.backgroundColor != null : !BACKGROUND_COLOR_EDEFAULT.equals(this.backgroundColor);
+                return this.backgroundColor != null;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                return FOREGROUND_COLOR_EDEFAULT == null ? this.foregroundColor != null : !FOREGROUND_COLOR_EDEFAULT.equals(this.foregroundColor);
+                return this.foregroundColor != null;
         }
         return super.eIsSet(featureID);
     }
@@ -590,10 +610,6 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
         result.append(this.underline);
         result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
-        result.append(", backgroundColor: ");
-        result.append(this.backgroundColor);
-        result.append(", foregroundColor: ");
-        result.append(this.foregroundColor);
         result.append(')');
         return result.toString();
     }

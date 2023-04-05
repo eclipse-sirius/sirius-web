@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle.Builder;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.FixedColor;
 
 /**
  * The style provider for the Checkbox Description widget of the View DSL.
@@ -37,10 +38,13 @@ public class CheckboxStyleProvider implements Function<VariableManager, Checkbox
     public CheckboxStyle apply(VariableManager variableManager) {
         Builder checkboxStyleBuilder = CheckboxStyle.newCheckboxStyle();
 
-        String color = this.viewStyle.getColor();
-        if (color != null && !color.isBlank()) {
-            checkboxStyleBuilder.color(color);
+        if (this.viewStyle.getColor() instanceof FixedColor fixedColor) {
+            String color = fixedColor.getValue();
+            if (color != null && !color.isBlank()) {
+                checkboxStyleBuilder.color(color);
+            }
         }
+
 
         return checkboxStyleBuilder.build();
     }

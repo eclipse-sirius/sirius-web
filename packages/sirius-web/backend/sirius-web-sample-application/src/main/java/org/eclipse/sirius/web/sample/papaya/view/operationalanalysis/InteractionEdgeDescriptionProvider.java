@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
@@ -28,10 +31,16 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public InteractionEdgeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public EdgeDescription create() {
         var interactionEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        interactionEdgeStyle.setColor("#212121");
+        interactionEdgeStyle.setColor(this.colorProvider.getColor("color_black"));
         interactionEdgeStyle.setEdgeWidth(1);
         interactionEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         interactionEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);

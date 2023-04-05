@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -25,12 +28,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
  */
 public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public InterfaceNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#3f51b5");
-        nodeStyle.setBorderColor("#1a237e");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Interface");
@@ -66,8 +75,8 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
 
     private NodeDescription operationNodeDescription() {
         var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
-        nodeStyle.setColor("#3f51b5");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var builder = new PapayaViewBuilder();
         var nodeDescription = builder.createNodeDescription("Operation");

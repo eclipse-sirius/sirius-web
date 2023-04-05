@@ -33,27 +33,26 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface BorderStyle extends EObject {
     /**
-     * Returns the value of the '<em><b>Border Color</b></em>' attribute. The default value is <code>"#33B0C3"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Border Color</em>' attribute.
-     * @see #setBorderColor(String)
+     * @return the value of the '<em>Border Color</em>' reference.
+     * @see #setBorderColor(UserColor)
      * @see org.eclipse.sirius.components.view.ViewPackage#getBorderStyle_BorderColor()
-     * @model default="#33B0C3" dataType="org.eclipse.sirius.components.view.Color" required="true"
+     * @model required="true"
      * @generated
      */
-    String getBorderColor();
+    UserColor getBorderColor();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.BorderStyle#getBorderColor <em>Border
-     * Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Border Color</em>' attribute.
+     *            the new value of the '<em>Border Color</em>' reference.
      * @see #getBorderColor()
      * @generated
      */
-    void setBorderColor(String value);
+    void setBorderColor(UserColor value);
 
     /**
      * Returns the value of the '<em><b>Border Radius</b></em>' attribute. The default value is <code>"3"</code>. <!--

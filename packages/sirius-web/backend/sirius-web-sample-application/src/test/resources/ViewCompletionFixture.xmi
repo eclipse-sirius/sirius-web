@@ -16,8 +16,12 @@
       <childrenLayoutStrategy xmi:type="view:ListLayoutStrategyDescription"/>
     </nodeDescriptions>
     <edgeDescriptions name="Edge">
-      <style color="#002639"/>
-      <conditionalStyles color="#002639"/>
+      <style>
+        <color xmi:type="view:FixedColor" name="edge_color" value="#002639"/>
+      </style>
+      <conditionalStyles>
+        <color xmi:type="view:FixedColor" name="edge_conditional_color" value="#002639"/>
+      </conditionalStyles>
     </edgeDescriptions>
     <palette>
       <dropTool name="On Drop">

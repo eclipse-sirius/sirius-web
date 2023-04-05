@@ -29,25 +29,25 @@ package org.eclipse.sirius.components.view;
  */
 public interface CheckboxDescriptionStyle extends WidgetDescriptionStyle {
     /**
-     * Returns the value of the '<em><b>Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Color</em>' attribute.
-     * @see #setColor(String)
+     * @return the value of the '<em>Color</em>' reference.
+     * @see #setColor(UserColor)
      * @see org.eclipse.sirius.components.view.ViewPackage#getCheckboxDescriptionStyle_Color()
-     * @model dataType="org.eclipse.sirius.components.view.Color"
+     * @model
      * @generated
      */
-    String getColor();
+    UserColor getColor();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.CheckboxDescriptionStyle#getColor
-     * <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <em>Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Color</em>' attribute.
+     *            the new value of the '<em>Color</em>' reference.
      * @see #getColor()
      * @generated
      */
-    void setColor(String value);
+    void setColor(UserColor value);
 
 } // CheckboxDescriptionStyle

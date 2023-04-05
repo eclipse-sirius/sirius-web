@@ -19,7 +19,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -64,7 +63,7 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_CheckboxDescriptionStyle_color_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_color_feature", "_UI_CheckboxDescriptionStyle_type"),
-                ViewPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                ViewPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR, true, false, false, null, null, null));
     }
 
     /**
@@ -94,8 +93,7 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
      */
     @Override
     public String getText(Object object) {
-        String label = ((CheckboxDescriptionStyle) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_CheckboxDescriptionStyle_type") : this.getString("_UI_CheckboxDescriptionStyle_type") + " " + label;
+        return this.getString("_UI_CheckboxDescriptionStyle_type");
     }
 
     /**

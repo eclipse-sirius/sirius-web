@@ -75,25 +75,25 @@ public interface PieChartDescriptionStyle extends WidgetDescriptionStyle, LabelS
     void setStrokeWidth(int value);
 
     /**
-     * Returns the value of the '<em><b>Stroke Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Stroke Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Stroke Color</em>' attribute.
-     * @see #setStrokeColor(String)
+     * @return the value of the '<em>Stroke Color</em>' reference.
+     * @see #setStrokeColor(UserColor)
      * @see org.eclipse.sirius.components.view.ViewPackage#getPieChartDescriptionStyle_StrokeColor()
-     * @model dataType="org.eclipse.sirius.components.view.Color"
+     * @model
      * @generated
      */
-    String getStrokeColor();
+    UserColor getStrokeColor();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.PieChartDescriptionStyle#getStrokeColor
-     * <em>Stroke Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <em>Stroke Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Stroke Color</em>' attribute.
+     *            the new value of the '<em>Stroke Color</em>' reference.
      * @see #getStrokeColor()
      * @generated
      */
-    void setStrokeColor(String value);
+    void setStrokeColor(UserColor value);
 
 } // PieChartDescriptionStyle

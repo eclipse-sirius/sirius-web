@@ -207,8 +207,7 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
     @Override
     public EList<ConditionalTextfieldDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalTextfieldDescriptionStyle.class, this,
-                    ViewPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalTextfieldDescriptionStyle.class, this, ViewPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

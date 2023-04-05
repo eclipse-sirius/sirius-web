@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2021, 2022 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view;
 
 /**
@@ -36,45 +36,44 @@ public interface TextfieldDescriptionStyle extends WidgetDescriptionStyle, Label
      * -->
      *
      * @return the value of the '<em>Background Color</em>' attribute.
-     * @see #setBackgroundColor(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescriptionStyle_BackgroundColor()
      * @model
      * @generated
+     * @see #setBackgroundColor(UserColor)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescriptionStyle_BackgroundColor()
      */
-    String getBackgroundColor();
+    UserColor getBackgroundColor();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle#getBackgroundColor
-     * <em>Background Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <em>Background Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Background Color</em>' attribute.
-     * @see #getBackgroundColor()
+     * @param value the new value of the '<em>Background Color</em>' reference.
      * @generated
+     * @see #getBackgroundColor()
      */
-    void setBackgroundColor(String value);
+    void setBackgroundColor(UserColor value);
 
     /**
      * Returns the value of the '<em><b>Foreground Color</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @return the value of the '<em>Foreground Color</em>' attribute.
-     * @see #setForegroundColor(String)
+     * @see #setForegroundColor(UserColor)
      * @see org.eclipse.sirius.components.view.ViewPackage#getTextfieldDescriptionStyle_ForegroundColor()
      * @model
      * @generated
      */
-    String getForegroundColor();
+    UserColor getForegroundColor();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.TextfieldDescriptionStyle#getForegroundColor
-     * <em>Foreground Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <em>Foreground Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Foreground Color</em>' attribute.
+     *            the new value of the '<em>Foreground Color</em>' reference.
      * @see #getForegroundColor()
      * @generated
      */
-    void setForegroundColor(String value);
+    void setForegroundColor(UserColor value);
 
 } // TextfieldDescriptionStyle

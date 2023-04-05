@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
@@ -27,10 +30,16 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public DependsOnEdgeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public EdgeDescription create() {
         var dependsOnEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        dependsOnEdgeStyle.setColor("#1b5e20");
+        dependsOnEdgeStyle.setColor(this.colorProvider.getColor("color_green_2"));
         dependsOnEdgeStyle.setEdgeWidth(1);
         dependsOnEdgeStyle.setSourceArrowStyle(ArrowStyle.OUTPUT_FILL_CLOSED_ARROW);
         dependsOnEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);

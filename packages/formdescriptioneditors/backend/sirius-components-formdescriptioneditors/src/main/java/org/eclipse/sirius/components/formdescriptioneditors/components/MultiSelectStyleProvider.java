@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.MultiSelectStyle.Builder;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
 
 /**
@@ -35,14 +36,20 @@ public class MultiSelectStyleProvider {
     public MultiSelectStyle build() {
         Builder multiSelectStyleBuilder = MultiSelectStyle.newMultiSelectStyle();
 
-        String backgroundColor = this.viewStyle.getBackgroundColor();
-        if (backgroundColor != null && !backgroundColor.isBlank()) {
-            multiSelectStyleBuilder.backgroundColor(backgroundColor);
+        if (this.viewStyle.getBackgroundColor() instanceof FixedColor fixedColor) {
+            String backgroundColor = fixedColor.getValue();
+            if (backgroundColor != null && !backgroundColor.isBlank()) {
+                multiSelectStyleBuilder.backgroundColor(backgroundColor);
+            }
         }
-        String foregroundColor = this.viewStyle.getForegroundColor();
-        if (foregroundColor != null && !foregroundColor.isBlank()) {
-            multiSelectStyleBuilder.foregroundColor(foregroundColor);
+
+        if (this.viewStyle.getForegroundColor() instanceof FixedColor fixedColor) {
+            String foregroundColor = fixedColor.getValue();
+            if (foregroundColor != null && !foregroundColor.isBlank()) {
+                multiSelectStyleBuilder.foregroundColor(foregroundColor);
+            }
         }
+
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();

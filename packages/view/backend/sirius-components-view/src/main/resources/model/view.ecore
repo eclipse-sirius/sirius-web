@@ -9,6 +9,19 @@
   <eClassifiers xsi:type="ecore:EClass" name="View">
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptions" upperBound="-1"
         eType="#//RepresentationDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="colorPalettes" upperBound="-1"
+        eType="#//ColorPalette" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ColorPalette">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="colors" upperBound="-1"
+        eType="#//UserColor" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FixedColor" eSuperTypes="#//UserColor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Color"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UserColor" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RepresentationDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"
@@ -98,8 +111,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BorderStyle" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderColor" lowerBound="1"
-        eType="#//Color" defaultValueLiteral="#33B0C3"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="borderColor" lowerBound="1"
+        eType="#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderRadius" lowerBound="1"
         eType="#//Length" defaultValueLiteral="3"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderSize" lowerBound="1"
@@ -107,13 +120,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderLineStyle" eType="#//LineStyle"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"
-        defaultValueLiteral="#E5F5F8"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
       interface="true" eSuperTypes="#//Style #//LabelStyle #//BorderStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColor" eType="#//Color"
-        defaultValueLiteral="black"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labelColor" eType="#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="widthComputationExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="heightComputationExpression"
@@ -391,40 +402,40 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescriptionStyle" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextfieldDescriptionStyle"
       eSuperTypes="#//Conditional #//TextfieldDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalCheckboxDescriptionStyle"
       eSuperTypes="#//Conditional #//CheckboxDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalSelectDescriptionStyle" eSuperTypes="#//Conditional #//SelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalMultiSelectDescriptionStyle"
       eSuperTypes="#//Conditional #//MultiSelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="TextareaDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextareaDescriptionStyle"
       eSuperTypes="#//Conditional #//TextareaDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="RadioDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalRadioDescriptionStyle" eSuperTypes="#//Conditional #//RadioDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="ButtonDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="#//Color"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foregroundColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalButtonDescriptionStyle" eSuperTypes="#//Conditional #//ButtonDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="BarChartDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
@@ -435,7 +446,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="PieChartDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="colors" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strokeWidth" eType="#//Length"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strokeColor" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="strokeColor" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalPieChartDescriptionStyle"
       eSuperTypes="#//Conditional #//PieChartDescriptionStyle"/>
@@ -447,7 +458,7 @@
         eType="#//ConditionalLabelDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLabelDescriptionStyle" eSuperTypes="#//Conditional #//LabelDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="LinkDescription" eSuperTypes="#//WidgetDescription">
@@ -458,7 +469,7 @@
         eType="#//ConditionalLinkDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LinkDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalLinkDescriptionStyle" eSuperTypes="#//Conditional #//LinkDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListDescription" eSuperTypes="#//WidgetDescription">
@@ -474,7 +485,7 @@
         eType="#//ConditionalListDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalListDescriptionStyle" eSuperTypes="#//Conditional #//ListDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">

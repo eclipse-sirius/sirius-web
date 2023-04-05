@@ -38,6 +38,22 @@ public interface ViewFactory extends EFactory {
     View createView();
 
     /**
+     * Returns a new object of class '<em>Color Palette</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Color Palette</em>'.
+     * @generated
+     */
+    ColorPalette createColorPalette();
+
+    /**
+     * Returns a new object of class '<em>Fixed Color</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Fixed Color</em>'.
+     * @generated
+     */
+    FixedColor createFixedColor();
+
+    /**
      * Returns a new object of class '<em>Diagram Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Diagram Description</em>'.

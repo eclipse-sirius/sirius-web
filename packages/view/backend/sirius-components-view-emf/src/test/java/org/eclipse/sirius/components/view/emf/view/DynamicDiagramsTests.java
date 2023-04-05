@@ -78,7 +78,11 @@ public class DynamicDiagramsTests {
 
     private void setBasicNodeStyle(NodeDescription nodeDescription, String color) {
         NodeStyleDescription eClassNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        eClassNodeStyle.setColor(color);
+        var userColor = ViewFactory.eINSTANCE.createFixedColor();
+        userColor.setName("color");
+        userColor.setValue(color);
+
+        eClassNodeStyle.setColor(userColor);
         nodeDescription.setStyle(eClassNodeStyle);
     }
 

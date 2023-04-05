@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.springframework.stereotype.Service;
@@ -78,8 +79,16 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
             // @formatter:off
             iNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
-                    .backgroundColor(Optional.ofNullable(nodeStyle.getColor()).orElse(DEFAULT_BACKGROUND_COLOR))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_BORDER_COLOR))
+                    .backgroundColor(Optional.ofNullable(nodeStyle.getColor())
+                                             .filter(FixedColor.class::isInstance)
+                                             .map(FixedColor.class::cast)
+                                             .map(FixedColor::getValue)
+                                             .orElse(DEFAULT_BACKGROUND_COLOR))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                                         .filter(FixedColor.class::isInstance)
+                                         .map(FixedColor.class::cast)
+                                         .map(FixedColor::getValue)
+                                         .orElse(DEFAULT_BORDER_COLOR))
                     .borderSize(nodeStyle.getBorderSize())
                     .borderRadius(nodeStyle.getBorderRadius())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
@@ -91,7 +100,11 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
             iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
                                .scalingFactor(1)
                                .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
-                               .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).orElse(DEFAULT_COLOR))
+                               .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                                                    .filter(FixedColor.class::isInstance)
+                                                    .map(FixedColor.class::cast)
+                                                    .map(FixedColor::getValue)
+                                                    .orElse(DEFAULT_COLOR))
                                .borderSize(nodeStyle.getBorderSize())
                                .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                                .borderRadius(nodeStyle.getBorderRadius())

@@ -141,7 +141,7 @@ public class DiagramDescriptionValidator implements EValidator {
     }
 
     private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = !nodeStyle.getColor().isBlank();
+        boolean isValid = Objects.nonNull(nodeStyle.getColor());
 
         if (!isValid && diagnostics != null) {
             // @formatter:off

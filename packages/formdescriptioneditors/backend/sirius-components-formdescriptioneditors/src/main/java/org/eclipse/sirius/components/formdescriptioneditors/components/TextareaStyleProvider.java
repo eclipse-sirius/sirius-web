@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.TextareaStyle.Builder;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 
 /**
@@ -35,14 +36,20 @@ public class TextareaStyleProvider {
     public TextareaStyle build() {
         Builder textareaStyleBuilder = TextareaStyle.newTextareaStyle();
 
-        String backgroundColor = this.viewStyle.getBackgroundColor();
-        if (backgroundColor != null && !backgroundColor.isBlank()) {
-            textareaStyleBuilder.backgroundColor(backgroundColor);
+        if (this.viewStyle.getBackgroundColor() instanceof FixedColor fixedColor) {
+            String backgroundColor = fixedColor.getValue();
+            if (backgroundColor != null && !backgroundColor.isBlank()) {
+                textareaStyleBuilder.backgroundColor(backgroundColor);
+            }
         }
-        String foregroundColor = this.viewStyle.getForegroundColor();
-        if (foregroundColor != null && !foregroundColor.isBlank()) {
-            textareaStyleBuilder.foregroundColor(foregroundColor);
+
+        if (this.viewStyle.getForegroundColor() instanceof FixedColor fixedColor) {
+            String foregroundColor = fixedColor.getValue();
+            if (foregroundColor != null && !foregroundColor.isBlank()) {
+                textareaStyleBuilder.foregroundColor(foregroundColor);
+            }
         }
+
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();

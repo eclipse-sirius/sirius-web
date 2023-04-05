@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
@@ -29,7 +30,7 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ClassDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
     @Override
-    public RepresentationDescription create() {
+    public RepresentationDescription create(IColorProvider colorProvider) {
         var classDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
         classDiagramDescription.setDomainType("papaya_logical_architecture::Component");
         classDiagramDescription.setName("Class Diagram");
@@ -38,12 +39,12 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
 
         var cache = new PapayaViewCache();
         var diagramElementDescriptionProviders = List.of(
-                new CDClassNodeDescriptionProvider(),
-                new CDInterfaceNodeDescriptionProvider(),
-                new CDPackageNodeDescriptionProvider(),
-                new CDExtendsClassEdgeDescriptionProvider(),
-                new CDExtendsInterfaceEdgeDescriptionProvider(),
-                new CDImplementsInterfaceEdgeDescriptionProvider()
+                new CDClassNodeDescriptionProvider(colorProvider),
+                new CDInterfaceNodeDescriptionProvider(colorProvider),
+                new CDPackageNodeDescriptionProvider(colorProvider),
+                new CDExtendsClassEdgeDescriptionProvider(colorProvider),
+                new CDExtendsInterfaceEdgeDescriptionProvider(colorProvider),
+                new CDImplementsInterfaceEdgeDescriptionProvider(colorProvider)
         );
 
         diagramElementDescriptionProviders.stream().

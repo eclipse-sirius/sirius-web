@@ -27,6 +27,7 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
@@ -77,6 +78,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.VIEW__DESCRIPTIONS);
+            this.childrenFeatures.add(ViewPackage.Literals.VIEW__COLOR_PALETTES);
         }
         return this.childrenFeatures;
     }
@@ -137,6 +139,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
 
         switch (notification.getFeatureID(View.class)) {
             case ViewPackage.VIEW__DESCRIPTIONS:
+            case ViewPackage.VIEW__COLOR_PALETTES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -163,6 +166,10 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
         newFormDescription.getGroups().add(groupDescription);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));
+
+        ColorPalette newColorPalette = ViewFactory.eINSTANCE.createColorPalette();
+        newColorPalette.setName("New Color Palette");
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__COLOR_PALETTES, newColorPalette));
 
     }
 

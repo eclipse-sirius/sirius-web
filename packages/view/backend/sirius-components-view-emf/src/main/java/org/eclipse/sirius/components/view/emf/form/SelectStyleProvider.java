@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.SelectStyle.Builder;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 
 /**
@@ -37,14 +38,20 @@ public class SelectStyleProvider implements Function<VariableManager, SelectStyl
     public SelectStyle apply(VariableManager variableManager) {
         Builder selectStyleBuilder = SelectStyle.newSelectStyle();
 
-        String backgroundColor = this.viewStyle.getBackgroundColor();
-        if (backgroundColor != null && !backgroundColor.isBlank()) {
-            selectStyleBuilder.backgroundColor(backgroundColor);
+        if (this.viewStyle.getBackgroundColor() instanceof FixedColor fixedColor) {
+            String backgroundColor = fixedColor.getValue();
+            if (backgroundColor != null && !backgroundColor.isBlank()) {
+                selectStyleBuilder.backgroundColor(backgroundColor);
+            }
         }
-        String foregroundColor = this.viewStyle.getForegroundColor();
-        if (foregroundColor != null && !foregroundColor.isBlank()) {
-            selectStyleBuilder.foregroundColor(foregroundColor);
+
+        if (this.viewStyle.getForegroundColor() instanceof FixedColor fixedColor) {
+            String foregroundColor = fixedColor.getValue();
+            if (foregroundColor != null && !foregroundColor.isBlank()) {
+                selectStyleBuilder.foregroundColor(foregroundColor);
+            }
         }
+
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();

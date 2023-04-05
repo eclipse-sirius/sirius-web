@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.sample.papaya.view.services;
 
 import java.util.List;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;

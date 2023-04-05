@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
@@ -21,6 +22,7 @@ import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.Style;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -50,16 +52,6 @@ import org.eclipse.sirius.components.view.ViewPackage;
  */
 public class ConditionalEdgeStyleImpl extends ConditionalImpl implements ConditionalEdgeStyle {
     /**
-     * The default value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected static final String COLOR_EDEFAULT = "#E5F5F8";
-
-    /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -67,7 +59,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      * @ordered
      */
-    protected String color = COLOR_EDEFAULT;
+    protected UserColor color;
 
     /**
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -294,7 +286,24 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      */
     @Override
-    public String getColor() {
+    public UserColor getColor() {
+        if (this.color != null && this.color.eIsProxy()) {
+            InternalEObject oldColor = (InternalEObject) this.color;
+            this.color = (UserColor) this.eResolveProxy(oldColor);
+            if (this.color != oldColor) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR, oldColor, this.color));
+            }
+        }
+        return this.color;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetColor() {
         return this.color;
     }
 
@@ -304,8 +313,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      */
     @Override
-    public void setColor(String newColor) {
-        String oldColor = this.color;
+    public void setColor(UserColor newColor) {
+        UserColor oldColor = this.color;
         this.color = newColor;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR, oldColor, this.color));
@@ -550,7 +559,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                return this.getColor();
+                if (resolve)
+                    return this.getColor();
+                return this.basicGetColor();
             case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
                 return this.getFontSize();
             case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
@@ -584,7 +595,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                this.setColor((String) newValue);
+                this.setColor((UserColor) newValue);
                 return;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
                 this.setFontSize((Integer) newValue);
@@ -629,7 +640,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public void eUnset(int featureID) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                this.setColor(COLOR_EDEFAULT);
+                this.setColor((UserColor) null);
                 return;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
                 this.setFontSize(FONT_SIZE_EDEFAULT);
@@ -674,7 +685,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_EDGE_STYLE__COLOR:
-                return COLOR_EDEFAULT == null ? this.color != null : !COLOR_EDEFAULT.equals(this.color);
+                return this.color != null;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__FONT_SIZE:
                 return this.fontSize != FONT_SIZE_EDEFAULT;
             case ViewPackage.CONDITIONAL_EDGE_STYLE__ITALIC:
@@ -810,9 +821,7 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (color: ");
-        result.append(this.color);
-        result.append(", fontSize: ");
+        result.append(" (fontSize: ");
         result.append(this.fontSize);
         result.append(", italic: ");
         result.append(this.italic);

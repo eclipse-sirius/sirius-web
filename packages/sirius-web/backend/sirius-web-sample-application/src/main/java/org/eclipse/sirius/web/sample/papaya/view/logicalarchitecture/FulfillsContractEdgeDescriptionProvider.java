@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
@@ -27,10 +30,16 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class FulfillsContractEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public FulfillsContractEdgeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public EdgeDescription create() {
         var fulfillsContractEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        fulfillsContractEdgeStyle.setColor("#3f51b5");
+        fulfillsContractEdgeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
         fulfillsContractEdgeStyle.setEdgeWidth(1);
         fulfillsContractEdgeStyle.setLineStyle(LineStyle.DOT);
         fulfillsContractEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);

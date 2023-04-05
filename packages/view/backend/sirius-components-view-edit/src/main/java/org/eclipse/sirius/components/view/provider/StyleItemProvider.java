@@ -25,7 +25,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.Style;
@@ -68,9 +67,9 @@ public class StyleItemProvider extends ItemProviderAdapter implements IEditingDo
      * @generated
      */
     protected void addColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Style_color_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), ViewPackage.Literals.STYLE__COLOR, true,
-                false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Style_color_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_Style_color_feature", "_UI_Style_type"), ViewPackage.Literals.STYLE__COLOR, true, false, false, null, null, null));
     }
 
     /**
@@ -100,8 +99,7 @@ public class StyleItemProvider extends ItemProviderAdapter implements IEditingDo
      */
     @Override
     public String getText(Object object) {
-        String label = ((Style) object).getColor();
-        return label == null || label.length() == 0 ? this.getString("_UI_Style_type") : this.getString("_UI_Style_type") + " " + label;
+        return this.getString("_UI_Style_type");
     }
 
     /**

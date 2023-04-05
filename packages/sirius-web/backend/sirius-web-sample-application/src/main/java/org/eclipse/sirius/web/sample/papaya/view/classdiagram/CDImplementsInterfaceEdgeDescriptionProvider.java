@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
@@ -30,10 +33,16 @@ public class CDImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescri
 
     public static final String NAME = "CD Edge Implements Interface";
 
+    private final IColorProvider colorProvider;
+
+    public CDImplementsInterfaceEdgeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
-    public EObject create() {
+    public EdgeDescription create() {
         var implementsInterfaceEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-        implementsInterfaceEdgeStyle.setColor("#1a237e");
+        implementsInterfaceEdgeStyle.setColor(this.colorProvider.getColor("color_blue_2"));
         implementsInterfaceEdgeStyle.setEdgeWidth(1);
         implementsInterfaceEdgeStyle.setLineStyle(LineStyle.DASH);
         implementsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);

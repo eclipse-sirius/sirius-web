@@ -14,12 +14,14 @@ package org.eclipse.sirius.components.view.emf.form;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 
@@ -45,7 +47,11 @@ public class PieChartStyleProvider implements Function<VariableManager, PieChart
         if (effectiveStyle != null) {
             Builder pieChartStyleBuilder = PieChartStyle.newPieChartStyle();
             String colors = effectiveStyle.getColors();
-            String strokeColor = effectiveStyle.getStrokeColor();
+            String strokeColor = Optional.ofNullable(effectiveStyle.getStrokeColor())
+                                         .filter(FixedColor.class::isInstance)
+                                         .map(FixedColor.class::cast)
+                                         .map(FixedColor::getValue)
+                                         .orElse(null);
             int strokeWidth = effectiveStyle.getStrokeWidth();
             this.handleColors(variableManager, pieChartStyleBuilder, colors);
             this.handleStrokeColor(pieChartStyleBuilder, strokeColor);

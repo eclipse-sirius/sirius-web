@@ -14,9 +14,11 @@ package org.eclipse.sirius.components.formdescriptioneditors.components;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle.Builder;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 
 /**
@@ -35,7 +37,11 @@ public class PieChartStyleProvider {
 
     public PieChartStyle build() {
         Builder pieChartStyleBuilder = PieChartStyle.newPieChartStyle();
-        String strokeColor = this.viewPieChartDescriptionStyle.getStrokeColor();
+        String strokeColor = Optional.ofNullable(this.viewPieChartDescriptionStyle.getStrokeColor())
+                                     .filter(FixedColor.class::isInstance)
+                                     .map(FixedColor.class::cast)
+                                     .map(FixedColor::getValue)
+                                     .orElse(null);
         int strokeWidth = this.viewPieChartDescriptionStyle.getStrokeWidth();
         pieChartStyleBuilder.colors(List.of());
         this.handleStrokeColor(pieChartStyleBuilder, strokeColor);

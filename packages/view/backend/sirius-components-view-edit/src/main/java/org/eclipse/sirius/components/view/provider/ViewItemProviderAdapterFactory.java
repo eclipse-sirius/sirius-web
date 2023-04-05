@@ -101,6 +101,52 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ColorPalette}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ColorPaletteItemProvider colorPaletteItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.ColorPalette}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createColorPaletteAdapter() {
+        if (this.colorPaletteItemProvider == null) {
+            this.colorPaletteItemProvider = new ColorPaletteItemProvider(this);
+        }
+
+        return this.colorPaletteItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.FixedColor} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FixedColorItemProvider fixedColorItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.FixedColor}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFixedColorAdapter() {
+        if (this.fixedColorItemProvider == null) {
+            this.fixedColorItemProvider = new FixedColorItemProvider(this);
+        }
+
+        return this.fixedColorItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DiagramDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1818,6 +1864,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     public void dispose() {
         if (this.viewItemProvider != null)
             this.viewItemProvider.dispose();
+        if (this.colorPaletteItemProvider != null)
+            this.colorPaletteItemProvider.dispose();
+        if (this.fixedColorItemProvider != null)
+            this.fixedColorItemProvider.dispose();
         if (this.diagramDescriptionItemProvider != null)
             this.diagramDescriptionItemProvider.dispose();
         if (this.nodeDescriptionItemProvider != null)

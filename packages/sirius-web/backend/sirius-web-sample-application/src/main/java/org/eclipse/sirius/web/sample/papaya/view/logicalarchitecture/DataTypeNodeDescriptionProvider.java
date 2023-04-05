@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -25,12 +28,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
  */
 public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public DataTypeNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#0097a7");
-        nodeStyle.setBorderColor("#006064");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue_5"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("bordre_green"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("DataType");
         nodeDescription.setPreconditionExpression("aql:self.oclIsTypeOf(papaya_logical_architecture::DataType)");

@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -27,19 +30,25 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class OperationalActorNodeDescriptionProvider implements INodeDescriptionProvider {
 
+    private final IColorProvider colorProvider;
+
+    public OperationalActorNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
     public NodeDescription create() {
         var operationalActorNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        operationalActorNodeStyle.setColor("#e0e0e0");
-        operationalActorNodeStyle.setBorderColor("#616161");
-        operationalActorNodeStyle.setLabelColor("#1212121");
+        operationalActorNodeStyle.setColor(this.colorProvider.getColor("color_gray"));
+        operationalActorNodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
+        operationalActorNodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
 
         var operationalActorEmptyNodeStyle = ViewFactory.eINSTANCE.createImageNodeStyleDescription();
         operationalActorEmptyNodeStyle.setShape("4d9a22c0-dc36-31c9-bb6a-c18c66b51d93");
-        operationalActorEmptyNodeStyle.setColor("white");
-        operationalActorEmptyNodeStyle.setBorderColor("");
+        operationalActorEmptyNodeStyle.setColor(this.colorProvider.getColor("color_white"));
+        operationalActorEmptyNodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         operationalActorEmptyNodeStyle.setBorderSize(0);
-        operationalActorEmptyNodeStyle.setLabelColor("#1212121");
+        operationalActorEmptyNodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
 
         var conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
         conditionalNodeStyle.setCondition("aql:collapsingState.toString() = 'COLLAPSED'");

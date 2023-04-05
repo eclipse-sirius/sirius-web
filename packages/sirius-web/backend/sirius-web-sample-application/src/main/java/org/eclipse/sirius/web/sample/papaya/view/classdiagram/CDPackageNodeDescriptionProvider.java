@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -32,12 +35,18 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
 
     public static final String NAME = "CD Node Package";
 
+    private final IColorProvider colorProvider;
+
+    public CDPackageNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
-    public EObject create() {
+    public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#d1c4e9");
-        nodeStyle.setBorderColor("#5e35b1");
-        nodeStyle.setLabelColor("#1212121");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue_7"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_3"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
 
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Package"));

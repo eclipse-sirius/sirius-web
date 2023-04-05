@@ -12,13 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
@@ -32,12 +34,18 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider {
     public static final String NAME = "CD Node Class";
 
+    private final IColorProvider colorProvider;
+
+    public CDClassNodeDescriptionProvider(IColorProvider colorProvider) {
+        this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
     @Override
-    public EObject create() {
+    public NodeDescription create() {
         var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor("#1976D2");
-        nodeStyle.setBorderColor("#0d47a1");
-        nodeStyle.setLabelColor("white");
+        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
+        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
+        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(false);
 
         var builder = new PapayaViewBuilder();
@@ -53,9 +61,9 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
         nodeDescription.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
 
         var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor("#00796B");
-        abstractNodeStyle.setBorderColor("#004D40");
-        abstractNodeStyle.setLabelColor("white");
+        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
+        abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
+        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         abstractNodeStyle.setWithHeader(false);
 
         var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
