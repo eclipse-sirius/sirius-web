@@ -79,6 +79,7 @@ This will allow us to easily compare the current layout algorithm and the new on
 This debug mode can be activated by setting the configuration property `sirius.components.diagram.debug` to `true`.
 Once activated, this debug mode will display additional information on diagram elements to help debug what has been computed by the backend.
 image:doc/images/Debug_info.png[]
+- https://github.com/eclipse-sirius/sirius-components/issues/1902[#1902] [sirius-web] Add new data fetchers to sirius-web allowing to execute AQL requests
 
 === Improvements
 
