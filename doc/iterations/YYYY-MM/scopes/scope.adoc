@@ -1,0 +1,22 @@
+= Scope
+
+== First task
+
+- [x] Shape written, reviewed and merged
+- [x] ADR written, reviewed and merged
+- [x] Mock of the features done with Figma
+- [x] First prototype of the user interface
+- [ ] First version of the user interface done with Cypress tests
+- [ ] Capture proper screenshots for the CHANGELOG and the documentation
+
+== Second task
+
+- [x] First prototype of the GraphQL API and implementation
+- [x] Improvement of the first prototype after the discovery of performance issues
+- [ ] Second prototype of the backend merged
+
+
+== Third task
+
+- [ ] User guide updated with screenshots
+- [ ] Integrated tests updated
