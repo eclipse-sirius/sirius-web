@@ -94,6 +94,12 @@ This has no visible effect at the moment, but will allow better documentation, v
 - https://github.com/eclipse-sirius/sirius-components/issues/1879[#1879] [core] Add an annotation `@Builder` to identify builders and simplify some use cases involving the builder pattern.
 It is now possible to use builders in records and it is a first step toward the deprecation of the `@Immutable` annotation in favor of more records.
 - [diagram] Added a common interface `IDiagramElement` that is implemented by `Node` and `Edge`
+- https://github.com/eclipse-sirius/sirius-components/issues/1904[#1904] [project] Add templates to track our work on shapes and scopes in `doc/iterations/YYYY-MM/{scopes/scope.adoc|shapes/shape.adoc}`.
+At the end of every iteration, we will work on the shape of the new iterations and validate them by merging a first version.
++
+During the iteration, while developers will progress on their work, they will update the scope.
+We will not create a new commit for each minor change in the scope, instead the scope will evolve while a pull request is updated.
+The progress on a task could thus be shared with a draft pull request with the rest of the team.
 
 
 == v2023.3.0
