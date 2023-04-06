@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-annotations-spring</artifactId>
-	<version>2023.3.2</version>
+	<version>2023.3.3</version>
 	<name>sirius-components-annotations-spring</name>
 	<description>Sirius Components Annotations Spring</description>
 
