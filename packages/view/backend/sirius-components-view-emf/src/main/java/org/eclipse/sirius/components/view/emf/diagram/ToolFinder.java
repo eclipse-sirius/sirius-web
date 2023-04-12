@@ -91,18 +91,19 @@ public class ToolFinder {
     }
 
     public List<EdgeReconnectionTool> findReconnectionTools(EdgeDescription edgeDescription, ReconnectEdgeKind reconnectEdgeKind) {
-        List<EdgeReconnectionTool> edgeReconnectionTools;
+        List<EdgeReconnectionTool> edgeReconnectionTools = List.of();
         var optionalTools = Optional.ofNullable(edgeDescription.getPalette()).map(EdgePalette::getEdgeReconnectionTools);
-        switch (reconnectEdgeKind) {
-            case SOURCE:
-                edgeReconnectionTools = optionalTools.filter(SourceEdgeEndReconnectionTool.class::isInstance).orElse(new BasicEList<>());
-                break;
-            case TARGET:
-                edgeReconnectionTools = optionalTools.filter(TargetEdgeEndReconnectionTool.class::isInstance).orElse(new BasicEList<>());
-                break;
-            default:
-                edgeReconnectionTools = List.of();
-                break;
+        if (optionalTools.isPresent()) {
+            switch (reconnectEdgeKind) {
+                case SOURCE:
+                    edgeReconnectionTools = optionalTools.get().stream().filter(SourceEdgeEndReconnectionTool.class::isInstance).toList();
+                    break;
+                case TARGET:
+                    edgeReconnectionTools = optionalTools.get().stream().filter(TargetEdgeEndReconnectionTool.class::isInstance).toList();
+                    break;
+                default:
+                    break;
+            }
         }
         return edgeReconnectionTools;
     }
