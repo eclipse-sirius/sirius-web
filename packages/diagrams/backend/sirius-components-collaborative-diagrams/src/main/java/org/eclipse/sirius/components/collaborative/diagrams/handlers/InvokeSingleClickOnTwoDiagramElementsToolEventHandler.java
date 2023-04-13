@@ -166,7 +166,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
             result = tool.getHandler().apply(variableManager);
 
-            diagramContext.setDiagramEvent(new DoublePositionEvent(sourcePosition, targetPosition));
+            diagramContext.setDiagramEvent(new DoublePositionEvent(sourceNodeId, targetNodeId, sourcePosition, targetPosition));
         }
         return result;
     }

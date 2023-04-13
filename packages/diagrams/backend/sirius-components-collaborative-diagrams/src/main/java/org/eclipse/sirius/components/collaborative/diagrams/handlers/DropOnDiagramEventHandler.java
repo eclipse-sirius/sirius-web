@@ -116,7 +116,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
             result = new Success();
             var dropHandler = optionalDropHandler.get();
             Position newPosition = Position.at(startingPositionX, startingPositionY);
-            diagramContext.setDiagramEvent(new SinglePositionEvent(newPosition));
+            diagramContext.setDiagramEvent(new SinglePositionEvent(diagramElementId, newPosition));
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();

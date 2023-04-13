@@ -210,8 +210,8 @@ public class IncrementalLayoutEngine {
         optionalDiagramElementEvent.filter(DoublePositionEvent.class::isInstance)
                 .map(DoublePositionEvent.class::cast)
                 .ifPresent(doublePositionEvent -> {
-                    Ratio edgeSourceAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getSource(), doublePositionEvent.getSourcePosition());
-                    Ratio edgeTargetAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getTarget(), doublePositionEvent.getTargetPosition());
+                    Ratio edgeSourceAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getSource(), doublePositionEvent.sourcePosition());
+                    Ratio edgeTargetAnchorRelativePosition = this.getPositionProportionOfEdgeEndAbsolutePosition(edge.getTarget(), doublePositionEvent.targetPosition());
                     edge.setSourceAnchorRelativePosition(edgeSourceAnchorRelativePosition);
                     edge.setTargetAnchorRelativePosition(edgeTargetAnchorRelativePosition);
                 });

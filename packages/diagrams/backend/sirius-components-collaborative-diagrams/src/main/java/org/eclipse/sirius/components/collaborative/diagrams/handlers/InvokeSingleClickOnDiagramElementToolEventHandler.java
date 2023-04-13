@@ -159,7 +159,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
                 result = tool.getHandler().apply(variableManager);
                 Position newPosition = Position.at(startingPositionX, startingPositionY);
 
-                diagramContext.setDiagramEvent(new SinglePositionEvent(newPosition));
+                diagramContext.setDiagramEvent(new SinglePositionEvent(diagramElementId, newPosition));
             }
         }
         return result;

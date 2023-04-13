@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,22 +21,13 @@ import org.eclipse.sirius.components.diagrams.Position;
  *
  * @author gcoutable
  */
-public class DoublePositionEvent implements IDiagramEvent {
+public record DoublePositionEvent(String sourceId, String targetId, Position sourcePosition, Position targetPosition) implements IDiagramEvent {
 
-    private final Position sourcePosition;
 
-    private final Position targetPosition;
-
-    public DoublePositionEvent(Position sourcePosition, Position targetPosition) {
-        this.sourcePosition = Objects.requireNonNull(sourcePosition);
-        this.targetPosition = Objects.requireNonNull(targetPosition);
-    }
-
-    public Position getSourcePosition() {
-        return this.sourcePosition;
-    }
-
-    public Position getTargetPosition() {
-        return this.targetPosition;
+    public DoublePositionEvent {
+        Objects.requireNonNull(sourceId);
+        Objects.requireNonNull(targetId);
+        Objects.requireNonNull(sourcePosition);
+        Objects.requireNonNull(targetPosition);
     }
 }

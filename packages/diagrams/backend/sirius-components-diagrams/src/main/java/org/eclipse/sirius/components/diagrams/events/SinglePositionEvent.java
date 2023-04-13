@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.events;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.diagrams.Position;
 
 /**
@@ -19,5 +21,10 @@ import org.eclipse.sirius.components.diagrams.Position;
  *
  * @author fbarbin
  */
-public record SinglePositionEvent(Position position) implements IDiagramEvent {
+public record SinglePositionEvent(String diagramElementId, Position position) implements IDiagramEvent {
+
+    public SinglePositionEvent {
+        Objects.requireNonNull(diagramElementId);
+        Objects.requireNonNull(position);
+    }
 }
