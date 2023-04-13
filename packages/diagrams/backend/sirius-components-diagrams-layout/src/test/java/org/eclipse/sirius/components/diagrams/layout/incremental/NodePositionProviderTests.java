@@ -68,7 +68,7 @@ public class NodePositionProviderTests {
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), ZERO_POSITION));
         Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
         // we pin the node so the next one gets positioned after
@@ -92,7 +92,7 @@ public class NodePositionProviderTests {
         diagramLayoutData.setChildrenNodes(nodes);
         nodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalDiagramElementEvent = Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), ZERO_POSITION));
         Position nextPosition = nodePositionProvider.getPosition(optionalDiagramElementEvent, nodeLayoutData);
         nodeLayoutData.setPosition(nextPosition);
         assertThat(nextPosition).isEqualTo(Position.at(0, 0));
@@ -105,7 +105,7 @@ public class NodePositionProviderTests {
         NodeLayoutData childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE);
         childNodes.add(childLayoutData);
 
-        Optional<IDiagramEvent> optionalEventInside = Optional.of(new SinglePositionEvent(startingPosition));
+        Optional<IDiagramEvent> optionalEventInside = Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), startingPosition));
         nextPosition = nodePositionProvider.getPosition(optionalEventInside, childLayoutData);
         assertThat(nextPosition).isEqualTo(startingPosition);
 
@@ -115,7 +115,7 @@ public class NodePositionProviderTests {
         childLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, nodeLayoutData, NodeType.NODE_RECTANGLE);
         childNodes.add(nodeLayoutData);
 
-        Optional<IDiagramEvent> optionalEventOutside = Optional.of(new SinglePositionEvent(startingPositionOutside));
+        Optional<IDiagramEvent> optionalEventOutside = Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), startingPositionOutside));
         nextPosition = nodePositionProvider.getPosition(optionalEventOutside, childLayoutData);
         assertThat(nextPosition).isEqualTo(nodePositionProvider.getDefaultPosition(childLayoutData));
     }
@@ -129,7 +129,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), ZERO_POSITION));
 
         NodeLayoutData nodeLayoutData = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(nodeLayoutData);
@@ -155,7 +155,7 @@ public class NodePositionProviderTests {
         List<NodeLayoutData> nodes = new ArrayList<>();
         parentNodeLayoutData.setChildrenNodes(nodes);
 
-        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(ZERO_POSITION));
+        Optional<IDiagramEvent> optionalEvent = Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), ZERO_POSITION));
 
         NodeLayoutData firstChild = this.createNodeLayoutData(Position.UNDEFINED, DEFAULT_NODE_SIZE, parentNodeLayoutData, NodeType.NODE_RECTANGLE);
         nodes.add(firstChild);
@@ -175,7 +175,7 @@ public class NodePositionProviderTests {
         Position startingPosition = Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT);
         nodes.add(thirdChild);
 
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPosition)), thirdChild);
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), startingPosition)), thirdChild);
         assertThat(nextPosition).isEqualTo(Position.at(START_X_WITHIN_PARENT, START_Y_WITHIN_PARENT));
 
         // Test creation of a new node at a given position outside parent (creation tool)
@@ -184,7 +184,7 @@ public class NodePositionProviderTests {
         nodes.add(fourthChild);
 
         nodePositionProvider = new NodePositionProvider();
-        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(startingPositionOutside)), fourthChild);
+        nextPosition = nodePositionProvider.getPosition(Optional.of(new SinglePositionEvent(diagramLayoutData.getId(), startingPositionOutside)), fourthChild);
         assertThat(nextPosition).isEqualTo(nodePositionProvider.getDefaultPosition(fourthChild));
     }
 

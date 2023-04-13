@@ -210,7 +210,7 @@ public class DiagramLayoutTests {
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
-        IDiagramEvent diagramEvent = new SinglePositionEvent(Position.at(300, 100));
+        IDiagramEvent diagramEvent = new SinglePositionEvent(diagram.getId(), Position.at(300, 100));
 
         Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, diagramEvent);
         assertThat(optionalRefreshedDiagram).isNotEmpty();
@@ -291,7 +291,7 @@ public class DiagramLayoutTests {
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
 
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(initialLayoutedDiagram);
-        DoublePositionEvent diagramEvent = new DoublePositionEvent(Position.at(20, 20), Position.at(60, 30));
+        DoublePositionEvent diagramEvent = new DoublePositionEvent(FIRST_TARGET_OBJECT_ID, SECOND_TARGET_OBJECT_ID, Position.at(20, 20), Position.at(60, 30));
         Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, initialLayoutedDiagram, diagramEvent);
         assertThat(optionalRefreshedDiagram).isPresent();
         Diagram refreshedDiagram = optionalRefreshedDiagram.get();

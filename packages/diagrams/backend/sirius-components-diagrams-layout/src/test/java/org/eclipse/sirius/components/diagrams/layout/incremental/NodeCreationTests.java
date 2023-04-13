@@ -264,7 +264,7 @@ public class NodeCreationTests {
 
     private Diagram createNewNode(Diagram diagram, IEditingContext editingContext, Position eventCreationPosition) {
         TestDiagramCreationService diagramCreationService = this.createDiagramCreationService(diagram);
-        IDiagramEvent diagramEvent = new SinglePositionEvent(eventCreationPosition);
+        IDiagramEvent diagramEvent = new SinglePositionEvent(diagram.getId(), eventCreationPosition);
 
         Optional<Diagram> optionalRefreshedDiagram = diagramCreationService.performRefresh(editingContext, diagram, diagramEvent);
         assertThat(optionalRefreshedDiagram).isNotEmpty();

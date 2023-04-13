@@ -67,6 +67,7 @@ image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%
 - https://github.com/eclipse-sirius/sirius-components/issues/1869[#1869] [tree] Navigate to the first child with the right arrow if a node is expanded.
 Navigate to the parent with the left arrow if a node is collapsed
 - https://github.com/eclipse-sirius/sirius-components/issues/1621[#1621] [project] Migrate the onboard area to Material-UI
+- https://github.com/eclipse-sirius/sirius-components/issues/1852[#1852] [layout] Single position event takes the diagram element id and the double position event takes the source id and target id
 
 == v2023.4.0
 

@@ -107,7 +107,8 @@ public class BorderNodePositionTests {
     public void testBorderNodeCreationEvent() {
         IncrementalLayoutConvertedDiagram incrementalLayoutConvertedDiagram = this.initializeDiagram();
         DiagramLayoutData initializeDiagram = incrementalLayoutConvertedDiagram.getDiagramLayoutData();
-        List<NodeLayoutData> borderNodes = initializeDiagram.getChildrenNodes().get(0).getBorderNodes();
+        NodeLayoutData nodeLayoutData = initializeDiagram.getChildrenNodes().get(0);
+        List<NodeLayoutData> borderNodes = nodeLayoutData.getBorderNodes();
 
         // add a border node with an non positioned label
         LabelLayoutData labelLayoutData = this.createLabelLayoutData(Position.at(-1, -1), "label:outside", BORDER_NODE_LABEL_TEXT_BOUNDS);
@@ -120,7 +121,7 @@ public class BorderNodePositionTests {
         ILayoutEngineHandlerSwitchProvider layoutEngineHandlerSwitchProvider = () -> new LayoutEngineHandlerSwitch(borderNodeLayoutEngine, List.of(), imageNodeStyleSizeProvider);
         IncrementalLayoutEngine incrementalLayoutEngine = new IncrementalLayoutEngine(layoutEngineHandlerSwitchProvider);
 
-        Optional<IDiagramEvent> creationEvent = Optional.of(new SinglePositionEvent(Position.at(10, 10)));
+        Optional<IDiagramEvent> creationEvent = Optional.of(new SinglePositionEvent(nodeLayoutData.getId(), Position.at(10, 10)));
         incrementalLayoutEngine.layout(creationEvent, incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         this.checkBorderNodeLabel(borderNodes.get(0).getLabel(), BORDER_NODE_LABEL_TEXT_POSITION, BORDER_NODE_LABEL_TEXT_BOUNDS);
@@ -203,7 +204,7 @@ public class BorderNodePositionTests {
 
         NodeLayoutData newChildLayoutData = this.createNodeLayoutData(Position.UNDEFINED, Size.UNDEFINED, parentNode, NodeType.NODE_RECTANGLE);
         // The height 118 is the right height to prevent the parent node decrease its height
-        SinglePositionEvent singlePositionEvent = new SinglePositionEvent(Position.at(200, 118));
+        SinglePositionEvent singlePositionEvent = new SinglePositionEvent(parentNode.getId(), Position.at(200, 118));
         incrementalLayoutEngine.layout(Optional.of(singlePositionEvent), incrementalLayoutConvertedDiagram, new LayoutConfiguratorRegistry(List.of()).getDefaultLayoutConfigurator());
 
         assertThat(newChildLayoutData.getPosition()).isEqualTo(Position.at(100, 18));
