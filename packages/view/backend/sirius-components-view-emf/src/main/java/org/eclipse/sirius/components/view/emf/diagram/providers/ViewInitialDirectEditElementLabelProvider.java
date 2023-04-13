@@ -16,13 +16,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IInitialDirectEditElementLabelProvider;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -38,7 +35,6 @@ import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.LabelEditTool;
@@ -47,6 +43,7 @@ import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -74,20 +71,18 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
+    private final IDiagramIdProvider idProvider;
+
     private final ApplicationContext applicationContext;
 
-    private final Function<DiagramElementDescription, UUID> idProvider = (diagramElementDescription) -> {
-        // DiagramElementDescription should have a proper id.
-        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
-    };
-
     public ViewInitialDirectEditElementLabelProvider(IIdentifierProvider identifierProvider, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
-                                                     List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
+            List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
+        this.idProvider = Objects.requireNonNull(idProvider);
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
 
@@ -172,7 +167,10 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     }
 
     private Optional<NodeDescription> getNodeDescription(List<NodeDescription> nodeDescriptions, String descriptionId) {
-        var optionalNodeDescription = nodeDescriptions.stream().filter(nodeDescription -> descriptionId.equals(this.idProvider.apply(nodeDescription))).findFirst();
+        if (nodeDescriptions.isEmpty()) {
+            return Optional.empty();
+        }
+        var optionalNodeDescription = nodeDescriptions.stream().filter(nodeDescription -> descriptionId.equals(this.idProvider.getId(nodeDescription))).findFirst();
 
         if (optionalNodeDescription.isEmpty()) {
             Stream<NodeDescription> childrenStream = nodeDescriptions.stream().map(NodeDescription::getChildrenDescriptions).flatMap(Collection::stream);
@@ -187,7 +185,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     private Optional<EdgeDescription> getEdgeDescription(List<EdgeDescription> edgeDescriptions, String descriptionId) {
         // @formatter:off
         return edgeDescriptions.stream()
-                .filter(edgeDescription -> descriptionId.equals(this.idProvider.apply(edgeDescription)))
+                .filter(edgeDescription -> descriptionId.equals(this.idProvider.getId(edgeDescription)))
                 .findFirst();
         // @formatter:on
     }
