@@ -1,0 +1,105 @@
+:imagesdir: images/
+= (M) Filtering tree based representations
+
+== Problem
+
+It is quite difficult to identify specific tree item(s) in a tree when this tree contains lots of tree items.
+
+== Key Result
+
+The solution should not slow-down the user interface.
+The user interface must remains as smooth as it was before the developments of this filter.
+The results displayed by the filter should be visible immediately, i.e. without any latency.
+Otherwise, if the solution can only be implemented with a latency, then during the computation time, a "busy" indicator should be displayed, informing the user his request is processing.
+
+== Solution
+
+Add a filtering capacity in the Explorer View and other tree based representations, by providing a textual filtering of the tree just like what is being done in VSCode using a simple textfield.
+
+=== Breadboarding
+
+See the following breadboarding for the filtering:
+image:filter_tree_based_representations_01.png[Filter widget]
+ 
+A shortcut (most likely ctrl+f) will be available in the Explorer View, allowing to display a filtering bar under the toolbar at the top of the Explorer View.
+
+It should be noted that this may require having the ability to focus the explorer itself (this is what VS Code does), and we don't support that today.
+This filtering bar will be composed by a simple textfield, a filter button and a close button.
+
+When user type a value in the textfield of the filtering bar, the tree item(s) containing this value are highlighted (only the part corresponding to the value, not the whole tree item(s)).
+
+Each character added/removed in the filtering bar will update the result (i.e. the highlighted tree item(s)).
+The filter button allows to hide all visible leaf tree items that do not match the filter.
+The close button close the filtering bar, the highlighted results are not highlighted anymore, and the filtered tree items are not filtered anymore.
+The up/down arrow keys allow to jump from an highlighted item to the next one/previous one.
+
+An expand all action is available in the explorer toolbar, allowing to expand the whole tree.
+If this action is performed before a filtering, it allows to see every possible result and do not miss any.
+
+=== Scenario 1 - Highlight elements using a filter
+
+User want to filter tree items containing a specific value as their label or part of their label.
+User type the shortcut to enable the filtering bar.
+User type the value to filter in the filtering bar.
+The tree items containing the filtered value are highlighted (only the part of the items containing the value).
+Each character added/removed in the filtering bar updates the highlighted tree items.
+User close the filtering bar with the close button.
+All highlighted items are not highlighted anymore.
+
+=== Scenario 2 - Hide elements using a rilter
+
+User want to filter tree items containing a specific value as their label or part of their label.
+User type the shortcut to enable the filtering bar.
+User type the value to filter in the filtering bar.
+The tree items containing the filtered value are highlighted (only the part of the items containing the value).
+User push the filter button (to enable the filter) in the filtering bar.
+All visible leaf tree items that do not match the filter are hidden.
+It will not concern collapsed root/intermediate tree items.
+When expanded, root/intermediate tree items may become hidden if they are now leaf tree items that do not match the filter.
+User push again the filter button (to disable the filter) in the filtering bar.
+All filtered items are not filtered anymore.
+
+=== Scenario 3 - Navigate through results
+
+User want to navigate quickly through the highlighted tree items containing after a filter.
+User type the shortcut to enable the filtering bar.
+User type the value to filter in the filtering bar.
+The tree items containing the filtered value are highlighted (only the part of the items containing the value).
+User type the down arrow key to select the next highlighted tree item.
+User type the up arrow key to select the previous highlighted tree item.
+When the last highlighted tree item is selected, the down arrow key has no effect.
+When the first highlighted tree item is selected, the up arrow key has no effect.
+
+=== Cutting backs
+
+Sort the things todo, define the nice-to-have. What could be removed if finally the feature does not fit the appetite:
+
+- Navigate through highlighted tree items
+- The filtering bar is enabled through a shortcut.
+Instead, it is always visible.
+
+== Rabbit holes
+
+The navigation through up/down arrow keys could lead to some misunderstanding for the users.
+The keys are already used to navigate through the tree items in the Explorer View.
+When the filtering bar will be enabled, the up/down arrow keys won't have the same behavior than when the filtering bar is disabled.
+An alternate solution could be to have two buttons in the filtering bar, allowing to navigate through the highlighted tree items.
+
+Some results may not be highlighted because they are collapsed. With the proposed solution, there is no simple way to access to those tree items.
+This could not be the behavior wanted by some users.
+The documentation will have to explain that.
+
+The filtering could also be confusing for the users. Indeed, the filtering will not concern collapsed root/intermediate tree items.
+Only leaf tree items are concerned.
+This could not be the behavior wanted by some users.
+The documentation will have to explain that.
+
+For those two concerns, the solution is to use the "expand all" action before using the filter.
+Then no result will be hidden to users.
+
+== No-gos
+
+- The filtering will not concern collapsed root/intermediate tree items.
+- The navigation through highlighted tree items will only concern visible tree items.
+- If a tree item is concerned by the result of the filter but is not visible because it is contained by another tree item that is collapsed, then it will not be highlighted.
+- Display the number of highlighted tree items somewhere in the filtering bar.
