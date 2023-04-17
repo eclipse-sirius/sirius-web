@@ -25,7 +25,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MouseEvent, useContext, useEffect, useRef, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { GQLListItem } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
@@ -170,7 +169,7 @@ export const ListPropertySection = ({
   const onDelete = (_: MouseEvent<HTMLElement>, item: GQLListItem) => {
     const variables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId: formId,
         listId: widget.id,
@@ -212,7 +211,7 @@ export const ListPropertySection = ({
     setSelection({ entries: [{ id, label, kind }] });
     const variables: GQLClickListItemMutationVariables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId: formId,
         listId: widget.id,
@@ -228,7 +227,7 @@ export const ListPropertySection = ({
     setSelection({ entries: [{ id, label, kind }] });
     const variables: GQLClickListItemMutationVariables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId: formId,
         listId: widget.id,

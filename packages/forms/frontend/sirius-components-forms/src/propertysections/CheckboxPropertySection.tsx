@@ -20,7 +20,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   CheckboxPropertySectionProps,
   CheckboxStyleProps,
@@ -85,7 +84,7 @@ export const CheckboxPropertySection = ({
   const onChange = (event) => {
     const newValue = event.target.checked;
     const input: GQLEditCheckboxInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       checkboxId: widget.id,
@@ -117,7 +116,7 @@ export const CheckboxPropertySection = ({
   ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const input: GQLUpdateWidgetFocusInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       widgetId: widget.id,

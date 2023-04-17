@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { GQLTextarea, GQLWidget } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -166,7 +165,7 @@ export const TextfieldPropertySection = ({
   const sendEditedValue = () => {
     if (textfieldPropertySection === 'edited') {
       const input: GQLEditTextfieldInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId: formId,
         textfieldId: widget.id,
@@ -213,7 +212,7 @@ export const TextfieldPropertySection = ({
   ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const input: GQLUpdateWidgetFocusInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       widgetId: widget.id,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   GQLErrorPayload,
   GQLUploadImageMutationVariables,
@@ -80,7 +79,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
     event.preventDefault();
     const variables: GQLUploadImageMutationVariables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId: projectId,
         label,
         file: null, // the file will be send as a part of the multipart POST query.

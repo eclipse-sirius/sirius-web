@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   GQLExplorerEventData,
@@ -88,7 +87,7 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       tree: null,
       expanded: [],
       maxDepth: 1,

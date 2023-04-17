@@ -22,7 +22,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useEffect, useRef, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   addGroupMutation,
   addWidgetMutation,
@@ -302,7 +301,7 @@ export const Group = ({
     event.preventDefault();
     if (event.key === 'Delete') {
       const deleteGroupInput: GQLDeleteGroupInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         groupId: group.id,
@@ -342,7 +341,7 @@ export const Group = ({
         newGroupIndex = 0;
       }
       const addGroupInput: GQLAddGroupInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         index: newGroupIndex,
@@ -359,7 +358,7 @@ export const Group = ({
         groupNewIndex--;
       }
       const moveGroupInput: GQLMoveGroupInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         groupId: id,
@@ -384,7 +383,7 @@ export const Group = ({
       return;
     } else if (isKind(id)) {
       const addWidgetInput: GQLAddWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         containerId: group.id,
@@ -399,7 +398,7 @@ export const Group = ({
       }
 
       const moveWidgetInput: GQLMoveWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         containerId: group.id,

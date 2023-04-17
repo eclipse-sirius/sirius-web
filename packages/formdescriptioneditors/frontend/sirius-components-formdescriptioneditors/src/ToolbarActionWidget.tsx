@@ -26,7 +26,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { deleteToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLDeleteToolbarActionInput,
@@ -306,7 +305,7 @@ export const ToolbarActionWidget = ({
       index--;
     }
     const moveToolbarActionInput: GQLMoveToolbarActionInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId,
       containerId: group.id,
@@ -337,7 +336,7 @@ export const ToolbarActionWidget = ({
     event.preventDefault();
     if (event.key === 'Delete') {
       const deleteToolbarActionInput: GQLDeleteToolbarActionInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         toolbarActionId: toolbarAction.id,

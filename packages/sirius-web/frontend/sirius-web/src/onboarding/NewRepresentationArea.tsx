@@ -23,7 +23,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Close as CloseIcon, Collections } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { NewDocumentAreaState } from './NewDocumentArea.types';
 import { NewRepresentationAreaProps } from './NewRepresentationArea.types';
 
@@ -97,7 +96,7 @@ export const NewRepresentationArea = ({
     const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
     const objectId = selectedItem.id;
     const input = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       objectId,
       representationDescriptionId,

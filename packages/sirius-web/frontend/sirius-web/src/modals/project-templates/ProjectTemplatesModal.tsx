@@ -25,7 +25,6 @@ import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import {
   NewProjectCard,
   ProjectTemplateCard,
@@ -189,7 +188,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
             dispatch(event);
             const variables = {
               input: {
-                id: uuid(),
+                id: crypto.randomUUID(),
                 templateId: template.id,
               },
             };

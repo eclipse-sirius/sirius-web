@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
@@ -77,7 +76,7 @@ export const TreeItemContextMenu = ({
 
   const deleteItem = () => {
     const input: GQLDeleteTreeItemInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: treeId,
       treeItemId: item.id,

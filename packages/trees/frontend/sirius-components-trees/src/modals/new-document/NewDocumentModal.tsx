@@ -26,7 +26,6 @@ import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   GQLCreateDocumentMutationData,
   GQLCreateDocumentPayload,
@@ -169,7 +168,7 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
   const onCreateDocument = () => {
     dispatch({ type: 'CREATE_DOCUMENT' } as CreateDocumentEvent);
     const input = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       name,
       stereotypeDescriptionId: selectedStereotypeDescriptionId,

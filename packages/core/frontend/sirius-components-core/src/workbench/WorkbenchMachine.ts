@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   GQLEditingContextEventPayload,
@@ -81,7 +80,7 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       selection: { entries: [] },
       representations: [],
       displayedRepresentation: null,

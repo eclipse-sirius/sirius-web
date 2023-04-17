@@ -23,7 +23,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Close as CloseIcon, NoteAdd } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   GQLCreateDocumentMutationInput,
   GQLCreateDocumentMutationVariables,
@@ -81,7 +80,7 @@ export const NewDocumentArea = ({
   const onCreateDocument = (stereotypeDescriptionId: string) => {
     const selected = stereotypeDescriptions.find((candidate) => candidate.id === stereotypeDescriptionId);
     const input: GQLCreateDocumentMutationInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       name: selected.documentName,
       stereotypeDescriptionId,
@@ -114,7 +113,7 @@ export const NewDocumentArea = ({
 
   const onInvokeEditingContextAction = (actionId: string) => {
     const input: GQLInvokeEditingContextActionInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       actionId,
     };

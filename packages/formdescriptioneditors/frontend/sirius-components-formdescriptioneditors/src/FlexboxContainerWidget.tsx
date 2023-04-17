@@ -18,7 +18,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useRef, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
 import { addWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -181,7 +180,7 @@ export const FlexboxContainerWidget = ({
 
     if (isKind(id)) {
       const addWidgetInput: GQLAddWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         containerId: widget.id,
@@ -195,7 +194,7 @@ export const FlexboxContainerWidget = ({
         index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         containerId: widget.id,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 import { SubscriptionResult } from '@apollo/client';
 import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   GQLFormRefreshedEventPayload,
@@ -96,7 +95,7 @@ export const representationsViewMachine = Machine<
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       currentSelection: null,
       widget: null,
       formId: null,
@@ -241,7 +240,10 @@ export const representationsViewMachine = Machine<
     actions: {
       switchSelection: assign((_, event) => {
         const { selection } = event as SwitchSelectionEvent;
-        return { id: uuid(), currentSelection: selection };
+        return {
+          id: crypto.randomUUID(),
+          currentSelection: selection,
+        };
       }),
       clearForm: assign((_, event) => {
         return { widget: null };

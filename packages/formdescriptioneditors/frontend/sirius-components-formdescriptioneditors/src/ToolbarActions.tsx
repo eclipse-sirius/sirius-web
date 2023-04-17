@@ -20,7 +20,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddToolbarActionInput,
@@ -123,7 +122,7 @@ export const ToolbarActions = ({
 
   const handleAddToolbarAction: React.MouseEventHandler<HTMLButtonElement> = () => {
     const addToolbarActionInput: GQLAddToolbarActionInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId,
       containerId: group.id,
@@ -166,7 +165,7 @@ export const ToolbarActions = ({
     }
 
     const moveToolbarActionInput: GQLMoveToolbarActionInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId,
       containerId: group.id,

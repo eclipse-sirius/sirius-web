@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   DeleteImageModalProps,
   GQLDeleteImageMutationData,
@@ -33,12 +32,12 @@ import {
 import {
   DeleteImageModalContext,
   DeleteImageModalEvent,
-  deleteImageModalMachine,
   HandleResponseEvent,
   HideToastEvent,
   RequestImageDeletionEvent,
   SchemaValue,
   ShowToastEvent,
+  deleteImageModalMachine,
 } from './DeleteImageModalMachine';
 
 const deleteImageMutation = gql`
@@ -93,7 +92,7 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
     event.preventDefault();
     const variables: GQLDeleteImageMutationVariables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         imageId,
       },
     };

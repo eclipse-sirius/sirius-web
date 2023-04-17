@@ -18,7 +18,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useCallback, useEffect } from 'react';
 import { EditLabelAction, isWithEditableLabel, SModelElement } from 'sprotty';
-import { v4 as uuid } from 'uuid';
 import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
 import { BorderNode, Diagram, Edge, Node, ViewModifier } from '../sprotty/Diagram.types';
 import { HIDE_CONTEXTUAL_TOOLBAR_ACTION } from '../sprotty/DiagramServer';
@@ -287,7 +286,7 @@ export const ContextualPalette = ({
       const hide = elements.some((elem) => elem.state !== ViewModifier.Hidden);
 
       const input: GQLHideDiagramElementInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         elementIds,
@@ -314,7 +313,7 @@ export const ContextualPalette = ({
       const fade = elements.some((elem) => elem.state !== ViewModifier.Hidden);
 
       const input: GQLFadeDiagramElementInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         elementIds,
@@ -341,7 +340,7 @@ export const ContextualPalette = ({
   const collapseExpandElement = useCallback(
     (nodeId: string, collapsingState: GQLCollapsingState) => {
       const input: GQLUpdateCollapsingStateInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         diagramElementId: nodeId,

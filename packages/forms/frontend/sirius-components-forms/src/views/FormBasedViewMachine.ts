@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   GQLForm,
@@ -89,7 +88,7 @@ export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewS
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       currentSelection: null,
       form: null,
       subscribers: [],
@@ -235,7 +234,10 @@ export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewS
     actions: {
       switchSelection: assign((_, event) => {
         const { selection } = event as SwitchSelectionEvent;
-        return { id: uuid(), currentSelection: selection };
+        return {
+          id: crypto.randomUUID(),
+          currentSelection: selection,
+        };
       }),
       clearForm: assign((_, event) => {
         return { form: null };

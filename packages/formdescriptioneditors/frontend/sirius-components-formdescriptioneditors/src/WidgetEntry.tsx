@@ -37,7 +37,6 @@ import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
@@ -221,7 +220,7 @@ export const WidgetEntry = ({
     event.preventDefault();
     if (event.key === 'Delete') {
       const deleteWidgetInput: GQLDeleteWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         widgetId: widget.id,
@@ -279,7 +278,7 @@ export const WidgetEntry = ({
 
     if (isKind(id)) {
       const addWidgetInput: GQLAddWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         containerId: container.id,
@@ -294,7 +293,7 @@ export const WidgetEntry = ({
         index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         containerId: container.id,

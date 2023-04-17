@@ -27,7 +27,6 @@ import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
 import { FitToScreenAction, Point } from 'sprotty-protocol';
-import { v4 as uuid } from 'uuid';
 import { DropArea } from '../droparea/DropArea';
 import { ContextualMenu } from '../palette/ContextualMenu';
 import { ContextualPalette } from '../palette/ContextualPalette';
@@ -518,7 +517,7 @@ export const DiagramRepresentation = ({
         .map((elt) => elt.id);
 
       const input: GQLDeleteFromDiagramInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         nodeIds,
@@ -534,7 +533,7 @@ export const DiagramRepresentation = ({
   const reconnectEdge = useCallback(
     (edgeId: string, newEdgeEndId: string, reconnectEdgeKind: GQLReconnectKind, newEdgeEndPosition: Point): void => {
       const input: GQLReconnectEdgeInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         edgeId,
@@ -559,7 +558,7 @@ export const DiagramRepresentation = ({
           const targetPositionY = targetPosition?.y;
 
           const input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput = {
-            id: uuid(),
+            id: crypto.randomUUID(),
             editingContextId,
             representationId,
             diagramSourceElementId,
@@ -578,7 +577,7 @@ export const DiagramRepresentation = ({
           let startingPositionX = startingPosition ? startingPosition.x : 0;
           let startingPositionY = startingPosition ? startingPosition.y : 0;
           const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
-            id: uuid(),
+            id: crypto.randomUUID(),
             editingContextId,
             representationId,
             diagramElementId,
@@ -605,7 +604,7 @@ export const DiagramRepresentation = ({
   const moveElement = useCallback(
     (diagramElementId: string, newPositionX: number, newPositionY: number) => {
       const input: GQLUpdateNodePositionInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         diagramElementId,
@@ -626,7 +625,7 @@ export const DiagramRepresentation = ({
       newHeight: number
     ): void => {
       const input: GQLUpdateNodeBoundsInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         diagramElementId,
@@ -643,7 +642,7 @@ export const DiagramRepresentation = ({
   const updateRoutingPointsListener = useCallback(
     (routingPoints: Point[], edgeId: string) => {
       const input: GQLUpdateEdgeRoutingPointsInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         diagramElementId: edgeId,
@@ -740,7 +739,7 @@ export const DiagramRepresentation = ({
     };
     const editLabel = (labelId: string, newText: string): void => {
       const input: GQLEditLabelInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         labelId,
@@ -887,7 +886,7 @@ export const DiagramRepresentation = ({
 
   const onArrangeAll = () => {
     const input: GQLArrangeAllInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId,
     };
