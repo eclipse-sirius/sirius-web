@@ -2,6 +2,10 @@
 
 == v2023.6.0 (unreleased)
 
+=== Shapes
+
+- Filter tree based representations
+
 === Architectural decision records
 
 === Breaking changes
