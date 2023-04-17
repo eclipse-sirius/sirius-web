@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
@@ -101,7 +100,7 @@ export const RadioPropertySection = ({
   const onChange = (event) => {
     const newValue = event.target.value;
     const input: GQLEditRadioInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       radioId: widget.id,
@@ -131,7 +130,7 @@ export const RadioPropertySection = ({
   ] = useMutation<GQLUpdateWidgetFocusMutationData>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const input: GQLUpdateWidgetFocusInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       widgetId: widget.id,

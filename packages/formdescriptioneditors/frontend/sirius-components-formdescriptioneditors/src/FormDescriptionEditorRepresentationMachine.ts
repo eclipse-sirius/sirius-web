@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   GQLFormDescriptionEditor,
@@ -87,7 +86,7 @@ export const formDescriptionEditorRepresentationMachine = Machine<
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       formDescriptionEditor: null,
       subscribers: [],
       message: null,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   ButtonPropertySectionProps,
   ButtonStyleProps,
@@ -135,7 +134,7 @@ export const ButtonPropertySection = ({
 
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const input: GQLUpdateWidgetFocusInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       widgetId: widget.id,
@@ -168,7 +167,7 @@ export const ButtonPropertySection = ({
   };
   const onClick = () => {
     const input: GQLPushButtonInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       buttonId: widget.id,

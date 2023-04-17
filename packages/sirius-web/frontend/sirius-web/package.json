@@ -39,7 +39,6 @@
     "reflect-metadata": "0.1.13",
     "sprotty": "0.12.0",
     "subscriptions-transport-ws": "0.9.19",
-    "uuid": "8.3.2",
     "vite": "^3.1.4",
     "vitest": "^0.23.4",
     "xstate": "4.32.1"
@@ -52,7 +51,6 @@
     "@types/jest": "27.0.0",
     "@types/node": "16.6.0",
     "@types/react-dom": "17.0.9",
-    "@types/uuid": "8.3.2",
     "jest-junit-reporter": "1.1.0",
     "prettier": "2.7.1",
     "typescript": "4.7.4"

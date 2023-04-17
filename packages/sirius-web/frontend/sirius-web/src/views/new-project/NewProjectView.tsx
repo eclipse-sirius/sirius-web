@@ -22,7 +22,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import { Footer } from '../../footer/Footer';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { GQLCreateProjectMutationData, GQLCreateProjectPayload, GQLErrorPayload } from './NewProjectView.types';
@@ -92,7 +91,7 @@ export const NewProjectView = () => {
     event.preventDefault();
     const variables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         name: name.trim(),
       },
     };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,
@@ -77,7 +76,7 @@ export const UploadProjectView = () => {
     event.preventDefault();
     const variables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         file: null,
       },
     };

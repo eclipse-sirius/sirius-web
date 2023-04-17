@@ -25,7 +25,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 
 import { useContext, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import { sendFile } from '../../common/sendFile';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { GQLErrorPayload, GQLUploadDocumentPayload, UploadDocumentModalProps } from './UploadDocumentModal.types';
@@ -84,7 +83,7 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
     event.preventDefault();
     const variables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         file: null, // the file will be send as a part of the multipart POST query.
       },

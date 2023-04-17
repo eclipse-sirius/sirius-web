@@ -44,7 +44,6 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import { Footer } from '../../footer/Footer';
 import { ProjectTemplatesModal } from '../../modals/project-templates/ProjectTemplatesModal';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -357,7 +356,7 @@ export const ProjectsView = () => {
       dispatch({ type: 'INVOKE_TEMPLATE', template } as InvokeTemplateEvent);
       const variables = {
         input: {
-          id: uuid(),
+          id: crypto.randomUUID(),
           templateId: template.id,
         },
       };

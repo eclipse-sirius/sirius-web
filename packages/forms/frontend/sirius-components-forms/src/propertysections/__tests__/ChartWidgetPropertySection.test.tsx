@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 import { MockedProvider } from '@apollo/client/testing';
 
 import { cleanup, render } from '@testing-library/react';
-import { afterEach, expect, test, vi } from 'vitest';
+import { afterEach, expect, test } from 'vitest';
 import {
   GQLBarChart,
   GQLBarChartEntry,
@@ -23,8 +23,6 @@ import {
   GQLRepresentationMetadata,
 } from '../../form/FormEventFragments.types';
 import { ChartWidgetPropertySection } from '../ChartWidgetPropertySection';
-
-vi.mock('uuid', () => ({ v4: () => '48be95fc-3422-45d3-b1f9-d590e847e9e1' }));
 
 afterEach(() => cleanup());
 const pieChartentries: GQLPieChartEntry[] = [

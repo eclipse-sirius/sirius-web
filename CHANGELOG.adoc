@@ -12,6 +12,8 @@
 === Dependency update
 - https://github.com/eclipse-sirius/sirius-components/issues/1936[#1936] [releng] Switch to Cypress 12.11.0
 
+- https://github.com/eclipse-sirius/sirius-components/issues/1848[#1848] [project] Remove the frontend dependency to `uuid` in favor of `crypto.randomUUID`
+
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1304[#1304] [tree] Fix an issue where dropping an element from the tree to a diagram used the current selection instead of the dragged tree item.
@@ -65,8 +67,6 @@ Such calls will not work anymore since `null` will not be an acceptable value an
 - https://github.com/eclipse-sirius/sirius-components/issues/1890[#1890]  [view] Tools are now retrieved from their corresponding View Description
 +
 Removing dependencies from sirius-components-compatibility-emf in the canHandle methods of sirius-components-view-emf services
-
-
 
 === Dependency update
 

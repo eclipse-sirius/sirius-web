@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import { RichTextEditor } from '../richtexteditor/RichTextEditor';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
@@ -87,7 +86,7 @@ export const RichTextPropertySection = ({
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
   const sendEditedValue = (newValue) => {
     const input: GQLEditRichTextInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       richTextId: widget.id,
@@ -123,7 +122,7 @@ export const RichTextPropertySection = ({
   ] = useMutation<GQLUpdateWidgetFocusMutationData, GQLUpdateWidgetFocusMutationVariables>(updateWidgetFocusMutation);
   const sendUpdateWidgetFocus = (selected: boolean) => {
     const input: GQLUpdateWidgetFocusInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId: formId,
       widgetId: widget.id,

@@ -29,7 +29,6 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { useMachine } from '@xstate/react';
 import React, { useCallback, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import { GQLDiagram, GQLNode } from '../representation/DiagramRepresentation.types';
 import { ShareDiagramModal } from '../share-diagram/ShareDiagramModal';
 import {
@@ -217,7 +216,7 @@ export const Toolbar = ({
 
   const onUnhideAll = () => {
     const input: GQLHideDiagramElementInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId,
       elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),
@@ -237,7 +236,7 @@ export const Toolbar = ({
 
   const onUnfadeAll = () => {
     const input: GQLFadeDiagramElementInput = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       representationId,
       elementIds: [...diagram.edges, ...getAllNodes(diagram)].map((elem) => elem.id),

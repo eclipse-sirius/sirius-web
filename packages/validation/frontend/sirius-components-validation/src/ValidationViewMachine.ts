@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   Category,
@@ -67,7 +66,7 @@ export const validationViewMachine = Machine<ValidationViewContext, ValidationVi
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       validation: null,
       message: null,
     },

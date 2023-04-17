@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SubscriptionResult } from '@apollo/client';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import {
   GQLForm,
@@ -88,7 +87,7 @@ export const formRepresentationMachine = Machine<
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       formId: null,
       form: null,
       subscribers: [],
@@ -177,7 +176,10 @@ export const formRepresentationMachine = Machine<
     actions: {
       switchForm: assign((_, event) => {
         const { formId } = event as SwitchFormEvent;
-        return { id: uuid(), formId };
+        return {
+          id: crypto.randomUUID(),
+          formId,
+        };
       }),
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;

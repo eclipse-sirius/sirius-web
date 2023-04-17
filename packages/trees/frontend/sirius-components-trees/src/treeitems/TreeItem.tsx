@@ -19,7 +19,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
@@ -288,7 +287,13 @@ export const TreeItem = ({
       if (isNameValid && item) {
         renameTreeItem({
           variables: {
-            input: { id: uuid(), editingContextId, representationId: treeId, treeItemId: item.id, newLabel: label },
+            input: {
+              id: crypto.randomUUID(),
+              editingContextId,
+              representationId: treeId,
+              treeItemId: item.id,
+              newLabel: label,
+            },
           },
         });
       } else {

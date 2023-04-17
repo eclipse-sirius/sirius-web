@@ -14,7 +14,6 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, SModelElement, TYPES } from 'sprotty';
 import { Point } from 'sprotty-protocol';
-import { v4 as uuid } from 'uuid';
 import { assign, Machine } from 'xstate';
 import { createDependencyInjectionContainer } from '../sprotty/DependencyInjection';
 import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
@@ -198,7 +197,7 @@ export const diagramRepresentationMachine = Machine<
   {
     type: 'parallel',
     context: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       displayedRepresentationId: null,
       diagramServer: null,
       diagram: null,
@@ -406,7 +405,10 @@ export const diagramRepresentationMachine = Machine<
     actions: {
       switchRepresentation: assign((_, event) => {
         const { representationId } = event as SwitchRepresentationEvent;
-        return { id: uuid(), displayedRepresentationId: representationId };
+        return {
+          id: crypto.randomUUID(),
+          displayedRepresentationId: representationId,
+        };
       }),
       initialize: assign((_, event) => {
         const {

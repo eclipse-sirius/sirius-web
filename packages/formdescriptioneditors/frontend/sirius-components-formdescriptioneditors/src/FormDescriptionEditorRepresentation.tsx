@@ -34,7 +34,6 @@ import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   addGroupMutation,
   formDescriptionEditorEventSubscription,
@@ -67,6 +66,7 @@ import {
 import { Group } from './Group';
 import { Button } from './icons/Button';
 import { isKind } from './WidgetOperations';
+
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
@@ -284,7 +284,7 @@ export const FormDescriptionEditorRepresentation = ({
 
     if (id === 'Group') {
       const addGroupInput: GQLAddGroupInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         index,
@@ -302,7 +302,7 @@ export const FormDescriptionEditorRepresentation = ({
         return;
       }
       const moveGroupInput: GQLMoveGroupInput = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         representationId,
         groupId: id,
