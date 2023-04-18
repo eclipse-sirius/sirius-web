@@ -115,9 +115,10 @@ public class GitCommitMessageTests {
         int beginIndex = title.indexOf(START);
         int endIndex = title.indexOf(END);
         assertThat(beginIndex).isLessThan(endIndex);
-
-        assertThat(title.length()).isGreaterThan(endIndex + 4);
-
+        
+        assertThat(title.length()).isGreaterThan(endIndex + 3);
+        assertThat(title.substring(endIndex + 1, endIndex + 2)).isBlank();
+        assertThat(title.substring(endIndex + 2, endIndex + 3)).isUpperCase();
 
         assertThat(lines.get(5)).isBlank();
 
