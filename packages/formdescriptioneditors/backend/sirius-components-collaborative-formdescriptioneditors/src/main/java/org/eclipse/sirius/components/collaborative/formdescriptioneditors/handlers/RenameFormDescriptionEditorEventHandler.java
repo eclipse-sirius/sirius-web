@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -79,7 +80,10 @@ public class RenameFormDescriptionEditorEventHandler implements IFormDescription
             RenameFormDescriptionEditorInput renameRepresentationInput = (RenameFormDescriptionEditorInput) formDescriptionEditorInput;
             String newLabel = renameRepresentationInput.newLabel();
 
-            FormDescriptionEditor renamedFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(formDescriptionEditorContext.getFormDescriptionEditor()).label(newLabel).build();
+            FormDescriptionEditor renamedFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(formDescriptionEditorContext.getFormDescriptionEditor())
+                    .label(newLabel)
+                    .groups(List.of()) // We don't store form description editor groups, it will be re-render by the FormDescriptionEditorProcessor.
+                    .build();
             this.representationPersistenceService.save(editingContext, renamedFormDescriptionEditor);
 
             payload = new RenameRepresentationSuccessPayload(formDescriptionEditorInput.id(), renamedFormDescriptionEditor);
