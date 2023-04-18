@@ -164,7 +164,7 @@ jobs:
 
       - name: Run end to end tests against the application
         if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           build: docker-compose -f ../packages/sirius-web/backend/sirius-web-sample-application/docker-compose.yml up -d
           start: docker-compose -f ../packages/sirius-web/backend/sirius-web-sample-application/docker-compose.yml ps
