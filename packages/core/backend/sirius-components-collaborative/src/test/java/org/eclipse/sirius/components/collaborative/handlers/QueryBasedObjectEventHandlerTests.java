@@ -62,7 +62,7 @@ public class QueryBasedObjectEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(QueryBasedObjectSuccessPayload.class);
-        assertThat(((QueryBasedObjectSuccessPayload) payload).getResult()).isEqualTo(EXPECTED_RESULT);
+        assertThat(((QueryBasedObjectSuccessPayload) payload).result()).isEqualTo(EXPECTED_RESULT);
     }
 
     @Test

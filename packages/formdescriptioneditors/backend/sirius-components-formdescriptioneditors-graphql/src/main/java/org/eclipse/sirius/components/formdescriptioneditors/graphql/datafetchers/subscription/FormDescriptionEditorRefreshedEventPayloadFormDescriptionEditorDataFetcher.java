@@ -31,7 +31,7 @@ public class FormDescriptionEditorRefreshedEventPayloadFormDescriptionEditorData
     public DataFetcherResult<FormDescriptionEditor> get(DataFetchingEnvironment environment) throws Exception {
         FormDescriptionEditorRefreshedEventPayload payload = environment.getSource();
         return DataFetcherResult.<FormDescriptionEditor>newResult()
-                .data(payload.getFormDescriptionEditor())
+                .data(payload.formDescriptionEditor())
                 .localContext(environment.getLocalContext())
                 .build();
     }

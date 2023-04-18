@@ -120,9 +120,8 @@ public class ProjectService implements IProjectService {
 
             var createProjectInput = new CreateProjectInput(UUID.randomUUID(), template.getLabel());
             var payload = this.createProject(createProjectInput);
-            if (payload instanceof CreateProjectSuccessPayload) {
-                var createProjectSuccessPayload = (CreateProjectSuccessPayload) payload;
-                var projectId = createProjectSuccessPayload.getProject().getId();
+            if (payload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
+                var projectId = createProjectSuccessPayload.project().getId();
 
                 var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
                 if (optionalEditingContext.isPresent()) {
@@ -130,7 +129,7 @@ public class ProjectService implements IProjectService {
                     var representationToOpen = projectTemplateInitializer.handle(input.templateId(), editingContext).orElse(null);
 
                     this.editingContextPersistenceService.persist(editingContext);
-                    result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.getProject(), representationToOpen);
+                    result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.project(), representationToOpen);
                 }
             } else {
                 result = payload;

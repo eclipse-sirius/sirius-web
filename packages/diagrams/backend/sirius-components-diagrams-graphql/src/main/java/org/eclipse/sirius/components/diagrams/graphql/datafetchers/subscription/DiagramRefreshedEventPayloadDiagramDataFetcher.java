@@ -31,7 +31,7 @@ public class DiagramRefreshedEventPayloadDiagramDataFetcher implements IDataFetc
     public DataFetcherResult<Diagram> get(DataFetchingEnvironment environment) throws Exception {
         DiagramRefreshedEventPayload payload = environment.getSource();
         return DataFetcherResult.<Diagram>newResult()
-                .data(payload.getDiagram())
+                .data(payload.diagram())
                 .localContext(environment.getLocalContext())
                 .build();
     }

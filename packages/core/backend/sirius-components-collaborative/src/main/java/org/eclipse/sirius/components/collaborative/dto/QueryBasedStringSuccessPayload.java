@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.dto;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,29 +22,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
  *
  * @author fbarbin
  */
-public final class QueryBasedStringSuccessPayload implements IPayload {
-
-    private final UUID id;
-
-    private final String result;
-
-    public QueryBasedStringSuccessPayload(UUID id, String result) {
-        this.id = Objects.requireNonNull(id);
-        this.result = Objects.requireNonNull(result);
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public String getResult() {
-        return this.result;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, result: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.result);
+public record QueryBasedStringSuccessPayload(UUID id, String result) implements IPayload {
+    public QueryBasedStringSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(result);
     }
 }

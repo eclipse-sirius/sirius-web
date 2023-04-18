@@ -63,7 +63,7 @@ public class DiagramDescriptionConnectorToolsDataFetcher implements IDataFetcher
             return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                     .filter(GetConnectorToolsSuccessPayload.class::isInstance)
                     .map(GetConnectorToolsSuccessPayload.class::cast)
-                    .map(GetConnectorToolsSuccessPayload::getConnectorTools)
+                    .map(GetConnectorToolsSuccessPayload::connectorTools)
                     .toFuture();
             // @formatter:on
         }

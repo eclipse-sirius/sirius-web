@@ -66,7 +66,7 @@ public class EMFQueryServiceTests {
         QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.allContents()->size()", Map.of());
         IPayload payload = queryService.execute(editingContext, input);
         assertTrue(payload instanceof QueryBasedIntSuccessPayload);
-        assertEquals(8, ((QueryBasedIntSuccessPayload) payload).getResult());
+        assertEquals(8, ((QueryBasedIntSuccessPayload) payload).result());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class EMFQueryServiceTests {
         QueryBasedIntInput input = new QueryBasedIntInput(UUID.randomUUID(), "aql:editingContext.contents()->size()", Map.of());
         IPayload payload = queryService.execute(editingContext, input);
         assertTrue(payload instanceof QueryBasedIntSuccessPayload);
-        assertEquals(2, ((QueryBasedIntSuccessPayload) payload).getResult());
+        assertEquals(2, ((QueryBasedIntSuccessPayload) payload).result());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class EMFQueryServiceTests {
         IPayload payload = queryService.execute(editingContext, input);
 
         assertTrue(payload instanceof QueryBasedObjectSuccessPayload);
-        assertEquals(eObjectToRetrieve, ((QueryBasedObjectSuccessPayload) payload).getResult());
+        assertEquals(eObjectToRetrieve, ((QueryBasedObjectSuccessPayload) payload).result());
 
         input = new QueryBasedObjectInput(UUID.randomUUID(), "aql:editingContext.getObjectById('" + id + "wrong')", Map.of());
         payload = queryService.execute(editingContext, input);

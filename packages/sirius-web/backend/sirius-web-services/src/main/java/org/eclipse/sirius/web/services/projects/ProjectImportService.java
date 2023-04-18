@@ -98,7 +98,7 @@ public class ProjectImportService implements IProjectImportService {
         CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName);
         IPayload createProjectPayload = this.projectService.createProject(createProjectInput);
         if (createProjectPayload instanceof CreateProjectSuccessPayload) {
-            Project project = ((CreateProjectSuccessPayload) createProjectPayload).getProject();
+            Project project = ((CreateProjectSuccessPayload) createProjectPayload).project();
             Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry
                     .getOrCreateEditingContextEventProcessor(project.getId().toString());
             if (optionalEditingContextEventProcessor.isPresent()) {

@@ -31,7 +31,7 @@ public class TreeRefreshedEventPayloadTreeDataFetcher implements IDataFetcherWit
     public DataFetcherResult<Tree> get(DataFetchingEnvironment environment) throws Exception {
         TreeRefreshedEventPayload payload = environment.getSource();
         return DataFetcherResult.<Tree>newResult()
-                .data(payload.getTree())
+                .data(payload.tree())
                 .localContext(environment.getLocalContext())
                 .build();
     }

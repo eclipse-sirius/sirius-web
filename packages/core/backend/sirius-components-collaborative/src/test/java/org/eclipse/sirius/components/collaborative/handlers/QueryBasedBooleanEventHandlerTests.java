@@ -63,7 +63,7 @@ public class QueryBasedBooleanEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(QueryBasedBooleanSuccessPayload.class);
-        assertThat(((QueryBasedBooleanSuccessPayload) payload).getResult()).isEqualTo(EXPECTED_RESULT_FALSE);
+        assertThat(((QueryBasedBooleanSuccessPayload) payload).result()).isEqualTo(EXPECTED_RESULT_FALSE);
     }
 
     @Test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms.dto;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,28 +22,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
  *
  * @author smonnier
  */
-public final class UpdateWidgetFocusSuccessPayload implements IPayload {
-    private final UUID id;
-
-    private final String widgetId;
-
-    public UpdateWidgetFocusSuccessPayload(UUID id, String widgetId) {
-        this.id = Objects.requireNonNull(id);
-        this.widgetId = Objects.requireNonNull(widgetId);
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public String getUpdateFocusWidgetId() {
-        return this.widgetId;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, widgetId: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.widgetId);
+public record UpdateWidgetFocusSuccessPayload(UUID id, String widgetId) implements IPayload {
+    public UpdateWidgetFocusSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(widgetId);
     }
 }

@@ -56,7 +56,7 @@ public class ObjectQueryBasedBooleanDataFetcher implements IDataFetcherWithField
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .filter(QueryBasedBooleanSuccessPayload.class::isInstance)
                 .map(QueryBasedBooleanSuccessPayload.class::cast)
-                .map(QueryBasedBooleanSuccessPayload::getResult)
+                .map(QueryBasedBooleanSuccessPayload::result)
                 .toFuture();
     }
 

@@ -73,7 +73,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
 
     private Connection<RepresentationDescriptionMetadata> toConnection(EditingContextRepresentationDescriptionsPayload payload) {
         // @formatter:off
-        List<Edge<RepresentationDescriptionMetadata>> representationDescriptionEdges = payload.getRepresentationDescriptions().stream()
+        List<Edge<RepresentationDescriptionMetadata>> representationDescriptionEdges = payload.representationDescriptions().stream()
                 .map(representationDescription -> {
                     String value = Base64.getEncoder().encodeToString(representationDescription.getId().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
@@ -88,7 +88,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
         if (!representationDescriptionEdges.isEmpty()) {
             endCursor = representationDescriptionEdges.get(representationDescriptionEdges.size() - 1).getCursor();
         }
-        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.getRepresentationDescriptions().size());
+        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.representationDescriptions().size());
         return new DefaultConnection<>(representationDescriptionEdges, pageInfo);
     }
 

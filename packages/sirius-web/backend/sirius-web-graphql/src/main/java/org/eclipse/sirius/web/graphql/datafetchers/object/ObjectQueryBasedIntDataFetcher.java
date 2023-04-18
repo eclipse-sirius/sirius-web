@@ -57,7 +57,7 @@ public class ObjectQueryBasedIntDataFetcher implements IDataFetcherWithFieldCoor
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .filter(QueryBasedIntSuccessPayload.class::isInstance)
                 .map(QueryBasedIntSuccessPayload.class::cast)
-                .map(QueryBasedIntSuccessPayload::getResult)
+                .map(QueryBasedIntSuccessPayload::result)
                 .toFuture();
     }
 

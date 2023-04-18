@@ -53,7 +53,7 @@ public class EditingContextQueryBasedObjectsDataFetcher implements IDataFetcherW
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .filter(QueryBasedObjectsSuccessPayload.class::isInstance)
                 .map(QueryBasedObjectsSuccessPayload.class::cast)
-                .map(QueryBasedObjectsSuccessPayload::getResult)
+                .map(QueryBasedObjectsSuccessPayload::result)
                 .map(result -> this.toDataFetcherResult(result, editingContextId))
                 .toFuture();
     }

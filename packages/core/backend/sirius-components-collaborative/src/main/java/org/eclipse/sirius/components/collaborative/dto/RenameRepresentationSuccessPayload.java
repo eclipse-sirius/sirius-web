@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.dto;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,28 +23,9 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  *
  * @author arichard
  */
-public final class RenameRepresentationSuccessPayload implements IPayload {
-    private final UUID id;
-
-    private final IRepresentation representation;
-
-    public RenameRepresentationSuccessPayload(UUID id, IRepresentation representation) {
-        this.id = Objects.requireNonNull(id);
-        this.representation = Objects.requireNonNull(representation);
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public IRepresentation getRepresentation() {
-        return this.representation;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, representation: '{'id: {2}, label: {3}'}''}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.representation.getId(), this.representation.getLabel());
+public record RenameRepresentationSuccessPayload(UUID id, IRepresentation representation) implements IPayload {
+    public RenameRepresentationSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(representation);
     }
 }

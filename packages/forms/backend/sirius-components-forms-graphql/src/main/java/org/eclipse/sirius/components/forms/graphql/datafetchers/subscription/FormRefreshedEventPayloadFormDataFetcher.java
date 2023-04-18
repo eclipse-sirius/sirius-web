@@ -31,7 +31,7 @@ public class FormRefreshedEventPayloadFormDataFetcher implements IDataFetcherWit
     public DataFetcherResult<Form> get(DataFetchingEnvironment environment) throws Exception {
         FormRefreshedEventPayload payload = environment.getSource();
         return DataFetcherResult.<Form>newResult()
-                .data(payload.getForm())
+                .data(payload.form())
                 .localContext(environment.getLocalContext())
                 .build();
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,10 +74,9 @@ public class RepresentationController {
                 .dispatchEvent(editingContextId, input)
                 .map(payload -> {
                     ResponseEntity<Resource> response;
-                    if (payload instanceof ExportRepresentationPayload) {
-                        ExportRepresentationPayload exportPayload = (ExportRepresentationPayload) payload;
-                        byte[] bytes = exportPayload.getContent().getBytes();
-                        String name = exportPayload.getName();
+                    if (payload instanceof ExportRepresentationPayload exportPayload) {
+                        byte[] bytes = exportPayload.content().getBytes();
+                        String name = exportPayload.name();
                         response = this.toResponseEntity(name, bytes);
                     } else {
                         response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);

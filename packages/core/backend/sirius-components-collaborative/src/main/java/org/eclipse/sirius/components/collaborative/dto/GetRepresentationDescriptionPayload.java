@@ -23,24 +23,8 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
  *
  * @author sbegaudeau
  */
-public final class GetRepresentationDescriptionPayload implements IPayload {
-
-    private final UUID id;
-
-    private final IRepresentationDescription representationDescription;
-
-    public GetRepresentationDescriptionPayload(UUID id, IRepresentationDescription representationDescription) {
-        this.id = Objects.requireNonNull(id);
-        this.representationDescription = representationDescription;
+public record GetRepresentationDescriptionPayload(UUID id, IRepresentationDescription representationDescription) implements IPayload {
+    public GetRepresentationDescriptionPayload {
+        Objects.requireNonNull(id);
     }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public IRepresentationDescription getRepresentationDescription() {
-        return this.representationDescription;
-    }
-
 }

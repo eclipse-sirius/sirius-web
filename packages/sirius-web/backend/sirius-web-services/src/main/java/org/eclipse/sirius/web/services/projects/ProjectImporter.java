@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,9 +86,7 @@ public class ProjectImporter {
      * Creates all representations in the project thanks to the {@link IEditingContextEventProcessor} and the create
      * representation input. If at least one representation has not been created it will return <code>false</code>.
      *
-     * @param inputId
-     *            The identifier of the input which has triggered this import
-     *
+     * @param inputId The identifier of the input which has triggered this import
      * @return <code>true</code> whether all representations has been created, <code>false</code> otherwise
      */
     private boolean createRepresentations(UUID inputId) {
@@ -122,7 +120,7 @@ public class ProjectImporter {
 
             representationCreated = inputHandle.filter(CreateRepresentationSuccessPayload.class::isInstance)
                     .map(CreateRepresentationSuccessPayload.class::cast)
-                    .map(CreateRepresentationSuccessPayload::getRepresentation)
+                    .map(CreateRepresentationSuccessPayload::representation)
                     .blockOptional()
                     .isPresent();
             // @formatter:on
@@ -138,12 +136,10 @@ public class ProjectImporter {
     }
 
     /**
-     * Creates all documents in the project thanks to the {@link IEditingContextEventProcessor} and the
-     * {@link CreateDocumentFromUploadEvent}. If at least one document has not been created it will return
-     * <code>false</code>.
+     * Creates all documents in the project thanks to the {@link IEditingContextEventProcessor}.
+     * If at least one document has not been created it will return <code>false</code>.
      *
      * @param inputId
-     *
      * @return <code>true</code> whether all documents has been created, <code>false</code> otherwise
      */
     private boolean createDocuments(UUID inputId) {
@@ -156,7 +152,7 @@ public class ProjectImporter {
             Document document = this.editingContextEventProcessor.handle(input)
                     .filter(UploadDocumentSuccessPayload.class::isInstance)
                     .map(UploadDocumentSuccessPayload.class::cast)
-                    .map(UploadDocumentSuccessPayload::getDocument)
+                    .map(UploadDocumentSuccessPayload::document)
                     .blockOptional()
                     .orElse(null);
             // @formatter:on
