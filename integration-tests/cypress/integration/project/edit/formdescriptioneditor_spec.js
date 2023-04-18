@@ -49,4 +49,38 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('ToolbarAction').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-ToolbarActions-DropArea-"]').eq(1).trigger('drop', { dataTransfer });
   });
+
+  it('rename a form description editor', () => {
+    cy.getByTestId('ViewDocument').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.getByTestId('View-more').click();
+    // create the form description
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    //make sure the data are fetched before selecting
+    cy.getByTestId('create-object').should('be.enabled');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Form Description"]').click();
+    cy.getByTestId('create-object').click();
+    // create a button widget under the group of the form description editor
+    cy.getByTestId('New Form Description').dblclick();
+    cy.getByTestId('GroupDescription').dblclick();
+    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    //make sure the data are fetched before selecting
+    cy.getByTestId('create-object').should('be.enabled');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Widgets Button Description"]').click();
+    cy.getByTestId('create-object').click();
+    // create the form description editor
+    cy.getByTestId('New Form Description').click();
+    cy.getByTestId('New Form Description-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('create-representation').click();
+    // rename the form description editor
+    cy.getByTestId('FormDescriptionEditor').click();
+    cy.getByTestId('FormDescriptionEditor-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').type('Renamed-FormDescriptionEditor{enter}');
+    cy.getByTestId('Renamed-FormDescriptionEditor').should('exist');
+  });
 });
