@@ -101,6 +101,6 @@ public class InvokeEditingContextActionEventHandlerTests {
         assertThat(payload).isInstanceOf(ErrorPayload.class);
 
         ErrorPayload errorPayload = (ErrorPayload) payload;
-        assertThat(errorPayload.getMessage()).isEqualTo("No handler could be found for action with id actionId");
+        assertThat(errorPayload.message()).isEqualTo("No handler could be found for action with id actionId");
     }
 }

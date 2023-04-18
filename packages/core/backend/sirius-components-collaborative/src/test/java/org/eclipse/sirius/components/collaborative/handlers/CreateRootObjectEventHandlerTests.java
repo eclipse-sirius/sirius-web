@@ -63,6 +63,6 @@ public class CreateRootObjectEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(CreateRootObjectSuccessPayload.class);
-        assertThat(((CreateRootObjectSuccessPayload) payload).getObject()).isEqualTo(object);
+        assertThat(((CreateRootObjectSuccessPayload) payload).object()).isEqualTo(object);
     }
 }

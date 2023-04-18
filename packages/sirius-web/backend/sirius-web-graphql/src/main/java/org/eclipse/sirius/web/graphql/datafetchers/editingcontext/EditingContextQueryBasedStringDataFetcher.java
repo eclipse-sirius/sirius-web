@@ -50,7 +50,7 @@ public class EditingContextQueryBasedStringDataFetcher implements IDataFetcherWi
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .filter(QueryBasedStringSuccessPayload.class::isInstance)
                 .map(QueryBasedStringSuccessPayload.class::cast)
-                .map(QueryBasedStringSuccessPayload::getResult)
+                .map(QueryBasedStringSuccessPayload::result)
                 .toFuture();
     }
 }

@@ -98,7 +98,7 @@ public class InitialDirectEditElementLabelEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(InitialDirectEditElementLabelSuccessPayload.class);
         InitialDirectEditElementLabelSuccessPayload successPayload = (InitialDirectEditElementLabelSuccessPayload) payload;
-        assertThat(successPayload.getInitialDirectEditElementLabel()).isEqualTo(INIT_LABEL);
+        assertThat(successPayload.initialDirectEditElementLabel()).isEqualTo(INIT_LABEL);
     }
 
 }

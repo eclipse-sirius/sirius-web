@@ -108,7 +108,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
 
         Predicate<IPayload> isEmptyDiagramRefreshedEventPayload = payload -> {
             if (payload instanceof DiagramRefreshedEventPayload diagramRefreshedEventPayload) {
-                var diagram = diagramRefreshedEventPayload.getDiagram();
+                var diagram = diagramRefreshedEventPayload.diagram();
                 return diagram.getNodes().isEmpty() && diagram.getEdges().isEmpty();
             }
             return false;
@@ -117,7 +117,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
         Predicate<IPayload> isInitializedPapayaDiagram = payload -> {
             if (payload instanceof DiagramRefreshedEventPayload diagramRefreshedEventPayload) {
                 this.initializedDiagramPayload = diagramRefreshedEventPayload;
-                var diagram = diagramRefreshedEventPayload.getDiagram();
+                var diagram = diagramRefreshedEventPayload.diagram();
                 return diagram.getNodes().size() == 15 && diagram.getEdges().size() == 59;
             }
             return false;
@@ -410,7 +410,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
     }
 
     private void editDiagramElementLabel(DiagramRefreshedEventPayload diagramRefreshedEventPayload) {
-        var diagram = diagramRefreshedEventPayload.getDiagram();
+        var diagram = diagramRefreshedEventPayload.diagram();
         // Get any node label
         var label = diagram.getNodes().get(0).getLabel();
         var labelId = label.getId();

@@ -62,7 +62,7 @@ public class QueryBasedIntEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(QueryBasedIntSuccessPayload.class);
-        assertThat(((QueryBasedIntSuccessPayload) payload).getResult()).isEqualTo(EXPECTED_RESULT_10);
+        assertThat(((QueryBasedIntSuccessPayload) payload).result()).isEqualTo(EXPECTED_RESULT_10);
 
     }
 

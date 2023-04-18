@@ -116,6 +116,9 @@ public class GitCommitMessageTests {
         int endIndex = title.indexOf(END);
         assertThat(beginIndex).isLessThan(endIndex);
 
+        assertThat(title.length()).isGreaterThan(endIndex + 4);
+
+
         assertThat(lines.get(5)).isBlank();
 
         String tag = title.substring(beginIndex + 1, endIndex);

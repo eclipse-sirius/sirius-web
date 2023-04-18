@@ -66,7 +66,7 @@ public class FormDescriptionEditorEventProcessorTests {
         return representationEventPayload -> {
             if (representationEventPayload instanceof FormDescriptionEditorRefreshedEventPayload) {
                 FormDescriptionEditorRefreshedEventPayload payload = (FormDescriptionEditorRefreshedEventPayload) representationEventPayload;
-                return payload.getFormDescriptionEditor() != null && payload.getFormDescriptionEditor().getLabel().equals(String.valueOf(count));
+                return payload.formDescriptionEditor() != null && payload.formDescriptionEditor().getLabel().equals(String.valueOf(count));
             }
             return false;
         };

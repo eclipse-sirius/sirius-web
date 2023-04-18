@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
@@ -303,7 +304,7 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
         Predicate<IPayload> isEmptyDiagramRefreshedEventPayload = payload -> {
             if (payload instanceof DiagramRefreshedEventPayload diagramRefreshedEventPayload) {
-                var diagram = diagramRefreshedEventPayload.getDiagram();
+                var diagram = diagramRefreshedEventPayload.diagram();
                 return diagram.getNodes().isEmpty() && diagram.getEdges().isEmpty();
             }
             return false;
@@ -311,7 +312,7 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
         Predicate<IPayload> isInitializedPapayaDiagram = payload -> {
             if (payload instanceof DiagramRefreshedEventPayload diagramRefreshedEventPayload) {
-                var diagram = diagramRefreshedEventPayload.getDiagram();
+                var diagram = diagramRefreshedEventPayload.diagram();
                 return diagram.getNodes().size() == 15 && diagram.getEdges().size() == 59;
             }
             return false;

@@ -60,7 +60,7 @@ public class DiagramDescriptionToolSectionsDataFetcher implements IDataFetcherWi
             return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                     .filter(GetToolSectionSuccessPayload.class::isInstance)
                     .map(GetToolSectionSuccessPayload.class::cast)
-                    .map(GetToolSectionSuccessPayload::getToolSections)
+                    .map(GetToolSectionSuccessPayload::toolSections)
                     .toFuture();
             // @formatter:on
         }

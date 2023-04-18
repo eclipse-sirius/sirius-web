@@ -67,7 +67,7 @@ public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCo
 
     private Connection<EditingContextAction> toConnection(GetEditingContextActionsSuccessPayload payload) {
         // @formatter:off
-        List<Edge<EditingContextAction>> representationDescriptionEdges = payload.getEditingContextActions().stream()
+        List<Edge<EditingContextAction>> representationDescriptionEdges = payload.editingContextActions().stream()
                 .map(representationDescription -> {
                     String value = Base64.getEncoder().encodeToString(representationDescription.getId().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
@@ -82,7 +82,7 @@ public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCo
         if (!representationDescriptionEdges.isEmpty()) {
             endCursor = representationDescriptionEdges.get(representationDescriptionEdges.size() - 1).getCursor();
         }
-        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.getEditingContextActions().size());
+        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.editingContextActions().size());
         return new DefaultConnection<>(representationDescriptionEdges, pageInfo);
     }
 

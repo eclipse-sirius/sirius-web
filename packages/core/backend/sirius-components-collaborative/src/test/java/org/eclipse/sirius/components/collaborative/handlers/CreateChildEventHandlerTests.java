@@ -61,7 +61,7 @@ public class CreateChildEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(CreateChildSuccessPayload.class);
-        assertThat(((CreateChildSuccessPayload) payload).getObject()).isEqualTo(createdObject);
+        assertThat(((CreateChildSuccessPayload) payload).object()).isEqualTo(createdObject);
     }
 
     @Test

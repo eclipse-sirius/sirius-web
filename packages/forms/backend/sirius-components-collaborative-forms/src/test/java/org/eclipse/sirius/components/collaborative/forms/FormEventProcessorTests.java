@@ -58,7 +58,7 @@ public class FormEventProcessorTests {
         return representationEventPayload -> {
             if (representationEventPayload instanceof FormRefreshedEventPayload) {
                 FormRefreshedEventPayload payload = (FormRefreshedEventPayload) representationEventPayload;
-                return payload.getForm() != null;
+                return payload.form() != null;
             }
             return false;
         };

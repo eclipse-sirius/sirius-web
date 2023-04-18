@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public class EditingContextTreePathDataFetcher implements IDataFetcherWithFieldC
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .filter(TreePathSuccessPayload.class::isInstance)
                 .map(TreePathSuccessPayload.class::cast)
-                .map(TreePathSuccessPayload::getTreePath)
+                .map(TreePathSuccessPayload::treePath)
                 .toFuture();
         // @formatter:on
     }

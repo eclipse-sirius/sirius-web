@@ -62,16 +62,14 @@ public class TreePathEventHandler implements ITreeEventHandler {
         IPayload payload = new TreePathSuccessPayload(treeInput.id(), new TreePath(List.of(), 0));
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
-        if (treeInput instanceof TreePathInput) {
-            TreePathInput input = (TreePathInput) treeInput;
+        if (treeInput instanceof TreePathInput input) {
             Optional<ITreePathProvider> optionalPathProvider = this.treePathProviders.stream().filter(treePathProvider -> treePathProvider.canHandle(tree)).findFirst();
             if (optionalPathProvider.isPresent()) {
                 IPayload resultPayload = optionalPathProvider.get().handle(editingContext, tree, input);
                 if (resultPayload instanceof TreePathSuccessPayload) {
                     payload = resultPayload;
-                } else if (resultPayload instanceof ErrorPayload) {
-                    ErrorPayload errorPayload = (ErrorPayload) resultPayload;
-                    this.logger.warn(errorPayload.getMessage());
+                } else if (resultPayload instanceof ErrorPayload errorPayload) {
+                    this.logger.warn(errorPayload.message());
                 }
             }
         }

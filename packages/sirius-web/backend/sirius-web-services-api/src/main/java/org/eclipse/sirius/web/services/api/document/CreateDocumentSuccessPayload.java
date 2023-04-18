@@ -22,24 +22,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
  *
  * @author sbegaudeau
  */
-public final class CreateDocumentSuccessPayload implements IPayload {
-
-    private final UUID id;
-
-    private final Document document;
-
-
-    public CreateDocumentSuccessPayload(UUID id, Document document) {
-        this.id = Objects.requireNonNull(id);
-        this.document = Objects.requireNonNull(document);
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public Document getDocument() {
-        return this.document;
+public record CreateDocumentSuccessPayload(UUID id, Document document) implements IPayload {
+    public CreateDocumentSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(document);
     }
 }

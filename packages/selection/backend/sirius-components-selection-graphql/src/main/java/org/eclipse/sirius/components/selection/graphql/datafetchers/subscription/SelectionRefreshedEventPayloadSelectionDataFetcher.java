@@ -31,7 +31,7 @@ public class SelectionRefreshedEventPayloadSelectionDataFetcher implements IData
     public DataFetcherResult<Selection> get(DataFetchingEnvironment environment) throws Exception {
         SelectionRefreshedEventPayload payload = environment.getSource();
         return DataFetcherResult.<Selection>newResult()
-                .data(payload.getSelection())
+                .data(payload.selection())
                 .localContext(environment.getLocalContext())
                 .build();
     }

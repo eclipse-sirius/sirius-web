@@ -86,7 +86,7 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
                 result = this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                         .filter(GetRepresentationDescriptionPayload.class::isInstance)
                         .map(GetRepresentationDescriptionPayload.class::cast)
-                        .map(GetRepresentationDescriptionPayload::getRepresentationDescription)
+                        .map(GetRepresentationDescriptionPayload::representationDescription)
                         .toFuture();
                 // @formatter:on
             }

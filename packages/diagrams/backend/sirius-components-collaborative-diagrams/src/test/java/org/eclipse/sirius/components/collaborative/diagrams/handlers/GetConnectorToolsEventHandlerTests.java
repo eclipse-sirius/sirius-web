@@ -221,7 +221,7 @@ public class GetConnectorToolsEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(GetConnectorToolsSuccessPayload.class);
-        List<ITool> connectorTools = ((GetConnectorToolsSuccessPayload) payload).getConnectorTools();
+        List<ITool> connectorTools = ((GetConnectorToolsSuccessPayload) payload).connectorTools();
         assertThat(connectorTools.size()).isEqualTo(1);
         assertThat(connectorTools.get(0)).isEqualTo(connectorTool);
     }

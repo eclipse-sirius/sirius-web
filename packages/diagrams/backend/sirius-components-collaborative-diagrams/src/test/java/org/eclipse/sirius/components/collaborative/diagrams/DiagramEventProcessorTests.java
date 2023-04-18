@@ -71,7 +71,7 @@ public class DiagramEventProcessorTests {
         return representationEventPayload -> {
             if (representationEventPayload instanceof DiagramRefreshedEventPayload) {
                 DiagramRefreshedEventPayload payload = (DiagramRefreshedEventPayload) representationEventPayload;
-                return payload.getDiagram() != null && payload.getDiagram().getLabel().equals(String.valueOf(count));
+                return payload.diagram() != null && payload.diagram().getLabel().equals(String.valueOf(count));
             }
             return false;
         };
