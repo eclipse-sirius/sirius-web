@@ -1,0 +1,17 @@
+= Scope
+
+== First task
+
+- [] Shape written, reviewed and merged
+
+== Second task
+
+- [] First prototype of implementation
+- [] Improvement of the first prototype after the discovery of performance issues
+- [] Second prototype of the backend merged
+
+
+== Third task
+
+- [ ] User guide updated with screenshots
+- [ ] Integrated tests updated

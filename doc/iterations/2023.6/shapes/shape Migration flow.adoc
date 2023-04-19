@@ -1,0 +1,29 @@
+= (appetite) Shape
+
+== Problem
+
+In order to include a test which covers the all odesign to view migration path, we will migrate the existing flow model.
+
+This view model should be generated using the soon to be introduced Java APIs to create view models. https://github.com/eclipse-sirius/sirius-components/issues/1919
+
+== Key Result
+
+The flow odesign model should be converted to a view model. All concepts used in the flow model should have a respective view concept.
+
+== Solution
+
+Use the soon to be introduced Java APIs to create view models. https://github.com/eclipse-sirius/sirius-components/issues/1919
+
+=== Scenario
+
+Giving a flow model defined in a odesign file, we should be able to generate a view model which  match all the concepts existing in the odesign flow model
+
+=== Breadboarding
+
+No UI involved
+
+=== Cutting backs
+
+== Rabbit holes
+
+== No-gos
