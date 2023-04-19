@@ -1,0 +1,46 @@
+= (M) ODesign reader
+
+== Problem
+
+We can create representations descriptions programmatically, with the view model and with the compatibility layer that converts odesign files in representation descriptions.
+It will be more efficient to concentrate our efforts in the creation of representation description programmatically and with the view model.
+As such the odesign will be converted in a view model. We will be able to support more concepts of the odesign model in the view model in a near future (see https://github.com/eclipse-sirius/sirius-components/issues/1920)
+
+Using plain old Java code, we should be able to transform an odesign model into a view model while converting the diagram and form descriptions. 
+
+== Key Result
+
+We will use the Flow model to validate the scenario below (https://github.com/eclipse-sirius/sirius-components/issues/1922).
+
+== Solution
+
+This code should be provided in a dedicated project named sirius-components-odesign-converter
+
+package org.eclipse.sirius.components.odesign.converter;
+
+import org.eclipse.sirius.viewpoint.description.Group;
+import org.eclipse.sirius.components.view.View;
+
+public interface IOdesignConverter {
+    Optional<View> convert(Group group);
+}
+
+The implementation will use the the soon to be introduced view creation API (https://github.com/eclipse-sirius/sirius-components/issues/1921)
+
+=== Scenario
+
+A user will be able to use the new interface IOdesignConverter to convert an odesign file to a view model.
+
+=== Breadboarding
+
+no ui changes
+
+=== Cutting backs
+
+
+== Rabbit holes
+
+The implementation will use an iterative transformation approach meaning that the API should be decomposed in smaller APIS that convert specifics entities and that it should be possible to add more entities to be converted in the future.
+
+== No-gos
+
