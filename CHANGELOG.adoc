@@ -1,5 +1,22 @@
 = Changelog
 
+== v2023.6.0 (unreleased)
+
+=== Architectural decision records
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1304[#1304] [tree] Fix an issue where dropping an element from the tree to a diagram used the current selection instead of the dragged tree item.
+
+=== New Features
+
+=== Improvements
+
+
 == v2023.4.0
 
 === Architectural decision records

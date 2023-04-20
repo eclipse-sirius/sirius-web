@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { DRAG_SOURCES_TYPE, Selection, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, Selection, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -376,8 +376,14 @@ export const TreeItem = ({
   const draggable = kind.startsWith('siriusComponents://semantic');
   const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
     const entries = selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic'));
+
     if (entries.length > 0) {
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
+      if (!selection.entries.map((entry) => entry.id).includes(item.id)) {
+        const itemEntry: SelectionEntry = { id: item.id, label: item.label, kind: item.kind };
+        event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
+      } else {
+        event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
+      }
     }
   };
   const dragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
