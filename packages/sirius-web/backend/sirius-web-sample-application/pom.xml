@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-sample-application</artifactId>
-	<version>2023.3.3</version>
+	<version>2023.3.4</version>
 	<name>sirius-web-sample-application</name>
 	<description>Sirius Web Sample Application</description>
 
@@ -87,52 +87,52 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-starter</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-graphql</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-spring</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-frontend</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphiql</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-voyager</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-edit</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-design</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
@@ -176,7 +176,7 @@
  		</dependency>
  		<dependency><groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
-			<version>2023.3.3</version>
+			<version>2023.3.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
