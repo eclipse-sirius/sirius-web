@@ -13,6 +13,7 @@
 - Add an example showing how to contribute to the details view with the View DSL
 - Improve the layout of simple nodes
 - Support custom widgets in Form representations
+- Send message to the frontend
 
 === Architectural decision records
 
