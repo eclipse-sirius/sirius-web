@@ -1,0 +1,62 @@
+= (S) Add an example showing how to contribute to the details view with the View DSL
+
+== Problem
+
+The default rules used for the _Details_ view provide a good generic solution, but in practice applications often need more specific details views for (some of) their elements.
+
+It is possible override these default rules by providing more specific custom `FormDescription` which apply to specific elements using the `IPropertiesDescriptionRegistryConfigurer` API.
+Indeed, we already use this capability ourselves in `NodeStylePropertiesConfigurer`.
+However this is not documented, and relatively cumbersome as it requires creating a fully programmatic `FormDescription` instance.
+
+We already support the definition of _Forms_ using the View DSL, which providers nicer APIs for this.
+We should provide an end-to-end example showing how to use a View-based Form definition to customize the _Details_ view for specific elements.
+
+== Key Result
+
+A studio maker who wants to provide custom _Details_ view for some types will find a clear documented path to do it by leveraging the View DSL to define the contents of the _Details_ views in question.
+
+== Solution
+
+We will rewrite the `NodeStylePropertiesConfigurer` to create its `FormDescription` as View-based Forms which are converted at startup into a programmatic `FormDescription` instance.
+
+We will organize its implementation to clearly separate the *definition* of the various View-based forms (which will be different in every use case) from their *conversion* and *registration* (which will be the same "glue code" in most/all cases).
+
+The definition part is specific to this case, while the conversion and registration parts are generic and will be lifted into reusable and documented helpers.
+
+=== Scenario
+
+A studio maker who wants to provide custom Details view for some types will then need to:
+
+1. Write a Java class which builds a View-based Form using the EMF API for the View DSL (maybe with some simple helpers).
+2. If the AQL expressions used by this Form need them, write the AQL Service classes needed.
+3. Define a Spring `@Component` which extends `IPropertiesDescriptionRegistryConfigurer` and in its `addPropertiesDescriptions` method uses a helper (that we will provide) to convert the result of the two steps above into a fully functional API-base `FormDescriptionEditor`.
+
+=== Breadboarding
+
+No UI changes.
+
+=== Cutting backs
+
+Allow the definition of these "details view" from a `.view` resource loaded on startup, which could have been designed graphically using the FormDescriptionEditor.
+The workflow would be:
+
+1. Design a Form visually using the FormDescriptionEditor.
+2. Test it at runtime as an actual Form representation.
+3. Once satisfied, download the _Form_ as a local file, put it in the `src/main/resources` folder of the application as a `.view` model.
+4. Follow the same steps as in the scenario above, except that instead of creating the View model using plain Java and EMF, it is loaded "fully formed" from the file.
+
+Note that this scenario is more "user friendly" but less powerful as it does not allow the use of custom Java services in the definition of the Form.
+Or more precisely it allow their use (AQL expressions are just strings) but features which use them can not be tested.
+
+== Rabbit holes
+
+- NodeStylePropertiesConfigurer uses various advanced techniques (for example to support images and their previous) which may or may not translate easily in View-based Forms.
+In particular the AQL expressions used by the Forms will need to depend on Java services to be extracted and provided to the converter.
+
+- Building a high-level API on top of the EMF-based one to ease the creation of these View-based FormDescriptions.
+We may extract some helpers here and there, but the goal is not to try and design a nicer API for this.
+This may come later after https://github.com/eclipse-sirius/sirius-components/issues/1921 has done something like this for View-based diagrams.
+
+== No-gos
+
+It is not in the scope of this shape to register a FormDescription defined *in a studio* as the one to be used for the _Details_ view of elements for a given domain.
