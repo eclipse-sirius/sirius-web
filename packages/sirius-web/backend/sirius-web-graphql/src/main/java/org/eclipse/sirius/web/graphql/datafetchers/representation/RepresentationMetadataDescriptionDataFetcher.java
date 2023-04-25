@@ -49,7 +49,6 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
             .labelProvider(variableManager -> PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
             .targetObjectIdProvider(variableManager -> PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
             .canCreatePredicate(variableManager -> true)
-            .groupDescriptions(List.of())
             .pageDescriptions(List.of())
             .build();
     // @formatter:on
@@ -62,7 +61,7 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
 
     @Override
     public CompletableFuture<IRepresentationDescription> get(DataFetchingEnvironment environment) throws Exception {
-        CompletableFuture<IRepresentationDescription> result = Mono.<IRepresentationDescription> empty().toFuture();
+        CompletableFuture<IRepresentationDescription> result = Mono.<IRepresentationDescription>empty().toFuture();
 
         RepresentationMetadata representationMetadata = environment.getSource();
         if (Objects.equals(PropertiesEventProcessorFactory.DETAILS_VIEW_ID, representationMetadata.getDescriptionId())) {

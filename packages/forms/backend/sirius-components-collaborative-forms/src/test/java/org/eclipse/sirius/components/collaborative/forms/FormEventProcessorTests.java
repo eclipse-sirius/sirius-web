@@ -48,7 +48,6 @@ public class FormEventProcessorTests {
                 .idProvider(variableManager -> UUID.randomUUID().toString())
                 .label("formLabel")
                 .labelProvider(variableManager -> "label")
-                .groupDescriptions(List.of())
                 .pageDescriptions(List.of())
                 .build();
         // @formatter:on

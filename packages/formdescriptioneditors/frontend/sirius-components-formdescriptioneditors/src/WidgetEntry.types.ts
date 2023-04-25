@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import {
   GQLLink,
   GQLList,
   GQLMultiSelect,
+  GQLPage,
   GQLRadio,
   GQLRichText,
   GQLSelect,
@@ -37,6 +38,7 @@ export interface WidgetEntryProps {
   editingContextId: string;
   representationId: string;
   formDescriptionEditor: GQLFormDescriptionEditor;
+  page: GQLPage;
   container: GQLGroup | GQLFlexboxContainer;
   widget: GQLWidget;
   selection: Selection;
@@ -60,6 +62,7 @@ export interface FlexboxContainerWidgetProps {
   editingContextId: string;
   representationId: string;
   formDescriptionEditor: GQLFormDescriptionEditor;
+  page: GQLPage;
   container: GQLGroup | GQLFlexboxContainer;
   widget: GQLFlexboxContainer;
   selection: Selection;

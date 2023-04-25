@@ -37,51 +37,53 @@
     </palette>
   </descriptions>
   <descriptions xmi:type="view:FormDescription" name="Form Completion Fixture" titleExpression="aql:'Form Completion Fixture'">
-  <groups xmi:type="view:GroupDescription">
-        <toolbarActions name="ToolbarAction">
-          <style/>
-          <conditionalStyles/>
-        </toolbarActions>
-        <widgets xmi:type="view:TextfieldDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:TextAreaDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:RichTextDescription"/>
-        <widgets xmi:type="view:CheckboxDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:RadioDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:SelectDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:MultiSelectDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:LabelDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:ButtonDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:ImageDescription"/>
-        <widgets xmi:type="view:LinkDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:ListDescription">
-          <style/>
-        </widgets>
-        <widgets xmi:type="view:FlexboxContainerDescription">
-          <children xmi:type="view:PieChartDescription">
-            <style/>
-          </children>
-          <children xmi:type="view:BarChartDescription">
-            <style/>
-          </children>
-        </widgets>
-    </groups> 
+    <pages xmi:type="view:PageDescription">
+        <groups xmi:type="view:GroupDescription">
+            <toolbarActions name="ToolbarAction">
+              <style/>
+              <conditionalStyles/>
+            </toolbarActions>
+            <widgets xmi:type="view:TextfieldDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:TextAreaDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:RichTextDescription"/>
+            <widgets xmi:type="view:CheckboxDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:RadioDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:SelectDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:MultiSelectDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:LabelDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:ButtonDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:ImageDescription"/>
+            <widgets xmi:type="view:LinkDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:ListDescription">
+              <style/>
+            </widgets>
+            <widgets xmi:type="view:FlexboxContainerDescription">
+              <children xmi:type="view:PieChartDescription">
+                <style/>
+              </children>
+              <children xmi:type="view:BarChartDescription">
+                <style/>
+              </children>
+            </widgets>
+        </groups>
+    </pages>
   </descriptions>
 </view:View>

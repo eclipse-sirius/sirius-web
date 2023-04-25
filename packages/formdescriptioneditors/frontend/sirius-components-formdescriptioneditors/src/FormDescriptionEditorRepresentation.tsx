@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation, useSubscription } from '@apollo/client';
+import { useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -32,26 +32,14 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import TextFormatIcon from '@material-ui/icons/TextFormat';
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import WebIcon from '@material-ui/icons/Web';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
 import {
-  addGroupMutation,
-  formDescriptionEditorEventSubscription,
-  moveGroupMutation,
-} from './FormDescriptionEditorEventFragment';
-import {
-  GQLAddGroupInput,
-  GQLAddGroupMutationData,
-  GQLAddGroupMutationVariables,
-  GQLAddWidgetPayload,
-  GQLErrorPayload,
   GQLFormDescriptionEditorEventInput,
   GQLFormDescriptionEditorEventSubscription,
   GQLFormDescriptionEditorEventVariables,
-  GQLMoveGroupInput,
-  GQLMoveGroupMutationData,
-  GQLMoveGroupMutationVariables,
-  GQLMoveWidgetPayload,
 } from './FormDescriptionEditorEventFragment.types';
 import {
   FormDescriptionEditorRepresentationContext,
@@ -63,12 +51,8 @@ import {
   SchemaValue,
   ShowToastEvent,
 } from './FormDescriptionEditorRepresentationMachine';
-import { Group } from './Group';
 import { Button } from './icons/Button';
-import { isKind } from './WidgetOperations';
-
-const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
+import { PageList } from './PageList';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -196,52 +180,6 @@ export const FormDescriptionEditorRepresentation = ({
     }
   );
 
-  const [addGroup, { loading: addGroupLoading, data: addGroupData, error: addGroupError }] = useMutation<
-    GQLAddGroupMutationData,
-    GQLAddGroupMutationVariables
-  >(addGroupMutation);
-
-  useEffect(() => {
-    if (!addGroupLoading) {
-      if (addGroupError) {
-        const message: string = addGroupError.message;
-        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-        dispatch(showToastEvent);
-      }
-      if (addGroupData) {
-        const { addGroup } = addGroupData;
-        if (isErrorPayload(addGroup)) {
-          const { message } = addGroup;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
-        }
-      }
-    }
-  }, [addGroupLoading, addGroupData, addGroupError, dispatch]);
-
-  const [moveGroup, { loading: moveGroupLoading, data: moveGroupData, error: moveGroupError }] = useMutation<
-    GQLMoveGroupMutationData,
-    GQLMoveGroupMutationVariables
-  >(moveGroupMutation);
-
-  useEffect(() => {
-    if (!moveGroupLoading) {
-      if (moveGroupError) {
-        const message: string = moveGroupError.message;
-        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-        dispatch(showToastEvent);
-      }
-      if (moveGroupData) {
-        const { moveGroup } = moveGroupData;
-        if (isErrorPayload(moveGroup)) {
-          const { message } = moveGroup;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
-        }
-      }
-    }
-  }, [moveGroupLoading, moveGroupData, moveGroupError, dispatch]);
-
   useEffect(() => {
     if (error) {
       const message: string = 'An error has occurred while trying to retrieve the form description editor';
@@ -260,57 +198,19 @@ export const FormDescriptionEditorRepresentation = ({
     }
   }, [formDescriptionEditorRepresentation, dispatch]);
 
-  const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.dataTransfer.setData('text/plain', event.currentTarget.id);
+  const handleDragStartPage: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
+    event.dataTransfer.setData('draggedElementType', 'Page');
   };
-  const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
-  };
-  const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
-  };
-  const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
-  };
-  const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
 
-    const id: string = event.dataTransfer.getData('text/plain');
-    let index = formDescriptionEditor.groups.length;
+  const handleDragStartGroup: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
+    event.dataTransfer.setData('draggedElementType', 'Group');
+  };
 
-    if (id === 'Group') {
-      const addGroupInput: GQLAddGroupInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId,
-        index,
-      };
-      const addGroupVariables: GQLAddGroupMutationVariables = { input: addGroupInput };
-      addGroup({ variables: addGroupVariables });
-    } else if (isKind(id)) {
-      // forbid to drag and drop new widgets into groups area
-      return;
-    } else {
-      if (formDescriptionEditor.groups.find((g) => g.id === id)) {
-        index--;
-      } else {
-        // forbid to drag and drop existing widgets or toolbarActions into groups area
-        return;
-      }
-      const moveGroupInput: GQLMoveGroupInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId,
-        groupId: id,
-        index,
-      };
-      const moveGroupVariables: GQLMoveGroupMutationVariables = { input: moveGroupInput };
-      moveGroup({ variables: moveGroupVariables });
-    }
+  const handleDragStartWidget: React.DragEventHandler<HTMLDivElement> = (event) => {
+    event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
+    event.dataTransfer.setData('draggedElementType', 'Widget');
   };
 
   let content: JSX.Element | null = null;
@@ -319,13 +219,25 @@ export const FormDescriptionEditorRepresentation = ({
     content = (
       <div className={classes.main}>
         <div className={classes.widgets}>
+          <Typography gutterBottom>Pages</Typography>
+          <div
+            id="Page"
+            data-testid="FormDescriptionEditor-Page"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStartPage}>
+            <WebIcon />
+            <Typography variant="caption" gutterBottom>
+              Page
+            </Typography>
+          </div>
           <Typography gutterBottom>Groups</Typography>
           <div
             id="Group"
             data-testid="FormDescriptionEditor-Group"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartGroup}>
             <ViewAgendaIcon />
             <Typography variant="caption" gutterBottom>
               Group
@@ -337,7 +249,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-BarChart"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <BarChartIcon />
             <Typography variant="caption" gutterBottom>
               BarChart
@@ -348,7 +260,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Button"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <Button width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
               Button
@@ -359,7 +271,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Checkbox"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <CheckBoxIcon />
             <Typography variant="caption" gutterBottom>
               Checkbox
@@ -370,7 +282,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-FlexboxContainer"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom align="center">
               Flexbox Container
@@ -381,7 +293,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Image"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
             <Typography variant="caption" gutterBottom>
               Image
@@ -392,7 +304,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Label"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <LabelOutlinedIcon />
             <Typography variant="caption" gutterBottom>
               Label
@@ -403,7 +315,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Link"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <LinkIcon />
             <Typography variant="caption" gutterBottom>
               Link
@@ -414,7 +326,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-List"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <FormatListBulletedIcon />
             <Typography variant="caption" gutterBottom>
               List
@@ -425,7 +337,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-MultiSelect"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               MultiSelect
@@ -436,7 +348,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-PieChart"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <PieChartIcon />
             <Typography variant="caption" gutterBottom>
               PieChart
@@ -447,7 +359,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Radio"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <RadioButtonCheckedIcon />
             <Typography variant="caption" gutterBottom>
               Radio
@@ -458,7 +370,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-RichText"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <TextFormatIcon />
             <Typography variant="caption" gutterBottom>
               RichText
@@ -469,7 +381,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Select"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <ArrowDropDownCircleIcon />
             <Typography variant="caption" gutterBottom>
               Select
@@ -480,7 +392,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-TextArea"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textarea
@@ -491,7 +403,7 @@ export const FormDescriptionEditorRepresentation = ({
             data-testid="FormDescriptionEditor-Textfield"
             draggable="true"
             className={classes.widgetKind}
-            onDragStart={handleDragStart}>
+            onDragStart={handleDragStartWidget}>
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textfield
@@ -500,26 +412,13 @@ export const FormDescriptionEditorRepresentation = ({
         </div>
         <div className={classes.preview}>
           <div className={classes.body}>
-            {formDescriptionEditor.groups.map((group) => (
-              <Group
-                key={group.id}
-                editingContextId={editingContextId}
-                representationId={representationId}
-                formDescriptionEditor={formDescriptionEditor}
-                group={group}
-                selection={selection}
-                setSelection={setSelection}
-              />
-            ))}
-            <div
-              data-testid="FormDescriptionEditor-DropArea"
-              className={classes.bottomDropArea}
-              onDragEnter={handleDragEnter}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}>
-              <Typography variant="body1">{'Drag and drop a group here'}</Typography>
-            </div>
+            <PageList
+              editingContextId={editingContextId}
+              representationId={representationId}
+              formDescriptionEditor={formDescriptionEditor}
+              selection={selection}
+              setSelection={setSelection}
+            />
           </div>
         </div>
       </div>

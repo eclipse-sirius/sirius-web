@@ -1,0 +1,27 @@
+= ADR-098 - Add `PageDescription` definition in the View DSL
+
+== Context
+
+In the View DSL definition (in `view.ecore`), it's only possible to organize `FormDescription` in separate groups.
+
+== Decision
+
+We will add a new level to organize groups in different pages. This new object `PageDescription` will be contained in a `FormDescription` and may contain any number of
+`GroupDescription`.
+
+=== Frontend
+
+The Material-UI `Tabs` representation will be used to display the pages of the FormDescription.
+A new drop area will be added to drop new page elements from the editor.
+To change the page order, the `Tab` will be _draggable._
+The `Tab` are Material-UI component, and it's not recommended to add a new drop area to `Tabs` between them to offer the possibility to place `Tab` at any position.
+To get around that, it will be possible to drop elements directly on the `Tab` element in order to place it before.
+
+=== Backend
+
+The new structure of the class `FormDescriptionEditor` will be just like the ecore definition i.e., the new layer `List<Page>` will be introduced in place of `List<Group>` which
+is moved in the `Page` object.
+
+== Status
+
+Accepted.

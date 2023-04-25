@@ -18,7 +18,7 @@ type FormDescriptionEditorRefreshedEventPayload {
 type FormDescriptionEditor implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
-  groups: [Group!]!
+  pages: [Page!]!
 }
 
 type FormDescriptionEditorDescription implements RepresentationDescription {
@@ -36,12 +36,16 @@ extend type Mutation {
   addToolbarAction(input: AddToolbarActionInput!): AddToolbarActionPayload!
   deleteToolbarAction(input: DeleteToolbarActionInput!): DeleteToolbarActionPayload!
   moveToolbarAction(input: MoveToolbarActionInput!): MoveToolbarActionPayload!
+  addPage(input: AddPageInput!): AddPagePayload!
+  movePage(input: MovePageInput!): MovePagePayload!
+  deletePage(input: DeletePageInput!): DeletePagePayload!
 }
 
 input AddGroupInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
+  pageId: ID!
   index: Int!
 }
 
@@ -60,6 +64,7 @@ input MoveGroupInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
+  pageId: String!
   groupId: String!
   index: Int!
 }
@@ -125,3 +130,31 @@ input MoveToolbarActionInput {
 }
 
 union MoveToolbarActionPayload = SuccessPayload | ErrorPayload
+
+input AddPageInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  index: Int!
+}
+
+union AddPagePayload = SuccessPayload | ErrorPayload
+
+input MovePageInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  pageId: String!
+  index: Int!
+}
+
+union MovePagePayload = SuccessPayload | ErrorPayload
+
+input DeletePageInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  pageId: String!
+}
+
+union DeletePagePayload = SuccessPayload | ErrorPayload

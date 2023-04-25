@@ -54,6 +54,7 @@ type Form implements Representation {
 type Page {
   id: ID!
   label: String!
+  toolbarActions: [ToolbarAction!]!
   groups: [Group!]!
 }
 

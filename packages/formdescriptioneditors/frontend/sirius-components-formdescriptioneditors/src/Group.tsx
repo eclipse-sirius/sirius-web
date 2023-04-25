@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLGroup, GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
@@ -54,7 +54,7 @@ import {
 import { GroupProps, GroupState } from './Group.types';
 import { ToolbarActions } from './ToolbarActions';
 import { WidgetEntry } from './WidgetEntry';
-import { getAllToolbarActions, isKind } from './WidgetOperations';
+import { isKind } from './WidgetOperations';
 
 const useGroupEntryStyles = makeStyles<Theme>((theme) => ({
   group: {
@@ -143,6 +143,7 @@ export const Group = ({
   editingContextId,
   representationId,
   formDescriptionEditor,
+  page,
   group,
   selection,
   setSelection,
@@ -313,7 +314,8 @@ export const Group = ({
   };
 
   const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
-    event.dataTransfer.setData('text/plain', group.id);
+    event.dataTransfer.setData('draggedElementId', group.id);
+    event.dataTransfer.setData('draggedElementType', 'Group');
   };
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -331,12 +333,15 @@ export const Group = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
 
-    const id: string = event.dataTransfer.getData('text/plain');
+    const id: string = event.dataTransfer.getData('draggedElementId');
+    const type: string = event.dataTransfer.getData('draggedElementType');
 
-    if (isKind(id)) {
+    if (type !== 'Group') {
       return;
-    } else if (id === 'Group') {
-      let newGroupIndex: number = formDescriptionEditor.groups.indexOf(group);
+    }
+
+    if (id === 'Group') {
+      let newGroupIndex: number = page.groups.indexOf(group);
       if (newGroupIndex <= 0) {
         newGroupIndex = 0;
       }
@@ -344,16 +349,17 @@ export const Group = ({
         id: crypto.randomUUID(),
         editingContextId,
         representationId,
+        pageId: page.id,
         index: newGroupIndex,
       };
       const addGroupVariables: GQLAddGroupMutationVariables = { input: addGroupInput };
       addGroup({ variables: addGroupVariables });
-    } else if (formDescriptionEditor.groups.find((g) => g.id === id)) {
-      let groupNewIndex: number = formDescriptionEditor.groups.indexOf(group);
+    } else if (page.groups.find((g) => g.id === id)) {
+      let groupNewIndex: number = page.groups.indexOf(group);
       if (groupNewIndex <= 0) {
         groupNewIndex = 0;
       }
-      const movedGroupIndex = formDescriptionEditor.groups.findIndex((g) => g.id === id);
+      const movedGroupIndex = page.groups.findIndex((g) => g.id === id);
       if (movedGroupIndex > -1 && movedGroupIndex < groupNewIndex) {
         groupNewIndex--;
       }
@@ -361,6 +367,7 @@ export const Group = ({
         id: crypto.randomUUID(),
         editingContextId,
         representationId,
+        pageId: page.id,
         groupId: id,
         index: groupNewIndex,
       };
@@ -372,16 +379,16 @@ export const Group = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
 
-    const id: string = event.dataTransfer.getData('text/plain');
+    const id: string = event.dataTransfer.getData('draggedElementId');
+    const type: string = event.dataTransfer.getData('draggedElementType');
+
+    if (type !== 'Widget') {
+      return;
+    }
+
     let widgetIndex = group.widgets.length;
 
-    if (id === 'Group') {
-      return;
-    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
-      return;
-    } else if (getAllToolbarActions(formDescriptionEditor).find((tba: GQLToolbarAction) => tba.id === id)) {
-      return;
-    } else if (isKind(id)) {
+    if (isKind(id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -494,6 +501,7 @@ export const Group = ({
                   editingContextId={editingContextId}
                   representationId={representationId}
                   formDescriptionEditor={formDescriptionEditor}
+                  page={page}
                   container={group}
                   widget={widget}
                   selection={selection}

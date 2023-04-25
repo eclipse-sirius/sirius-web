@@ -29,12 +29,17 @@ public class OverviewFormProvider implements IRepresentationDescriptionProvider 
         formDescription.setDomainType("papaya_core::Root");
         formDescription.setName("Overview Form");
 
+        var pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        pageDescription.setName("Page");
+        pageDescription.setSemanticCandidatesExpression("aql:self");
+
         var groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
         groupDescription.setName("Group");
         groupDescription.setSemanticCandidatesExpression("aql:self");
         groupDescription.setLabelExpression("Root");
 
-        formDescription.getGroups().add(groupDescription);
+        pageDescription.getGroups().add(groupDescription);
+        formDescription.getPages().add(pageDescription);
 
         return formDescription;
     }

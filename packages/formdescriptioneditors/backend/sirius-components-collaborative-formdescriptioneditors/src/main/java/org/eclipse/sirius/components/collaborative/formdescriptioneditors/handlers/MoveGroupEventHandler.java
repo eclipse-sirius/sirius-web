@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -27,8 +28,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -58,11 +59,9 @@ public class MoveGroupEventHandler implements IFormDescriptionEditorEventHandler
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -79,10 +78,8 @@ public class MoveGroupEventHandler implements IFormDescriptionEditorEventHandler
         IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
-        if (formDescriptionEditorInput instanceof MoveGroupInput) {
-            String groupId = ((MoveGroupInput) formDescriptionEditorInput).groupId();
-            int index = ((MoveGroupInput) formDescriptionEditorInput).index();
-            boolean moveGroup = this.moveGroup(editingContext, formDescriptionEditorContext, groupId, index);
+        if (formDescriptionEditorInput instanceof MoveGroupInput moveGroupInput) {
+            boolean moveGroup = this.moveGroup(editingContext, moveGroupInput.pageId(), moveGroupInput.groupId(), moveGroupInput.index());
             if (moveGroup) {
                 payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
@@ -93,28 +90,26 @@ public class MoveGroupEventHandler implements IFormDescriptionEditorEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean moveGroup(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String groupId, int index) {
-        boolean success = false;
-        var optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
-        if (optionalSelf.isPresent()) {
-            Object container = optionalSelf.get();
-            if (container instanceof FormDescription) {
-                var objectToMove = this.objectService.getObject(editingContext, groupId);
-                if (objectToMove.filter(GroupDescription.class::isInstance).isPresent()) {
-                    GroupDescription groupToMove = (GroupDescription) objectToMove.get();
-                    try {
-                        if (container.equals(groupToMove.eContainer())) {
-                            ((FormDescription) container).getGroups().move(index, groupToMove);
-                        } else {
-                            ((FormDescription) container).getGroups().add(index, groupToMove);
-                        }
-                        success = true;
-                    } catch (IndexOutOfBoundsException exception) {
-                        this.logger.warn(exception.getMessage(), exception);
-                    }
-                }
-            }
-        }
-        return success;
+    private boolean moveGroup(IEditingContext editingContext, String pageId, String groupId, int index) {
+        AtomicBoolean success = new AtomicBoolean(false);
+        this.objectService.getObject(editingContext, pageId)
+                .filter(PageDescription.class::isInstance)
+                .map(PageDescription.class::cast)
+                .ifPresent(pageDescription -> this.objectService.getObject(editingContext, groupId)
+                        .filter(GroupDescription.class::isInstance)
+                        .map(GroupDescription.class::cast)
+                        .ifPresent(groupDescription -> {
+                            try {
+                                if (pageDescription.equals(groupDescription.eContainer())) {
+                                    pageDescription.getGroups().move(index, groupDescription);
+                                } else {
+                                    pageDescription.getGroups().add(index, groupDescription);
+                                }
+                                success.set(true);
+                            } catch (IndexOutOfBoundsException exception) {
+                                this.logger.warn(exception.getMessage(), exception);
+                            }
+                        }));
+        return success.get();
     }
 }

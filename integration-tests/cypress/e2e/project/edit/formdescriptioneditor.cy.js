@@ -20,13 +20,9 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
         cy.visit(`/projects/${projectId}/edit`);
       });
     });
-  });
-
-  it('try to move a toolbar action into another empty group', () => {
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
     cy.getByTestId('View-more').click();
-
     // create the form description
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     //make sure the data are fetched before selecting
@@ -39,10 +35,13 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('New Form Description-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('create-representation').click();
-    // create a second group
+  });
+
+  it('try to move a toolbar action into another empty group', () => {
+    // create another group
     const dataTransfer = new DataTransfer();
     cy.getByTestId('FormDescriptionEditor-Group').trigger('dragstart', { dataTransfer });
-    cy.getByTestId('FormDescriptionEditor-DropArea').trigger('drop', { dataTransfer });
+    cy.getByTestId('Page-DropArea').trigger('drop', { dataTransfer });
     // create a toolbar action in the first group
     cy.get('[data-testid^="Group-ToolbarActions-NewAction-"]').eq(0).click();
     // move the toolbar action from the first group to the second one
@@ -50,37 +49,59 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.get('[data-testid^="Group-ToolbarActions-DropArea-"]').eq(1).trigger('drop', { dataTransfer });
   });
 
-  it('rename a form description editor', () => {
-    cy.getByTestId('ViewDocument').dblclick();
-    cy.getByTestId('View').dblclick();
-    cy.getByTestId('View-more').click();
-    // create the form description
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    //make sure the data are fetched before selecting
-    cy.getByTestId('create-object').should('be.enabled');
-    cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Form Description"]').click();
-    cy.getByTestId('create-object').click();
-    // create a button widget under the group of the form description editor
-    cy.getByTestId('New Form Description').dblclick();
-    cy.getByTestId('GroupDescription').dblclick();
-    cy.getByTestId('GroupDescription-more').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    //make sure the data are fetched before selecting
-    cy.getByTestId('create-object').should('be.enabled');
-    cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Widgets Button Description"]').click();
-    cy.getByTestId('create-object').click();
-    // create the form description editor
-    cy.getByTestId('New Form Description').click();
-    cy.getByTestId('New Form Description-more').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
-    cy.getByTestId('create-representation').click();
-    // rename the form description editor
-    cy.getByTestId('FormDescriptionEditor').click();
-    cy.getByTestId('FormDescriptionEditor-more').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
-    cy.getByTestId('name-edit').type('Renamed-FormDescriptionEditor{enter}');
-    cy.getByTestId('Renamed-FormDescriptionEditor').should('exist');
+  it('try to create an empty page', () => {
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 1);
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-Page').trigger('dragstart', { dataTransfer });
+    cy.getByTestId('PageList-DropArea').trigger('drop', { dataTransfer });
+    cy.wait(500); // Wait for representation to refresh
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 2);
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(1).click();
+    cy.get('[title="Group"]').should('exist');
   });
+
+  it('try to rename a page', () => {
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(0).click();
+    cy.getByTestId('Label Expression').click().type('Page Rename{enter}');
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').first().should('have.text', 'Page Rename');
+  });
+
+  it('try to move a page', () => {
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(0).click();
+    cy.getByTestId('Label Expression').click().type('Page 1{enter}');
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-Page').trigger('dragstart', { dataTransfer });
+    cy.getByTestId('PageList-DropArea').trigger('drop', { dataTransfer });
+    cy.wait(500); // Wait for representation to refresh
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 2);
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(1).click();
+    cy.wait(500); // Wait for representation to refresh
+    cy.getByTestId('Label Expression').click().type('Page 2{enter}');
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(0).should('have.text', 'Page 1');
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(1).should('have.text', 'Page 2');
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(0).trigger('dragstart', { dataTransfer });
+    cy.getByTestId('PageList-DropArea').trigger('drop', { dataTransfer });
+    cy.wait(500); // Wait for representation to refresh
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(0).should('have.text', 'Page 2');
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').eq(1).should('have.text', 'Page 1');
+  });
+
+  it('try to delete a page', () => {
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-Page').trigger('dragstart', { dataTransfer });
+    cy.getByTestId('PageList-DropArea').trigger('drop', { dataTransfer });
+    cy.wait(500); // Wait for representation to refresh
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 2);
+    cy.get('[data-testid^="Page-"]').eq(0).click().type('{del}');
+    cy.wait(500); // Wait for representation to refresh
+    cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 1);
+  });
+
+  it('try to add group and widget to a page', () => {
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-BarChart').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="Group-Widgets-DropArea-"]').eq(0).trigger('drop', { dataTransfer });
+    cy.getByTestId('BarChart').should('exist');
+  });
+
 });

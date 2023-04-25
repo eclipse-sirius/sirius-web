@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -27,7 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.springframework.stereotype.Service;
 
@@ -54,11 +55,9 @@ public class AddGroupEventHandler implements IFormDescriptionEditorEventHandler 
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -75,9 +74,8 @@ public class AddGroupEventHandler implements IFormDescriptionEditorEventHandler 
         IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
-        if (formDescriptionEditorInput instanceof AddGroupInput) {
-            int index = ((AddGroupInput) formDescriptionEditorInput).index();
-            boolean addGroup = this.addGroup(editingContext, formDescriptionEditorContext, index);
+        if (formDescriptionEditorInput instanceof AddGroupInput addGroupInput) {
+            boolean addGroup = this.addGroup(editingContext, addGroupInput.pageId(), addGroupInput.index());
             if (addGroup) {
                 payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
@@ -88,17 +86,21 @@ public class AddGroupEventHandler implements IFormDescriptionEditorEventHandler 
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean addGroup(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, int index) {
-        boolean success = false;
-        var optionalSelf = this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId());
-        if (optionalSelf.isPresent()) {
-            Object container = optionalSelf.get();
-            if (container instanceof FormDescription) {
-                var groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-                ((FormDescription) container).getGroups().add(index, groupDescription);
-                success = true;
-            }
-        }
-        return success;
+    private boolean addGroup(IEditingContext editingContext, String pageId, int index) {
+        AtomicBoolean success = new AtomicBoolean(false);
+        this.objectService.getObject(editingContext, pageId)
+                .filter(PageDescription.class::isInstance)
+                .map(PageDescription.class::cast)
+                .ifPresent(pageDescription -> {
+                    this.createNewGroupInPageDescription(pageDescription, index);
+                    success.set(true);
+                });
+
+        return success.get();
+    }
+
+    private void createNewGroupInPageDescription(PageDescription pageDescription, int index) {
+        var groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        pageDescription.getGroups().add(index, groupDescription);
     }
 }

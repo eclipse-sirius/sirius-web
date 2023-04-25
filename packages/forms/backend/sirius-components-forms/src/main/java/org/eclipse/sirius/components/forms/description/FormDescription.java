@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @PublicApi
 @Immutable
 public final class FormDescription implements IRepresentationDescription {
+
     private String id;
 
     private String label;
@@ -45,8 +46,6 @@ public final class FormDescription implements IRepresentationDescription {
     private Predicate<VariableManager> canCreatePredicate;
 
     private List<PageDescription> pageDescriptions;
-
-    private List<GroupDescription> groupDescriptions;
 
     private FormDescription() {
         // Prevent instantiation
@@ -83,10 +82,6 @@ public final class FormDescription implements IRepresentationDescription {
         return this.pageDescriptions;
     }
 
-    public List<GroupDescription> getGroupDescriptions() {
-        return this.groupDescriptions;
-    }
-
     public static Builder newFormDescription(String id) {
         return new Builder(id);
     }
@@ -104,6 +99,7 @@ public final class FormDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -117,8 +113,6 @@ public final class FormDescription implements IRepresentationDescription {
         private Predicate<VariableManager> canCreatePredicate;
 
         private List<PageDescription> pageDescriptions;
-
-        private List<GroupDescription> groupDescriptions;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -154,11 +148,6 @@ public final class FormDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder groupDescriptions(List<GroupDescription> groupDescriptions) {
-            this.groupDescriptions = Objects.requireNonNull(groupDescriptions);
-            return this;
-        }
-
         public FormDescription build() {
             FormDescription formDescription = new FormDescription();
             formDescription.id = Objects.requireNonNull(this.id);
@@ -168,7 +157,6 @@ public final class FormDescription implements IRepresentationDescription {
             formDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             formDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             formDescription.pageDescriptions = Objects.requireNonNull(this.pageDescriptions);
-            formDescription.groupDescriptions = Objects.requireNonNull(this.groupDescriptions);
             return formDescription;
         }
     }

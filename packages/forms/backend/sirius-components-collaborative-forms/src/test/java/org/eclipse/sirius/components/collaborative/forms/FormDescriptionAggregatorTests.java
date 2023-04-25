@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,6 @@ public class FormDescriptionAggregatorTests {
 
         assertThat(optional).isPresent();
         assertThat(optional.get().getPageDescriptions()).hasSize(3);
-        assertThat(optional.get().getGroupDescriptions()).hasSize(3);
     }
 
     @Test
@@ -73,7 +72,6 @@ public class FormDescriptionAggregatorTests {
 
     private FormDescription createForm(Object object, int numberOfPages, int numberOfCanCreate) {
         List<PageDescription> pageDescriptions = new ArrayList<>();
-        List<GroupDescription> groupDescriptions = new ArrayList<>();
         int initialCount = numberOfCanCreate;
 
         for (int i = 0; i < numberOfPages; i++) {
@@ -81,14 +79,12 @@ public class FormDescriptionAggregatorTests {
             GroupDescription groupDescription = this.createGroup();
             PageDescription pageDescription = this.createPage(object, groupDescription, canCreate);
             pageDescriptions.add(pageDescription);
-            groupDescriptions.add(groupDescription);
         }
 
         // @formatter:off
         return FormDescription.newFormDescription(UUID.randomUUID().toString())
                 .targetObjectIdProvider(targetObjectIdProvider -> "targetObjectId")
                 .canCreatePredicate(variableManager -> true)
-                .groupDescriptions(groupDescriptions)
                 .pageDescriptions(pageDescriptions)
                 .idProvider(variableManager -> UUID.randomUUID().toString())
                 .labelProvider(variableManager -> LABEL)

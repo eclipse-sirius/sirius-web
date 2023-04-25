@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.provider;
 
 import java.util.Collection;
@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -66,7 +68,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ViewPackage.Literals.FORM_DESCRIPTION__GROUPS);
+            this.childrenFeatures.add(ViewPackage.Literals.FORM_DESCRIPTION__PAGES);
         }
         return this.childrenFeatures;
     }
@@ -127,7 +129,7 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(FormDescription.class)) {
-            case ViewPackage.FORM_DESCRIPTION__GROUPS:
+            case ViewPackage.FORM_DESCRIPTION__PAGES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -138,12 +140,15 @@ public class FormDescriptionItemProvider extends RepresentationDescriptionItemPr
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__GROUPS, ViewFactory.eINSTANCE.createGroupDescription()));
+        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        pageDescription.getGroups().add(groupDescription);
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.FORM_DESCRIPTION__PAGES, pageDescription));
     }
 }

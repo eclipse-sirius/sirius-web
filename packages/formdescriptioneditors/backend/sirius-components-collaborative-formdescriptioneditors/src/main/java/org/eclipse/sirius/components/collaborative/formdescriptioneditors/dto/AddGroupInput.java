@@ -21,5 +21,6 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
  *
  * @author arichard
  */
-public record AddGroupInput(UUID id, String editingContextId, String representationId, int index) implements IFormDescriptionEditorInput {
+public record AddGroupInput(UUID id, String editingContextId, String representationId, String pageId, int index) implements IFormDescriptionEditorInput {
+
 }

@@ -16,9 +16,7 @@ import {
   ButtonStyleProps,
   getTextDecorationLineValue,
   GQLButton,
-  GQLGroup,
   GQLToolbarAction,
-  GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -38,7 +36,6 @@ import {
   GQLMoveToolbarActionMutationVariables,
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionProps, ToolbarActionState } from './ToolbarActionWidget.types';
-import { getAllWidgets, isKind } from './WidgetOperations';
 
 const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
@@ -109,7 +106,6 @@ const isErrorPayload = (payload: GQLDeleteToolbarActionPayload): payload is GQLE
 export const ToolbarActionWidget = ({
   editingContextId,
   representationId,
-  formDescriptionEditor,
   group,
   toolbarAction,
   selection,
@@ -261,7 +257,8 @@ export const ToolbarActionWidget = ({
   }, [moveToolbarActionLoading, moveToolbarActionData, moveToolbarActionError]);
 
   const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<Element>) => {
-    event.dataTransfer.setData('text/plain', toolbarAction.id);
+    event.dataTransfer.setData('draggedElementId', toolbarAction.id);
+    event.dataTransfer.setData('draggedElementType', 'ToolbarActionWidget');
     event.stopPropagation();
   };
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<Element>) => {
@@ -283,15 +280,10 @@ export const ToolbarActionWidget = ({
   };
 
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, toolbarAction: GQLButton) => {
-    const id: string = event.dataTransfer.getData('text/plain');
-    // We only accept drop of ToolbarAction, no Widget or Group allowed
-    if (isKind(id)) {
-      return;
-    } else if (id === 'Group') {
-      return;
-    } else if (getAllWidgets(formDescriptionEditor).find((w: GQLWidget) => w.id === id)) {
-      return;
-    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+    const id: string = event.dataTransfer.getData('draggedElementId');
+    // We only accept a drop of ToolbarAction
+    const type: string = event.dataTransfer.getData('draggedElementType');
+    if (type !== 'ToolbarActionWidget') {
       return;
     }
 

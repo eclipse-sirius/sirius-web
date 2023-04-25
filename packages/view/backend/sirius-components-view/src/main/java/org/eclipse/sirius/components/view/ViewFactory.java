@@ -269,6 +269,14 @@ public interface ViewFactory extends EFactory {
     FormDescription createFormDescription();
 
     /**
+     * Returns a new object of class '<em>Page Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Page Description</em>'.
+     * @generated
+     */
+    PageDescription createPageDescription();
+
+    /**
      * Returns a new object of class '<em>Group Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Group Description</em>'.
@@ -331,6 +339,47 @@ public interface ViewFactory extends EFactory {
      * @generated
      */
     RadioDescription createRadioDescription();
+
+    /**
+     * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Bar Chart Description</em>'.
+     * @generated
+     */
+    BarChartDescription createBarChartDescription();
+
+    /**
+     * Returns a new object of class '<em>Pie Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Pie Chart Description</em>'.
+     * @generated
+     */
+    PieChartDescription createPieChartDescription();
+
+    /**
+     * Returns a new object of class '<em>Flexbox Container Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Flexbox Container Description</em>'.
+     * @generated
+     */
+    FlexboxContainerDescription createFlexboxContainerDescription();
+
+    /**
+     * Returns a new object of class '<em>Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Button Description</em>'.
+     * @generated
+     */
+    ButtonDescription createButtonDescription();
+
+    /**
+     * Returns a new object of class '<em>Image Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Image Description</em>'.
+     * @generated
+     */
+    ImageDescription createImageDescription();
 
     /**
      * Returns a new object of class '<em>Textfield Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc
@@ -589,47 +638,6 @@ public interface ViewFactory extends EFactory {
      * @generated
      */
     EdgePalette createEdgePalette();
-
-    /**
-     * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Bar Chart Description</em>'.
-     * @generated
-     */
-    BarChartDescription createBarChartDescription();
-
-    /**
-     * Returns a new object of class '<em>Pie Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Pie Chart Description</em>'.
-     * @generated
-     */
-    PieChartDescription createPieChartDescription();
-
-    /**
-     * Returns a new object of class '<em>Flexbox Container Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @return a new object of class '<em>Flexbox Container Description</em>'.
-     * @generated
-     */
-    FlexboxContainerDescription createFlexboxContainerDescription();
-
-    /**
-     * Returns a new object of class '<em>Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Button Description</em>'.
-     * @generated
-     */
-    ButtonDescription createButtonDescription();
-
-    /**
-     * Returns a new object of class '<em>Image Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Image Description</em>'.
-     * @generated
-     */
-    ImageDescription createImageDescription();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

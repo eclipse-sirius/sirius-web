@@ -75,7 +75,6 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
-                .groupDescriptions(groupDescriptions)
                 .build();
         // @formatter:on
     }

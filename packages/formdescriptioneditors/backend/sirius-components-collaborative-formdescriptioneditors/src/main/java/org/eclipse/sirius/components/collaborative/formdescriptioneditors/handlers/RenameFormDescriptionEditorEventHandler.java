@@ -82,7 +82,8 @@ public class RenameFormDescriptionEditorEventHandler implements IFormDescription
 
             FormDescriptionEditor renamedFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(formDescriptionEditorContext.getFormDescriptionEditor())
                     .label(newLabel)
-                    .groups(List.of()) // We don't store form description editor groups, it will be re-render by the FormDescriptionEditorProcessor.
+                    .pages(List.of()) // We don't store form description editor pages, it will be re-render by
+                    // the FormDescriptionEditorProcessor.
                     .build();
             this.representationPersistenceService.save(editingContext, renamedFormDescriptionEditor);
 

@@ -79,6 +79,7 @@ import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
@@ -358,6 +359,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseFormDescription(FormDescription object) {
             return ViewAdapterFactory.this.createFormDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter casePageDescription(PageDescription object) {
+            return ViewAdapterFactory.this.createPageDescriptionAdapter();
         }
 
         @Override
@@ -1155,6 +1161,19 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.PageDescription <em>Page
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.PageDescription
+     * @generated
+     */
+    public Adapter createPageDescriptionAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.GroupDescription
      * <em>Group Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
@@ -1277,6 +1296,76 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRadioDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.BarChartDescription
+     * <em>Bar Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.BarChartDescription
+     */
+    public Adapter createBarChartDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.PieChartDescription
+     * <em>Pie Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.PieChartDescription
+     */
+    public Adapter createPieChartDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription <em>Flexbox Container Description</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription
+     */
+    public Adapter createFlexboxContainerDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ButtonDescription
+     * <em>Button Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.ButtonDescription
+     */
+    public Adapter createButtonDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ImageDescription
+     * <em>Image Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.ImageDescription
+     */
+    public Adapter createImageDescriptionAdapter() {
         return null;
     }
 
@@ -1713,76 +1802,6 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEdgePaletteAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.BarChartDescription
-     * <em>Bar Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-     * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.BarChartDescription
-     * @generated
-     */
-    public Adapter createBarChartDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.PieChartDescription
-     * <em>Pie Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-     * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.PieChartDescription
-     * @generated
-     */
-    public Adapter createPieChartDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.FlexboxContainerDescription <em>Flexbox Container Description</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.FlexboxContainerDescription
-     * @generated
-     */
-    public Adapter createFlexboxContainerDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ButtonDescription
-     * <em>Button Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-     * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.ButtonDescription
-     * @generated
-     */
-    public Adapter createButtonDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.ImageDescription
-     * <em>Image Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-     * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.ImageDescription
-     * @generated
-     */
-    public Adapter createImageDescriptionAdapter() {
         return null;
     }
 

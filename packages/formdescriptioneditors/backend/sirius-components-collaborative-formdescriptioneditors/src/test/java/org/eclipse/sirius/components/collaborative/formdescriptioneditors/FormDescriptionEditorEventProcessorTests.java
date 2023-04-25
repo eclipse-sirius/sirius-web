@@ -44,14 +44,12 @@ public class FormDescriptionEditorEventProcessorTests {
 
     private static final String FORMDESCRIPTIONEDITOR_DESCRIPTION_ID = UUID.randomUUID().toString();
 
-    // @formatter:off
     private static final FormDescriptionEditor INITIAL_TEST_FORMDESCRIPTIONEDITOR = FormDescriptionEditor.newFormDescriptionEditor(FORMDESCRIPTIONEDITOR_ID)
             .descriptionId(FORMDESCRIPTIONEDITOR_DESCRIPTION_ID)
             .label(String.valueOf(0))
             .targetObjectId("targetObjectId")
-            .groups(List.of())
+            .pages(List.of())
             .build();
-    // @formatter:on
 
     private final IFormDescriptionEditorCreationService formDescriptionEditorCreationService = new MockFormDescriptionEditorCreationService(INITIAL_TEST_FORMDESCRIPTIONEDITOR);
 

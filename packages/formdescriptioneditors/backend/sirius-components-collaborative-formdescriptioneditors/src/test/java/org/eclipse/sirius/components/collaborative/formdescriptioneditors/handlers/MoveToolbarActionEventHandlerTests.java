@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEdito
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -48,14 +49,17 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class MoveToolbarActionEventHandlerTests {
+
     @Test
     public void testMoveToolbarAction() {
 
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        formDescription.getGroups().add(groupDescription);
+        pageDescription.getGroups().add(groupDescription);
+        formDescription.getPages().add(pageDescription);
         ButtonDescription toolbarButton1 = ViewFactory.eINSTANCE.createButtonDescription();
         ButtonDescription toolbarButton2 = ViewFactory.eINSTANCE.createButtonDescription();
         ButtonDescription toolbarButton3 = ViewFactory.eINSTANCE.createButtonDescription();
@@ -75,7 +79,7 @@ public class MoveToolbarActionEventHandlerTests {
                     result = Optional.of(toolbarButton2);
                 } else if ("button3".equals(objectId)) {
                     result = Optional.of(toolbarButton3);
-                } else if (formDescriptionEditor.getGroups().get(0).getId().equals(objectId)) {
+                } else if (formDescriptionEditor.getPages().get(0).getGroups().get(0).getId().equals(objectId)) {
                     result = Optional.of(groupDescription);
                 }
                 return result;
@@ -90,13 +94,15 @@ public class MoveToolbarActionEventHandlerTests {
 
     private void invokMove(FormDescriptionEditor formDescriptionEditor, NoOp objectService, String toolbarActionId, int index) {
         var handler = new MoveToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getGroups().get(0).getId(), toolbarActionId, index);
+        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getPages().get(0).getGroups().get(0)
+                .getId(), toolbarActionId, index);
 
         assertThat(handler.canHandle(input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
-        IFormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString()));
+        IFormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID()
+                .toString()));
 
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), formDescriptionEditorContext, input);
 

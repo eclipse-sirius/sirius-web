@@ -79,6 +79,7 @@ import org.eclipse.sirius.components.view.NodeContainmentKind;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.PieChartDescription;
 import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
 import org.eclipse.sirius.components.view.RadioDescription;
@@ -198,6 +199,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createConditionalEdgeStyle();
             case ViewPackage.FORM_DESCRIPTION:
                 return this.createFormDescription();
+            case ViewPackage.PAGE_DESCRIPTION:
+                return this.createPageDescription();
             case ViewPackage.GROUP_DESCRIPTION:
                 return this.createGroupDescription();
             case ViewPackage.TEXTFIELD_DESCRIPTION:
@@ -688,6 +691,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     @Override
+    public PageDescription createPageDescription() {
+        PageDescriptionImpl pageDescription = new PageDescriptionImpl();
+        return pageDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public GroupDescription createGroupDescription() {
         GroupDescriptionImpl groupDescription = new GroupDescriptionImpl();
         return groupDescription;
@@ -768,6 +782,61 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public RadioDescription createRadioDescription() {
         RadioDescriptionImpl radioDescription = new RadioDescriptionImpl();
         return radioDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public BarChartDescription createBarChartDescription() {
+        BarChartDescriptionImpl barChartDescription = new BarChartDescriptionImpl();
+        return barChartDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PieChartDescription createPieChartDescription() {
+        PieChartDescriptionImpl pieChartDescription = new PieChartDescriptionImpl();
+        return pieChartDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FlexboxContainerDescription createFlexboxContainerDescription() {
+        FlexboxContainerDescriptionImpl flexboxContainerDescription = new FlexboxContainerDescriptionImpl();
+        return flexboxContainerDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ButtonDescription createButtonDescription() {
+        ButtonDescriptionImpl buttonDescription = new ButtonDescriptionImpl();
+        return buttonDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ImageDescription createImageDescription() {
+        ImageDescriptionImpl imageDescription = new ImageDescriptionImpl();
+        return imageDescription;
     }
 
     /**
@@ -1119,61 +1188,6 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      */
     public String convertLayoutDirectionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public BarChartDescription createBarChartDescription() {
-        BarChartDescriptionImpl barChartDescription = new BarChartDescriptionImpl();
-        return barChartDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public PieChartDescription createPieChartDescription() {
-        PieChartDescriptionImpl pieChartDescription = new PieChartDescriptionImpl();
-        return pieChartDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public FlexboxContainerDescription createFlexboxContainerDescription() {
-        FlexboxContainerDescriptionImpl flexboxContainerDescription = new FlexboxContainerDescriptionImpl();
-        return flexboxContainerDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ButtonDescription createButtonDescription() {
-        ButtonDescriptionImpl buttonDescription = new ButtonDescriptionImpl();
-        return buttonDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ImageDescription createImageDescription() {
-        ImageDescriptionImpl imageDescription = new ImageDescriptionImpl();
-        return imageDescription;
     }
 
     /**

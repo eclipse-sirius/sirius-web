@@ -28,7 +28,6 @@ import {
   GQLSelect,
   GQLTextarea,
   GQLTextfield,
-  GQLToolbarAction,
   GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
@@ -69,7 +68,7 @@ import { SelectWidget } from './SelectWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
-import { getAllToolbarActions, isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
+import { isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
 
 const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) => ({
   widget: {
@@ -122,6 +121,7 @@ export const WidgetEntry = ({
   editingContextId,
   representationId,
   formDescriptionEditor,
+  page,
   container,
   widget,
   selection,
@@ -232,7 +232,8 @@ export const WidgetEntry = ({
   };
 
   const handleDragStart: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
-    event.dataTransfer.setData('text/plain', widget.id);
+    event.dataTransfer.setData('draggedElementId', widget.id);
+    event.dataTransfer.setData('draggedElementType', 'Widget');
     event.stopPropagation();
   };
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
@@ -254,13 +255,10 @@ export const WidgetEntry = ({
   };
 
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, widget: GQLWidget) => {
-    const id: string = event.dataTransfer.getData('text/plain');
-    // We only accept drop of Widgets, no ToolbarAction or Group allowed
-    if (id === 'Group') {
-      return;
-    } else if (getAllToolbarActions(formDescriptionEditor).find((tba: GQLToolbarAction) => tba.id === id)) {
-      return;
-    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+    const id: string = event.dataTransfer.getData('draggedElementId');
+    const type: string = event.dataTransfer.getData('draggedElementType');
+
+    if (type !== 'Widget') {
       return;
     }
 
@@ -333,6 +331,7 @@ export const WidgetEntry = ({
         editingContextId={editingContextId}
         representationId={representationId}
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         container={container}
         widget={widget as GQLFlexboxContainer}
         selection={selection}

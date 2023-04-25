@@ -765,6 +765,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.PageDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PageDescriptionItemProvider pageDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.PageDescription}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPageDescriptionAdapter() {
+        if (this.pageDescriptionItemProvider == null) {
+            this.pageDescriptionItemProvider = new PageDescriptionItemProvider(this);
+        }
+
+        return this.pageDescriptionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.GroupDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1962,6 +1985,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.conditionalEdgeStyleItemProvider.dispose();
         if (this.formDescriptionItemProvider != null)
             this.formDescriptionItemProvider.dispose();
+        if (this.pageDescriptionItemProvider != null)
+            this.pageDescriptionItemProvider.dispose();
         if (this.groupDescriptionItemProvider != null)
             this.groupDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionItemProvider != null)

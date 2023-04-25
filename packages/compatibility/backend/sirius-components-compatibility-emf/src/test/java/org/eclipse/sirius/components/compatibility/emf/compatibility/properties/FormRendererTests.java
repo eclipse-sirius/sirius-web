@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -210,23 +211,28 @@ public class FormRendererTests {
     private void checkResult(FormDescription description) {
         // test SiriusViewExtensionDescriptionConverter
         assertThat(description).isNotNull();
-        assertThat(description.getGroupDescriptions()).hasSize(1);
         assertThat(description.getPageDescriptions()).hasSize(1);
         assertThat(description.getPageDescriptions().get(0).getGroupDescriptions()).hasSize(1);
-        assertThat(description.getPageDescriptions()).hasSize(1);
-        assertThat(description.getPageDescriptions().get(0).getGroupDescriptions().get(0)).isEqualTo(description.getGroupDescriptions().get(0));
-        assertThat(description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream())).hasSize(6);
-        assertThat(description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream()).filter(CheckboxDescription.class::isInstance)).hasSize(1);
-        assertThat(description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream()).filter(RadioDescription.class::isInstance)).hasSize(1);
-        assertThat(description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream()).filter(SelectDescription.class::isInstance)).hasSize(1);
-        assertThat(description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream()).filter(TextfieldDescription.class::isInstance)).hasSize(1);
-        assertThat(description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream()).filter(TextfieldDescription.class::isInstance)).hasSize(1);
-        Optional<ForDescription> forOptional = description.getGroupDescriptions().stream().flatMap(g -> g.getControlDescriptions().stream()).filter(ForDescription.class::isInstance)
+        assertThat(description.getPageDescriptions().stream().flatMap(g -> g.getGroupDescriptions().stream()).flatMap(g -> g.getControlDescriptions().stream())).hasSize(6);
+        assertThat(description.getPageDescriptions().stream().flatMap(g -> g.getGroupDescriptions().stream()).flatMap(g -> g.getControlDescriptions().stream())
+                .filter(CheckboxDescription.class::isInstance)).hasSize(1);
+        assertThat(description.getPageDescriptions().stream().flatMap(g -> g.getGroupDescriptions().stream()).flatMap(g -> g.getControlDescriptions().stream())
+                .filter(RadioDescription.class::isInstance)).hasSize(1);
+        assertThat(description.getPageDescriptions().stream().flatMap(g -> g.getGroupDescriptions().stream()).flatMap(g -> g.getControlDescriptions().stream())
+                .filter(SelectDescription.class::isInstance)).hasSize(1);
+        assertThat(description.getPageDescriptions().stream().flatMap(g -> g.getGroupDescriptions().stream()).flatMap(g -> g.getControlDescriptions().stream())
+                .filter(TextfieldDescription.class::isInstance)).hasSize(1);
+        assertThat(description.getPageDescriptions().stream().flatMap(g -> g.getGroupDescriptions().stream()).flatMap(g -> g.getControlDescriptions().stream())
+                .filter(TextareaDescription.class::isInstance)).hasSize(1);
+        Optional<ForDescription> forOptional = description.getPageDescriptions()
+                .stream()
+                .flatMap(g -> g.getGroupDescriptions().stream())
+                .flatMap(g -> g.getControlDescriptions().stream())
+                .filter(ForDescription.class::isInstance)
                 .map(ForDescription.class::cast).findFirst();
         assertThat(forOptional).isNotEmpty();
         assertThat(forOptional.get().getIfDescriptions()).hasSize(1);
         assertThat(forOptional.get().getIfDescriptions().stream().findFirst().get().getWidgetDescription()).isNotNull();
-
         // Test FormRenderer
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, List.of(EcorePackage.eINSTANCE));

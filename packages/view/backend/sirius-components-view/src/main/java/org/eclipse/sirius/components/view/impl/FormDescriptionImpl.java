@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.impl;
 
 import java.util.Collection;
@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 
 /**
@@ -37,15 +37,16 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * @generated
  */
 public class FormDescriptionImpl extends RepresentationDescriptionImpl implements FormDescription {
+
     /**
-     * The cached value of the '{@link #getGroups() <em>Groups</em>}' containment reference list. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getPages() <em>Pages</em>}' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @see #getGroups()
      * @generated
      * @ordered
+     * @see #getPages()
      */
-    protected EList<GroupDescription> groups;
+    protected EList<PageDescription> pages;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -72,11 +73,11 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
-    public EList<GroupDescription> getGroups() {
-        if (this.groups == null) {
-            this.groups = new EObjectContainmentEList<>(GroupDescription.class, this, ViewPackage.FORM_DESCRIPTION__GROUPS);
+    public EList<PageDescription> getPages() {
+        if (this.pages == null) {
+            this.pages = new EObjectContainmentEList<>(PageDescription.class, this, ViewPackage.FORM_DESCRIPTION__PAGES);
         }
-        return this.groups;
+        return this.pages;
     }
 
     /**
@@ -87,8 +88,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case ViewPackage.FORM_DESCRIPTION__GROUPS:
-                return ((InternalEList<?>) this.getGroups()).basicRemove(otherEnd, msgs);
+            case ViewPackage.FORM_DESCRIPTION__PAGES:
+                return ((InternalEList<?>) this.getPages()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -101,8 +102,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ViewPackage.FORM_DESCRIPTION__GROUPS:
-                return this.getGroups();
+            case ViewPackage.FORM_DESCRIPTION__PAGES:
+                return this.getPages();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -116,9 +117,9 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ViewPackage.FORM_DESCRIPTION__GROUPS:
-                this.getGroups().clear();
-                this.getGroups().addAll((Collection<? extends GroupDescription>) newValue);
+            case ViewPackage.FORM_DESCRIPTION__PAGES:
+                this.getPages().clear();
+                this.getPages().addAll((Collection<? extends PageDescription>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -132,8 +133,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ViewPackage.FORM_DESCRIPTION__GROUPS:
-                this.getGroups().clear();
+            case ViewPackage.FORM_DESCRIPTION__PAGES:
+                this.getPages().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -147,8 +148,8 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ViewPackage.FORM_DESCRIPTION__GROUPS:
-                return this.groups != null && !this.groups.isEmpty();
+            case ViewPackage.FORM_DESCRIPTION__PAGES:
+                return this.pages != null && !this.pages.isEmpty();
         }
         return super.eIsSet(featureID);
     }

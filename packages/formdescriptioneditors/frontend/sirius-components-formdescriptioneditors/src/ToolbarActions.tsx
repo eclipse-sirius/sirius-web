@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useMutation } from '@apollo/client';
-import { GQLGroup, GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -34,7 +34,6 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
-import { getAllWidgets, isKind } from './WidgetOperations';
 
 const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
   toolbar: {
@@ -147,15 +146,10 @@ export const ToolbarActions = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
 
-    const id: string = event.dataTransfer.getData('text/plain');
+    const id: string = event.dataTransfer.getData('draggedElementId');
+    const type: string = event.dataTransfer.getData('draggedElementType');
 
-    if (isKind(id)) {
-      return;
-    } else if (id === 'Group') {
-      return;
-    } else if (getAllWidgets(formDescriptionEditor).find((w: GQLWidget) => w.id === id)) {
-      return;
-    } else if (formDescriptionEditor.groups.find((g: GQLGroup) => g.id === id)) {
+    if (type !== 'ToolbarActionWidget') {
       return;
     }
 
