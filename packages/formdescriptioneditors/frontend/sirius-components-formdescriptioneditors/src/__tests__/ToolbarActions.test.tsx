@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLGroup, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
+import { GQLGroup, GQLPage, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import {
@@ -133,9 +133,16 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
     toolbarActions: [toolbarAction],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    groups: [group],
+    pages: [page],
   };
 
   let addToolbarActionCalled: boolean = false;
@@ -223,9 +230,16 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
     toolbarActions: [toolbarAction1, toolbarAction2],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    groups: [group],
+    pages: [page],
   };
 
   let deleteToolbarActionCalled: boolean = false;
@@ -315,9 +329,16 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
     toolbarActions: [toolbarAction1, toolbarAction2],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    groups: [group],
+    pages: [page],
   };
 
   let moveToolbarActionCalled: boolean = false;
@@ -350,7 +371,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
   const element: HTMLElement = screen.getByTestId('ToolbarAction-DropArea-ToolbarAction1');
 
   const dataTransfer: DataTransfer = new DataTransfer();
-  dataTransfer.setData('text/plain', 'ToolbarAction2');
+  dataTransfer.setData('draggedElementId', 'ToolbarAction2');
+  dataTransfer.setData('draggedElementType', 'ToolbarActionWidget');
   fireEvent.drop(element, { dataTransfer });
 
   await act(async () => {
@@ -408,9 +430,16 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     toolbarActions: [toolbarAction1, toolbarAction2],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    groups: [group],
+    pages: [page],
   };
 
   let moveToolbarActionAtTheEndCalled: boolean = false;
@@ -443,7 +472,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
   const element: HTMLElement = screen.getByTestId(`Group-ToolbarActions-DropArea-${group.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
-  dataTransfer.setData('text/plain', 'ToolbarAction2');
+  dataTransfer.setData('draggedElementId', 'ToolbarAction2');
+  dataTransfer.setData('draggedElementType', 'ToolbarActionWidget');
   fireEvent.drop(element, { dataTransfer });
 
   await act(async () => {

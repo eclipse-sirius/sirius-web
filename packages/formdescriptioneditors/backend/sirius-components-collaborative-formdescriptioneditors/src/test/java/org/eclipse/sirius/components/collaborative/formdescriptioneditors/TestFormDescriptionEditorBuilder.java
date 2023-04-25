@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Page;
 
 /**
  * Utility class used to help build form description editors for unit tests.
@@ -25,26 +26,24 @@ import org.eclipse.sirius.components.forms.Group;
  */
 public class TestFormDescriptionEditorBuilder {
 
-    public static final String IMAGE_PNG = "/image.png";
-
-    public static final String TOOL_IMAGE_URL = IMAGE_PNG;
-
-    public static final String TOOL_LABEL = "toolLabel";
-
     public FormDescriptionEditor getFormDescriptionEditor(String id) {
-        // @formatter:off
         Group group = Group.newGroup(UUID.randomUUID().toString())
-            .label("group1")
-            .widgets(List.of())
-            .toolbarActions(List.of())
-            .build();
+                .label("group1")
+                .widgets(List.of())
+                .toolbarActions(List.of())
+                .build();
+
+        Page page = Page.newPage(UUID.randomUUID().toString())
+                .label("page1")
+                .groups(List.of(group))
+                .toolbarActions(List.of())
+                .build();
 
         return FormDescriptionEditor.newFormDescriptionEditor(id)
                 .label("formDescriptionEditorLabel")
                 .descriptionId(UUID.randomUUID().toString())
                 .targetObjectId("formDescriptionEditorTargetObjectId")
-                .groups(List.of(group))
+                .pages(List.of(page))
                 .build();
-        // @formatter:on
     }
 }

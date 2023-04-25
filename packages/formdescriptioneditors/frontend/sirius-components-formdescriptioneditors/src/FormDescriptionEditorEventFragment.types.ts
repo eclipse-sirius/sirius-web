@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLGroup } from '@eclipse-sirius/sirius-components-forms';
+import { GQLPage } from '@eclipse-sirius/sirius-components-forms';
 
 export interface GQLFormDescriptionEditorEventSubscription {
   formDescriptionEditorEvent: GQLFormDescriptionEditorEventPayload;
@@ -59,7 +59,7 @@ export interface GQLRepresentation {
 
 export interface GQLFormDescriptionEditor extends GQLRepresentation {
   id: string;
-  groups: GQLGroup[];
+  pages: GQLPage[];
 }
 
 export interface GQLAddWidgetInput {
@@ -185,6 +185,7 @@ export interface GQLAddGroupInput {
   id: string;
   editingContextId: string;
   representationId: string;
+  pageId: string;
   index: number;
 }
 
@@ -223,6 +224,7 @@ export interface GQLMoveGroupInput {
   id: string;
   editingContextId: string;
   representationId: string;
+  pageId: string;
   groupId: string;
   index: number;
 }
@@ -239,6 +241,64 @@ export interface GQLMoveGroupPayload {
   __typename: string;
 }
 
+export interface GQLAddPageInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  index: number;
+}
+
+export interface GQLAddPageMutationVariables {
+  input: GQLAddPageInput;
+}
+
+export interface GQLAddPageMutationData {
+  addPage: GQLAddPagePayload;
+}
+
+export interface GQLAddPagePayload {
+  __typename: string;
+}
+
+export interface GQLMovePageInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  pageId: string;
+  index: number;
+}
+
+export interface GQLMovePageMutationVariables {
+  input: GQLMovePageInput;
+}
+
+export interface GQLMovePageMutationData {
+  movePage: GQLMovePagePayload;
+}
+
+export interface GQLMovePagePayload {
+  __typename: string;
+}
+
+export interface GQLDeletePageInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  pageId: string;
+}
+
+export interface GQLDeletePageMutationVariables {
+  input: GQLDeletePageInput;
+}
+
+export interface GQLDeletePageMutationData {
+  deletePage: GQLMovePagePayload;
+}
+
+export interface GQLDeletePagePayload {
+  __typename: string;
+}
+
 export interface GQLErrorPayload
   extends GQLAddWidgetPayload,
     GQLDeleteWidgetPayload,
@@ -248,7 +308,10 @@ export interface GQLErrorPayload
     GQLMoveToolbarActionPayload,
     GQLAddGroupPayload,
     GQLDeleteGroupPayload,
-    GQLMoveGroupPayload {
+    GQLMoveGroupPayload,
+    GQLAddPagePayload,
+    GQLMovePagePayload,
+    GQLDeletePagePayload {
   message: string;
 }
 
@@ -261,6 +324,9 @@ export interface GQLSuccessPayload
     GQLMoveToolbarActionPayload,
     GQLAddGroupPayload,
     GQLDeleteGroupPayload,
-    GQLMoveGroupPayload {
+    GQLMoveGroupPayload,
+    GQLAddPagePayload,
+    GQLMovePagePayload,
+    GQLDeletePagePayload {
   id: string;
 }

@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -164,8 +165,10 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
 
         FormDescription newFormDescription = ViewFactory.eINSTANCE.createFormDescription();
         newFormDescription.setName("New Form Description");
+        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        newFormDescription.getPages().add(pageDescription);
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        newFormDescription.getGroups().add(groupDescription);
+        pageDescription.getGroups().add(groupDescription);
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));
 
         ColorPalette newColorPalette = ViewFactory.eINSTANCE.createColorPalette();

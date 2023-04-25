@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -44,11 +45,14 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class AddToolbarActionEventHandlerTests {
+
     @Test
     public void testAddToolbarAction() {
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        formDescription.getGroups().add(groupDescription);
+        pageDescription.getGroups().add(groupDescription);
+        formDescription.getPages().add(pageDescription);
         var objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
@@ -62,7 +66,8 @@ public class AddToolbarActionEventHandlerTests {
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
-        IFormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString()));
+        IFormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID()
+                .toString()));
 
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), formDescriptionEditorContext, input);
 

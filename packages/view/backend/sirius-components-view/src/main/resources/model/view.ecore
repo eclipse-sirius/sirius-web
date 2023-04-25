@@ -261,6 +261,16 @@
     <eLiterals name="UNSYNCHRONIZED" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="#//RepresentationDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pages" upperBound="-1"
+        eType="#//PageDescription" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PageDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
         eType="#//GroupDescription" containment="true"/>
   </eClassifiers>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLFlexboxContainer, GQLGroup, GQLToolbarAction, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
-import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
+import { GQLGroup, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import { Kind } from './FormDescriptionEditorRepresentation.types';
 
 export const isKind = (value: string): value is Kind => {
@@ -40,32 +39,4 @@ export const isGroup = (element: GQLWidget | GQLGroup): boolean => {
 
 export const isFlexboxContainer = (element: GQLWidget | GQLGroup): boolean => {
   return element.__typename === 'FlexboxContainer';
-};
-
-export const getAllWidgets = (formDescriptionEditor: GQLFormDescriptionEditor): GQLWidget[] => {
-  let allWidgets: GQLWidget[] = [];
-  formDescriptionEditor.groups.forEach((group: GQLGroup) => {
-    group.widgets.forEach((widget: GQLWidget) => {
-      if (isFlexboxContainer(widget)) {
-        allWidgets = allWidgets.concat(getAllFlexboxContainerWidgets(widget as GQLFlexboxContainer));
-      }
-      allWidgets.push(widget);
-    });
-  });
-  return allWidgets;
-};
-
-const getAllFlexboxContainerWidgets = (flexboxContainer: GQLFlexboxContainer): GQLWidget[] => {
-  let allWidgets: GQLWidget[] = [];
-  flexboxContainer.children.forEach((widget: GQLWidget) => {
-    if (isFlexboxContainer(widget)) {
-      allWidgets = allWidgets.concat(getAllFlexboxContainerWidgets(widget as GQLFlexboxContainer));
-    }
-    allWidgets.push(widget);
-  });
-  return allWidgets;
-};
-
-export const getAllToolbarActions = (formDescriptionEditor: GQLFormDescriptionEditor): GQLToolbarAction[] => {
-  return formDescriptionEditor.groups.flatMap((g: GQLGroup) => g.toolbarActions);
 };

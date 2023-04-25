@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,23 +60,19 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
 
-        // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "formdescriptioneditor")
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
     public FormDescriptionEditor create(String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
-        // @formatter:off
         FormDescriptionEditor newFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
                 .label(label)
                 .targetObjectId(this.objectService.getId(targetObject))
                 .descriptionId(formDescriptionEditorDescription.getId())
-                .groups(List.of()) // We don't store form description editor groups, it will be re-render by the FormDescriptionEditorProcessor.
+                .pages(List.of()) // We don't store form description editor pages, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
-        // @formatter:on
 
         this.representationPersistenceService.save(editingContext, newFormDescriptionEditor);
 
@@ -87,18 +83,15 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
     public FormDescriptionEditor refresh(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext) {
         FormDescriptionEditor previousFormDescriptionEditor = formDescriptionEditorContext.getFormDescriptionEditor();
         var optionalObject = this.objectService.getObject(editingContext, previousFormDescriptionEditor.getTargetObjectId());
-        // @formatter:off
         var optionalFormDescriptionEditorDescription = this.representationDescriptionSearchService.findById(editingContext, previousFormDescriptionEditor.getDescriptionId())
                 .filter(FormDescriptionEditorDescription.class::isInstance)
                 .map(FormDescriptionEditorDescription.class::cast);
-        // @formatter:on
 
         if (optionalObject.isPresent() && optionalFormDescriptionEditorDescription.isPresent()) {
             Object object = optionalObject.get();
             FormDescriptionEditorDescription formDescriptionEditorDescription = optionalFormDescriptionEditorDescription.get();
-            FormDescriptionEditor formDescriptionEditor = this.doRender(previousFormDescriptionEditor.getLabel(), object, editingContext, formDescriptionEditorDescription,
+            return this.doRender(previousFormDescriptionEditor.getLabel(), object, editingContext, formDescriptionEditorDescription,
                     Optional.of(formDescriptionEditorContext));
-            return formDescriptionEditor;
         }
 
         return null;

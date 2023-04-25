@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,12 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class Page {
+
     private String id;
 
     private String label;
+
+    private List<ToolbarAction> toolbarActions;
 
     private List<Group> groups;
 
@@ -41,6 +44,10 @@ public final class Page {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public List<ToolbarAction> getToolbarActions() {
+        return this.toolbarActions;
     }
 
     public List<Group> getGroups() {
@@ -64,9 +71,12 @@ public final class Page {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
+
+        private List<ToolbarAction> toolbarActions = List.of();
 
         private List<Group> groups;
 
@@ -79,6 +89,11 @@ public final class Page {
             return this;
         }
 
+        public Builder toolbarActions(List<ToolbarAction> toolbarActions) {
+            this.toolbarActions = Objects.requireNonNull(toolbarActions);
+            return this;
+        }
+
         public Builder groups(List<Group> groups) {
             this.groups = Objects.requireNonNull(groups);
             return this;
@@ -88,6 +103,7 @@ public final class Page {
             Page page = new Page();
             page.id = Objects.requireNonNull(this.id);
             page.label = Objects.requireNonNull(this.label);
+            page.toolbarActions = Objects.requireNonNull(this.toolbarActions);
             page.groups = Objects.requireNonNull(this.groups);
             return page;
         }

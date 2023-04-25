@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescr
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponentProps;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorPageComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorPageComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
@@ -41,6 +43,8 @@ public class FormDescriptionEditorComponentPropsValidator implements IComponentP
             checkValidProps = props instanceof FormDescriptionEditorComponentProps;
         } else if (FormDescriptionEditorGroupComponent.class.equals(componentType)) {
             checkValidProps = props instanceof FormDescriptionEditorGroupComponentProps;
+        } else if (FormDescriptionEditorPageComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorPageComponentProps;
         } else {
             checkValidProps = this.formComponentPropsValidator.validateComponentProps(componentType, props);
         }

@@ -199,7 +199,11 @@ public class FormElementFactory implements IElementFactory {
     }
 
     private Page instantiatePage(PageElementProps props, List<Object> children) {
-        // @formatter:off
+        List<ToolbarAction> toolbarActions = children.stream()
+                .filter(ToolbarAction.class::isInstance)
+                .map(ToolbarAction.class::cast)
+                .toList();
+
         List<Group> groups = children.stream()
                 .filter(Group.class::isInstance)
                 .map(Group.class::cast)
@@ -207,9 +211,9 @@ public class FormElementFactory implements IElementFactory {
 
         return Page.newPage(props.getId())
                 .label(props.getLabel())
+                .toolbarActions(toolbarActions)
                 .groups(groups)
                 .build();
-        //@formatter:on
     }
 
     private Group instantiateGroup(GroupElementProps props, List<Object> children) {

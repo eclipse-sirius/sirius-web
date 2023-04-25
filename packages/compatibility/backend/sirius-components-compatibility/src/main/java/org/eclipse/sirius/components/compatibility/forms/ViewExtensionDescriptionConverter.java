@@ -36,7 +36,7 @@ import org.eclipse.sirius.properties.ViewExtensionDescription;
 import org.springframework.stereotype.Service;
 
 /**
- * This class is used to convert a Sirius {@link ViewExtensionDescription} to an Sirius Web {@link FormDescription}.
+ * This class is used to convert a Sirius {@link ViewExtensionDescription} to a Sirius Web {@link FormDescription}.
  *
  * @author fbarbin
  */
@@ -72,13 +72,12 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
         PageDescriptionConverter pageDescriptionConverter = new PageDescriptionConverter(interpreter, this.identifierProvider, this.semanticCandidatesProviderFactory);
         GroupDescriptionConverter groupDescriptionConverter = new GroupDescriptionConverter(interpreter, this.objectService, this.identifierProvider, this.modelOperationHandlerSwitchProvider);
 
-        // @formatter:off
         Map<org.eclipse.sirius.properties.GroupDescription, GroupDescription> siriusGroup2SiriusWebGroup = new HashMap<>();
-        List<GroupDescription> groupDescriptions = viewExtensionDescription.getCategories().stream()
+
+        viewExtensionDescription.getCategories().stream()
                 .flatMap(category -> category.getPages().stream())
                 .flatMap(page -> page.getGroups().stream())
-                .map(groupDescription -> groupDescriptionConverter.convert(groupDescription, siriusGroup2SiriusWebGroup))
-                .toList();
+                .forEach(groupDescription -> groupDescriptionConverter.convert(groupDescription, siriusGroup2SiriusWebGroup));
 
         List<PageDescription> pageDescriptions = viewExtensionDescription.getCategories().stream()
                 .flatMap(category -> category.getPages().stream())
@@ -106,8 +105,6 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .canCreatePredicate(variableManager -> false)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .pageDescriptions(pageDescriptions)
-                .groupDescriptions(groupDescriptions)
                 .build();
-        // @formatter:on
     }
 }

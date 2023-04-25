@@ -13,8 +13,10 @@
 package org.eclipse.sirius.web.sample.configuration;
 
 import fr.obeo.dsl.designer.sample.flow.FlowFactory;
+
 import java.util.List;
 import java.util.UUID;
+
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
@@ -55,6 +57,10 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     public static final String BIG_GUY_FLOW_LABEL = "Big Guy Flow (17k elements)";
 
+    public static final UUID EMPTY_VIEW_ID = UUID.nameUUIDFromBytes("empty_view".getBytes());
+
+    public static final String EMPTY_VIEW_LABEL = "View";
+
     private static final UUID EMPTY_DOMAIN_ID = UUID.nameUUIDFromBytes("empty_domain".getBytes());
 
     private static final String EMPTY_DOMAIN_LABEL = "Domain";
@@ -62,10 +68,6 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
     private static final UUID PAPAYA_DOMAIN_ID = UUID.nameUUIDFromBytes("papaya_domain".getBytes());
 
     private static final String PAPAYA_DOMAIN_LABEL = "Papaya Domain";
-
-    private static final UUID EMPTY_VIEW_ID = UUID.nameUUIDFromBytes("empty_view".getBytes());
-
-    private static final String EMPTY_VIEW_LABEL = "View";
 
     private static final UUID PAPAYA_VIEW_ID = UUID.nameUUIDFromBytes("papaya_view".getBytes());
 

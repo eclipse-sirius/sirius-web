@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEdito
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +49,7 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class DeleteToolbarActionEventHandlerTests {
+
     private static final String TOOLBAR_ACTION_ID = "toolbarActionId";
 
     @Test
@@ -55,8 +57,10 @@ public class DeleteToolbarActionEventHandlerTests {
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        formDescription.getGroups().add(groupDescription);
+        pageDescription.getGroups().add(groupDescription);
+        formDescription.getPages().add(pageDescription);
         ButtonDescription toolbarButton = ViewFactory.eINSTANCE.createButtonDescription();
         groupDescription.getToolbarActions().add(toolbarButton);
         var objectService = new IObjectService.NoOp() {

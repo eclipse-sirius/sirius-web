@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 
@@ -43,7 +43,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
     private String descriptionId;
 
-    private List<Group> groups;
+    private List<Page> pages;
 
     private FormDescriptionEditor() {
         // Prevent instantiation
@@ -74,8 +74,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
         return this.descriptionId;
     }
 
-    public List<Group> getGroups() {
-        return this.groups;
+    public List<Page> getPages() {
+        return this.pages;
     }
 
     public static Builder newFormDescriptionEditor(String id) {
@@ -99,6 +99,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String kind = KIND;
@@ -109,7 +110,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
 
         private String descriptionId;
 
-        private List<Group> groups;
+        private List<Page> pages;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -120,7 +121,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             this.label = formDescriptionEditor.label;
             this.targetObjectId = formDescriptionEditor.targetObjectId;
             this.descriptionId = formDescriptionEditor.descriptionId;
-            this.groups = formDescriptionEditor.groups;
+            this.pages = formDescriptionEditor.pages;
         }
 
         public Builder label(String label) {
@@ -138,8 +139,8 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             return this;
         }
 
-        public Builder groups(List<Group> groups) {
-            this.groups = Objects.requireNonNull(groups);
+        public Builder pages(List<Page> pages) {
+            this.pages = Objects.requireNonNull(pages);
             return this;
         }
 
@@ -150,7 +151,7 @@ public final class FormDescriptionEditor implements IRepresentation, ISemanticRe
             formDescriptionEditor.label = Objects.requireNonNull(this.label);
             formDescriptionEditor.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             formDescriptionEditor.descriptionId = Objects.requireNonNull(this.descriptionId);
-            formDescriptionEditor.groups = Objects.requireNonNull(this.groups);
+            formDescriptionEditor.pages = Objects.requireNonNull(this.pages);
             return formDescriptionEditor;
         }
     }

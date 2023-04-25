@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLGroup } from '@eclipse-sirius/sirius-components-forms';
+import { GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addGroupMutation, deleteGroupMutation, moveGroupMutation } from '../FormDescriptionEditorEventFragment';
@@ -49,6 +49,7 @@ const addGroupVariables: GQLAddGroupMutationVariables = {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
+    pageId: 'Page1',
     index: 0,
   },
 };
@@ -75,6 +76,7 @@ const moveGroupVariables: GQLMoveGroupMutationVariables = {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
     editingContextId: 'editingContextId',
     representationId: 'formDescriptionEditorId',
+    pageId: 'Page1',
     groupId: 'Group2',
     index: 0,
   },
@@ -94,9 +96,16 @@ test('should drop the Group in the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'FormDescriptionEditor1',
-    groups: [group],
+    pages: [page],
   };
 
   let addGroupCalled: boolean = false;
@@ -119,6 +128,7 @@ test('should drop the Group in the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         group={group}
         selection={emptySelection}
         setSelection={emptySetSelection}
@@ -129,7 +139,8 @@ test('should drop the Group in the drop area', async () => {
   const element: HTMLElement = screen.getByTestId(`Group-DropArea-${group.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
-  dataTransfer.setData('text/plain', 'Group');
+  dataTransfer.setData('draggedElementId', 'Group');
+  dataTransfer.setData('draggedElementType', 'Group');
   fireEvent.drop(element, { dataTransfer });
 
   await act(async () => {
@@ -150,9 +161,16 @@ test('should delete the Group from the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    groups: [group],
+    pages: [page],
   };
 
   let deleteGroupCalled: boolean = false;
@@ -175,6 +193,7 @@ test('should delete the Group from the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         group={group}
         selection={emptySelection}
         setSelection={emptySetSelection}
@@ -214,9 +233,16 @@ test('should move the existing Group from/into the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group1, group2],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    groups: [group1, group2],
+    pages: [page],
   };
 
   let moveGroupCalled: boolean = false;
@@ -239,6 +265,7 @@ test('should move the existing Group from/into the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         group={group1}
         selection={emptySelection}
         setSelection={emptySetSelection}
@@ -249,7 +276,8 @@ test('should move the existing Group from/into the drop area', async () => {
   const element: HTMLElement = screen.getByTestId(`Group-DropArea-${group1.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
-  dataTransfer.setData('text/plain', group2.id);
+  dataTransfer.setData('draggedElementId', group2.id);
+  dataTransfer.setData('draggedElementType', 'Group');
   fireEvent.drop(element, { dataTransfer });
 
   await act(async () => {

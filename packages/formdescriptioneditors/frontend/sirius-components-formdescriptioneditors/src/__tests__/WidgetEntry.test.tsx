@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLChartWidget, GQLGroup, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
+import { GQLChartWidget, GQLGroup, GQLPage, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
@@ -118,9 +118,16 @@ test('should drop the Textfield in the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    groups: [group],
+    pages: [page],
   };
 
   let addWidgetCalled: boolean = false;
@@ -143,6 +150,7 @@ test('should drop the Textfield in the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         container={group}
         flexDirection={'row'}
         flexGrow={0}
@@ -156,7 +164,8 @@ test('should drop the Textfield in the drop area', async () => {
   const element: HTMLElement = screen.getByTestId(`WidgetEntry-DropArea-${textfieldWidget.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
-  dataTransfer.setData('text/plain', 'Textfield');
+  dataTransfer.setData('draggedElementId', 'Textfield');
+  dataTransfer.setData('draggedElementType', 'Widget');
   fireEvent.drop(element, { dataTransfer });
 
   await act(async () => {
@@ -196,9 +205,16 @@ test('should delete the Textfield from the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    groups: [group],
+    pages: [page],
   };
 
   let deleteWidgetCalled: boolean = false;
@@ -221,6 +237,7 @@ test('should delete the Textfield from the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         container={group}
         flexDirection={'row'}
         flexGrow={0}
@@ -283,9 +300,16 @@ test('should delete the PieChart from the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    groups: [group],
+    pages: [page],
   };
 
   let deleteWidgetCalled: boolean = false;
@@ -308,6 +332,7 @@ test('should delete the PieChart from the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         container={group}
         flexDirection={'row'}
         flexGrow={0}
@@ -359,9 +384,16 @@ test('should move the existing Textfield from/into the drop area', async () => {
     toolbarActions: [],
   };
 
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [],
+    groups: [group],
+  };
+
   const formDescriptionEditor: GQLFormDescriptionEditor = {
     id: 'formDescriptionEditorId',
-    groups: [group],
+    pages: [page],
   };
 
   let moveWidgetCalled: boolean = false;
@@ -384,6 +416,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
+        page={page}
         container={group}
         flexDirection={'row'}
         flexGrow={0}
@@ -397,7 +430,8 @@ test('should move the existing Textfield from/into the drop area', async () => {
   const element: HTMLElement = screen.getByTestId(`WidgetEntry-DropArea-${textfieldWidget.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
-  dataTransfer.setData('text/plain', 'Textfield2');
+  dataTransfer.setData('draggedElementId', 'Textfield2');
+  dataTransfer.setData('draggedElementType', 'Widget');
   fireEvent.drop(element, { dataTransfer });
 
   await act(async () => {

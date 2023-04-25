@@ -33,18 +33,26 @@ export const formDescriptionEditorEventSubscription = gql`
         id
         formDescriptionEditor {
           id
-          groups {
+          pages {
             id
             label
-            displayMode
             toolbarActions {
               ...commonFields
               ...toolbarActionFields
             }
-            widgets {
-              ...widgetFields
-              ... on FlexboxContainer {
-                ...flexboxContainerFields
+            groups {
+              id
+              label
+              displayMode
+              toolbarActions {
+                ...commonFields
+                ...toolbarActionFields
+              }
+              widgets {
+                ...widgetFields
+                ... on FlexboxContainer {
+                  ...flexboxContainerFields
+                }
               }
             }
           }
@@ -169,6 +177,48 @@ export const deleteToolbarActionMutation = gql`
 export const moveToolbarActionMutation = gql`
   mutation moveToolbarAction($input: MoveToolbarActionInput!) {
     moveToolbarAction(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const addPageMutation = gql`
+  mutation addPage($input: AddPageInput!) {
+    addPage(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const movePageMutation = gql`
+  mutation movePage($input: MovePageInput!) {
+    movePage(input: $input) {
+      __typename
+      ... on SuccessPayload {
+        id
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const deletePageMutation = gql`
+  mutation deletePage($input: DeletePageInput!) {
+    deletePage(input: $input) {
       __typename
       ... on SuccessPayload {
         id

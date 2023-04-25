@@ -40,6 +40,7 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class RenameFormDescriptionEditorEventHandlerTests {
+
     private static final String OLD_LABEL = "oldLabel";
 
     private static final String NEW_LABEL = "newLabel";
@@ -51,14 +52,12 @@ public class RenameFormDescriptionEditorEventHandlerTests {
         String representationId = UUID.randomUUID().toString();
         UUID targetObjectId = UUID.randomUUID();
 
-        // @formatter:off
         FormDescriptionEditor formDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(representationId)
                 .label(OLD_LABEL)
                 .descriptionId(formDescriptionEditorDescriptionId)
                 .targetObjectId(targetObjectId.toString())
-                .groups(List.of())
+                .pages(List.of())
                 .build();
-        // @formatter:on
 
         RenameFormDescriptionEditorEventHandler handler = new RenameFormDescriptionEditorEventHandler(new IRepresentationPersistenceService.NoOp(),
                 new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());

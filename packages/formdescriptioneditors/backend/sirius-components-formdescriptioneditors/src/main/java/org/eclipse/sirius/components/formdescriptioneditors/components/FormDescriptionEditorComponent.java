@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,31 +47,28 @@ public class FormDescriptionEditorComponent implements IComponent {
         var optionalPreviousFormDescriptionEditor = this.props.getOptionalPreviousFormDescriptionEditor();
 
         String id = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getId).orElseGet(() -> UUID.randomUUID().toString());
-        // @formatter:off
         String label = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getLabel)
                 .orElseGet(() -> variableManager.get(FormDescriptionEditor.LABEL, String.class)
-                .orElse("Form Description Editor"));
-        // @formatter:on
+                        .orElse("Form Description Editor"));
         Function<VariableManager, String> targetObjectIdProvider = formDescriptionEditorDescription.getTargetObjectIdProvider();
         String targetObjectId = targetObjectIdProvider.apply(variableManager);
 
         List<Element> childrenWidgets = new ArrayList<>();
 
-        formDescription.getGroups().forEach(viewGroupDescription -> {
+        formDescription.getPages().forEach(viewPageDescription -> {
             VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, viewGroupDescription);
-            FormDescriptionEditorGroupComponentProps fdeGroupComponentProps = new FormDescriptionEditorGroupComponentProps(childVariableManager, this.props.getFormDescriptionEditorDescription());
-            childrenWidgets.add(new Element(FormDescriptionEditorGroupComponent.class, fdeGroupComponentProps));
+            childVariableManager.put(VariableManager.SELF, viewPageDescription);
+            FormDescriptionEditorPageComponentProps formDescriptionEditorPageComponentProps = new FormDescriptionEditorPageComponentProps(childVariableManager,
+                    this.props.getFormDescriptionEditorDescription());
+            childrenWidgets.add(new Element(FormDescriptionEditorPageComponent.class, formDescriptionEditorPageComponentProps));
         });
 
-        // @formatter:off
         FormDescriptionEditorElementProps formDescriptionEditorElementProps = FormDescriptionEditorElementProps.newFormDescriptionEditorElementProps(id)
                 .label(label)
                 .targetObjectId(targetObjectId)
                 .descriptionId(formDescriptionEditorDescription.getId())
                 .children(childrenWidgets)
                 .build();
-        // @formatter:on
 
         return new Element(FormDescriptionEditorElementProps.TYPE, formDescriptionEditorElementProps);
     }

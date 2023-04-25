@@ -211,7 +211,14 @@
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalEdgeStyle"/>
     <genClasses ecoreClass="view.ecore#//FormDescription">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/groups"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//FormDescription/pages"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//PageDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PageDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PageDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PageDescription/semanticCandidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PageDescription/preconditionExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//PageDescription/groups"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//GroupDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//GroupDescription/name"/>

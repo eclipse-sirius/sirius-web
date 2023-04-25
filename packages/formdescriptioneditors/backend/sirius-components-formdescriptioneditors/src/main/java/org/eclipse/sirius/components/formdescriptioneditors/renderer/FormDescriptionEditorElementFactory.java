@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
-import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.renderer.FormElementFactory;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
@@ -46,19 +46,17 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
     }
 
     private FormDescriptionEditor instantiateFormDescriptionEditor(FormDescriptionEditorElementProps props, List<Object> children) {
-        // @formatter:off
-        List<Group> groups = children.stream()
-                .filter(Group.class::isInstance)
-                .map(Group.class::cast)
+        List<Page> pages = children.stream()
+                .filter(Page.class::isInstance)
+                .map(Page.class::cast)
                 .toList();
 
         return FormDescriptionEditor.newFormDescriptionEditor(props.getId())
                 .label(props.getLabel())
                 .targetObjectId(props.getTargetObjectId())
                 .descriptionId(props.getDescriptionId())
-                .groups(groups)
+                .pages(pages)
                 .build();
-        // @formatter:on
     }
 
 }

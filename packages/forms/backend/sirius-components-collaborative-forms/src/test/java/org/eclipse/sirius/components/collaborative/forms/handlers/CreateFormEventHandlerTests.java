@@ -45,6 +45,7 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public class CreateFormEventHandlerTests {
+
     @Test
     public void testFormCreation() {
         // @formatter:off
@@ -52,7 +53,6 @@ public class CreateFormEventHandlerTests {
                 .label("label")
                 .canCreatePredicate(variableManager -> true)
                 .pageDescriptions(List.of())
-                .groupDescriptions(List.of())
                 .idProvider(variableManager -> "id")
                 .labelProvider(variableManager -> "label")
                 .targetObjectIdProvider(variableManager -> "targetObjectId")

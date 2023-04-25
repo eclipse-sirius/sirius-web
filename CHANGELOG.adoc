@@ -33,6 +33,7 @@ In the _styleDescription_, the definition of a color are now a select list of al
 For that, the `DiagramCreationService` will have less responsabilities.
 Starting now, it will stop persisting the diagram after its creation.
 It will start by improving a bit performances since diagrams were persisted twice in some use cases.
+- https://github.com/eclipse-sirius/sirius-components/issues/1915[#1915] [view] Add the page support in the view DSL.
 
 === Dependency update
 - https://github.com/eclipse-sirius/sirius-components/issues/1936[#1936] [releng] Switch to Cypress 12.11.0

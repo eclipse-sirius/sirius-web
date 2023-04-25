@@ -131,7 +131,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(this.getTargetObjectIdProvider())
                 .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
-                .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
     }
@@ -163,7 +162,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(this.getTargetObjectIdProvider())
                 .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
-                .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
     }
@@ -200,7 +198,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .targetObjectIdProvider(this.getTargetObjectIdProvider())
                 .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
-                .groupDescriptions(List.of(groupDescription))
                 .build();
         // @formatter:on
     }
