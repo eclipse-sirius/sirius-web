@@ -5,6 +5,7 @@
 === Shapes
 
 - Filter tree based representations
+- Add pages to form in the view DSL
 
 === Architectural decision records
 

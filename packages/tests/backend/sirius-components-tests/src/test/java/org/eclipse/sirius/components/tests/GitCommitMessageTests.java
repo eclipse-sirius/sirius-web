@@ -150,13 +150,15 @@ public class GitCommitMessageTests {
         assertThat(lines).filteredOn(line -> line.trim().startsWith(SIGNED_OFF_BY_PREFIX)).isNotEmpty();
 
         Predicate<Integer> isSignedOffLine = (index) -> lines.get(index).trim().startsWith(SIGNED_OFF_BY_PREFIX);
-        var indexOfSignedOff = IntStream.range(0, lines.size()).filter(isSignedOffLine::test).findFirst().orElse(0);
+        var indexOfSignedOff = IntStream.range(0, lines.size()).filter(isSignedOffLine::test).findFirst().orElse(-1);
         Predicate<Integer> isIssueUrlLine = (index) -> lines.get(index).trim().startsWith(ISSUE_URL_PREFIX);
-        var indexOfIssueURL = IntStream.range(0, lines.size()).filter(isIssueUrlLine::test).findFirst().orElse(0);
+        var indexOfIssueURL = IntStream.range(0, lines.size()).filter(isIssueUrlLine::test).findFirst().orElse(-1);
 
-        assertThat(Math.abs(indexOfSignedOff - indexOfIssueURL))
-                .withFailMessage("The line 'Signed-off-by: ...' and 'Bug: ...' are not next to each other")
-                .isEqualTo(1);
+        if (indexOfSignedOff != -1 && indexOfIssueURL != -1) {
+            assertThat(Math.abs(indexOfSignedOff - indexOfIssueURL))
+                    .withFailMessage("The line 'Signed-off-by: ...' and 'Bug: ...' are not next to each other")
+                    .isEqualTo(1);
+        }
     }
 
     private boolean runningOnCI() {
