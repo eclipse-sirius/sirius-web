@@ -1,0 +1,49 @@
+= (L) Simplify the programmatic creation of view models
+
+== Problem
+
+We can create representations descriptions programmatically, with the view model and with the compatibility layer that converts odesign files in representation descriptions.
+Another use case is to create view models programmatically but we don't have an API to create complex models easily.
+
+
+== Key Result
+
+The Papaya View will be created with this new API and offer the same functionalities than before this implementation.
+All the tests will still work.
+
+
+== Solution
+
+In a project `sirius-components-view-builder`, depending only on `sirius-components-view`, we should provide utility classes to help the creation of view based models.
+We will need to synthesize how other applications using Sirius Web implements some parts of the future API.
+The detailed ADR will gather some feedback first.
+
+
+=== Scenario
+
+Some features that the API will offer are :
+
+* Helpers for creating diagrams, nodes and edges
+* Helpers for creating element's style and conditional style
+* Helpers for creating unsynchronized nodes (including unsynchronized children or recursively with reused node description)
+* Easy access to previously declared elements to use them as reference to other elements (for example an edge description will need some node description)
+* Helpers for creating tools (node & edge creation, delete, direct edit, drag & drop, simple or complex tools)
+* Helpers for creating and reusing AQL expressions that will be used in previous scenarios.
+
+
+=== Breadboarding
+
+no ui changes
+
+=== Cutting backs
+
+The AQL expressions API could be reused for scenarios other than diagram, tool, node and edge creation.
+
+As such, it will probably need specific ADR and might be too large to implement completely in this scope.
+
+== Rabbit holes
+
+== No-gos
+
+The API will not generate a complete diagram description from a metamodel, we want to explicitly control what's created.
+

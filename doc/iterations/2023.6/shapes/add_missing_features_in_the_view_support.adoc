@@ -1,0 +1,34 @@
+= (M) Add support for the features of the compatibility layer not supported in the view DSL
+
+== Problem
+
+Some odesign concepts are not implemented in View (like selection dialogs or icons support). 
+
+== Key Result
+
+Each new feature works and can be used by the end user, the new flow version is updated to use those features, integration tests of those features are available
+
+== Solution
+
+For each concepts we should provide an adrs that will explain the solution if more details.
+
+We should also provide some mock ui in these adrs.
+
+=== Scenario
+
+An user will be able to use the newly implemented concept that was available in odesign models in updated views.
+
+=== Breadboarding
+
+Futurs ui changes will be discussed in their respective adrs.
+
+=== Cutting backs
+
+Some concepts may be challenging to implement. We will discuss it further in specific adrs.
+
+== Rabbit holes
+
+Some concepts may be challenging to implement. We will discuss it further in specific adrs.
+
+== No-gos
+
