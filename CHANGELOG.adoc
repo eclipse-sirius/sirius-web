@@ -6,6 +6,10 @@
 
 - Filter tree based representations
 - Add pages to form in the view DSL
+- Simplify the programmatic creation of view models
+- Add the ability to convert an odesign to a view model
+- Provide a view-based version of Flow
+- Add support for the features of the compatibility layer not supported in the view DSL
 
 === Architectural decision records
 

@@ -1,0 +1,38 @@
+= (M) Provide a view-based version of Flow
+
+== Problem
+
+In order to include a test which covers the odesign to view transformation, we will migrate the existing flow model.
+
+== Key Result
+
+The new view-based version of flow is fully equivalent to the previous odesign based version, all integrations tests of the odesign version of flow are working on the new version
+
+== Solution
+
+We will use the same maven package flow's dependencies.
+We will offer an interface that if implemented will convert the odesign from their path to Views.
+
+=== Scenario
+
+The end user will open Sirius Web and not see any single change at all.
+
+Everything will work as before including our Cypress integration tests.
+
+=== Breadboarding
+
+no ui changes
+
+=== Cutting backs
+
+Some concepts might not be available in the first implementation of the odesign converter.
+They will be added back progressively
+
+== Rabbit holes
+
+== No-gos
+
+
+
+
+
