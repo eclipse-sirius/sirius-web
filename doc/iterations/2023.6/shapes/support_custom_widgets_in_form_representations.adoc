@@ -1,0 +1,147 @@
+= (M) Support custom widgets in Form representations
+
+== Problem
+
+The _Form_ representation currently supports a fixed set of generic widgets.
+Even if we enrich this set, it will never account for all the specific needs of concrete applications.
+The Sirius Components framework should be open for custom applications to provide their own widgets.
+
+If an application provides such a custom widget, its use both by the studio maker and by the end users should be indisguishable from the core widgets.
+
+== Key Result
+
+An application based on Sirius Component should be able to extend the _Form_ representation with additional, custom widget definitions.
+This should be possible without forking/modifying Sirius Components, i.e. stricly on the application side.
+
+When running such an application, studio makers should be able to use the additional widgets inside their modelers, whether the modelers are defined:
+* programmatically using the _Form_ API (`org.eclipse.sirius.components.forms.description.FormDescription`)
+* programmatically by creating View-based _Form Description_
+* manually by configuring their View-based _Form Description_ using the Explorer and _Details_ view
+* manually by configuring their View-based _Form Description_ using the visual _FormDescriptionEditor_
+
+It should be possible for a developer to provide a (set of) custom widgets as a reusable library (with backend and frontend parts) and for a studio maker (different person) to use these custom widgets in his own application by adding the appropriate dependencies.
+
+Sirius Web should provide at least one complete and documented example of such a custom widget to serve as a reference for implementers.
+
+== Solution
+
+We will need to make the Form representation implementation extensible at several levels to support widget types which the core implementation does not know about:
+
+1. The core Form representation itself
+2. The GraphQL Schema
+3. The View DSL
+4. The frontend
+
+We will provide a simple "Slider" widget as an example and to validate the feature.
+The slider widget will only support displaying/adjusting an integer value inside a range (min/max).
+The backend part will be provided in new, separate Java projects/Maven modules that only `sirius-web-sample-application` will depend on.
+The frontend part of the Slider widget will be entirely contained in `sirius-components/packages/sirius-web/frontend/sirius-web`.
+It will use [the Slider component from MUI](https://v4.mui.com/components/slider/) for the frontend UI.
+
+[#core]
+=== Form Representation Core
+
+It is already possible to provide custom sub-types of `AbstractWidgetDescription` (e.g. `SliderDescription`), and to add this to a `GroupDescription.controlDescription`.
+However the `FormRenderer` (more specifically, its helpers `FormElementFactory`, `FormInstancePropsValidator` and `FormComponentPropsValidator`) does not know what to do with `AbstractWidgetDescription`s which are not in its hard-coded list.
+
+We will introduce a new Java API named `WidgetDescriptor` which represents a new kind of widget the renderer should know about.
+`FormRenderer` will take a list of such widget descriptors as a parameter, and its helpers will use that to render the new components.
+
+This list of widget descriptors will be passed by `FormEventProcessor`, which will itself get it from `FormEventProcessorFactory`.
+`FormEventProcessorFactory` itself will get these using usual Spring dependency mechanisms.
+
+If the custom widget supports edition operations, its backend implementation will also need to provide the appropriate `IFormEventHandler` implementations and supporting types (custom `IFormInput`s and `IPayload`s).
+
+=== GraphQL Schema
+
+On the backend, since we switched to declaring our GraphQL Schema using `.graphqls` files, extending the GraphQL Schema with the definition of a new widgets is simply a matter of contributing the corresponding `.graqphls` file.
+The file in question can declare both the new widget type, any needed styles or additional types, and any new mutation needed to trigger the new widget's behaviors.
+
+For example:
+
+```graphql
+type Slider implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  minValue: Int!
+  maxValue: Int!
+  currentValue: Int!
+}
+
+extend type Mutation {
+  editSlider(input: EditSliderInput!): EditSliderPayload!
+}
+```
+
+On the frontend, things are a little more involved. The shape of the GraphQL Schema for forms impacts:
+
+- `FormEventFragments.types.ts` defines all the TypeScript types, but is easily extensible; new TypeScript types can be added by the new widget's implementation code.
+- `FormEventFragments.ts` is more complex and hard-codes the set of supported widgets and all their fields in the query's structure. It will need to be parameterized (it is already computed) and use some form of "custom widgets schema" metadata supplied by the application in a React context.
+
+[#frontend]
+=== Frontend (property sections)
+
+Assuming the new widgets have been rendered by the backend, and received with all their custom fields by the frontend through its GraphQL Subscription, it must then be actually displayed.
+
+This is handled by `PropertySection.tsx` but, like other parts the set of supported widgets (e.g. `ButtonPropertySection`) is currently hard-coded.
+We will use the same kind of technique as already used to make the `Workench` component independant of the concrete representations supported:
+
+* Extract a generic super-type shared by all widgets, similar to `RepresentationComponentProps` but for widgets;
+* Setup a React context (similar to `RepresentationContext`) to register new widget types;
+* At the top-level of the application, register the custom widget types it wants to use and put that information into the context;
+* Modify `PropertySection` so that in addition to the hard-coded widgets, it also looks into the context to find the React component to instanciate for a widget it does not know about.
+
+=== View DSL Support
+
+To support the definition of custom widgets through the View DSL, we will first need to _make the View metamodel extensible_.
+In its current state, the generated implementation of `view.ecore` does not support new types (e.g. new `WidgetDescription` subtypes) which are not directly defined in `view.ecore`.
+This is possible in EMF with the "child creation extender" GenModel feature, but needs to be enabled explictly.
+This mecahnism is normally used in the context of an Eclipse runtime and relies on EMF extension points, so some adaptation will be needed to support it in our context.
+
+Once it is possible to create View models which use custom widgets definitions, these models must be converted into the actual API-based widget description (see <<#core, the section above>>) to be rendered correctly (and later displayed by <<#frontend,the frontend>>).
+This transformation is handled by `ViewFormDescriptionConverter`, but like the rest it will need to be made extensible.
+It already uses and EMF-based "switch class" to handle the different kinds of core widgets, so we will extend this to also consider EMF switches which know about any custom widgets.
+
+Finally, we will create a `slider.ecore` metamodel which defines the `SliderDescription` type as a custom `WidgetDescrption` subtype and provide the corresponding converter switch.
+
+=== Form Description Editor Support
+
+Support for custom widgets in the visual _Form Description Editor_ will be minimal.
+Custom widgets will appear using the palette with their name and a custom icon, but when displayed inside the WYSIWYG editor they will all appear using the same generic icon (to be determined).
+There will be no style preview.
+It should still be possible to create, move, and delete these widgets using the editor.
+
+The kinds of widgets supported by the editor is currently hard-coded in several places in the frontend, which will need to be made extensible and use the same context/registry information as in <<#frontend,the property section support>>.
+This includes at least:
+
+- In `WidgetOperations.tsx`: the `isKind` function.
+- In `FormDescriptionEditorRepresentation.types.ts`: the `Kind` type.
+- In `FormDescriptionEditorRepresentation.tsx`: the hard-coded definition of the palette elements.
+
+On the backend side, `FormDescriptionEditorGroupComponent` will be made extensible to support `ViewFormDescriptionEditorConverterSwitch`.
+
+=== Breadboarding
+
+No UI change for the generic feature itself.
+The Slider widget that will be developed as an example will use [the Slider component from MUI](https://v4.mui.com/components/slider/).
+
+=== Cutting backs
+
+- Form Description Editor Support (may be dropped if time is too short).
+- Stretch goal: Make the frontend part into a separate, reusable NPM library (instead of directly inside sirius-web-sample-application).
+- Stretch goal: make someone else go through the documentation (with minimal assistance) to add a simple Color Picker widget in addition to the Slider example.
+
+== Rabbit holes
+
+// Details about the solution worth calling out to avoid problems.
+// Try to identify the most risky areas which can trip up our assumptions.
+// Look critically at what we came up with. Did we miss anything?
+// Are we making technical assumptions that aren't fair?
+
+== No-gos
+
+- We will not "retrofit" all the existing widgets using the newly introduced APIs.
+- No support for custom ModelOperations added by the new widgets.
+- Complex widgets/controls with their own sub-elements (for example new kinds of groups, pages, or containers like FlexboxContainer).
