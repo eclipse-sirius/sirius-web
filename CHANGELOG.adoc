@@ -42,17 +42,19 @@ In the _styleDescription_, the definition of a color are now a select list of al
 
 === New Features
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1883[#1883] [sirius-web] Add the possibility to programmatically set some metadate such as specifics natures to a project.
+- https://github.com/eclipse-sirius/sirius-components/issues/1883[#1883] [sirius-web] Add the possibility to programmatically set some metadata such as specifics natures to a project.
 These natures can be used later to enable or not some capabilities on a project.
 This work will start by adding the ability to filter the project's domains.
 A large set of features will have to be updated in order to stop considering the list of metamodels available in an editing context as a certainty.
+- https://github.com/eclipse-sirius/sirius-components/issues/1946[1#946] Enabled child extenders in the View DSL implementation.
+This allows downstream projects and applications to provide their own sub-types of the DSL types (e.g. new WidgetDescriptions).
+In addition to registering the extension metadmodel itself, users must provide a `ChildExtenderProvider` bean for their extensions to be properly integrated.
 
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1869[#1869] [tree] Navigate to the first child with the right arrow if a node is expanded.
 Navigate to the parent with the left arrow if a node is collapsed
 - https://github.com/eclipse-sirius/sirius-components/issues/1621[#1621] [project] Migrate the onboard area to Material-UI
-
 
 == v2023.4.0
 
