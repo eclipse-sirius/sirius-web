@@ -11,7 +11,7 @@
   <foreignModel>view.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="View" basePackage="org.eclipse.sirius.components" disposableProviderFactory="true"
-      ecorePackage="view.ecore#/">
+      extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="view.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//LayoutDirection">
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//LayoutDirection/Column"/>
     </genEnums>
