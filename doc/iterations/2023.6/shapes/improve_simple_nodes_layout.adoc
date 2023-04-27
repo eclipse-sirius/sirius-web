@@ -1,0 +1,147 @@
+= (L) Improve the layout of simple nodes
+
+== Problem
+
+It has been some iterations we have increase the effort put on diagram layout.
+We try as much as we can to maintain two layout solutions:
+
+- ELK: Thanks to configuration, it performs layout for diagrams.
+In sirius-components, we are using it to perform the first layout of a diagram, or to perfrom an "arrange all" on demand.
+- Incremental Layout: Our layout algorithm used to handle layout updates of diagrams during their life.
+
+Having two layout solutions brings some issues.
+One of them is about ELK.
+Sometime, ELK needs to be twisted to get the result we want.
+An other one concerns the moment we goes from ELK layout to the incremental layout.
+The incremental layout needs to update only the part that needs to be updated without touching anything else ELK produced.
+
+Lately, we were not able to configure ELK to let it produce a fine layout without spending a lot of time to implements a lot of workarounds to twist ELK and make it produced the layout we want.
+We do not want to use ELK anymore.
+For that we need to be able to handle the lifecycle of a diagram layout from its creation to its desctruction.
+
+== Key Result
+
+Empty nodes can be displayed without overlap.
+The nodes should be able to have various descendants.
+Nodes size and position should take into account, data coming from the specifier, updates coming from the user like the move or resize and, default values.
+The Java data structure should evolve to consider the new use cases that we want to support (lack of a label vs empty label).
+The view DSL and the odesign compatibility layer should simply be adapted to those changes.
+
+== Solution
+
+[#scenario-1]
+=== Scenario 1 - Synchronous diagram creation
+
+The user wants to creates a diagram on a semantic element that contains children that have node descriptions specified in the dagram description.
+The user uses the onboarding area or the representation creation modal to create a diagram.
+The diagram display all of its children in one direction (we need to choose between row or column) without overlap.
+
+=== Scenario 2 - Creating a node using a node creation tool on the diagram root
+
+The user wants to create a node using a node creation tool on the diagram root.
+The user clicks on the diagram background to display the associated palette, then uses a node creation tool.
+The node is displayed where the user clicked.
+If necessary other nodes adjust their position to avoid overlap.
+
+=== Scenario 3 - Creating a node using a node creation tool on another node
+
+The user wants to create a node using a node creation tool on another node.
+The user clicks on a node to display the associated palette, then uses a node creation tool.
+The node is displayed wher the user clicked.
+If necessary sibling nodes adjust their position to avoid overlap.
+If necessary the parent node updates its size (and its position due to the resize ?????) to make enough space for its children to be displayed inside it (in such case parents sibling may have to update their positions too).
+
+[#scenario-4]
+=== Scenario 4 - Creating a semantic element from the Explorer on a synchronized diagram
+
+The user wants to create a semantic element from the explorer.
+The user uses the object creation modal on an explorer element.
+The node will be display at abscissa 0 but under the farthest most bottom node.
+
+=== Scenario 5 - Root element move
+
+The user wants to move an element in the background.
+The user drags an element and move it around.
+The node should be displayed where the drop happened.
+Siblings should rearrange themself if overlap occurred.
+
+[#scenario-6]
+=== Scenario 6 - Contained element move
+
+The user wants to move an element in a container.
+The user drags an element and move it around.
+The node should be displayed where the drop happened with some subtilities (we have to choose one):
+
+  - The container is resized to make it large enough to contain its child (we suppose the frontend accepts that node can be dropped "outside" the container).
+  - The container is not resized but we display overflows.
+  - The node cannot be moved outside its container.
+  The container can be resized by its padding if needed (behavior of the current state of the layout engine).
+  - The node cannot be moved outside the area allowed by its container.
+  The container will never be resized because of a move.
+
+=== Scenario 7 - Root element size increase
+
+The user wants to increase the size of a root element.
+The user drags one of the eight resize anchor and expands the node.
+The node should displayed with the new size.
+Siblings should rearrange themself if needed.
+
+[#scenario-8]
+=== Scenario 8 - Root element size decrease
+
+The user wants to decrease the size of a root element.
+The user drags one of the eight resize anchor and shrinks the node.
+The node should be displayed with the new size as long it has enough space to display its children.
+
+=== Scenario 9 - Contained element size increase
+
+The user wants to increase the size of a node contained by another node.
+The user drags one of the eight resize anchor and shrinks the node.
+The node should displayed with the new size.
+Siblings and the container should rearrange themself if needed, following one of the four subtilities in <<scenario-6,Scenario 6>>.
+
+=== Scenario 10 - Contained element size decrease
+
+Its the same as <<scenario-8,Scenario 8>>.
+
+=== Breadboarding
+
+N/A
+
+=== Cutting backs
+
+1- Produce a layout with default size for node
+2- Move event
+3- Resize event
+4- Single click event
+5- Extract the calculation of height and width expressions out of the renderer, to use data from view/odesign
+
+== Rabbit holes
+
+We should keep in mind that a tool can do anything, create, update or, remove elements.
+It is not because a tool is called a node creation tool that it will only be used to create something (it may be should but...).
+
+Using a tool that creates many nodes will use the conjuction of the <<scenario-1,scenario 1>> and <<scenario-4,scenario 4>>.
+If a tool creates many nodes at the same depth, one of the node will be located where the user clicked, other nodes will be display following the direction (like <<scenario-1,scenario 1>>).
+If a tool creates many nodes, a node and one or many children, the new parent node will be created where the user clicked, children will be display starting at (0, 0) in the parent (like <<scenario-4,scenario 4>>).
+
+Shrinking a node by moving its North or West anchor can be tricky because it changes the size of the node _and_ its position.
+So, if a node being shrinked does not have enough space to display its children, the size _and_ the position must be reevaluated by the algorithm.
+In other words, the layout algorithm, while moving an achor to resize a node must consider the opposite anchor position as an invariant.
+
+We have added `height expression` and `width expression` to compute the size of a node during the render.
+It should be the size of a node, unless the user has resized it or it does not have enough space to display all of its children.
+Unfortunately, these expressions are calculated during the diagram rendering.
+We may need to extract the calculation of these expressions out of the renderer.
+
+== No-go
+
+The specifier will not be able to use new APIs (for now)
+We will not try to consider for now:
+
+- Inside labels
+- Outside labels
+- Bordered nodes
+- Edge layout (routing of the endpoints, positions of the nodes, Manhattan layout, etc)
+- List layout
+- The move between containers
