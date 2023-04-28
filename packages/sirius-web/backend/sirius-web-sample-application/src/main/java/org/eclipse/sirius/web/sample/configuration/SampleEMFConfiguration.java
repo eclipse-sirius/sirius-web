@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,13 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.provider.DomainItemProviderAdapterFactory;
+import org.eclipse.sirius.components.emf.configuration.ChildExtenderProvider;
 import org.eclipse.sirius.components.emf.services.ILabelFeatureProvider;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProvider;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
+import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
+import org.eclipse.sirius.web.customwidgets.provider.CustomwidgetsItemProviderAdapterFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,5 +74,23 @@ public class SampleEMFConfiguration {
     @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public AdapterFactory viewAdapterFactory() {
         return new ViewItemProviderAdapterFactory();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
+    public EPackage customWidgetsEPackage() {
+        return CustomwidgetsPackage.eINSTANCE;
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
+    public AdapterFactory customWidgetsAdapterFactory() {
+        return new CustomwidgetsItemProviderAdapterFactory();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
+    public ChildExtenderProvider sliderChildExtenderProvider() {
+        return new ChildExtenderProvider(ViewPackage.eNS_URI, CustomwidgetsItemProviderAdapterFactory.ViewChildCreationExtender::new);
     }
 }

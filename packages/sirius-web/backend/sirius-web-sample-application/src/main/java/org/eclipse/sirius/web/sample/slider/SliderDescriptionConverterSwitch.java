@@ -1,0 +1,107 @@
+/*******************************************************************************
+ * Copyright (c) 2023 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.sample.slider;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
+import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.web.customwidgets.SliderDescription;
+import org.eclipse.sirius.web.customwidgets.util.CustomwidgetsSwitch;
+
+/**
+ * Converts a modeled Slider Description into its API equivalent.
+ *
+ * @author pcdavid
+ */
+public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<AbstractWidgetDescription> {
+    private final AQLInterpreter interpreter;
+
+    private final IEditService editService;
+
+    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService) {
+        this.interpreter = Objects.requireNonNull(interpreter);
+        this.editService = Objects.requireNonNull(editService);
+    }
+
+    @Override
+    public AbstractWidgetDescription caseSliderDescription(SliderDescription viewSliderDescription) {
+        String descriptionId = this.getDescriptionId(viewSliderDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewSliderDescription.getLabelExpression());
+        Function<VariableManager, Integer> minValueProvider = this.getIntValueProvider(viewSliderDescription.getMinValueExpression());
+        Function<VariableManager, Integer> maxValueProvider = this.getIntValueProvider(viewSliderDescription.getMaxValueExpression());
+        Function<VariableManager, Integer> currentValueProvider = this.getIntValueProvider(viewSliderDescription.getCurrentValueExpression());
+        Function<VariableManager, IStatus> newValueHandler = this.getOperationsHandler(viewSliderDescription.getBody());
+
+        // @formatter:off
+        return org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(descriptionId)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .minValueProvider(minValueProvider)
+                .maxValueProvider(maxValueProvider)
+                .currentValueProvider(currentValueProvider)
+                .newValueHandler(newValueHandler)
+                .build();
+        // @formatter:on
+    }
+
+    private Function<VariableManager, Integer> getIntValueProvider(String intValueExpression) {
+        String safeValueExpression = Optional.ofNullable(intValueExpression).orElse("");
+        return variableManager -> {
+            if (!safeValueExpression.isBlank()) {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression);
+                return result.asInt().orElse(0);
+            }
+            return 0;
+        };
+    }
+
+    private Function<VariableManager, IStatus> getOperationsHandler(List<Operation> operations) {
+        return variableManager -> {
+            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
+            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+            if (optionalVariableManager.isEmpty()) {
+                return new Failure("Something went wrong while handling the widget operations execution.");
+            } else {
+                return new Success();
+            }
+        };
+    }
+
+    private StringValueProvider getStringValueProvider(String valueExpression) {
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
+        return new StringValueProvider(this.interpreter, safeValueExpression);
+    }
+
+    private String getDescriptionId(EObject description) {
+        String descriptionURI = EcoreUtil.getURI(description).toString();
+        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+    }
+}

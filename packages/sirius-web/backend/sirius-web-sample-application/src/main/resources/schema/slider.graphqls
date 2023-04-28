@@ -1,0 +1,23 @@
+type Slider implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  minValue: Int!
+  maxValue: Int!
+  currentValue: Int!
+}
+
+extend type Mutation {
+  editSlider(input: EditSliderInput!): EditSliderPayload!
+}
+
+input EditSliderInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  sliderId: ID!
+  newValue: Int!
+}
+
+union EditSliderPayload = SuccessPayload | ErrorPayload

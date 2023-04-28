@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:customwidgets="http://www.eclipse.org/sirius-web/customwidgets" xmlns:view="http://www.eclipse.org/sirius-web/view">
+  <descriptions xmi:type="view:FormDescription" name="Slider Widget Test" domainType="flow::System" titleExpression="Slider Widget Test">
+    <pages>
+      <groups>
+        <widgets xmi:type="view:TextfieldDescription" name="Weight" labelExpression="Weight" valueExpression="aql:self.weight">
+          <body xmi:type="view:SetValue" featureName="weight" valueExpression="aql:newValue"/>
+          <style/>
+        </widgets>
+        <widgets xmi:type="customwidgets:SliderDescription" name="Weight" labelExpression="Weight" minValueExpression="0" maxValueExpression="100" currentValueExpression="aql:self.weight">
+          <body xmi:type="view:SetValue" featureName="weight" valueExpression="aql:newValue"/>
+        </widgets>
+        <widgets xmi:type="view:FlexboxContainerDescription">
+          <children xmi:type="view:TextfieldDescription" name="Temp" labelExpression="Temp" valueExpression="aql:self.temperature">
+            <body xmi:type="view:SetValue" featureName="temperature" valueExpression="aql:newValue"/>
+            <style/>
+          </children>
+          <children xmi:type="customwidgets:SliderDescription" name="temperature" labelExpression="temperature" minValueExpression="-273" maxValueExpression="500" currentValueExpression="aql:self.temperature">
+            <body xmi:type="view:SetValue" featureName="temperature" valueExpression="aql:newValue"/>
+          </children>
+        </widgets>
+      </groups>
+    </pages>
+  </descriptions>
+</view:View>
