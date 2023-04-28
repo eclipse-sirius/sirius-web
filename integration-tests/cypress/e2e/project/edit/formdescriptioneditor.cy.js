@@ -104,4 +104,28 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('BarChart').should('exist');
   });
 
+  it('can create a slider widget in a Group', () => {
+    // Check that the "Slider" widget is available in the list
+    cy.getByTestId('FormDescriptionEditor-Slider').should('exist');
+    // Create a slider inside the Group
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-Slider').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="Slider"]').should('be.visible');
+  });
+
+  it('can create a slider widget in a Flexbox Container', () => {
+    // Check that the "Slider" widget is available in the list
+    cy.getByTestId('FormDescriptionEditor-Slider').should('exist');
+    // Create a Flexbox inside the Group
+    var dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-FlexboxContainer').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="FlexboxContainer"]').should('be.visible');
+    // Create a slider inside the Flexbox
+    dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-Slider').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="FlexboxContainer-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="Slider"]').should('be.visible');
+  });
 });

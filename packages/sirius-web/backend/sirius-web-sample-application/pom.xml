@@ -169,6 +169,16 @@
  			<artifactId>org.eclipse.eef.common</artifactId>
  			<version>${eef.version}</version>
  		</dependency>
+ 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customwidgets</artifactId>
+			<version>2023.4.1</version>
+		</dependency>
+ 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customwidgets-edit</artifactId>
+			<version>2023.4.1</version>
+		</dependency>
  		<dependency><groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
 			<version>2023.4.1</version>

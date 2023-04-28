@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,18 +20,26 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import {
+  FormRepresentation,
+  GQLWidget,
+  PropertySectionContext,
+  WidgetContribution,
+} from '@eclipse-sirius/sirius-components-forms';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
+import './Sprotty.css';
 import { httpOrigin } from './core/URL';
 import './fonts.css';
 import { Main } from './main/Main';
 import './reset.css';
-import './Sprotty.css';
 import './variables.css';
+import { SliderPreview } from './widgets/SliderPreview';
+import { SliderPropertySection } from './widgets/SliderPropertySection';
 
 const baseTheme = createTheme({
   ...theme,
@@ -117,6 +125,31 @@ const representationContextValue = {
   registry,
 };
 
+const propertySectionsRegistry = {
+  getComponent: (widget: GQLWidget) => {
+    if (widget.__typename === 'Slider') {
+      return SliderPropertySection;
+    }
+  },
+  getPreviewComponent: (widget: GQLWidget) => {
+    if (widget.__typename === 'Slider') {
+      return SliderPreview;
+    }
+  },
+  getWidgetContributions: () => {
+    const sliderWidgetContribution: WidgetContribution = {
+      name: 'Slider',
+      fields: `label iconURL minValue maxValue currentValue`,
+      icon: <LinearScaleOutlinedIcon />,
+    };
+    return [sliderWidgetContribution];
+  },
+};
+
+const propertySectionRegistryValue = {
+  propertySectionsRegistry,
+};
+
 ReactDOM.render(
   <ApolloProvider client={ApolloGraphQLClient}>
     <BrowserRouter>
@@ -124,9 +157,11 @@ ReactDOM.render(
         <CssBaseline />
         <ServerContext.Provider value={{ httpOrigin }}>
           <RepresentationContext.Provider value={representationContextValue}>
-            <div style={style}>
-              <Main />
-            </div>
+            <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+              <div style={style}>
+                <Main />
+              </div>
+            </PropertySectionContext.Provider>
           </RepresentationContext.Provider>
         </ServerContext.Provider>
       </ThemeProvider>

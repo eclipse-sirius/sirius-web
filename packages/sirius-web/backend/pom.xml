@@ -38,6 +38,8 @@
 		<module>sirius-web-services</module>
 		<module>sirius-web-graphql</module>
 		<module>sirius-web-spring</module>
+		<module>sirius-web-customwidgets</module>
+		<module>sirius-web-customwidgets-edit</module>
 		<module>sirius-web-sample-application</module>
 	</modules>
 </project>
