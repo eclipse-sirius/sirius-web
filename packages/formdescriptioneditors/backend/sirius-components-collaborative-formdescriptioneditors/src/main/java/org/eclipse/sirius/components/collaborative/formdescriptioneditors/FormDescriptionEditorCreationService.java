@@ -27,10 +27,12 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
+import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponentProps;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.renderer.FormDescriptionEditorRenderer;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -52,13 +54,19 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
     private final IObjectService objectService;
 
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
+    private final List<IWidgetPreviewConverterProvider> customWidgetConverterProviders;
+
     private final Timer timer;
 
     public FormDescriptionEditorCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, MeterRegistry meterRegistry) {
+            IObjectService objectService, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+        this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
 
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "formdescriptioneditor")
@@ -109,10 +117,10 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
         Optional<FormDescriptionEditor> optionalPreviousFormDescriptionEditor = optionalFormDescriptionEditorContext.map(IFormDescriptionEditorContext::getFormDescriptionEditor);
 
-        var formDescriptionEditorComponentProps = new FormDescriptionEditorComponentProps(variableManager, formDescriptionEditorDescription, optionalPreviousFormDescriptionEditor);
+        var formDescriptionEditorComponentProps = new FormDescriptionEditorComponentProps(variableManager, formDescriptionEditorDescription, optionalPreviousFormDescriptionEditor, this.widgetDescriptors, this.customWidgetConverterProviders);
         Element element = new Element(FormDescriptionEditorComponent.class, formDescriptionEditorComponentProps);
 
-        FormDescriptionEditor newFormDescriptionEditor = new FormDescriptionEditorRenderer().render(element);
+        FormDescriptionEditor newFormDescriptionEditor = new FormDescriptionEditorRenderer(this.widgetDescriptors).render(element);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

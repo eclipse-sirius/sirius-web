@@ -48,7 +48,7 @@ public class FormDescriptionEditorPageComponent implements IComponent {
         pageDescription.getGroups().forEach(viewGroupDescription -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, viewGroupDescription);
-            FormDescriptionEditorGroupComponentProps fdeGroupComponentProps = new FormDescriptionEditorGroupComponentProps(childVariableManager, this.props.formDescriptionEditorDescription());
+            FormDescriptionEditorGroupComponentProps fdeGroupComponentProps = new FormDescriptionEditorGroupComponentProps(childVariableManager, this.props.formDescriptionEditorDescription(), this.props.widgetDescriptors(), this.props.customWidgetConverterProviders());
             childrenWidgets.add(new Element(FormDescriptionEditorGroupComponent.class, fdeGroupComponentProps));
         });
 

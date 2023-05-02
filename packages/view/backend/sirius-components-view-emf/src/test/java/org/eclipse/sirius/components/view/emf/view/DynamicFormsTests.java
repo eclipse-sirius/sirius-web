@@ -1281,7 +1281,7 @@ public class DynamicFormsTests {
         IEditService.NoOp editService = new IEditService.NoOp() {
 
         };
-        ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService, new IFormIdProvider.NoOp());
+        ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService, new IFormIdProvider.NoOp(), List.of());
         var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), new StaticApplicationContext());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
@@ -1294,8 +1294,8 @@ public class DynamicFormsTests {
         IEditingContext editingContext = new IEditingContext.NoOp();
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
-        FormRenderer formRenderer = new FormRenderer();
-        FormComponentProps props = new FormComponentProps(variableManager, convertedFormDescription);
+        FormRenderer formRenderer = new FormRenderer(List.of());
+        FormComponentProps props = new FormComponentProps(variableManager, convertedFormDescription, List.of());
         Element element = new Element(FormComponent.class, props);
         return formRenderer.render(element);
 

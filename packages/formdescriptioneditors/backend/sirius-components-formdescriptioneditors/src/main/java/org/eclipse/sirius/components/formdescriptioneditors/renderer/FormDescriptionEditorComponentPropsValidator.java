@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponentProps;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponent;
@@ -19,6 +21,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescr
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorPageComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorPageComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormComponentPropsValidator;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -31,8 +34,8 @@ public class FormDescriptionEditorComponentPropsValidator implements IComponentP
 
     private final FormComponentPropsValidator formComponentPropsValidator;
 
-    public FormDescriptionEditorComponentPropsValidator() {
-        this.formComponentPropsValidator = new FormComponentPropsValidator();
+    public FormDescriptionEditorComponentPropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
+        this.formComponentPropsValidator = new FormComponentPropsValidator(widgetDescriptors);
     }
 
     @Override

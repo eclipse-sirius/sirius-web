@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,14 @@ import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
+import { WidgetContribution } from '../form/Form.types';
+import { PropertySectionContext } from '../form/FormContext';
 import {
   formRefreshedEventPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
@@ -30,16 +32,17 @@ import { Page } from '../pages/Page';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
-  formRepresentationMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchFormEvent,
+  formRepresentationMachine,
 } from './FormRepresentationMachine';
 
-const formEventSubscription = gql(`
+const formEventSubscription = (contributions: Array<WidgetContribution>) =>
+  gql(`
   subscription formEvent($input: FormEventInput!) {
     formEvent(input: $input) {
       __typename
@@ -56,7 +59,7 @@ const formEventSubscription = gql(`
   }
   ${subscribersUpdatedEventPayloadFragment}
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
-  ${formRefreshedEventPayloadFragment}
+  ${formRefreshedEventPayloadFragment(contributions)}
 `);
 
 const useFormRepresentationStyles = makeStyles((theme) => ({
@@ -103,27 +106,32 @@ export const FormRepresentation = ({
     }
   }, [representationId, formId, dispatch]);
 
-  const { error } = useSubscription<GQLFormEventSubscription>(formEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        formId: representationId,
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+
+  const { error } = useSubscription<GQLFormEventSubscription>(
+    formEventSubscription(propertySectionsRegistry.getWidgetContributions()),
+    {
+      variables: {
+        input: {
+          id,
+          editingContextId,
+          formId: representationId,
+        },
       },
-    },
-    fetchPolicy: 'no-cache',
-    onSubscriptionData: ({ subscriptionData }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
-      };
-      dispatch(handleDataEvent);
-    },
-    onSubscriptionComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+      fetchPolicy: 'no-cache',
+      onSubscriptionData: ({ subscriptionData }) => {
+        const handleDataEvent: HandleSubscriptionResultEvent = {
+          type: 'HANDLE_SUBSCRIPTION_RESULT',
+          result: subscriptionData,
+        };
+        dispatch(handleDataEvent);
+      },
+      onSubscriptionComplete: () => {
+        const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+        dispatch(completeEvent);
+      },
+    }
+  );
 
   useEffect(() => {
     if (error) {

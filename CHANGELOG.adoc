@@ -69,6 +69,8 @@ All visible tree items containing the value typed in the filter bar will be high
 The filter button inside the filter bar allows to filter (hide) all visible tree items not containing the value typed in the filter bar.
 +
 image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%]
+- https://github.com/eclipse-sirius/sirius-components/issues/1914[#1914] [form] It is now possible for applications to provide their own custom widgets without forking Sirius Components.
+See link:how-to/contribute-custom-widget.adoc[the documentation] for more details.
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name. The new algorithm does the minimum possible to place node without overlap.
 - https://github.com/eclipse-sirius/sirius-components/issues/1985[|#1985] [sirius-web] It is now possible to use in-memory View-based representations by registering them in the new `InMemoryViewRegistry`.

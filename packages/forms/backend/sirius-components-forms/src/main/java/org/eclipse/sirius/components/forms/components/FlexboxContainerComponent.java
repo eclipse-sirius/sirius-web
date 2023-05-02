@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class FlexboxContainerComponent implements IComponent {
             if (optionalSelf.isPresent()) {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, optionalSelf.get());
-                childrenWidgets.add(new Element(WidgetComponent.class, new WidgetComponentProps(childVariableManager, widget)));
+                childrenWidgets.add(new Element(WidgetComponent.class, new WidgetComponentProps(childVariableManager, widget, this.props.getWidgetDescriptors())));
             }
         });
 

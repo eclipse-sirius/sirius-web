@@ -13,8 +13,11 @@
 package org.eclipse.sirius.components.formdescriptioneditors.components;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.ComposedSwitch;
+import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.components.ToolbarActionComponent;
 import org.eclipse.sirius.components.forms.components.ToolbarActionComponentProps;
@@ -39,11 +42,17 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
 
     private final FormDescriptionEditorGroupComponentProps props;
 
-    private final ViewFormDescriptionEditorConverterSwitch converter;
+    private final Switch<AbstractWidgetDescription> converter;
 
     public FormDescriptionEditorGroupComponent(FormDescriptionEditorGroupComponentProps props) {
         this.props = props;
-        this.converter = new ViewFormDescriptionEditorConverterSwitch(props.getFormDescriptionEditorDescription(), props.getVariableManager());
+        List<Switch<AbstractWidgetDescription>> widgetConverters = this.props.getCustomWidgetConverterProviders().stream()
+                .map(provider -> provider.getWidgetConverter(props.getFormDescriptionEditorDescription(), props.getVariableManager()))
+                .toList();
+        Collection<Switch<AbstractWidgetDescription>> switches = new ArrayList<>();
+        switches.add(new ViewFormDescriptionEditorConverterSwitch(props.getFormDescriptionEditorDescription(), props.getVariableManager(), new ComposedSwitch<>(widgetConverters)));
+        switches.addAll(widgetConverters);
+        this.converter = new ComposedSwitch<>(switches);
     }
 
     @Override
@@ -68,7 +77,7 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, viewWidgetDescription);
             AbstractWidgetDescription widgetDescription = this.converter.doSwitch(viewWidgetDescription);
-            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription);
+            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription, this.props.getWidgetDescriptors());
             childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
         });
 

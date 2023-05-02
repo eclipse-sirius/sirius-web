@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors.components;
 
+import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -23,10 +26,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author arichard
  */
-public record FormDescriptionEditorPageComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription) implements IProps {
+public record FormDescriptionEditorPageComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) implements IProps {
 
-    public FormDescriptionEditorPageComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription) {
+    public FormDescriptionEditorPageComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.formDescriptionEditorDescription = Objects.requireNonNull(formDescriptionEditorDescription);
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+        this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
     }
 }

@@ -29,16 +29,18 @@ import {
   GQLTextarea,
   GQLTextfield,
   GQLWidget,
+  PropertySectionContext,
 } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
+import { CustomWidget } from './CustomWidget';
 import { FlexboxContainerWidget } from './FlexboxContainerWidget';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -134,6 +136,8 @@ export const WidgetEntry = ({
   const initialState: WidgetEntryState = { message: null };
   const [state, setState] = useState<WidgetEntryState>(initialState);
   const { message } = state;
+
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -274,7 +278,7 @@ export const WidgetEntry = ({
       index = 0;
     }
 
-    if (isKind(id)) {
+    if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -460,6 +464,31 @@ export const WidgetEntry = ({
           onDropBefore={onDropBefore}
         />
       );
+    }
+  } else {
+    const PreviewComponent = propertySectionsRegistry.getPreviewComponent(widget);
+    if (PreviewComponent) {
+      widgetElement = (
+        <PreviewComponent
+          data-testid={widget.id}
+          widget={widget as GQLWidget}
+          selection={selection}
+          setSelection={setSelection}
+          onDropBefore={onDropBefore}
+        />
+      );
+    } else if (propertySectionsRegistry.getComponent(widget)) {
+      widgetElement = (
+        <CustomWidget
+          data-testid={widget.id}
+          widget={widget as GQLWidget}
+          selection={selection}
+          setSelection={setSelection}
+          onDropBefore={onDropBefore}
+        />
+      );
+    } else {
+      console.error(`Unsupported widget type ${widget.__typename}`);
     }
   }
 

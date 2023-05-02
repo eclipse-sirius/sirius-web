@@ -14,14 +14,16 @@ import { useMutation } from '@apollo/client';
 import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import {
   ButtonStyleProps,
-  getTextDecorationLineValue,
   GQLButton,
   GQLToolbarAction,
+  GQLWidget,
+  PropertySectionContext,
+  getTextDecorationLineValue,
 } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { deleteToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
@@ -278,7 +280,7 @@ export const ToolbarActionWidget = ({
     event.currentTarget.classList.remove(classes.dragOver);
     onDropBefore(event, toolbarAction);
   };
-
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, toolbarAction: GQLButton) => {
     const id: string = event.dataTransfer.getData('draggedElementId');
     // We only accept a drop of ToolbarAction

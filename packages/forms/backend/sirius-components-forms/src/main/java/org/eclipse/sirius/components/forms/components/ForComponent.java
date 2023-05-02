@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class ForComponent implements IComponent {
 
             List<IfDescription> ifDescriptions = forDescription.getIfDescriptions();
             for (IfDescription ifDescription : ifDescriptions) {
-                IfComponentProps ifComponentProps = new IfComponentProps(childVariableManager, ifDescription);
+                IfComponentProps ifComponentProps = new IfComponentProps(childVariableManager, ifDescription, this.props.getWidgetDescriptors());
                 forChildren.add(new Element(IfComponent.class, ifComponentProps));
             }
 

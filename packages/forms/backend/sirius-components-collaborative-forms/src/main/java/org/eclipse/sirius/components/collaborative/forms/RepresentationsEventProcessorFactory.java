@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,7 +86,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                         .build();
                 // @formatter:on
 
-                FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
+                FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), this.formEventHandlers, this.subscriptionManagerFactory.create(),
                         this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                 // @formatter:off

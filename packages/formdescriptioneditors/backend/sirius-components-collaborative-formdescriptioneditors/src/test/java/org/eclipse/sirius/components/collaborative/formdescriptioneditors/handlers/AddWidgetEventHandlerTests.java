@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handl
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class AddWidgetEventHandlerTests {
                 return Optional.of(ViewFactory.eINSTANCE.createFlexboxContainerDescription());
             }
         };
-        var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), List.of(), new SimpleMeterRegistry());
         var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0);
 
         assertThat(handler.canHandle(input)).isTrue();

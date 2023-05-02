@@ -121,8 +121,8 @@ public class RenderTextfieldTest {
     private Form renderForm(FormDescription formDescription) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, this.self);
-        FormComponentProps props = new FormComponentProps(variableManager, formDescription);
-        Form form = new FormRenderer().render(new Element(FormComponent.class, props));
+        FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of());
+        Form form = new FormRenderer(List.of()).render(new Element(FormComponent.class, props));
         return form;
     }
 

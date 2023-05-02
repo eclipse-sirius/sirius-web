@@ -55,7 +55,7 @@ public class PageComponent implements IComponent {
             // @formatter:off
             List<Element> groupComponents = pageDescription.getGroupDescriptions().stream()
                     .map(groupDescription -> {
-                        GroupComponentProps groupComponentProps = new GroupComponentProps(pageVariableManager, groupDescription);
+                        GroupComponentProps groupComponentProps = new GroupComponentProps(pageVariableManager, groupDescription, this.props.getWidgetDescriptors());
                         return new Element(GroupComponent.class, groupComponentProps);
                     })
                     .toList();

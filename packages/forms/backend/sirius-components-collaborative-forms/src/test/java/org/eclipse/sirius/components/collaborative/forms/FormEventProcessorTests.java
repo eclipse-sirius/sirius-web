@@ -76,7 +76,7 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
         // @formatter:off
@@ -100,7 +100,7 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
         Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
@@ -128,7 +128,7 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry());
 
         Runnable disposeFormEventProcessor = () -> formEventProcessor.dispose();

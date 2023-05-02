@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,13 @@ import { gql, useSubscription } from '@apollo/client';
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { WidgetContribution } from '../form/Form.types';
+import { PropertySectionContext } from '../form/FormContext';
 import {
   formRefreshedEventPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
@@ -32,13 +34,14 @@ import {
   HideToastEvent,
   RepresentationsViewContext,
   RepresentationsViewEvent,
-  representationsViewMachine,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
+  representationsViewMachine,
 } from './RepresentationsViewMachine';
 
-const representationsEventSubscription = gql(`
+const representationsEventSubscription = (contributions: Array<WidgetContribution>) =>
+  gql(`
   subscription representationsEvent($input: RepresentationsEventInput!) {
     representationsEvent(input: $input) {
       __typename
@@ -55,7 +58,7 @@ const representationsEventSubscription = gql(`
   }
   ${subscribersUpdatedEventPayloadFragment}
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
-  ${formRefreshedEventPayloadFragment}
+  ${formRefreshedEventPayloadFragment(contributions)}
 `);
 
 const useRepresentationsViewStyles = makeStyles((theme) => ({
@@ -88,29 +91,32 @@ export const RepresentationsView = ({
       dispatch(switchSelectionEvent);
     }
   }, [currentSelection, selection, dispatch]);
-
-  const { error } = useSubscription(representationsEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        objectId: currentSelection?.id,
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { error } = useSubscription(
+    representationsEventSubscription(propertySectionsRegistry.getWidgetContributions()),
+    {
+      variables: {
+        input: {
+          id,
+          editingContextId,
+          objectId: currentSelection?.id,
+        },
       },
-    },
-    fetchPolicy: 'no-cache',
-    skip: representationsView === 'empty' || representationsView === 'unsupportedSelection',
-    onSubscriptionData: ({ subscriptionData }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
-      };
-      dispatch(handleDataEvent);
-    },
-    onSubscriptionComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-  });
+      fetchPolicy: 'no-cache',
+      skip: representationsView === 'empty' || representationsView === 'unsupportedSelection',
+      onSubscriptionData: ({ subscriptionData }) => {
+        const handleDataEvent: HandleSubscriptionResultEvent = {
+          type: 'HANDLE_SUBSCRIPTION_RESULT',
+          result: subscriptionData,
+        };
+        dispatch(handleDataEvent);
+      },
+      onSubscriptionComplete: () => {
+        const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+        dispatch(completeEvent);
+      },
+    }
+  );
 
   useEffect(() => {
     if (error) {

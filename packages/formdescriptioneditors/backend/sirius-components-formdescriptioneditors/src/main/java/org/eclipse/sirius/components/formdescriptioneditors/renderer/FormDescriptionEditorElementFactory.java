@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEdito
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.renderer.FormElementFactory;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -30,8 +31,8 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
 
     private final FormElementFactory formElementFactory;
 
-    public FormDescriptionEditorElementFactory() {
-        this.formElementFactory = new FormElementFactory();
+    public FormDescriptionEditorElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
+        this.formElementFactory = new FormElementFactory(widgetDescriptors);
     }
 
     @Override

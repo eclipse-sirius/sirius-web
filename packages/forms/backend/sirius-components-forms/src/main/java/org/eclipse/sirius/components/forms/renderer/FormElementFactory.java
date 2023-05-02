@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.forms.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.charts.IChart;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
@@ -72,6 +74,11 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author sbegaudeau
  */
 public class FormElementFactory implements IElementFactory {
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
+    public FormElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+    }
 
     @Override
     @SuppressWarnings("checkstyle:JavaNCSS")
@@ -121,6 +128,16 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateRichText((RichTextElementProps) props, children);
         } else if (ToolbarActionElementProps.TYPE.equals(type) && props instanceof ToolbarActionElementProps) {
             object = this.instantiateToolbarAction((ToolbarActionElementProps) props, children);
+        } else {
+            for (IWidgetDescriptor widgetDescriptor : this.widgetDescriptors) {
+                if (widgetDescriptor.getWidgetType().equals(type) && widgetDescriptor.getInstancePropsClass().isInstance(props)) {
+                    Optional<Object> optionalInstance = widgetDescriptor.instanciate(props, children);
+                    if (optionalInstance.isPresent()) {
+                        object = optionalInstance.get();
+                        break;
+                    }
+                }
+            }
         }
 
         return object;
@@ -404,9 +421,9 @@ public class FormElementFactory implements IElementFactory {
 
         // @formatter:off
         Link.Builder linkbuilder = Link.newLink(props.getId())
-                 .label(props.getLabel())
-                 .url(props.getUrl())
-                 .diagnostics(diagnostics);
+                .label(props.getLabel())
+                .url(props.getUrl())
+                .diagnostics(diagnostics);
         // @formatter:on
 
         if (props.getStyle() != null) {
@@ -423,9 +440,9 @@ public class FormElementFactory implements IElementFactory {
 
         // @formatter:off
         Button.Builder buttonBuilder = Button.newButton(props.getId())
-                 .label(props.getLabel())
-                 .pushButtonHandler(props.getPushButtonHandler())
-                 .diagnostics(diagnostics);
+                .label(props.getLabel())
+                .pushButtonHandler(props.getPushButtonHandler())
+                .diagnostics(diagnostics);
         // @formatter:on
         if (props.getIconURL() != null) {
             buttonBuilder.iconURL(props.getIconURL());
@@ -448,9 +465,9 @@ public class FormElementFactory implements IElementFactory {
 
         // @formatter:off
         ToolbarAction.Builder buttonBuilder = ToolbarAction.newToolbarAction(props.getId())
-                 .label(props.getLabel())
-                 .pushButtonHandler(props.getPushButtonHandler())
-                 .diagnostics(diagnostics);
+                .label(props.getLabel())
+                .pushButtonHandler(props.getPushButtonHandler())
+                .diagnostics(diagnostics);
         // @formatter:on
         if (props.getIconURL() != null) {
             buttonBuilder.iconURL(props.getIconURL());
@@ -515,13 +532,13 @@ public class FormElementFactory implements IElementFactory {
                 .toList();
 
         return FlexboxContainer.newFlexboxContainer(props.getId())
-                 .label(props.getLabel())
-                 .flexDirection(props.getFlexDirection().toString())
-                 .flexWrap("wrap")
-                 .flexGrow(1)
-                 .children(widgets)
-                 .diagnostics(diagnostics)
-                 .build();
+                .label(props.getLabel())
+                .flexDirection(props.getFlexDirection().toString())
+                .flexWrap("wrap")
+                .flexGrow(1)
+                .children(widgets)
+                .diagnostics(diagnostics)
+                .build();
         // @formatter:on
     }
 
@@ -544,9 +561,9 @@ public class FormElementFactory implements IElementFactory {
 
         // @formatter:off
         Image.Builder imagebuilder = Image.newImage(props.getId())
-                 .label(props.getLabel())
-                 .url(props.getUrl())
-                 .diagnostics(diagnostics);
+                .label(props.getLabel())
+                .url(props.getUrl())
+                .diagnostics(diagnostics);
         // @formatter:on
 
         if (props.getIconURL() != null) {

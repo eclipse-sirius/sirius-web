@@ -20,12 +20,15 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
+import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -60,10 +63,14 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     private final IEditService editService;
 
     private final IFormIdProvider formIdProvider;
-    public ViewFormDescriptionConverter(IObjectService objectService, IEditService editService, IFormIdProvider formIdProvider) {
+
+    private final List<IWidgetConverterProvider> customWidgetConverterProviders;
+
+    public ViewFormDescriptionConverter(IObjectService objectService, IEditService editService, IFormIdProvider formIdProvider, List<IWidgetConverterProvider> customWidgetConverterProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
+        this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
     }
 
     @Override
@@ -74,7 +81,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     @Override
     public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
-        ViewFormDescriptionConverterSwitch dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService);
+        List<Switch<AbstractWidgetDescription>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter, this.editService, this.objectService)).toList();
+        Switch<AbstractWidgetDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters));
 
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()
                 .stream()
@@ -98,7 +106,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private PageDescription instantiatePage(org.eclipse.sirius.components.view.PageDescription viewPageDescription, ViewFormDescriptionConverterSwitch dispatcher,
+    private PageDescription instantiatePage(org.eclipse.sirius.components.view.PageDescription viewPageDescription, Switch<AbstractWidgetDescription> dispatcher,
             AQLInterpreter interpreter) {
 
         List<GroupDescription> groupDescriptions = viewPageDescription.getGroups().stream()
@@ -107,7 +115,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
         String descriptionId = this.getDescriptionId(viewPageDescription);
         return PageDescription.newPageDescription(descriptionId)
-                .idProvider(getIdProvider(descriptionId))
+                .idProvider(this.getIdProvider(descriptionId))
                 .labelProvider(variableManager -> this.computePageLabel(viewPageDescription, variableManager, interpreter))
                 .semanticElementsProvider(variableManager -> this.getSemanticElementsProvider(viewPageDescription, variableManager, interpreter))
                 .canCreatePredicate(variableManager -> this.canCreatePage(viewPageDescription, variableManager, interpreter))
@@ -115,7 +123,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, ViewFormDescriptionConverterSwitch dispatcher, AQLInterpreter interpreter) {
+    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, Switch<AbstractWidgetDescription> dispatcher, AQLInterpreter interpreter) {
         List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getWidgets().stream()
                 .map(dispatcher::doSwitch)
                 .filter(Objects::nonNull)
@@ -131,7 +139,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         String descriptionId = this.getDescriptionId(viewGroupDescription);
 
         return GroupDescription.newGroupDescription(descriptionId)
-                .idProvider(getIdProvider(descriptionId))
+                .idProvider(this.getIdProvider(descriptionId))
                 .labelProvider(variableManager -> this.computeGroupLabel(viewGroupDescription, variableManager, interpreter))
                 .semanticElementsProvider(variableManager -> this.getSemanticElementsProvider(viewGroupDescription, variableManager, interpreter))
                 .controlDescriptions(controlDescriptions)

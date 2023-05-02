@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useContext } from 'react';
+import { PropertySectionContext } from '../form/FormContext';
 import {
   GQLButton,
   GQLChartWidget,
@@ -70,6 +72,8 @@ export const PropertySection = ({
   readOnly,
 }: PropertySectionProps) => {
   let subscribers = [];
+
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
 
   widgetSubscriptions
     .filter((subscription) => subscription.widgetId === widget.id)
@@ -190,7 +194,21 @@ export const PropertySection = ({
       />
     );
   } else {
-    console.error(`Unsupported widget type ${widget.__typename}`);
+    const CustomWidgetComponent = propertySectionsRegistry.getComponent(widget);
+    if (CustomWidgetComponent) {
+      propertySection = (
+        <CustomWidgetComponent
+          editingContextId={editingContextId}
+          formId={formId}
+          widget={widget}
+          subscribers={subscribers}
+          key={widget.id}
+          readOnly={readOnly}
+        />
+      );
+    } else {
+      console.error(`Unsupported widget type ${widget.__typename}`);
+    }
   }
   return propertySection;
 };

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WidgetContribution } from './Form.types';
+
 export const subscribersUpdatedEventPayloadFragment = `
   fragment subscribersUpdatedEventPayloadFragment on SubscribersUpdatedEventPayload {
     id
@@ -44,7 +46,7 @@ export const commonFields = `
   }
 `;
 
-export const widgetFields = `
+export const widgetFields = (contributions: Array<WidgetContribution>) => `
   ${commonFields}
   
   fragment textfieldFields on Textfield {
@@ -296,6 +298,15 @@ export const widgetFields = `
     stringValue: value
   }
 
+  ${contributions.map(
+    (widget) =>
+      `
+    fragment ${widget.name.toLowerCase()}Fields on ${widget.name} {
+      ${widget.fields}
+    }
+    `
+  )}
+
   fragment widgetFields on Widget {
     ...commonFields
     ... on Textfield {
@@ -343,12 +354,21 @@ export const widgetFields = `
     ... on RichText {
       ...richTextFields
     }
+
+    ${contributions.map(
+      (widget) =>
+        `
+      ... on ${widget.name} {
+        ...${widget.name.toLowerCase()}Fields
+      }
+      `
+    )}
   }
 `;
 
-export const flexboxContainerFields = `
+export const flexboxContainerFields = (contributions: Array<WidgetContribution>) => `
   ${commonFields}
-  ${widgetFields}
+  ${widgetFields(contributions)}
   fragment flexboxContainerFields on FlexboxContainer {
     ...commonFields
     label
@@ -381,9 +401,9 @@ export const flexboxContainerFields = `
   }
 `;
 
-export const formRefreshedEventPayloadFragment = `
-  ${widgetFields}
-  ${flexboxContainerFields}
+export const formRefreshedEventPayloadFragment = (contributions: Array<WidgetContribution>) => `
+  ${widgetFields(contributions)}
+  ${flexboxContainerFields(contributions)}
   fragment formRefreshedEventPayloadFragment on FormRefreshedEventPayload {
     id
     form {

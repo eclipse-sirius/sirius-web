@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
 import { addWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -163,6 +163,7 @@ export const FlexboxContainerWidget = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
@@ -174,8 +175,7 @@ export const FlexboxContainerWidget = ({
     }
 
     let index = widget.children.length;
-
-    if (isKind(id)) {
+    if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,

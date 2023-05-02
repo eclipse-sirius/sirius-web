@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
@@ -82,6 +83,7 @@ import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.TextAreaDescription;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.WidgetDescription;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -98,10 +100,13 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private final IObjectService objectService;
 
-    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService) {
+    private final Switch<AbstractWidgetDescription> customWidgetConverters;
+
+    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<AbstractWidgetDescription> customWidgetConverters) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.customWidgetConverters = Objects.requireNonNull(customWidgetConverters);
     }
 
     @Override
@@ -597,6 +602,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .messageProvider(object -> "")
                 .build();
         // @formatter:on
+    }
+
+    @Override
+    public AbstractWidgetDescription caseWidgetDescription(WidgetDescription widgetDescription) {
+        return this.customWidgetConverters.doSwitch(widgetDescription);
     }
 
     private IStatus handleItemDeletion(VariableManager variableManager) {

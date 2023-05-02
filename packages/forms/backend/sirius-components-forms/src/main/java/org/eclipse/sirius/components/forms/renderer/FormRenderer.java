@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.renderer;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.forms.Form;
@@ -33,8 +34,8 @@ public class FormRenderer {
 
     private final BaseRenderer baseRenderer;
 
-    public FormRenderer() {
-        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(), new FormComponentPropsValidator(), new FormElementFactory());
+    public FormRenderer(List<IWidgetDescriptor> widgetDescriptors) {
+        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(widgetDescriptors), new FormComponentPropsValidator(widgetDescriptors), new FormElementFactory(widgetDescriptors));
     }
 
     public Form render(Element element) {

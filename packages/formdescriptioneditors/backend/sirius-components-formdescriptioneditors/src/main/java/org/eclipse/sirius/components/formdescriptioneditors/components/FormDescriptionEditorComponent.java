@@ -48,8 +48,7 @@ public class FormDescriptionEditorComponent implements IComponent {
 
         String id = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getId).orElseGet(() -> UUID.randomUUID().toString());
         String label = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getLabel)
-                .orElseGet(() -> variableManager.get(FormDescriptionEditor.LABEL, String.class)
-                        .orElse("Form Description Editor"));
+                .orElseGet(() -> variableManager.get(FormDescriptionEditor.LABEL, String.class).orElse("Form Description Editor"));
         Function<VariableManager, String> targetObjectIdProvider = formDescriptionEditorDescription.getTargetObjectIdProvider();
         String targetObjectId = targetObjectIdProvider.apply(variableManager);
 
@@ -59,7 +58,9 @@ public class FormDescriptionEditorComponent implements IComponent {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, viewPageDescription);
             FormDescriptionEditorPageComponentProps formDescriptionEditorPageComponentProps = new FormDescriptionEditorPageComponentProps(childVariableManager,
-                    this.props.getFormDescriptionEditorDescription());
+                    this.props.getFormDescriptionEditorDescription(),
+                    this.props.getWidgetDescriptors(),
+                    this.props.getCustomWidgetConverterProviders());
             childrenWidgets.add(new Element(FormDescriptionEditorPageComponent.class, formDescriptionEditorPageComponentProps));
         });
 
