@@ -15,8 +15,8 @@ import { useMutation } from '@apollo/client';
 import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
@@ -32,8 +32,8 @@ import {
   GQLMoveToolbarActionMutationVariables,
   GQLMoveToolbarActionPayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
+import { ToolbarActionsProps } from './ToolbarActions.types';
 
 const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
   toolbar: {

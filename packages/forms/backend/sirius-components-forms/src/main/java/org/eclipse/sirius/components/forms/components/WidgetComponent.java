@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -92,7 +93,7 @@ public class WidgetComponent implements IComponent {
             ChartWidgetComponentProps chartComponentProps = new ChartWidgetComponentProps(variableManager, (ChartWidgetDescription) widgetDescription);
             element = new Element(ChartWidgetComponent.class, chartComponentProps);
         } else if (widgetDescription instanceof FlexboxContainerDescription) {
-            FlexboxContainerComponentProps flexboxContainerProps = new FlexboxContainerComponentProps(variableManager, (FlexboxContainerDescription) widgetDescription);
+            FlexboxContainerComponentProps flexboxContainerProps = new FlexboxContainerComponentProps(variableManager, (FlexboxContainerDescription) widgetDescription, this.props.getWidgetDescriptors());
             element = new Element(FlexboxContainerComponent.class, flexboxContainerProps);
         } else if (widgetDescription instanceof TreeDescription) {
             TreeComponentProps treeComponentProps = new TreeComponentProps(variableManager, (TreeDescription) widgetDescription);
@@ -104,8 +105,17 @@ public class WidgetComponent implements IComponent {
             RichTextComponentProps richTextComponentProps = new RichTextComponentProps(variableManager, (RichTextDescription) widgetDescription);
             element = new Element(RichTextComponent.class, richTextComponentProps);
         } else {
-            String pattern = "Unsupported widget description: {}";
-            this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
+            for (IWidgetDescriptor widgetDescriptor : this.props.getWidgetDescriptors()) {
+                var optionalElement = widgetDescriptor.createElement(variableManager, widgetDescription);
+                if (optionalElement.isPresent()) {
+                    element = optionalElement.get();
+                    break;
+                }
+            }
+            if (element == null) {
+                String pattern = "Unsupported widget description: {}";
+                this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
+            }
         }
         return element;
     }

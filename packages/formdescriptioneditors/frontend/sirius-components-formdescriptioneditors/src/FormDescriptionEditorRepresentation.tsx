@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSubscription } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -34,7 +35,7 @@ import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import WebIcon from '@material-ui/icons/Web';
 import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
 import {
   GQLFormDescriptionEditorEventInput,
@@ -44,15 +45,15 @@ import {
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
-  formDescriptionEditorRepresentationMachine,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   InitializeRepresentationEvent,
   SchemaValue,
   ShowToastEvent,
+  formDescriptionEditorRepresentationMachine,
 } from './FormDescriptionEditorRepresentationMachine';
-import { Button } from './icons/Button';
 import { PageList } from './PageList';
+import { Button } from './icons/Button';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -160,9 +161,9 @@ export const FormDescriptionEditorRepresentation = ({
     formDescriptionEditorId: representationId,
   };
   const variables: GQLFormDescriptionEditorEventVariables = { input };
-
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
   const { error } = useSubscription<GQLFormDescriptionEditorEventSubscription, GQLFormDescriptionEditorEventVariables>(
-    formDescriptionEditorEventSubscription,
+    gql(formDescriptionEditorEventSubscription(propertySectionsRegistry.getWidgetContributions())),
     {
       variables,
       fetchPolicy: 'no-cache',
@@ -409,6 +410,22 @@ export const FormDescriptionEditorRepresentation = ({
               Textfield
             </Typography>
           </div>
+          {propertySectionsRegistry.getWidgetContributions().map((customWidget) => {
+            return (
+              <div
+                id={customWidget.name}
+                key={customWidget.name}
+                data-testid={`FormDescriptionEditor-${customWidget.name}`}
+                draggable="true"
+                className={classes.widgetKind}
+                onDragStart={handleDragStartWidget}>
+                {customWidget.icon}
+                <Typography variant="caption" gutterBottom>
+                  {customWidget.name}
+                </Typography>
+              </div>
+            );
+          })}
         </div>
         <div className={classes.preview}>
           <div className={classes.body}>

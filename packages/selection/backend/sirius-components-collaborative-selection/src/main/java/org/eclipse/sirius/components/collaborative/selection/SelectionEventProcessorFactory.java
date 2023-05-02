@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.selection.api.ISelectionEventProcessor;
 import org.eclipse.sirius.components.collaborative.selection.api.SelectionConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -44,12 +45,11 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public SelectionEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
-            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    public SelectionEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IObjectService objectService) {
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.objectService = Objects.requireNonNull(objectService);
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
     }
 
     @Override
@@ -60,8 +60,7 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (ISelectionEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof SelectionConfiguration) {
-            SelectionConfiguration selectionConfiguration = (SelectionConfiguration) configuration;
+        if (ISelectionEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof SelectionConfiguration selectionConfiguration) {
 
             // @formatter:off
             Optional<SelectionDescription> optionalSelectionDescription = this.representationDescriptionSearchService

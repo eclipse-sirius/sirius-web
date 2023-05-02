@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -31,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
 import org.eclipse.sirius.components.view.FlexDirection;
 import org.eclipse.sirius.components.view.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
@@ -56,11 +59,14 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
+    private final List<IWidgetDescriptionProvider> widgetDescriptionProviders;
+
     private final Counter counter;
 
-    public AddWidgetEventHandler(IObjectService objectService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
+    public AddWidgetEventHandler(IObjectService objectService, ICollaborativeFormDescriptionEditorMessageService messageService, List<IWidgetDescriptionProvider> widgetDescriptionProviders, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.widgetDescriptionProviders = Objects.requireNonNull(widgetDescriptionProviders);
 
         // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -103,9 +109,9 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         var optionalSelf = this.objectService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
-            EClassifier eClassifier = ViewPackage.eINSTANCE.getEClassifier(kind + "Description");
-            if (eClassifier instanceof EClass) {
-                var widgetDescription = ViewFactory.eINSTANCE.create((EClass) eClassifier);
+            EClassifier eClassifier = this.getWidgetDescriptionType(kind);
+            if (eClassifier instanceof EClass eClass) {
+                var widgetDescription = EcoreUtil.create(eClass);
                 if (widgetDescription instanceof FlexboxContainerDescription) {
                     ((FlexboxContainerDescription) widgetDescription).setFlexDirection(FlexDirection.get(kind));
                 }
@@ -122,6 +128,17 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
             }
         }
         return success;
+    }
+
+
+    private EClassifier getWidgetDescriptionType(String kind) {
+        for (IWidgetDescriptionProvider widgetDescriptionProvider : this.widgetDescriptionProviders) {
+            var optionalType = widgetDescriptionProvider.getWidgetDescriptionType(kind);
+            if (optionalType.isPresent()) {
+                return optionalType.get();
+            }
+        }
+        return ViewPackage.eINSTANCE.getEClassifier(kind + "Description");
     }
 
     private void createStyle(WidgetDescription widgetDescription) {

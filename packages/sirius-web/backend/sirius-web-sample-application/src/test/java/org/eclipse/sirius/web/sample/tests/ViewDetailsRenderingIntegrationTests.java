@@ -212,8 +212,8 @@ public class ViewDetailsRenderingIntegrationTests {
         variableManager.put(VariableManager.SELF, List.of(eObject));
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
 
-        FormRenderer formRenderer = new FormRenderer();
-        FormComponentProps props = new FormComponentProps(variableManager, formDescription);
+        FormRenderer formRenderer = new FormRenderer(List.of());
+        FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of());
         Element element = new Element(FormComponent.class, props);
         Form form = formRenderer.render(element);
         return form;

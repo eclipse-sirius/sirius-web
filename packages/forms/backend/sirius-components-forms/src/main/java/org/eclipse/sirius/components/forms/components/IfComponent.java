@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ public class IfComponent implements IComponent {
         IfDescription ifDescription = this.props.getIfDescription();
         Boolean result = ifDescription.getPredicate().apply(variableManager);
         if (result.booleanValue()) {
-            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(variableManager, ifDescription.getWidgetDescription());
+            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(variableManager, ifDescription.getWidgetDescription(), this.props.getWidgetDescriptors());
             return new Element(WidgetComponent.class, widgetComponentProps);
         }
         return null;

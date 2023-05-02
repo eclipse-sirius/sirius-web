@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
 import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
@@ -64,6 +65,7 @@ import org.eclipse.sirius.components.view.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.WidgetDescription;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
 /**
@@ -79,9 +81,12 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
 
     private final VariableManager variableManager;
 
-    public ViewFormDescriptionEditorConverterSwitch(FormDescriptionEditorDescription formDescriptionEditorDescription, VariableManager variableManager) {
+    private final Switch<AbstractWidgetDescription> customWidgetConverter;
+
+    public ViewFormDescriptionEditorConverterSwitch(FormDescriptionEditorDescription formDescriptionEditorDescription, VariableManager variableManager, Switch<AbstractWidgetDescription> customWidgetConverter) {
         this.formDescriptionEditorDescription = formDescriptionEditorDescription;
         this.variableManager = variableManager;
+        this.customWidgetConverter = customWidgetConverter;
     }
 
     @Override
@@ -503,6 +508,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .messageProvider(object -> "")
                 .build();
         // @formatter:on
+    }
+
+    @Override
+    public AbstractWidgetDescription caseWidgetDescription(WidgetDescription widgetDescription) {
+        return ViewFormDescriptionEditorConverterSwitch.this.customWidgetConverter.doSwitch(widgetDescription);
     }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, String defaultLabel) {

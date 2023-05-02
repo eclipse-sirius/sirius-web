@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfiguration;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
@@ -54,16 +55,15 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    public DiagramEventProcessorFactory(IRepresentationSearchService representationSearchService, IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers,
-                                        ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-                                        IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IRepresentationPersistenceService representationPersistenceService) {
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+    public DiagramEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IDiagramCreationService diagramCreationService,
+            List<IDiagramEventHandler> diagramEventHandlers, IRepresentationPersistenceService representationPersistenceService) {
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
     }
 
     @Override

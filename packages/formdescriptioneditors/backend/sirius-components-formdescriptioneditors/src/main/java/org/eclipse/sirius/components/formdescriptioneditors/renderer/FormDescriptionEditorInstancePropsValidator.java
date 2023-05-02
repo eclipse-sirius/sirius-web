@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
 import org.eclipse.sirius.components.forms.renderer.FormInstancePropsValidator;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -26,8 +29,8 @@ public class FormDescriptionEditorInstancePropsValidator implements IInstancePro
 
     private final FormInstancePropsValidator formInstancePropsValidator;
 
-    public FormDescriptionEditorInstancePropsValidator() {
-        this.formInstancePropsValidator = new FormInstancePropsValidator();
+    public FormDescriptionEditorInstancePropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
+        this.formInstancePropsValidator = new FormInstancePropsValidator(widgetDescriptors);
     }
 
     @Override

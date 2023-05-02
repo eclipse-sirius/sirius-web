@@ -237,8 +237,8 @@ public class FormRendererTests {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, List.of(EcorePackage.eINSTANCE));
 
-        FormRenderer formRenderer = new FormRenderer();
-        FormComponentProps props = new FormComponentProps(variableManager, description);
+        FormRenderer formRenderer = new FormRenderer(List.of());
+        FormComponentProps props = new FormComponentProps(variableManager, description, List.of());
         Element element = new Element(FormComponent.class, props);
         Form form = formRenderer.render(element);
 

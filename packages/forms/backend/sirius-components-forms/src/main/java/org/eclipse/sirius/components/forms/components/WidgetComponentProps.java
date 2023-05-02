@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -28,9 +30,12 @@ public class WidgetComponentProps implements IProps {
 
     private AbstractWidgetDescription widgetDescription;
 
-    public WidgetComponentProps(VariableManager variableManager, AbstractWidgetDescription widgetDescription) {
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
+    public WidgetComponentProps(VariableManager variableManager, AbstractWidgetDescription widgetDescription, List<IWidgetDescriptor> widgetDescriptors) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.widgetDescription = Objects.requireNonNull(widgetDescription);
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
     }
 
     public VariableManager getVariableManager() {
@@ -39,5 +44,9 @@ public class WidgetComponentProps implements IProps {
 
     public AbstractWidgetDescription getWidgetDescription() {
         return this.widgetDescription;
+    }
+
+    public List<IWidgetDescriptor> getWidgetDescriptors() {
+        return this.widgetDescriptors;
     }
 }

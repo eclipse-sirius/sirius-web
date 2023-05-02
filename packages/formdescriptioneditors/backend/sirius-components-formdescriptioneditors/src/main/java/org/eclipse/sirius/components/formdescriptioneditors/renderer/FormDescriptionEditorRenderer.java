@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.BaseRenderer;
 import org.eclipse.sirius.components.representations.Element;
 
@@ -32,8 +34,8 @@ import org.eclipse.sirius.components.representations.Element;
 public class FormDescriptionEditorRenderer {
     private final BaseRenderer baseRenderer;
 
-    public FormDescriptionEditorRenderer() {
-        this.baseRenderer = new BaseRenderer(new FormDescriptionEditorInstancePropsValidator(), new FormDescriptionEditorComponentPropsValidator(), new FormDescriptionEditorElementFactory());
+    public FormDescriptionEditorRenderer(List<IWidgetDescriptor> widgetDescriptors) {
+        this.baseRenderer = new BaseRenderer(new FormDescriptionEditorInstancePropsValidator(widgetDescriptors), new FormDescriptionEditorComponentPropsValidator(widgetDescriptors), new FormDescriptionEditorElementFactory(widgetDescriptors));
     }
 
     public FormDescriptionEditor render(Element element) {

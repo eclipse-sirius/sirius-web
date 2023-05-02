@@ -72,7 +72,7 @@ public class FormComponent implements IComponent {
             childVariableManager.put(WIDGET_ID_PROVIDER_COUNTER, widgetIdCounter);
             return childVariableManager;
         }).flatMap(childVariableManager -> pageDescriptions.stream().map(pageDescription -> {
-            PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription);
+            PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription, this.props.getWidgetDescriptors());
             return new Element(PageComponent.class, pageComponentProps);
         })).toList();
 

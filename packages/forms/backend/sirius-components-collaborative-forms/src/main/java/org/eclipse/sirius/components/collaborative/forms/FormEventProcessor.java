@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
@@ -68,6 +69,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final FormCreationParameters formCreationParameters;
 
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
     private final List<IFormEventHandler> formEventHandlers;
 
     private final ISubscriptionManager subscriptionManager;
@@ -80,12 +83,13 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
-    public FormEventProcessor(IEditingContext editingContext, FormCreationParameters formCreationParameters, List<IFormEventHandler> formEventHandlers, ISubscriptionManager subscriptionManager,
-            IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+    public FormEventProcessor(IEditingContext editingContext, FormCreationParameters formCreationParameters, List<IWidgetDescriptor> widgetDescriptors, List<IFormEventHandler> formEventHandlers,
+            ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the form event processor {}", formCreationParameters.getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.formCreationParameters = Objects.requireNonNull(formCreationParameters);
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
@@ -172,9 +176,9 @@ public class FormEventProcessor implements IFormEventProcessor {
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
 
-        FormComponentProps formComponentProps = new FormComponentProps(variableManager, this.formCreationParameters.getFormDescription());
+        FormComponentProps formComponentProps = new FormComponentProps(variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors);
         Element element = new Element(FormComponent.class, formComponentProps);
-        Form form = new FormRenderer().render(element);
+        Form form = new FormRenderer(this.widgetDescriptors).render(element);
 
         this.logger.trace("Form refreshed: {}", form.getId());
 
@@ -188,10 +192,10 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         // @formatter:off
         return Flux.merge(
-            refreshEventFlux,
-            this.widgetSubscriptionManager.getFlux(input),
-            this.subscriptionManager.getFlux(input)
-        );
+                refreshEventFlux,
+                this.widgetSubscriptionManager.getFlux(input),
+                this.subscriptionManager.getFlux(input)
+                );
         // @formatter:on
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,14 @@
 import { gql, useSubscription } from '@apollo/client';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
+import { WidgetContribution } from '../form/Form.types';
+import { PropertySectionContext } from '../form/FormContext';
 import {
   formRefreshedEventPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
@@ -33,16 +35,16 @@ import { FormBasedViewProps } from './FormBasedView.types';
 import {
   FormBasedViewContext,
   FormBasedViewEvent,
-  formBasedViewMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
+  formBasedViewMachine,
 } from './FormBasedViewMachine';
 
-export const getFormEventSubscription = (subscriptionName: string) => {
+export const getFormEventSubscription = (subscriptionName: string, contributions: Array<WidgetContribution>) => {
   return `
   subscription ${subscriptionName}($input: PropertiesEventInput!) {
     ${subscriptionName}(input: $input) {
@@ -60,7 +62,7 @@ export const getFormEventSubscription = (subscriptionName: string) => {
   }
   ${subscribersUpdatedEventPayloadFragment}
   ${widgetSubscriptionsUpdatedEventPayloadFragment}
-  ${formRefreshedEventPayloadFragment}
+  ${formRefreshedEventPayloadFragment(contributions)}
 `;
 };
 
@@ -110,9 +112,13 @@ export const FormBasedView = ({
     objectIds: currentSelection?.entries.map((entry) => entry.id),
   };
   const variables: GQLPropertiesEventVariables = { input };
-
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const formSubscription = getFormEventSubscription(
+    subscriptionName,
+    propertySectionsRegistry.getWidgetContributions()
+  );
   const { error } = useSubscription<GQLPropertiesEventSubscription, GQLPropertiesEventVariables>(
-    gql(getFormEventSubscription(subscriptionName)),
+    gql(formSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',

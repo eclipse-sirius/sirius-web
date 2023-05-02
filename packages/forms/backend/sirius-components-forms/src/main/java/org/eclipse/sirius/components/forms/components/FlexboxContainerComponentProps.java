@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -28,9 +30,12 @@ public class FlexboxContainerComponentProps implements IProps {
 
     private final FlexboxContainerDescription flexboxContainerDescription;
 
-    public FlexboxContainerComponentProps(VariableManager variableManager, FlexboxContainerDescription flexboxContainerDescription) {
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
+    public FlexboxContainerComponentProps(VariableManager variableManager, FlexboxContainerDescription flexboxContainerDescription, List<IWidgetDescriptor> widgetDescriptors) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.flexboxContainerDescription = Objects.requireNonNull(flexboxContainerDescription);
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
     }
 
     public VariableManager getVariableManager() {
@@ -40,4 +45,9 @@ public class FlexboxContainerComponentProps implements IProps {
     public FlexboxContainerDescription getFlexboxContainerDescription() {
         return this.flexboxContainerDescription;
     }
+
+    public List<IWidgetDescriptor> getWidgetDescriptors() {
+        return this.widgetDescriptors;
+    }
+
 }

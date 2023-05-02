@@ -68,10 +68,10 @@ public class GroupComponent implements IComponent {
             List<AbstractControlDescription> controlDescriptions = groupDescription.getControlDescriptions();
             for (AbstractControlDescription controlDescription : controlDescriptions) {
                 if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
-                    WidgetComponentProps widgetComponentProps = new WidgetComponentProps(groupVariableManager, widgetDescription);
+                    WidgetComponentProps widgetComponentProps = new WidgetComponentProps(groupVariableManager, widgetDescription, this.props.getWidgetDescriptors());
                     groupChildren.add(new Element(WidgetComponent.class, widgetComponentProps));
                 } else if (controlDescription instanceof ForDescription forDescription) {
-                    ForComponentProps forComponentProps = new ForComponentProps(groupVariableManager, forDescription);
+                    ForComponentProps forComponentProps = new ForComponentProps(groupVariableManager, forDescription, this.props.getWidgetDescriptors());
                     groupChildren.add(new Element(ForComponent.class, forComponentProps));
                 }
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLForm, GQLPage, GQLWidgetSubscription } from './FormEventFragments.types';
+import { GQLForm, GQLPage, GQLSubscriber, GQLWidget, GQLWidgetSubscription } from './FormEventFragments.types';
 
 export interface FormProps {
   editingContextId: string;
@@ -24,4 +24,22 @@ export interface FormProps {
 export interface FormState {
   selectedPage: GQLPage;
   pages: GQLPage[];
+}
+
+export type PropertySectionComponentProps<W extends GQLWidget> = {
+  editingContextId: string;
+  formId: string;
+  widget: W;
+  subscribers: GQLSubscriber[];
+  readOnly: boolean;
+};
+
+export type PropertySectionComponent<W extends GQLWidget> = (
+  props: PropertySectionComponentProps<W>
+) => JSX.Element | null;
+
+export interface WidgetContribution {
+  name: string;
+  fields: string;
+  icon: JSX.Element;
 }

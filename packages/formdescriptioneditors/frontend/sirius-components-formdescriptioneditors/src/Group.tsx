@@ -12,16 +12,16 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   addGroupMutation,
   addWidgetMutation,
@@ -329,6 +329,7 @@ export const Group = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
+  const { propertySectionsRegistry } = useContext(PropertySectionContext);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
@@ -388,7 +389,7 @@ export const Group = ({
 
     let widgetIndex = group.widgets.length;
 
-    if (isKind(id)) {
+    if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,

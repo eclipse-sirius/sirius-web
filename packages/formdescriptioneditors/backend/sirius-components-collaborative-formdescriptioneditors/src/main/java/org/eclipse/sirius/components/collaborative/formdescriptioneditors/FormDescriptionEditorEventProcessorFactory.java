@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.FormDescriptionEditorConfiguration;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorEventHandler;
@@ -51,16 +52,14 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public FormDescriptionEditorEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IFormDescriptionEditorCreationService formDescriptionEditormCreationService, IRepresentationSearchService representationSearchService,
-            List<IFormDescriptionEditorEventHandler> formDescriptionEditorEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    public FormDescriptionEditorEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IFormDescriptionEditorCreationService formDescriptionEditormCreationService,
+            List<IFormDescriptionEditorEventHandler> formDescriptionEditorEventHandlers) {
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.formDescriptionEditormCreationService = Objects.requireNonNull(formDescriptionEditormCreationService);
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.formDescriptionEditorEventHandlers = Objects.requireNonNull(formDescriptionEditorEventHandlers);
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
     }
 
     @Override

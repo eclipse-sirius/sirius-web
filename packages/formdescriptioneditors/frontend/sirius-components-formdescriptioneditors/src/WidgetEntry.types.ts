@@ -47,7 +47,7 @@ export interface WidgetEntryProps {
   flexGrow: number;
 }
 
-interface WidgetProps<WidgetType extends GQLWidget> {
+export interface WidgetProps<WidgetType extends GQLWidget> {
   widget: WidgetType;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;

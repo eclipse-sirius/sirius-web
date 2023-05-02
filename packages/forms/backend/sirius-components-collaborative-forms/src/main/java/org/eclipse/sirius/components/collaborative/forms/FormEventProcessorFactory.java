@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,6 +51,8 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationSearchService representationSearchService;
 
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
     private final List<IFormEventHandler> formEventHandlers;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
@@ -57,16 +61,16 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public FormEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
-            IRepresentationSearchService representationSearchService, List<IFormEventHandler> formEventHandlers, ISubscriptionManagerFactory subscriptionManagerFactory,
-            IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IObjectService objectService, List<IWidgetDescriptor> widgetDescriptors,
+            List<IFormEventHandler> formEventHandlers, IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory) {
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.objectService = Objects.requireNonNull(objectService);
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.widgetSubscriptionManagerFactory = Objects.requireNonNull(widgetSubscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
     }
 
     @Override
@@ -101,8 +105,8 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             .build();
                     // @formatter:on
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, this.formEventHandlers, this.subscriptionManagerFactory.create(),
-                            this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, this.widgetDescriptors, this.formEventHandlers,
+                            this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                     // @formatter:off
                     return Optional.of(formEventProcessor)

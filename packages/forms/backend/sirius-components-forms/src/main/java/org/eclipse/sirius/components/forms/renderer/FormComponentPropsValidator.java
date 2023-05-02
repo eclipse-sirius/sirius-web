@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.renderer;
+
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponent;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartComponentProps;
@@ -71,6 +74,11 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author sbegaudeau
  */
 public class FormComponentPropsValidator implements IComponentPropsValidator {
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
+    public FormComponentPropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+    }
 
     @Override
     @SuppressWarnings("checkstyle:JavaNCSS")
@@ -127,9 +135,13 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof RichTextComponentProps;
         } else if (ToolbarActionComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ToolbarActionComponentProps;
+        } else {
+            checkValidProps = this.widgetDescriptors.stream()
+                    .filter(widgetDescriptor -> Objects.equals(componentType,  widgetDescriptor.getComponentClass()))
+                    .findFirst()
+                    .map(descriptor -> descriptor.getComponentPropsClass().isInstance(props))
+                    .orElse(false);
         }
-
         return checkValidProps;
     }
-
 }
