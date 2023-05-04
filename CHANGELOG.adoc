@@ -16,7 +16,7 @@
 
 === Breaking changes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1897[1897] [diagram] ToolSection are not using records
+- https://github.com/eclipse-sirius/sirius-components/issues/1897[1897] [diagram] ToolSection are now using records
 - https://github.com/eclipse-sirius/sirius-components/issues/1616[#1616] [core] Use Java records for all our payloads
 - https://github.com/eclipse-sirius/sirius-components/issues/1848[#1848] [project] Remove the frontend dependency to `uuid` in favor of `crypto.randomUUID`
 - https://github.com/eclipse-sirius/sirius-components/issues/1907[#1907] [view] The management of colors is changing, it is not possible anymore to use color directly represented by a string in the _styleDescription_.
