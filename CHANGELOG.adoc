@@ -19,6 +19,7 @@
 
 - [ADR-098] Use the editing context to compute the metamodels
 - [ADR-099] Filter tree based representations
+- [ADR-100] Add support for custom widgets
 
 === Breaking changes
 

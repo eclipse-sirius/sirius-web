@@ -1,0 +1,258 @@
+= ADR-100 - Add support for custom widgets
+
+== Context
+
+The _Form_ representation currently supports a fixed set of generic widgets.
+Even if we enrich this set, it will never account for all the specific needs of concrete applications.
+The Sirius Components framework should be open for custom applications to provide their own widgets.
+
+== Decision
+
+We will make the _Form_ and _Form Description Editor_ representations (including the View-based Form definitions) extensible to allow for applications to contribute and use their own widgets beyond the fixed set supported by Sirius Components.
+
+We will provide a simple "Slider" widget as part of Sirius Web Sample Application (not in Sirius Components) to illustrate how an application can contribute its own widgets.
+
+[#core]
+=== Form Representation Core
+
+A new interface named `IWidgetDescriptor` will be introduced to allow applications to provide the required information to "plug" their new widgets into the Form rendering:
+
+```java
+public interface IWidgetDescriptor {
+    String getWidgetType();
+
+    Class<? extends IComponent> getComponentClass();
+
+    Class<? extends IProps> getInstancePropsClass();
+
+    Class<? extends IProps> getComponentPropsClass();
+
+    Optional<Object> instanciate(IProps elementProps, List<Object> children);
+
+    Optional<Element> createElement(VariableManager variableManager, AbstractWidgetDescription widgetDescription);
+}
+```
+
+The `FormRenderer` will take a list of such widget descriptors as argument, and pass it to its helpers:
+
+```java
+    public FormRenderer(List<IWidgetDescriptor> widgetDescriptors) {
+        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(widgetDescriptors), new FormComponentPropsValidator(widgetDescriptors), new FormElementFactory(widgetDescriptors));
+    }
+```
+
+This list of widget descriptors will be passed by `FormEventProcessor`, which will itself get it from `FormEventProcessorFactory`.
+`FormEventProcessorFactory` itself will get these using usual Spring dependency mechanisms.
+
+If the custom widget supports edition operations, its backend implementation will also need to provide the appropriate `IFormEventHandler` implementations and supporting types (custom `IFormInput`s and `IPayload`s).
+
+For the example "Slider" widget, the only edition operation supported will be `editSlider(input: EditSliderInput!): EditSliderPayload!`, which will require:
+
+```java
+public record EditSliderInput(UUID id, String editingContextId, String representationId, String sliderId, int newValue) implements IFormInput {
+}
+
+@MutationDataFetcher(type = "Mutation", field = "editSlider")
+public class MutationEditSliderDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
+  // Code omitted
+}
+```
+
+=== GraphQL Schema
+
+On the backend, since we switched to declaring our GraphQL Schema using `.graphqls` files, extending the GraphQL Schema with the definition of a new widgets is simply a matter of contributing the corresponding `.graqphls` file.
+The file in question can declare both the new widget type, any needed styles or additional types, and any new mutation needed to trigger the new widget's behaviors.
+
+For example for the Slider:
+
+```graphql
+type Slider implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  minValue: Int!
+  maxValue: Int!
+  currentValue: Int!
+}
+
+extend type Mutation {
+  editSlider(input: EditSliderInput!): EditSliderPayload!
+}
+
+input EditSliderInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  sliderId: ID!
+  newValue: Int!
+}
+
+union EditSliderPayload = SuccessPayload | ErrorPayload
+```
+
+On the frontend, things are a little more involved.
+The shape of the GraphQL Schema for forms impacts:
+
+- `FormEventFragments.types.ts` defines all the TypeScript types, but is easily extensible; new TypeScript types can be added by the new widget's implementation code.
++
+[source,typescript]
+----
+export interface GQLSlider extends GQLWidget {
+  label: string;
+  minValue: number;
+  maxValue: number;
+  currentValue: number;
+}
+----
+- `FormEventFragments.ts` is more complex and hard-codes the set of supported widgets and all their fields in the query's structure.
+`widgetFields` which is currently a constant string will become a function parameterized by all the available custom widgets:
+[source,typescript]
+----
+const widgetFields = (contributions: Array<WidgetContribution>) => { ... }
+----
+
+The new type `WidgetContribution` provides the necessary metadata about custom widgets:
+
+[source,typescript]
+----
+export interface WidgetContribution {
+  name: string;
+  fields: string;
+  icon: JSX.Element;
+}
+----
+
+For example for the slider widget:
+
+[source,typescript]
+----
+const sliderWidgetContribution: WidgetContribution = {
+      name: 'Slider',
+      fields: `label iconURL minValue maxValue currentValue`,
+      icon: <LinearScaleOutlinedIcon />,
+};
+----
+
+The actual `WidgetContribution` available will be provided using a new React context provider, configured by each concrete application at the top-level.
+The mechanism will be similar to the existing `RepresentationComponent` registry and `RepresentationContext`.
+
+[#frontend]
+=== Frontend (property sections)
+
+Assuming the new widgets have been rendered by the backend, and received with all their custom fields by the frontend through its GraphQL Subscription, it must then be actually displayed.
+
+This is handled by `PropertySection.tsx` but, like other parts the set of supported widgets (e.g. `ButtonPropertySection`) is currently hard-coded.
+A new case will be added to `PropertySection` for widgets which are not part of the hard-coded ones to handle custom widgets:
+
+[source,typescript]
+----
+const CustomWidgetComponent = propertySectionsRegistry.getComponent(widget);
+if (CustomWidgetComponent) {
+  propertySection = (
+    <CustomWidgetComponent
+      editingContextId={editingContextId}
+      formId={formId}
+      widget={widget}
+      subscribers={subscribers}
+      key={widget.id}
+      readOnly={readOnly}
+    />
+  );
+}
+----
+
+In the case of the Slider, the top-level `propertySectionsRegistry` must provide the proper `PropertySectionComponent` implementation if the widget to render is a slider:
+
+[source,typescript]
+----
+getComponent: (widget: GQLWidget) => {
+  if (widget.__typename === 'Slider') {
+    return SliderPropertySection;
+  }
+},
+----
+
+The actual implementation of `SliderPropertySection` is similar to the other property sections, but can be provided by the application (or a separate library) instead of coming directly from Sirius Components.
+
+=== View DSL Support
+
+To support the definition of custom widgets through the View DSL, we will first need to _make the View metamodel extensible_.
+In its current state, the generated implementation of `view.ecore` does not support new types (e.g. new `WidgetDescription` subtypes) which are not directly defined in `view.ecore`.
+This is possible in EMF with the "child creation extender" GenModel feature, but needs to be enabled explictly.
+This mechanism is normally used in the context of an Eclipse runtime and relies on EMF extension points.
+A new `ChildExtenderProvider` type will be defined to allow applications to register (as Spring beans) the child extender providers for their extensions.
+
+Once it is possible to create View models which use custom widgets definitions, these models must be converted into the actual API-based widget description (see <<#core, the section above>>) to be rendered correctly (and later displayed by <<#frontend,the frontend>>).
+This transformation is handled by `ViewFormDescriptionConverter`, but like the rest it will need to be made extensible.
+It already uses and EMF-based "switch class" to handle the different kinds of core widgets, so we will extend this to also consider EMF switches which know about any custom widgets.
+These new switches which know about custom widgets will be registered using Spring services of the new type `IWidgetConverterProvider`:
+
+[source,java]
+----
+public interface IWidgetConverterProvider {
+    Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService);
+}
+----
+
+=== Form Description Editor Support
+
+On the backend, the _Form Description Editor_ representation delegates most of the actual rendering to the Form representation, except that it uses "Preview" versions of the widgets.
+It will be made extensible in a similar way as the main _Form_ representation, with new types that custom widgets must provide implementations:
+
+[source,java]
+----
+/**
+ * Provides the EClass to use to represent a given kind of widget in a Form Description Editor.
+ */
+ public interface IWidgetDescriptionProvider {
+    Optional<EClass> getWidgetDescriptionType(String widgetKind);
+}
+
+/**
+ * Provides a switch to convert View-based custom widget descriptions into their API equivalent "preview widget" in a Form Description Editor.
+ */
+public interface IWidgetPreviewConverterProvider {
+    Switch<AbstractWidgetDescription> getWidgetConverter(FormDescriptionEditorDescription formDescriptionEditorDescription, VariableManager variableManager);
+}
+----
+
+`IWidgetDescriptionProvide` is needed to break the hard-coded assumption in `AddWidgetEventHandler` that the `EClass` of a view-based widgets is always in the main `View` package and named after the widget's name (`EClassifier eClassifier = ViewPackage.eINSTANCE.getEClassifier(kind + "Description")`).
+
+The `IWidgetPreviewConverterProvider` is used to allow `ViewFormDescriptionEditorConverterSwitch` to delegate to switches which know how to handle custom widgets when it is given a widget it does not know how to handle:
+
+[source,java]
+----
+  @Override
+  public AbstractWidgetDescription caseWidgetDescription(WidgetDescription widgetDescription) {
+      return ViewFormDescriptionEditorConverterSwitch.this.customWidgetConverter.doSwitch(widgetDescription);
+  }
+----
+
+where `customWidgetConverter` is a `ComposedSwitch` which aggregates all the "custom-widget-aware" switches.
+
+On the frontend, the widgets list/palette in `FormDescriptionEditorRepresentation.tsx` will be augmented to add a new entry for each of the custom widgets declared in the `propertySectionsRegistry` (see above).
+
+The `propertySectionsRegistry` will be augmented to allow the registration of "Preview Widgets":
+
+[source,typescript]
+----
+getPreviewComponent: (widget: GQLWidget) => {
+    if (widget.__typename === 'Slider') {
+      return SliderPreview;
+    }
+},
+----
+
+where `SliderPreview` is a React component displaying the corresponding previw widget inside the _FormDescriptionEditor_.
+
+A generic `CustomWidget` which simply displays an icon (`ExtensionIcon`) will be provided as a fallback for custom widgets which do not provide a preview component in the _FormDescriptionEditor_.
+
+== Status
+
+Accepted
+
+== Consequences
+
+The code handling the "core" widgets will still be hard-coded and separate from the custom widgets code.
+Later on it would be possible to refactor the Form representation not to have any special handling or even knowledge about the hard-coded widgets, but simply consider them as a "standard library" of widgets, not that different from custom ones.
