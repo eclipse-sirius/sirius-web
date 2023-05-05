@@ -15,28 +15,22 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 
 /**
  * Interface to provide ids for DiagramDescription & DiagramElementDescription.
  *
  * @author mcharfadi
  */
-public interface IDiagramIdProvider {
+public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider<DiagramDescription> {
 
-    String DIAGRAM_DESCRIPTION_KIND = "siriusComponents://diagramDescription";
+    String DIAGRAM_DESCRIPTION_KIND = PREFIX + "?kind=diagramDescription";
 
     String NODE_DESCRIPTION_KIND = "siriusComponents://nodeDescription";
 
     String EDGE_DESCRIPTION_KIND = "siriusComponents://edgeDescription";
 
-    String SOURCE_KIND = "sourceKind";
-
-    String SOURCE_ID = "sourceId";
-
-    String SOURCE_ELEMENT_ID = "sourceElementId";
-
-    String VIEW_SOURCE_KIND = "view";
-
+    @Override
     String getId(DiagramDescription diagramDescription);
 
     String getId(DiagramElementDescription diagramElementDescription);

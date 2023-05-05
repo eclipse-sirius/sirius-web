@@ -89,6 +89,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final IEditService editService;
 
+    private final IDiagramIdProvider diagramIdProvider;
+
+    private final IViewToolImageProvider viewToolImageProvider;
+
     private final StylesFactory stylesFactory;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
@@ -97,19 +101,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final Function<VariableManager, String> semanticTargetLabelProvider;
 
-    private final IDiagramIdProvider diagramIdProvider;
-
-    private final IViewToolImageProvider viewToolImageProvider;
-
     public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IDiagramIdProvider diagramIdProvider, IViewToolImageProvider viewToolImageProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
         this.stylesFactory = new StylesFactory(Objects.requireNonNull(iNodeStyleProviders), this.objectService);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
-        this.diagramIdProvider = diagramIdProvider;
-        this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
     }
 
     @Override

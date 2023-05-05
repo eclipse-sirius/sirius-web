@@ -27,16 +27,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -64,13 +66,16 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final IURLParser urlParser;
 
+    private final IFormIdProvider formIdProvider;
+
     private final IObjectService objectService;
 
-    public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser, IObjectService objectService) {
+    public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser, IFormIdProvider formIdProvider, IObjectService objectService) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
     }
 
@@ -156,11 +161,16 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     private String getRepresentationDescriptionId(RepresentationDescription description) {
+        String result;
         if (description instanceof DiagramDescription diagramDescription) {
-            return this.diagramIdProvider.getId(diagramDescription);
+            result = this.diagramIdProvider.getId(diagramDescription);
+        } else if (description instanceof FormDescription formDescription) {
+            result = this.formIdProvider.getId(formDescription);
+        } else {
+            String descriptionURI = EcoreUtil.getURI(description).toString();
+            result = UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
         }
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+        return result;
     }
 
     public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, String nodeDescriptionId) {

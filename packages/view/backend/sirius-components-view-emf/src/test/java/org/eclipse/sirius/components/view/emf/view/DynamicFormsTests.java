@@ -115,6 +115,7 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
@@ -1277,7 +1278,7 @@ public class DynamicFormsTests {
         IEditService.NoOp editService = new IEditService.NoOp() {
 
         };
-        ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService);
+        ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService, new IFormIdProvider.NoOp());
         var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), new StaticApplicationContext());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);

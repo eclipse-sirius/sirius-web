@@ -14,22 +14,18 @@ package org.eclipse.sirius.components.view.emf;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,22 +40,17 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    private final IURLParser urlParser;
+    private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
-    public ViewRepresentationDescriptionsProvider(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders,  IURLParser urlParser) {
+    public ViewRepresentationDescriptionsProvider(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate) {
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
-        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
     }
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
-        if (representationDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
-            Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationDescription.getId());
-            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
-            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
-        }
-        return false;
+        return this.viewRepresentationDescriptionPredicate.test(representationDescription);
     }
 
     @Override

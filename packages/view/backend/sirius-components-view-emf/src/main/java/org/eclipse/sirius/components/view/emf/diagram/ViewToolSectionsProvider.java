@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +29,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDia
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -44,6 +43,7 @@ import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.springframework.stereotype.Service;
 
@@ -66,8 +66,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
-
     private final IURLParser urlParser;
+
+    private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
@@ -79,8 +80,9 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    public ViewToolSectionsProvider(IURLParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectService objectService) {
+    public ViewToolSectionsProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectService objectService) {
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -88,12 +90,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
-        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
-            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
-            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
-            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
-        }
-        return false;
+        return this.viewRepresentationDescriptionPredicate.test(diagramDescription);
     }
 
     @Override

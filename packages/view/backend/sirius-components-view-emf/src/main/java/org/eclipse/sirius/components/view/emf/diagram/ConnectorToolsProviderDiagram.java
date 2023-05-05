@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -30,6 +28,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,35 +43,29 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
-    private final IURLParser urlParser;
+    private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
-    public ConnectorToolsProviderDiagram(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IURLParser urlParser) {
+    public ConnectorToolsProviderDiagram(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate) {
         this.representationDescriptionSearchService = representationDescriptionSearchService;
         this.diagramDescriptionService = diagramDescriptionService;
-        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
     }
 
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
-        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
-            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
-            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
-            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
-        }
-        return false;
+        return this.viewRepresentationDescriptionPredicate.test(diagramDescription);
     }
 
     @Override
     public List<ITool> getConnectorTools(Object sourceDiagramElement, Object targetDiagramElement, Diagram diagram, IEditingContext editingContext) {
-
         var optDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
         var optSourceDiagramElementDescriptionId = this.mapDiagramElementToDescriptionId(sourceDiagramElement);
         var optTargetDiagramElementDescriptionId = this.mapDiagramElementToDescriptionId(targetDiagramElement);
 
         boolean diagramElementDescriptionsPresent = optDiagramDescription.isPresent() && optSourceDiagramElementDescriptionId.isPresent() && optTargetDiagramElementDescriptionId.isPresent();
+
         List<ITool> result = null;
         if (diagramElementDescriptionsPresent && optDiagramDescription.get() instanceof DiagramDescription) {
-
             DiagramDescription diagramDescription = (DiagramDescription) optDiagramDescription.get();
             var optSourceDiagramElementDescription = this.mapDescriptionIdToDescription(optSourceDiagramElementDescriptionId.get(), diagramDescription, sourceDiagramElement);
             var optTargetDiagramElementDescription = this.mapDescriptionIdToDescription(optTargetDiagramElementDescriptionId.get(), diagramDescription, targetDiagramElement);
@@ -80,12 +73,12 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
             if (optSourceDiagramElementDescription.isPresent() && optTargetDiagramElementDescription.isPresent()) {
                 Object sourceDescription = optSourceDiagramElementDescription.get();
                 Object targetDescription = optTargetDiagramElementDescription.get();
-                result = diagramDescription.getToolSections().stream().flatMap(ts -> ts.getTools().stream())//
-                        .filter(t -> t instanceof SingleClickOnTwoDiagramElementsTool)//
-                        .map(SingleClickOnTwoDiagramElementsTool.class::cast)//
+                result = diagramDescription.getToolSections().stream().flatMap(toolSection -> toolSection.getTools().stream())
+                        .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
+                        .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                         .filter(tool -> {
                             List<SingleClickOnTwoDiagramElementsCandidate> candidates = tool.getCandidates();
-                            return candidates.stream().anyMatch(c -> c.getSources().contains(sourceDescription) && c.getTargets().contains(targetDescription));
+                            return candidates.stream().anyMatch(candidate -> candidate.getSources().contains(sourceDescription) && candidate.getTargets().contains(targetDescription));
                         }).collect(Collectors.toList());
             }
         }
@@ -94,10 +87,10 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
 
     private Optional<String> mapDiagramElementToDescriptionId(Object object) {
         Optional<String> descriptionId = Optional.empty();
-        if (object instanceof Node) {
-            descriptionId = Optional.of(((Node) object).getDescriptionId());
-        } else if (object instanceof Edge) {
-            descriptionId = Optional.of(((Edge) object).getDescriptionId());
+        if (object instanceof Node node) {
+            descriptionId = Optional.of(node.getDescriptionId());
+        } else if (object instanceof Edge edge) {
+            descriptionId = Optional.of(edge.getDescriptionId());
         }
         return descriptionId;
     }

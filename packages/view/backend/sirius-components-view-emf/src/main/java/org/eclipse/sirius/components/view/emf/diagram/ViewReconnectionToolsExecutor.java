@@ -21,11 +21,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
-import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -38,6 +37,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,30 +62,29 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
-    private final ApplicationContext applicationContext;
+    private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
     private final IURLParser urlParser;
 
+    private final ApplicationContext applicationContext;
+
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
-    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext, IURLParser urlParser) {
+    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
+                                         List<IJavaServiceProvider> javaServiceProviders, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IURLParser urlParser,
+                                         ApplicationContext applicationContext) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
-        this.applicationContext = Objects.requireNonNull(applicationContext);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.applicationContext = Objects.requireNonNull(applicationContext);
     }
 
     @Override
     public boolean canExecute(DiagramDescription diagramDescription) {
-        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
-            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
-            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
-            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
-        }
-        return false;
+        return this.viewRepresentationDescriptionPredicate.test(diagramDescription);
     }
 
     @Override

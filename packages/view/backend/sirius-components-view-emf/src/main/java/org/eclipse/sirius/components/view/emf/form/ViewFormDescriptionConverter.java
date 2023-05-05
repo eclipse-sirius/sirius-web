@@ -57,9 +57,11 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
     private final IEditService editService;
 
-    public ViewFormDescriptionConverter(IObjectService objectService, IEditService editService) {
+    private final IFormIdProvider formIdProvider;
+    public ViewFormDescriptionConverter(IObjectService objectService, IEditService editService, IFormIdProvider formIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
+        this.formIdProvider = Objects.requireNonNull(formIdProvider);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .map(GroupDescription.class::cast)
                 .toList();
 
-        String descriptionId = this.getDescriptionId(viewFormDescription);
+        String descriptionId = this.formIdProvider.getId(viewFormDescription);
         PageDescription pageDescription = PageDescription.newPageDescription(descriptionId + "_page")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
