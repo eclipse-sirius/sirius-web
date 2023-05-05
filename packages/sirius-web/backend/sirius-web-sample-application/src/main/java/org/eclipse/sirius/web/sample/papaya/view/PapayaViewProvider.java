@@ -43,6 +43,7 @@ import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.Operational
 import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.OperationalActorNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.OperationalEntityNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.OperationalPerimeterNodeDescriptionProvider;
+import org.eclipse.sirius.web.sample.papaya.view.overviewform.OverviewFormProvider;
 
 /**
  * Used to create the test view.
@@ -124,6 +125,9 @@ public class PapayaViewProvider {
 
         var classDiagramDescription = new ClassDiagramDescriptionProvider().create(colorProvider);
         view.getDescriptions().add(classDiagramDescription);
+
+        var overviewFormDescription = new OverviewFormProvider().create(colorProvider);
+        view.getDescriptions().add(overviewFormDescription);
 
         return view;
     }

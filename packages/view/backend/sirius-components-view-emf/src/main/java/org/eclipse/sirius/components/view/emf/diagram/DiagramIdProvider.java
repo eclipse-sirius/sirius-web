@@ -40,7 +40,7 @@ public class DiagramIdProvider implements IDiagramIdProvider {
     public String getId(DiagramDescription diagramDescription) {
         String sourceId = this.getSourceIdFromElementDescription(diagramDescription);
         String sourceElementId = this.objectService.getId(diagramDescription);
-        return DIAGRAM_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+        return DIAGRAM_DESCRIPTION_KIND + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
 
     @Override

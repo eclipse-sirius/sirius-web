@@ -64,16 +64,14 @@ public class ViewConverter implements IViewConverter {
         views.forEach(view -> {
             AQLInterpreter interpreter = this.createInterpreter(view, visibleEPackages);
             try {
-                // @formatter:off
                 result.addAll(view.getDescriptions().stream()
                         .map(representationDescription -> this.convert(representationDescription, allViewsRepresentationDescriptions, interpreter))
                         .flatMap(Optional::stream)
                         .toList());
-
-                // @formatter:on
-            } catch (NullPointerException e) {
+            } catch (NullPointerException exception) {
                 // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
                 // currently being created or edited.
+                this.logger.debug("Exception while converting view", exception);
             }
         });
         return result;

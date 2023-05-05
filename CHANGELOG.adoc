@@ -13,6 +13,7 @@
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1897[1897] [diagram] ToolSection are not using records
 - https://github.com/eclipse-sirius/sirius-components/issues/1616[#1616] [core] Use Java records for all our payloads
+- https://github.com/eclipse-sirius/sirius-components/issues/1848[#1848] [project] Remove the frontend dependency to `uuid` in favor of `crypto.randomUUID`
 - https://github.com/eclipse-sirius/sirius-components/issues/1907[#1907] [view] The management of colors is changing, it is not possible anymore to use color directly represented by a string in the _styleDescription_.
 All the colors are now defined in a new palette object _ColorPalette_ with the properties _name_ and _value_.
 A view can define as many _ColorPalette_ as desired.
@@ -24,13 +25,12 @@ In the _styleDescription_, the definition of a color are now a select list of al
 - https://github.com/eclipse-sirius/sirius-components/issues/265[#265] [core] Switch to the latest release of AQL
 
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1848[#1848] [project] Remove the frontend dependency to `uuid` in favor of `crypto.randomUUID`
-
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1304[#1304] [tree] Fix an issue where dropping an element from the tree to a diagram used the current selection instead of the dragged tree item.
 - https://github.com/eclipse-sirius/sirius-components/issues/1839[#1839] [view] Remove default AQL expression on Create Edge and Create Node since they did not work anymore.
 - https://github.com/eclipse-sirius/sirius-components/issues/1940[#1940] [sirius-web] Remove duplicated spring-boot-starter-test dependency in sirius-web-sample-application
+- https://github.com/eclipse-sirius/sirius-components/issues/1952[#1952] [view] Fix a regression introduced in 2023.4.0 where View-based Forms could no longer be instanciated
 
 === New Features
 

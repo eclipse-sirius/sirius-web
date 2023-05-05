@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.emf.diagram.providers;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -24,7 +23,6 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IInitialDirectEditElementLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -43,6 +41,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.slf4j.Logger;
@@ -62,7 +61,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final Logger logger = LoggerFactory.getLogger(ViewInitialDirectEditElementLabelProvider.class);
 
-    private final IURLParser urlParser;
+    private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -76,9 +75,9 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final ApplicationContext applicationContext;
 
-    public ViewInitialDirectEditElementLabelProvider(IURLParser urlParser, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
+    public ViewInitialDirectEditElementLabelProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
                                                      List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
-        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -89,19 +88,16 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     @Override
     public boolean canHandle(org.eclipse.sirius.components.diagrams.description.DiagramDescription diagramDescription) {
-        if (diagramDescription.getId().startsWith(IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND)) {
-            Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
-            List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_KIND)).orElse(List.of());
-            return values.contains(IDiagramIdProvider.VIEW_SOURCE_KIND);
-        }
-        return false;
+        return this.viewRepresentationDescriptionPredicate.test(diagramDescription);
     }
 
     @Override
     public String getInitialDirectEditElementLabel(Object diagramElement, String labelId, Diagram diagram, IEditingContext editingContext) {
         String initialDirectEditElementLabel = "";
         String diagramDescriptionId = diagram.getDescriptionId();
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescriptionId).filter(DiagramDescription.class::isInstance).map(DiagramDescription.class::cast);
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescriptionId)
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast);
 
         if (optionalDiagramDescription.isPresent()) {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
