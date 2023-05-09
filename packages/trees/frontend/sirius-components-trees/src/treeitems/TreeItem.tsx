@@ -22,6 +22,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
+import { isFilterCandidate } from './filterTreeItem';
 
 const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
@@ -102,6 +103,9 @@ const useTreeItemStyle = makeStyles((theme) => ({
   ul: {
     marginLeft: theme.spacing(3),
   },
+  highlight: {
+    backgroundColor: theme.palette.navigation.leftBackground,
+  },
 }));
 
 // The list of characters that will enable the direct edit mechanism.
@@ -116,6 +120,8 @@ export const TreeItem = ({
   selection,
   setSelection,
   readOnly,
+  textToHighlight,
+  isFilterEnabled,
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
   const { httpOrigin } = useContext(ServerContext);
@@ -242,6 +248,8 @@ export const TreeItem = ({
                 selection={selection}
                 setSelection={setSelection}
                 readOnly={readOnly}
+                textToHighlight={textToHighlight}
+                isFilterEnabled={isFilterEnabled}
               />
             </li>
           );
@@ -273,6 +281,7 @@ export const TreeItem = ({
   if (item.imageURL) {
     image = <img height="16" width="16" alt={item.kind} src={httpOrigin + item.imageURL}></img>;
   }
+  const highlightRegExp = new RegExp(`(${textToHighlight})`, 'gi');
   let text;
   if (editingMode) {
     const handleChange = (event) => {
@@ -331,9 +340,28 @@ export const TreeItem = ({
       />
     );
   } else {
+    let itemLabel: JSX.Element;
+    const splitLabelWithTextToHighlight: string[] = item.label.split(highlightRegExp);
+    if (textToHighlight === '' || splitLabelWithTextToHighlight.length === 1) {
+      itemLabel = <>{item.label}</>;
+    } else {
+      const languages: string[] = Array.from(navigator.languages);
+      itemLabel = (
+        <>
+          {splitLabelWithTextToHighlight.map((value, index) => {
+            const shouldHighlight = value.localeCompare(textToHighlight, languages, { sensitivity: 'base' }) === 0;
+            return (
+              <span key={value + index} className={shouldHighlight ? classes.highlight : ''}>
+                {value}
+              </span>
+            );
+          })}
+        </>
+      );
+    }
     text = (
       <Typography variant="body2" className={`${classes.label} ${selected ? classes.selectedLabel : ''}`}>
-        {item.label}
+        {itemLabel}
       </Typography>
     );
   }
@@ -412,47 +440,53 @@ export const TreeItem = ({
 
   const shouldDisplayMoreButton = item.deletable || item.editable || treeItemMenuContributionComponents.length > 0;
 
-  /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
-  return (
-    <>
-      <div className={className}>
-        <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
-        <div
-          ref={refDom}
-          tabIndex={0}
-          onKeyDown={onBeginEditing}
-          draggable={draggable}
-          onClick={onClick}
-          onDragStart={dragStart}
-          onDragOver={dragOver}
-          data-treeitemid={item.id}
-          data-haschildren={item.hasChildren.toString()}
-          data-depth={depth}
-          data-expanded={item.expanded.toString()}
-          data-testid={dataTestid}>
-          <div className={classes.content}>
-            <div
-              className={classes.imageAndLabel}
-              onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
-              title={tooltipText}
-              data-testid={item.label}>
-              {image}
-              {text}
+  let currentTreeItem: JSX.Element | null;
+  if (isFilterEnabled && isFilterCandidate(item, highlightRegExp)) {
+    currentTreeItem = null;
+  } else {
+    /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
+    currentTreeItem = (
+      <>
+        <div className={className}>
+          <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
+          <div
+            ref={refDom}
+            tabIndex={0}
+            onKeyDown={onBeginEditing}
+            draggable={draggable}
+            onClick={onClick}
+            onDragStart={dragStart}
+            onDragOver={dragOver}
+            data-treeitemid={item.id}
+            data-haschildren={item.hasChildren.toString()}
+            data-depth={depth}
+            data-expanded={item.expanded.toString()}
+            data-testid={dataTestid}>
+            <div className={classes.content}>
+              <div
+                className={classes.imageAndLabel}
+                onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
+                title={tooltipText}
+                data-testid={item.label}>
+                {image}
+                {text}
+              </div>
+              {shouldDisplayMoreButton ? (
+                <IconButton
+                  className={classes.more}
+                  size="small"
+                  onClick={openContextMenu}
+                  data-testid={`${item.label}-more`}>
+                  <MoreVertIcon style={{ fontSize: 12 }} />
+                </IconButton>
+              ) : null}
             </div>
-            {shouldDisplayMoreButton ? (
-              <IconButton
-                className={classes.more}
-                size="small"
-                onClick={openContextMenu}
-                data-testid={`${item.label}-more`}>
-                <MoreVertIcon style={{ fontSize: 12 }} />
-              </IconButton>
-            ) : null}
           </div>
         </div>
-      </div>
-      {children}
-      {contextMenu}
-    </>
-  );
+        {children}
+        {contextMenu}
+      </>
+    );
+  }
+  return <>{currentTreeItem}</>;
 };
