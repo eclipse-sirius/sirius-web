@@ -11,11 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useSubscription } from '@apollo/client';
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Toast, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Close as CloseIcon } from '@material-ui/icons';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 
@@ -42,6 +39,7 @@ import {
   SynchronizeWithSelectionEvent,
 } from './ExplorerViewMachine';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
+
 const getTreePathQuery = gql`
   query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
     viewer {
@@ -179,25 +177,10 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
           />
         ) : null}
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </div>
   );

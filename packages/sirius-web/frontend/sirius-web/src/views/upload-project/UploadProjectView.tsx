@@ -12,13 +12,10 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { FileUpload, Form, FormContainer, sendFile } from '@eclipse-sirius/sirius-components';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -130,22 +127,7 @@ export const UploadProjectView = () => {
           </FormContainer>
         </Container>
       </main>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' })}
-        message={message}
-        data-testid="snackbar"
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => dispatch({ type: 'HIDE_TOAST' })}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      />
+      <Toast message={message} open={toast === 'visible'} onClose={() => dispatch({ type: 'HIDE_TOAST' })} />
     </div>
   );
 };

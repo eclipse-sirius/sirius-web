@@ -11,17 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Snackbar from '@material-ui/core/Snackbar';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Close as CloseIcon, Collections } from '@material-ui/icons';
+import Typography from '@material-ui/core/Typography';
+import { Collections } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
 import { NewDocumentAreaState } from './NewDocumentArea.types';
 import { NewRepresentationAreaProps } from './NewRepresentationArea.types';
@@ -142,22 +141,7 @@ export const NewRepresentationArea = ({
           </List>
         </CardContent>
       </Card>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={state.message != null}
-        autoHideDuration={3000}
-        message={state.message}
-        onClose={() => setState({ message: null })}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setState({ message: null })}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={state.message} open={!!state.message} onClose={() => setState({ message: null })} />
     </>
   );
 };

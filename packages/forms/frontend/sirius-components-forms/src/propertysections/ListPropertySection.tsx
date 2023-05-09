@@ -11,18 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MouseEvent, useContext, useEffect, useRef, useState } from 'react';
 import { GQLListItem } from '../form/FormEventFragments.types';
@@ -277,22 +275,7 @@ export const ListPropertySection = ({
         </TableBody>
       </Table>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setMessage(null)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </FormControl>
   );
 };

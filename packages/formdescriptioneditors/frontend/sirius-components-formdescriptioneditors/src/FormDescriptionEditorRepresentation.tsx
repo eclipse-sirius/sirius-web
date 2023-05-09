@@ -11,18 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CloseIcon from '@material-ui/icons/Close';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import ImageIcon from '@material-ui/icons/Image';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
@@ -45,15 +42,15 @@ import {
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
+  formDescriptionEditorRepresentationMachine,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   InitializeRepresentationEvent,
   SchemaValue,
   ShowToastEvent,
-  formDescriptionEditorRepresentationMachine,
 } from './FormDescriptionEditorRepresentationMachine';
-import { PageList } from './PageList';
 import { Button } from './icons/Button';
+import { PageList } from './PageList';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -465,25 +462,10 @@ export const FormDescriptionEditorRepresentation = ({
         </div>
       </div>
       {content}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </div>
   );

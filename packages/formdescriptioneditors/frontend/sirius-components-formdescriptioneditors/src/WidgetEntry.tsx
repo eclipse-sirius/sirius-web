@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -31,11 +31,8 @@ import {
   GQLWidget,
   PropertySectionContext,
 } from '@eclipse-sirius/sirius-components-forms';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import React, { useContext, useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -512,22 +509,7 @@ export const WidgetEntry = ({
           {widgetElement}
         </div>
       </WidgetTooltip>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setState({ message: null })}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setState({ message: null })}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={message} open={!!message} onClose={() => setState({ message: null })} />
     </div>
   );
 };

@@ -262,7 +262,7 @@ test('should display the error received', async () => {
     await waitFor(() => {
       expect(updateWidgetFocusCalled).toBeTruthy();
       expect(pushButtonCalled).toBeTruthy();
-      expect(screen.getByTestId('error')).not.toBeUndefined();
+      expect(screen.getByTestId('toast')).not.toBeUndefined();
       expect(baseElement).toMatchSnapshot();
     });
   });

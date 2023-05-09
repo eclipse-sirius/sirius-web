@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
@@ -102,11 +103,14 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private final Switch<AbstractWidgetDescription> customWidgetConverters;
 
-    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<AbstractWidgetDescription> customWidgetConverters) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<AbstractWidgetDescription> customWidgetConverters, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
         this.customWidgetConverters = Objects.requireNonNull(customWidgetConverters);
+        this.feedbackMessageService = feedbackMessageService;
     }
 
     @Override
@@ -618,7 +622,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
         Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
         if (optionalVariableManager.isEmpty()) {
-            return new Failure("Something went wrong while handling the item click.");
+            return this.buildFailureWithFeedbackMessages("Something went wrong while handling the item click.");
         } else {
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         }
@@ -674,7 +678,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private BiFunction<VariableManager, List<String>, IStatus> getMultiSelectNewValuesHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
-            IStatus status = new Failure("An error occured while handling the new selected values.");
+            IStatus status = this.buildFailureWithFeedbackMessages("An error occured while handling the new selected values.");
             Optional<IEditingContext> optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
             if (optionalEditingDomain.isPresent()) {
                 IEditingContext editingContext = optionalEditingDomain.get();
@@ -689,7 +693,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
                 Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
                 if (optionalVariableManager.isEmpty()) {
-                    status = new Failure("Something went wrong while handling the MultiSelect widget new values.");
+                    status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the MultiSelect widget new values.");
                 } else {
                     status = new Success();
                 }
@@ -740,7 +744,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
             if (optionalVariableManager.isEmpty()) {
-                return new Failure("Something went wrong while handling the widget operations execution.");
+                return this.buildFailureWithFeedbackMessages("Something went wrong while handling the widget operations execution.");
             } else {
                 return new Success();
             }
@@ -754,7 +758,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
-                return new Failure("Something went wrong while handling the widget new value.");
+                return this.buildFailureWithFeedbackMessages("Something went wrong while handling the widget new value.");
             } else {
                 return new Success();
             }
@@ -763,7 +767,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private BiFunction<VariableManager, String, IStatus> getSelectNewValueHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
-            IStatus status = new Failure("An error occured while handling the new selected value.");
+            IStatus status;
 
             Object newValueObject = null;
             if (newValue != null && !newValue.isBlank()) {
@@ -775,7 +779,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
             if (optionalVariableManager.isEmpty()) {
-                status = new Failure("Something went wrong while handling the Select widget new value.");
+                status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the Select widget new value.");
             } else {
                 status = new Success();
             }
@@ -791,13 +795,21 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     private String getListItemImageURL(VariableManager variablemanager) {
         // @formatter:off
         return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
-                .map(candidate -> this.objectService.getImagePath(candidate))
+                .map(this.objectService::getImagePath)
                 .orElse("");
         // @formatter:on
     }
 
     private boolean matches(String condition, VariableManager variableManager) {
         return this.interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
+    }
+
+    private Failure buildFailureWithFeedbackMessages(String technicalMessage) {
+        var errorMessages = new ArrayList<>(List.of(technicalMessage));
+        if (Objects.nonNull(this.feedbackMessageService)) {
+            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+        }
+        return new Failure(String.join(", ", errorMessages));
     }
 
 }

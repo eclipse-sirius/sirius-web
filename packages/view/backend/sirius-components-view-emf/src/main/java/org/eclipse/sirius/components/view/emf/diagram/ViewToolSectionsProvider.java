@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.configuration.ViewToolConfiguration;
 import org.springframework.stereotype.Service;
 
 /**
@@ -80,12 +81,12 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    public ViewToolSectionsProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectService objectService) {
-        this.urlParser = Objects.requireNonNull(urlParser);
-        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+    public ViewToolSectionsProvider(ViewToolConfiguration configuration, IDiagramDescriptionService diagramDescriptionService) {
+        this.urlParser = Objects.requireNonNull(configuration.getUrlParser());
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(configuration.getViewRepresentationDescriptionPredicate());
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(configuration.getViewRepresentationDescriptionSearchService());
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectService = Objects.requireNonNull(configuration.getObjectService());
     }
 
     @Override

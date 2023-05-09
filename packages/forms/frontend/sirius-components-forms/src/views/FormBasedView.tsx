@@ -11,11 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import Typography from '@material-ui/core/Typography';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
@@ -35,13 +33,13 @@ import { FormBasedViewProps } from './FormBasedView.types';
 import {
   FormBasedViewContext,
   FormBasedViewEvent,
+  formBasedViewMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
-  formBasedViewMachine,
 } from './FormBasedViewMachine';
 
 export const getFormEventSubscription = (subscriptionName: string, contributions: Array<WidgetContribution>) => {
@@ -88,7 +86,7 @@ export const FormBasedView = ({
   const { id, currentSelection, form, widgetSubscriptions, message } = context;
 
   /**
-   * Displays an other form if the selection indicates that we should display another properties view.
+   * Displays another form if the selection indicates that we should display another properties view.
    */
   useEffect(() => {
     if (selection.entries.length > 0 && selection !== currentSelection) {
@@ -167,25 +165,10 @@ export const FormBasedView = ({
   return (
     <>
       {content}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );

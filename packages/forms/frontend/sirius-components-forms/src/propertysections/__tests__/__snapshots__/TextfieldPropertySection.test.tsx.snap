@@ -186,7 +186,7 @@ exports[`should display the error received 2`] = `
       </div>
       <div
         class="MuiSnackbar-root MuiSnackbar-anchorOriginBottomRight"
-        data-testid="error"
+        data-testid="toast"
       >
         <div
           class="MuiPaper-root MuiSnackbarContent-root MuiPaper-elevation6"

@@ -12,13 +12,12 @@
  *******************************************************************************/
 
 import { useMutation } from '@apollo/client';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -32,8 +31,8 @@ import {
   GQLMoveToolbarActionMutationVariables,
   GQLMoveToolbarActionPayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { ToolbarActionWidget } from './ToolbarActionWidget';
 import { ToolbarActionsProps } from './ToolbarActions.types';
+import { ToolbarActionWidget } from './ToolbarActionWidget';
 
 const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
   toolbar: {
@@ -201,22 +200,7 @@ export const ToolbarActions = ({
           </IconButton>
         </Tooltip>
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setMessage(null)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </div>
   );
 };

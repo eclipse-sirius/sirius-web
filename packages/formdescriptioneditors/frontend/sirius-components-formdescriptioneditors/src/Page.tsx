@@ -11,13 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Group } from './Group';
-import { PageProps, PageState } from './Page.types';
+import React, { useEffect, useRef, useState } from 'react';
+import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddGroupInput,
   GQLAddGroupMutationData,
@@ -29,8 +27,8 @@ import {
   GQLMoveGroupMutationVariables,
   GQLMovePagePayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
-import React, { useEffect, useRef, useState } from 'react';
+import { Group } from './Group';
+import { PageProps, PageState } from './Page.types';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -218,33 +216,14 @@ export const Page = ({
         onDrop={handleDrop}>
         <Typography variant="body1">{'Drag and drop a group here'}</Typography>
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+      <Toast
+        message={message}
         open={!!message}
-        autoHideDuration={3000}
         onClose={() =>
           setState((prevState) => {
             return { ...prevState, message: null };
           })
         }
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() =>
-              setState((prevState) => {
-                return { ...prevState, message: null };
-              })
-            }>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
       />
     </div>
   );

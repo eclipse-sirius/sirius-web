@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToo
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -39,6 +40,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.configuration.ViewToolConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -66,20 +68,22 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IURLParser urlParser;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final ApplicationContext applicationContext;
 
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
-    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
-                                         List<IJavaServiceProvider> javaServiceProviders, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IURLParser urlParser,
-                                         ApplicationContext applicationContext) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ViewReconnectionToolsExecutor(ViewToolConfiguration configuration, IEditService editService, List<IJavaServiceProvider> javaServiceProviders,
+            ApplicationContext applicationContext, IFeedbackMessageService feedbackMessageService) {
+        this.objectService = Objects.requireNonNull(configuration.getObjectService());
         this.editService = Objects.requireNonNull(editService);
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(configuration.getViewRepresentationDescriptionSearchService());
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
-        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
-        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(configuration.getViewRepresentationDescriptionPredicate());
+        this.urlParser = Objects.requireNonNull(configuration.getUrlParser());
         this.applicationContext = Objects.requireNonNull(applicationContext);
+        this.feedbackMessageService = feedbackMessageService;
     }
 
     @Override
@@ -119,7 +123,8 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                     VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 
                     AQLInterpreter interpreter = this.createInterpreter((View) viewDiagramDescription.eContainer(), this.getAccessibleEPackages(editingContext));
-                    var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.editService, toolInterpreterData.getDiagramContext(), Map.of());
+                    var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.editService, toolInterpreterData.getDiagramContext(),
+                            Map.of(), this.feedbackMessageService);
                     diagramOperationInterpreter.executeOperations(edgeReconnectionTool.getBody(), variableManager);
                 }
 

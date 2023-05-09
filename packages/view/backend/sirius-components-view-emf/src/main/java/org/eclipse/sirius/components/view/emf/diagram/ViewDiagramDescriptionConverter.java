@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.handlers.DeleteFromD
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
@@ -101,12 +102,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final Function<VariableManager, String> semanticTargetLabelProvider;
 
-    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IDiagramIdProvider diagramIdProvider, IViewToolImageProvider viewToolImageProvider) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IDiagramIdProvider diagramIdProvider, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
         this.stylesFactory = new StylesFactory(Objects.requireNonNull(iNodeStyleProviders), this.objectService);
+        this.feedbackMessageService = feedbackMessageService;
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
@@ -125,7 +129,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).toList();
         List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).toList();
         // @formatter:off
-        var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider);
+        var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider, this.feedbackMessageService);
 
         return DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
@@ -159,7 +163,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             if (optionalDropTool.isPresent()) {
                 var augmentedVariableManager = variableManager.createChild();
                 augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, capturedNodeDescriptions);
-                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedNodeDescriptions)
+                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
+                        capturedNodeDescriptions, this.feedbackMessageService)
                         .executeTool(optionalDropTool.get(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured");
@@ -478,7 +483,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
                 var optionalTooltool = new ToolFinder().findDeleteTool(diagramElementDescription);
                 if (optionalTooltool.isPresent()) {
-                    result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                    result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
+                            capturedConvertedNodes, this.feedbackMessageService)
                             .executeTool(optionalTooltool.get(), child);
                 } else {
                     result = new Failure("No deletion tool configured");
@@ -527,7 +533,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
             var optionalTool = new ToolFinder().findNodeLabelEditTool(nodeDescription);
             if (optionalTool.isPresent()) {
-                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
+                        capturedConvertedNodes, this.feedbackMessageService)
                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
@@ -558,7 +565,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
             Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
             if (optionalTool.isPresent()) {
-                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes)
+                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
+                        capturedConvertedNodes, this.feedbackMessageService)
                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");

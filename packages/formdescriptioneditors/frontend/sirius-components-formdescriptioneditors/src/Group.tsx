@@ -11,14 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -523,33 +520,14 @@ export const Group = ({
           </div>
         </div>
       </GroupTooltip>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+      <Toast
+        message={message}
         open={!!message}
-        autoHideDuration={3000}
         onClose={() =>
           setState((prevState) => {
             return { ...prevState, message: null };
           })
         }
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() =>
-              setState((prevState) => {
-                return { ...prevState, message: null };
-              })
-            }>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
       />
     </div>
   );

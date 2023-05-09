@@ -11,20 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { Selection, ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import {
   ButtonStyleProps,
+  getTextDecorationLineValue,
   GQLButton,
   GQLToolbarAction,
-  GQLWidget,
   PropertySectionContext,
-  getTextDecorationLineValue,
 } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { deleteToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -386,13 +382,9 @@ export const ToolbarActionWidget = ({
           {state.buttonLabel}
         </Button>
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+      <Toast
+        message={state.message}
         open={!!state.message}
-        autoHideDuration={3000}
         onClose={() =>
           setState((prevState) => {
             return {
@@ -401,24 +393,6 @@ export const ToolbarActionWidget = ({
             };
           })
         }
-        message={state.message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() =>
-              setState((prevState) => {
-                return {
-                  ...prevState,
-                  message: null,
-                };
-              })
-            }>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
       />
     </div>
   );
