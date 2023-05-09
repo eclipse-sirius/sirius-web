@@ -46,7 +46,7 @@ Each character added/removed in the filtering bar updates the highlighted tree i
 User close the filtering bar with the close button.
 All highlighted items are not highlighted anymore.
 
-=== Scenario 2 - Hide elements using a rilter
+=== Scenario 2 - Hide elements using a filter
 
 User want to filter tree items containing a specific value as their label or part of their label.
 User type the shortcut to enable the filtering bar.

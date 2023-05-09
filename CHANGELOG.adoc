@@ -18,6 +18,7 @@
 === Architectural decision records
 
 - [ADR-098] Use the editing context to compute the metamodels
+- [ADR-099] Filter tree based representations
 
 === Breaking changes
 
