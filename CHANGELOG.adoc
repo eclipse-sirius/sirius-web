@@ -41,7 +41,7 @@ In the _styleDescription_, the definition of a color are now a select list of al
 - https://github.com/eclipse-sirius/sirius-components/issues/1304[#1304] [tree] Fix an issue where dropping an element from the tree to a diagram used the current selection instead of the dragged tree item.
 - https://github.com/eclipse-sirius/sirius-components/issues/1839[#1839] [view] Remove default AQL expression on Create Edge and Create Node since they did not work anymore.
 - https://github.com/eclipse-sirius/sirius-components/issues/1940[#1940] [sirius-web] Remove duplicated spring-boot-starter-test dependency in sirius-web-sample-application
-- https://github.com/eclipse-sirius/sirius-components/issues/1952[#1952] [view] Fix a regression introduced in 2023.4.0 where View-based Forms could no longer be instanciated
+- https://github.com/eclipse-sirius/sirius-components/issues/1952[#1952] [view] Fix a regression introduced in 2023.4.0 where View-based Forms could no longer be instantiated
 
 === New Features
 
@@ -52,6 +52,15 @@ A large set of features will have to be updated in order to stop considering the
 - https://github.com/eclipse-sirius/sirius-components/issues/1946[1#946] Enabled child extenders in the View DSL implementation.
 This allows downstream projects and applications to provide their own sub-types of the DSL types (e.g. new WidgetDescriptions).
 In addition to registering the extension metadmodel itself, users must provide a `ChildExtenderProvider` bean for their extensions to be properly integrated.
+- https://github.com/eclipse-sirius/sirius-components/issues/1918[#1918] [tree] Its is now possible to filter tree items in trees.
+After selected a tree item, hit Ctrl+f (or Cmd+f on macOS) to enable the filter bar.
++
+image:doc/screenshots/filterBar.png[Filter Bar,30%,30%]
++
+All visible tree items containing the value typed in the filter bar will be highlighted.
+The filter button inside the filter bar allows to filter (hide) all visible tree items not containing the value typed in the filter bar.
++
+image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%]
 
 === Improvements
 

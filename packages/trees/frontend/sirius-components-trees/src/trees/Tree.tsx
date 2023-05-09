@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { makeStyles } from '@material-ui/core/styles';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
-import { TreeProps } from './Tree.types';
+import { FilterBar } from './FilterBar';
+import { TreeProps, TreeState } from './Tree.types';
 
 const useTreeStyle = makeStyles((_) => ({
   ul: {
@@ -25,10 +26,19 @@ const useTreeStyle = makeStyles((_) => ({
 export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection, readOnly }: TreeProps) => {
   const classes = useTreeStyle();
   const treeElement = useRef(null);
+  const initialState: TreeState = {
+    filterBar: false,
+    filterBarText: null,
+    filterBarTreeFiltering: false,
+  };
+  const [state, setState] = useState<TreeState>(initialState);
 
   useEffect(() => {
     const downHandler = (event) => {
-      if (
+      if ((event.ctrlKey === true || event.metaKey === true) && event.key === 'f' && event.target.tagName !== 'INPUT') {
+        event.preventDefault();
+        setState({ filterBar: true, filterBarText: '', filterBarTreeFiltering: false });
+      } else if (
         (event.key === 'ArrowLeft' ||
           event.key === 'ArrowRight' ||
           event.key === 'ArrowUp' ||
@@ -93,24 +103,50 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
     return null;
   }, [treeElement, onExpand]);
 
+  let filterBar: JSX.Element;
+  if (state.filterBar) {
+    filterBar = (
+      <FilterBar
+        onTextChange={(event) => {
+          const {
+            target: { value },
+          } = event;
+          setState((prevState) => {
+            return { ...prevState, filterBarText: value };
+          });
+        }}
+        onFilterButtonClick={(enabled) =>
+          setState((prevState) => {
+            return { ...prevState, filterBarTreeFiltering: enabled };
+          })
+        }
+        onClose={() => setState({ filterBar: false, filterBarText: null, filterBarTreeFiltering: false })}
+      />
+    );
+  }
   return (
-    <div ref={treeElement}>
-      <ul className={classes.ul} data-testid="tree-root-elements">
-        {tree.children.map((item) => (
-          <li key={item.id}>
-            <TreeItem
-              editingContextId={editingContextId}
-              treeId={tree.id}
-              item={item}
-              depth={1}
-              onExpand={onExpand}
-              selection={selection}
-              setSelection={setSelection}
-              readOnly={readOnly}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      {filterBar}
+      <div ref={treeElement}>
+        <ul className={classes.ul} data-testid="tree-root-elements">
+          {tree.children.map((item) => (
+            <li key={item.id}>
+              <TreeItem
+                editingContextId={editingContextId}
+                treeId={tree.id}
+                item={item}
+                depth={1}
+                onExpand={onExpand}
+                selection={selection}
+                setSelection={setSelection}
+                readOnly={readOnly}
+                textToHighlight={state.filterBarText}
+                isFilterEnabled={state.filterBarTreeFiltering}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 };
