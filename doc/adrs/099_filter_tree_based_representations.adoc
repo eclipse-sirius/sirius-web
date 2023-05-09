@@ -1,0 +1,54 @@
+= ADR-099 - Filtering tree based representations
+
+== Context
+
+It is quite difficult to identify specific tree item(s) in a tree when this tree contains lots of tree items.
+
+== Decision
+
+Add a filtering capacity in the Explorer View and other tree based representations, by providing a textual filtering of the tree just like what is being done in VSCode using a simple textfield.
+
+The solution should not slow-down the user interface.
+The user interface must remains as smooth as it was before the developments of this filter.
+The results displayed by the filter should be visible immediately, i.e. without any latency.
+Otherwise, if the solution can only be implemented with a latency, then during the computation time, a "busy" indicator should be displayed, informing the user his request is processing.
+
+The implementation of the solution will only modify the frontend.
+
+=== Frontend
+
+A new `FilterBar.tsx` component will be introduced.
+
+[source,typescript]
+----
+export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: FilterBarProps) => {
+    ...
+}
+----
+
+A new `FilterBar.types.ts` file will be introduced.
+
+[source,typescript]
+----
+export interface FilterBarProps {
+  onTextChange: (newFilterText: string) => void;
+  onFilterButtonClick: (enabled: boolean) => void;
+  onClose: () => void;
+}
+----
+
+`Tree.tsx` will be able to detect a new shortcut (ctrl+f).
+This shortcut will enable a filter bar: a simple textfield, a filter button and a close button.
+Material-UI will be used to provide the textfield and buttons.
+
+`TreeItem.tsx` will be modified to be able to highlight the text typed in the filter bar and to potentially hide itself when the filter button is enabled.
+
+== Status
+
+WIP.
+
+== Consequences
+
+In most web browsers, the ctrl+f shortcut allows to enable the web browser search.
+With this new feature, when the Explorer View of sirius-components or all other tree based representation is selected in sirius-components based applications, the ctrl+f shortcut will enable the filter bar instead.
+We could choose to only enable the filter bar when a tree item is selected to reduce the scope of the ctrl+f shortcut overriding.
