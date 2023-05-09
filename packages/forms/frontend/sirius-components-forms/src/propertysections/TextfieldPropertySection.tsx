@@ -11,16 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import IconButton from '@material-ui/core/IconButton';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Popover from '@material-ui/core/Popover';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
 import { GQLTextarea, GQLWidget } from '../form/FormEventFragments.types';
@@ -389,22 +387,7 @@ export const TextfieldPropertySection = ({
         }
       />
       {proposalsList}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' })}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => dispatch({ type: 'HIDE_TOAST' })}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={message} open={toast === 'visible'} onClose={() => dispatch({ type: 'HIDE_TOAST' })} />
     </div>
   );
 };

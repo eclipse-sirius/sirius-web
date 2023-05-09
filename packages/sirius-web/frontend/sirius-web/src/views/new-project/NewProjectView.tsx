@@ -12,13 +12,11 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { Form, FormContainer } from '@eclipse-sirius/sirius-components';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -162,25 +160,10 @@ export const NewProjectView = () => {
         </main>
         <Footer />
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );

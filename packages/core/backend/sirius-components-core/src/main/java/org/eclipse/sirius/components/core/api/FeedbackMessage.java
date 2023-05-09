@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo and others.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export * from './contexts/ServerContext';
-export * from './contexts/ServerContext.types';
-export * from './dataTransferTypes';
-export * from './materialui';
-export * from './theme';
-export * from './workbench/Panels';
-export * from './workbench/RepresentationContext';
-export * from './workbench/Toast';
-export * from './workbench/Workbench';
-export * from './workbench/Workbench.types';
-export * from './workbench/WorkbenchViewContribution';
+package org.eclipse.sirius.components.core.api;
+
+import java.util.Objects;
+
+/**
+ * Record used to represent a feedback message.
+ *
+ * @author frouene
+ */
+public record FeedbackMessage(String message, FeedbackLevel level) {
+
+    public FeedbackMessage {
+        Objects.requireNonNull(message);
+        Objects.requireNonNull(level);
+    }
+
+}

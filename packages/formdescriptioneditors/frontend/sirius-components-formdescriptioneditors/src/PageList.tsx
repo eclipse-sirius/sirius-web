@@ -11,17 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
-import { PageListProps, PageListState } from './PageList.types';
-import { Page } from './Page';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
+import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddPageInput,
   GQLAddPageMutationData,
@@ -36,7 +32,8 @@ import {
   GQLMovePageMutationVariables,
   GQLMovePagePayload,
 } from './FormDescriptionEditorEventFragment.types';
-import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
+import { Page } from './Page';
+import { PageListProps, PageListState } from './PageList.types';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -373,33 +370,14 @@ export const PageList = ({
         selection={selection}
         setSelection={setSelection}
       />
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+      <Toast
+        message={message}
         open={!!message}
-        autoHideDuration={3000}
         onClose={() =>
           setState((prevState) => {
             return { ...prevState, message: null };
           })
         }
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() =>
-              setState((prevState) => {
-                return { ...prevState, message: null };
-              })
-            }>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
       />
     </div>
   );

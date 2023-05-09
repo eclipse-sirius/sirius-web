@@ -11,12 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
 import { addWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
@@ -248,33 +246,14 @@ export const FlexboxContainerWidget = ({
         onDrop={handleDrop}>
         <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+      <Toast
+        message={message}
         open={!!message}
-        autoHideDuration={3000}
         onClose={() =>
           setState((prevState) => {
             return { ...prevState, message: null };
           })
         }
-        message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() =>
-              setState((prevState) => {
-                return { ...prevState, message: null };
-              })
-            }>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
       />
     </div>
   );

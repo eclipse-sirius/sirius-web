@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
@@ -45,20 +46,24 @@ import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolIma
  * @author pcdavid
  */
 public class ToolConverter {
+
     private static final String CONVERTED_NODES_VARIABLE = "convertedNodes";
 
     private final IObjectService objectService;
 
     private final IEditService editService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Function<EObject, UUID> idProvider = (eObject) -> {
         // DiagramElementDescription should have a proper id.
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    public ToolConverter(IObjectService objectService, IEditService editService, IViewToolImageProvider viewToolImageProvider) {
+    public ToolConverter(IObjectService objectService, IEditService editService, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
+        this.feedbackMessageService = feedbackMessageService;
     }
 
     /**
@@ -209,7 +214,8 @@ public class ToolConverter {
     private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedConvertedNodes,
             Tool tool, VariableManager variableManager) {
         IDiagramContext diagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
-        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext, capturedConvertedNodes);
+        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext,
+                capturedConvertedNodes, this.feedbackMessageService);
         return operationInterpreter.executeTool(tool, variableManager);
     }
 }

@@ -16,13 +16,11 @@ import {
   Selection,
   SelectionEntry,
   ServerContext,
+  Toast,
 } from '@eclipse-sirius/sirius-components-core';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
@@ -1217,25 +1215,10 @@ export const DiagramRepresentation = ({
       />
       {content}
       {selectModelElementDialog}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </div>
   );

@@ -20,6 +20,7 @@
 - [ADR-098] Use the editing context to compute the metamodels
 - [ADR-099] Filter tree based representations
 - [ADR-100] Add support for custom widgets
+- [ADR-101] Feedback messages on actions
 
 === Breaking changes
 
@@ -75,6 +76,8 @@ See link:how-to/contribute-custom-widget.adoc[the documentation] for more detail
 - https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name. The new algorithm does the minimum possible to place node without overlap.
 - https://github.com/eclipse-sirius/sirius-components/issues/1985[|#1985] [sirius-web] It is now possible to use in-memory View-based representations by registering them in the new `InMemoryViewRegistry`.
 These representations can be created programmatically or loaded from `.view` EMF models on startup, and do not need to be stored as documents inside a project in the database.
+
+- https://github.com/eclipse-sirius/sirius-components/issues/1912[#1912] [core] Add the possibility to send feedback messages to the frontend after an action.
 
 === Improvements
 

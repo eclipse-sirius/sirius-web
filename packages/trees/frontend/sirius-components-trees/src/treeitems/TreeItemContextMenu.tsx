@@ -11,13 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import IconButton from '@material-ui/core/IconButton';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import React, { useEffect, useState } from 'react';
@@ -63,7 +61,6 @@ export const TreeItemContextMenu = ({
   onClose,
 }: TreeItemContextMenuProps) => {
   const [state, setState] = useState<TreeItemContextMenuState>({ message: null });
-  const closeToast = () => setState({ message: null });
 
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
@@ -155,22 +152,7 @@ export const TreeItemContextMenu = ({
           </MenuItem>
         ) : null}
       </Menu>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={state.message != null}
-        autoHideDuration={3000}
-        onClose={closeToast}
-        message={state.message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={closeToast}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={state.message} open={!!state.message} onClose={() => setState({ message: null })} />
     </>
   );
 };

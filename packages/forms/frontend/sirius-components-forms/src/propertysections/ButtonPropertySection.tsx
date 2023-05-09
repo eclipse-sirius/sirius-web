@@ -11,12 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -193,22 +190,7 @@ export const ButtonPropertySection = ({
         ) : null}
         {widget.buttonLabel}
       </Button>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setMessage(null)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </div>
   );
 };

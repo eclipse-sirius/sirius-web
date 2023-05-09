@@ -11,15 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import {
   DeleteProjectModalContext,
@@ -123,25 +121,10 @@ export const DeleteProjectModal = ({ projectId, onDelete, onClose }: DeleteProje
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );

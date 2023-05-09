@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo and others.
+ * Copyright (c) 2022, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { Toast, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Close as CloseIcon, ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
 import { GQLValidationEventSubscription, GQLValidationEventVariables } from './ValidationView.types';
@@ -153,25 +151,10 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
   return (
     <>
       {content}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );

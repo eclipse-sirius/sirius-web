@@ -12,17 +12,14 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { FileUpload, Form, sendFile } from '@eclipse-sirius/sirius-components';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormGroup from '@material-ui/core/FormGroup';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
-import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -158,25 +155,10 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );

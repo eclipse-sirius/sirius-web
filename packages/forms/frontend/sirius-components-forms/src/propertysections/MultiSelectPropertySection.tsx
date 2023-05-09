@@ -11,16 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
+import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import IconButton from '@material-ui/core/IconButton';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
@@ -208,22 +206,7 @@ export const MultiSelectPropertySection = ({
         ))}
       </Select>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setMessage(null)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
+      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </FormControl>
   );
 };

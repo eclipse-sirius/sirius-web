@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -46,21 +48,28 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     private final IDiagramContext diagramContext;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes;
 
     public DiagramOperationInterpreter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes) {
+            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.diagramContext = diagramContext;
         this.convertedNodes = Objects.requireNonNull(convertedNodes);
+        this.feedbackMessageService = feedbackMessageService;
     }
 
     public IStatus executeTool(Tool tool, VariableManager variableManager) {
         Optional<VariableManager> optionalVariableManager = this.executeOperations(tool.getBody(), variableManager);
         if (optionalVariableManager.isEmpty()) {
-            return new Failure(String.format("Something went wrong while executing the tool '%s'", tool.getName()));
+            var feedbackMessages = new ArrayList<>(List.of(String.format("Something went wrong while executing the tool '%s'", tool.getName())));
+            if (Objects.nonNull(this.feedbackMessageService)) {
+                feedbackMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+            }
+            return new Failure(String.join(", ", feedbackMessages));
         }
         return new Success();
     }

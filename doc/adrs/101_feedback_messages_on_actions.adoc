@@ -1,0 +1,62 @@
+= ADR-101 - Add the possibility to send feedback messages to the frontend after an action
+
+== Context
+
+After an action, only technical error messages can be displayed on the UI.
+We want to offer the specifier the ability to send back custom return messages to the end user.
+
+== Decision
+
+We will provide a new Java service that specifiers can invoke during the execution of their actions (tools behaviors) to stack messages.
+These messages will be displayed on the UI after the action resolution.
+
+=== Backend
+
+The interface will provide the following method :
+
+[source,java]
+----
+interface IFeedbackMessageService {
+    void addFeedbackMessage(String message, FeedbackLevel level);
+}
+----
+with
+[source,java]
+----
+enum FeedbackLevel {
+    DEBUG,
+    INFO,
+    WARNING,
+    ERROR,
+}
+----
+
+The implementation must have a scope to limit the _bean_ life cycle to the action only, in order to just return at the end of the action the messages stacked by the services called by the action.
+The spring scope of type _request_ provides this limitation.
+
+At first, we will join all the _string messages_ stacked in a single string, and append it to the existing `Failure` (`IStatus` implementation) _message_ parameter.
+In doing so, we can keep the actual _frontend_ representation for this message.
+
+To differentiate the level applied to the message, we will prefix it with an emoji representing this level.
+
+=== Frontend
+
+To begin, we will not change the actual representation for an action error message.
+But in order to facilitate the maintenance and the evolutions, we will mutualize all these representations in a single custom component `Toast`.
+
+with
+
+[source,typescript]
+----
+export interface ToastProps {
+    message?: string;
+    open?: boolean;
+    onClose?: () => void;
+}
+----
+
+Next, we will change this representation to display, for each stacked message, a unique _notification_ with a style depending on the chosen level.
+
+== Status
+
+Accepted.

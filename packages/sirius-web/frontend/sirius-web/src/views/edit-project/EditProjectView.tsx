@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { Representation, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
+import { Representation, Toast, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
   ExplorerView,
@@ -21,12 +21,9 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import CloseIcon from '@material-ui/icons/Close';
 import Filter from '@material-ui/icons/Filter';
 import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -43,12 +40,12 @@ import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariab
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
+  editProjectViewMachine,
   HandleFetchedProjectEvent,
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
   ShowToastEvent,
-  editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 
@@ -199,25 +196,10 @@ export const EditProjectView = () => {
         {navbar}
         {main}
       </div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={toast === 'visible'}
-        autoHideDuration={3000}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+      <Toast
         message={message}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
+        open={toast === 'visible'}
+        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );
