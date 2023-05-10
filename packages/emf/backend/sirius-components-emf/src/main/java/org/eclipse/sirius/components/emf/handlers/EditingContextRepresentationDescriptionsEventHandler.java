@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
-import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -89,7 +88,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
             List<RepresentationDescriptionMetadata> result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
             payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.id(), result));
         } else {
-            String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), CreateChildInput.class.getSimpleName());
+            String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), EditingContextRepresentationDescriptionsInput.class.getSimpleName());
             payloadSink.tryEmitValue(new ErrorPayload(input.id(), message));
         }
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input));
