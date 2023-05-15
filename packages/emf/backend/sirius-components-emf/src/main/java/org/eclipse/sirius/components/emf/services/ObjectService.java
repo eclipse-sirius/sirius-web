@@ -50,6 +50,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObjectService implements IObjectService {
 
+    public static final String DEFAULT_ICON_PATH = "/icons/svg/Default.svg";
+
     private static final String DEFAULT_LABEL_FEATURE = "name";
 
     private static final String ID_SEPARATOR = "#";
@@ -164,7 +166,7 @@ public class ObjectService implements IObjectService {
                 }
             }
         }
-        return null;
+        return DEFAULT_ICON_PATH;
     }
 
     private String getImageRelativePath(String imageFullPath) {

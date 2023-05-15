@@ -88,6 +88,7 @@ import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.SelectionDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
@@ -287,6 +288,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createNodePalette();
             case ViewPackage.EDGE_PALETTE:
                 return this.createEdgePalette();
+            case ViewPackage.SELECTION_DESCRIPTION:
+                return this.createSelectionDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -1167,6 +1170,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public EdgePalette createEdgePalette() {
         EdgePaletteImpl edgePalette = new EdgePaletteImpl();
         return edgePalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SelectionDescription createSelectionDescription() {
+        SelectionDescriptionImpl selectionDescription = new SelectionDescriptionImpl();
+        return selectionDescription;
     }
 
     /**

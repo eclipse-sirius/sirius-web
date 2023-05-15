@@ -1683,6 +1683,29 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.SelectionDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectionDescriptionItemProvider selectionDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.SelectionDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSelectionDescriptionAdapter() {
+        if (this.selectionDescriptionItemProvider == null) {
+            this.selectionDescriptionItemProvider = new SelectionDescriptionItemProvider(this);
+        }
+
+        return this.selectionDescriptionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2073,6 +2096,8 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.nodePaletteItemProvider.dispose();
         if (this.edgePaletteItemProvider != null)
             this.edgePaletteItemProvider.dispose();
+        if (this.selectionDescriptionItemProvider != null)
+            this.selectionDescriptionItemProvider.dispose();
     }
 
 }

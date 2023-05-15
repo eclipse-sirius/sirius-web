@@ -89,6 +89,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.SelectionDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.Style;
@@ -589,6 +590,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEdgePalette(EdgePalette object) {
             return ViewAdapterFactory.this.createEdgePaletteAdapter();
+        }
+
+        @Override
+        public Adapter caseSelectionDescription(SelectionDescription object) {
+            return ViewAdapterFactory.this.createSelectionDescriptionAdapter();
         }
 
         @Override
@@ -1306,8 +1312,8 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.BarChartDescription
+     * @generated
      */
     public Adapter createBarChartDescriptionAdapter() {
         return null;
@@ -1320,8 +1326,8 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.PieChartDescription
+     * @generated
      */
     public Adapter createPieChartDescriptionAdapter() {
         return null;
@@ -1334,8 +1340,8 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.FlexboxContainerDescription
+     * @generated
      */
     public Adapter createFlexboxContainerDescriptionAdapter() {
         return null;
@@ -1348,8 +1354,8 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.ButtonDescription
+     * @generated
      */
     public Adapter createButtonDescriptionAdapter() {
         return null;
@@ -1362,8 +1368,8 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.ImageDescription
+     * @generated
      */
     public Adapter createImageDescriptionAdapter() {
         return null;
@@ -1802,6 +1808,20 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEdgePaletteAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.SelectionDescription
+     * <em>Selection Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.SelectionDescription
+     * @generated
+     */
+    public Adapter createSelectionDescriptionAdapter() {
         return null;
     }
 

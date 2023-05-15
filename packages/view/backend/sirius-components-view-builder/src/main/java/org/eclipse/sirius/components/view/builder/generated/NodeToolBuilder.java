@@ -62,6 +62,15 @@ public class NodeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for SelectionDescription.
+     *
+     * @generated
+     */
+    public NodeToolBuilder selectionDescription(org.eclipse.sirius.components.view.SelectionDescription value) {
+        this.getNodeTool().setSelectionDescription(value);
+        return this;
+    }
 
 }
 

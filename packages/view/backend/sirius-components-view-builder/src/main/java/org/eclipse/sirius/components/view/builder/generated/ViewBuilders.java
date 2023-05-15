@@ -675,5 +675,14 @@ public class ViewBuilders {
         return new EdgePaletteBuilder();
     }
 
+    /**
+     * Instantiate a SelectionDescriptionBuilder .
+     * @generated
+     */
+    @SuppressWarnings("checkstyle:JavadocType")
+    public SelectionDescriptionBuilder newSelectionDescription() {
+        return new SelectionDescriptionBuilder();
+    }
+
 
 }
