@@ -136,9 +136,14 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         List<ITool> diagramTools = new ArrayList<>();
         for (NodeTool nodeTool : viewDiagramDescription.getPalette().getNodeTools()) {
             String toolId = this.idProvider.apply(nodeTool).toString();
+            String selectionDescriptionId = "";
+            if (nodeTool.getSelectionDescription() != null) {
+                selectionDescriptionId = this.objectService.getId(nodeTool.getSelectionDescription());
+            }
             var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                     .label(nodeTool.getName())
                     .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
+                    .selectionDescriptionId(selectionDescriptionId)
                     .targetDescriptions(List.of())
                     .appliesToDiagramRoot(true)
                     .build();
@@ -168,11 +173,17 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
     private List<ITool> createNodePaletteTools(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, NodeDescription nodeDescription) {
         List<ITool> tools = new ArrayList<>();
+
         for (NodeTool nodeTool : new ToolFinder().findNodeTools(viewNodeDescription)) {
             String toolId = this.idProvider.apply(nodeTool).toString();
+            String selectionDescriptionId = "";
+            if (nodeTool.getSelectionDescription() != null) {
+                selectionDescriptionId = this.objectService.getId(nodeTool.getSelectionDescription());
+            }
             var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                     .label(nodeTool.getName())
                     .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
+                    .selectionDescriptionId(selectionDescriptionId)
                     .targetDescriptions(List.of())
                     .appliesToDiagramRoot(false)
                     .build();
@@ -207,10 +218,15 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         List<NodeTool> paletteSingleTargetTools = new ToolFinder().findNodeTools(viewEdgeDescription);
         for (NodeTool nodeTool : paletteSingleTargetTools) {
             String toolId = this.idProvider.apply(nodeTool).toString();
+            String selectionDescriptionId = "";
+            if (nodeTool.getSelectionDescription() != null) {
+                selectionDescriptionId = this.objectService.getId(nodeTool.getSelectionDescription());
+            }
             var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                     .label(nodeTool.getName())
                     .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
                     .targetDescriptions(List.of())
+                    .selectionDescriptionId(selectionDescriptionId)
                     .appliesToDiagramRoot(false)
                     .build();
 

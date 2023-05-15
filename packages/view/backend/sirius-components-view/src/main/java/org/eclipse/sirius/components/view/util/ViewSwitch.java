@@ -88,6 +88,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.RichTextDescription;
 import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.SelectionDescription;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.Style;
@@ -1026,6 +1027,13 @@ public class ViewSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case ViewPackage.SELECTION_DESCRIPTION: {
+                SelectionDescription selectionDescription = (SelectionDescription) theEObject;
+                T result = this.caseSelectionDescription(selectionDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -1782,7 +1790,8 @@ public class ViewSwitch<T> extends Switch<T> {
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Bar Chart Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1796,7 +1805,8 @@ public class ViewSwitch<T> extends Switch<T> {
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Pie Chart Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1810,7 +1820,8 @@ public class ViewSwitch<T> extends Switch<T> {
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Flexbox Container Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1824,7 +1835,8 @@ public class ViewSwitch<T> extends Switch<T> {
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Button Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1838,7 +1850,8 @@ public class ViewSwitch<T> extends Switch<T> {
      * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
      * -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Image Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -2313,6 +2326,21 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEdgePalette(EdgePalette object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Selection Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Selection Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSelectionDescription(SelectionDescription object) {
         return null;
     }
 

@@ -640,6 +640,14 @@ public interface ViewFactory extends EFactory {
     EdgePalette createEdgePalette();
 
     /**
+     * Returns a new object of class '<em>Selection Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Selection Description</em>'.
+     * @generated
+     */
+    SelectionDescription createSelectionDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
