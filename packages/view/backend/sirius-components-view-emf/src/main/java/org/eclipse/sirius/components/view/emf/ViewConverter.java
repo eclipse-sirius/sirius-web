@@ -16,10 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.selection.description.SelectionDescription;
+import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.slf4j.Logger;
@@ -45,12 +56,15 @@ public class ViewConverter implements IViewConverter {
 
     private final ApplicationContext applicationContext;
 
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext) {
+    private final IObjectService objectService;
+
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
         this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class));
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     /**
@@ -68,6 +82,9 @@ public class ViewConverter implements IViewConverter {
                         .map(representationDescription -> this.convert(representationDescription, allViewsRepresentationDescriptions, interpreter))
                         .flatMap(Optional::stream)
                         .toList());
+
+                result.addAll(this.convertSelectionsDialogs(view, interpreter));
+
             } catch (NullPointerException exception) {
                 // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
                 // currently being created or edited.
@@ -77,13 +94,51 @@ public class ViewConverter implements IViewConverter {
         return result;
     }
 
+    private List<IRepresentationDescription> convertSelectionsDialogs(View view, AQLInterpreter interpreter) {
+        return view.getDescriptions().stream().filter(DiagramDescription.class::isInstance)
+            .flatMap(representationDescription -> this.getAllContent(representationDescription))
+            .filter(org.eclipse.sirius.components.view.SelectionDescription.class::isInstance)
+            .map(org.eclipse.sirius.components.view.SelectionDescription.class::cast)
+            .map(selectionDescription -> this.convertSelectionDialog(selectionDescription, interpreter))
+            .toList();
+    }
+
+    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.SelectionDescription selectionDescription, AQLInterpreter interpreter) {
+        String selectionDescriptionId = this.objectService.getId(selectionDescription);
+
+        return SelectionDescription.newSelectionDescription(selectionDescriptionId)
+                .objectsProvider(variableManager -> {
+                    Result result = interpreter.evaluateExpression(variableManager.getVariables(), selectionDescription.getSelectionCandidatesExpression());
+                    return result.asObjects().orElse(List.of()).stream()
+                            .filter(Objects::nonNull)
+                            .toList();
+                })
+                .messageProvider(variableManager -> {
+                    String message = selectionDescription.getSelectionMessage();
+                    if (message == null) {
+                        message = "";
+                    }
+                    return message;
+                })
+                .idProvider(new GetOrCreateRandomIdProvider())
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
+                .iconURLProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .selectionObjectsIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .label("Selection Description")
+                .canCreatePredicate(variableManager -> false)
+                .build();
+    }
+
+    private Stream<EObject> getAllContent(EObject representationDescription) {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(representationDescription.eAllContents(), Spliterator.ORDERED), false);
+    }
+
     private Optional<IRepresentationDescription> convert(RepresentationDescription representationDescription, List<RepresentationDescription> allViewsRepresentationDescriptions, AQLInterpreter aqlInterpreter) {
-        // @formatter:off
         return this.representationDescriptionConverters.stream()
                 .filter(converter -> converter.canConvert(representationDescription))
                 .map(converter -> converter.convert(representationDescription, allViewsRepresentationDescriptions, aqlInterpreter))
                 .findFirst();
-        // @formatter:on
     }
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {

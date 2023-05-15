@@ -190,7 +190,10 @@
         eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTool" eSuperTypes="#//Tool"/>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeTool" eSuperTypes="#//Tool">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selectionDescription" eType="#//SelectionDescription"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeTool" eSuperTypes="#//Tool">
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetElementDescriptions"
         upperBound="-1" eType="#//DiagramElementDescription"/>
@@ -527,5 +530,10 @@
         eType="#//NodeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeReconnectionTools"
         upperBound="-1" eType="#//EdgeReconnectionTool" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SelectionDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionCandidatesExpression"
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionMessage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

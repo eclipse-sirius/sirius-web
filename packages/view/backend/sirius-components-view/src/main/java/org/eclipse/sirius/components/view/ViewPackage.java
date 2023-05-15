@@ -1922,13 +1922,22 @@ public interface ViewPackage extends EPackage {
     int NODE_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Selection Description</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__SELECTION_DESCRIPTION = TOOL_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 0;
+    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6483,6 +6492,52 @@ public interface ViewPackage extends EPackage {
     int EDGE_PALETTE_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.SelectionDescriptionImpl <em>Selection
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.SelectionDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectionDescription()
+     * @generated
+     */
+    int SELECTION_DESCRIPTION = 87;
+
+    /**
+     * The feature id for the '<em><b>Selection Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = 0;
+
+    /**
+     * The feature id for the '<em><b>Selection Message</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DESCRIPTION__SELECTION_MESSAGE = 1;
+
+    /**
+     * The number of structural features of the '<em>Selection Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DESCRIPTION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Selection Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout Direction</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6490,7 +6545,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 87;
+    int LAYOUT_DIRECTION = 88;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
@@ -6500,7 +6555,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 88;
+    int ARROW_STYLE = 89;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -6510,7 +6565,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.LineStyle
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      */
-    int LINE_STYLE = 89;
+    int LINE_STYLE = 90;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.NodeContainmentKind <em>Node Containment
@@ -6520,7 +6575,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 90;
+    int NODE_CONTAINMENT_KIND = 91;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -6530,7 +6585,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 91;
+    int SYNCHRONIZATION_POLICY = 92;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
@@ -6540,7 +6595,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 92;
+    int GROUP_DISPLAY_MODE = 93;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -6550,7 +6605,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 93;
+    int FLEX_DIRECTION = 94;
 
     /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6559,7 +6614,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 94;
+    int IDENTIFIER = 95;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -6569,7 +6624,7 @@ public interface ViewPackage extends EPackage {
      * @see java.lang.String
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      */
-    int INTERPRETED_EXPRESSION = 95;
+    int INTERPRETED_EXPRESSION = 96;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6578,7 +6633,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 96;
+    int DOMAIN_TYPE = 97;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6587,7 +6642,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 97;
+    int COLOR = 98;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6595,7 +6650,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 98;
+    int LENGTH = 99;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -7588,6 +7643,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EClass getNodeTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.NodeTool#getSelectionDescription <em>Selection Description</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Selection Description</em>'.
+     * @see org.eclipse.sirius.components.view.NodeTool#getSelectionDescription()
+     * @see #getNodeTool()
+     * @generated
+     */
+    EReference getNodeTool_SelectionDescription();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.EdgeTool <em>Edge Tool</em>}'. <!--
@@ -9733,6 +9800,40 @@ public interface ViewPackage extends EPackage {
     EReference getEdgePalette_EdgeReconnectionTools();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.SelectionDescription <em>Selection
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Selection Description</em>'.
+     * @see org.eclipse.sirius.components.view.SelectionDescription
+     * @generated
+     */
+    EClass getSelectionDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.SelectionDescription#getSelectionCandidatesExpression <em>Selection
+     * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Selection Candidates Expression</em>'.
+     * @see org.eclipse.sirius.components.view.SelectionDescription#getSelectionCandidatesExpression()
+     * @see #getSelectionDescription()
+     * @generated
+     */
+    EAttribute getSelectionDescription_SelectionCandidatesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.SelectionDescription#getSelectionMessage <em>Selection Message</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Selection Message</em>'.
+     * @see org.eclipse.sirius.components.view.SelectionDescription#getSelectionMessage()
+     * @see #getSelectionDescription()
+     * @generated
+     */
+    EAttribute getSelectionDescription_SelectionMessage();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout
      * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -10632,6 +10733,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass NODE_TOOL = eINSTANCE.getNodeTool();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Description</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_TOOL__SELECTION_DESCRIPTION = eINSTANCE.getNodeTool_SelectionDescription();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.EdgeToolImpl <em>Edge
@@ -12294,6 +12403,32 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = eINSTANCE.getEdgePalette_EdgeReconnectionTools();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.SelectionDescriptionImpl
+         * <em>Selection Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.SelectionDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSelectionDescription()
+         * @generated
+         */
+        EClass SELECTION_DESCRIPTION = eINSTANCE.getSelectionDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = eINSTANCE.getSelectionDescription_SelectionCandidatesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Message</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDescription_SelectionMessage();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout

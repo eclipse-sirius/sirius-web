@@ -132,6 +132,7 @@ public class ToolConverter {
                         return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
                     })
                     .targetDescriptions(List.of())
+                    .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
                     .appliesToDiagramRoot(true)
                     .build();
             // @formatter:on
@@ -156,6 +157,7 @@ public class ToolConverter {
                         return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
                     })
                     .targetDescriptions(List.of())
+                    .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
                     .appliesToDiagramRoot(false)
                     .build();
             // @formatter:on
