@@ -30,22 +30,32 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.get('.MuiDialog-container').should('be.visible');
   });
 
-  //fails during build
   it('can create a new object by clicking on the create button', () => {
     cy.getByTestId('robot-more').click();
 
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('create-object').should('not.be.disabled');
+
+    cy.getByTestId('domain').click();
+    cy.get('[data-value="http://www.obeo.fr/dsl/designer/sample/flow"]').click();
+    cy.getByTestId('type').click();
+    cy.get('[data-value="System"]').click();
 
     cy.getByTestId('create-object').click();
 
     cy.getByTestId('explorerTree').contains('System');
   });
 
-  //fails during build
   it('can select the created root object', () => {
     cy.getByTestId('robot-more').click();
 
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('create-object').should('not.be.disabled');
+
+    cy.getByTestId('domain').click();
+    cy.get('[data-value="http://www.obeo.fr/dsl/designer/sample/flow"]').click();
+    cy.getByTestId('type').click();
+    cy.get('[data-value="System"]').click();
 
     cy.getByTestId('create-object').click();
 
