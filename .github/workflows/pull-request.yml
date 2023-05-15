@@ -2,6 +2,9 @@ name: Pull Request Checks
 
 on:
   pull_request:
+    paths-ignore:
+      - "CHANGELOG.adoc"
+      - "doc/**"
     types:
       [
         opened,
