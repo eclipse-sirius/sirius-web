@@ -19,11 +19,12 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Description of the class.
@@ -209,17 +210,19 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalClassNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+        var optionalInterfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
 
-        EList<EdgeTool> edgeTools = classNodeDescription.getPalette().getEdgeTools();
-        edgeTools.stream().filter(tool -> tool.getName().equals("Extends")).findFirst().ifPresent(extendsClassEdgeTool -> {
-            extendsClassEdgeTool.getTargetElementDescriptions().add(classNodeDescription);
-        });
-        edgeTools.stream().filter(tool -> tool.getName().equals("Implements")).findFirst().ifPresent(extendsClassEdgeTool -> {
-            extendsClassEdgeTool.getTargetElementDescriptions().add(interfaceNodeDescription);
-        });
+        if (optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            EList<EdgeTool> edgeTools = optionalClassNodeDescription.get().getPalette().getEdgeTools();
+            edgeTools.stream().filter(tool -> tool.getName().equals("Extends")).findFirst().ifPresent(extendsClassEdgeTool -> {
+                extendsClassEdgeTool.getTargetElementDescriptions().add(optionalClassNodeDescription.get());
+            });
+            edgeTools.stream().filter(tool -> tool.getName().equals("Implements")).findFirst().ifPresent(extendsClassEdgeTool -> {
+                extendsClassEdgeTool.getTargetElementDescriptions().add(optionalInterfaceNodeDescription.get());
+            });
+        }
     }
 
 }

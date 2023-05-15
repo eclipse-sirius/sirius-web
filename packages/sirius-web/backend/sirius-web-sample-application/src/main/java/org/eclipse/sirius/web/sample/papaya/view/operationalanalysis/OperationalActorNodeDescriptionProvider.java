@@ -17,11 +17,11 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Description of the operational actor.
@@ -74,12 +74,13 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var operationalActorNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActor");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
-
-        diagramDescription.getNodeDescriptions().add(operationalActorNodeDescription);
-        operationalActorNodeDescription.getReusedChildNodeDescriptions().add(operationalActivityNodeDescription);
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalOperationalActorNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActor");
+        var optionalOperationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+        if (optionalOperationalActorNodeDescription.isPresent() && optionalOperationalActivityNodeDescription.isPresent()) {
+            diagramDescription.getNodeDescriptions().add(optionalOperationalActorNodeDescription.get());
+            optionalOperationalActorNodeDescription.get().getReusedChildNodeDescriptions().add(optionalOperationalActivityNodeDescription.get());
+        }
     }
 
 }

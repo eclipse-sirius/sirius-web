@@ -35,5 +35,6 @@
 		<module>sirius-components-view</module>
 		<module>sirius-components-view-edit</module>
 		<module>sirius-components-view-emf</module>
+		<module>sirius-components-view-builder</module>
 	</modules>
 </project>

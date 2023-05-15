@@ -19,9 +19,9 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 
 /**
  * Used to create the extends class edge description.
@@ -59,12 +59,13 @@ public class CDExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionPr
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var extendsClassEdgeDescription = cache.getEdgeDescription(NAME);
-        var classNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
-
-        diagramDescription.getEdgeDescriptions().add(extendsClassEdgeDescription);
-        extendsClassEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-        extendsClassEdgeDescription.getTargetNodeDescriptions().add(classNodeDescription);
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalExtendsClassEdgeDescription = cache.getEdgeDescription(NAME);
+        var optionalClassNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
+        if (optionalExtendsClassEdgeDescription.isPresent() && optionalClassNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalExtendsClassEdgeDescription.get());
+            optionalExtendsClassEdgeDescription.get().getSourceNodeDescriptions().add(optionalClassNodeDescription.get());
+            optionalExtendsClassEdgeDescription.get().getTargetNodeDescriptions().add(optionalClassNodeDescription.get());
+        }
     }
 }

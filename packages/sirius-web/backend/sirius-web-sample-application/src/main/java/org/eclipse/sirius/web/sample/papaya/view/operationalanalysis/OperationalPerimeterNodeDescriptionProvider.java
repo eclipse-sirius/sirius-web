@@ -17,11 +17,12 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Description of the operational perimeter.
@@ -61,10 +62,12 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var operationalPerimeterNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalPerimeter");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
-        operationalPerimeterNodeDescription.getChildrenDescriptions().add(operationalActivityNodeDescription);
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalOperationalPerimeterNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalPerimeter");
+        var optionalOperationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+        if (optionalOperationalPerimeterNodeDescription.isPresent() && optionalOperationalActivityNodeDescription.isPresent()) {
+            optionalOperationalPerimeterNodeDescription.get().getChildrenDescriptions().add(optionalOperationalActivityNodeDescription.get());
+        }
     }
 
 }

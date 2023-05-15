@@ -16,44 +16,47 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.IViewObjectCache;
 
 /**
- * Used to cache concepts created for the Papaya view.
+ * Store and retrieve created element.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public class PapayaViewCache {
+public class ViewDiagramElementFinder implements IViewObjectCache, IViewDiagramElementFinder {
+
     private final Map<String, List<EObject>> data = new HashMap<>();
 
+    @Override
     public void put(EObject eObject) {
         var eObjects = this.data.getOrDefault(eObject.eClass().getName(), new ArrayList<>());
         eObjects.add(eObject);
         this.data.put(eObject.eClass().getName(), eObjects);
     }
 
-    public NodeDescription getNodeDescription(String name) {
-        // @formatter:off
+    @Override
+    public Optional<NodeDescription> getNodeDescription(String name) {
         return this.data.getOrDefault("NodeDescription", List.of()).stream()
                 .filter(NodeDescription.class::isInstance)
                 .map(NodeDescription.class::cast)
                 .filter(nodeDescription -> nodeDescription.getName().equals(name))
-                .findFirst()
-                .orElse(null);
-        // @formatter:on
+                .findFirst();
     }
 
-    public EdgeDescription getEdgeDescription(String name) {
-        // @formatter:off
+    @Override
+    public Optional<EdgeDescription> getEdgeDescription(String name) {
         return this.data.getOrDefault("EdgeDescription", List.of()).stream()
                 .filter(EdgeDescription.class::isInstance)
                 .map(EdgeDescription.class::cast)
                 .filter(edgeDescription -> edgeDescription.getName().equals(name))
-                .findFirst()
-                .orElse(null);
-        // @formatter:on
+                .findFirst();
     }
+
+
 }

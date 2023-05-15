@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya.view;
+package org.eclipse.sirius.components.view.builder;
 
-import org.eclipse.sirius.components.view.UserColor;
+import java.util.Optional;
+
+import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.NodeDescription;
 
 /**
- * Used to find colors.
+ * Used to retrieve diagram description elements created by providers.
  *
  * @author sbegaudeau
  */
-public interface IColorProvider {
-    UserColor getColor(String colorName);
+public interface IViewDiagramElementFinder {
+    Optional<NodeDescription> getNodeDescription(String name);
+    Optional<EdgeDescription> getEdgeDescription(String name);
 }

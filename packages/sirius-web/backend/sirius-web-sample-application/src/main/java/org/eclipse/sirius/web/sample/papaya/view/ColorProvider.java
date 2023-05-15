@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 
 /**
  * Used to find a color in the palette.

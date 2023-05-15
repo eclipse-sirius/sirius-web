@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.INodeToolProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Provide the tool to create interfaces.
@@ -25,7 +25,7 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class CDCreateInterfaceNodeToolProvider implements INodeToolProvider {
     @Override
-    public NodeTool create(PapayaViewCache cache) {
+    public NodeTool create(IViewDiagramElementFinder cache) {
         var createPackageNodeTool = ViewFactory.eINSTANCE.createNodeTool();
         createPackageNodeTool.setName("Create Interface");
 
@@ -44,16 +44,17 @@ public class CDCreateInterfaceNodeToolProvider implements INodeToolProvider {
         setValue.setFeatureName("name");
         setValue.setValueExpression("aql:'Interface'");
 
-        var interfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
-        var createView = ViewFactory.eINSTANCE.createCreateView();
-        createView.setParentViewExpression("aql:selectedNode");
-        createView.setSemanticElementExpression("aql:newInstance");
-        createView.setElementDescription(interfaceNodeDescription);
+        var optionalInterfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
+        if (optionalInterfaceNodeDescription.isPresent()) {
+            var createView = ViewFactory.eINSTANCE.createCreateView();
+            createView.setParentViewExpression("aql:selectedNode");
+            createView.setSemanticElementExpression("aql:newInstance");
+            createView.setElementDescription(optionalInterfaceNodeDescription.get());
 
-        createPackageNodeTool.getBody().add(createInstance);
-        createInstance.getChildren().add(changeContext);
-        changeContext.getChildren().add(setValue);
-        setValue.getChildren().add(createView);
+            createPackageNodeTool.getBody().add(createInstance);
+            createInstance.getChildren().add(changeContext);
+            changeContext.getChildren().add(setValue);
+        }
 
         return createPackageNodeTool;
     }

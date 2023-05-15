@@ -19,9 +19,10 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+
 
 /**
  * Description of fulfills contract.
@@ -57,16 +58,18 @@ public class FulfillsContractEdgeDescriptionProvider implements IEdgeDescription
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var fulfillsContractEdgeDescription = cache.getEdgeDescription("Edge Fulfills contract");
-        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
-        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalFulfillsContractEdgeDescription = cache.getEdgeDescription("Edge Fulfills contract");
+        var optionalProvidedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var optionalRequiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
+        var optionalInterfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
 
-        diagramDescription.getEdgeDescriptions().add(fulfillsContractEdgeDescription);
-        fulfillsContractEdgeDescription.getSourceNodeDescriptions().add(providedServiceNodeDescription);
-        fulfillsContractEdgeDescription.getSourceNodeDescriptions().add(requiredServiceNodeDescription);
-        fulfillsContractEdgeDescription.getTargetNodeDescriptions().add(interfaceNodeDescription);
+        if (optionalFulfillsContractEdgeDescription.isPresent() && optionalProvidedServiceNodeDescription.isPresent() && optionalRequiredServiceNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalFulfillsContractEdgeDescription.get());
+            optionalFulfillsContractEdgeDescription.get().getSourceNodeDescriptions().add(optionalProvidedServiceNodeDescription.get());
+            optionalFulfillsContractEdgeDescription.get().getSourceNodeDescriptions().add(optionalRequiredServiceNodeDescription.get());
+            optionalFulfillsContractEdgeDescription.get().getTargetNodeDescriptions().add(optionalInterfaceNodeDescription.get());
+        }
     }
 
 }

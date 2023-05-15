@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya.view;
+package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.UserColor;
 
 /**
- * Used to create representation descriptions.
+ * Used to find colors.
  *
  * @author sbegaudeau
  */
-public interface IRepresentationDescriptionProvider {
-    RepresentationDescription create(IColorProvider colorProvider);
+public interface IColorProvider {
+    UserColor getColor(String colorName);
 }

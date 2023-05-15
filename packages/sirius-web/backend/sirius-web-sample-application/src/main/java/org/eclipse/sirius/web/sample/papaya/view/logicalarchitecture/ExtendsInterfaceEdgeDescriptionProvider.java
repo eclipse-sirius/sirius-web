@@ -19,9 +19,9 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 
 /**
  * Description of extends interface.
@@ -57,13 +57,15 @@ public class ExtendsInterfaceEdgeDescriptionProvider implements IEdgeDescription
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var extendsInterfaceEdgeDescription = cache.getEdgeDescription("Edge Extends interface");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalExtendsInterfaceEdgeDescription = cache.getEdgeDescription("Edge Extends interface");
+        var optionalInterfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
 
-        diagramDescription.getEdgeDescriptions().add(extendsInterfaceEdgeDescription);
-        extendsInterfaceEdgeDescription.getSourceNodeDescriptions().add(interfaceNodeDescription);
-        extendsInterfaceEdgeDescription.getTargetNodeDescriptions().add(interfaceNodeDescription);
+        if (optionalExtendsInterfaceEdgeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalExtendsInterfaceEdgeDescription.get());
+            optionalExtendsInterfaceEdgeDescription.get().getSourceNodeDescriptions().add(optionalInterfaceNodeDescription.get());
+            optionalExtendsInterfaceEdgeDescription.get().getTargetNodeDescriptions().add(optionalInterfaceNodeDescription.get());
+        }
     }
 
 }

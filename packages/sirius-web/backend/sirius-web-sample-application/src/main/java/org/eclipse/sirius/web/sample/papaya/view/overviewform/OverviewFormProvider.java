@@ -14,8 +14,8 @@ package org.eclipse.sirius.web.sample.papaya.view.overviewform;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 
 /**
  * Used to create the description of the overview form.

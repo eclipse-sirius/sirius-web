@@ -18,11 +18,12 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Description of the operational activity.
@@ -97,14 +98,16 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
-        var componentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalOperationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+        var optionalComponentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
 
-        var tools = operationalActivityNodeDescription.getPalette().getEdgeTools();
-        tools.stream().filter(tool -> tool.getName().equals("Realized by")).findFirst().ifPresent(edgeRealizedByTool -> {
-            edgeRealizedByTool.getTargetElementDescriptions().add(componentNodeDescription);
-        });
+        if (optionalOperationalActivityNodeDescription.isPresent() && optionalComponentNodeDescription.isPresent()) {
+            var tools = optionalOperationalActivityNodeDescription.get().getPalette().getEdgeTools();
+            tools.stream().filter(tool -> tool.getName().equals("Realized by")).findFirst().ifPresent(edgeRealizedByTool -> {
+                edgeRealizedByTool.getTargetElementDescriptions().add(optionalComponentNodeDescription.get());
+            });
+        }
 
     }
 }

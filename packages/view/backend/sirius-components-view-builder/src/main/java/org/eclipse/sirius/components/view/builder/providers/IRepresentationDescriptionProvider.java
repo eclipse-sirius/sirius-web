@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya.view;
+package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.RepresentationDescription;
 
 /**
- * Used to create node descriptions.
+ * Used to create representation descriptions.
  *
  * @author sbegaudeau
  */
-public interface INodeDescriptionProvider extends IDiagramElementDescriptionProvider<NodeDescription> {
+public interface IRepresentationDescriptionProvider {
+    RepresentationDescription create(IColorProvider colorProvider);
 }

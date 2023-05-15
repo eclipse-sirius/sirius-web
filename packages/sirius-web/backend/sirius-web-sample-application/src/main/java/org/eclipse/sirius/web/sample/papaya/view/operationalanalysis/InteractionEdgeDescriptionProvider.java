@@ -18,10 +18,10 @@ import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Description of the interaction.
@@ -61,13 +61,15 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var interactionEdgeDescription = cache.getEdgeDescription("Edge Interaction");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalInteractionEdgeDescription = cache.getEdgeDescription("Edge Interaction");
+        var optionalOperationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
 
-        diagramDescription.getEdgeDescriptions().add(interactionEdgeDescription);
-        interactionEdgeDescription.getSourceNodeDescriptions().add(operationalActivityNodeDescription);
-        interactionEdgeDescription.getTargetNodeDescriptions().add(operationalActivityNodeDescription);
+        if (optionalInteractionEdgeDescription.isPresent() && optionalOperationalActivityNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalInteractionEdgeDescription.get());
+            optionalInteractionEdgeDescription.get().getSourceNodeDescriptions().add(optionalOperationalActivityNodeDescription.get());
+            optionalInteractionEdgeDescription.get().getTargetNodeDescriptions().add(optionalOperationalActivityNodeDescription.get());
+        }
     }
 
 }

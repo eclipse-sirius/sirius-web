@@ -17,10 +17,11 @@ import java.util.List;
 import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IDiagramElementDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IRepresentationDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.web.sample.papaya.view.ViewDiagramElementFinder;
+
 
 /**
  * Used to create the description of the class diagram.
@@ -37,7 +38,7 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setTitleExpression("aql:self.name + ' class diagram'");
         classDiagramDescription.setAutoLayout(false);
 
-        var cache = new PapayaViewCache();
+        var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
                 new CDClassNodeDescriptionProvider(colorProvider),
                 new CDInterfaceNodeDescriptionProvider(colorProvider),
@@ -59,7 +60,7 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
     }
 
 
-    private DiagramPalette palette(PapayaViewCache cache) {
+    private DiagramPalette palette(ViewDiagramElementFinder cache) {
         var diagramPalette = ViewFactory.eINSTANCE.createDiagramPalette();
 
         diagramPalette.getNodeTools().add(new CDCreatePackageNodeToolProvider().create(cache));

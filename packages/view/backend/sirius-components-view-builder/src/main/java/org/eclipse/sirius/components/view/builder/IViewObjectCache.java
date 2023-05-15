@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya.view;
+package org.eclipse.sirius.components.view.builder;
 
-import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.emf.ecore.EObject;
 
 /**
- * Used to provide a node tool.
+ * Used to store objects created by the various providers.
  *
  * @author sbegaudeau
  */
-public interface INodeToolProvider {
-    NodeTool create(PapayaViewCache cache);
+public interface IViewObjectCache {
+    void put(EObject eObject);
 }

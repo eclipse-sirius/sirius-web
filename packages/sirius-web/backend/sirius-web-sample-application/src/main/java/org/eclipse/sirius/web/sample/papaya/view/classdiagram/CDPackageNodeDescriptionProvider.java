@@ -20,11 +20,11 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Used to create the package node description.
@@ -66,22 +66,24 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var packageNodeDescription = cache.getNodeDescription(NAME);
-        var classNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
-        var interfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalPackageNodeDescription = cache.getNodeDescription(NAME);
+        var optionalClassNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
+        var optionalInterfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
 
-        diagramDescription.getNodeDescriptions().add(packageNodeDescription);
+        if (optionalPackageNodeDescription.isPresent() && optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            diagramDescription.getNodeDescriptions().add(optionalPackageNodeDescription.get());
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
-        packageNodeDescription.setPalette(nodePalette);
+            var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+            optionalPackageNodeDescription.get().setPalette(nodePalette);
 
-        nodePalette.getNodeTools().add(new CDCreateClassNodeToolProvider().create(cache));
-        nodePalette.getNodeTools().add(new CDCreateInterfaceNodeToolProvider().create(cache));
-        nodePalette.getNodeTools().add(new CDCreatePackageNodeToolProvider().create(cache));
+            nodePalette.getNodeTools().add(new CDCreateClassNodeToolProvider().create(cache));
+            nodePalette.getNodeTools().add(new CDCreateInterfaceNodeToolProvider().create(cache));
+            nodePalette.getNodeTools().add(new CDCreatePackageNodeToolProvider().create(cache));
 
-        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
+            nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
+            nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
+        }
     }
 
     private NodeTool createNamedElement(String typeName, String containinedFeatureName, String initialName, DiagramElementDescription diagramElementDescription) {
