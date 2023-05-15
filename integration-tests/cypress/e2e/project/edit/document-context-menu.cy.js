@@ -41,6 +41,9 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.getByTestId('type').click();
     cy.get('[data-value="System"]').click();
 
+    cy.getByTestId('type').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('type').click().get('[data-value="System"]').click();
+
     cy.getByTestId('create-object').click();
 
     cy.getByTestId('explorerTree').contains('System');
@@ -56,6 +59,9 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.get('[data-value="http://www.obeo.fr/dsl/designer/sample/flow"]').click();
     cy.getByTestId('type').click();
     cy.get('[data-value="System"]').click();
+
+    cy.getByTestId('type').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('type').click().get('[data-value="System"]').click();
 
     cy.getByTestId('create-object').click();
 
