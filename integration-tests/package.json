@@ -1,6 +1,6 @@
 {
   "name": "sirius-web-integration-tests",
-  "version": "2022.11.2",
+  "version": "2023.4.0",
   "license": "EPL-2.0",
   "private": true,
   "devDependencies": {

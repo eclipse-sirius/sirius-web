@@ -10,3 +10,8 @@ cd vscode-extension
 npm version "$VERSION"  --commit-hooks=false --git-tag-version=false --workspaces=false --include-workspace-root=false --workspaces-update=false
 npm i
 cd ..
+
+cd integration-tests
+npm version "$VERSION"  --commit-hooks=false --git-tag-version=false --workspaces=false --include-workspace-root=false --workspaces-update=false
+npm i
+cd ..
