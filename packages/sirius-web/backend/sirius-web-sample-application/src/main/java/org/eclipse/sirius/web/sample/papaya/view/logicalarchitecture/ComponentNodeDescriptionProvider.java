@@ -17,11 +17,12 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Description of the component.
@@ -63,16 +64,18 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var componentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
-        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
-        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
-        var packageNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Package");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalComponentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
+        var optionalProvidedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var optionalRequiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
+        var optionalPackageNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Package");
 
-        diagramDescription.getNodeDescriptions().add(componentNodeDescription);
-        componentNodeDescription.getBorderNodesDescriptions().add(providedServiceNodeDescription);
-        componentNodeDescription.getBorderNodesDescriptions().add(requiredServiceNodeDescription);
-        componentNodeDescription.getChildrenDescriptions().add(packageNodeDescription);
+        if (optionalComponentNodeDescription.isPresent() && optionalProvidedServiceNodeDescription.isPresent() && optionalRequiredServiceNodeDescription.isPresent() && optionalPackageNodeDescription.isPresent()) {
+            diagramDescription.getNodeDescriptions().add(optionalComponentNodeDescription.get());
+            optionalComponentNodeDescription.get().getBorderNodesDescriptions().add(optionalProvidedServiceNodeDescription.get());
+            optionalComponentNodeDescription.get().getBorderNodesDescriptions().add(optionalRequiredServiceNodeDescription.get());
+            optionalComponentNodeDescription.get().getChildrenDescriptions().add(optionalPackageNodeDescription.get());
+        }
     }
 
 }

@@ -18,11 +18,12 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Used to create the interface node description.
@@ -80,9 +81,11 @@ public class CDInterfaceNodeDescriptionProvider implements INodeDescriptionProvi
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var interfaceNodeDescription = cache.getNodeDescription(NAME);
-        var packageNodeDescription = cache.getNodeDescription(CDPackageNodeDescriptionProvider.NAME);
-        packageNodeDescription.getChildrenDescriptions().add(interfaceNodeDescription);
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalInterfaceNodeDescription = cache.getNodeDescription(NAME);
+        var optionalPackageNodeDescription = cache.getNodeDescription(CDPackageNodeDescriptionProvider.NAME);
+        if (optionalPackageNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            optionalPackageNodeDescription.get().getChildrenDescriptions().add(optionalInterfaceNodeDescription.get());
+        }
     }
 }

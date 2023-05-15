@@ -18,10 +18,11 @@ import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Description of depends on.
@@ -57,14 +58,16 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var dependsOnEdgeDescription = cache.getEdgeDescription("Edge Depends on");
-        var providedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
-        var requiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalDependsOnEdgeDescription = cache.getEdgeDescription("Edge Depends on");
+        var optionalProvidedServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::ProvidedService");
+        var optionalRequiredServiceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::RequiredService");
 
-        diagramDescription.getEdgeDescriptions().add(dependsOnEdgeDescription);
-        dependsOnEdgeDescription.getSourceNodeDescriptions().add(requiredServiceNodeDescription);
-        dependsOnEdgeDescription.getTargetNodeDescriptions().add(providedServiceNodeDescription);
+        if (optionalDependsOnEdgeDescription.isPresent() && optionalProvidedServiceNodeDescription.isPresent() && optionalRequiredServiceNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalDependsOnEdgeDescription.get());
+            optionalDependsOnEdgeDescription.get().getSourceNodeDescriptions().add(optionalRequiredServiceNodeDescription.get());
+            optionalDependsOnEdgeDescription.get().getTargetNodeDescriptions().add(optionalProvidedServiceNodeDescription.get());
+        }
     }
 
 }

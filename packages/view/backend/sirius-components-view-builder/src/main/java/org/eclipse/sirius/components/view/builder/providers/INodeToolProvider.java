@@ -10,23 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya.view;
+package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 
 /**
- * Used to provide a diagram element description.
- *
- * @param <T>
- *            The type of the diagram element description
+ * Used to provide a node tool.
  *
  * @author sbegaudeau
  */
-public interface IDiagramElementDescriptionProvider<T extends DiagramElementDescription> {
-    T create();
-
-    default void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        // Do nothing by default
-    }
+public interface INodeToolProvider {
+    NodeTool create(IViewDiagramElementFinder cache);
 }

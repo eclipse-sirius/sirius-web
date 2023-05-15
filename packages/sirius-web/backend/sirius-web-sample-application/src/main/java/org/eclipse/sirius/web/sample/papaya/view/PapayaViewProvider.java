@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.web.sample.papaya.view.classdiagram.ClassDiagramDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ClassNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ComponentNodeDescriptionProvider;
@@ -78,7 +79,7 @@ public class PapayaViewProvider {
 
         IColorProvider colorProvider = new ColorProvider(view);
 
-        var cache = new PapayaViewCache();
+        var cache = new ViewDiagramElementFinder();
         // @formatter:off
         var diagramElementDescriptionProviders = List.of(
                 new OperationalEntityNodeDescriptionProvider(colorProvider),
@@ -112,8 +113,11 @@ public class PapayaViewProvider {
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(this.diagramDescription, cache));
 
         var builder = new PapayaViewBuilder();
-        var newOperationalEntityNodeTool = this.createNewOperationalEntityTool(builder, cache.getNodeDescription("Node papaya_operational_analysis::OperationalEntity"));
-        palette.getNodeTools().addAll(List.of(this.getInitializeNodeTool(), newOperationalEntityNodeTool));
+        var nodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalEntity");
+        if (nodeDescription.isPresent()) {
+            var newOperationalEntityNodeTool = this.createNewOperationalEntityTool(builder, nodeDescription.get());
+            palette.getNodeTools().addAll(List.of(this.getInitializeNodeTool(), newOperationalEntityNodeTool));
+        }
 
         var newComponentNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Component", "components", "Component");
         newComponentNodeTool.setName("New Component");

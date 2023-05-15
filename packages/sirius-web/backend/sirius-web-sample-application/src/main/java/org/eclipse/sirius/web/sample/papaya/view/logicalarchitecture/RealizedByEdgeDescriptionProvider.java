@@ -19,9 +19,10 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+
 
 /**
  * Description of realized by.
@@ -57,14 +58,16 @@ public class RealizedByEdgeDescriptionProvider implements IEdgeDescriptionProvid
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var realizedByEdgeDescription = cache.getEdgeDescription("Edge Realized by");
-        var operationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
-        var componentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalRealizedByEdgeDescription = cache.getEdgeDescription("Edge Realized by");
+        var optionalOperationalActivityNodeDescription = cache.getNodeDescription("Node papaya_operational_analysis::OperationalActivity");
+        var optionalComponentNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Component");
 
-        diagramDescription.getEdgeDescriptions().add(realizedByEdgeDescription);
-        realizedByEdgeDescription.getSourceNodeDescriptions().add(operationalActivityNodeDescription);
-        realizedByEdgeDescription.getTargetNodeDescriptions().add(componentNodeDescription);
+        if (optionalRealizedByEdgeDescription.isPresent() && optionalOperationalActivityNodeDescription.isPresent() && optionalComponentNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalRealizedByEdgeDescription.get());
+            optionalRealizedByEdgeDescription.get().getSourceNodeDescriptions().add(optionalOperationalActivityNodeDescription.get());
+            optionalRealizedByEdgeDescription.get().getTargetNodeDescriptions().add(optionalComponentNodeDescription.get());
+        }
     }
 
 }

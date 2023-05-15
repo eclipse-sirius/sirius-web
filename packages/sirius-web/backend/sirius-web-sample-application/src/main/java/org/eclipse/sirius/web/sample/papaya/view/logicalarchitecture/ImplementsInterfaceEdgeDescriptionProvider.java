@@ -20,9 +20,9 @@ import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 
 /**
  * Description implements interface.
@@ -103,14 +103,16 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var implementsInterfaceEdgeDescription = cache.getEdgeDescription("Edge Implements interface");
-        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
-        var interfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalImplementsInterfaceEdgeDescription = cache.getEdgeDescription("Edge Implements interface");
+        var optionalClassNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+        var optionalInterfaceNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Interface");
 
-        diagramDescription.getEdgeDescriptions().add(implementsInterfaceEdgeDescription);
-        implementsInterfaceEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-        implementsInterfaceEdgeDescription.getTargetNodeDescriptions().add(interfaceNodeDescription);
+        if (optionalImplementsInterfaceEdgeDescription.isPresent() && optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalImplementsInterfaceEdgeDescription.get());
+            optionalImplementsInterfaceEdgeDescription.get().getSourceNodeDescriptions().add(optionalClassNodeDescription.get());
+            optionalImplementsInterfaceEdgeDescription.get().getTargetNodeDescriptions().add(optionalInterfaceNodeDescription.get());
+        }
     }
 
 }

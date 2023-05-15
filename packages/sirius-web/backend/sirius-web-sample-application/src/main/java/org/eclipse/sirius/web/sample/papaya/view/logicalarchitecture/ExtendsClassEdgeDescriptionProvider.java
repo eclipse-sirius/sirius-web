@@ -19,9 +19,9 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 
 /**
  * Description of extends class.
@@ -57,13 +57,15 @@ public class ExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionProv
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var extendsClassEdgeDescription = cache.getEdgeDescription("Edge Extends class");
-        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalExtendsClassEdgeDescription = cache.getEdgeDescription("Edge Extends class");
+        var optionalClassNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
 
-        diagramDescription.getEdgeDescriptions().add(extendsClassEdgeDescription);
-        extendsClassEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-        extendsClassEdgeDescription.getTargetNodeDescriptions().add(classNodeDescription);
+        if (optionalExtendsClassEdgeDescription.isPresent() && optionalClassNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalExtendsClassEdgeDescription.get());
+            optionalExtendsClassEdgeDescription.get().getSourceNodeDescriptions().add(optionalClassNodeDescription.get());
+            optionalExtendsClassEdgeDescription.get().getTargetNodeDescriptions().add(optionalClassNodeDescription.get());
+        }
     }
 
 }

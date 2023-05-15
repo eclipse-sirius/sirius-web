@@ -20,11 +20,13 @@ import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+
 
 /**
  * Used to create the class node description.
@@ -36,95 +38,96 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
 
     private final IColorProvider colorProvider;
 
+    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+
     public CDClassNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
-        nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        nodeStyle.setWithHeader(false);
-
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Class"));
 
-        var nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
-        nodeDescription.setName(NAME);
-        nodeDescription.setDomainType(domainType);
-        nodeDescription.setSemanticCandidatesExpression("aql:self.types");
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("aql:self.name");
-        nodeDescription.setStyle(nodeStyle);
-        nodeDescription.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
-
-        var abstractNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
-        abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
-        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        abstractNodeStyle.setWithHeader(false);
-
-        var abstractConditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
-        abstractConditionalNodeStyle.setCondition("aql:self.abstract");
-        abstractConditionalNodeStyle.setStyle(abstractNodeStyle);
-        nodeDescription.getConditionalStyles().add(abstractConditionalNodeStyle);
+        var nodeDescription = this.viewBuilderHelper.newNodeDescription()
+                .name(NAME)
+                .domainType(domainType)
+                .semanticCandidatesExpression("aql:self.types")
+                .childrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())
+                .labelExpression("aql:self.name")
+                .style(this.viewBuilderHelper.newRectangularNodeStyleDescription()
+                        .color(this.colorProvider.getColor("color_blue"))
+                        .borderColor(this.colorProvider.getColor("border_blue"))
+                        .labelColor(this.colorProvider.getColor("label_white"))
+                        .withHeader(false)
+                        .build())
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .conditionalStyles(this.viewBuilderHelper.newConditionalNodeStyle()
+                        .condition("aql:self.abstract")
+                        .style(this.viewBuilderHelper.newRectangularNodeStyleDescription()
+                                .color(this.colorProvider.getColor("color_green"))
+                                .borderColor(this.colorProvider.getColor("border_green"))
+                                .labelColor(this.colorProvider.getColor("label_white"))
+                                .withHeader(false)
+                                .build())
+                        .build())
+                .build();
 
         return nodeDescription;
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var classNodeDescription = cache.getNodeDescription(NAME);
         var packageNodeDescription = cache.getNodeDescription(CDPackageNodeDescriptionProvider.NAME);
-        packageNodeDescription.getChildrenDescriptions().add(classNodeDescription);
-
-        classNodeDescription.setPalette(this.palette(cache));
+        if (classNodeDescription.isPresent() && packageNodeDescription.isPresent()) {
+            packageNodeDescription.get().getChildrenDescriptions().add(classNodeDescription.get());
+            classNodeDescription.get().setPalette(this.palette(cache));
+        }
     }
 
-    private NodePalette palette(PapayaViewCache cache) {
-        var classNodeDescription = cache.getNodeDescription(NAME);
-        var interfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
+    private NodePalette palette(IViewDiagramElementFinder cache) {
+        var optionalClassNodeDescription = cache.getNodeDescription(NAME);
+        var optionalInterfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
-        classNodeDescription.setPalette(nodePalette);
-        nodePalette.getEdgeTools().add(this.createExtendsClassEdgeTool(classNodeDescription));
-        nodePalette.getEdgeTools().add(this.createImplementsInterfaceEdgeTool(interfaceNodeDescription));
-        nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
-        nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
-        return nodePalette;
+        var nodePaletteBuilder = this.viewBuilderHelper.newNodePalette();
+        if (optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
+            var nodePalette = nodePaletteBuilder.edgeTools(this.createExtendsClassEdgeTool(optionalClassNodeDescription.get()),
+                    this.createImplementsInterfaceEdgeTool(optionalInterfaceNodeDescription.get()))
+                .labelEditTool(new PapayaToolsFactory().editName())
+                .deleteTool(new PapayaToolsFactory().deleteTool())
+                .build();
+            optionalClassNodeDescription.get().setPalette(nodePalette);
+            return nodePalette;
+        }
+        return nodePaletteBuilder.build();
     }
 
     private EdgeTool createExtendsClassEdgeTool(NodeDescription classNodeDescription) {
-        var extendsClassEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        extendsClassEdgeTool.setName("Extends Class");
-        extendsClassEdgeTool.getTargetElementDescriptions().add(classNodeDescription);
-
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("extends");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        changeContext.getChildren().add(setTargetValue);
-        extendsClassEdgeTool.getBody().add(changeContext);
-        return extendsClassEdgeTool;
+        return this.viewBuilderHelper.newEdgeTool()
+                .name("Extends Class")
+                .targetElementDescriptions(classNodeDescription)
+                .body(this.viewBuilderHelper.newChangeContext()
+                    .expression("aql:semanticEdgeSource")
+                    .children(this.viewBuilderHelper.newSetValue()
+                        .featureName("extends")
+                        .valueExpression("aql:semanticEdgeTarget")
+                        .build())
+                    .build())
+                .build();
     }
 
     private EdgeTool createImplementsInterfaceEdgeTool(NodeDescription interfaceNodeDescription) {
-        var implementsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
-        implementsInterfaceEdgeTool.setName("Implements");
-        implementsInterfaceEdgeTool.getTargetElementDescriptions().add(interfaceNodeDescription);
-
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:semanticEdgeSource");
-        var setTargetValue = ViewFactory.eINSTANCE.createSetValue();
-        setTargetValue.setFeatureName("implements");
-        setTargetValue.setValueExpression("aql:semanticEdgeTarget");
-
-        changeContext.getChildren().add(setTargetValue);
-        implementsInterfaceEdgeTool.getBody().add(changeContext);
-        return implementsInterfaceEdgeTool;
+        return this.viewBuilderHelper.newEdgeTool()
+                .name("Implements")
+                .targetElementDescriptions(interfaceNodeDescription)
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:semanticEdgeSource")
+                        .children(this.viewBuilderHelper.newSetValue()
+                            .featureName("implements")
+                            .valueExpression("aql:semanticEdgeTarget")
+                            .build())
+                        .build())
+                .build();
     }
 }

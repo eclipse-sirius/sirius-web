@@ -37,10 +37,10 @@ It will start by improving a bit performances since diagrams were persisted twic
 - https://github.com/eclipse-sirius/sirius-components/issues/1915[#1915] [view] Add the page support in the view DSL.
 
 === Dependency update
+
 - https://github.com/eclipse-sirius/sirius-components/issues/1936[#1936] [releng] Switch to Cypress 12.11.0
 - https://github.com/eclipse-sirius/sirius-components/issues/1377[#1377] [core] Switch to Spring Boot 3.0.6
 - https://github.com/eclipse-sirius/sirius-components/issues/265[#265] [core] Switch to the latest release of AQL
-
 
 === Bug fixes
 
@@ -75,6 +75,11 @@ See link:how-to/contribute-custom-widget.adoc[the documentation] for more detail
 - https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name. The new algorithm does the minimum possible to place node without overlap.
 - https://github.com/eclipse-sirius/sirius-components/issues/1985[|#1985] [sirius-web] It is now possible to use in-memory View-based representations by registering them in the new `InMemoryViewRegistry`.
 These representations can be created programmatically or loaded from `.view` EMF models on startup, and do not need to be stored as documents inside a project in the database.
+- https://github.com/eclipse-sirius/sirius-components/issues/1921[#1921] [view] Added a project sirius-components-view-builder.
++
+Introducing providers interfaces to help creating view programmatically.
++
+Introducing a generator of builders aimed to help creating view programmatically, the generation makes use of emf-merge and modifications to these builders can be annotated to live during future regeneration. 
 
 === Improvements
 

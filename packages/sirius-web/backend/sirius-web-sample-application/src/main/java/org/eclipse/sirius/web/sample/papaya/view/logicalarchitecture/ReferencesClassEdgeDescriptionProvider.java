@@ -19,9 +19,9 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.IColorProvider;
-import org.eclipse.sirius.web.sample.papaya.view.IEdgeDescriptionProvider;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 
 /**
  * Description of the references class.
@@ -59,13 +59,15 @@ public class ReferencesClassEdgeDescriptionProvider implements IEdgeDescriptionP
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, PapayaViewCache cache) {
-        var referencesClassEdgeDescription = cache.getEdgeDescription("Edge References class");
-        var classNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var optionalReferencesClassEdgeDescription = cache.getEdgeDescription("Edge References class");
+        var optionalClassNodeDescription = cache.getNodeDescription("Node papaya_logical_architecture::Class");
 
-        diagramDescription.getEdgeDescriptions().add(referencesClassEdgeDescription);
-        referencesClassEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-        referencesClassEdgeDescription.getTargetNodeDescriptions().add(classNodeDescription);
+        if (optionalReferencesClassEdgeDescription.isPresent() && optionalClassNodeDescription.isPresent()) {
+            diagramDescription.getEdgeDescriptions().add(optionalReferencesClassEdgeDescription.get());
+            optionalReferencesClassEdgeDescription.get().getSourceNodeDescriptions().add(optionalClassNodeDescription.get());
+            optionalReferencesClassEdgeDescription.get().getTargetNodeDescriptions().add(optionalClassNodeDescription.get());
+        }
     }
 
 }

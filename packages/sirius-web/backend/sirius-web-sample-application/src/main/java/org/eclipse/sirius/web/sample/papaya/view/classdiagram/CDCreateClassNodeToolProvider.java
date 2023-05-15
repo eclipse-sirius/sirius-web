@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.web.sample.papaya.view.INodeToolProvider;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
 
 /**
  * Provide the tool to create classes.
@@ -25,7 +25,7 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewCache;
  */
 public class CDCreateClassNodeToolProvider implements INodeToolProvider {
     @Override
-    public NodeTool create(PapayaViewCache cache) {
+    public NodeTool create(IViewDiagramElementFinder cache) {
         var nodeTool = ViewFactory.eINSTANCE.createNodeTool();
         nodeTool.setName("Create Class ");
 
@@ -44,16 +44,17 @@ public class CDCreateClassNodeToolProvider implements INodeToolProvider {
         setValue.setFeatureName("name");
         setValue.setValueExpression("aql:'Class'");
 
-        var classNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
-        var createView = ViewFactory.eINSTANCE.createCreateView();
-        createView.setParentViewExpression("aql:selectedNode");
-        createView.setSemanticElementExpression("aql:newInstance");
-        createView.setElementDescription(classNodeDescription);
-
-        nodeTool.getBody().add(createInstance);
-        createInstance.getChildren().add(changeContext);
-        changeContext.getChildren().add(setValue);
-        setValue.getChildren().add(createView);
+        var optionalClassNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
+        if (optionalClassNodeDescription.isPresent()) {
+            var createView = ViewFactory.eINSTANCE.createCreateView();
+            createView.setParentViewExpression("aql:selectedNode");
+            createView.setSemanticElementExpression("aql:newInstance");
+            createView.setElementDescription(optionalClassNodeDescription.get());
+            nodeTool.getBody().add(createInstance);
+            createInstance.getChildren().add(changeContext);
+            changeContext.getChildren().add(setValue);
+            setValue.getChildren().add(createView);
+        }
 
         return nodeTool;
     }

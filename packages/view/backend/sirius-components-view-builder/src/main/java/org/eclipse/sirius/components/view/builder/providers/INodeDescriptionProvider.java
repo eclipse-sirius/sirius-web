@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.papaya.view;
+package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.NodeDescription;
 
 /**
- * Used to provide edge descriptions.
+ * Used to create node descriptions.
  *
  * @author sbegaudeau
  */
-public interface IEdgeDescriptionProvider extends IDiagramElementDescriptionProvider<EdgeDescription> {
+public interface INodeDescriptionProvider extends IDiagramElementDescriptionProvider<NodeDescription> {
 }
