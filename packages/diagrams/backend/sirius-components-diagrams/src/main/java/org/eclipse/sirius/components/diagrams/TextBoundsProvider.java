@@ -20,6 +20,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -148,6 +149,61 @@ public class TextBoundsProvider {
 
         return new TextBounds(size, alignment);
     }
+
+    public long computeAutoWrapLines(LabelStyle labelStyle, String text, double containerMaxWidth) {
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = img.createGraphics();
+        Font font = this.getFont(labelStyle).deriveFont(AFFINE_TRANSFORM_AUTO_WRAP);
+        g2d.setFont(font);
+        FontMetrics fm = g2d.getFontMetrics();
+        float fontSize = font.getSize2D();
+        float backendRatio = fontSize / 10;
+        float lineHeight = fm.getHeight() + backendRatio;
+
+        AtomicReference<Float> height = new AtomicReference<>();
+        height.set(0f);
+        float maxWidth = 0;
+        if (containerMaxWidth < 0) {
+            maxWidth = 1000;
+        } else {
+            maxWidth = (float) containerMaxWidth;
+        }
+        boolean isIcon = !labelStyle.getIconURL().isEmpty();
+        if (isIcon) {
+            maxWidth = Math.max(SPACE_FOR_ICON, maxWidth - SPACE_FOR_ICON);
+        }
+        final float breakWidth = maxWidth;
+
+        AtomicLong nbLines = new AtomicLong();
+        Stream<String> lines = text.lines();
+        lines.forEach(line -> {
+            nbLines.incrementAndGet();
+            height.set(height.get() + lineHeight);
+            int textWidth = fm.stringWidth(line);
+            if (textWidth > breakWidth) {
+                String[] words = line.split("((?=\\t| )|(?<=\\t| ))");
+                String currentLine = "";
+                for (String word : words) {
+                    int lineWidth = fm.stringWidth(currentLine + word);
+                    if (lineWidth >= breakWidth) {
+                        currentLine = word;
+                        height.set(height.get() + lineHeight);
+                        nbLines.incrementAndGet();
+                    } else {
+                        currentLine += word;
+                    }
+                }
+            }
+        });
+
+        g2d.dispose();
+        return nbLines.get();
+    }
+
+
 
     private Position getAlignment(Rectangle2D labelBounds, boolean isIcon, boolean applySprottyCorrection) {
         Position alignment = null;

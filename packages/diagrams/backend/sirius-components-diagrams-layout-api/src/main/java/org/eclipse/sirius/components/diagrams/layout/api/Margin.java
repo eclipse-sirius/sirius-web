@@ -10,19 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+package org.eclipse.sirius.components.diagrams.layout.api;
 
 /**
- * The position of an element.
+ * The margin of an element.
+ *
+ * @param top The margin top
+ * @param right The margin right
+ * @param bottom The margin bottom
+ * @param left The margin left
  *
  * @author sbegaudeau
  */
-public record Position(double x, double y) {
-    public Position translate(double dx, double dy) {
-        return new Position(this.x + dx, this.y + dy);
-    }
-
-    public Position midPoint(Position other) {
-        return new Position((this.x + other.x) / 2.0, (this.y + other.y) / 2.0);
-    }
+public record Margin(int top, int right, int bottom, int left) {
 }

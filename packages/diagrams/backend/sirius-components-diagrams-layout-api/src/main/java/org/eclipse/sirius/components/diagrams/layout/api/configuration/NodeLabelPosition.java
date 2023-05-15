@@ -10,19 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+package org.eclipse.sirius.components.diagrams.layout.api.configuration;
 
 /**
- * The position of an element.
+ * The position of the label relative to the content of a node.
  *
  * @author sbegaudeau
  */
-public record Position(double x, double y) {
-    public Position translate(double dx, double dy) {
-        return new Position(this.x + dx, this.y + dy);
-    }
-
-    public Position midPoint(Position other) {
-        return new Position((this.x + other.x) / 2.0, (this.y + other.y) / 2.0);
-    }
+public enum NodeLabelPosition {
+    TOP,
+    RIGHT,
+    BOTTOM,
+    LEFT,
 }

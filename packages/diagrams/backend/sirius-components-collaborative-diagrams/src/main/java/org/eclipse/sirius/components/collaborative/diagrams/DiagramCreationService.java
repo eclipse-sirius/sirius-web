@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +35,9 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.B
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.layout.api.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IOperationValidator;
@@ -62,6 +65,8 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final ILayoutService layoutService;
 
+    private final IDiagramLayoutEngine diagramLayoutEngine;
+
     private final IOperationValidator operationValidator;
 
     private final Timer timer;
@@ -69,11 +74,12 @@ public class DiagramCreationService implements IDiagramCreationService {
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, ILayoutService layoutService, IOperationValidator operationValidator, MeterRegistry meterRegistry) {
+            IObjectService objectService, ILayoutService layoutService, IDiagramLayoutEngine diagramLayoutEngine, IOperationValidator operationValidator, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.layoutService = Objects.requireNonNull(layoutService);
+        this.diagramLayoutEngine = Objects.requireNonNull(diagramLayoutEngine);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -160,6 +166,18 @@ public class DiagramCreationService implements IDiagramCreationService {
             newDiagram = this.layoutService.layout(editingContext, newDiagram);
         } else if (optionalDiagramContext.isPresent()) {
             newDiagram = this.layoutService.incrementalLayout(editingContext, newDiagram, optionalDiagramElementEvent);
+        }
+
+        if (newDiagram.getLabel().endsWith("__EXPERIMENTAL")) {
+            DiagramLayoutData emptyLayoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of());
+            DiagramLayoutData newLayoutData;
+            if (this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription)) {
+                newLayoutData = this.diagramLayoutEngine.layout(editingContext, newDiagram, emptyLayoutData, Optional.empty());
+            } else {
+                var previousLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(emptyLayoutData);
+                newLayoutData = this.diagramLayoutEngine.layout(editingContext, newDiagram, previousLayoutData, optionalDiagramElementEvent);
+            }
+            newDiagram = Diagram.newDiagram(newDiagram).layoutData(newLayoutData).build();
         }
 
         this.representationPersistenceService.save(editingContext, newDiagram);
