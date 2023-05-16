@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layout.api;
-
-import org.eclipse.sirius.components.annotations.Immutable;
+package org.eclipse.sirius.components.diagrams.layout.api.experimental;
 
 /**
  * Specifies offsets in all 4 directions. Can be used to represent a margin, border, or padding.
  *
  * @author pcdavid
  */
-@Immutable
 public record Offsets(double top, double bottom, double left, double right) {
 
     private static final Offsets EMPTY = Offsets.of(0.0);
@@ -61,8 +58,7 @@ public record Offsets(double top, double bottom, double left, double right) {
 
     private static double checkNonNegative(double value, String name) {
         if (value < 0) {
-            var error = new IllegalArgumentException(name + " can not be negative");
-            throw error;
+            throw new IllegalArgumentException(name + " can not be negative");
         }
         return value;
     }
@@ -72,6 +68,7 @@ public record Offsets(double top, double bottom, double left, double right) {
      *
      * @author pcdavid
      */
+    @org.eclipse.sirius.components.annotations.Builder
     public static final class Builder {
         private double top;
 

@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 
-import org.eclipse.sirius.components.diagrams.layout.api.Rectangle;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Rectangle;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 
 /**
@@ -25,30 +25,32 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Position;
  * @author pcdavid
  */
 public class OverlapHandler {
-    public Rectangle findNearestFreeLocation(Rectangle rect, Collection<Rectangle> obstacles) {
+    public Rectangle findNearestFreeLocation(Rectangle rectangle, Collection<Rectangle> obstacles) {
         var largestOverlappingObstacle = obstacles.stream()
-                .filter(obstacle -> !obstacle.intersection(rect).isEmpty())
-                .max(Comparator.comparing(obstacle -> obstacle.intersection(rect).area()));
+                .filter(obstacle -> !obstacle.intersection(rectangle).isEmpty())
+                .max(Comparator.comparing(obstacle -> obstacle.intersection(rectangle).area()));
         if (largestOverlappingObstacle.isPresent()) {
             var obstacle = largestOverlappingObstacle.get();
-            var shift = this.getVectorToShift(rect, obstacle);
-            return rect.translate(shift.x(), shift.y());
+            var shift = this.getVectorToShift(rectangle, obstacle);
+            return rectangle.translate(shift.x(), shift.y());
         } else {
-            return rect;
+            return rectangle;
         }
     }
 
-    private Position getVectorToShift(Rectangle rect, Rectangle obstacle) {
-        // How much would be need to move rect in each direction to avoid the obstacle?
-        double leftShift = Math.abs(obstacle.topLeft().x() - rect.topRight().x());
-        double rightShift = Math.abs(obstacle.topRight().x() - rect.topLeft().x());
-        double upShift = Math.abs(obstacle.topLeft().y() - rect.bottomLeft().y());
-        double downShift = Math.abs(obstacle.bottomLeft().y() - rect.topLeft().y());
+    private Position getVectorToShift(Rectangle rectangle, Rectangle obstacle) {
+        // How much would be need to move rectangle in each direction to avoid the obstacle?
+        double leftShift = Math.abs(obstacle.topLeft().x() - rectangle.topRight().x());
+        double rightShift = Math.abs(obstacle.topRight().x() - rectangle.topLeft().x());
+        double upShift = Math.abs(obstacle.topLeft().y() - rectangle.bottomLeft().y());
+        double downShift = Math.abs(obstacle.bottomLeft().y() - rectangle.topLeft().y());
+
         // Choose the direction with the smallest non-null distance
         double minShift = Arrays.stream(new double[] { leftShift, rightShift, upShift, downShift })
                 .filter(shift -> shift > 0)
                 .min()
-                .getAsDouble();
+                .orElse(0.0);
+
         Position result;
         if (minShift == rightShift) {
             result = new Position(rightShift, 0);

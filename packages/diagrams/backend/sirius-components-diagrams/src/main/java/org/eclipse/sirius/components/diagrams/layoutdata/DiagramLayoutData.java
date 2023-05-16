@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.layoutdata;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The layout data of the diagram.
@@ -23,4 +24,9 @@ public record DiagramLayoutData(
         Map<String, NodeLayoutData> nodeLayoutData,
         Map<String, EdgeLayoutData> edgeLayoutData,
         Map<String, LabelLayoutData> labelLayoutData) {
+    public DiagramLayoutData {
+        Objects.requireNonNull(nodeLayoutData);
+        Objects.requireNonNull(edgeLayoutData);
+        Objects.requireNonNull(labelLayoutData);
+    }
 }

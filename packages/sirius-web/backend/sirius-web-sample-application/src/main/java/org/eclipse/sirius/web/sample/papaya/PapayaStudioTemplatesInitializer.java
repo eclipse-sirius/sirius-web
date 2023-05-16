@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -67,14 +68,17 @@ public class PapayaStudioTemplatesInitializer implements IProjectTemplateInitial
 
     private final IDiagramCreationService diagramCreationService;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final StereotypeBuilder stereotypeBuilder;
 
-    public PapayaStudioTemplatesInitializer(IProjectRepository projectRepository, IDocumentRepository documentRepository,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService, MeterRegistry meterRegistry) {
+    public PapayaStudioTemplatesInitializer(IProjectRepository projectRepository, IDocumentRepository documentRepository, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+                                            IDiagramCreationService diagramCreationService, IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.stereotypeBuilder = new StereotypeBuilder(PapayaStudioTemplateProvider.STUDIO_TEMPLATE_ID, meterRegistry);
     }
 
@@ -125,7 +129,10 @@ public class PapayaStudioTemplatesInitializer implements IProjectTemplateInitial
                     if (optionalTopographyDiagram.isPresent()) {
                         DiagramDescription topographyDiagram = optionalTopographyDiagram.get();
                         Object semanticTarget = resource.getContents().get(0);
+
                         Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
+                        this.representationPersistenceService.save(editingContext, diagram);
+
                         result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId()));
                     }
                 } catch (IOException exception) {

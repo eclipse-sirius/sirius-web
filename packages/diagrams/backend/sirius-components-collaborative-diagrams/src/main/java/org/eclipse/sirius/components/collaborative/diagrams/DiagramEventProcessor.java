@@ -13,11 +13,11 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
@@ -68,24 +68,26 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final DiagramEventFlux diagramEventFlux;
 
-    public DiagramEventProcessor(IEditingContext editingContext, IDiagramContext diagramContext, List<IDiagramEventHandler> diagramEventHandlers, ISubscriptionManager subscriptionManager,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-            IDiagramCreationService diagramCreationService) {
-        this.logger.trace("Creating the diagram event processor {}", diagramContext.getDiagram().getId());
+    public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
+        this.logger.trace("Creating the diagram event processor {}", parameters.diagramContext().getDiagram().getId());
 
-        this.editingContext = Objects.requireNonNull(editingContext);
-        this.diagramContext = Objects.requireNonNull(diagramContext);
-        this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
-        this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
-        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
+        this.editingContext = parameters.editingContext();
+        this.diagramContext = parameters.diagramContext();
+        this.diagramEventHandlers = parameters.diagramEventHandlers();
+        this.subscriptionManager = parameters.subscriptionManager();
+        this.representationDescriptionSearchService = parameters.representationDescriptionSearchService();
+        this.representationRefreshPolicyRegistry = parameters.representationRefreshPolicyRegistry();
+        this.representationPersistenceService = parameters.representationPersistenceService();
+        this.diagramCreationService = parameters.diagramCreationService();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
         Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext).orElse(null);
+        this.representationPersistenceService.save(parameters.editingContext(), diagram);
         diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
@@ -127,6 +129,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+            this.representationPersistenceService.save(this.editingContext, refreshedDiagram);
+
             if (refreshedDiagram != null) {
                 this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
             }

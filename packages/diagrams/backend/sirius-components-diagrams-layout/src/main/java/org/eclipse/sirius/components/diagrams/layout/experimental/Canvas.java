@@ -15,11 +15,10 @@ package org.eclipse.sirius.components.diagrams.layout.experimental;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.diagrams.layout.api.Offsets;
-import org.eclipse.sirius.components.diagrams.layout.api.Rectangle;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Rectangle;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 
@@ -45,10 +44,6 @@ public class Canvas {
 
     public boolean hasBounds(String nodeId) {
         return this.bounds.containsKey(nodeId);
-    }
-
-    public Optional<Rectangle> getBounds(String nodeId) {
-        return Optional.ofNullable(this.bounds.get(nodeId));
     }
 
     public Map<String, Rectangle> getAllBounds() {

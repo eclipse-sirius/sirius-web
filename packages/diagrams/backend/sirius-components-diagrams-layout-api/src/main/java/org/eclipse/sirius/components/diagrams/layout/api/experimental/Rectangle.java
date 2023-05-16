@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layout.api;
+package org.eclipse.sirius.components.diagrams.layout.api.experimental;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,19 +28,13 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Size;
  */
 public record Rectangle(double x, double y, double width, double height) {
 
-    public Rectangle(double x, double y, double width, double height) {
+    public Rectangle {
         if (width < 0) {
-            var error = new IllegalArgumentException("width can not be negative");
-            throw error;
+            throw new IllegalArgumentException("width can not be negative");
         }
         if (height < 0) {
-            var error = new IllegalArgumentException("height can not be negative");
-            throw error;
+            throw new IllegalArgumentException("height can not be negative");
         }
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
     }
 
     public Rectangle(Position position, Size size) {
