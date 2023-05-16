@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -70,8 +71,7 @@ public class ObjectService implements IObjectService {
     @Override
     public String getId(Object object) {
         String id = null;
-        if (object instanceof EObject) {
-            EObject eObject = (EObject) object;
+        if (object instanceof EObject eObject) {
 
             id = this.getIdFromIDAdapter(eObject);
             if (id == null) {
@@ -87,8 +87,7 @@ public class ObjectService implements IObjectService {
 
     @Override
     public String getKind(Object object) {
-        if (object instanceof EObject) {
-            EObject eObject = (EObject) object;
+        if (object instanceof EObject eObject) {
             return this.emfKindService.getKind(eObject.eClass());
         }
         return "";
@@ -136,9 +135,9 @@ public class ObjectService implements IObjectService {
     @Override
     public String getFullLabel(Object object) {
         String fullLabel;
-        if (object instanceof EObject) {
-            fullLabel = ((EObject) object).eClass().getName();
-            String label = this.getLabel(object);
+        if (object instanceof EObject eObject) {
+            fullLabel = eObject.eClass().getName();
+            String label = this.getLabel(eObject);
             if (label != null && !label.isEmpty()) {
                 fullLabel += " " + label;
             }
@@ -150,12 +149,10 @@ public class ObjectService implements IObjectService {
 
     @Override
     public String getImagePath(Object object) {
-        if (object instanceof EObject && !(object instanceof DynamicEObjectImpl)) {
-            EObject eObject = (EObject) object;
+        if (object instanceof EObject eObject && !(object instanceof DynamicEObjectImpl)) {
 
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
-            if (adapter instanceof IItemLabelProvider) {
-                IItemLabelProvider labelProvider = (IItemLabelProvider) adapter;
+            if (adapter instanceof IItemLabelProvider labelProvider) {
                 try {
                     Object image = labelProvider.getImage(eObject);
                     String imageFullPath = this.findImagePath(image);
@@ -187,14 +184,11 @@ public class ObjectService implements IObjectService {
 
     private String findImagePath(Object image) {
         String imagePath = null;
-        if (image instanceof URI) {
-            URI uri = (URI) image;
+        if (image instanceof URI uri) {
             imagePath = uri.toString();
-        } else if (image instanceof URL) {
-            URL url = (URL) image;
+        } else if (image instanceof URL url) {
             imagePath = url.toString();
-        } else if (image instanceof ComposedImage) {
-            ComposedImage composite = (ComposedImage) image;
+        } else if (image instanceof ComposedImage composite) {
             // @formatter:off
             imagePath = composite.getImages().stream()
                                  .map(this::findImagePath)
@@ -246,14 +240,20 @@ public class ObjectService implements IObjectService {
     @Override
     public List<Object> getContents(IEditingContext editingContext, String objectId) {
         List<Object> contents = new ArrayList<>();
+        Optional<EObject> optionalEObject = this.getObject(editingContext, objectId)
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast);
 
-        // @formatter:off
-        this.getObject(editingContext, objectId)
-        .filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .ifPresent(eObject -> contents.addAll(eObject.eContents()));
-        // @formatter:on
-
+        if (optionalEObject.isPresent()) {
+            EObject eObject = optionalEObject.get();
+            Adapter adapter = this.composedAdapterFactory.adapt(eObject, IEditingDomainItemProvider.class);
+            if (adapter instanceof IEditingDomainItemProvider contentProvider) {
+                contents.addAll(contentProvider.getChildren(eObject));
+            }
+            else {
+                contents.addAll(eObject.eContents());
+            }
+        }
         return contents;
     }
 
@@ -299,8 +299,7 @@ public class ObjectService implements IObjectService {
     @Override
     public boolean isLabelEditable(Object object) {
         boolean isEditable = false;
-        if (object instanceof EObject) {
-            EObject eObject = (EObject) object;
+        if (object instanceof EObject eObject) {
             String nsUri = eObject.eClass().getEPackage().getNsURI();
 
             Optional<ILabelFeatureProvider> labelFeatureProvider = this.labelFeatureProviderRegistry.getLabelFeatureProvider(nsUri);
