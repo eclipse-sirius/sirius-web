@@ -28,16 +28,19 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.layout.api.IDiagramLayoutConfigurationProvider;
-import org.eclipse.sirius.components.diagrams.layout.api.NodeLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.layout.api.Offsets;
-import org.eclipse.sirius.components.diagrams.layout.api.configuration.DiagramLayoutConfiguration;
-import org.eclipse.sirius.components.diagrams.layout.api.configuration.EdgeLayoutConfiguration;
-import org.eclipse.sirius.components.diagrams.layout.api.configuration.FontStyle;
-import org.eclipse.sirius.components.diagrams.layout.api.configuration.IParentLayoutConfiguration;
-import org.eclipse.sirius.components.diagrams.layout.api.configuration.LabelLayoutConfiguration;
-import org.eclipse.sirius.components.diagrams.layout.api.configuration.NodeLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.DiagramLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.EdgeLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.FontStyle;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IParentLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IconLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.LabelLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +52,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigurationProvider {
 
-    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private ImageSizeProvider imageSizeProvider;
+    private final ImageSizeProvider imageSizeProvider;
 
     public DiagramLayoutConfigurationProvider(IRepresentationDescriptionSearchService representationDescriptionSearchService, ImageSizeProvider imageSizeProvider) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -59,24 +62,27 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
     }
 
     @Override
-    public Optional<DiagramLayoutConfiguration> getDiagramLayoutConfiguration(IEditingContext editingContext, Diagram diagram) {
+    public Optional<DiagramLayoutConfiguration> getDiagramLayoutConfiguration(IEditingContext editingContext, Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
         Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService
                 .findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
+
         if (optionalDiagramDescription.isPresent()) {
             var diagramDescription = optionalDiagramDescription.get();
             var diagramLayoutConfiguration = DiagramLayoutConfiguration.newDiagramLayoutConfiguration(diagram.getId())
                     .displayName(String.format("[diagram] %s::%s", diagramDescription.getLabel(), diagram.getLabel()))
+                    .previousLayoutData(previousLayoutData)
+                    .diagramEvent(optionalDiagramEvent.orElse(null))
                     .build();
 
             diagram.getNodes().stream()
                 .map(node -> this.convertNode(diagramLayoutConfiguration, node))
-                .forEach(diagramLayoutConfiguration.getChildNodeLayoutConfigurations()::add);
+                .forEach(diagramLayoutConfiguration.childNodeLayoutConfigurations()::add);
 
             diagram.getEdges().stream()
                 .map(edge -> this.convertEdge(diagramLayoutConfiguration, edge))
-                .forEach(diagramLayoutConfiguration.getEdgeLayoutConfigurations()::add);
+                .forEach(diagramLayoutConfiguration.edgeLayoutConfigurations()::add);
 
             return Optional.of(diagramLayoutConfiguration);
         }
@@ -89,25 +95,26 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
             containmentKind = "border";
         }
         var nodeLabel = node.getLabel().getText();
-        var displayName = String.format("%s > [%s node] %s", parentLayoutConfiguration.getDisplayName(), containmentKind, nodeLabel);
+        var displayName = String.format("%s > [%s node] %s", parentLayoutConfiguration.displayName(), containmentKind, nodeLabel);
 
         var nodeLayoutConfiguration = NodeLayoutConfiguration.newNodeLayoutConfiguration(node.getId())
                 .displayName(displayName)
                 .labelLayoutConfiguration(this.convertLabel(node.getLabel()))
                 .parentLayoutConfiguration(parentLayoutConfiguration)
-                .withHeader(node.getStyle() instanceof RectangularNodeStyle nodeStyle && nodeStyle.isWithHeader())
-                .labelInside(node.getStyle() instanceof RectangularNodeStyle)
                 .border(this.getBorderSize(node.getStyle()))
+                .padding(Offsets.of(12.0))
+                .margin(Offsets.of(25.0))
+                .minimumSize(new Size(150, 70))
                 .layoutStrategy(this.getLayoutStrategy(node))
                 .build();
 
         node.getChildNodes().stream()
             .map(childNode -> this.convertNode(nodeLayoutConfiguration, childNode))
-            .forEach(nodeLayoutConfiguration.getChildNodeLayoutConfigurations()::add);
+            .forEach(nodeLayoutConfiguration.childNodeLayoutConfigurations()::add);
 
         node.getBorderNodes().stream()
             .map(borderNode -> this.convertNode(nodeLayoutConfiguration, borderNode))
-            .forEach(nodeLayoutConfiguration.getBorderNodeLayoutConfigurations()::add);
+            .forEach(nodeLayoutConfiguration.borderNodeLayoutConfigurations()::add);
 
         return nodeLayoutConfiguration;
     }
@@ -133,10 +140,12 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
     }
 
     private EdgeLayoutConfiguration convertEdge(DiagramLayoutConfiguration diagramLayoutConfiguration, Edge edge) {
-        var edgeLabel = Optional.ofNullable(edge.getCenterLabel()).map(Label::getText).orElse("<no label>");
+        var edgeLabel = Optional.ofNullable(edge.getCenterLabel())
+                .map(Label::getText)
+                .orElse("<no label>");
 
         var builder = EdgeLayoutConfiguration.newEdgeLayoutConfiguration(edge.getId())
-                .displayName(String.format("%s > [edge] %s", diagramLayoutConfiguration.getDisplayName(), edgeLabel))
+                .displayName(String.format("%s > [edge] %s", diagramLayoutConfiguration.displayName(), edgeLabel))
                 .parentLayoutConfiguration(diagramLayoutConfiguration)
                 .width(edge.getStyle().getSize());
 
@@ -155,11 +164,13 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
                 .text(label.getText())
                 .fontSize(labelStyle.getFontSize())
                 .fontStyle(fontStyle)
-                .padding(Offsets.of(4.0));
+                .border(Offsets.empty())
+                .padding(Offsets.of(5.0))
+                .margin(Offsets.of(5.0));
 
         if (optionalIconSize.isPresent()) {
             Size iconSize = new Size(optionalIconSize.get().getWidth(), optionalIconSize.get().getHeight());
-            builder.gap(10.0).iconSize(Optional.of(iconSize));
+            builder.iconLayoutConfiguration(new IconLayoutConfiguration(iconSize, 10.0));
         }
         return builder.build();
     }

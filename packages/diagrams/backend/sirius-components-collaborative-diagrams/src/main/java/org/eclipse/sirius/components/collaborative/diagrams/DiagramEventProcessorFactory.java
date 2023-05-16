@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
@@ -51,15 +52,18 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     public DiagramEventProcessorFactory(IRepresentationSearchService representationSearchService, IDiagramCreationService diagramCreationService, List<IDiagramEventHandler> diagramEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+                                        ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+                                        IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IRepresentationPersistenceService representationPersistenceService) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
     }
 
     @Override
@@ -74,16 +78,24 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
             var optionalDiagram = this.representationSearchService.findById(editingContext, diagramConfiguration.getId(), Diagram.class);
             if (optionalDiagram.isPresent()) {
                 Diagram diagram = optionalDiagram.get();
-
-                // @formatter:off
                 DiagramContext diagramContext = new DiagramContext(diagram);
-                IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(editingContext, diagramContext,
-                        this.diagramEventHandlers, this.subscriptionManagerFactory.create(), this.representationDescriptionSearchService, this.representationRefreshPolicyRegistry, this.diagramCreationService);
+
+                var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
+                        .editingContext(editingContext)
+                        .diagramContext(diagramContext)
+                        .diagramEventHandlers(this.diagramEventHandlers)
+                        .subscriptionManager(this.subscriptionManagerFactory.create())
+                        .diagramCreationService(this.diagramCreationService)
+                        .representationDescriptionSearchService(this.representationDescriptionSearchService)
+                        .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
+                        .representationPersistenceService(this.representationPersistenceService)
+                        .build();
+
+                IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
 
                 return Optional.of(diagramEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)
                         .map(representationEventProcessorClass::cast);
-                // @formatter:on
             }
         }
         return Optional.empty();

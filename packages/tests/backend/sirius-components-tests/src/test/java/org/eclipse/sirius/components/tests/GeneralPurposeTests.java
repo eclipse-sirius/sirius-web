@@ -178,7 +178,7 @@ public class GeneralPurposeTests {
                         String line = lines.get(index);
                         this.testNoSuppressWarnings(index, line, javaFilePath, lines);
                         this.testNoCheckstyleOff(index, line, javaFilePath);
-                        this.testNoThrowNewException(index, line, javaFilePath);
+                        this.testNoThrowNewException(index, line, javaFilePath, lines);
                         this.testNoNonNls(index, line, javaFilePath);
                     }
                     this.testCopyrightHeader(javaFilePath, lines);
@@ -233,9 +233,12 @@ public class GeneralPurposeTests {
         }
     }
 
-    private void testNoThrowNewException(int index, String line, Path javaFilePath) {
+    private void testNoThrowNewException(int index, String line, Path javaFilePath, List<String> lines) {
         if (line.contains(THROW_NEW)) {
-            fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
+            var isRecord = lines.stream().anyMatch(l -> l.contains("public record"));
+            if (!isRecord) {
+                fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
+            }
         }
     }
 

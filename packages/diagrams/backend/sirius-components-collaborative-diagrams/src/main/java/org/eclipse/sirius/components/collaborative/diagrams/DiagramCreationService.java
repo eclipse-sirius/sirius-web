@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -35,8 +34,9 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.B
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.api.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.representations.Element;
@@ -59,13 +59,13 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
-
     private final IObjectService objectService;
 
     private final ILayoutService layoutService;
 
     private final IDiagramLayoutEngine diagramLayoutEngine;
+
+    private final IDiagramLayoutConfigurationProvider diagramLayoutConfigurationProvider;
 
     private final IOperationValidator operationValidator;
 
@@ -73,13 +73,14 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
-    public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, ILayoutService layoutService, IDiagramLayoutEngine diagramLayoutEngine, IOperationValidator operationValidator, MeterRegistry meterRegistry) {
+    public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
+                                  ILayoutService layoutService, IDiagramLayoutEngine diagramLayoutEngine, IDiagramLayoutConfigurationProvider diagramLayoutConfigurationProvider,
+                                  IOperationValidator operationValidator, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.layoutService = Objects.requireNonNull(layoutService);
         this.diagramLayoutEngine = Objects.requireNonNull(diagramLayoutEngine);
+        this.diagramLayoutConfigurationProvider = Objects.requireNonNull(diagramLayoutConfigurationProvider);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -99,8 +100,7 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .toList();
         // @formatter:on
 
-        Diagram newDiagram = this.doRender(label, targetObject, editingContext, diagramDescription, allDiagramDescriptions, Optional.empty());
-        return newDiagram;
+        return this.doRender(label, targetObject, editingContext, diagramDescription, allDiagramDescriptions, Optional.empty());
     }
 
     @Override
@@ -173,11 +173,15 @@ public class DiagramCreationService implements IDiagramCreationService {
             if (!this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription) && optionalPreviousDiagram.isPresent()) {
                 previousLayoutData = optionalPreviousDiagram.get().getLayoutData();
             }
-            DiagramLayoutData newLayoutData = this.diagramLayoutEngine.layout(editingContext, newDiagram, previousLayoutData, optionalDiagramElementEvent);
-            newDiagram = Diagram.newDiagram(newDiagram).layoutData(newLayoutData).build();
+            var optionalDiagramLayoutConfiguration = this.diagramLayoutConfigurationProvider.getDiagramLayoutConfiguration(editingContext, newDiagram, previousLayoutData, optionalDiagramElementEvent);
+            if (optionalDiagramLayoutConfiguration.isPresent()) {
+                var diagramLayoutConfiguration = optionalDiagramLayoutConfiguration.get();
+                DiagramLayoutData newLayoutData = this.diagramLayoutEngine.layout(diagramLayoutConfiguration);
+                newDiagram = Diagram.newDiagram(newDiagram)
+                        .layoutData(newLayoutData)
+                        .build();
+            }
         }
-
-        this.representationPersistenceService.save(editingContext, newDiagram);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

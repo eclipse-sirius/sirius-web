@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layout.api.configuration;
+package org.eclipse.sirius.components.diagrams.layout.api.experimental;
 
-import java.util.List;
+import java.util.Objects;
+
+import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 
 /**
- * Interface used by the parent of node layout configurations.
+ * Aggregates all configuration information relevant for an icon.
  *
  * @author sbegaudeau
  */
-public interface IParentLayoutConfiguration {
-    String getId();
-
-    String getDisplayName();
-
-    List<NodeLayoutConfiguration> getChildNodeLayoutConfigurations();
+public record IconLayoutConfiguration(Size iconSize, double gap) {
+    public IconLayoutConfiguration {
+        Objects.requireNonNull(iconSize);
+    }
 }

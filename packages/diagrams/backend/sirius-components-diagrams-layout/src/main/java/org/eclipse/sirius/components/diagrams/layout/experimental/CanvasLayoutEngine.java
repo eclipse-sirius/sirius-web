@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.diagrams.layout.experimental;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,8 +20,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.components.diagrams.layout.api.Offsets;
-import org.eclipse.sirius.components.diagrams.layout.api.Rectangle;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Rectangle;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 
@@ -43,10 +42,6 @@ public class CanvasLayoutEngine {
         this.nodeIds = Objects.requireNonNull(nodeIds);
         this.sizeProvider = Objects.requireNonNull(sizeProvider);
         this.marginProvider = Objects.requireNonNull(marginProvider);
-    }
-
-    public Map<String, Rectangle> getLeftToRightLayout() {
-        return this.getLeftToRightLayout(Collections.emptyList());
     }
 
     public Map<String, Rectangle> getLeftToRightLayout(Collection<Rectangle> occupied) {

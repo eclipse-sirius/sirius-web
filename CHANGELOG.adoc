@@ -22,13 +22,17 @@
 
 === Breaking changes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1897[1897] [diagram] ToolSection are now using records
+- https://github.com/eclipse-sirius/sirius-components/issues/1897[#1897] [diagram] ToolSection are now using records
 - https://github.com/eclipse-sirius/sirius-components/issues/1616[#1616] [core] Use Java records for all our payloads
 - https://github.com/eclipse-sirius/sirius-components/issues/1848[#1848] [project] Remove the frontend dependency to `uuid` in favor of `crypto.randomUUID`
 - https://github.com/eclipse-sirius/sirius-components/issues/1907[#1907] [view] The management of colors is changing, it is not possible anymore to use color directly represented by a string in the _styleDescription_.
 All the colors are now defined in a new palette object _ColorPalette_ with the properties _name_ and _value_.
 A view can define as many _ColorPalette_ as desired.
 In the _styleDescription_, the definition of a color are now a select list of all the colors contained in the _ColorPalette_ of the view.
+- https://github.com/eclipse-sirius/sirius-components/issues/1970[#1970] [diagram] Simplify the lifecycle of the diagram creation and refresh.
+For that, the `DiagramCreationService` will have less responsabilities.
+Starting now, it will stop persisting the diagram after its creation.
+It will start by improving a bit performances since diagrams were persisted twice in some use cases.
 
 === Dependency update
 - https://github.com/eclipse-sirius/sirius-components/issues/1936[#1936] [releng] Switch to Cypress 12.11.0
@@ -49,7 +53,7 @@ In the _styleDescription_, the definition of a color are now a select list of al
 These natures can be used later to enable or not some capabilities on a project.
 This work will start by adding the ability to filter the project's domains.
 A large set of features will have to be updated in order to stop considering the list of metamodels available in an editing context as a certainty.
-- https://github.com/eclipse-sirius/sirius-components/issues/1946[1#946] Enabled child extenders in the View DSL implementation.
+- https://github.com/eclipse-sirius/sirius-components/issues/1946[#1946] Enabled child extenders in the View DSL implementation.
 This allows downstream projects and applications to provide their own sub-types of the DSL types (e.g. new WidgetDescriptions).
 In addition to registering the extension metadmodel itself, users must provide a `ChildExtenderProvider` bean for their extensions to be properly integrated.
 - https://github.com/eclipse-sirius/sirius-components/issues/1918[#1918] [tree] Its is now possible to filter tree items in trees.

@@ -16,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
 
-import org.eclipse.sirius.components.diagrams.layout.api.Offsets;
-import org.eclipse.sirius.components.diagrams.layout.api.Rectangle;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Rectangle;
 import org.junit.jupiter.api.Test;
 
 /**
