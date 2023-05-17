@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.diagrams.layout.api.experimental.LabelLayou
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
-import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.springframework.stereotype.Service;
@@ -49,12 +48,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigurationProvider {
-
-    private final ImageSizeProvider imageSizeProvider;
-
-    public DiagramLayoutConfigurationProvider(ImageSizeProvider imageSizeProvider) {
-        this.imageSizeProvider = Objects.requireNonNull(imageSizeProvider);
-    }
 
     @Override
     public DiagramLayoutConfiguration getDiagramLayoutConfiguration(Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
@@ -166,19 +159,14 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
     public LabelLayoutConfiguration convertLabel(Label label) {
         var labelStyle = label.getStyle();
         var fontStyle = new FontStyle(labelStyle.isBold(), labelStyle.isItalic(), labelStyle.isUnderline(), labelStyle.isStrikeThrough());
-        var optionalIconSize = this.imageSizeProvider.getSize(labelStyle.getIconURL());
-        var builder = LabelLayoutConfiguration.newLabelLayoutConfiguration(label.getId())
+        return LabelLayoutConfiguration.newLabelLayoutConfiguration(label.getId())
                 .text(label.getText())
                 .fontSize(labelStyle.getFontSize())
                 .fontStyle(fontStyle)
                 .border(Offsets.empty())
                 .padding(Offsets.of(5.0))
-                .margin(Offsets.of(5.0));
-
-        if (optionalIconSize.isPresent()) {
-            Size iconSize = new Size(optionalIconSize.get().getWidth(), optionalIconSize.get().getHeight());
-            builder.iconLayoutConfiguration(new IconLayoutConfiguration(iconSize, 10.0));
-        }
-        return builder.build();
+                .margin(Offsets.of(5.0))
+                .iconLayoutConfiguration(new IconLayoutConfiguration(new Size(16, 16), 10.0))
+                .build();
     }
 }

@@ -24,33 +24,23 @@ import org.eclipse.sirius.components.collaborative.diagrams.export.svg.EdgeExpor
 import org.eclipse.sirius.components.collaborative.diagrams.export.svg.NodeExportService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.DiagramLayoutConfiguration;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutEngine;
+import org.eclipse.sirius.components.diagrams.layout.experimental.DiagramLayoutConfigurationProvider;
+import org.eclipse.sirius.components.diagrams.layout.experimental.DiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
-import org.eclipse.sirius.web.sample.tests.integration.AbstractIntegrationTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * Integration tests for diagram layout engine.
  *
  * @author gcoutable
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DiagramLayoutIntegrationTests extends AbstractIntegrationTests {
+public class DiagramLayoutIntegrationTests {
 
     private final Logger logger = LoggerFactory.getLogger(DiagramLayoutIntegrationTests.class);
-
-    @Autowired
-    private IDiagramLayoutConfigurationProvider diagramLayoutConfigurationProvider;
-
-    @Autowired
-    private IDiagramLayoutEngine diagramLayoutEngine;
 
     @Test
     @DisplayName("Given a diagram, when the layout is performed, then valid layout data are computed")
@@ -60,9 +50,9 @@ public class DiagramLayoutIntegrationTests extends AbstractIntegrationTests {
                 .nodes(List.of(builder.getNode("node")))
                 .build();
 
-        DiagramLayoutConfiguration diagramLayoutConfiguration = this.diagramLayoutConfigurationProvider.getDiagramLayoutConfiguration(diagram, new DiagramLayoutData(Map.of(), Map.of(), Map.of()), Optional.empty());
+        DiagramLayoutConfiguration diagramLayoutConfiguration = new DiagramLayoutConfigurationProvider().getDiagramLayoutConfiguration(diagram, new DiagramLayoutData(Map.of(), Map.of(), Map.of()), Optional.empty());
 
-        DiagramLayoutData diagramLayoutData = this.diagramLayoutEngine.layout(diagramLayoutConfiguration);
+        DiagramLayoutData diagramLayoutData = new DiagramLayoutEngine().layout(diagramLayoutConfiguration);
 
         Diagram layoutedDiagram = Diagram.newDiagram(diagram)
                 .layoutData(diagramLayoutData)
@@ -78,9 +68,7 @@ public class DiagramLayoutIntegrationTests extends AbstractIntegrationTests {
         DiagramElementExportService diagramElementExportService = new DiagramElementExportService(imageRegistry);
         EdgeExportService edgeExportService = new EdgeExportService(diagramElementExportService);
         NodeExportService nodeExportService = new NodeExportService(diagramElementExportService);
-        DiagramExportService diagramExportService = new DiagramExportService(nodeExportService, edgeExportService, imageRegistry);
-
-        return diagramExportService;
+        return new DiagramExportService(nodeExportService, edgeExportService, imageRegistry);
     }
 
 }

@@ -50,15 +50,15 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
 
     @Override
     public DiagramLayoutData layout(DiagramLayoutConfiguration diagramLayoutConfiguration) {
-        Map<String, Rectangle> nodeBounds = new HashMap<>();
+        DiagramBoxModel diagramBoxModel = new DiagramBoxModel(new HashMap<>());
 
         try {
-            this.layoutContents(diagramLayoutConfiguration.id(), diagramLayoutConfiguration, nodeBounds);
+            this.layoutContents(diagramLayoutConfiguration.id(), diagramLayoutConfiguration, diagramBoxModel);
 
             var childNodeIds = diagramLayoutConfiguration.childNodeLayoutConfigurations().stream()
                     .map(NodeLayoutConfiguration::id)
                     .toList();
-            this.arrangeChildren(diagramLayoutConfiguration.id(), childNodeIds, diagramLayoutConfiguration, nodeBounds);
+            this.arrangeChildren(diagramLayoutConfiguration.id(), childNodeIds, diagramLayoutConfiguration, diagramBoxModel);
         } catch (IllegalArgumentException exception) {
             // Several kind of assertions are performed during the layout, in case of bugs in our code,
             // those assertions could throw some exceptions. We will catch them here in order to return
@@ -67,12 +67,12 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
         }
 
         Map<String, NodeLayoutData> newNodeLayoutData = new HashMap<>();
-        nodeBounds.forEach((nodeId, newBounds) -> newNodeLayoutData.put(nodeId, new NodeLayoutData(nodeId, newBounds.topLeft(), newBounds.size())));
+        diagramBoxModel.nodeBoxModels().forEach((nodeId, nodeBoxModel) -> newNodeLayoutData.put(nodeId, new NodeLayoutData(nodeId, nodeBoxModel.bounds().topLeft(), nodeBoxModel.bounds().size())));
 
         return new DiagramLayoutData(newNodeLayoutData, Map.of(), Map.of());
     }
 
-    private void layoutContents(String containerId, DiagramLayoutConfiguration diagramLayoutConfiguration, Map<String, Rectangle> nodeBounds) {
+    private void layoutContents(String containerId, DiagramLayoutConfiguration diagramLayoutConfiguration, DiagramBoxModel diagramBoxModel) {
         // Recursively layout the children's contents
         IParentLayoutConfiguration containerLayoutConfiguration = Optional.<IParentLayoutConfiguration>ofNullable(diagramLayoutConfiguration.nodeLayoutConfigurationsById().get(containerId))
                 .orElse(diagramLayoutConfiguration);
@@ -81,18 +81,21 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
                 .map(NodeLayoutConfiguration::id)
                 .toList();
 
-        childNodeIds.forEach(childNodeId -> this.layoutContents(childNodeId, diagramLayoutConfiguration, nodeBounds));
+        childNodeIds.forEach(childNodeId -> this.layoutContents(childNodeId, diagramLayoutConfiguration, diagramBoxModel));
 
         // At this point the children have their correct *size* but are not correctly positioned.
         // Arrange them properly as if on an unbounded canvas.
-        this.arrangeChildren(containerId, childNodeIds, diagramLayoutConfiguration, nodeBounds);
+        this.arrangeChildren(containerId, childNodeIds, diagramLayoutConfiguration, diagramBoxModel);
 
         // Shift the children's position if needed so that they stay inside the container's content area.
         var internalOffsets = diagramLayoutConfiguration.optionalNodeLayoutConfiguration(containerId)
                 .map(configuration -> configuration.border().combine(configuration.padding()))
                 .orElse(Offsets.empty());
 
-        Rectangle childrenFootprint = Rectangle.union(childNodeIds.stream().map(nodeBounds::get).toList());
+        Rectangle childrenFootprint = Rectangle.union(childNodeIds.stream()
+                .map(diagramBoxModel.nodeBoxModels()::get)
+                .map(NodeBoxModel::footprint)
+                .toList());
         if (!childNodeIds.isEmpty() && !containerId.equals(diagramLayoutConfiguration.id())) {
             double dx = 0.0;
             double dy = 0.0;
@@ -104,8 +107,17 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
                 dy = internalOffsets.top() - childrenOrigin.y();
             }
             for (String childNodeId : childNodeIds) {
-                Rectangle childBounds = nodeBounds.get(childNodeId).translate(dx, dy);
-                nodeBounds.put(childNodeId, childBounds);
+                var optionalNodeBoxModel = Optional.ofNullable(diagramBoxModel.nodeBoxModels().get(childNodeId));
+                var optionalNodeLayoutConfiguration = diagramLayoutConfiguration.optionalNodeLayoutConfiguration(childNodeId);
+                if (optionalNodeBoxModel.isPresent() && optionalNodeLayoutConfiguration.isPresent()) {
+                    var nodeBoxModel = optionalNodeBoxModel.get();
+                    var nodeLayoutConfiguration = optionalNodeLayoutConfiguration.get();
+
+                    var newBounds = nodeBoxModel.bounds().translate(dx, dy);
+                    var newFootprint = newBounds.expand(nodeLayoutConfiguration.margin());
+                    var newNodeBoxModel = new NodeBoxModel(nodeBoxModel.nodeId(), newBounds, newFootprint);
+                    diagramBoxModel.nodeBoxModels().put(childNodeId, newNodeBoxModel);
+                }
             }
         }
 
@@ -128,14 +140,23 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
         Size requestedSize = diagramLayoutConfiguration.optionalResizeEvent(containerId).map(ResizeEvent::newSize).map(s -> new Size(s.getWidth(), s.getHeight())).orElse(previousSize);
         double width = Math.max(contentsSize.width(), Math.max(minSize.width(), requestedSize.width()));
         double height = Math.max(contentsSize.height(), Math.max(minSize.height(), requestedSize.height()));
-        nodeBounds.put(containerId, new Rectangle(0, 0, width, height));
+
+        var optionalNodeLayoutConfiguration = diagramLayoutConfiguration.optionalNodeLayoutConfiguration(containerId);
+        if (optionalNodeLayoutConfiguration.isPresent()) {
+            var nodeLayoutConfiguration = optionalNodeLayoutConfiguration.get();
+
+            var bounds = new Rectangle(0, 0, width, height);
+            var footprint = bounds.expand(nodeLayoutConfiguration.margin());
+            var newNodeBoxModel = new NodeBoxModel(containerId, bounds, footprint);
+            diagramBoxModel.nodeBoxModels().put(containerId, newNodeBoxModel);
+        }
     }
 
     /**
      * Assuming all the children have their proper size, arrange them (only changing their positions) to their final
      * position (relative to their parent).
      */
-    private void arrangeChildren(String parentElementId, List<String> childNodeIds, DiagramLayoutConfiguration diagramLayoutConfiguration, Map<String, Rectangle> layout) {
+    private void arrangeChildren(String parentElementId, List<String> childNodeIds, DiagramLayoutConfiguration diagramLayoutConfiguration, DiagramBoxModel diagramBoxModel) {
         Canvas canvas = new Canvas();
 
         // First, place the node(s) which has been directly interacted with by the end-user if there are any.
@@ -143,7 +164,7 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
             Optional<MoveEvent> optionalMoveEvent = diagramLayoutConfiguration.optionalMoveEvent(childNodeId);
             if (optionalMoveEvent.isPresent()) {
                 Position newPosition = new Position(optionalMoveEvent.get().newPosition().getX(), optionalMoveEvent.get().newPosition().getY());
-                canvas.setBounds(childNodeId, layout.get(childNodeId).moveTo(newPosition));
+                canvas.setBounds(childNodeId, diagramBoxModel.nodeBoxModels().get(childNodeId).bounds().moveTo(newPosition));
             }
             // A resize can also change the position if it moves the top-left corner.
             Optional<ResizeEvent> optionalResizeEvent = diagramLayoutConfiguration.optionalResizeEvent(childNodeId);
@@ -153,7 +174,7 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
                     double dx = -resizeEvent.positionDelta().getX();
                     double dy = -resizeEvent.positionDelta().getY();
                     Position newPosition = bounds.topLeft().translate(dx, dy);
-                    canvas.setBounds(childNodeId, layout.get(childNodeId).moveTo(newPosition));
+                    canvas.setBounds(childNodeId, diagramBoxModel.nodeBoxModels().get(childNodeId).bounds().moveTo(newPosition));
                 });
             }
         }
@@ -178,14 +199,14 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
                 String newChildId = childrenWithoutPreviousLocation.iterator().next();
                 childrenWithoutPreviousLocation.remove(newChildId);
                 var position = singlePositionEvent.position();
-                canvas.place(newChildId, this.relativePosition(diagramLayoutConfiguration, parentElementId, new Position(position.getX(), position.getY())), layout.get(newChildId).size());
+                canvas.place(newChildId, this.relativePosition(diagramLayoutConfiguration, parentElementId, new Position(position.getX(), position.getY())), diagramBoxModel.nodeBoxModels().get(newChildId).footprint().size());
             });
         }
 
         // Next, try to keep the position for all the other nodes which have previous positions.
         for (String childId : childrenWithPreviousLocation) {
             diagramLayoutConfiguration.optionalPreviousFootprint(childId).ifPresent(bounds -> {
-                canvas.place(childId, bounds.topLeft(), layout.get(childId).size());
+                canvas.place(childId, bounds.topLeft(), diagramBoxModel.nodeBoxModels().get(childId).bounds().size());
             });
         }
 
@@ -195,14 +216,18 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
                 .map(NodeLayoutConfiguration::margin)
                 .orElse(Offsets.empty());
 
-        Function<String, Size> sizeProvider = nodeId -> layout.get(nodeId).size();
+        Function<String, Size> sizeProvider = nodeId -> diagramBoxModel.nodeBoxModels().get(nodeId).bounds().size();
 
         var newNodesLayout = new CanvasLayoutEngine(childrenWithoutPreviousLocation, sizeProvider, marginProvider)
                 .getLeftToRightLayout(canvas.getOccupiedFootprints(marginProvider));
         newNodesLayout.forEach(canvas::setBounds);
 
-        // "Commit" the result into the global layout
-        layout.putAll(canvas.getAllBounds());
+        // "Commit" the result into the global box model
+        canvas.getAllBounds().entrySet().stream()
+                        .map(entry -> {
+                            var nodeBoxModel = diagramBoxModel.nodeBoxModels().get(entry.getKey());
+                            return new NodeBoxModel(nodeBoxModel.nodeId(), nodeBoxModel.bounds(), entry.getValue());
+                        }).forEach(nodeBoxModel -> diagramBoxModel.nodeBoxModels().put(nodeBoxModel.nodeId(), nodeBoxModel));
     }
 
     public Position relativePosition(DiagramLayoutConfiguration diagramLayoutConfiguration, String nodeId, Position absolutePosition) {
