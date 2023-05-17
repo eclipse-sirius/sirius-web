@@ -94,19 +94,21 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
         if (node.isBorderNode()) {
             containmentKind = "border";
         }
-        var nodeLabel = node.getLabel().getText();
+        var nodeLabel = Optional.ofNullable(node.getLabel()).map(Label::getText).orElse("nolabel");
         var displayName = String.format("%s > [%s node] %s", parentLayoutConfiguration.displayName(), containmentKind, nodeLabel);
 
-        var nodeLayoutConfiguration = NodeLayoutConfiguration.newNodeLayoutConfiguration(node.getId())
+        var builder = NodeLayoutConfiguration.newNodeLayoutConfiguration(node.getId())
                 .displayName(displayName)
-                .labelLayoutConfiguration(this.convertLabel(node.getLabel()))
                 .parentLayoutConfiguration(parentLayoutConfiguration)
                 .border(this.getBorderSize(node.getStyle()))
                 .padding(Offsets.of(12.0))
                 .margin(Offsets.of(25.0))
                 .minimumSize(new Size(150, 70))
-                .layoutStrategy(this.getLayoutStrategy(node))
-                .build();
+                .layoutStrategy(this.getLayoutStrategy(node));
+
+        Optional.ofNullable(node.getLabel()).map(this::convertLabel).ifPresent(builder::labelLayoutConfiguration);
+
+        var nodeLayoutConfiguration = builder.build();
 
         node.getChildNodes().stream()
             .map(childNode -> this.convertNode(nodeLayoutConfiguration, childNode))
