@@ -76,6 +76,7 @@ Navigate to the parent with the left arrow if a node is collapsed
 - https://github.com/eclipse-sirius/sirius-components/issues/1852[#1852] [layout] Single position event takes the diagram element id and the double position event takes the source id and target id
 - https://github.com/eclipse-sirius/sirius-components/issues/1971[#1971] [layout] Add the first new layout engine integration test
 - https://github.com/eclipse-sirius/sirius-components/issues/1831[#1831] [layout] Improve the data structure of the layout algorithm
+- https://github.com/eclipse-sirius/sirius-components/issues/1982[#1982] [diagram] Make the node label non required
 
 == v2023.4.0
 

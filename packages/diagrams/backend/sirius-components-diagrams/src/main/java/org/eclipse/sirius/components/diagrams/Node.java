@@ -337,7 +337,7 @@ public final class Node implements IDiagramElement {
             node.modifiers = Objects.requireNonNull(this.modifiers);
             node.state = Objects.requireNonNull(this.state);
             node.collapsingState = Objects.requireNonNull(this.collapsingState);
-            node.label = Objects.requireNonNull(this.label);
+            node.label = this.label;
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);

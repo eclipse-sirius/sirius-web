@@ -351,7 +351,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
             nodeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             nodeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
-            nodeDescription.labelDescription = Objects.requireNonNull(this.labelDescription);
+            nodeDescription.labelDescription = this.labelDescription;
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
             nodeDescription.userResizable = this.userResizable;

@@ -185,19 +185,21 @@ public class NodeComponent implements IComponent {
         }
         List<Element> childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor);
 
-        LabelDescription labelDescription = nodeDescription.getLabelDescription();
-        nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
-
-        // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
-        // the diagrams-layout.
-        LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
-
-        Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
-        LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, dummyLabelType.getValue());
-        Element labelElement = new Element(LabelComponent.class, labelComponentProps);
-
         List<Element> nodeChildren = new ArrayList<>();
-        nodeChildren.add(labelElement);
+        LabelDescription labelDescription = nodeDescription.getLabelDescription();
+        if (labelDescription != null) {
+            nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
+
+            // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
+            // the diagrams-layout.
+            LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
+
+            Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
+            LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, dummyLabelType.getValue());
+            Element labelElement = new Element(LabelComponent.class, labelComponentProps);
+            nodeChildren.add(labelElement);
+        }
+
         nodeChildren.addAll(borderNodes);
         nodeChildren.addAll(childNodes);
         // @formatter:off
