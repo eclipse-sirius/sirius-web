@@ -13,11 +13,10 @@
 
 package org.eclipse.sirius.components.diagrams.layout.experimental;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -27,18 +26,17 @@ import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.DiagramLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.EdgeLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.FontStyle;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.IParentLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.IconLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.LabelLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
@@ -52,41 +50,50 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigurationProvider {
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
     private final ImageSizeProvider imageSizeProvider;
 
-    public DiagramLayoutConfigurationProvider(IRepresentationDescriptionSearchService representationDescriptionSearchService, ImageSizeProvider imageSizeProvider) {
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    public DiagramLayoutConfigurationProvider(ImageSizeProvider imageSizeProvider) {
         this.imageSizeProvider = Objects.requireNonNull(imageSizeProvider);
     }
 
     @Override
-    public Optional<DiagramLayoutConfiguration> getDiagramLayoutConfiguration(IEditingContext editingContext, Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
-        Optional<DiagramDescription> optionalDiagramDescription = this.representationDescriptionSearchService
-                .findById(editingContext, diagram.getDescriptionId())
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast);
+    public DiagramLayoutConfiguration getDiagramLayoutConfiguration(Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
+        var builder = DiagramLayoutConfiguration.newDiagramLayoutConfiguration(diagram.getId())
+                .displayName(String.format("[diagram] %s", diagram.getLabel()))
+                .previousLayoutData(previousLayoutData);
 
-        if (optionalDiagramDescription.isPresent()) {
-            var diagramDescription = optionalDiagramDescription.get();
-            var diagramLayoutConfiguration = DiagramLayoutConfiguration.newDiagramLayoutConfiguration(diagram.getId())
-                    .displayName(String.format("[diagram] %s::%s", diagramDescription.getLabel(), diagram.getLabel()))
-                    .previousLayoutData(previousLayoutData)
-                    .diagramEvent(optionalDiagramEvent.orElse(null))
-                    .build();
+        optionalDiagramEvent.ifPresent(builder::diagramEvent);
 
-            diagram.getNodes().stream()
-                .map(node -> this.convertNode(diagramLayoutConfiguration, node))
-                .forEach(diagramLayoutConfiguration.childNodeLayoutConfigurations()::add);
+        var diagramLayoutConfiguration = builder.build();
 
-            diagram.getEdges().stream()
-                .map(edge -> this.convertEdge(diagramLayoutConfiguration, edge))
-                .forEach(diagramLayoutConfiguration.edgeLayoutConfigurations()::add);
+        diagram.getNodes().stream()
+            .map(node -> this.convertNode(diagramLayoutConfiguration, node))
+            .forEach(diagramLayoutConfiguration.childNodeLayoutConfigurations()::add);
 
-            return Optional.of(diagramLayoutConfiguration);
+        diagram.getEdges().stream()
+            .map(edge -> this.convertEdge(diagramLayoutConfiguration, edge))
+            .forEach(diagramLayoutConfiguration.edgeLayoutConfigurations()::add);
+
+        for (var configuration : diagramLayoutConfiguration.childNodeLayoutConfigurations()) {
+            diagramLayoutConfiguration.nodeLayoutConfigurationsById().put(configuration.id(), configuration);
+            this.indexNodeLayoutConfigurations(diagramLayoutConfiguration.nodeLayoutConfigurationsById(), configuration);
         }
-        return Optional.empty();
+        for (var configuration: diagramLayoutConfiguration.edgeLayoutConfigurations()) {
+            diagramLayoutConfiguration.edgeLayoutConfigurationsById().put(configuration.id(), configuration);
+        }
+
+        return diagramLayoutConfiguration;
+    }
+
+    private void indexNodeLayoutConfigurations(Map<String, NodeLayoutConfiguration> nodeLayoutConfigurationsById, NodeLayoutConfiguration nodeLayoutConfiguration) {
+        for (var configuration : nodeLayoutConfiguration.childNodeLayoutConfigurations()) {
+            nodeLayoutConfigurationsById.put(configuration.id(), configuration);
+            this.indexNodeLayoutConfigurations(nodeLayoutConfigurationsById, configuration);
+        }
+        for (var configuration : nodeLayoutConfiguration.borderNodeLayoutConfigurations()) {
+            nodeLayoutConfigurationsById.put(configuration.id(), configuration);
+            this.indexNodeLayoutConfigurations(nodeLayoutConfigurationsById, configuration);
+        }
     }
 
     private NodeLayoutConfiguration convertNode(IParentLayoutConfiguration parentLayoutConfiguration, Node node) {
