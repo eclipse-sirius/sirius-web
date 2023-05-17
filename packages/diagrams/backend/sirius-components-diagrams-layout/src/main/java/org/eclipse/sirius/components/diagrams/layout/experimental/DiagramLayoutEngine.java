@@ -26,9 +26,10 @@ import org.eclipse.sirius.components.diagrams.events.MoveEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.DiagramLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutEngine;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.IParentLayoutConfiguration;
+import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.Offsets;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.Rectangle;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.NodeLayoutConfiguration;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
@@ -73,7 +74,10 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
 
     private void layoutContents(String containerId, DiagramLayoutConfiguration diagramLayoutConfiguration, Map<String, Rectangle> nodeBounds) {
         // Recursively layout the children's contents
-        var childNodeIds = diagramLayoutConfiguration.childNodeLayoutConfigurations().stream()
+        IParentLayoutConfiguration containerLayoutConfiguration = Optional.<IParentLayoutConfiguration>ofNullable(diagramLayoutConfiguration.nodeLayoutConfigurationsById().get(containerId))
+                .orElse(diagramLayoutConfiguration);
+        var childNodeIds = containerLayoutConfiguration.childNodeLayoutConfigurations()
+                .stream()
                 .map(NodeLayoutConfiguration::id)
                 .toList();
 

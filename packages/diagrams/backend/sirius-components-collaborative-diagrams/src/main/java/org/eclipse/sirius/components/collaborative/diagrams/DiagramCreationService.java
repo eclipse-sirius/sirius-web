@@ -173,14 +173,11 @@ public class DiagramCreationService implements IDiagramCreationService {
             if (!this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription) && optionalPreviousDiagram.isPresent()) {
                 previousLayoutData = optionalPreviousDiagram.get().getLayoutData();
             }
-            var optionalDiagramLayoutConfiguration = this.diagramLayoutConfigurationProvider.getDiagramLayoutConfiguration(editingContext, newDiagram, previousLayoutData, optionalDiagramElementEvent);
-            if (optionalDiagramLayoutConfiguration.isPresent()) {
-                var diagramLayoutConfiguration = optionalDiagramLayoutConfiguration.get();
-                DiagramLayoutData newLayoutData = this.diagramLayoutEngine.layout(diagramLayoutConfiguration);
-                newDiagram = Diagram.newDiagram(newDiagram)
-                        .layoutData(newLayoutData)
-                        .build();
-            }
+            var diagramLayoutConfiguration = this.diagramLayoutConfigurationProvider.getDiagramLayoutConfiguration(newDiagram, previousLayoutData, optionalDiagramElementEvent);
+            DiagramLayoutData newLayoutData = this.diagramLayoutEngine.layout(diagramLayoutConfiguration);
+            newDiagram = Diagram.newDiagram(newDiagram)
+                    .layoutData(newLayoutData)
+                    .build();
         }
 
         long end = System.currentTimeMillis();

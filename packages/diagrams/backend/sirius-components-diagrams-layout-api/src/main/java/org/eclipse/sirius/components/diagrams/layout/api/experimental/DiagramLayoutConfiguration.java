@@ -142,37 +142,14 @@ public record DiagramLayoutConfiguration(
             return this;
         }
 
-        private void indexNodeLayoutConfigurations(Map<String, NodeLayoutConfiguration> nodeLayoutConfigurationsById, NodeLayoutConfiguration nodeLayoutConfiguration) {
-            for (var configuration : nodeLayoutConfiguration.childNodeLayoutConfigurations()) {
-                nodeLayoutConfigurationsById.put(configuration.id(), configuration);
-                this.indexNodeLayoutConfigurations(nodeLayoutConfigurationsById, configuration);
-            }
-            for (var configuration : nodeLayoutConfiguration.borderNodeLayoutConfigurations()) {
-                nodeLayoutConfigurationsById.put(configuration.id(), configuration);
-                this.indexNodeLayoutConfigurations(nodeLayoutConfigurationsById, configuration);
-            }
-        }
-
         public DiagramLayoutConfiguration build() {
-            Map<String, NodeLayoutConfiguration> nodeLayoutConfigurationsById = new HashMap<>();
-
-            for (var configuration : this.childNodeLayoutConfigurations) {
-                nodeLayoutConfigurationsById.put(configuration.id(), configuration);
-                this.indexNodeLayoutConfigurations(nodeLayoutConfigurationsById, configuration);
-            }
-
-            Map<String, EdgeLayoutConfiguration> edgeLayoutConfigurationsById = new HashMap<>();
-            for (var configuration: this.edgeLayoutConfigurations) {
-                edgeLayoutConfigurationsById.put(configuration.id(), configuration);
-            }
-
             return new DiagramLayoutConfiguration(
                     this.id,
                     this.displayName,
                     this.childNodeLayoutConfigurations,
                     this.edgeLayoutConfigurations,
-                    nodeLayoutConfigurationsById,
-                    edgeLayoutConfigurationsById,
+                    new HashMap<>(),
+                    new HashMap<>(),
                     this.previousLayoutData,
                     Optional.ofNullable(this.diagramEvent)
             );

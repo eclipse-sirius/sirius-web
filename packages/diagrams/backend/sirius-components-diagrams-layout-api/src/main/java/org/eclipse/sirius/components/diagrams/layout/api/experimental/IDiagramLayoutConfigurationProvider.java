@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.layout.api.experimental;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
@@ -25,7 +24,7 @@ import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
  * @author sbegaudeau
  */
 public interface IDiagramLayoutConfigurationProvider {
-    Optional<DiagramLayoutConfiguration> getDiagramLayoutConfiguration(IEditingContext editingContext, Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent);
+    DiagramLayoutConfiguration getDiagramLayoutConfiguration(Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -35,8 +34,8 @@ public interface IDiagramLayoutConfigurationProvider {
     class NoOp implements  IDiagramLayoutConfigurationProvider {
 
         @Override
-        public Optional<DiagramLayoutConfiguration> getDiagramLayoutConfiguration(IEditingContext editingContext, Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
-            return Optional.empty();
+        public DiagramLayoutConfiguration getDiagramLayoutConfiguration(Diagram diagram, DiagramLayoutData previousLayoutData, Optional<IDiagramEvent> optionalDiagramEvent) {
+            return null;
         }
     }
 }
