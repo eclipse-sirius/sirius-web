@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -62,6 +63,8 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final EPackage.Registry ePackageRegistry;
 
+    private final IInMemoryViewRegistry inMemoryViewRegistry;
+
     private final IDiagramIdProvider diagramIdProvider;
 
     private final IURLParser urlParser;
@@ -70,23 +73,23 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final IObjectService objectService;
 
-    public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser, IFormIdProvider formIdProvider, IObjectService objectService) {
+    public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser, IFormIdProvider formIdProvider, IObjectService objectService, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
+        this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
     }
 
     @Override
     public Optional<RepresentationDescription> findById(String representationDescriptionId) {
         Optional<String> sourceId = this.getSourceId(representationDescriptionId);
         if (sourceId.isPresent()) {
-            Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId.get()));
-            if (documentEntity.isPresent()) {
-                Resource resource = this.loadDocumentAsEMF(documentEntity.get());
-                var searchedView = this.getViewDefinitions(resource)
+            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            if (!views.isEmpty()) {
+                var searchedView = views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
                         .filter(representationDescription -> representationDescriptionId.equals(this.getRepresentationDescriptionId(representationDescription)))
                         .findFirst();
@@ -101,18 +104,18 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     public Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId) {
         Optional<String> sourceId = this.getSourceId(nodeDescriptionId);
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescriptionId);
-
         if (sourceId.isPresent() && sourceElementId.isPresent()) {
-            Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId.get()));
-            if (documentEntity.isPresent()) {
-                Resource resource = this.loadDocumentAsEMF(documentEntity.get());
-                var searchedViewNodes = this.getViewDefinitions(resource)
+            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            if (!views.isEmpty()) {
+                // @formatter:off
+                var searchedViewNodes = views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
                         .filter(DiagramDescription.class::isInstance)
                         .map(DiagramDescription.class::cast)
                         .map(diagramDescription -> this.findNodeDescriptionById(diagramDescription, sourceElementId.get()))
                         .flatMap(Optional::stream)
                         .findFirst();
+                // @formatter:on
                 return searchedViewNodes;
             }
         }
@@ -123,22 +126,35 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
         Optional<String> sourceId = this.getSourceId(edgeDescriptionId);
         Optional<String> sourceElementId = this.getSourceElementId(edgeDescriptionId);
-
         if (sourceId.isPresent() && sourceElementId.isPresent()) {
-            Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId.get()));
-            if (documentEntity.isPresent()) {
-                Resource resource = this.loadDocumentAsEMF(documentEntity.get());
-                var searchedViewEdges = this.getViewDefinitions(resource)
+            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            if (!views.isEmpty()) {
+                // @formatter:off
+                var searchedViewNodes = views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
                         .filter(DiagramDescription.class::isInstance)
                         .map(DiagramDescription.class::cast)
                         .map(diagramDescription -> this.findEdgeDescriptionById(diagramDescription, sourceElementId.get()))
                         .flatMap(Optional::stream)
                         .findFirst();
-                return searchedViewEdges;
+                // @formatter:on
+                return searchedViewNodes;
             }
         }
         return Optional.empty();
+    }
+
+    private List<View> getViewsFromSourceId(String sourceId) {
+        List<View> views = this.inMemoryViewRegistry.findViewById(sourceId).stream().toList();
+        if (views.isEmpty()) {
+            Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId));
+            if (documentEntity.isPresent()) {
+                Resource resource = this.loadDocumentAsEMF(documentEntity.get());
+                views = this.getViewDefinitions(resource).toList();
+            }
+        }
+
+        return views;
     }
 
     private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
