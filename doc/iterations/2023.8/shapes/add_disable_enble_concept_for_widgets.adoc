@@ -36,7 +36,7 @@ image::images/add_disable_enble_concept_for_widgets_02.png[button_read_only_repr
 
 == Rabbit holes
 
-* If there is no `isEnabledExpression` defined, the default behavior is to make the widget always enable.
+* If there is no `isEnabledExpression` defined, the default behavior is to make the widget always enabled.
 * There will be no `isEnabledExpression` on `PageDescription` or `GroupDescription`.
 * In the View DSL, here's the list for which the expression will be added :
 ** Textfield / Text area

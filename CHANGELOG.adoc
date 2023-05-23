@@ -5,6 +5,7 @@
 === Shapes
 
 - Add disable / enable concept for widgets
+- Add support for Help Expressions in Form widgets
 
 === Architectural decision records
 
