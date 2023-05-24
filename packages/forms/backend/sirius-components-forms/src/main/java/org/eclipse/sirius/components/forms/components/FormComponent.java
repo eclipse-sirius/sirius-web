@@ -30,6 +30,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class FormComponent implements IComponent {
 
+    /**
+     * The variable name used to store a {@link WidgetIdCounter} in the {@link VariableManager} of the
+     * {@link FormComponent}.
+     */
+    public static final String WIDGET_ID_PROVIDER_COUNTER = "widgetIdProviderCounter";
+
     private final FormComponentProps props;
 
     public FormComponent(FormComponentProps props) {
@@ -40,6 +46,7 @@ public class FormComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         FormDescription formDescription = this.props.getFormDescription();
+        WidgetIdCounter widgetIdCounter = new WidgetIdCounter();
 
         String id = formDescription.getIdProvider().apply(variableManager);
         String label = formDescription.getLabelProvider().apply(variableManager);
@@ -51,8 +58,7 @@ public class FormComponent implements IComponent {
         var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
         if (optionalSelf.isPresent()) {
             Object self = optionalSelf.get();
-            if (self instanceof Collection<?>) {
-                Collection<?> objects = (Collection<?>) self;
+            if (self instanceof Collection<?> objects) {
                 candidates.addAll(objects);
             } else {
                 candidates.add(self);
@@ -63,6 +69,7 @@ public class FormComponent implements IComponent {
         List<Element> children = candidates.stream().map(candidate -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, candidate);
+            childVariableManager.put(WIDGET_ID_PROVIDER_COUNTER, widgetIdCounter);
             return childVariableManager;
         }).flatMap(childVariableManager -> pageDescriptions.stream().map(pageDescription -> {
             PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription);
