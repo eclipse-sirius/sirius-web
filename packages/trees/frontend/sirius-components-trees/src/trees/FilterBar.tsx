@@ -60,6 +60,7 @@ export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: Filter
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
+                data-testid="filterbar-filter-button"
                 aria-label="filter"
                 size="small"
                 onClick={() => {
@@ -75,7 +76,12 @@ export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: Filter
           className: classes.textfield,
         }}
       />
-      <IconButton size="small" aria-label="close" color="inherit" onClick={onClose}>
+      <IconButton
+        data-testid="filterbar-close-button"
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={onClose}>
         <CloseIcon fontSize="small" />
       </IconButton>
     </div>
