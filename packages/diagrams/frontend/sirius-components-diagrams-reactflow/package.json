@@ -1,0 +1,61 @@
+{
+  "name": "@eclipse-sirius/sirius-components-diagrams-reactflow",
+  "version": "2023.4.1",
+  "author": "Eclipse Sirius",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-components"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-components-diagrams-reactflow.umd.js",
+  "module": "./dist/sirius-components-diagrams-reactflow.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-components-diagrams-reactflow.umd.js",
+      "import": "./dist/sirius-components-diagrams-reactflow.es.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@apollo/client": "3.6.9",
+    "@eclipse-sirius/sirius-components-core": "~2023.4.0",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "graphql": "16.5.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "reactflow": "11.7.2"
+  },
+  "devDependencies": {
+    "@apollo/client": "3.6.9",
+    "@eclipse-sirius/sirius-components-core": "~2023.4.0",
+    "@eclipse-sirius/sirius-components-tsconfig": "~2023.4.0",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@types/react": "17.0.37",
+    "@types/react-dom": "17.0.9",
+    "@vitejs/plugin-react": "2.0.0",
+    "c8": "7.12.0",
+    "jsdom": "16.7.0",
+    "graphql": "16.5.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "prettier": "2.7.1",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "typescript": "4.7.4",
+    "vite": "3.0.4",
+    "vitest": "0.21.1"
+  }
+}

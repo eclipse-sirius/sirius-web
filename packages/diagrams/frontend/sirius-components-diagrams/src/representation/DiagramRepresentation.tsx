@@ -16,11 +16,12 @@ import {
   Selection,
   SelectionEntry,
   ServerContext,
+  ServerContextValue,
   Toast,
 } from '@eclipse-sirius/sirius-components-core';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
@@ -95,7 +96,6 @@ import {
   DiagramRefreshedEvent,
   DiagramRepresentationContext,
   DiagramRepresentationEvent,
-  diagramRepresentationMachine,
   HandleDiagramDescriptionResultEvent,
   HandleSelectedObjectInSelectionDialogEvent,
   HideToastEvent,
@@ -103,9 +103,9 @@ import {
   ResetSelectedObjectInSelectionDialogEvent,
   ResetToolsEvent,
   SchemaValue,
+  SelectZoomLevelEvent,
   SelectedElementEvent,
   SelectionEvent,
-  SelectZoomLevelEvent,
   SetActiveConnectorToolsEvent,
   SetActiveToolEvent,
   SetContextualMenuEvent,
@@ -115,6 +115,7 @@ import {
   ShowToastEvent,
   SubscribersUpdatedEvent,
   SwitchRepresentationEvent,
+  diagramRepresentationMachine,
 } from './DiagramRepresentationMachine';
 import { getDiagramDescriptionQuery } from './GetDiagramDescriptionQuery';
 import { GQLGetDiagramDescriptionData, GQLGetDiagramDescriptionVariables } from './GetDiagramDescriptionQuery.types';
@@ -339,7 +340,7 @@ export const DiagramRepresentation = ({
   setSelection,
 }: RepresentationComponentProps) => {
   const diagramDomElement = useRef<HTMLDivElement | null>(null);
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const classes = useDiagramRepresentationStyle();
   const [{ value, context }, dispatch] = useMachine<DiagramRepresentationContext, DiagramRepresentationEvent>(
     diagramRepresentationMachine

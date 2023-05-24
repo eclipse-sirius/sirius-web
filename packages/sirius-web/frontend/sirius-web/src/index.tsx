@@ -19,6 +19,7 @@ import {
   theme,
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
   FormRepresentation,
@@ -110,7 +111,9 @@ const registry = {
     const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
     const params = new URLSearchParams(query);
     const type = params.get('type');
-    if (type === 'Diagram') {
+    if (type === 'Diagram' && representation.label.endsWith('__REACT_FLOW')) {
+      return ReactFlowDiagramRepresentation;
+    } else if (type === 'Diagram') {
       return DiagramRepresentation;
     } else if (type === 'Form') {
       return FormRepresentation;
