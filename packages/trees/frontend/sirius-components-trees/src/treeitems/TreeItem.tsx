@@ -351,7 +351,10 @@ export const TreeItem = ({
           {splitLabelWithTextToHighlight.map((value, index) => {
             const shouldHighlight = value.localeCompare(textToHighlight, languages, { sensitivity: 'base' }) === 0;
             return (
-              <span key={value + index} className={shouldHighlight ? classes.highlight : ''}>
+              <span
+                key={value + index}
+                data-testid={`${item.label}-${value}-${index}`}
+                className={shouldHighlight ? classes.highlight : ''}>
                 {value}
               </span>
             );
