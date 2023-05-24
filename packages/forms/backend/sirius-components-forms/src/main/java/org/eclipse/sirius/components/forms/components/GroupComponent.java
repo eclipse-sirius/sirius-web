@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,13 +36,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class GroupComponent implements IComponent {
 
-    /**
-     * The variable name used to store a {@link WidgetIdCounter} in the {@link VariableManager} of the
-     * {@link GroupComponent}.
-     */
-    public static final String WIDGET_ID_PROVIDER_COUNTER = "widgetIdProviderCounter";
-
-    private GroupComponentProps props;
+    private final GroupComponentProps props;
 
     public GroupComponent(GroupComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -52,7 +46,6 @@ public class GroupComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         GroupDescription groupDescription = this.props.getGroupDescription();
-        WidgetIdCounter widgetIdCounter = new WidgetIdCounter();
 
         List<?> semanticElements = groupDescription.getSemanticElementsProvider().apply(variableManager);
 
@@ -61,7 +54,6 @@ public class GroupComponent implements IComponent {
         for (Object semanticElement : semanticElements) {
             VariableManager groupVariableManager = variableManager.createChild();
             groupVariableManager.put(VariableManager.SELF, semanticElement);
-            groupVariableManager.put(WIDGET_ID_PROVIDER_COUNTER, widgetIdCounter);
 
             String id = groupDescription.getIdProvider().apply(groupVariableManager);
             String label = groupDescription.getLabelProvider().apply(groupVariableManager);
@@ -75,12 +67,10 @@ public class GroupComponent implements IComponent {
             // @formatter:off
             List<AbstractControlDescription> controlDescriptions = groupDescription.getControlDescriptions();
             for (AbstractControlDescription controlDescription : controlDescriptions) {
-                if (controlDescription instanceof AbstractWidgetDescription) {
-                    AbstractWidgetDescription widgetDescription = (AbstractWidgetDescription) controlDescription;
+                if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
                     WidgetComponentProps widgetComponentProps = new WidgetComponentProps(groupVariableManager, widgetDescription);
                     groupChildren.add(new Element(WidgetComponent.class, widgetComponentProps));
-                } else if (controlDescription instanceof ForDescription) {
-                    ForDescription forDescription = (ForDescription) controlDescription;
+                } else if (controlDescription instanceof ForDescription forDescription) {
                     ForComponentProps forComponentProps = new ForComponentProps(groupVariableManager, forDescription);
                     groupChildren.add(new Element(ForComponent.class, forComponentProps));
                 }

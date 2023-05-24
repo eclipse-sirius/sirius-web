@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.forms.components.GroupComponent;
+import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.WidgetIdCounter;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -35,7 +35,7 @@ public class WidgetIdProvider implements Function<VariableManager, String> {
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
 
-        Optional<WidgetIdCounter> optionalCounter = Optional.of(variableManager.getVariables().get(GroupComponent.WIDGET_ID_PROVIDER_COUNTER))
+        Optional<WidgetIdCounter> optionalCounter = Optional.of(variableManager.getVariables().get(FormComponent.WIDGET_ID_PROVIDER_COUNTER))
                 .filter(WidgetIdCounter.class::isInstance)
                 .map(WidgetIdCounter.class::cast);
         // @formatter:on
