@@ -83,6 +83,7 @@ Introducing providers interfaces to help creating view programmatically.
 Introducing a generator of builders aimed to help creating view programmatically, the generation makes use of emf-merge and modifications to these builders can be annotated to live during future regeneration. 
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1912[#1912] [core] Add the possibility to send feedback messages to the frontend after an action.
+- https://github.com/eclipse-sirius/sirius-components/issues/1989[#1979] [diagram] Contribute a new way to render diagrams to evaluate an alternate layouting strategy
 
 === Improvements
 
