@@ -49,7 +49,7 @@ public class UpdateCollapsingStateEventHandlerTests {
     @Test
     public void testCollapseExpandDiagramElement() {
         String nodeId = UUID.randomUUID().toString();
-        Node node = new TestDiagramBuilder().getNode(nodeId);
+        Node node = new TestDiagramBuilder().getNode(nodeId, true);
 
         IDiagramQueryService diagramQueryService = new IDiagramQueryService.NoOp() {
             @Override

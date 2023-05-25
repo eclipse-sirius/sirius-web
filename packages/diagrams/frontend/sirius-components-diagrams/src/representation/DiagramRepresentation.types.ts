@@ -142,7 +142,7 @@ export enum GQLViewModifier {
 
 export interface GQLNode {
   id: string;
-  label: GQLLabel;
+  insideLabel: GQLLabel;
   descriptionId: string;
   type: string;
   targetObjectId: string;

@@ -31,7 +31,7 @@ import org.eclipse.elk.graph.ElkPort;
 import org.eclipse.elk.graph.ElkShape;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -77,14 +77,14 @@ public class DiagramConverterTests {
 
     private TextBoundsService textBoundsService = new TextBoundsService() {
         @Override
-        public TextBounds getBounds(Label label) {
+        public TextBounds getBounds(InsideLabel label) {
             Size size = Size.of(TEXT_WIDTH, TEXT_HEIGHT);
             Position alignment = Position.UNDEFINED;
             return new TextBounds(size, alignment);
         }
 
         @Override
-        public TextBounds getAutoWrapBounds(Label label, double maxWidth) {
+        public TextBounds getAutoWrapBounds(InsideLabel label, double maxWidth) {
             Size size = Size.of(TEXT_WIDTH, TEXT_HEIGHT);
             Position alignment = Position.UNDEFINED;
             return new TextBounds(size, alignment);
@@ -108,7 +108,7 @@ public class DiagramConverterTests {
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
-        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID, true))
                 .type(NodeType.NODE_RECTANGLE)
                 .style(diagramBuilder.getRectangularNodeStyle())
                 .build();
@@ -126,7 +126,7 @@ public class DiagramConverterTests {
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
         assertThat(id2ElkGraphElements.get(node.getId().toString())).isInstanceOf(ElkNode.class);
-        assertThat(id2ElkGraphElements.get(node.getLabel().getId().toString())).isInstanceOf(ElkLabel.class);
+        assertThat(id2ElkGraphElements.get(node.getInsideLabel().getId().toString())).isInstanceOf(ElkLabel.class);
 
         ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
         this.assertSize(elkNode, Size.UNDEFINED.getWidth(), Size.UNDEFINED.getHeight());
@@ -146,7 +146,7 @@ public class DiagramConverterTests {
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
-        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID, true))
                 .type(NodeType.NODE_IMAGE)
                 .style(diagramBuilder.getImageNodeStyle())
                 .build();
@@ -164,7 +164,7 @@ public class DiagramConverterTests {
 
         Map<String, ElkGraphElement> id2ElkGraphElements = convertedDiagram.getId2ElkGraphElements();
         assertThat(id2ElkGraphElements.get(node.getId().toString())).isInstanceOf(ElkNode.class);
-        assertThat(id2ElkGraphElements.get(node.getLabel().getId().toString())).isInstanceOf(ElkLabel.class);
+        assertThat(id2ElkGraphElements.get(node.getInsideLabel().getId().toString())).isInstanceOf(ElkLabel.class);
 
         ElkNode elkNode = (ElkNode) id2ElkGraphElements.get(node.getId().toString());
         this.assertSize(elkNode, TEXT_WIDTH, TEXT_HEIGHT);
@@ -187,7 +187,7 @@ public class DiagramConverterTests {
 
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
-        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID, true))
                 .style(diagramBuilder.getImageNodeStyle())
                 .build();
 
@@ -220,11 +220,11 @@ public class DiagramConverterTests {
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
 
-        Node borderNode = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+        Node borderNode = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID, true))
                 .style(diagramBuilder.getRectangularNodeStyle())
                 .build();
 
-        Node node = Node.newNode(diagramBuilder.getNode(SECOND_NODE_ID))
+        Node node = Node.newNode(diagramBuilder.getNode(SECOND_NODE_ID, true))
                 .style(diagramBuilder.getImageNodeStyle())
                 .borderNodes(List.of(borderNode))
                 .build();
@@ -258,14 +258,14 @@ public class DiagramConverterTests {
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
 
-        Node firstBorderNode = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+        Node firstBorderNode = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID, true))
                 .style(diagramBuilder.getRectangularNodeStyle())
                 .build();
-        Node secondBorderNode = Node.newNode(diagramBuilder.getNode(SECOND_NODE_ID))
+        Node secondBorderNode = Node.newNode(diagramBuilder.getNode(SECOND_NODE_ID, true))
                 .style(diagramBuilder.getRectangularNodeStyle())
                 .build();
 
-        Node node = Node.newNode(diagramBuilder.getNode(THIRD_NODE_ID))
+        Node node = Node.newNode(diagramBuilder.getNode(THIRD_NODE_ID, true))
                 .style(diagramBuilder.getImageNodeStyle())
                 .borderNodes(List.of(firstBorderNode, secondBorderNode))
                 .build();

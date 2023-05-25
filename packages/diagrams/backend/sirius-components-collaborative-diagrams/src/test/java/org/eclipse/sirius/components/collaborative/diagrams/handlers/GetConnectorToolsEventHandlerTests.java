@@ -33,7 +33,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -100,7 +100,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .fontSize(16)
                 .iconURL("")
                 .build();
-        Label label = Label.newLabel(UUID.randomUUID().toString())
+        InsideLabel insdieLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
                 .text("text")
                 .position(Position.UNDEFINED)
@@ -115,7 +115,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .targetObjectKind("")
                 .targetObjectLabel("")
                 .descriptionId(NODE_DESCRIPTION_ID)
-                .label(label)
+                .insideLabel(insdieLabel)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)

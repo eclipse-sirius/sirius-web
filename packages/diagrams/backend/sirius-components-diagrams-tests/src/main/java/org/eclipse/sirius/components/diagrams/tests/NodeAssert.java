@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -73,7 +73,7 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
             assertThat(this.actual.getTargetObjectId()).isEqualTo(node.getTargetObjectId());
             assertThat(this.actual.getDescriptionId()).isEqualTo(node.getDescriptionId());
 
-            assertThat(this.actual.getLabel()).matches(node.getLabel(), idPolicy, layoutPolicy);
+            assertThat(this.actual.getInsideLabel()).matches(node.getInsideLabel(), idPolicy, layoutPolicy);
 
             assertThat(this.actual.getStyle().getClass()).isEqualTo(node.getStyle().getClass());
             if (this.actual.getStyle() instanceof ImageNodeStyle && node.getStyle() instanceof ImageNodeStyle) {
@@ -177,11 +177,11 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
     public void hasNoOverflow() {
         Size size = this.actual.getSize();
 
-        Label label = this.actual.getLabel();
-        if (!label.getType().equals(LabelType.OUTSIDE.getValue()) && !label.getType().equals(LabelType.OUTSIDE_CENTER.getValue())) {
-            Position labelTopLeftCorner = Position.at(label.getPosition().getX() + label.getAlignment().getX(), label.getPosition().getY() + label.getAlignment().getY());
-            Position labelTopRightCorner = Position.at(labelTopLeftCorner.getX() + label.getSize().getWidth(), labelTopLeftCorner.getY());
-            Position labelBottomLeftCorner = Position.at(labelTopLeftCorner.getX(), labelTopLeftCorner.getY() + label.getSize().getHeight());
+        InsideLabel insidelabel = this.actual.getInsideLabel();
+        if (!insidelabel.getType().equals(LabelType.OUTSIDE.getValue()) && !insidelabel.getType().equals(LabelType.OUTSIDE_CENTER.getValue())) {
+            Position labelTopLeftCorner = Position.at(insidelabel.getPosition().getX() + insidelabel.getAlignment().getX(), insidelabel.getPosition().getY() + insidelabel.getAlignment().getY());
+            Position labelTopRightCorner = Position.at(labelTopLeftCorner.getX() + insidelabel.getSize().getWidth(), labelTopLeftCorner.getY());
+            Position labelBottomLeftCorner = Position.at(labelTopLeftCorner.getX(), labelTopLeftCorner.getY() + insidelabel.getSize().getHeight());
             Position labelBottomRightCorner = Position.at(labelTopRightCorner.getX(), labelBottomLeftCorner.getY());
 
             assertThat(labelTopLeftCorner).isInside(size);

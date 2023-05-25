@@ -18,6 +18,7 @@ import {
   GQLIconLabelNodeStyle,
   GQLImageNodeStyle,
   GQLNode,
+  GQLNodeStyle,
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
@@ -32,13 +33,21 @@ import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toRectangularNode = (
-  gqlNode: GQLNode,
-  gqlParentNode: GQLNode | null,
+  gqlNode: GQLNode<GQLRectangularNodeStyle>,
+  gqlParentNode: GQLNode<GQLNodeStyle> | null,
   isBorderNode: boolean
 ): Node<RectangularNodeData> => {
-  const style = gqlNode.style as GQLRectangularNodeStyle;
-  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
-  const labelStyle = gqlNode.label.style;
+  const {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
+    descriptionId,
+    id,
+    insideLabel,
+    state,
+    style,
+    labelEditable,
+  } = gqlNode;
 
   const data: RectangularNodeData = {
     targetObjectId,
@@ -52,30 +61,32 @@ const toRectangularNode = (
       borderWidth: style.borderSize,
       borderStyle: style.borderStyle,
     },
-    label: {
-      id: gqlNode.label.id,
-      text: gqlNode.label.text,
+    label: undefined,
+    faded: state === GQLViewModifier.Faded,
+    isBorderNode: isBorderNode,
+    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    labelEditable,
+  };
+
+  if (insideLabel) {
+    const labelStyle = insideLabel.style;
+    data.label = {
+      id: insideLabel.id,
+      text: insideLabel.text,
       style: {
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
-    },
-    faded: gqlNode.state === GQLViewModifier.Faded,
-    isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
-    labelEditable: gqlNode.labelEditable,
-  };
+    };
+    const verticalAlignmentIndex = insideLabel.type.indexOf('v_');
+    const horizontalAlignmentIndex = insideLabel.type.indexOf('-h_');
+    const verticalAlignment = insideLabel.type.substring(
+      verticalAlignmentIndex + 'v_'.length,
+      horizontalAlignmentIndex
+    );
+    const horizontalAliment = insideLabel.type.substring(horizontalAlignmentIndex + '-h_'.length);
 
-  const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
-  const horizontalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
-  const verticalAlignment = gqlNode.label.type.substring(
-    verticalAlignmentIndex + 'v_'.length,
-    horizontalAlignmentIndex
-  );
-  const horizontalAliment = gqlNode.label.type.substring(horizontalAlignmentIndex + '-h_'.length);
-
-  if (data.label) {
     if (verticalAlignment === 'top') {
       data.label.style.alignSelf = 'flex-start';
     } else if (verticalAlignment === 'center') {
@@ -93,18 +104,18 @@ const toRectangularNode = (
       data.label.style.marginLeft = 'auto';
     }
 
-    if (gqlNode.label.type === 'label:inside-center') {
+    if (insideLabel.type === 'label:inside-center') {
       data.label.style.marginLeft = 'auto';
       data.label.style.marginRight = 'auto';
     }
   }
 
   const node: Node<RectangularNodeData> = {
-    id: gqlNode.id,
+    id,
     type: 'rectangularNode',
     data,
     position: defaultPosition,
-    hidden: gqlNode.state === GQLViewModifier.Hidden,
+    hidden: state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -115,14 +126,21 @@ const toRectangularNode = (
 };
 
 const toIconLabelNode = (
-  gqlNode: GQLNode,
-  gqlParentNode: GQLNode | null,
+  gqlNode: GQLNode<GQLIconLabelNodeStyle>,
+  gqlParentNode: GQLNode<GQLNodeStyle> | null,
   isBorderNode: boolean
 ): Node<IconLabelNodeData> => {
-  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
-  const style = gqlNode.style as GQLIconLabelNodeStyle;
-  const { id, label } = gqlNode;
-  const labelStyle = label.style;
+  const {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
+    descriptionId,
+    id,
+    insideLabel,
+    state,
+    style,
+    labelEditable,
+  } = gqlNode;
 
   const data: IconLabelNodeData = {
     targetObjectId,
@@ -133,26 +151,32 @@ const toIconLabelNode = (
       textAlign: 'left',
       backgroundColor: style.backgroundColor,
     },
-    label: {
-      id: label.id,
-      text: label.text,
+    label: undefined,
+    isBorderNode: isBorderNode,
+    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    faded: state === GQLViewModifier.Faded,
+    labelEditable: labelEditable,
+  };
+
+  if (insideLabel) {
+    const labelStyle = insideLabel.style;
+
+    data.label = {
+      id: insideLabel.id,
+      text: insideLabel.text,
       style: {
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
-    },
-    isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
-    faded: gqlNode.state === GQLViewModifier.Faded,
-    labelEditable: gqlNode.labelEditable,
-  };
+    };
+  }
 
   const node: Node<IconLabelNodeData> = {
     id,
     type: 'iconLabelNode',
     data,
     position: defaultPosition,
-    hidden: gqlNode.state === GQLViewModifier.Hidden,
+    hidden: state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -162,11 +186,23 @@ const toIconLabelNode = (
   return node;
 };
 
-const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNode: boolean): Node<ListNodeData> => {
-  const style = gqlNode.style as GQLRectangularNodeStyle;
-  const labelStyle = gqlNode.label.style;
+const toListNode = (
+  gqlNode: GQLNode<GQLRectangularNodeStyle>,
+  gqlParentNode: GQLNode<GQLNodeStyle> | null,
+  isBorderNode: boolean
+): Node<ListNodeData> => {
+  const {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
+    descriptionId,
+    insideLabel,
+    id,
+    state,
+    style,
+    labelEditable,
+  } = gqlNode;
 
-  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
   const data: ListNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -179,9 +215,18 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
       borderWidth: style.borderSize,
       borderStyle: style.borderStyle,
     },
-    label: {
-      id: gqlNode.label.id,
-      text: gqlNode.label.text,
+    label: undefined,
+    isBorderNode: isBorderNode,
+    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    faded: state === GQLViewModifier.Faded,
+    labelEditable,
+  };
+
+  if (insideLabel) {
+    const labelStyle = insideLabel.style;
+    data.label = {
+      id: insideLabel.id,
+      text: insideLabel.text,
       iconURL: labelStyle.iconURL,
       style: {
         display: 'flex',
@@ -192,26 +237,20 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
-    },
-    isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
-    faded: gqlNode.state === GQLViewModifier.Faded,
-    labelEditable: gqlNode.labelEditable,
-  };
+    };
 
-  if (style.withHeader && data.label) {
-    data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-  }
+    if (style.withHeader) {
+      data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+    }
 
-  const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
-  const horizontalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
-  const verticalAlignment = gqlNode.label.type.substring(
-    verticalAlignmentIndex + 'v_'.length,
-    horizontalAlignmentIndex
-  );
-  const horizontalAlignment = gqlNode.label.type.substring(horizontalAlignmentIndex + '-h_'.length);
+    const verticalAlignmentIndex = insideLabel.type.indexOf('v_');
+    const horizontalAlignmentIndex = insideLabel.type.indexOf('-h_');
+    const verticalAlignment = insideLabel.type.substring(
+      verticalAlignmentIndex + 'v_'.length,
+      horizontalAlignmentIndex
+    );
+    const horizontalAlignment = insideLabel.type.substring(horizontalAlignmentIndex + '-h_'.length);
 
-  if (data.label) {
     if (verticalAlignment === 'top') {
       data.label.style.alignSelf = 'flex-start';
     } else if (verticalAlignment === 'center') {
@@ -229,18 +268,18 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
       data.label.style.marginLeft = 'auto';
     }
 
-    if (gqlNode.label.type === 'label:inside-center') {
+    if (insideLabel.type === 'label:inside-center') {
       data.label.style.marginLeft = 'auto';
       data.label.style.marginRight = 'auto';
     }
   }
 
   const node: Node<ListNodeData> = {
-    id: gqlNode.id,
+    id,
     type: 'listNode',
     data,
     position: defaultPosition,
-    hidden: gqlNode.state === GQLViewModifier.Hidden,
+    hidden: state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -250,19 +289,42 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
   return node;
 };
 
-const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNode: boolean): Node<ImageNodeData> => {
-  const style = gqlNode.style as GQLImageNodeStyle;
-  const labelStyle = gqlNode.label.style;
-  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
+const toImageNode = (
+  gqlNode: GQLNode<GQLImageNodeStyle>,
+  gqlParentNode: GQLNode<GQLNodeStyle> | null,
+  isBorderNode: boolean
+): Node<ImageNodeData> => {
+  const {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
+    descriptionId,
+    insideLabel,
+    id,
+    state,
+    style,
+    labelEditable,
+  } = gqlNode;
 
   const data: ImageNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    label: {
-      id: gqlNode.label.id,
-      text: gqlNode.label.text,
+    label: undefined,
+    imageURL: style.imageURL,
+    style: {},
+    faded: state === GQLViewModifier.Faded,
+    isBorderNode: isBorderNode,
+    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    labelEditable,
+  };
+
+  if (insideLabel) {
+    const labelStyle = insideLabel.style;
+    data.label = {
+      id: insideLabel.id,
+      text: insideLabel.text,
       iconURL: labelStyle.iconURL,
       style: {
         display: 'flex',
@@ -273,21 +335,15 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNo
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
-    },
-    imageURL: style.imageURL,
-    style: {},
-    faded: gqlNode.state === GQLViewModifier.Faded,
-    isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
-    labelEditable: gqlNode.labelEditable,
-  };
+    };
+  }
 
   const node: Node<ImageNodeData> = {
-    id: gqlNode.id,
+    id,
     type: 'imageNode',
     data,
     position: defaultPosition,
-    hidden: gqlNode.state === GQLViewModifier.Hidden,
+    hidden: state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -297,10 +353,19 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNo
   return node;
 };
 
-const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]): void => {
+const isRectangularNode = (gqlNode: GQLNode<GQLNodeStyle>): gqlNode is GQLNode<GQLRectangularNodeStyle> =>
+  gqlNode.style.__typename === 'RectangularNodeStyle';
+
+const isImageNode = (gqlNode: GQLNode<GQLNodeStyle>): gqlNode is GQLNode<GQLImageNodeStyle> =>
+  gqlNode.style.__typename === 'ImageNodeStyle';
+
+const isIconLabelNode = (gqlNode: GQLNode<GQLNodeStyle>): gqlNode is GQLNode<GQLIconLabelNodeStyle> =>
+  gqlNode.style.__typename === 'IconLabelNodeStyle';
+
+const convertNode = (gqlNode: GQLNode<GQLNodeStyle>, parentNode: GQLNode<GQLNodeStyle> | null, nodes: Node[]): void => {
   const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(gqlNode.id);
 
-  if (gqlNode.style.__typename === 'RectangularNodeStyle') {
+  if (isRectangularNode(gqlNode)) {
     const isList = gqlNode.childrenLayoutStrategy?.kind === 'List';
     if (!isList) {
       nodes.push(toRectangularNode(gqlNode, parentNode, isBorderNode));
@@ -312,12 +377,12 @@ const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]
       (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
       (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
     }
-  } else if (gqlNode.style.__typename === 'ImageNodeStyle') {
+  } else if (isImageNode(gqlNode)) {
     nodes.push(toImageNode(gqlNode, parentNode, isBorderNode));
 
     (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
     (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
-  } else if (gqlNode.style.__typename === 'IconLabelNodeStyle') {
+  } else if (isIconLabelNode(gqlNode)) {
     nodes.push(toIconLabelNode(gqlNode, parentNode, isBorderNode));
   }
 };

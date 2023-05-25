@@ -115,8 +115,8 @@ public class DiagramELKLayoutTest {
         Node firstParent = layoutedDiagram.getNodes().get(0);
 
         // Check that the parent node and the label have the right size
-        assertThat(firstParent.getLabel().getSize().getWidth()).isCloseTo(190.0, Offset.offset(5.0));
-        assertThat(firstParent.getLabel().getSize().getHeight()).isCloseTo(40.0, Offset.offset(5.0));
+        assertThat(firstParent.getInsideLabel().getSize().getWidth()).isCloseTo(190.0, Offset.offset(5.0));
+        assertThat(firstParent.getInsideLabel().getSize().getHeight()).isCloseTo(40.0, Offset.offset(5.0));
         assertThat(firstParent.getSize().getWidth()).isCloseTo(200.0, Offset.offset(5.0));
         assertThat(firstParent.getSize().getHeight()).isCloseTo(155.0, Offset.offset(5.0));
 

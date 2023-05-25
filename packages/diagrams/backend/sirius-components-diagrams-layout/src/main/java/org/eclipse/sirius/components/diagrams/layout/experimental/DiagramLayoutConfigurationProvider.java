@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -94,7 +95,7 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
         if (node.isBorderNode()) {
             containmentKind = "border";
         }
-        var nodeLabel = Optional.ofNullable(node.getLabel()).map(Label::getText).orElse("nolabel");
+        var nodeLabel = Optional.ofNullable(node.getInsideLabel()).map(InsideLabel::getText).orElse("nolabel");
         var displayName = String.format("%s > [%s node] %s", parentLayoutConfiguration.displayName(), containmentKind, nodeLabel);
 
         var builder = NodeLayoutConfiguration.newNodeLayoutConfiguration(node.getId())
@@ -106,7 +107,7 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
                 .minimumSize(new Size(150, 70))
                 .layoutStrategy(this.getLayoutStrategy(node));
 
-        Optional.ofNullable(node.getLabel()).map(this::convertLabel).ifPresent(builder::labelLayoutConfiguration);
+        Optional.ofNullable(node.getInsideLabel()).map(this::convertInsideLabel).ifPresent(builder::labelLayoutConfiguration);
 
         var nodeLayoutConfiguration = builder.build();
 
@@ -163,6 +164,20 @@ public class DiagramLayoutConfigurationProvider implements IDiagramLayoutConfigu
         var fontStyle = new FontStyle(labelStyle.isBold(), labelStyle.isItalic(), labelStyle.isUnderline(), labelStyle.isStrikeThrough());
         return LabelLayoutConfiguration.newLabelLayoutConfiguration(label.getId())
                 .text(label.getText())
+                .fontSize(labelStyle.getFontSize())
+                .fontStyle(fontStyle)
+                .border(Offsets.empty())
+                .padding(Offsets.of(5.0))
+                .margin(Offsets.of(5.0))
+                .iconLayoutConfiguration(new IconLayoutConfiguration(new Size(16, 16), 10.0))
+                .build();
+    }
+
+    public LabelLayoutConfiguration convertInsideLabel(InsideLabel insidelabel) {
+        var labelStyle = insidelabel.getStyle();
+        var fontStyle = new FontStyle(labelStyle.isBold(), labelStyle.isItalic(), labelStyle.isUnderline(), labelStyle.isStrikeThrough());
+        return LabelLayoutConfiguration.newLabelLayoutConfiguration(insidelabel.getId())
+                .text(insidelabel.getText())
                 .fontSize(labelStyle.getFontSize())
                 .fontStyle(fontStyle)
                 .border(Offsets.empty())

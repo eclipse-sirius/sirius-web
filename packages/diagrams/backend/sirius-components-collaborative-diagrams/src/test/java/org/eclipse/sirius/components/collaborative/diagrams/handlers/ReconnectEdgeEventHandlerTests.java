@@ -67,9 +67,9 @@ public class ReconnectEdgeEventHandlerTests {
         String previousEdgeEndId = UUID.randomUUID().toString();
         String newEdgeEndId = UUID.randomUUID().toString();
         Edge edge = new TestDiagramBuilder().getEdge(edgeId, sourceEdgeEndId, previousEdgeEndId);
-        Node sourceEdgeEnd = new TestDiagramBuilder().getNode(sourceEdgeEndId);
-        Node previousEdgeEnd = new TestDiagramBuilder().getNode(previousEdgeEndId);
-        Node newEdgeEnd = new TestDiagramBuilder().getNode(newEdgeEndId);
+        Node sourceEdgeEnd = new TestDiagramBuilder().getNode(sourceEdgeEndId, true);
+        Node previousEdgeEnd = new TestDiagramBuilder().getNode(previousEdgeEndId, true);
+        Node newEdgeEnd = new TestDiagramBuilder().getNode(newEdgeEndId, true);
 
         Diagram initialDiagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
 

@@ -76,8 +76,8 @@ public class InitialDirectEditElementLabelEventHandlerTests {
             }
         };
 
-        Node node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString());
-        String labelId = node.getLabel().getId();
+        Node node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
+        String labelId = node.getInsideLabel().getId();
         Diagram diagram = Diagram.newDiagram(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())).nodes(List.of(node)).build();
 
         var handler = new InitialDirectEditElementLabelEventHandler(representationDescriptionSearchService, new DiagramQueryService(), List.of(initialDirectEditElementLabelProvider),

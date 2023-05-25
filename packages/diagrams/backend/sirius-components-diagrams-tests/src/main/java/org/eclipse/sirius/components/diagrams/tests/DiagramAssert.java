@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.List;
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -158,7 +159,7 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
             this.failWithMessage("The id of the node <%s> already exist in the diagram", node.getId());
         }
         ids.add(node.getId());
-        this.visitLabelId(ids, node.getLabel());
+        this.visitInsideLabelId(ids, node.getInsideLabel());
 
         node.getBorderNodes().forEach(borderNode -> this.visitNodeId(ids, borderNode));
         node.getChildNodes().forEach(childNode -> this.visitNodeId(ids, childNode));
@@ -176,6 +177,15 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
     }
 
     private void visitLabelId(List<String> ids, Label label) {
+        if (label != null) {
+            if (ids.contains(label.getId())) {
+                this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId());
+            }
+            ids.add(label.getId());
+        }
+    }
+
+    private void visitInsideLabelId(List<String> ids, InsideLabel label) {
         if (label != null) {
             if (ids.contains(label.getId())) {
                 this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId());

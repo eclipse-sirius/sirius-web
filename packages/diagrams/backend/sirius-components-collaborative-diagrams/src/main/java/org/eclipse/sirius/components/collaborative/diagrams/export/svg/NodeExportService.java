@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -81,7 +81,7 @@ public class NodeExportService {
     private StringBuilder exportImage(Node node, ImageNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy, float nodeOpacity) {
         StringBuilder imageExport = new StringBuilder();
         Size size = node.getSize();
-        Label label = node.getLabel();
+        InsideLabel insideLabel = node.getInsideLabel();
 
         // @formatter:off
         var rectangleStyle = RectangleStyle.newRectangleStyle()
@@ -99,13 +99,13 @@ public class NodeExportService {
         Position position = Position.at(-style.getBorderSize() / 2., -style.getBorderSize() / 2.);
         imageExport.append(this.elementExport.exportRectangleElement(imageSize, position, rectangleStyle));
         imageExport.append(this.elementExport.exportImageElement(style.getImageURL(), 0, 0, Optional.of(size), nodeOpacity));
-        imageExport.append(this.elementExport.exportLabel(label, nodeOpacity, node));
+        imageExport.append(this.elementExport.exportInsideLabel(insideLabel, nodeOpacity, node));
         imageExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return imageExport.append("</g>");
     }
 
-    private StringBuilder exportHeaderSeparator(Node node, Label label, RectangularNodeStyle nodeStyle, float opacity) {
+    private StringBuilder exportHeaderSeparator(Node node, InsideLabel label, RectangularNodeStyle nodeStyle, float opacity) {
         StringBuilder headerExport = new StringBuilder();
         // The label y position indicates the padding top, we suppose the same padding is applied to the bottom.
         double headerLabelPadding = label.getPosition().getY();
@@ -137,7 +137,7 @@ public class NodeExportService {
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Position.at(0, 0), rectangleStyle));
-        rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity, node));
+        rectangleExport.append(this.elementExport.exportInsideLabel(node.getInsideLabel(), nodeOpacity, node));
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 
         return rectangleExport.append("</g>");
@@ -159,9 +159,9 @@ public class NodeExportService {
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Position.at(0, 0), rectangleStyle));
-        rectangleExport.append(this.elementExport.exportLabel(node.getLabel(), nodeOpacity, node));
+        rectangleExport.append(this.elementExport.exportInsideLabel(node.getInsideLabel(), nodeOpacity, node));
         if (style.isWithHeader()) {
-            rectangleExport.append(this.exportHeaderSeparator(node, node.getLabel(), style, nodeOpacity));
+            rectangleExport.append(this.exportHeaderSeparator(node, node.getInsideLabel(), style, nodeOpacity));
         }
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));
 

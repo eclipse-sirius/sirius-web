@@ -54,7 +54,7 @@ export interface NodeData {
   targetObjectKind: string;
   targetObjectLabel: string;
   descriptionId: string;
-  label: Label | null;
+  label: Label | undefined;
   faded: boolean;
   isBorderNode: boolean;
   borderNodePosition: BorderNodePositon | null;

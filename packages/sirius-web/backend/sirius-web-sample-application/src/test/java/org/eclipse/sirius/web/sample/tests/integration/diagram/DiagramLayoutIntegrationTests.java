@@ -47,7 +47,7 @@ public class DiagramLayoutIntegrationTests {
     public void givenDiagramWhenLayoutIsPerformedThenValidLayoutDataAreComputed() {
         TestDiagramBuilder builder = new TestDiagramBuilder();
         var diagram = Diagram.newDiagram(builder.getDiagram("diagram"))
-                .nodes(List.of(builder.getNode("node")))
+                .nodes(List.of(builder.getNode("node", true)))
                 .build();
 
         DiagramLayoutConfiguration diagramLayoutConfiguration = new DiagramLayoutConfigurationProvider().getDiagramLayoutConfiguration(diagram, new DiagramLayoutData(Map.of(), Map.of(), Map.of()), Optional.empty());

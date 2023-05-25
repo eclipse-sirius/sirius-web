@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -120,7 +121,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         }
 
         TextBounds textBounds = null;
-        Label label = node.getLabel();
+        InsideLabel insideLabel = node.getInsideLabel();
         String labelType;
         if (node.isBorderNode()) {
             labelType = this.elkPropertiesService.getBorderNodeLabelType(node, layoutConfigurator);
@@ -129,10 +130,10 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         }
         if (labelType.startsWith("label:inside-v")) {
             double maxPadding = this.elkPropertiesService.getMaxPadding(node, layoutConfigurator);
-            textBounds = this.textBoundsService.getAutoWrapBounds(label, node.getSize().getWidth() - maxPadding * 2);
+            textBounds = this.textBoundsService.getAutoWrapBounds(insideLabel, node.getSize().getWidth() - maxPadding * 2);
             elkNode.setDimensions(node.getSize().getWidth(), node.getSize().getHeight());
         } else {
-            textBounds = this.textBoundsService.getBounds(label);
+            textBounds = this.textBoundsService.getBounds(insideLabel);
             double width = textBounds.getSize().getWidth();
             double height = textBounds.getSize().getHeight();
             elkNode.setDimensions(width, height);
@@ -168,7 +169,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         node.getChildNodes().stream().forEach(childNode -> this.convertNode(childNode, elkNode, connectableShapeIndex, id2ElkGraphElements, layoutConfigurator));
 
         boolean hasHeader = this.elkPropertiesService.hasHeader(node);
-        this.convertLabel(label, textBounds, elkNode, id2ElkGraphElements, hasHeader, null);
+        this.convertInsideLabel(insideLabel, textBounds, elkNode, id2ElkGraphElements, hasHeader);
 
         id2ElkGraphElements.put(node.getId(), elkNode);
     }
@@ -181,7 +182,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkPort.setProperty(PROPERTY_CHILDREN_LAYOUT_STRATEGY, borderNode.getChildrenLayoutStrategy().getClass());
         }
 
-        TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getLabel());
+        TextBounds textBounds = this.textBoundsService.getBounds(borderNode.getInsideLabel());
         double width = borderNode.getSize().getWidth();
         double height = borderNode.getSize().getHeight();
         elkPort.setDimensions(width, height);
@@ -202,7 +203,7 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         connectableShapeIndex.put(elkPort.getIdentifier(), elkPort);
 
         boolean hasHeader = this.elkPropertiesService.hasHeader(borderNode);
-        this.convertLabel(borderNode.getLabel(), textBounds, elkPort, id2ElkGraphElements, hasHeader, null);
+        this.convertInsideLabel(borderNode.getInsideLabel(), textBounds, elkPort, id2ElkGraphElements, hasHeader);
 
         id2ElkGraphElements.put(borderNode.getId(), elkPort);
     }
@@ -221,6 +222,21 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
         if (placement != null) {
             elkLabel.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, placement);
         }
+
+        elkLabel.eAdapters().add(new AlignmentHolder(textBounds.getAlignment()));
+
+        id2ElkGraphElements.put(label.getId(), elkLabel);
+    }
+
+    private void convertInsideLabel(InsideLabel label, TextBounds textBounds, ElkGraphElement elkGraphElement, Map<String, ElkGraphElement> id2ElkGraphElements, boolean isInsideHeader) {
+        ElkLabel elkLabel = ElkGraphFactory.eINSTANCE.createElkLabel();
+        elkLabel.setIdentifier(label.getId());
+        elkLabel.setProperty(PROPERTY_TYPE, label.getType());
+        elkLabel.setDimensions(textBounds.getSize().getWidth(), textBounds.getSize().getHeight());
+
+        this.handleElkLabel(label, elkLabel, isInsideHeader);
+
+        elkLabel.setParent(elkGraphElement);
 
         elkLabel.eAdapters().add(new AlignmentHolder(textBounds.getAlignment()));
 
@@ -266,6 +282,17 @@ public class ELKDiagramConverter implements IELKDiagramConverter {
             elkLabel.setDimensions(0, 0);
         } else {
             elkLabel.setText(label.getText());
+        }
+    }
+
+    private void handleElkLabel(InsideLabel insideLabel, ElkLabel elkLabel, boolean isInsideHeader) {
+        if (insideLabel.getText().isEmpty() && (!insideLabel.getStyle().getIconURL().isEmpty() || isInsideHeader)) {
+            elkLabel.setText(" ");
+        } else if (insideLabel.getText().isEmpty()) {
+            // workaround to prevent an empty label to be considered by Elk.
+            elkLabel.setDimensions(0, 0);
+        } else {
+            elkLabel.setText(insideLabel.getText());
         }
     }
 

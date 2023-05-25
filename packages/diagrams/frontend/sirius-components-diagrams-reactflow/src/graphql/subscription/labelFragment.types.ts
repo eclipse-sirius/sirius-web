@@ -18,6 +18,13 @@ export interface GQLLabel {
   style: GQLLabelStyle;
 }
 
+export interface GQLInsideLabel {
+  id: string;
+  type: string;
+  text: string;
+  style: GQLLabelStyle;
+}
+
 export interface GQLLabelStyle {
   color: string;
   fontSize: number;

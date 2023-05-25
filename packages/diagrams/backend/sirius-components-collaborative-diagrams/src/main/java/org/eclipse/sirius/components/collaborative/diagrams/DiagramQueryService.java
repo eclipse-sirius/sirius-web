@@ -38,7 +38,7 @@ public class DiagramQueryService implements IDiagramQueryService {
 
     @Override
     public Optional<Node> findNodeByLabelId(Diagram diagram, String labelId) {
-        return this.findNode(node -> Objects.equals(node.getLabel().getId(), labelId), diagram.getNodes());
+        return this.findNode(node -> Objects.equals(node.getInsideLabel().getId(), labelId), diagram.getNodes());
     }
 
     private Optional<Node> findNode(Predicate<Node> condition, List<Node> candidates) {

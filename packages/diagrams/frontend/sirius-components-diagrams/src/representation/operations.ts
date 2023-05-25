@@ -107,8 +107,8 @@ export const diagramEventSubscription = gql`
     targetObjectLabel
     descriptionId
     state
-    label {
-      ...labelFields
+    insideLabel {
+      ...insideLabelFields
     }
     style {
       ... on RectangularNodeStyle {
@@ -190,6 +190,33 @@ export const diagramEventSubscription = gql`
   }
 
   fragment labelFields on Label {
+    id
+    type
+    text
+    style {
+      color
+      fontSize
+      bold
+      italic
+      underline
+      strikeThrough
+      iconURL
+    }
+    position {
+      x
+      y
+    }
+    size {
+      width
+      height
+    }
+    alignment {
+      x
+      y
+    }
+  }
+
+  fragment insideLabelFields on InsideLabel {
     id
     type
     text

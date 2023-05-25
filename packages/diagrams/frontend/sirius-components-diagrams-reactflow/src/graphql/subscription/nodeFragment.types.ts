@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLabel } from './labelFragment.types';
+import { GQLInsideLabel } from './labelFragment.types';
 
-export interface GQLNode {
+export interface GQLNode<T extends GQLNodeStyle> {
   id: string;
   type: string;
   targetObjectId: string;
@@ -20,11 +20,11 @@ export interface GQLNode {
   targetObjectLabel: string;
   descriptionId: string;
   state: GQLViewModifier;
-  label: GQLLabel;
-  style: GQLNodeStyle;
+  insideLabel: GQLInsideLabel | undefined;
+  style: T;
   childrenLayoutStrategy?: ILayoutStrategy;
-  borderNodes: GQLNode[] | undefined;
-  childNodes: GQLNode[] | undefined;
+  borderNodes: GQLNode<GQLNodeStyle>[] | undefined;
+  childNodes: GQLNode<GQLNodeStyle>[] | undefined;
   position: GQLPosition;
   size: GQLSize;
   labelEditable: boolean;

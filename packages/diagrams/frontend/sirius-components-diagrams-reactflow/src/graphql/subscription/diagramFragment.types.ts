@@ -12,13 +12,13 @@
  *******************************************************************************/
 
 import { GQLEdge } from './edgeFragment.types';
-import { GQLNode } from './nodeFragment.types';
+import { GQLNode, GQLNodeStyle } from './nodeFragment.types';
 
 export interface GQLDiagram {
   id: string;
   targetObjectId: string;
   metadata: GQLRepresentationMetadata;
-  nodes: GQLNode[];
+  nodes: GQLNode<GQLNodeStyle>[];
   edges: GQLEdge[];
 }
 

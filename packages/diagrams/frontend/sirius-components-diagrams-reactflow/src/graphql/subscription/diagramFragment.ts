@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { edgeFragment } from './edgeFragment';
-import { labelFragment } from './labelFragment';
+import { insideLabelFragment, labelFragment } from './labelFragment';
 import { nodeFragment } from './nodeFragment';
 
 export const diagramFragment = `
@@ -67,4 +67,5 @@ fragment diagramFragment on Diagram {
 ${nodeFragment}
 ${edgeFragment}
 ${labelFragment}
+${insideLabelFragment}
 `;

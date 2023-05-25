@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.EdgeComponent;
 import org.eclipse.sirius.components.diagrams.components.EdgeComponentProps;
+import org.eclipse.sirius.components.diagrams.components.InsideLabelComponent;
+import org.eclipse.sirius.components.diagrams.components.InsideLabelComponentProps;
 import org.eclipse.sirius.components.diagrams.components.LabelComponent;
 import org.eclipse.sirius.components.diagrams.components.LabelComponentProps;
 import org.eclipse.sirius.components.diagrams.components.NodeComponent;
@@ -42,6 +44,8 @@ public class DiagramComponentPropsValidator implements IComponentPropsValidator 
             checkValidProps = props instanceof EdgeComponentProps;
         } else if (LabelComponent.class.equals(componentType)) {
             checkValidProps = props instanceof LabelComponentProps;
+        } else if (InsideLabelComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof InsideLabelComponentProps;
         }
 
         return checkValidProps;

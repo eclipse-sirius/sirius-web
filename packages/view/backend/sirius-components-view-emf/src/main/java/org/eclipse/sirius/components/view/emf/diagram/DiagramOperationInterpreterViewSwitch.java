@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -177,7 +177,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .iconURL("")
                 .build();
 
-        var label = Label.newLabel("")
+        var insideLabel = InsideLabel.newLabel("")
                 .type("")
                 .text("")
                 .position(Position.UNDEFINED)
@@ -202,7 +202,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
-                .label(label)
+                .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)

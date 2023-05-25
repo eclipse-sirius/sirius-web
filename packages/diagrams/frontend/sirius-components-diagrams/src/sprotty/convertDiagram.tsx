@@ -131,7 +131,7 @@ const convertNode = (
 ): Node => {
   const {
     id,
-    label,
+    insideLabel,
     descriptionId,
     type,
     targetObjectId,
@@ -151,7 +151,7 @@ const convertNode = (
 
   node.state = ViewModifier[GQLViewModifier[state]];
 
-  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly, theme);
+  const convertedLabel = convertLabel(node, insideLabel, httpOrigin, readOnly, theme);
   (borderNodes ?? [])
     .filter((borderNode) => borderNode.state !== GQLViewModifier.Hidden)
     .map((borderNode) => convertBorderNode(node, borderNode, httpOrigin, readOnly, autoLayout, theme));
@@ -185,7 +185,7 @@ const convertBorderNode = (
 ): BorderNode => {
   const {
     id,
-    label,
+    insideLabel,
     descriptionId,
     type,
     targetObjectId,
@@ -201,7 +201,7 @@ const convertBorderNode = (
   const node: BorderNode = new BorderNode();
   parentElement.add(node);
 
-  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly, theme);
+  const convertedLabel = convertLabel(node, insideLabel, httpOrigin, readOnly, theme);
 
   node.id = id;
   node.type = type.replace('node:', 'port:');

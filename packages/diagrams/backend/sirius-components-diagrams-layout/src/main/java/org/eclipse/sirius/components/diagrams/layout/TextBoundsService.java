@@ -16,9 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -28,6 +26,9 @@ import org.eclipse.sirius.components.diagrams.TextBoundsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 /**
  * Utility class used to compute the size of a piece of text.
@@ -90,8 +91,16 @@ public class TextBoundsService {
         return this.textBoundsProvider.computeBounds(label.getStyle(), label.getText());
     }
 
+    public TextBounds getBounds(InsideLabel insideLabel) {
+        return this.textBoundsProvider.computeBounds(insideLabel.getStyle(), insideLabel.getText());
+    }
+
     public TextBounds getAutoWrapBounds(Label label, double maxWidth) {
         return this.textBoundsProvider.computeAutoWrapBounds(label.getStyle(), label.getText(), maxWidth);
+    }
+
+    public TextBounds getAutoWrapBounds(InsideLabel insideLabel, double maxWidth) {
+        return this.textBoundsProvider.computeAutoWrapBounds(insideLabel.getStyle(), insideLabel.getText(), maxWidth);
     }
 
 }

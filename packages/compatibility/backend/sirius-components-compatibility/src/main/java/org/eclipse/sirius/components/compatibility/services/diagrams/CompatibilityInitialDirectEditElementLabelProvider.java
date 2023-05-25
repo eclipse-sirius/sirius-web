@@ -46,7 +46,7 @@ public class CompatibilityInitialDirectEditElementLabelProvider implements IInit
     public String getInitialDirectEditElementLabel(Object diagramElement, String labelId, Diagram diagram, IEditingContext editingContext) {
         String label = "";
         if (diagramElement instanceof Node node) {
-            label = node.getLabel().getText();
+            label = node.getInsideLabel().getText();
         } else if (diagramElement instanceof Edge edge) {
             if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
                 label = edge.getBeginLabel().getText();

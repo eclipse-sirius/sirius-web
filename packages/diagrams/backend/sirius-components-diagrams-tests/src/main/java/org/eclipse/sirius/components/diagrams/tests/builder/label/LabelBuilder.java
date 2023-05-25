@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.builder.label;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -29,7 +30,6 @@ import org.eclipse.sirius.components.diagrams.components.LabelType;
 public final class LabelBuilder {
 
     public Label basicLabel(String text, LabelType labelType) {
-        // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("black")
                 .fontSize(14)
@@ -39,9 +39,7 @@ public final class LabelBuilder {
                 .strikeThrough(false)
                 .iconURL("")
                 .build();
-        // @formatter:on
 
-        // @formatter:off
         return Label.newLabel(UUID.randomUUID().toString())
                 .type(Objects.requireNonNull(labelType).getValue())
                 .text(Objects.requireNonNull(text))
@@ -50,7 +48,27 @@ public final class LabelBuilder {
                 .size(Size.UNDEFINED)
                 .style(labelStyle)
                 .build();
-        // @formatter:on
+    }
+
+    public InsideLabel basicInsideLabel(String text, LabelType labelType) {
+        LabelStyle labelStyle = LabelStyle.newLabelStyle()
+                .color("black")
+                .fontSize(14)
+                .bold(false)
+                .italic(false)
+                .underline(false)
+                .strikeThrough(false)
+                .iconURL("")
+                .build();
+
+        return InsideLabel.newLabel(UUID.randomUUID().toString())
+                .type(Objects.requireNonNull(labelType).getValue())
+                .text(Objects.requireNonNull(text))
+                .alignment(Position.UNDEFINED)
+                .position(Position.UNDEFINED)
+                .size(Size.UNDEFINED)
+                .style(labelStyle)
+                .build();
     }
 
 }

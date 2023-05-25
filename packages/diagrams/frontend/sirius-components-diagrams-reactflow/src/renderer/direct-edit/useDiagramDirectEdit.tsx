@@ -38,7 +38,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
       let currentlyEditedLabelId: string | undefined | null = nodes.find((node) => node.selected)?.data.label?.id;
-      let isLabelEditable: boolean | undefined = nodes.find((node) => node.selected)?.data.labelEditable;
+      const isLabelEditable: boolean = nodes.find((node) => node.selected)?.data.labelEditable || false;
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = edges.find((edge) => edge.selected)?.data?.label?.id;
       }

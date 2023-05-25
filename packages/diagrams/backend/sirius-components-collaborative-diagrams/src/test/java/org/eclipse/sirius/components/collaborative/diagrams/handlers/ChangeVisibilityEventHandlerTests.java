@@ -58,7 +58,7 @@ public class ChangeVisibilityEventHandlerTests {
     private final IDiagramQueryService diagramQueryService = new IDiagramQueryService.NoOp() {
         @Override
         public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
-            return Optional.of(new TestDiagramBuilder().getNode(NODE_ID));
+            return Optional.of(new TestDiagramBuilder().getNode(NODE_ID, true));
         }
 
         @Override
