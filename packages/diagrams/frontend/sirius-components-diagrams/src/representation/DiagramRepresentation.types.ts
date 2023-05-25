@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from '../sprotty/Diagram.types';
+import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
 
 export type CursorValue = 'pointer' | 'copy' | 'not-allowed';
 
@@ -62,9 +62,7 @@ export interface Palette {
   palettePosition: Position;
   canvasBounds: Bounds;
   edgeStartPosition: Position;
-  element: any;
-  renameable: boolean;
-  deletable: boolean;
+  element: Diagram | Node | BorderNode | Edge;
 }
 
 export interface Menu {

@@ -20,6 +20,7 @@ import {
   SingleClickOnTwoDiagramElementsTool,
   Tool,
 } from '../representation/DiagramRepresentation.types';
+import { BorderNode, Diagram, Edge, Node } from './Diagram.types';
 
 export interface SiriusUpdateModelAction extends Action {
   kind: 'siriusUpdateModel';
@@ -40,7 +41,7 @@ export interface SiriusSelectAction extends Action {
 
 export interface SprottySelectAction extends Action {
   kind: 'sprottySelectElement';
-  element: SModelElement;
+  element: Diagram | Node | BorderNode | Edge | null;
 }
 
 export interface ZoomToAction extends Action {
@@ -73,6 +74,6 @@ export interface ShowContextualMenuAction extends Action {
 
 export interface ShowContextualToolbarAction extends Action {
   kind: 'showContextualToolbar';
-  element: SModelElement;
+  element: Diagram | Node | BorderNode | Edge | null;
   position: Point;
 }

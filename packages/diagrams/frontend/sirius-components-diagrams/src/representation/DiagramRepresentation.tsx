@@ -20,12 +20,12 @@ import {
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
-import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
+import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort, isDeletable, isWithEditableLabel } from 'sprotty';
 import { FitToScreenAction, Point } from 'sprotty-protocol';
 import { DropArea } from '../droparea/DropArea';
 import { ContextualMenu } from '../palette/ContextualMenu';
@@ -97,7 +97,6 @@ import {
   DiagramRefreshedEvent,
   DiagramRepresentationContext,
   DiagramRepresentationEvent,
-  diagramRepresentationMachine,
   HandleDiagramDescriptionResultEvent,
   HandleSelectedObjectInSelectionDialogEvent,
   HideToastEvent,
@@ -105,9 +104,9 @@ import {
   ResetSelectedObjectInSelectionDialogEvent,
   ResetToolsEvent,
   SchemaValue,
+  SelectZoomLevelEvent,
   SelectedElementEvent,
   SelectionEvent,
-  SelectZoomLevelEvent,
   SetActiveConnectorToolsEvent,
   SetActiveToolEvent,
   SetContextualMenuEvent,
@@ -117,6 +116,7 @@ import {
   ShowToastEvent,
   SubscribersUpdatedEvent,
   SwitchRepresentationEvent,
+  diagramRepresentationMachine,
 } from './DiagramRepresentationMachine';
 import { getDiagramDescriptionQuery } from './GetDiagramDescriptionQuery';
 import { GQLGetDiagramDescriptionData, GQLGetDiagramDescriptionVariables } from './GetDiagramDescriptionQuery.types';
@@ -810,7 +810,7 @@ export const DiagramRepresentation = ({
   ]);
 
   useEffect(() => {
-    if (selectedObjectId && activeTool && contextualPalette) {
+    if (selectedObjectId && activeTool && contextualPalette && contextualPalette.element) {
       invokeTool(activeTool, contextualPalette.element.id, contextualPalette.palettePosition);
       const sourceElementAction: SourceElementAction = { kind: SOURCE_ELEMENT_ACTION, sourceElement: null };
       diagramServer.actionDispatcher.dispatch(sourceElementAction);
@@ -1044,15 +1044,14 @@ export const DiagramRepresentation = ({
    */
   let contextualPaletteContent;
   if (!readOnly && contextualPalette) {
-    const { element, palettePosition, canvasBounds, edgeStartPosition, renameable, deletable } = contextualPalette;
+    const { element, palettePosition, canvasBounds, edgeStartPosition } = contextualPalette;
     const { x, y } = edgeStartPosition;
     const style = {
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
     };
-
     let invokeDeleteFromContextualPalette;
-    if (deletable) {
+    if (isDeletable(element)) {
       invokeDeleteFromContextualPalette = (deletionPolicy: GQLDeletionPolicy) =>
         deleteElements([element], deletionPolicy);
     }
@@ -1121,7 +1120,7 @@ export const DiagramRepresentation = ({
           representationId={representationId}
           diagramElement={element}
           diagramServer={diagramServer}
-          renameable={renameable}
+          renameable={isWithEditableLabel(element)}
           invokeTool={invokeToolFromContextualPalette}
           invokeConnectorTool={invokeConnectorToolFromContextualPalette}
           invokeDelete={invokeDeleteFromContextualPalette}
