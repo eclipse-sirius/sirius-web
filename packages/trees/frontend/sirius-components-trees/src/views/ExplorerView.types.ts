@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,4 +72,22 @@ export interface GQLGetTreePathEditingContext {
 export interface GQLTreePath {
   treeItemIdsToExpand: string[];
   maxDepth: number;
+}
+
+export interface GQLGetExpandAllTreePathVariables {
+  editingContextId: string;
+  treeId: string;
+  treeItemId: string;
+}
+
+export interface GQLGetExpandAllTreePathData {
+  viewer: GQLGetExpandAllTreePathViewer;
+}
+
+export interface GQLGetExpandAllTreePathViewer {
+  editingContext: GQLGetExpandAllTreePathEditingContext;
+}
+
+export interface GQLGetExpandAllTreePathEditingContext {
+  expandAllTreePath: GQLTreePath;
 }

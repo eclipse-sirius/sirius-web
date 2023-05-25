@@ -21,22 +21,27 @@ import { Tree } from '../trees/Tree';
 import {
   GQLExplorerEventData,
   GQLExplorerEventVariables,
+  GQLGetExpandAllTreePathData,
+  GQLGetExpandAllTreePathVariables,
   GQLGetTreePathData,
   GQLGetTreePathVariables,
+  GQLTreeItem,
 } from './ExplorerView.types';
 import {
   AutoExpandToRevealSelectionEvent,
   ExplorerViewContext,
   ExplorerViewEvent,
-  explorerViewMachine,
   HandleCompleteEvent,
+  HandleExpandAllTreePathEvent,
   HandleExpandedEvent,
+  HandleOnExpandAllEvent,
   HandleSubscriptionResultEvent,
   HandleTreePathEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SynchronizeWithSelectionEvent,
+  explorerViewMachine,
 } from './ExplorerViewMachine';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
 
@@ -45,6 +50,19 @@ const getTreePathQuery = gql`
     viewer {
       editingContext(editingContextId: $editingContextId) {
         treePath(treeId: $treeId, selectionEntryIds: $selectionEntryIds) {
+          treeItemIdsToExpand
+          maxDepth
+        }
+      }
+    }
+  }
+`;
+
+const getExpandAllTreePathQuery = gql`
+  query getExpandAllTreePath($editingContextId: ID!, $treeId: ID!, $treeItemId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        expandAllTreePath(treeId: $treeId, treeItemId: $treeItemId) {
           treeItemIdsToExpand
           maxDepth
         }
@@ -71,12 +89,26 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
 
   const [{ value, context }, dispatch] = useMachine<ExplorerViewContext, ExplorerViewEvent>(explorerViewMachine);
   const { toast, explorerView } = value as SchemaValue;
-  const { id, tree, expanded, maxDepth, autoExpandToRevealSelection, synchronizedWithSelection, message } = context;
+  const {
+    id,
+    tree,
+    expanded,
+    maxDepth,
+    autoExpandToRevealSelection,
+    treeItemToExpandAll,
+    synchronizedWithSelection,
+    message,
+  } = context;
 
   const [getTreePath, { loading: treePathLoading, data: treePathData, error: treePathError }] = useLazyQuery<
     GQLGetTreePathData,
     GQLGetTreePathVariables
   >(getTreePathQuery);
+
+  const [
+    getExpandAllTreePath,
+    { loading: expandAllTreePathLoading, data: expandAllTreePathData, error: expandAllTreePathError },
+  ] = useLazyQuery<GQLGetExpandAllTreePathData, GQLGetExpandAllTreePathVariables>(getExpandAllTreePathQuery);
 
   // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
   useEffect(() => {
@@ -103,6 +135,34 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
       }
     }
   }, [treePathLoading, treePathData, treePathError]);
+
+  useEffect(() => {
+    if (tree && treeItemToExpandAll) {
+      const variables: GQLGetExpandAllTreePathVariables = {
+        editingContextId,
+        treeId: tree.id,
+        treeItemId: treeItemToExpandAll,
+      };
+      getExpandAllTreePath({ variables });
+    }
+  }, [editingContextId, tree, treeItemToExpandAll, getExpandAllTreePathQuery]);
+
+  useEffect(() => {
+    if (!expandAllTreePathLoading) {
+      if (expandAllTreePathData) {
+        const handleExpandAllTreePathEvent: HandleExpandAllTreePathEvent = {
+          type: 'HANDLE_EXPAND_ALL_TREE_PATH',
+          expandAllTreePathData,
+        };
+        dispatch(handleExpandAllTreePathEvent);
+      }
+      if (expandAllTreePathError) {
+        const { message } = expandAllTreePathError;
+        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+        dispatch(showToastEvent);
+      }
+    }
+  }, [expandAllTreePathLoading, expandAllTreePathData, expandAllTreePathError]);
 
   const { error } = useSubscription<GQLExplorerEventData, GQLExplorerEventVariables>(
     gql(getTreeEventSubscription(maxDepth)),
@@ -150,6 +210,11 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
     dispatch(handleExpandedEvent);
   };
 
+  const onExpandAll = (treeItem: GQLTreeItem) => {
+    const handleOnExpandAllEvent: HandleOnExpandAllEvent = { type: 'HANDLE_ON_EXPAND_ALL', treeItemId: treeItem.id };
+    dispatch(handleOnExpandAllEvent);
+  };
+
   const onSynchronizedClick = () => {
     const synchronizeWithSelectionEvent: SynchronizeWithSelectionEvent = {
       type: 'SYNCHRONIZE_WITH_SELECTION',
@@ -171,6 +236,7 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
             editingContextId={editingContextId}
             tree={tree}
             onExpand={onExpand}
+            onExpandAll={onExpandAll}
             selection={selection}
             setSelection={setSelection}
             readOnly={readOnly}

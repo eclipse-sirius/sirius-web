@@ -117,6 +117,7 @@ export const TreeItem = ({
   item,
   depth,
   onExpand,
+  onExpandAll,
   selection,
   setSelection,
   readOnly,
@@ -224,6 +225,7 @@ export const TreeItem = ({
         treeItemMenuContributionComponents={treeItemMenuContributionComponents}
         depth={depth}
         onExpand={onExpand}
+        onExpandAll={onExpandAll}
         selection={selection}
         setSelection={setSelection}
         enterEditingMode={enterEditingMode}
@@ -245,6 +247,7 @@ export const TreeItem = ({
                 item={childItem}
                 depth={depth + 1}
                 onExpand={onExpand}
+                onExpandAll={onExpandAll}
                 selection={selection}
                 setSelection={setSelection}
                 readOnly={readOnly}

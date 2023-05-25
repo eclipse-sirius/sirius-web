@@ -14,6 +14,7 @@ import { SubscriptionResult } from '@apollo/client';
 import { assign, Machine } from 'xstate';
 import {
   GQLExplorerEventData,
+  GQLGetExpandAllTreePathData,
   GQLGetTreePathData,
   GQLTree,
   GQLTreeEventPayload,
@@ -49,6 +50,7 @@ export interface ExplorerViewContext {
   expanded: string[];
   maxDepth: number;
   autoExpandToRevealSelection: boolean;
+  treeItemToExpandAll: string | null;
   synchronizedWithSelection: boolean;
   message: string | null;
 }
@@ -69,6 +71,14 @@ export type SynchronizeWithSelectionEvent = {
   synchronizedWithSelection: boolean;
 };
 export type HandleExpandedEvent = { type: 'HANDLE_EXPANDED'; id: string; depth: number };
+export type HandleOnExpandAllEvent = {
+  type: 'HANDLE_ON_EXPAND_ALL';
+  treeItemId: string;
+};
+export type HandleExpandAllTreePathEvent = {
+  type: 'HANDLE_EXPAND_ALL_TREE_PATH';
+  expandAllTreePathData: GQLGetExpandAllTreePathData;
+};
 export type HandleTreePathEvent = { type: 'HANDLE_TREE_PATH'; treePathData: GQLGetTreePathData };
 export type ExplorerViewEvent =
   | HandleSubscriptionResultEvent
@@ -77,6 +87,8 @@ export type ExplorerViewEvent =
   | HideToastEvent
   | AutoExpandToRevealSelectionEvent
   | HandleExpandedEvent
+  | HandleOnExpandAllEvent
+  | HandleExpandAllTreePathEvent
   | HandleTreePathEvent
   | SynchronizeWithSelectionEvent;
 
@@ -92,6 +104,7 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
       expanded: [],
       maxDepth: 1,
       autoExpandToRevealSelection: true,
+      treeItemToExpandAll: null,
       synchronizedWithSelection: true,
       message: null,
     },
@@ -146,6 +159,12 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
               },
               HANDLE_EXPANDED: {
                 actions: 'expand',
+              },
+              HANDLE_ON_EXPAND_ALL: {
+                actions: 'onExpandAll',
+              },
+              HANDLE_EXPAND_ALL_TREE_PATH: {
+                actions: 'expandAllTreePath',
               },
               HANDLE_TREE_PATH: {
                 actions: 'handleTreePath',
@@ -211,6 +230,32 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
           return { expanded: newExpanded, autoExpandToRevealSelection: false, maxDepth: Math.max(maxDepth, depth) };
         }
         return { expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) };
+      }),
+      onExpandAll: assign((_, event) => {
+        const { treeItemId } = event as HandleOnExpandAllEvent;
+        return { treeItemToExpandAll: treeItemId };
+      }),
+      expandAllTreePath: assign((context, event) => {
+        const { expanded, maxDepth } = context;
+        const { expandAllTreePathData } = event as HandleExpandAllTreePathEvent;
+        if (expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+          const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+            expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+          const newExpanded: string[] = [...expanded];
+
+          treeItemIdsToExpand?.forEach((itemToExpand) => {
+            if (!expanded.includes(itemToExpand)) {
+              newExpanded.push(itemToExpand);
+            }
+          });
+
+          return {
+            expanded: newExpanded,
+            maxDepth: Math.max(expandedMaxDepth, maxDepth),
+            treeItemToExpandAll: null,
+          };
+        }
+        return { treeItemToExpandAll: null };
       }),
       handleTreePath: assign((context, event) => {
         const { expanded, maxDepth } = context;

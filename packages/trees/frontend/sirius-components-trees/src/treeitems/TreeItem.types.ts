@@ -19,6 +19,7 @@ export interface TreeItemProps {
   item: GQLTreeItem;
   depth: number;
   onExpand: (id: string, depth: number) => void;
+  onExpandAll: (treeItem: GQLTreeItem) => void;
   selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;

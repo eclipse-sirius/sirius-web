@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ public class TreePath {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'treeItemIdsToExpand: {2}, maxDepth: {3}'}'";
+        String pattern = "{0} '{'treeItemIdsToExpand: {1}, maxDepth: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.treeItemIdsToExpand, this.maxDepth);
     }
 }

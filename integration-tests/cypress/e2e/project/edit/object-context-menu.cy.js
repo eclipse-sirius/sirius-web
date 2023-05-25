@@ -170,4 +170,72 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('name').should('have.value', 'newName');
   });
+
+  it('expand all menu item on root object', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').should('exist');
+
+    cy.getByTestId('Robot-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('expand-all').click();
+
+    cy.getByTestId('robot').should('exist');
+    cy.getByTestId('Robot').should('exist');
+    cy.getByTestId('Central_Unit').should('exist');
+    cy.getByTestId('DSP').should('exist');
+    cy.getByTestId('standard').should('exist');
+    cy.getByTestId('Motion_Engine').should('exist');
+    cy.getByTestId('active').should('exist');
+    cy.getByTestId('CaptureSubSystem').should('exist');
+    cy.getByTestId('Radar_Capture').should('exist');
+    cy.getByTestId('high').should('exist');
+    cy.getByTestId('high').should('exist');
+    cy.getByTestId('Back_Camera').should('exist');
+    cy.getByTestId('standard').should('exist');
+    cy.getByTestId('Radar').should('exist');
+    cy.getByTestId('high').should('exist');
+    cy.getByTestId('Engine').should('exist');
+    cy.getByTestId('GPU').should('exist');
+    cy.getByTestId('standard').should('exist');
+    cy.getByTestId('active').should('exist');
+    cy.getByTestId('Wifi').should('exist');
+    cy.getByTestId('standard').should('exist');
+  });
+
+  it('expand all menu item on intermediate object in tree hierarchy', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+
+    cy.getByTestId('Central_Unit').should('exist');
+    cy.getByTestId('Central_Unit-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('expand-all').click();
+
+    cy.getByTestId('robot').should('exist');
+    cy.getByTestId('Robot').should('exist');
+    cy.getByTestId('Central_Unit').should('exist');
+    cy.getByTestId('DSP').should('exist');
+    cy.getByTestId('standard').should('exist');
+    cy.getByTestId('Motion_Engine').should('exist');
+    cy.getByTestId('active').should('exist');
+    cy.getByTestId('CaptureSubSystem').should('exist');
+    cy.getByTestId('Radar_Capture').should('not.exist');
+    cy.getByTestId('Back_Camera').should('not.exist');
+    cy.getByTestId('Radar').should('not.exist');
+    cy.getByTestId('Engine').should('not.exist');
+    cy.getByTestId('GPU').should('not.exist');
+    // Unable to test this tree item cause it has the same id than another existing one
+    // cy.getByTestId('active').should('not.exist');
+    cy.getByTestId('Wifi').should('exist');
+    // Unable to test this tree item cause it has the same id than another existing one
+    // cy.getByTestId('standard').should('not.exist');
+  });
+
+  it('expand all menu item on object with no children', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Wifi').dblclick();
+    cy.getByTestId('standard').dblclick();
+
+    cy.getByTestId('standard-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('expand-all').should('not.exist');
+  });
 });

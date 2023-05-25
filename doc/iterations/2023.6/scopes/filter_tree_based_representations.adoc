@@ -8,7 +8,7 @@
 - [x] Changelog updated
 
 == Second task
-- [ ] Implement expand all action in tree item context menu
+- [x] Implement expand all action in tree item context menu
 - [x] First version of the user interface done with Cypress tests
 - [ ] User guide updated with screenshots
 

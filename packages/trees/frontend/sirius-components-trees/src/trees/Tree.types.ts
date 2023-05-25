@@ -11,12 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLTree } from '../views/ExplorerView.types';
+import { GQLTree, GQLTreeItem } from '../views/ExplorerView.types';
 
 export interface TreeProps {
   editingContextId: string;
   tree: GQLTree;
   onExpand: (id: string, depth: number) => void;
+  onExpandAll: (treeItem: GQLTreeItem) => void;
   selection: Selection;
   setSelection: (selection: Selection) => void;
   readOnly: boolean;

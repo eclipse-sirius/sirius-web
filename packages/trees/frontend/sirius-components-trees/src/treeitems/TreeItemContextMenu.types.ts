@@ -23,6 +23,7 @@ export interface TreeItemContextMenuProps {
   treeItemMenuContributionComponents: ((props: TreeItemContextMenuComponentProps) => JSX.Element)[];
   depth: number;
   onExpand: (id: string, depth: number) => void;
+  onExpandAll: (treeItem: GQLTreeItem) => void;
   selection: Selection;
   setSelection: (selection: Selection) => void;
   enterEditingMode: () => void;
