@@ -668,7 +668,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     private Function<VariableManager, String> getOptionIdProvider() {
         return variableManager -> {
             Object candidate = variableManager.getVariables().get(SelectComponent.CANDIDATE_VARIABLE);
-            return this.objectService.getId(candidate);
+            return Optional.ofNullable(this.objectService.getId(candidate)).orElseGet(() -> Optional.ofNullable(candidate).map(Objects::toString).orElse(""));
         };
     }
 
@@ -728,7 +728,8 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         return variableManager -> {
             if (!safeValueExpression.isBlank()) {
                 Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression);
-                return result.asObject().map(this.objectService::getId).orElse("");
+                var rawValue = result.asObject();
+                return rawValue.map(this.objectService::getId).orElseGet(() -> rawValue.map(Objects::toString).orElse(""));
             }
             return "";
         };
@@ -767,7 +768,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             Object newValueObject = null;
             if (newValue != null && !newValue.isBlank()) {
                 newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
-                        .orElse(null);
+                        .orElse(newValue);
             }
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValueObject);
