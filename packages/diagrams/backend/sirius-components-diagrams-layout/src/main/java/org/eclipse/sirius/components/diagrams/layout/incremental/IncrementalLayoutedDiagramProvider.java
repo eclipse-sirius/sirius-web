@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.layout.incremental.data.DiagramLayoutData;
@@ -67,7 +68,7 @@ public class IncrementalLayoutedDiagramProvider {
     }
 
     private Node getLayoutedNode(Node node, NodeLayoutData nodeLayoutData, Map<String, ILayoutData> id2LayoutData) {
-        Label label = this.getLayoutedLabel(node.getLabel(), id2LayoutData);
+        InsideLabel insideLabel = this.getLayoutedInsideLabel(node.getInsideLabel(), id2LayoutData);
 
         List<Node> childNodes = this.getLayoutedNodes(node.getChildNodes(), id2LayoutData);
         List<Node> borderNodes = this.getLayoutedNodes(node.getBorderNodes(), id2LayoutData);
@@ -80,7 +81,7 @@ public class IncrementalLayoutedDiagramProvider {
         }
         // @formatter:off
         return Node.newNode(node)
-                .label(label)
+                .insideLabel(insideLabel)
                 .size(nodeLayoutData.getSize())
                 .userResizable(nodeLayoutData.isUserResizable())
                 .position(nodeLayoutData.getPosition())
@@ -143,6 +144,22 @@ public class IncrementalLayoutedDiagramProvider {
                     .type(labelLayoutData.getLabelType())
                     .build();
             // @formatter:on
+        }
+        return layoutedLabel;
+    }
+
+    private InsideLabel getLayoutedInsideLabel(InsideLabel insideLabel, Map<String, ILayoutData> id2LayoutData) {
+        InsideLabel layoutedLabel = insideLabel;
+        var optionalLabelLayoutData = Optional.of(id2LayoutData.get(insideLabel.getId())).filter(LabelLayoutData.class::isInstance).map(LabelLayoutData.class::cast);
+        if (optionalLabelLayoutData.isPresent()) {
+            LabelLayoutData labelLayoutData = optionalLabelLayoutData.get();
+
+            layoutedLabel = InsideLabel.newInsideLabel(insideLabel)
+                    .size(labelLayoutData.getTextBounds().getSize())
+                    .position(labelLayoutData.getPosition())
+                    .alignment(labelLayoutData.getTextBounds().getAlignment())
+                    .type(labelLayoutData.getLabelType())
+                    .build();
         }
         return layoutedLabel;
     }

@@ -87,7 +87,7 @@ public class LayoutedDiagramProviderTests {
         // @formatter:off
         TestDiagramBuilder diagramBuilder = new TestDiagramBuilder();
 
-        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID))
+        Node node = Node.newNode(diagramBuilder.getNode(FIRST_NODE_ID, true))
                 .build();
 
         Edge edge = Edge.newEdge(diagramBuilder.getEdge(FIRST_EDGE_ID, node.getId(), node.getId()))
@@ -124,7 +124,7 @@ public class LayoutedDiagramProviderTests {
         elkNode.setParent(elkDiagram);
 
         ElkLabel elkLabel = ElkGraphFactory.eINSTANCE.createElkLabel();
-        elkLabel.setIdentifier(node.getLabel().getId().toString());
+        elkLabel.setIdentifier(node.getInsideLabel().getId().toString());
         elkLabel.setDimensions(LABEL_WIDTH, LABEL_HEIGHT);
         elkLabel.setX(LABEL_X);
         elkLabel.setY(LABEL_Y);

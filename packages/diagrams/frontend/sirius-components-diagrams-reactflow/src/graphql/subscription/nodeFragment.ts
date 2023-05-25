@@ -20,8 +20,8 @@ fragment nodeFragment on Node {
   targetObjectLabel
   descriptionId
   state
-  label {
-    ...labelFragment
+  insideLabel {
+    ...insideLabelFragment
   }
   style {
     __typename

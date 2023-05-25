@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -210,11 +210,11 @@ public class NodeCreationTests {
         double labelPaddings = 0;
         if (this.isLabelOfType(parent, "inside")) {
             // We consider here the label is also on TOP of the node
-            double parentLabelHeight = parent.getLabel().getSize().getHeight();
+            double parentLabelHeight = parent.getInsideLabel().getSize().getHeight();
             labelPaddings += defaultLabelPadding + parentLabelHeight + defaultYPosition;
         }
         if (this.isLabelOfType(child, "outside")) {
-            double nodeLabelHeight = child.getLabel().getSize().getHeight();
+            double nodeLabelHeight = child.getInsideLabel().getSize().getHeight();
             labelPaddings += nodeLabelHeight + defaultLabelPadding;
         }
         double yPosition = Math.max(labelPaddings, defaultYPosition);
@@ -223,9 +223,9 @@ public class NodeCreationTests {
     }
 
     private boolean isLabelOfType(Node node, String labelType) {
-        Label label = node.getLabel();
-        if (label != null) {
-            return label.getType().contains(labelType);
+        InsideLabel insideLabel = node.getInsideLabel();
+        if (insideLabel != null) {
+            return insideLabel.getType().contains(labelType);
         }
         return false;
     }

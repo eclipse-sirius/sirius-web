@@ -50,7 +50,7 @@ public final class Node implements IDiagramElement {
 
     private CollapsingState collapsingState;
 
-    private Label label;
+    private InsideLabel insideLabel;
 
     private INodeStyle style;
 
@@ -124,8 +124,8 @@ public final class Node implements IDiagramElement {
         return this.collapsingState;
     }
 
-    public Label getLabel() {
-        return this.label;
+    public InsideLabel getInsideLabel() {
+        return this.insideLabel;
     }
 
     public INodeStyle getStyle() {
@@ -167,9 +167,8 @@ public final class Node implements IDiagramElement {
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'";
-        return MessageFormat.format(pattern, this.getClass()
-                        .getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
-                this.label.getText(), this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
+                this.insideLabel.getText(), this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
     }
 
     /**
@@ -200,7 +199,7 @@ public final class Node implements IDiagramElement {
 
         private CollapsingState collapsingState;
 
-        private Label label;
+        private InsideLabel insideLabel;
 
         private INodeStyle style;
 
@@ -235,7 +234,7 @@ public final class Node implements IDiagramElement {
             this.modifiers = node.getModifiers();
             this.state = node.getState();
             this.collapsingState = node.getCollapsingState();
-            this.label = node.getLabel();
+            this.insideLabel = node.getInsideLabel();
             this.style = node.getStyle();
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.position = node.getPosition();
@@ -292,8 +291,8 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder label(Label label) {
-            this.label = Objects.requireNonNull(label);
+        public Builder insideLabel(InsideLabel insideLabel) {
+            this.insideLabel = Objects.requireNonNull(insideLabel);
             return this;
         }
 
@@ -354,7 +353,7 @@ public final class Node implements IDiagramElement {
             node.modifiers = Objects.requireNonNull(this.modifiers);
             node.state = Objects.requireNonNull(this.state);
             node.collapsingState = Objects.requireNonNull(this.collapsingState);
-            node.label = this.label;
+            node.insideLabel = this.insideLabel;
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);

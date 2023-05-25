@@ -112,7 +112,7 @@ public class DynamicDiagramsTests {
         assertThat(result).isNotNull();
         assertThat(result.getEdges()).isEmpty();
         assertThat(result.getNodes()).hasSize(2);
-        assertThat(result.getNodes()).extracting(node -> node.getLabel().getText()).containsExactlyInAnyOrder("Class1", "Class2");
+        assertThat(result.getNodes()).extracting(node -> node.getInsideLabel().getText()).containsExactlyInAnyOrder("Class1", "Class2");
     }
 
     @Test

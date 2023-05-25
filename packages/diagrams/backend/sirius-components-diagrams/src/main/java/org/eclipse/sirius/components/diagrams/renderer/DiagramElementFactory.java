@@ -17,12 +17,14 @@ import java.util.List;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Node.Builder;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
+import org.eclipse.sirius.components.diagrams.elements.InsideLabelElementProps;
 import org.eclipse.sirius.components.diagrams.elements.LabelElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
@@ -50,6 +52,8 @@ public class DiagramElementFactory implements IElementFactory {
             object = this.instantiateEdge(edgeElementProps, children);
         } else if (LabelElementProps.TYPE.equals(type) && props instanceof LabelElementProps labelElementProps) {
             object = this.instantiateLabel(labelElementProps);
+        } else if (InsideLabelElementProps.TYPE.equals(type) && props instanceof InsideLabelElementProps insideLabelElementProps) {
+            object = this.instantiateInsideLabel(insideLabelElementProps);
         }
         return object;
     }
@@ -58,7 +62,6 @@ public class DiagramElementFactory implements IElementFactory {
         List<Node> nodes = new ArrayList<>();
         List<Edge> edges = new ArrayList<>();
 
-        // @formatter:off
         children.forEach(child -> {
             if (child instanceof Node node) {
                 nodes.add(node);
@@ -78,17 +81,14 @@ public class DiagramElementFactory implements IElementFactory {
                 .nodes(nodes)
                 .edges(edges)
                 .build();
-        // @formatter:on
     }
 
     private Node instantiateNode(NodeElementProps props, List<Object> children) {
-        // @formatter:off
-        Label label = children.stream()
-                .filter(Label.class::isInstance)
-                .map(Label.class::cast)
+        InsideLabel insideLabel = children.stream()
+                .filter(InsideLabel.class::isInstance)
+                .map(InsideLabel.class::cast)
                 .findFirst()
                 .orElse(null);
-        // @formatter:on
 
         List<Node> childNodes = new ArrayList<>();
         List<Node> borderNodes = new ArrayList<>();
@@ -101,7 +101,6 @@ public class DiagramElementFactory implements IElementFactory {
             }
         });
 
-        // @formatter:off
         Builder nodeBuilder = Node.newNode(props.getId())
                 .type(props.getType())
                 .targetObjectId(props.getTargetObjectId())
@@ -109,7 +108,6 @@ public class DiagramElementFactory implements IElementFactory {
                 .targetObjectLabel(props.getTargetObjectLabel())
                 .descriptionId(props.getDescriptionId())
                 .borderNode(props.isBorderNode())
-                .label(label)
                 .style(props.getStyle())
                 .position(props.getPosition())
                 .size(props.getSize())
@@ -122,16 +120,18 @@ public class DiagramElementFactory implements IElementFactory {
                 .collapsingState(props.getCollapsingState())
                 .labelEditable(props.isLabelEditable());
 
+        if (insideLabel != null) {
+            nodeBuilder.insideLabel(insideLabel);
+        }
+
         if (props.getChildrenLayoutStrategy() != null) {
             nodeBuilder.childrenLayoutStrategy(props.getChildrenLayoutStrategy());
         }
 
         return nodeBuilder.build();
-        // @formatter:on
     }
 
     private Edge instantiateEdge(EdgeElementProps props, List<Object> children) {
-        // @formatter:off
         Label beginLabel = this.getLabel(children, LabelType.EDGE_BEGIN);
         Label centerLabel = this.getLabel(children, LabelType.EDGE_CENTER);
         Label endLabel = this.getLabel(children, LabelType.EDGE_END);
@@ -153,23 +153,19 @@ public class DiagramElementFactory implements IElementFactory {
                 .state(props.getState())
                 .modifiers(props.getModifiers())
                 .build();
-        // @formatter:on
     }
 
     private Label getLabel(List<Object> children, LabelType labelType) {
-        // @formatter:off
         return children.stream()
                 .filter(Label.class::isInstance)
                 .map(Label.class::cast)
                 .filter(label -> label.getType().equals(labelType.getValue()))
                 .findFirst()
                 .orElse(null);
-        // @formatter:on
 
     }
 
     private Label instantiateLabel(LabelElementProps props) {
-        // @formatter:off
         return Label.newLabel(props.getId())
                 .type(props.getType())
                 .text(props.getText())
@@ -178,7 +174,17 @@ public class DiagramElementFactory implements IElementFactory {
                 .alignment(props.getAlignment())
                 .style(props.getStyle())
                 .build();
-        // @formatter:on
+    }
+
+    private InsideLabel instantiateInsideLabel(InsideLabelElementProps props) {
+        return InsideLabel.newLabel(props.getId())
+                .type(props.getType())
+                .text(props.getText())
+                .position(props.getPosition())
+                .size(props.getSize())
+                .alignment(props.getAlignment())
+                .style(props.getStyle())
+                .build();
     }
 
 }

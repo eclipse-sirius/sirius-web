@@ -438,7 +438,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
     private void editDiagramElementLabel(DiagramRefreshedEventPayload diagramRefreshedEventPayload) {
         var diagram = diagramRefreshedEventPayload.diagram();
         // Get any node label
-        var label = diagram.getNodes().get(0).getLabel();
+        var label = diagram.getNodes().get(0).getInsideLabel();
         var labelId = label.getId();
         var query = """
                 query initialDirectEditElementLabel($editingContextId: ID!, $diagramId: ID!, $labelId: ID!) {

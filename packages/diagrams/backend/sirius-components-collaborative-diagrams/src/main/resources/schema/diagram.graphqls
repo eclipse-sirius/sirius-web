@@ -33,7 +33,7 @@ enum ViewModifier {
 
 type Node {
   id: ID!
-  label: Label!
+  insideLabel: InsideLabel
   descriptionId: ID!
   type: String!
   targetObjectId: String!
@@ -61,6 +61,16 @@ type ListLayoutStrategy {
 union ILayoutStrategy = FreeFormLayoutStrategy | ListLayoutStrategy
 
 type Label {
+  id: ID!
+  text: String!
+  type: String!
+  style: LabelStyle!
+  alignment: Position!
+  position: Position!
+  size: Size!
+}
+
+type InsideLabel {
   id: ID!
   text: String!
   type: String!

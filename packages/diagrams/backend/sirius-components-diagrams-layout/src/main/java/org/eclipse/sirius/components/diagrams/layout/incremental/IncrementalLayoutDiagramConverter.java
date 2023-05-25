@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.TextBounds;
@@ -164,12 +165,12 @@ public class IncrementalLayoutDiagramConverter {
 
     private LabelLayoutData convertNodeLabel(Node node, Map<String, ILayoutData> id2LayoutData, ISiriusWebLayoutConfigurator layoutConfigurator) {
         LabelLayoutData layoutData = new LabelLayoutData();
-        Label label = node.getLabel();
-        String id = label.getId();
+        InsideLabel insideLabel = node.getInsideLabel();
+        String id = insideLabel.getId();
         layoutData.setId(id);
         id2LayoutData.put(id, layoutData);
 
-        layoutData.setPosition(label.getPosition());
+        layoutData.setPosition(insideLabel.getPosition());
         String labelType;
         if (node.isBorderNode()) {
             labelType = this.elkPropertiesService.getBorderNodeLabelType(node, layoutConfigurator);
@@ -181,9 +182,9 @@ public class IncrementalLayoutDiagramConverter {
         TextBounds textBounds = null;
         if (labelType.startsWith("label:inside-v")) {
             double maxPadding = this.elkPropertiesService.getMaxPadding(node, layoutConfigurator);
-            textBounds = this.textBoundsService.getAutoWrapBounds(label, node.getSize().getWidth() - maxPadding * 2);
+            textBounds = this.textBoundsService.getAutoWrapBounds(insideLabel, node.getSize().getWidth() - maxPadding * 2);
         } else {
-            textBounds = this.textBoundsService.getBounds(label);
+            textBounds = this.textBoundsService.getBounds(insideLabel);
         }
         layoutData.setTextBounds(textBounds);
 

@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -40,10 +41,14 @@ public class DiagramElementExportService {
     }
 
     public StringBuilder exportLabel(Label label, float opacity, Node node) {
-        if (label.getType().startsWith("label:inside-v")) {
-            return this.exportLabelAsForeignObject(label, opacity, node);
-        }
         return this.exportLabelAsText(label, opacity);
+    }
+
+    public StringBuilder exportInsideLabel(InsideLabel insideLabel, float opacity, Node node) {
+        if (insideLabel.getType().startsWith("label:inside-v")) {
+            return this.exportInsideLabelAsForeignObject(insideLabel, opacity, node);
+        }
+        return this.exportInsideLabelAsText(insideLabel, opacity);
     }
 
     public StringBuilder exportLabelAsText(Label label, float opacity) {
@@ -70,19 +75,46 @@ public class DiagramElementExportService {
         return labelExport.append("</g>");
     }
 
-    public StringBuilder exportLabelAsForeignObject(Label label, float opacity, Node node) {
+
+    public StringBuilder exportInsideLabelAsText(InsideLabel insideLabel, float opacity) {
         StringBuilder labelExport = new StringBuilder();
-        double width = node.getSize().getWidth() - label.getPosition().getX() * 2;
-        double height = node.getSize().getHeight() - label.getPosition().getY() * 2;
+        Position position = insideLabel.getPosition();
+        Position alignment = insideLabel.getAlignment();
+        LabelStyle style = insideLabel.getStyle();
+        String text = insideLabel.getText();
+        String type = insideLabel.getType();
+
+        labelExport.append("<g ");
+        labelExport.append("transform=\"");
+        labelExport.append("translate(" + position.getX() + ", " + position.getY() + ") ");
+        labelExport.append("translate(" + alignment.getX() + ", " + alignment.getY() + ")\" ");
+        labelExport.append("style=\"");
+        labelExport.append("opacity: " + opacity + ";");
+        labelExport.append("\" ");
+        labelExport.append(">");
+
+        if (!(style.getIconURL().isEmpty())) {
+            labelExport.append(this.exportImageElement(style.getIconURL(), -20, -12, Optional.empty(), 1));
+        }
+
+        labelExport.append(this.exportTextElement(text, type, style));
+
+        return labelExport.append("</g>");
+    }
+
+    public StringBuilder exportInsideLabelAsForeignObject(InsideLabel insideLabel, float opacity, Node node) {
+        StringBuilder labelExport = new StringBuilder();
+        double width = node.getSize().getWidth() - insideLabel.getPosition().getX() * 2;
+        double height = node.getSize().getHeight() - insideLabel.getPosition().getY() * 2;
         labelExport.append("<foreignObject ");
         labelExport.append("requiredFeatures=\"http://www.w3.org/TR/SVG11/feature#Extensibility\" ");
         labelExport.append("width=\"").append(width).append("\" ");
         labelExport.append("height=\"").append(height).append("\" ");
-        labelExport.append("transform=\"translate(").append(label.getPosition().getX()).append(", ").append(label.getPosition().getY()).append(")\" ");
+        labelExport.append("transform=\"translate(").append(insideLabel.getPosition().getX()).append(", ").append(insideLabel.getPosition().getY()).append(")\" ");
         labelExport.append("style=\"pointer-events: none;\"");
         labelExport.append(">");
 
-        labelExport.append(this.exportTextElementAsDiv(label.getText(), label.getType(), label.getStyle(), opacity, width, height));
+        labelExport.append(this.exportTextElementAsDiv(insideLabel.getText(), insideLabel.getType(), insideLabel.getStyle(), opacity, width, height));
 
         return labelExport.append("</foreignObject>");
     }

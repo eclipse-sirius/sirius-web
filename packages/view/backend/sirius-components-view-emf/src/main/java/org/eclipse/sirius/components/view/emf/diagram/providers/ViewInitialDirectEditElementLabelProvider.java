@@ -108,7 +108,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                 String descriptionId = node.getDescriptionId();
                 optionalLabelEditTool = this.getNodeDescription(diagramDescription.getNodeDescriptions(), descriptionId).map(NodeDescription::getPalette).map(NodePalette::getLabelEditTool);
                 semanticElement = this.objectService.getObject(editingContext, node.getTargetObjectId());
-                initialDirectEditElementLabel = node.getLabel().getText();
+                initialDirectEditElementLabel = node.getInsideLabel().getText();
             } else if (diagramElement instanceof Edge edge) {
                 String descriptionId = edge.getDescriptionId();
                 semanticElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());

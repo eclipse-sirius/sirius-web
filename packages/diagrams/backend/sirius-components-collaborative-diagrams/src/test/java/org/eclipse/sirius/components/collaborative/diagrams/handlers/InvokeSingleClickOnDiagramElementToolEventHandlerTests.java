@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -382,7 +383,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .fontSize(16)
                 .iconURL("")
                 .build();
-        var label = Label.newLabel(UUID.randomUUID().toString())
+        var label = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
                 .text("text")
                 .position(Position.UNDEFINED)
@@ -397,7 +398,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectKind("")
                 .targetObjectLabel("")
                 .descriptionId(nodeDescriptionId)
-                .label(label)
+                .insideLabel(label)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)

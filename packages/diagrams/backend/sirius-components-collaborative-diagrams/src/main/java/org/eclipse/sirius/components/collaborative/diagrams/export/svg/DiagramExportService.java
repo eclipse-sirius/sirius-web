@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.ISVGDiagramExportService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -143,10 +144,10 @@ public class DiagramExportService implements ISVGDiagramExportService {
 
     private void computeElementsCoordinates(Diagram diagram) {
         diagram.getNodes().forEach(node -> {
-            this.addElementPositions(node.getPosition(), node.getSize(), node.getLabel(), Position.at(0, 0));
+            this.addElementPositions(node.getPosition(), node.getSize(), node.getInsideLabel(), Position.at(0, 0));
 
             node.getBorderNodes().forEach(border -> {
-                this.addElementPositions(border.getPosition(), border.getSize(), border.getLabel(), node.getPosition());
+                this.addElementPositions(border.getPosition(), border.getSize(), border.getInsideLabel(), node.getPosition());
             });
         });
 
@@ -170,14 +171,29 @@ public class DiagramExportService implements ISVGDiagramExportService {
         });
     }
 
-    private void addElementPositions(Position elementPosition, Size elementSize, Label elementLabel, Position parentPosition) {
+    private void addElementPositions(Position elementPosition, Size elementSize, InsideLabel elementLabel, Position parentPosition) {
         double nodeX = parentPosition.getX() + elementPosition.getX();
         double nodeY = parentPosition.getY() + elementPosition.getY();
         this.xBeginPositions.add(nodeX);
         this.yBeginPositions.add(nodeY);
         this.xEndPositions.add(nodeX + elementSize.getWidth());
         this.yEndPositions.add(nodeY + elementSize.getHeight());
-        this.addAbsoluteLabelPosition(elementLabel, elementPosition);
+        this.addAbsoluteInsideLabelPosition(elementLabel, elementPosition);
+    }
+
+    private void addAbsoluteInsideLabelPosition(InsideLabel insideLabel, Position parentPosition) {
+        double xOffest = parentPosition.getX();
+        double yOffest = parentPosition.getY();
+        Position labelPosition = insideLabel.getPosition();
+        Position labelAlignment = insideLabel.getAlignment();
+        Size labelSize = insideLabel.getSize();
+
+        double xLabel = xOffest + labelPosition.getX() + labelAlignment.getX();
+        double yLabel = yOffest + labelPosition.getY() + labelAlignment.getY();
+        this.xBeginPositions.add(xLabel);
+        this.yBeginPositions.add(yLabel);
+        this.xEndPositions.add(xLabel + labelSize.getWidth());
+        this.yEndPositions.add(yLabel + labelSize.getHeight());
     }
 
     private void addAbsoluteLabelPosition(Label label, Position parentPosition) {

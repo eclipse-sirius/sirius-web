@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
@@ -194,10 +194,10 @@ public class NodeComponent implements IComponent {
             // the diagrams-layout.
             LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
 
-            Optional<Label> optionalPreviousLabel = optionalPreviousNode.map(Node::getLabel);
-            LabelComponentProps labelComponentProps = new LabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousLabel, dummyLabelType.getValue());
-            Element labelElement = new Element(LabelComponent.class, labelComponentProps);
-            nodeChildren.add(labelElement);
+            Optional<InsideLabel> optionalPreviousInsideLabel = optionalPreviousNode.map(Node::getInsideLabel);
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousInsideLabel, dummyLabelType.getValue());
+            Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
+            nodeChildren.add(insideLabelElement);
         }
 
         nodeChildren.addAll(borderNodes);

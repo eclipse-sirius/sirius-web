@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -47,7 +47,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
     private boolean isBorderNode;
 
-    private Label label;
+    private InsideLabel insideLabel;
 
     private Position position;
 
@@ -60,7 +60,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public ImageNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
-        this.label = new LabelBuilder().basicLabel(nodeLabel, LabelType.OUTSIDE_CENTER);
+        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.OUTSIDE_CENTER);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
@@ -106,7 +106,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
                 .build();
         // @formatter:on
 
-        String labelText = this.label.getText();
+        String labelText = this.insideLabel.getText();
         String nodeId = UUID.randomUUID().toString();
         targetObjectIdToNodeId.put(labelText, nodeId);
 
@@ -117,7 +117,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
 
         return Node.newNode(nodeId)
                 .type(NodeType.NODE_IMAGE)
-                .label(this.label)
+                .insideLabel(this.insideLabel)
                 .position(Objects.requireNonNull(this.position))
                 .size(Objects.requireNonNull(this.size))
                 .borderNode(this.isBorderNode)

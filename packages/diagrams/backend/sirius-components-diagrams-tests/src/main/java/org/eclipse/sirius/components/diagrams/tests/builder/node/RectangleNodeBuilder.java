@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Node.Builder;
@@ -52,7 +52,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private boolean withHeader;
 
-    private Label label;
+    private InsideLabel insideLabel;
 
     private Position position;
 
@@ -71,7 +71,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
-        this.label = new LabelBuilder().basicLabel(nodeLabel, LabelType.INSIDE_CENTER);
+        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
@@ -137,7 +137,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .build();
         // @formatter:on
 
-        String labeltext = this.label.getText();
+        String labeltext = this.insideLabel.getText();
         String nodeId = UUID.randomUUID().toString();
         targetObjectIdToNodeId.put(labeltext, nodeId);
 
@@ -148,7 +148,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
         Builder nodeBuilder = Node.newNode(nodeId)
                 .type(NodeType.NODE_RECTANGLE)
-                .label(this.label)
+                .insideLabel(this.insideLabel)
                 .position(Objects.requireNonNull(this.position))
                 .size(Objects.requireNonNull(this.size))
                 .borderNode(this.isBorderNode)
@@ -158,7 +158,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .descriptionId(descriptionId)
                 .targetObjectId(labeltext)
                 .targetObjectKind("")
-                .targetObjectLabel(this.label.getText())
+                .targetObjectLabel(this.insideLabel.getText())
                 .style(Objects.requireNonNull(style))
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)

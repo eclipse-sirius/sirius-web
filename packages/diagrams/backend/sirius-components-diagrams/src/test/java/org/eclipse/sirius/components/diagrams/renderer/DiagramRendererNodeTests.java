@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -98,14 +98,14 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == -1 && s.getWidth() == -1);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(LABEL_TEXT::equals);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isUnderline).allMatch(underline -> underline);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isUnderline).allMatch(underline -> underline);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
     }
 
     @Test
@@ -135,14 +135,14 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(LABEL_TEXT::equals);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isUnderline).allMatch(underline -> underline);
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isUnderline).allMatch(underline -> underline);
+        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::isStrikeThrough).allMatch(strikeThrough -> strikeThrough);
     }
 
     @Test

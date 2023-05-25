@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.Label;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -83,29 +83,13 @@ public class TestDiagramBuilder {
         // @formatter:on
     }
 
-    public Node getNode(String id) {
-        // @formatter:off
-        LabelStyle labelStyle = LabelStyle.newLabelStyle()
-                .color("#000000")
-                .fontSize(16)
-                .iconURL("")
-                .build();
-        Label label = Label.newLabel(UUID.randomUUID().toString())
-                .type("labelType")
-                .text("text")
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
-                .alignment(Position.UNDEFINED)
-                .style(labelStyle)
-                .build();
-
-        return Node.newNode(id)
+    public Node getNode(String id, boolean withLabel) {
+        Node.Builder nodeBuilder = Node.newNode(id)
                 .type(NodeType.NODE_RECTANGLE)
                 .targetObjectId("nodeTargetObjectId")
                 .targetObjectKind("")
                 .targetObjectLabel("")
                 .descriptionId(UUID.randomUUID().toString())
-                .label(label)
                 .style(this.getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)
@@ -114,9 +98,26 @@ public class TestDiagramBuilder {
                 .childNodes(List.of())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
-                .collapsingState(CollapsingState.EXPANDED)
-                .build();
-        // @formatter:on
+                .collapsingState(CollapsingState.EXPANDED);
+
+        if (withLabel) {
+            LabelStyle labelStyle = LabelStyle.newLabelStyle()
+                    .color("#000000")
+                    .fontSize(16)
+                    .iconURL("")
+                    .build();
+            InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
+                    .type("labelType")
+                    .text("text")
+                    .position(Position.UNDEFINED)
+                    .size(Size.UNDEFINED)
+                    .alignment(Position.UNDEFINED)
+                    .style(labelStyle)
+                    .build();
+            nodeBuilder.insideLabel(insideLabel);
+        }
+
+        return nodeBuilder.build();
     }
 
     public Edge getEdge(String id, String sourceId, String targetId) {

@@ -27,3 +27,20 @@ fragment labelFragment on Label {
   }
 }
 `;
+
+export const insideLabelFragment = `
+fragment insideLabelFragment on InsideLabel {
+  id
+  type
+  text
+  style {
+    color
+    fontSize
+    bold
+    italic
+    underline
+    strikeThrough
+    iconURL
+  }
+}
+`;

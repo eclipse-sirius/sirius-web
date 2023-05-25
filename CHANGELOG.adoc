@@ -27,6 +27,7 @@ A new parameter `rootDomainsOnly: Boolean` has been added, allowing to remove do
 For example, Diagram & Form domains are not root domains because `DiagramDescription` and `FormDescription` are not root objects valid candidates.
 - https://github.com/eclipse-sirius/sirius-web/issues/1712[#1712] [diagram] The GraphQL type `Node` must now implement `isLabelEditable` boolean field.
 - https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [sirius-web] The GraphQL field `CreateChildSuccessPayload` now expects to have a list of messages.
+- https://github.com/eclipse-sirius/sirius-web/issues/1982[#1982] [diagram] Change the diagram structure. The Node's 'label' attribute has been renamed into 'insideLabel' and its type changed from `Label` to `InsideLabel` (which is currently identical to `Label` except for the name).
 
 === Dependency update
 
@@ -50,7 +51,7 @@ Note that double-clicking no longer triggers a direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2264[#2264] [diagram] Add feedback for edge reconnection with React Flow.
 - https://github.com/eclipse-sirius/sirius-web/issues/288[#288] [diagram] Add support for drag and drop of nodes inside diagrams.
 The behavior is controlled by the new _Drop Node_ tools defined on the target element, which can be either a node or the diagram itself (when dropping on the diagram's background).
-- https://github.com/eclipse-sirius/sirius-components/issues/1982[#1982] [diagram] Make the node label non required
+- https://github.com/eclipse-sirius/sirius-web/issues/1982[#1982] [diagram] Make the node label non required
 
 === Improvements
 
