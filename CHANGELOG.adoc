@@ -21,6 +21,7 @@
 - [ADR-099] Filter tree based representations
 - [ADR-100] Add support for custom widgets
 - [ADR-101] Feedback messages on actions
+- [ADR-102] Expand all menu item contribution in Explorer View
 
 === Breaking changes
 
@@ -84,6 +85,7 @@ Introducing a generator of builders aimed to help creating view programmatically
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1912[#1912] [core] Add the possibility to send feedback messages to the frontend after an action.
 - https://github.com/eclipse-sirius/sirius-components/issues/1989[#1979] [diagram] Contribute a new way to render diagrams to evaluate an alternate layouting strategy
+- https://github.com/eclipse-sirius/sirius-components/issues/1996[#1996] [explorer] Add an Expand All menu item contribution to the Explorer View.
 
 === Improvements
 

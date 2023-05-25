@@ -1,0 +1,78 @@
+= ADR-102 - Add expand all menu item contribution in Explorer View
+
+== Context
+
+In addition to the filter bar for the tree based representations, an expand all capability on tree items could be useful.
+Indeed, the current filter action of the filter bar only removes visible items that do not satisfy the filter term typed in the filter bar.
+
+== Decision
+
+Add an expand all menu item contribution to the Explorer View.
+This menu item will be available on any kind of tree item, from the moment the tree item has children.
+The expand all will expand the current tree item and all its children recursively.
+The context menu will be closed after the click on the new expand all men item.
+
+=== Backend
+
+The current expand action calls the `treePath` GraphqQL query.
+This query comes with implementations of an `ITreeInput`, an `ITreeEventHandler` and an implementation of `ITreePathProvider` in sirius-web.
+The new expand all action will create similar interfaces/implementations/data fetcher named `expandAllTreePath`.
+
+The `tree.graphqls` will be modified, allowing to call the new query on `EditingContext`.
+
+[source,graphql]
+----
+extend type EditingContext {
+  treePath(treeId: ID!, selectionEntryIds: [ID!]!): TreePath!
+  expandAllTreePath(treeId: ID!, treeItemId: ID!): TreePath!
+}
+----
+
+The new `ITreeInput`:
+
+[source,java]
+----
+public record ExpandAllTreePathInput(UUID id, String editingContextId, String representationId, String treeItemId) implements ITreeInput {
+}
+----
+
+
+[source,java]
+----
+public interface IExpandAllTreePathProvider {
+    boolean canHandle(Tree tree);
+
+    IPayload handle(IEditingContext editingContext, Tree tree, ExpandAllTreePathInput input);
+}
+----
+
+=== Frontend
+
+The `ExplorerView.tsx` and its state machine will be modified.
+The new query introduced on backend side will be used in this component.
+
+[source,graphql]
+----
+const getExpandAllTreePathQuery = gql`
+  query getExpandAllTreePath($editingContextId: ID!, $treeId: ID!, $treeItemId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        expandAllTreePath(treeId: $treeId, treeItemId: $treeItemId) {
+          treeItemIdsToExpand
+          maxDepth
+        }
+      }
+    }
+  }
+`;
+----
+
+The `TreeItemContextMenu.tsx` will be modified by adding a new menu contribution.
+
+== Status
+
+WIP.
+
+== Consequences
+
+An implementation of the new `IExpandAllTreePathProvider` will be required in sirius-components clients to provide the list of tree items to expand.
