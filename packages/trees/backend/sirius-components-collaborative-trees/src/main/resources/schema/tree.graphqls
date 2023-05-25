@@ -4,6 +4,7 @@ extend type Subscription {
 
 extend type EditingContext {
   treePath(treeId: ID!, selectionEntryIds: [ID!]!): TreePath!
+  expandAllTreePath(treeId: ID!, treeItemId: ID!): TreePath!
 }
 
 type TreePath {

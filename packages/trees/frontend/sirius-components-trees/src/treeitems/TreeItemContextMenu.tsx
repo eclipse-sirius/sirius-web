@@ -18,6 +18,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import UnfoldMore from '@material-ui/icons/UnfoldMore';
 import React, { useEffect, useState } from 'react';
 import {
   GQLDeleteTreeItemData,
@@ -55,6 +56,7 @@ export const TreeItemContextMenu = ({
   treeItemMenuContributionComponents,
   depth,
   onExpand,
+  onExpandAll,
   selection,
   setSelection,
   enterEditingMode,
@@ -129,7 +131,22 @@ export const TreeItemContextMenu = ({
           const element = React.createElement(component, props);
           return element;
         })}
-
+        {item.hasChildren ? (
+          <MenuItem
+            key="expand-all"
+            data-testid="expand-all"
+            onClick={() => {
+              onExpandAll(item);
+              onClose();
+            }}
+            disabled={readOnly}
+            aria-disabled>
+            <ListItemIcon>
+              <UnfoldMore fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Expand all" />
+          </MenuItem>
+        ) : null}
         {item.editable ? (
           <MenuItem
             key="rename"

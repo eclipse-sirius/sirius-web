@@ -23,7 +23,15 @@ const useTreeStyle = makeStyles((_) => ({
   },
 }));
 
-export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection, readOnly }: TreeProps) => {
+export const Tree = ({
+  editingContextId,
+  tree,
+  onExpand,
+  onExpandAll,
+  selection,
+  setSelection,
+  readOnly,
+}: TreeProps) => {
   const classes = useTreeStyle();
   const treeElement = useRef(null);
   const initialState: TreeState = {
@@ -137,6 +145,7 @@ export const Tree = ({ editingContextId, tree, onExpand, selection, setSelection
                 item={item}
                 depth={1}
                 onExpand={onExpand}
+                onExpandAll={onExpandAll}
                 selection={selection}
                 setSelection={setSelection}
                 readOnly={readOnly}
