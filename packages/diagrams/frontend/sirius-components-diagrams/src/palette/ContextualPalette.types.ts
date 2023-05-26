@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { SModelElement } from 'sprotty';
-import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
+import { GQLDeletionPolicy, ToolSectionWithDefaultTool } from '../representation/DiagramRepresentation.types';
 import { DiagramServer } from '../sprotty/DiagramServer';
 
 export interface ContextualPaletteProps {
@@ -20,7 +20,8 @@ export interface ContextualPaletteProps {
   diagramElement: SModelElement;
   diagramServer: DiagramServer;
   renameable: boolean;
-  invokeTool: (tool: GQLTool) => void;
+  defaultTools: ToolSectionWithDefaultTool[];
+  invokeTool: (tool: GQLTool, toolSection: GQLToolSection) => void;
   invokeConnectorTool: (toolSections: GQLToolSection[]) => void;
   invokeDelete: (deletionPolicy: GQLDeletionPolicy) => void | null;
   invokeClose: () => void;
@@ -80,6 +81,7 @@ export interface GQLTool {
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   selectionDescriptionId: string;
+  targetDescriptions: GQLDiagramElementDescription[];
 }
 
 export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
@@ -91,6 +93,9 @@ export interface GQLSingleClickOnTwoDiagramElementsCandidate {
   targets: GQLNodeDescription[];
 }
 
+export interface GQLDiagramElementDescription {
+  id: string;
+}
 export interface GQLNodeDescription {
   id: string;
 }

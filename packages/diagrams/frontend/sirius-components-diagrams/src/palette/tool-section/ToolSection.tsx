@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useCallback, useState } from 'react';
+import { GQLTool } from '../ContextualPalette.types';
 import { Tool } from '../tool/Tool';
 import { ToolSectionProps } from './ToolSection.types';
 
@@ -68,7 +69,7 @@ const useToolSectionStyles = makeStyles(() => ({
  *
  * @hmarchadour
  */
-export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
+export const ToolSection = ({ toolSection, defaultToolId, onToolClick }: ToolSectionProps) => {
   const { tools } = toolSection;
   const initialState = {
     expanded: false,
@@ -125,10 +126,16 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
       </>
     );
   }
+  let defaultTool: GQLTool;
+  if (defaultToolId && toolSection.tools.some((tool) => tool.id === defaultToolId)) {
+    defaultTool = toolSection.tools.find((tool) => tool.id === defaultToolId);
+  } else {
+    defaultTool = tools[0];
+  }
   return (
     <>
       <div className={classes.toolSection}>
-        <Tool tool={tools[0]} thumbnail onClick={() => onToolClick(tools[0])} />
+        <Tool tool={defaultTool} thumbnail onClick={() => onToolClick(defaultTool)} />
         {caretContent}
       </div>
       {toolChoiceContent}

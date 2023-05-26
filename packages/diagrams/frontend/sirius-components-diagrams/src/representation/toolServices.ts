@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { SourceElement } from '../sprotty/DiagramServer.types';
 import {
-  SingleClickOnDiagramElementTool,
-  SingleClickOnTwoDiagramElementsTool,
-  Tool,
-} from './DiagramRepresentation.types';
+  GQLSingleClickOnDiagramElementTool,
+  GQLSingleClickOnTwoDiagramElementsTool,
+  GQLTool,
+} from '../palette/ContextualPalette.types';
+import { SourceElement } from '../sprotty/DiagramServer.types';
 
-const isSingleClickOnDiagramElementTool = (tool: Tool): tool is SingleClickOnDiagramElementTool =>
+export const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
-const isSingleClickOnTwoDiagramElementsTool = (tool: Tool): tool is SingleClickOnTwoDiagramElementsTool =>
+export const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingleClickOnTwoDiagramElementsTool =>
   tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
 
-export const canInvokeTool = (tool: Tool, sourceElement: SourceElement, targetElement) => {
+export const canInvokeTool = (tool: GQLTool, sourceElement: SourceElement, targetElement) => {
   let result = false;
   if (isSingleClickOnDiagramElementTool(tool)) {
     result =
@@ -40,7 +40,7 @@ export const canInvokeTool = (tool: Tool, sourceElement: SourceElement, targetEl
 };
 
 export const atLeastOneSingleClickOnTwoDiagramElementsTool = (
-  tools: SingleClickOnTwoDiagramElementsTool[],
+  tools: GQLSingleClickOnTwoDiagramElementsTool[],
   sourceElement: SourceElement,
   targetElement
 ) => {

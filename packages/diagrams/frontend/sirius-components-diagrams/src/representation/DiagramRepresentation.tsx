@@ -32,6 +32,7 @@ import { ContextualPalette } from '../palette/ContextualPalette';
 import {
   GQLSingleClickOnDiagramElementTool,
   GQLSingleClickOnTwoDiagramElementsTool,
+  GQLTool,
   GQLToolSection,
 } from '../palette/ContextualPalette.types';
 import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
@@ -89,7 +90,6 @@ import {
   GQLUpdateNodePositionVariables,
   Menu,
   Palette,
-  Tool,
 } from './DiagramRepresentation.types';
 import {
   CloseSelectionDialogEvent,
@@ -131,7 +131,12 @@ import {
   updateNodeBoundsOp,
   updateNodePositionOp,
 } from './operations';
-import { atLeastOneSingleClickOnTwoDiagramElementsTool, canInvokeTool } from './toolServices';
+import {
+  atLeastOneSingleClickOnTwoDiagramElementsTool,
+  canInvokeTool,
+  isSingleClickOnDiagramElementTool,
+  isSingleClickOnTwoDiagramElementsTool,
+} from './toolServices';
 
 const useDiagramRepresentationStyle = makeStyles(() => ({
   container: {
@@ -352,7 +357,7 @@ export const DiagramRepresentation = ({
     diagramServer,
     diagram,
     diagramDescription,
-    toolSections,
+    defaultTools,
     contextualPalette,
     contextualMenu,
     activeTool,
@@ -732,7 +737,7 @@ export const DiagramRepresentation = ({
       }
       return cursor;
     };
-    const setActiveTool = (tool: Tool | null) => {
+    const setActiveTool = (tool: GQLTool | null) => {
       const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
       dispatch(setActiveToolEvent);
     };
@@ -778,7 +783,7 @@ export const DiagramRepresentation = ({
         onSelectElement,
         getCursorOn,
         setActiveTool,
-        toolSections,
+        defaultTools,
         setContextualPalette,
         setContextualMenu,
         updateRoutingPointsListener,
@@ -798,7 +803,7 @@ export const DiagramRepresentation = ({
     moveElement,
     resizeElement,
     editLabelMutation,
-    toolSections,
+    defaultTools,
     selection,
     editingContextId,
     representationId,
@@ -1056,8 +1061,8 @@ export const DiagramRepresentation = ({
         deleteElements([element], deletionPolicy);
     }
 
-    const invokeToolFromContextualPalette = (tool) => {
-      if (tool.__typename === 'SingleClickOnTwoDiagramElementsTool') {
+    const invokeToolFromContextualPalette = (tool: GQLTool, toolSection: GQLToolSection) => {
+      if (isSingleClickOnTwoDiagramElementsTool(tool)) {
         const setActiveToolEvent: SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL', activeTool: tool };
         dispatch(setActiveToolEvent);
         const setContextualPaletteEvent: SetContextualPaletteEvent = {
@@ -1072,7 +1077,7 @@ export const DiagramRepresentation = ({
           sourceElement: { element, position: { ...palettePosition } },
         };
         diagramServer.actionDispatcher.dispatch(action);
-      } else if (tool.__typename === 'SingleClickOnDiagramElementTool') {
+      } else if (isSingleClickOnDiagramElementTool(tool)) {
         if (tool.selectionDescriptionId) {
           const showSelectionDialogEvent: ShowSelectionDialogEvent = {
             type: 'SHOW_SELECTION_DIALOG',
@@ -1085,7 +1090,11 @@ export const DiagramRepresentation = ({
           diagramServer.actionDispatcher.dispatch(sourceElementAction);
         }
       }
-      const setDefaultToolEvent: SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL', defaultTool: tool };
+      const setDefaultToolEvent: SetDefaultToolEvent = {
+        type: 'SET_DEFAULT_TOOL',
+        defaultTool: tool,
+        toolSection: toolSection,
+      };
       dispatch(setDefaultToolEvent);
     };
     const invokeConnectorToolFromContextualPalette = (toolSections: GQLToolSection[]) => {
@@ -1121,6 +1130,7 @@ export const DiagramRepresentation = ({
           diagramElement={element}
           diagramServer={diagramServer}
           renameable={renameable}
+          defaultTools={defaultTools}
           invokeTool={invokeToolFromContextualPalette}
           invokeConnectorTool={invokeConnectorToolFromContextualPalette}
           invokeDelete={invokeDeleteFromContextualPalette}
@@ -1136,7 +1146,7 @@ export const DiagramRepresentation = ({
       left: canvasBounds.x + 'px',
       top: canvasBounds.y + 'px',
     };
-    const invokeToolFromContextualMenu = (tool: Tool) => {
+    const invokeToolFromContextualMenu = (tool: GQLTool) => {
       invokeTool(tool, sourceElement.id, targetElement.id, startPosition, endPosition);
     };
     contextualMenuContent = (

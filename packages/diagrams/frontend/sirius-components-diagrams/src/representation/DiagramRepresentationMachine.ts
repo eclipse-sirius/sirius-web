@@ -14,7 +14,8 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, SModelElement, TYPES } from 'sprotty';
 import { Point } from 'sprotty-protocol';
-import { assign, Machine } from 'xstate';
+import { Machine, assign } from 'xstate';
+import { GQLSingleClickOnTwoDiagramElementsTool, GQLTool, GQLToolSection } from '../palette/ContextualPalette.types';
 import { createDependencyInjectionContainer } from '../sprotty/DependencyInjection';
 import { BorderNode, Diagram, Edge, Node } from '../sprotty/Diagram.types';
 import { DiagramServer } from '../sprotty/DiagramServer';
@@ -27,10 +28,8 @@ import {
   Menu,
   Palette,
   Position,
-  SingleClickOnTwoDiagramElementsTool,
   Subscriber,
-  Tool,
-  ToolSection,
+  ToolSectionWithDefaultTool,
 } from './DiagramRepresentation.types';
 import {
   GQLGetDiagramDescriptionData,
@@ -76,9 +75,9 @@ export interface DiagramRepresentationContext {
   diagramServer: DiagramServer;
   diagram: GQLDiagram;
   diagramDescription: DiagramDescription | null;
-  toolSections: ToolSection[];
-  activeTool: Tool | null;
-  activeConnectorTools: SingleClickOnTwoDiagramElementsTool[];
+  defaultTools: ToolSectionWithDefaultTool[];
+  activeTool: GQLTool | null;
+  activeConnectorTools: GQLSingleClickOnTwoDiagramElementsTool[];
   contextualPalette: Palette | null;
   contextualMenu: Menu | null;
   latestSelection: Selection;
@@ -91,7 +90,7 @@ export interface DiagramRepresentationContext {
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type ShowSelectionDialogEvent = { type: 'SHOW_SELECTION_DIALOG'; activeTool: Tool };
+export type ShowSelectionDialogEvent = { type: 'SHOW_SELECTION_DIALOG'; activeTool: GQLTool };
 export type CloseSelectionDialogEvent = { type: 'CLOSE_SELECTION_DIALOG' };
 export type HandleDiagramDescriptionResultEvent = {
   type: 'HANDLE_DIAGRAM_DESCRIPTION_RESULT';
@@ -103,14 +102,14 @@ export type HandleSelectedObjectInSelectionDialogEvent = {
 };
 export type ResetSelectedObjectInSelectionDialogEvent = { type: 'RESET_SELECTED_OBJECT_IN_SELECTION_DIALOG' };
 export type SwitchRepresentationEvent = { type: 'SWITCH_REPRESENTATION'; representationId: string };
-export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: Tool };
+export type SetDefaultToolEvent = { type: 'SET_DEFAULT_TOOL'; defaultTool: GQLTool; toolSection: GQLToolSection };
 export type DiagramRefreshedEvent = { type: 'HANDLE_DIAGRAM_REFRESHED'; diagram: GQLDiagram };
 export type SubscribersUpdatedEvent = { type: 'HANDLE_SUBSCRIBERS_UPDATED'; subscribers: Subscriber[] };
 export type ResetToolsEvent = { type: 'RESET_TOOLS' };
-export type SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL'; activeTool: Tool | null };
+export type SetActiveToolEvent = { type: 'SET_ACTIVE_TOOL'; activeTool: GQLTool | null };
 export type SetActiveConnectorToolsEvent = {
   type: 'SET_ACTIVE_CONNECTOR_TOOLS';
-  tools: SingleClickOnTwoDiagramElementsTool[];
+  tools: GQLSingleClickOnTwoDiagramElementsTool[];
 };
 export type SetContextualPaletteEvent = { type: 'SET_CONTEXTUAL_PALETTE'; contextualPalette: Palette | null };
 export type SetContextualMenuEvent = { type: 'SET_CONTEXTUAL_MENU'; contextualMenu: Menu | null };
@@ -146,8 +145,8 @@ export type InitializeRepresentationEvent = {
     event: MouseEvent
   ) => void;
   getCursorOn: (element, diagramServer: DiagramServer) => CursorValue;
-  setActiveTool: (tool: Tool | null) => void;
-  toolSections: ToolSection[];
+  setActiveTool: (tool: GQLTool | null) => void;
+  defaultTools: ToolSectionWithDefaultTool[];
   setContextualPalette: (contextualPalette: Palette | null) => void;
   setContextualMenu: (contextualMenu: Menu | null) => void;
   updateRoutingPointsListener: (routingPoints: Point[], edgeId: string) => void;
@@ -202,7 +201,7 @@ export const diagramRepresentationMachine = Machine<
       diagramServer: null,
       diagram: null,
       diagramDescription: null,
-      toolSections: [],
+      defaultTools: [],
       activeTool: null,
       activeConnectorTools: [],
       contextualPalette: null,
@@ -422,7 +421,6 @@ export const diagramRepresentationMachine = Machine<
           onSelectElement,
           getCursorOn,
           setActiveTool,
-          toolSections,
           setContextualPalette,
           setContextualMenu,
           updateRoutingPointsListener,
@@ -461,7 +459,7 @@ export const diagramRepresentationMachine = Machine<
 
         return {
           diagramServer,
-          toolSections,
+          defaultTools: [],
           contextualPalette: undefined,
           contextualMenu: undefined,
           diagram: undefined,
@@ -476,22 +474,16 @@ export const diagramRepresentationMachine = Machine<
       }),
 
       setDefaultTool: assign((context, event) => {
-        const { defaultTool } = event as SetDefaultToolEvent;
-        let newToolSections;
-        if (context.toolSections) {
-          newToolSections = [];
-          context.toolSections.forEach((toolSection) => {
-            const newToolSection = Object.assign({}, toolSection);
-            newToolSection.tools.forEach((tool) => {
-              if (tool.id === defaultTool.id) {
-                newToolSection.defaultTool = defaultTool;
-                return;
-              }
-            });
-            newToolSections.push(newToolSection);
-          });
+        const { defaultTool, toolSection } = event as SetDefaultToolEvent;
+        const toolSectionsWithDefaultTool: ToolSectionWithDefaultTool[] = context.defaultTools;
+        if (toolSectionsWithDefaultTool.some((ts) => ts.toolSectionId === toolSection.id)) {
+          toolSectionsWithDefaultTool.splice(
+            toolSectionsWithDefaultTool.findIndex((ts) => ts.toolSectionId === toolSection.id),
+            1
+          );
         }
-        return { toolSections: newToolSections };
+        toolSectionsWithDefaultTool.push({ toolSectionId: toolSection.id, defaultToolId: defaultTool.id });
+        return { defaultTools: toolSectionsWithDefaultTool };
       }),
 
       handleDiagramRefreshed: assign((_, event) => {

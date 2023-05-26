@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLTool } from '../palette/ContextualPalette.types';
 import { Node } from '../sprotty/Diagram.types';
 
 export type CursorValue = 'pointer' | 'copy' | 'not-allowed';
@@ -71,47 +72,14 @@ export interface Menu {
   canvasBounds: Bounds;
   sourceElement: Node;
   targetElement: Node;
-  tools: Tool[];
+  tools: GQLTool[];
   startPosition: Position | null;
   endPosition: Position | null;
 }
 
-export interface ToolSection {
-  id: string;
-  label: string;
-  imageURL: string;
-  tools: Tool[];
-  defaultTool: Tool | null;
-}
-
-export interface Tool {
-  id: string;
-  label: string;
-  imageURL: string;
-  __typename: string;
-}
-
-export interface SingleClickOnDiagramElementTool extends Tool {
-  appliesToDiagramRoot: boolean;
-  selectionDescriptionId: string;
-  targetDescriptions: DiagramElementDescription[];
-}
-
-export interface SingleClickOnTwoDiagramElementsTool extends Tool {
-  candidates: SingleClickOnTwoDiagramElementsCandidate[];
-}
-
-export interface SingleClickOnTwoDiagramElementsCandidate {
-  sources: NodeDescription[];
-  targets: NodeDescription[];
-}
-
-export interface DiagramElementDescription {
-  id: string;
-}
-
-export interface NodeDescription extends DiagramElementDescription {
-  id: string;
+export interface ToolSectionWithDefaultTool {
+  toolSectionId: string;
+  defaultToolId: string;
 }
 
 export interface GQLViewer {

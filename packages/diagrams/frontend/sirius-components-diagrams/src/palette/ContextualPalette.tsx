@@ -15,7 +15,7 @@ import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useCallback, useEffect } from 'react';
-import { EditLabelAction, isWithEditableLabel, SModelElement } from 'sprotty';
+import { EditLabelAction, SModelElement, isWithEditableLabel } from 'sprotty';
 import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
 import { BorderNode, Diagram, Edge, Node, ViewModifier } from '../sprotty/Diagram.types';
 import { HIDE_CONTEXTUAL_TOOLBAR_ACTION } from '../sprotty/DiagramServer';
@@ -41,11 +41,11 @@ import {
 import {
   ContextualPaletteContext,
   ContextualPaletteEvent,
-  contextualPaletteMachine,
   HandleToolSectionsResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
+  contextualPaletteMachine,
 } from './ContextualPaletteMachine';
 import closeImagePath from './icons/close.svg';
 import connectorImagePath from './icons/connector.svg';
@@ -216,6 +216,7 @@ export const ContextualPalette = ({
   diagramElement,
   diagramServer,
   renameable,
+  defaultTools,
   invokeTool,
   invokeConnectorTool,
   invokeDelete,
@@ -415,7 +416,7 @@ export const ContextualPalette = ({
   const props: ContextualPaletteStyleProps = { toolSectionsCount };
   const classes = useContextualPaletteStyle(props);
 
-  const toolSectionElements: JSX.Element[] = toolSections.map((toolSection) => {
+  const toolSectionElements: JSX.Element[] = toolSections.map((toolSection: GQLToolSection) => {
     const handleToolClick = (tool: GQLTool) => {
       if (tool.id === 'edit') {
         invokeLabelEdit();
@@ -428,13 +429,17 @@ export const ContextualPalette = ({
       } else if (tool.id === 'collapse') {
         updateCollapsingState(GQLCollapsingState.COLLAPSED);
       } else {
-        invokeTool(tool);
+        invokeTool(tool, toolSection);
       }
     };
 
+    const defaultToolId: string | undefined = defaultTools.find(
+      (ts) => ts.toolSectionId === toolSection.id
+    )?.defaultToolId;
+
     return (
       <div className={classes.toolSection} key={diagramElementId + toolSection.id}>
-        <ToolSection toolSection={toolSection} onToolClick={handleToolClick} />
+        <ToolSection toolSection={toolSection} defaultToolId={defaultToolId} onToolClick={handleToolClick} />
       </div>
     );
   });
