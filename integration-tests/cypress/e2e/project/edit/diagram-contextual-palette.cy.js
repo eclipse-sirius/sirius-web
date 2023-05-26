@@ -40,4 +40,31 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('Diagram').click();
     cy.getByTestId('visibilitySection').should('not.exist');
   });
+
+  it('test default tool is updated', () => {
+    cy.getByTestId('Diagram').click(5, 5);
+    cy.getByTestId('Composite Processor - Tool').should('exist');
+    cy.getByTestId('Data Source - Tool').should('not.exist');
+    cy.getByTestId('expand').click();
+    cy.getByTestId('Composite Processor - Tool').should('exist');
+    cy.getByTestId('Data Source - Tool').should('exist');
+    cy.getByTestId('Data Source - Tool').click();
+    cy.getByTestId('Diagram').within(() => {
+      cy.getByTestId('Image - DataSource2').should('exist');
+    });
+
+    cy.getByTestId('Diagram').click(5, 5);
+    cy.getByTestId('Composite Processor - Tool').should('not.exist');
+    cy.getByTestId('Data Source - Tool').should('exist');
+    cy.getByTestId('expand').click();
+    cy.getByTestId('Composite Processor - Tool').should('exist');
+    cy.getByTestId('Data Source - Tool').should('exist');
+    cy.getByTestId('Composite Processor - Tool').click();
+    cy.getByTestId('Diagram').within(() => {
+      cy.getByTestId('Rectangle - Processor3').should('exist');
+    });
+    cy.getByTestId('Diagram').click(5, 5);
+    cy.getByTestId('Composite Processor - Tool').should('exist');
+    cy.getByTestId('Data Source - Tool').should('not.exist');
+  });
 });
