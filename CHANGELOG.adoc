@@ -95,6 +95,7 @@ Navigate to the parent with the left arrow if a node is collapsed
 - https://github.com/eclipse-sirius/sirius-components/issues/1975[#1975] [emf] The getContents method from the ObjectService will use the eObject's IEditingDomainItemProvider if it exists.
 - https://github.com/eclipse-sirius/sirius-components/issues/1916[#1916] [sirius-web] We supply an example of how to provide your own _Details_ view definition for specific elements using a View-based FormDescription.
 See `org.eclipse.sirius.web.sample.configuration.DomainPropertiesConfigurer` and `org.eclipse.sirius.web.sample.services.DomainAttributeServices` for a working example that can be easily adapted.
+- https://github.com/eclipse-sirius/sirius-components/issues/2003[#2003] [view] Make reconnection tool more robust for applications which use a custom IViewRepresentationDescriptionSearchService.
 
 == v2023.4.0
 
