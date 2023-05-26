@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
@@ -25,7 +24,6 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -66,8 +64,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
-    private final IURLParser urlParser;
-
     private final IFeedbackMessageService feedbackMessageService;
 
     private final ApplicationContext applicationContext;
@@ -81,7 +77,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(configuration.getViewRepresentationDescriptionSearchService());
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(configuration.getViewRepresentationDescriptionPredicate());
-        this.urlParser = Objects.requireNonNull(configuration.getUrlParser());
         this.applicationContext = Objects.requireNonNull(applicationContext);
         this.feedbackMessageService = feedbackMessageService;
     }
@@ -101,20 +96,8 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                 .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast);
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
-            var optionalViewEdgeDescription = viewDiagramDescription.getEdgeDescriptions().stream().filter(viewEdgeDescription -> {
-                Map<String, List<String>> parameters = this.urlParser.getParameterValues(diagramDescription.getId());
-                List<String> values = Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ID)).orElse(List.of());
-                Optional<String> sourceId = values.stream().findFirst();
 
-                if (sourceId.isPresent()) {
-                    String sourceElementId = this.objectService.getId(viewEdgeDescription);
-                    String formattedEdgeDescriptionId = IDiagramIdProvider.EDGE_DESCRIPTION_KIND + '?' + IDiagramIdProvider.SOURCE_KIND + '=' + IDiagramIdProvider.VIEW_SOURCE_KIND + '&' + IDiagramIdProvider.SOURCE_ID + '=' + sourceId.get() + '&' + IDiagramIdProvider.SOURCE_ELEMENT_ID + '=' + sourceElementId;
-                    return edge.getDescriptionId().equals(formattedEdgeDescriptionId);
-                } else {
-                    return false;
-                }
-            }).findFirst();
-
+            var optionalViewEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescription.getId());
             if (optionalViewEdgeDescription.isPresent()) {
                 var viewEdgeDescription = optionalViewEdgeDescription.get();
 
