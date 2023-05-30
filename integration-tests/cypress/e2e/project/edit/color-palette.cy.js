@@ -75,7 +75,6 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('LinkedTo Edge-toggle').click();
     cy.get('[title="diagram::EdgeStyle"]').click();
     cy.getByTestId('Color').click();
-    cy.contains('FixedColor color_blue').click();
+    cy.contains('color_blue').click();
   });
 });
-

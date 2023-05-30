@@ -881,13 +881,21 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 12;
 
     /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 13;
+
+    /**
      * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 13;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 14;
 
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1070,6 +1078,14 @@ public interface DiagramPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON = NODE_STYLE_DESCRIPTION__SHOW_ICON;
 
     /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON = NODE_STYLE_DESCRIPTION__LABEL_ICON;
+
+    /**
      * The feature id for the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1219,6 +1235,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int IMAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON = NODE_STYLE_DESCRIPTION__SHOW_ICON;
+
+    /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON = NODE_STYLE_DESCRIPTION__LABEL_ICON;
 
     /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1373,6 +1397,14 @@ public interface DiagramPackage extends EPackage {
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON = NODE_STYLE_DESCRIPTION__SHOW_ICON;
 
     /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON = NODE_STYLE_DESCRIPTION__LABEL_ICON;
+
+    /**
      * The number of structural features of the '<em>Icon Label Node Style Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -1491,13 +1523,21 @@ public interface DiagramPackage extends EPackage {
     int EDGE_STYLE__SHOW_ICON = STYLE_FEATURE_COUNT + 9;
 
     /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__LABEL_ICON = STYLE_FEATURE_COUNT + 10;
+
+    /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 10;
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1616,13 +1656,21 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__LABEL_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
+
+    /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3038,6 +3086,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getNodeStyleDescription_ShowIcon();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getLabelIcon <em>Label Icon</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Icon</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getLabelIcon()
+     * @see #getNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getNodeStyleDescription_LabelIcon();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      * <em>Conditional Node Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3183,6 +3243,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EAttribute getEdgeStyle_ShowIcon();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon <em>Label Icon</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Icon</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon()
+     * @see #getEdgeStyle()
+     * @generated
+     */
+    EAttribute getEdgeStyle_LabelIcon();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
@@ -4134,6 +4206,14 @@ public interface DiagramPackage extends EPackage {
         EAttribute NODE_STYLE_DESCRIPTION__SHOW_ICON = eINSTANCE.getNodeStyleDescription_ShowIcon();
 
         /**
+         * The meta object literal for the '<em><b>Label Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE_DESCRIPTION__LABEL_ICON = eINSTANCE.getNodeStyleDescription_LabelIcon();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalNodeStyleImpl <em>Conditional Node
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4250,6 +4330,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_STYLE__SHOW_ICON = eINSTANCE.getEdgeStyle_ShowIcon();
+
+        /**
+         * The meta object literal for the '<em><b>Label Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__LABEL_ICON = eINSTANCE.getEdgeStyle_LabelIcon();
 
         /**
          * The meta object literal for the

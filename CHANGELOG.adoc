@@ -72,6 +72,7 @@ The arrange all is made with elkjs.
 Note that IFormPostProcessor is a singleton, if several rules must be applied to several forms, a mechanism has to be added to the implementation.
 - https://github.com/eclipse-sirius/sirius-components/issues/2116[#2116] [form] Add a modal to select a new value for single-valued references
 - https://github.com/eclipse-sirius/sirius-components/issues/2083[#2083] [diagram] Add support for edge markers with React Flow.
+- https://github.com/eclipse-sirius/sirius-components/issues/2044[#2044] [view] Add custom icons to edges and nodes label in view dsl
 
 === Improvements
 

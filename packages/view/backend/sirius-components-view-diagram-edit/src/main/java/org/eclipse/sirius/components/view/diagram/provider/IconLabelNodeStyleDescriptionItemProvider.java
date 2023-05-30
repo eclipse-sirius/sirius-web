@@ -65,6 +65,7 @@ public class IconLabelNodeStyleDescriptionItemProvider extends StyleItemProvider
             this.addWidthComputationExpressionPropertyDescriptor(object);
             this.addHeightComputationExpressionPropertyDescriptor(object);
             this.addShowIconPropertyDescriptor(object);
+            this.addLabelIconPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -219,6 +220,18 @@ public class IconLabelNodeStyleDescriptionItemProvider extends StyleItemProvider
     }
 
     /**
+     * This adds a property descriptor for the Label Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelIconPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeStyleDescription_labelIcon_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelIcon_feature", "_UI_NodeStyleDescription_type"),
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns IconLabelNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -274,6 +287,7 @@ public class IconLabelNodeStyleDescriptionItemProvider extends StyleItemProvider
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
+            case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

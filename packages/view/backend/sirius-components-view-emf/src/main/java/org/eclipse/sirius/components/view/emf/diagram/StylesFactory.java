@@ -66,8 +66,11 @@ public final class StylesFactory {
                                     .strikeThroughProvider(variableManager -> nodeStyle.isStrikeThrough())
                                     .iconURLProvider(variableManager -> {
                                         String iconURL = "";
-                                        if (nodeStyle.isShowIcon()) {
+                                        if (nodeStyle.isShowIcon() && nodeStyle.getLabelIcon() == null) {
                                             iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse("");
+                                        }
+                                        if (nodeStyle.isShowIcon() && !(nodeStyle.getLabelIcon() == null)) {
+                                            iconURL = nodeStyle.getLabelIcon();
                                         }
                                         return iconURL;
                                     })
@@ -90,8 +93,11 @@ public final class StylesFactory {
                                     .strikeThroughProvider(variableManager -> edgeStyle.isStrikeThrough())
                                     .iconURLProvider(variableManager -> {
                                         String iconURL = "";
-                                        if (edgeStyle.isShowIcon()) {
+                                        if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() == null) {
                                             iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse("");
+                                        }
+                                        if (edgeStyle.isShowIcon() && !(edgeStyle.getLabelIcon() == null)) {
+                                            iconURL = edgeStyle.getLabelIcon();
                                         }
                                         return iconURL;
                                     })
