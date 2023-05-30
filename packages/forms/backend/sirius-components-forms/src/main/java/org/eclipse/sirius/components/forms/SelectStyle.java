@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ public final class SelectStyle extends AbstractFontStyle {
 
     private String foregroundColor;
 
+    private boolean showIcon;
+
     private SelectStyle() {
         // Prevent instantiation
     }
@@ -40,14 +42,18 @@ public final class SelectStyle extends AbstractFontStyle {
         return this.foregroundColor;
     }
 
+    public boolean isShowIcon() {
+        return this.showIcon;
+    }
+
     public static Builder newSelectStyle() {
         return new Builder();
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'backgroundColor: {1}, foregroundColor: {2}, fontSize: {3}, italic: {4}, bold: {5}, underline: {6}, strikeThrough: {7},'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.backgroundColor, this.foregroundColor, this.fontSize, this.italic, this.bold, this.underline, this.strikeThrough);
+        String pattern = "{0} '{'backgroundColor: {1}, foregroundColor: {2}, fontSize: {3}, italic: {4}, bold: {5}, underline: {6}, strikeThrough: {7}, isShowIcon: {8'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.backgroundColor, this.foregroundColor, this.fontSize, this.italic, this.bold, this.underline, this.strikeThrough, this.showIcon);
     }
 
     /**
@@ -70,6 +76,8 @@ public final class SelectStyle extends AbstractFontStyle {
         private boolean underline;
 
         private boolean strikeThrough;
+
+        private boolean showIcon;
 
         private Builder() {
         }
@@ -99,6 +107,11 @@ public final class SelectStyle extends AbstractFontStyle {
             return this;
         }
 
+        public Builder showIcon(boolean showIcon) {
+            this.showIcon = showIcon;
+            return this;
+        }
+
         public Builder underline(boolean underline) {
             this.underline = underline;
             return this;
@@ -118,6 +131,7 @@ public final class SelectStyle extends AbstractFontStyle {
             selectStyle.bold = this.bold;
             selectStyle.underline = this.underline;
             selectStyle.strikeThrough = this.strikeThrough;
+            selectStyle.showIcon = this.showIcon;
             return selectStyle;
         }
 

@@ -190,6 +190,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(viewSelectDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewSelectDescription.getLabelExpression());
+        Function<VariableManager, String> optionIconURLProvider = this.getOptionIconURLProvider();
         Function<VariableManager, String> valueProvider = this.getSelectValueProvider(viewSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(viewSelectDescription.getCandidateLabelExpression());
@@ -215,6 +216,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
                 .optionsProvider(optionsProvider)
+                .optionIconURLProvider(optionIconURLProvider)
                 .newValueHandler(selectNewValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
@@ -287,6 +289,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(multiSelectDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(multiSelectDescription.getLabelExpression());
+        Function<VariableManager, String> optionIconURLProvider = this.getOptionIconURLProvider();
         Function<VariableManager, List<String>> valuesProvider = this.getMultiSelectValuesProvider(multiSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(multiSelectDescription.getCandidateLabelExpression());
@@ -311,6 +314,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .valuesProvider(valuesProvider)
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
+                .optionIconURLProvider(optionIconURLProvider)
                 .optionsProvider(optionsProvider)
                 .newValuesHandler(multiSelectNewValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -781,6 +785,10 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             }
             return status;
         };
+    }
+
+    private Function<VariableManager, String> getOptionIconURLProvider() {
+        return variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse("");
     }
 
     private String getDescriptionId(EObject description) {

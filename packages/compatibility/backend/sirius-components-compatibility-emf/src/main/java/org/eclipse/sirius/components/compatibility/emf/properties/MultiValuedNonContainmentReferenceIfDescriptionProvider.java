@@ -92,6 +92,7 @@ public class MultiValuedNonContainmentReferenceIfDescriptionProvider {
                 .optionsProvider(this.getOptionsProvider())
                 .optionIdProvider(this.getOptionIdProvider())
                 .optionLabelProvider(this.getOptionLabelProvider())
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
                 .newValuesHandler(this.getNewValuesHandler())
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())

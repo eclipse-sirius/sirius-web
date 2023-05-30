@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl#getForegroundColor <em>Foreground
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.SelectDescriptionStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -162,6 +163,26 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
      * @ordered
      */
     protected UserColor foregroundColor;
+
+    /**
+     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SHOW_ICON_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -383,6 +404,29 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
      * @generated
      */
     @Override
+    public boolean isShowIcon() {
+        return this.showIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowIcon(boolean newShowIcon) {
+        boolean oldShowIcon = this.showIcon;
+        this.showIcon = newShowIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.SELECT_DESCRIPTION_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.SELECT_DESCRIPTION_STYLE__FONT_SIZE:
@@ -403,6 +447,8 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                 if (resolve)
                     return this.getForegroundColor();
                 return this.basicGetForegroundColor();
+            case ViewPackage.SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                return this.isShowIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -435,6 +481,9 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                 return;
             case ViewPackage.SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                 this.setForegroundColor((UserColor) newValue);
+                return;
+            case ViewPackage.SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                this.setShowIcon((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -469,6 +518,9 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
             case ViewPackage.SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                 this.setForegroundColor((UserColor) null);
                 return;
+            case ViewPackage.SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                this.setShowIcon(SHOW_ICON_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -495,6 +547,8 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                 return this.backgroundColor != null;
             case ViewPackage.SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                 return this.foregroundColor != null;
+            case ViewPackage.SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                return this.showIcon != SHOW_ICON_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -572,6 +626,8 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
         result.append(this.underline);
         result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
+        result.append(", showIcon: ");
+        result.append(this.showIcon);
         result.append(')');
         return result.toString();
     }

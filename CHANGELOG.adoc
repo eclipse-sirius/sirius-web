@@ -36,6 +36,9 @@ An absent/empty candidates expression now simply means the widget is empty.
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/2039[#2039] [project] A new "Blank Studio" project template is available to create a project with the "studio" nature but no initial content
+- https://github.com/eclipse-sirius/sirius-components/issues/2004[#2004] [form] Add the possibility to show select options' icons.
++
+image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget option,70%,30%]
 
 === Improvements
 

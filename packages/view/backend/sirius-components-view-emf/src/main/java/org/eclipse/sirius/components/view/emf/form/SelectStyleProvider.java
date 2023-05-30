@@ -57,6 +57,7 @@ public class SelectStyleProvider implements Function<VariableManager, SelectStyl
         boolean bold = this.viewStyle.isBold();
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
+        boolean isShowIcon = this.viewStyle.isShowIcon();
 
         // @formatter:off
         return selectStyleBuilder
@@ -65,6 +66,7 @@ public class SelectStyleProvider implements Function<VariableManager, SelectStyl
                 .bold(bold)
                 .underline(underline)
                 .strikeThrough(strikeThrough)
+                .showIcon(isShowIcon)
                 .build();
         // @formatter:on
     }

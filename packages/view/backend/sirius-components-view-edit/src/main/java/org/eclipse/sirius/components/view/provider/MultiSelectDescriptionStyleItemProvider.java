@@ -57,6 +57,7 @@ public class MultiSelectDescriptionStyleItemProvider extends WidgetDescriptionSt
             this.addStrikeThroughPropertyDescriptor(object);
             this.addBackgroundColorPropertyDescriptor(object);
             this.addForegroundColorPropertyDescriptor(object);
+            this.addShowIconPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -141,6 +142,18 @@ public class MultiSelectDescriptionStyleItemProvider extends WidgetDescriptionSt
     }
 
     /**
+     * This adds a property descriptor for the Show Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addShowIconPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_MultiSelectDescriptionStyle_showIcon_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_MultiSelectDescriptionStyle_showIcon_feature", "_UI_MultiSelectDescriptionStyle_type"),
+                ViewPackage.Literals.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns MultiSelectDescriptionStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -190,6 +203,7 @@ public class MultiSelectDescriptionStyleItemProvider extends WidgetDescriptionSt
             case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
             case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
             case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+            case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

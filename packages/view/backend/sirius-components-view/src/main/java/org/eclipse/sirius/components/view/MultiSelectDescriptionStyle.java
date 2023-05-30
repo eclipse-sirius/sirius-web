@@ -24,6 +24,7 @@ package org.eclipse.sirius.components.view;
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#getForegroundColor <em>Foreground
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescriptionStyle()
@@ -76,5 +77,27 @@ public interface MultiSelectDescriptionStyle extends WidgetDescriptionStyle, Lab
      * @generated
      */
     void setForegroundColor(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Show Icon</em>' attribute.
+     * @see #setShowIcon(boolean)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getMultiSelectDescriptionStyle_ShowIcon()
+     * @model
+     * @generated
+     */
+    boolean isShowIcon();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#isShowIcon <em>Show
+     * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Show Icon</em>' attribute.
+     * @see #isShowIcon()
+     * @generated
+     */
+    void setShowIcon(boolean value);
 
 } // MultiSelectDescriptionStyle

@@ -44,6 +44,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> optionLabelProvider;
 
+    private Function<VariableManager, String> optionIconURLProvider;
+
     private Function<VariableManager, List<String>> valuesProvider;
 
     private BiFunction<VariableManager, List<String>, IStatus> newValuesHandler;
@@ -76,6 +78,10 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getOptionLabelProvider() {
         return this.optionLabelProvider;
+    }
+
+    public Function<VariableManager, String> getOptionIconURLProvider() {
+        return this.optionIconURLProvider;
     }
 
     public Function<VariableManager, List<String>> getValuesProvider() {
@@ -121,6 +127,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> optionIdProvider;
 
         private Function<VariableManager, String> optionLabelProvider;
+
+        private Function<VariableManager, String> optionIconURLProvider = variableManager -> null;
 
         private Function<VariableManager, List<String>> valuesProvider;
 
@@ -170,6 +178,11 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder optionIconURLProvider(Function<VariableManager, String> optionIconURLProvider) {
+            this.optionIconURLProvider = Objects.requireNonNull(optionIconURLProvider);
+            return this;
+        }
+
         public Builder valuesProvider(Function<VariableManager, List<String>> valuesProvider) {
             this.valuesProvider = Objects.requireNonNull(valuesProvider);
             return this;
@@ -214,6 +227,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             multiSelectDescription.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             multiSelectDescription.optionIdProvider = Objects.requireNonNull(this.optionIdProvider);
             multiSelectDescription.optionLabelProvider = Objects.requireNonNull(this.optionLabelProvider);
+            multiSelectDescription.optionIconURLProvider = Objects.requireNonNull(this.optionIconURLProvider);
             multiSelectDescription.valuesProvider = Objects.requireNonNull(this.valuesProvider);
             multiSelectDescription.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);
             multiSelectDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditSelectMutationData,
@@ -30,7 +31,7 @@ import {
 } from './SelectPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, SelectStyleProps>(() => ({
+const useStyle = makeStyles<Theme, SelectStyleProps>((theme) => ({
   style: {
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
@@ -38,6 +39,13 @@ const useStyle = makeStyles<Theme, SelectStyleProps>(() => ({
     fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
     fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
+  icon: {
+    width: '16px',
+    height: '16px',
+  },
+  iconRoot: {
+    minWidth: theme.spacing(3),
   },
 }));
 
@@ -97,6 +105,8 @@ export const SelectPropertySection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
+
+  const { httpOrigin } = useContext(ServerContext);
 
   const [isFocused, setFocus] = useState(false);
 
@@ -219,6 +229,12 @@ export const SelectPropertySection = ({
                   }
                 : {}
             }>
+            {option.iconURL && (
+              <ListItemIcon className={classes.iconRoot}>
+                <img className={classes.icon} alt={option.label} src={httpOrigin + option.iconURL} />
+              </ListItemIcon>
+            )}
+
             {option.label}
           </MenuItem>
         ))}

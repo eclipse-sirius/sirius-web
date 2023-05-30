@@ -57,6 +57,7 @@ public class MultiSelectStyleProvider implements Function<VariableManager, Multi
         boolean bold = this.viewStyle.isBold();
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
+        boolean isShowIcon = this.viewStyle.isShowIcon();
 
         // @formatter:off
         return multiSelectStyleBuilder
@@ -65,6 +66,7 @@ public class MultiSelectStyleProvider implements Function<VariableManager, Multi
                 .bold(bold)
                 .underline(underline)
                 .strikeThrough(strikeThrough)
+                .showIcon(isShowIcon)
                 .build();
         // @formatter:on
     }

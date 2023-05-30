@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ public final class SelectOption {
 
     private String label;
 
+    private String iconURL;
+
     private SelectOption() {
         // Prevent instantiation
     }
@@ -40,14 +42,18 @@ public final class SelectOption {
         return this.label;
     }
 
+    public String getIconURL() {
+        return this.iconURL;
+    }
+
     public static Builder newSelectOption(String id) {
         return new Builder(id);
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
+        String pattern = "{0} '{'id: {1}, label: {2}', iconUrl: {3}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.iconURL);
     }
 
     /**
@@ -61,6 +67,8 @@ public final class SelectOption {
 
         private String label;
 
+        private String iconURL;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -70,10 +78,16 @@ public final class SelectOption {
             return this;
         }
 
+        public Builder iconURL(String iconURL) {
+            this.iconURL = iconURL;
+            return this;
+        }
+
         public SelectOption build() {
             SelectOption selectOption = new SelectOption();
             selectOption.id = Objects.requireNonNull(this.id);
             selectOption.label = Objects.requireNonNull(this.label);
+            selectOption.iconURL = this.iconURL;
             return selectOption;
         }
     }

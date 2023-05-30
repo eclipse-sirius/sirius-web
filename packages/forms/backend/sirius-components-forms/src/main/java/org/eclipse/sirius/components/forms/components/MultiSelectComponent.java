@@ -54,6 +54,7 @@ public class MultiSelectComponent implements IComponent {
         String iconURL = multiSelectDescription.getIconURLProvider().apply(variableManager);
         List<?> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);
         List<String> values = multiSelectDescription.getValuesProvider().apply(variableManager);
+        var multiSelectStyle = multiSelectDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(multiSelectDescription, variableManager)));
 
@@ -65,18 +66,21 @@ public class MultiSelectComponent implements IComponent {
             String optionId = multiSelectDescription.getOptionIdProvider().apply(optionVariableManager);
             String optionLabel = multiSelectDescription.getOptionLabelProvider().apply(optionVariableManager);
 
-            // @formatter:off
-            SelectOption option = SelectOption.newSelectOption(optionId)
-                    .label(optionLabel)
-                    .build();
-            // @formatter:on
+            var selectOptionBuilder = SelectOption.newSelectOption(optionId)
+                    .label(optionLabel);
+            if (multiSelectStyle != null && multiSelectStyle.isShowIcon()) {
+                String optionIconUrl = multiSelectDescription.getOptionIconURLProvider().apply(optionVariableManager);
+                if (optionIconUrl != null && !optionIconUrl.isBlank()) {
+                    selectOptionBuilder.iconURL(optionIconUrl);
+                }
+            }
+            SelectOption option = selectOptionBuilder.build();
 
             options.add(option);
         }
         Function<List<String>, IStatus> newValuesHandler = newValues -> {
             return multiSelectDescription.getNewValuesHandler().apply(variableManager, newValues);
         };
-        var multiSelectStyle = multiSelectDescription.getStyleProvider().apply(variableManager);
 
         // @formatter:off
         Builder multiSelectElementPropsBuilder = MultiSelectElementProps.newMultiSelectElementProps(id)

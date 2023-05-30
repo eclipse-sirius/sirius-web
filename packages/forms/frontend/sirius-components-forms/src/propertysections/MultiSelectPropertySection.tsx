@@ -11,15 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   GQLEditMultiSelectMutationData,
   GQLEditMultiSelectPayload,
@@ -33,7 +34,7 @@ import {
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
-const useStyle = makeStyles<Theme, MultiSelectStyleProps>(() => ({
+const useStyle = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
   style: {
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
@@ -41,6 +42,13 @@ const useStyle = makeStyles<Theme, MultiSelectStyleProps>(() => ({
     fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
     fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
+  icon: {
+    width: '16px',
+    height: '16px',
+  },
+  iconRoot: {
+    minWidth: theme.spacing(3),
   },
 }));
 
@@ -101,6 +109,8 @@ export const MultiSelectPropertySection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
+
+  const { httpOrigin } = useContext(ServerContext);
 
   const [isFocused, setFocus] = useState(false);
 
@@ -214,6 +224,11 @@ export const MultiSelectPropertySection = ({
         {widget.options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
             <Checkbox checked={widget.values.indexOf(option.id) > -1} />
+            {option.iconURL && (
+              <ListItemIcon className={classes.iconRoot}>
+                <img className={classes.icon} alt={option.label} src={httpOrigin + option.iconURL} />
+              </ListItemIcon>
+            )}
             <ListItemText
               primary={option.label}
               primaryTypographyProps={
