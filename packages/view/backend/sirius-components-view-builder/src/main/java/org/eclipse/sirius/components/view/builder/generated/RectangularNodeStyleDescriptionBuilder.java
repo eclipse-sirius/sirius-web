@@ -169,6 +169,16 @@ public class RectangularNodeStyleDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for LabelIcon.
+     *
+     * @generated
+     */
+    public RectangularNodeStyleDescriptionBuilder labelIcon(java.lang.String value) {
+        this.getRectangularNodeStyleDescription().setLabelIcon(value);
+        return this;
+    }
+
+    /**
      * Setter for WithHeader.
      *
      * @generated

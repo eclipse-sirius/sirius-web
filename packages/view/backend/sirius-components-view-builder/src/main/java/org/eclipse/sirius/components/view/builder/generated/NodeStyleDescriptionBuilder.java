@@ -153,5 +153,15 @@ public abstract class NodeStyleDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelIcon.
+     *
+     * @generated
+     */
+    public NodeStyleDescriptionBuilder labelIcon(java.lang.String value) {
+        this.getNodeStyleDescription().setLabelIcon(value);
+        return this;
+    }
+
 }
 

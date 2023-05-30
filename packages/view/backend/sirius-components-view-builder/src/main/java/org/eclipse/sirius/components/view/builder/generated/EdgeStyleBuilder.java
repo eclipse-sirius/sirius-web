@@ -142,5 +142,15 @@ public class EdgeStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelIcon.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder labelIcon(java.lang.String value) {
+        this.getEdgeStyle().setLabelIcon(value);
+        return this;
+    }
+
 }
 

@@ -169,6 +169,16 @@ public class ImageNodeStyleDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for LabelIcon.
+     *
+     * @generated
+     */
+    public ImageNodeStyleDescriptionBuilder labelIcon(java.lang.String value) {
+        this.getImageNodeStyleDescription().setLabelIcon(value);
+        return this;
+    }
+
+    /**
      * Setter for Shape.
      *
      * @generated

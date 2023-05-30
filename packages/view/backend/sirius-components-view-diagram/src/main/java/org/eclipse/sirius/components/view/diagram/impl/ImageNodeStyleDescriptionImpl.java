@@ -56,6 +56,8 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * <em>Height Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isShowIcon <em>Show
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getLabelIcon <em>Label
+ * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getShape
  * <em>Shape</em>}</li>
  * </ul>
@@ -302,6 +304,26 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @ordered
      */
     protected boolean showIcon = SHOW_ICON_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_ICON_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected String labelIcon = LABEL_ICON_EDEFAULT;
 
     /**
      * The default value of the '{@link #getShape() <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -683,6 +705,29 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @generated
      */
     @Override
+    public String getLabelIcon() {
+        return this.labelIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelIcon(String newLabelIcon) {
+        String oldLabelIcon = this.labelIcon;
+        this.labelIcon = newLabelIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON, oldLabelIcon, this.labelIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getShape() {
         return this.shape;
     }
@@ -738,6 +783,8 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
                 return this.getHeightComputationExpression();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.isShowIcon();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                return this.getLabelIcon();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return this.getShape();
         }
@@ -790,6 +837,9 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                this.setLabelIcon((String) newValue);
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape((String) newValue);
@@ -845,6 +895,9 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape(SHAPE_EDEFAULT);
                 return;
@@ -886,6 +939,8 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
                 return HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.heightComputationExpression != null : !HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.heightComputationExpression);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return SHAPE_EDEFAULT == null ? this.shape != null : !SHAPE_EDEFAULT.equals(this.shape);
         }
@@ -1005,6 +1060,8 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
         result.append(this.heightComputationExpression);
         result.append(", showIcon: ");
         result.append(this.showIcon);
+        result.append(", labelIcon: ");
+        result.append(this.labelIcon);
         result.append(", shape: ");
         result.append(this.shape);
         result.append(')');
