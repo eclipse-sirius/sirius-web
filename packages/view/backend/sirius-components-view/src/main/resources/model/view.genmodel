@@ -327,11 +327,13 @@
     <genClasses ecoreClass="view.ecore#//SelectDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//SelectDescriptionStyle/backgroundColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//SelectDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectDescriptionStyle/showIcon"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalSelectDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//MultiSelectDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescriptionStyle/backgroundColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference view.ecore#//MultiSelectDescriptionStyle/foregroundColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//MultiSelectDescriptionStyle/showIcon"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ConditionalMultiSelectDescriptionStyle"/>
     <genClasses ecoreClass="view.ecore#//TextareaDescriptionStyle">

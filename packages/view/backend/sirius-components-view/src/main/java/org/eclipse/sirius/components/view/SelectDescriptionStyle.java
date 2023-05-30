@@ -24,6 +24,7 @@ package org.eclipse.sirius.components.view;
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getForegroundColor <em>Foreground
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getSelectDescriptionStyle()
@@ -76,5 +77,27 @@ public interface SelectDescriptionStyle extends WidgetDescriptionStyle, LabelSty
      * @generated
      */
     void setForegroundColor(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Show Icon</em>' attribute.
+     * @see #setShowIcon(boolean)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getSelectDescriptionStyle_ShowIcon()
+     * @model
+     * @generated
+     */
+    boolean isShowIcon();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#isShowIcon <em>Show
+     * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Show Icon</em>' attribute.
+     * @see #isShowIcon()
+     * @generated
+     */
+    void setShowIcon(boolean value);
 
 } // SelectDescriptionStyle

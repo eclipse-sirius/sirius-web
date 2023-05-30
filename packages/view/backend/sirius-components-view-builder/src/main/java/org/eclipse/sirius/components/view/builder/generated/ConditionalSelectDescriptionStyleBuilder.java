@@ -114,6 +114,15 @@ public class ConditionalSelectDescriptionStyleBuilder {
         this.getConditionalSelectDescriptionStyle().setForegroundColor(value);
         return this;
     }
+    /**
+     * Setter for ShowIcon.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder showIcon(java.lang.Boolean value) {
+        this.getConditionalSelectDescriptionStyle().setShowIcon(value);
+        return this;
+    }
 
 }
 

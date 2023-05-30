@@ -4536,13 +4536,21 @@ public interface ViewPackage extends EPackage {
     int SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__SHOW_ICON = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Select Description Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+    int SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Select Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -4630,13 +4638,21 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__SHOW_ICON = CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Conditional Select Description Style</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Conditional Select Description Style</em>' class. <!-- begin-user-doc -->
@@ -4716,13 +4732,21 @@ public interface ViewPackage extends EPackage {
     int MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Multi Select Description Style</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+    int MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Multi Select Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -4811,13 +4835,21 @@ public interface ViewPackage extends EPackage {
     int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Conditional Multi Select Description Style</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = CONDITIONAL_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Conditional Multi Select Description Style</em>' class. <!-- begin-user-doc
@@ -9274,6 +9306,18 @@ public interface ViewPackage extends EPackage {
     EReference getSelectDescriptionStyle_ForegroundColor();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#isShowIcon <em>Show Icon</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Show Icon</em>'.
+     * @see org.eclipse.sirius.components.view.SelectDescriptionStyle#isShowIcon()
+     * @see #getSelectDescriptionStyle()
+     * @generated
+     */
+    EAttribute getSelectDescriptionStyle_ShowIcon();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle
      * <em>Conditional Select Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9316,6 +9360,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getMultiSelectDescriptionStyle_ForegroundColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#isShowIcon <em>Show Icon</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Show Icon</em>'.
+     * @see org.eclipse.sirius.components.view.MultiSelectDescriptionStyle#isShowIcon()
+     * @see #getMultiSelectDescriptionStyle()
+     * @generated
+     */
+    EAttribute getMultiSelectDescriptionStyle_ShowIcon();
 
     /**
      * Returns the meta object for class
@@ -12045,6 +12101,14 @@ public interface ViewPackage extends EPackage {
         EReference SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getSelectDescriptionStyle_ForegroundColor();
 
         /**
+         * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECT_DESCRIPTION_STYLE__SHOW_ICON = eINSTANCE.getSelectDescriptionStyle_ShowIcon();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.impl.ConditionalSelectDescriptionStyleImpl <em>Conditional Select
          * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -12081,6 +12145,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = eINSTANCE.getMultiSelectDescriptionStyle_ForegroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = eINSTANCE.getMultiSelectDescriptionStyle_ShowIcon();
 
         /**
          * The meta object literal for the

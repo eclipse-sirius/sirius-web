@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -34,6 +33,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -151,10 +151,10 @@ public class ObjectService implements IObjectService {
 
     @Override
     public String getImagePath(Object object) {
-        if (object instanceof EObject eObject && !(object instanceof DynamicEObjectImpl)) {
+        if (object instanceof EObject eObject) {
 
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
-            if (adapter instanceof IItemLabelProvider labelProvider) {
+            if (adapter instanceof IItemLabelProvider labelProvider && !(adapter instanceof ReflectiveItemProvider)) {
                 try {
                     Object image = labelProvider.getImage(eObject);
                     String imageFullPath = this.findImagePath(image);

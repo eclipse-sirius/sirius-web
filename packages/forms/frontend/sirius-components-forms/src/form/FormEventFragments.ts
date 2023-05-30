@@ -98,6 +98,7 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     options {
       id
       label
+      iconURL
     }
     style {
       backgroundColor
@@ -117,6 +118,7 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     options {
       id
       label
+      iconURL
     }
     style {
       backgroundColor

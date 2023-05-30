@@ -55,6 +55,7 @@ public class MultiSelectStyleProvider {
         boolean bold = this.viewStyle.isBold();
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
+        boolean isShowIcon = this.viewStyle.isShowIcon();
 
         // @formatter:off
         return multiSelectStyleBuilder
@@ -63,6 +64,7 @@ public class MultiSelectStyleProvider {
                 .bold(bold)
                 .underline(underline)
                 .strikeThrough(strikeThrough)
+                .showIcon(isShowIcon)
                 .build();
         // @formatter:on
     }

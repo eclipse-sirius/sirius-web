@@ -180,6 +180,7 @@ type Select implements Widget {
 type SelectOption {
   id: ID!
   label: String!
+  iconURL: String
 }
 
 type SelectStyle {

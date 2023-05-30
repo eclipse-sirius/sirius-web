@@ -44,6 +44,8 @@ import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
  * <em>Background Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalMultiSelectDescriptionStyleImpl#getForegroundColor
  * <em>Foreground Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.ConditionalMultiSelectDescriptionStyleImpl#isShowIcon <em>Show
+ * Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -168,6 +170,26 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
      * @ordered
      */
     protected UserColor foregroundColor;
+
+    /**
+     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SHOW_ICON_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowIcon()
+     * @generated
+     * @ordered
+     */
+    protected boolean showIcon = SHOW_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -389,6 +411,29 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
      * @generated
      */
     @Override
+    public boolean isShowIcon() {
+        return this.showIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowIcon(boolean newShowIcon) {
+        boolean oldShowIcon = this.showIcon;
+        this.showIcon = newShowIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
@@ -409,6 +454,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                 if (resolve)
                     return this.getForegroundColor();
                 return this.basicGetForegroundColor();
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                return this.isShowIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -441,6 +488,9 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                 return;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                 this.setForegroundColor((UserColor) newValue);
+                return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                this.setShowIcon((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -475,6 +525,9 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                 this.setForegroundColor((UserColor) null);
                 return;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                this.setShowIcon(SHOW_ICON_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -501,6 +554,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                 return this.backgroundColor != null;
             case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                 return this.foregroundColor != null;
+            case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                return this.showIcon != SHOW_ICON_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -540,6 +595,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                     return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
                 case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                     return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
+                case ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                    return ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON;
                 default:
                     return -1;
             }
@@ -582,6 +639,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
                     return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
                 case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
                     return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
+                case ViewPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+                    return ViewPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON;
                 default:
                     return -1;
             }
@@ -610,6 +669,8 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
         result.append(this.underline);
         result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
+        result.append(", showIcon: ");
+        result.append(this.showIcon);
         result.append(')');
         return result.toString();
     }

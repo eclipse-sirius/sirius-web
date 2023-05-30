@@ -207,6 +207,7 @@ export interface GQLMultiSelectStyle {
 export interface GQLSelectOption {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLRadio extends GQLWidget {

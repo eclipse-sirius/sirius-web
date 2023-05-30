@@ -105,6 +105,15 @@ public class MultiSelectDescriptionStyleBuilder {
         this.getMultiSelectDescriptionStyle().setForegroundColor(value);
         return this;
     }
+    /**
+     * Setter for ShowIcon.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder showIcon(java.lang.Boolean value) {
+        this.getMultiSelectDescriptionStyle().setShowIcon(value);
+        return this;
+    }
 
 }
 

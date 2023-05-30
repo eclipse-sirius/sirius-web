@@ -433,11 +433,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalSelectDescriptionStyle" eSuperTypes="#//Conditional #//SelectDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalMultiSelectDescriptionStyle"
       eSuperTypes="#//Conditional #//MultiSelectDescriptionStyle"/>

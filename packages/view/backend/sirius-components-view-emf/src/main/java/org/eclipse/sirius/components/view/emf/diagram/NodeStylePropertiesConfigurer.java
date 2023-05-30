@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -85,12 +86,15 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
 
+    private final IObjectService objectService;
+
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, IValidationService validationService,
-            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
+            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, AQLTextfieldCustomizer aqlTextfieldCustomizer, IObjectService objectService) {
         this.validationService = Objects.requireNonNull(validationService);
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
         this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
@@ -337,6 +341,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
                                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
                                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
+                                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
                                 .newValueHandler((variableManager, newValue) -> {
                                     var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
                                     if (optionalBorderStyle.isPresent()) {
@@ -372,6 +377,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, UserColor.class)
                                                                                        .map(UserColor::getName)
                                                                                        .orElse(EMPTY))
+                                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
                                 .newValueHandler((variableManager, newValue) ->
                                                          variableManager.get(VariableManager.SELF, styleType)
                                                                         .<IStatus>map((style) -> {
@@ -435,6 +441,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
                         .map(CustomImageMetadata::getLabel)
                         .orElse(EMPTY))
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
                 .newValueHandler(this.getNewShapeValueHandler())
                 .diagnosticsProvider(this.getDiagnosticsProvider(feature))
                 .kindProvider(this::kindProvider)

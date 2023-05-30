@@ -53,6 +53,7 @@ public class SelectComponent implements IComponent {
         String iconURL = selectDescription.getIconURLProvider().apply(variableManager);
         List<?> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);
         String value = selectDescription.getValueProvider().apply(variableManager);
+        var selectStyle = selectDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(selectDescription, variableManager)));
 
@@ -64,18 +65,21 @@ public class SelectComponent implements IComponent {
             String optionId = selectDescription.getOptionIdProvider().apply(optionVariableManager);
             String optionLabel = selectDescription.getOptionLabelProvider().apply(optionVariableManager);
 
-            // @formatter:off
-            SelectOption option = SelectOption.newSelectOption(optionId)
-                    .label(optionLabel)
-                    .build();
-            // @formatter:on
+            var selectOptionBuilder = SelectOption.newSelectOption(optionId)
+                    .label(optionLabel);
+            if (selectStyle != null && selectStyle.isShowIcon()) {
+                String optionIconUrl = selectDescription.getOptionIconURLProvider().apply(optionVariableManager);
+                if (optionIconUrl != null && !optionIconUrl.isBlank()) {
+                    selectOptionBuilder.iconURL(optionIconUrl);
+                }
+            }
+            SelectOption option = selectOptionBuilder.build();
 
             options.add(option);
         }
         Function<String, IStatus> specializedHandler = newValue -> {
             return selectDescription.getNewValueHandler().apply(variableManager, newValue);
         };
-        var selectStyle = selectDescription.getStyleProvider().apply(variableManager);
 
         // @formatter:off
         Builder selectElementPropsBuilder = SelectElementProps.newSelectElementProps(id)

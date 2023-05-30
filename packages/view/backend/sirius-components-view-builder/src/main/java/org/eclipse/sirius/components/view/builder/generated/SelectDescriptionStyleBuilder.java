@@ -105,6 +105,15 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setForegroundColor(value);
         return this;
     }
+    /**
+     * Setter for ShowIcon.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder showIcon(java.lang.Boolean value) {
+        this.getSelectDescriptionStyle().setShowIcon(value);
+        return this;
+    }
 
 }
 
