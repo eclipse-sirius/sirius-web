@@ -53,6 +53,8 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * Width</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#isShowIcon <em>Show
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getLabelIcon <em>Label
+ * Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -267,6 +269,26 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected boolean showIcon = SHOW_ICON_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_ICON_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected String labelIcon = LABEL_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -563,6 +585,29 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @generated
      */
     @Override
+    public String getLabelIcon() {
+        return this.labelIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelIcon(String newLabelIcon) {
+        String oldLabelIcon = this.labelIcon;
+        this.labelIcon = newLabelIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON, oldLabelIcon, this.labelIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__COLOR:
@@ -589,6 +634,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return this.getEdgeWidth();
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
                 return this.isShowIcon();
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
+                return this.getLabelIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -633,6 +680,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
+                return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
+                this.setLabelIcon((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -679,6 +729,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
+                this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -713,6 +766,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
+                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
         }
         return super.eIsSet(featureID);
     }
@@ -760,6 +815,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.EDGE_STYLE__EDGE_WIDTH;
                 case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
                     return DiagramPackage.EDGE_STYLE__SHOW_ICON;
+                case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
+                    return DiagramPackage.EDGE_STYLE__LABEL_ICON;
                 default:
                     return -1;
             }
@@ -810,6 +867,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_WIDTH;
                 case DiagramPackage.EDGE_STYLE__SHOW_ICON:
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON;
+                case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+                    return DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON;
                 default:
                     return -1;
             }
@@ -848,6 +907,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         result.append(this.edgeWidth);
         result.append(", showIcon: ");
         result.append(this.showIcon);
+        result.append(", labelIcon: ");
+        result.append(this.labelIcon);
         result.append(')');
         return result.toString();
     }

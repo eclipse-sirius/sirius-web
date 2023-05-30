@@ -169,5 +169,15 @@ public class IconLabelNodeStyleDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelIcon.
+     *
+     * @generated
+     */
+    public IconLabelNodeStyleDescriptionBuilder labelIcon(java.lang.String value) {
+        this.getIconLabelNodeStyleDescription().setLabelIcon(value);
+        return this;
+    }
+
 }
 

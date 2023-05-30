@@ -57,6 +57,8 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * <em>Height Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.IconLabelNodeStyleDescriptionImpl#isShowIcon <em>Show
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.IconLabelNodeStyleDescriptionImpl#getLabelIcon <em>Label
+ * Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -301,6 +303,26 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @ordered
      */
     protected boolean showIcon = SHOW_ICON_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_ICON_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected String labelIcon = LABEL_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -662,6 +684,29 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
      * @generated
      */
     @Override
+    public String getLabelIcon() {
+        return this.labelIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelIcon(String newLabelIcon) {
+        String oldLabelIcon = this.labelIcon;
+        this.labelIcon = newLabelIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON, oldLabelIcon, this.labelIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__FONT_SIZE:
@@ -694,6 +739,8 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 return this.getHeightComputationExpression();
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.isShowIcon();
+            case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                return this.getLabelIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -744,6 +791,9 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 return;
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
+                return;
+            case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                this.setLabelIcon((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -796,6 +846,9 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
+            case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -834,6 +887,8 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                 return HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.heightComputationExpression != null : !HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.heightComputationExpression);
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
         }
         return super.eIsSet(featureID);
     }
@@ -951,6 +1006,8 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
         result.append(this.heightComputationExpression);
         result.append(", showIcon: ");
         result.append(this.showIcon);
+        result.append(", labelIcon: ");
+        result.append(this.labelIcon);
         result.append(')');
         return result.toString();
     }

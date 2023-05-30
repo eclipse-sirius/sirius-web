@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getEdgeWidth <em>Edge Width</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isShowIcon <em>Show Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getLabelIcon <em>Label Icon</em>}</li>
  * </ul>
  *
  * @generated
@@ -245,6 +246,26 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * @ordered
      */
     protected boolean showIcon = SHOW_ICON_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_ICON_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected String labelIcon = LABEL_ICON_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -501,6 +522,29 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * @generated
      */
     @Override
+    public String getLabelIcon() {
+        return this.labelIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelIcon(String newLabelIcon) {
+        String oldLabelIcon = this.labelIcon;
+        this.labelIcon = newLabelIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__LABEL_ICON, oldLabelIcon, this.labelIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.EDGE_STYLE__FONT_SIZE:
@@ -523,6 +567,8 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return this.getEdgeWidth();
             case DiagramPackage.EDGE_STYLE__SHOW_ICON:
                 return this.isShowIcon();
+            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+                return this.getLabelIcon();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -564,6 +610,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return;
             case DiagramPackage.EDGE_STYLE__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
+                return;
+            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+                this.setLabelIcon((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -607,6 +656,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             case DiagramPackage.EDGE_STYLE__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
+            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+                this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -639,6 +691,8 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
                 return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
             case DiagramPackage.EDGE_STYLE__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
         }
         return super.eIsSet(featureID);
     }
@@ -726,6 +780,8 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         result.append(this.edgeWidth);
         result.append(", showIcon: ");
         result.append(this.showIcon);
+        result.append(", labelIcon: ");
+        result.append(this.labelIcon);
         result.append(')');
         return result.toString();
     }

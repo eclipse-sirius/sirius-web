@@ -18,38 +18,29 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
-import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
-import org.eclipse.sirius.components.forms.description.TextareaDescription;
-import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -66,11 +57,11 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesConfigurerService;
+import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
+import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -82,29 +73,20 @@ import org.springframework.stereotype.Component;
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
     private static final String EMPTY = "";
-
-    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
-
+    private static final String CUSTOM = "/custom/%s";
     private final List<IParametricSVGImageRegistry> parametricSVGImageRegistries;
-
     private final ICustomImageMetadataSearchService customImageSearchService;
-
-    private final IValidationService validationService;
-
-    private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
-
+    private final IPropertiesConfigurerService propertiesConfigurerService;
+    private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
     private final IObjectService objectService;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-    public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, IValidationService validationService,
-            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, AQLTextfieldCustomizer aqlTextfieldCustomizer, IObjectService objectService) {
-        this.validationService = Objects.requireNonNull(validationService);
+    public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService,
+            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
-        this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
+        this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
+        this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
 
     @Override
@@ -118,17 +100,17 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         String id = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString();
 
         List<AbstractControlDescription> controls = new ArrayList<>();
-        controls.add(this.createShapeSelectionField(DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
+        controls.add(this.createShapeSelectionField());
         controls.add(this.createShapePreviewField());
         controls.addAll(this.getGeneralControlDescription(NodeType.NODE_IMAGE));
 
-        GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
+        GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
                     .filter(ImageNodeStyleDescription.class::isInstance)
                     .isPresent();
 
-        return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
+        return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
     private PageDescription getIconLabelNodeStyleProperties() {
@@ -136,13 +118,13 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         List<AbstractControlDescription> controls = this.getGeneralControlDescription(NodeType.NODE_ICON_LABEL);
 
-        GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
+        GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
                 .filter(IconLabelNodeStyleDescription.class::isInstance)
                 .isPresent();
 
-        return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
+        return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
     private PageDescription getRectangularNodeStyleProperties() {
@@ -150,53 +132,58 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         String id = UUID.nameUUIDFromBytes("rectangularnodestyle".getBytes()).toString();
 
         List<AbstractControlDescription> controls = new ArrayList<>();
-        controls.add(this.createCheckbox("nodestyle.isWithHeader", "With Header",
-                style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
-                (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
-                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
+        controls.add(this.propertiesWidgetCreationService.createCheckbox("nodestyle.isWithHeader", "With Header",
+            style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
+            (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
+                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER, Optional.empty()));
+
         controls.addAll(this.getGeneralControlDescription(NodeType.NODE_RECTANGLE));
 
-        GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
+        GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
                 .filter(RectangularNodeStyleDescription.class::isInstance)
                 .isPresent();
 
-        return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
+        return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
     private List<AbstractControlDescription> getGeneralControlDescription(String nodeType) {
         List<AbstractControlDescription> controls = new ArrayList<>();
 
-        var widthExpression = this.createExpressionField("nodestyle.widthExpression", "Width Expression",
+        var widthExpression = this.propertiesWidgetCreationService.createExpressionField("nodestyle.widthExpression", "Width Expression",
                 style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
                 (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
                 DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION);
         controls.add(widthExpression);
 
-        var heightExpression = this.createExpressionField("nodestyle.heightExpression", "Height Expression",
-                                   style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
-                                   (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
-                                   DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
+        var heightExpression = this.propertiesWidgetCreationService.createExpressionField("nodestyle.heightExpression", "Height Expression",
+               style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
+               (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
+               DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
         controls.add(heightExpression);
 
-        var showIcon = this.createCheckbox("nodestyle.showIcon", "Show Icon",
-                            style -> ((NodeStyleDescription) style).isShowIcon(),
-                            (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
-                            DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON);
+        var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon", "Show Icon",
+                style -> ((NodeStyleDescription) style).isShowIcon(),
+                (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON,
+                Optional.of(variableManager -> "Show an icon near the label, use the default one if no custom icon is set."));
         controls.add(showIcon);
 
-        var labelColor = this.createUserColorReferenceWidget("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR);
+        controls.add(this.createIconSelectionField());
+
+        Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
+        var labelColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR, colorOptionsProvider);
         controls.add(labelColor);
 
         if (!Objects.equals(nodeType, NodeType.NODE_IMAGE)) {
-            var color = this.createUserColorReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR);
+            var color = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
             controls.add(color);
         }
-        var borderColor = this.createUserColorReferenceWidget("nodestyle.borderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR);
+        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.borderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
         controls.add(borderColor);
 
-        var bordeRadius = this.createTextField("nodestyle.borderRadius", "Border Radius",
+        var borderRadius = this.propertiesWidgetCreationService.createTextField("nodestyle.borderRadius", "Border Radius",
                              style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
                              (style, newBorderRadius) -> {
                                  try {
@@ -206,9 +193,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                  }
                              },
                              DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS);
-        controls.add(bordeRadius);
+        controls.add(borderRadius);
 
-        var borderSize = this.createTextField("nodestyle.borderSize", "Border Size",
+        var borderSize = this.propertiesWidgetCreationService.createTextField("nodestyle.borderSize", "Border Size",
                              style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
                              (style, newBorderSize) -> {
                                  try {
@@ -220,10 +207,10 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                              DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE);
         controls.add(borderSize);
 
-        var borderStyle = this.createBorderLineStyleSelectionField("nodestyle.borderstyle", DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE);
+        var borderStyle = this.createBorderLineStyleSelectionField();
         controls.add(borderStyle);
 
-        var fontSize = this.createTextField("nodestyle.fontSize", "Font Size",
+        var fontSize = this.propertiesWidgetCreationService.createTextField("nodestyle.fontSize", "Font Size",
                              style -> String.valueOf(((LabelStyle) style).getFontSize()),
                              (style, newColor) -> {
                                  try {
@@ -235,129 +222,37 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                              ViewPackage.Literals.LABEL_STYLE__FONT_SIZE);
         controls.add(fontSize);
 
-        var italic = this.createCheckbox("nodestyle.italic", "Italic",
-                            style -> ((LabelStyle) style).isItalic(),
-                            (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
-                            ViewPackage.Literals.LABEL_STYLE__ITALIC);
+        var italic = this.propertiesWidgetCreationService.createCheckbox("nodestyle.italic", "Italic",
+                style -> ((LabelStyle) style).isItalic(),
+                (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
+                ViewPackage.Literals.LABEL_STYLE__ITALIC, Optional.empty());
         controls.add(italic);
 
-        var bold = this.createCheckbox("nodestyle.bold", "Bold",
-                            style -> ((LabelStyle) style).isBold(),
-                            (style, newBold) -> ((LabelStyle) style).setBold(newBold),
-                            ViewPackage.Literals.LABEL_STYLE__BOLD);
+        var bold = this.propertiesWidgetCreationService.createCheckbox("nodestyle.bold", "Bold",
+                style -> ((LabelStyle) style).isBold(),
+                (style, newBold) -> ((LabelStyle) style).setBold(newBold),
+                ViewPackage.Literals.LABEL_STYLE__BOLD, Optional.empty());
         controls.add(bold);
 
-        var underline = this.createCheckbox("nodestyle.underline", "Underline",
-                            style -> ((LabelStyle) style).isUnderline(),
-                            (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
-                            ViewPackage.Literals.LABEL_STYLE__UNDERLINE);
+        var underline = this.propertiesWidgetCreationService.createCheckbox("nodestyle.underline", "Underline",
+                style -> ((LabelStyle) style).isUnderline(),
+                (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
+                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, Optional.empty());
         controls.add(underline);
 
-        var strikeThrough = this.createCheckbox("nodestyle.strikeThrough", "Strike Through",
-                            style -> ((LabelStyle) style).isStrikeThrough(),
-                            (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
-                            ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH);
+        var strikeThrough = this.propertiesWidgetCreationService.createCheckbox("nodestyle.strikeThrough", "Strike Through",
+                style -> ((LabelStyle) style).isStrikeThrough(),
+                (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
+                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, Optional.empty());
         controls.add(strikeThrough);
 
         return controls;
     }
 
-    private PageDescription createSimplePageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
-        return PageDescription.newPageDescription(id)
-                .idProvider(variableManager -> "page")
-                .labelProvider(variableManager -> "Properties")
-                .semanticElementsProvider(this.semanticElementsProvider)
-                .canCreatePredicate(canCreatePredicate)
-                .groupDescriptions(List.of(groupDescription))
-                .build();
-    }
-
-    private GroupDescription createSimpleGroupDescription(List<AbstractControlDescription> controls) {
-        return GroupDescription.newGroupDescription("group")
-                .idProvider(variableManager -> "group")
-                .labelProvider(variableManager -> "General")
-                .semanticElementsProvider(this.semanticElementsProvider)
-                .controlDescriptions(controls)
-                .build();
-    }
-
-    private TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
-        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
-            if (optionalDiagramMapping.isPresent()) {
-                writer.accept(optionalDiagramMapping.get(), newValue);
-                return new Success();
-            } else {
-                return new Failure("");
-            }
-        };
-
-        return TextfieldDescription.newTextfieldDescription(id)
-                .idProvider(variableManager -> id)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(variableManager -> title)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
-                .build();
-    }
-
-    private TextareaDescription createExpressionField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
-        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
-            if (optionalDiagramMapping.isPresent()) {
-                writer.accept(optionalDiagramMapping.get(), newValue);
-                return new Success();
-            } else {
-                return new Failure("");
-            }
-        };
-
-        return TextareaDescription.newTextareaDescription(id)
-                .idProvider(variableManager -> id)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(variableManager -> title)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                .completionProposalsProvider(this.aqlTextfieldCustomizer.getCompletionProposalsProvider())
-                .styleProvider(this.aqlTextfieldCustomizer.getStyleProvider())
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
-                .build();
-    }
-
-    private CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature) {
-        Function<VariableManager, Boolean> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(Boolean.FALSE);
-        BiFunction<VariableManager, Boolean, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
-            if (optionalDiagramMapping.isPresent()) {
-                writer.accept(optionalDiagramMapping.get(), newValue);
-                return new Success();
-            } else {
-                return new Failure("");
-            }
-        };
-        return CheckboxDescription.newCheckboxDescription(id)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .idProvider(variableManager -> id)
-                .labelProvider(variableManager -> title)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
-                .build();
-    }
-
-    private SelectDescription createBorderLineStyleSelectionField(String id, Object feature) {
-        return SelectDescription.newSelectDescription(id)
-                                .idProvider(variableManager -> id)
-                                .targetObjectIdProvider(this.semanticTargetIdProvider)
+    private SelectDescription createBorderLineStyleSelectionField() {
+        return SelectDescription.newSelectDescription("nodestyle.borderstyle")
+                                .idProvider(variableManager -> "nodestyle.borderstyle")
+                                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                                 .labelProvider(variableManager -> "Border Line Style")
                                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString).orElse(EMPTY))
                                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
@@ -376,59 +271,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                     }
                                     return new Failure("");
                                 })
-                                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                                .kindProvider(this::kindProvider)
-                                .messageProvider(this::messageProvider)
+                                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE))
+                                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                                 .build();
     }
 
-    private <T> ReferenceWidgetDescription createUserColorReferenceWidget(String id, String label, Object feature) {
-        return ReferenceWidgetDescription.newReferenceWidgetDescription(id)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .idProvider(variableManager -> id)
-                .labelProvider(variableManager -> label)
-                .optionsProvider(variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList())
-                .iconURLProvider(variableManager -> "")
-                .itemsProvider(variableManager -> this.getReferenceValue(variableManager, feature))
-                .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getId).orElse(""))
-                .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getKind).orElse(""))
-                .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getLabel).orElse(""))
-                .itemImageURLProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getImagePath).orElse(""))
-                .settingProvider(variableManager -> this.resolveSetting(variableManager, feature))
-                .styleProvider(variableManager -> null)
-                .ownerIdProvider(variableManager -> variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(""))
-                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
-                .build();
-    }
-
-    private Optional<Object> getItem(VariableManager variableManager) {
-        return variableManager.get(ReferenceWidgetComponent.ITEM_VARIABLE, Object.class);
-    }
-
-    private List<?> getReferenceValue(VariableManager variableManager, Object feature) {
-        List<?> value = List.of();
-        EStructuralFeature.Setting setting = this.resolveSetting(variableManager, feature);
-        if (setting != null) {
-            var rawValue = setting.get(true);
-            if (rawValue != null) {
-                value = List.of(rawValue);
-            } else {
-                value = List.of();
-            }
-        }
-        return value;
-    }
-
-    private EStructuralFeature.Setting resolveSetting(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        if (referenceOwner != null && feature instanceof EReference reference) {
-            return ((InternalEObject) referenceOwner).eSetting(reference);
-        } else {
-            return null;
-        }
-    }
 
     private Stream<UserColor> getColorsFromColorPalettesStream(VariableManager variableManager) {
         return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
@@ -449,10 +297,39 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .flatMap(EList::stream);
     }
 
-    private SelectDescription createShapeSelectionField(Object feature) {
+    private SelectDescription createIconSelectionField() {
+        return SelectDescription.newSelectDescription("nodestyle.iconLabelSelector")
+                .idProvider(variableManager -> "nodestyle.iconLabelSelector")
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
+                .labelProvider(variableManager -> "Custom Icon")
+                .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getLabelIcon).orElse(EMPTY))
+                .optionsProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                        .map(IEditingContext::getId)
+                        .map(this.customImageSearchService::getAvailableImages)
+                        .orElse(List.of())
+                )
+                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
+                        .map(customImageMetadataEntity -> String.format(CUSTOM, customImageMetadataEntity.getId().toString()))
+                        .orElse(EMPTY))
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
+                        .map(CustomImageMetadata::getLabel)
+                        .orElse(EMPTY))
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
+                        .map(customImageMetadataEntity -> String.format(CUSTOM, customImageMetadataEntity.getId().toString()))
+                        .orElse(EMPTY))
+                .newValueHandler(this.getIconLabelValueHandler())
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON))
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
+                .helpTextProvider(variableManager -> "Set a custom icon for the label, use in association with Show Icon property")
+                .build();
+    }
+
+    private SelectDescription createShapeSelectionField() {
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector")
                 .idProvider(variableManager -> "nodestyle.shapeSelector")
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Shape")
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(EMPTY))
                 .optionsProvider(variableManager -> {
@@ -477,29 +354,44 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
                 .newValueHandler(this.getNewShapeValueHandler())
-                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE))
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .build();
     }
 
     private ImageDescription createShapePreviewField() {
         return ImageDescription.newImageDescription("nodestyle.shapePreview")
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .idProvider(variableManager -> "nodestyle.shapePreview")
                 .labelProvider(variableManager -> "Shape Preview")
                 .urlProvider(variableManager -> {
                     var optionalShape = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape);
                     if (optionalShape.isPresent()) {
-                        return String.format("/custom/%s", optionalShape.get());
+                        return String.format(CUSTOM, optionalShape.get());
                     }
                     return "";
                 })
                 .maxWidthProvider(variableManager -> "300px")
                 .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(this::kindProvider)
-                .messageProvider(this::messageProvider)
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .build();
+    }
+
+    private BiFunction<VariableManager, String, IStatus> getIconLabelValueHandler() {
+        return (variableManager, newValue) -> {
+            var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyleDescription.class);
+            if (optionalNodeStyle.isPresent()) {
+                String newIcon = newValue;
+                if (newValue != null && newValue.isBlank()) {
+                    newIcon = null;
+                }
+                optionalNodeStyle.get().setLabelIcon(newIcon);
+                return new Success();
+            }
+            return new Failure("");
+        };
     }
 
     private BiFunction<VariableManager, String, IStatus> getNewShapeValueHandler() {
@@ -515,48 +407,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
             }
             return new Failure("");
         };
-    }
-
-    private Function<VariableManager, List<?>> getDiagnosticsProvider(Object feature) {
-        return variableManager -> {
-            var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
-
-            if (optionalSelf.isPresent()) {
-                EObject self = optionalSelf.get();
-                List<Object> diagnostics = this.validationService.validate(self, feature);
-                return diagnostics;
-            }
-
-            return List.of();
-        };
-    }
-
-    private String kindProvider(Object object) {
-        String kind = "Unknown";
-        if (object instanceof Diagnostic diagnostic) {
-            switch (diagnostic.getSeverity()) {
-                case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                    kind = "Error";
-                    break;
-                case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                    kind = "Warning";
-                    break;
-                case org.eclipse.emf.common.util.Diagnostic.INFO:
-                    kind = "Info";
-                    break;
-                default:
-                    kind = "Unknown";
-                    break;
-            }
-        }
-        return kind;
-    }
-
-    private String messageProvider(Object object) {
-        if (object instanceof Diagnostic diagnostic) {
-            return diagnostic.getMessage();
-        }
-        return "";
     }
 
 }

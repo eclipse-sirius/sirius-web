@@ -57,6 +57,8 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
  * <em>Height Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#isShowIcon <em>Show
  * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#getLabelIcon <em>Label
+ * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#isWithHeader <em>With
  * Header</em>}</li>
  * </ul>
@@ -303,6 +305,26 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @ordered
      */
     protected boolean showIcon = SHOW_ICON_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_ICON_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected String labelIcon = LABEL_ICON_EDEFAULT;
 
     /**
      * The default value of the '{@link #isWithHeader() <em>With Header</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -684,6 +706,29 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @generated
      */
     @Override
+    public String getLabelIcon() {
+        return this.labelIcon;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelIcon(String newLabelIcon) {
+        String oldLabelIcon = this.labelIcon;
+        this.labelIcon = newLabelIcon;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON, oldLabelIcon, this.labelIcon));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public boolean isWithHeader() {
         return this.withHeader;
     }
@@ -739,6 +784,8 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return this.getHeightComputationExpression();
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.isShowIcon();
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                return this.getLabelIcon();
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 return this.isWithHeader();
         }
@@ -791,6 +838,9 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return;
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
+                return;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                this.setLabelIcon((String) newValue);
                 return;
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 this.setWithHeader((Boolean) newValue);
@@ -846,6 +896,9 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                this.setLabelIcon(LABEL_ICON_EDEFAULT);
+                return;
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 this.setWithHeader(WITH_HEADER_EDEFAULT);
                 return;
@@ -887,6 +940,8 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.heightComputationExpression != null : !HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.heightComputationExpression);
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 return this.withHeader != WITH_HEADER_EDEFAULT;
         }
@@ -1006,6 +1061,8 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
         result.append(this.heightComputationExpression);
         result.append(", showIcon: ");
         result.append(this.showIcon);
+        result.append(", labelIcon: ");
+        result.append(this.labelIcon);
         result.append(", withHeader: ");
         result.append(this.withHeader);
         result.append(')');

@@ -73,7 +73,8 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
     private static final List<EClass> TYPES_WITH_CUSTOM_PROPERTIES = List.of(
             DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION,
-            DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION
+            DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION,
+            DiagramPackage.Literals.EDGE_STYLE
     );
 
     private final IObjectService objectService;

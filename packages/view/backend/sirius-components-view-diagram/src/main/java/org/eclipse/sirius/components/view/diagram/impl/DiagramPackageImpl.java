@@ -908,6 +908,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getNodeStyleDescription_LabelIcon() {
+        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getConditionalNodeStyle() {
         return this.conditionalNodeStyleEClass;
     }
@@ -1030,6 +1040,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EAttribute getEdgeStyle_ShowIcon() {
         return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getEdgeStyle_LabelIcon() {
+        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1709,6 +1729,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
         this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__SHOW_ICON);
+        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_ICON);
 
         this.conditionalNodeStyleEClass = this.createEClass(CONDITIONAL_NODE_STYLE);
         this.createEReference(this.conditionalNodeStyleEClass, CONDITIONAL_NODE_STYLE__STYLE);
@@ -1727,6 +1748,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__TARGET_ARROW_STYLE);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__EDGE_WIDTH);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__SHOW_ICON);
+        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LABEL_ICON);
 
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
@@ -1970,6 +1992,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeStyleDescription_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeStyleDescription_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getConditionalNodeStyle_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, ConditionalNodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -1996,6 +2020,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeStyle_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

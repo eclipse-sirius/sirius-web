@@ -151,5 +151,15 @@ public class ConditionalEdgeStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelIcon.
+     *
+     * @generated
+     */
+    public ConditionalEdgeStyleBuilder labelIcon(java.lang.String value) {
+        this.getConditionalEdgeStyle().setLabelIcon(value);
+        return this;
+    }
+
 }
 

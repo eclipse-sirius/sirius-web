@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getHeightComputationExpression <em>Height
  * Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#isShowIcon <em>Show Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getLabelIcon <em>Label Icon</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription()
@@ -127,5 +128,27 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
      * @generated
      */
     void setShowIcon(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Label Icon</em>' attribute.
+     * @see #setLabelIcon(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_LabelIcon()
+     * @model
+     * @generated
+     */
+    String getLabelIcon();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getLabelIcon
+     * <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Label Icon</em>' attribute.
+     * @see #getLabelIcon()
+     * @generated
+     */
+    void setLabelIcon(String value);
 
 } // NodeStyleDescription
