@@ -53,6 +53,7 @@ It will start by improving a bit performances since diagrams were persisted twic
 - https://github.com/eclipse-sirius/sirius-components/issues/1968[#1968] [sirius-web] Fix a regression introduced with the feature 1907, where for the papaya studio, colors are only searched in the first _ColorPalette_.
 - https://github.com/eclipse-sirius/sirius-components/issues/1991[#1991] [form] Fix an issue where widgets from different groups share the same ID.
 - https://github.com/eclipse-sirius/sirius-components/issues/1305[#1305] [diagram] Fix an issue where the default tools of the palette's tool sections where not updated.
+- https://github.com/eclipse-sirius/sirius-components/issues/2008[#2008] [view] Make edge tool more robust for applications which use a custom IViewRepresentationDescriptionSearchService.
 
 === New Features
 
