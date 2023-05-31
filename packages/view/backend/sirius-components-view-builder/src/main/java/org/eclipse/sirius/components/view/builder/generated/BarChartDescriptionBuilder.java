@@ -61,6 +61,16 @@ public class BarChartDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public BarChartDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getBarChartDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValuesExpression.
      *
      * @generated

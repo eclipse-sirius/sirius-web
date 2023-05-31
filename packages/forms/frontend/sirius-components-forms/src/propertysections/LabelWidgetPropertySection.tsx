@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,12 @@ const useStyle = makeStyles<Theme, LabelStyleProps>(() => ({
   },
 }));
 
-export const LabelWidgetPropertySection = ({ widget, subscribers }: LabelWidgetPropertySectionProps) => {
+export const LabelWidgetPropertySection = ({
+  editingContextId,
+  formId,
+  widget,
+  subscribers,
+}: LabelWidgetPropertySectionProps) => {
   const props: LabelStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -38,7 +43,12 @@ export const LabelWidgetPropertySection = ({ widget, subscribers }: LabelWidgetP
   const classes = useStyle(props);
   return (
     <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <Typography className={classes.style}>{widget.stringValue}</Typography>
     </div>
   );

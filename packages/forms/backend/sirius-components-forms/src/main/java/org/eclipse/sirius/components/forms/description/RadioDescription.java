@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,6 +130,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, RadioStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
@@ -196,6 +198,11 @@ public final class RadioDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public RadioDescription build() {
             RadioDescription radioDescription = new RadioDescription();
             radioDescription.id = Objects.requireNonNull(this.id);
@@ -211,6 +218,7 @@ public final class RadioDescription extends AbstractWidgetDescription {
             radioDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             radioDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             radioDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            radioDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return radioDescription;
         }
 

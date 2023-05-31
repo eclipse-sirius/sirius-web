@@ -292,6 +292,164 @@ exports[`render pie-chart widget with empty style 1`] = `
 </div>
 `;
 
+exports[`render pie-chart widget with help hint 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-26"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myPieChart
+      </h6>
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+        focusable="false"
+        style="margin-left: 8px; font-size: 16px;"
+        title=""
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+        />
+      </svg>
+      <div
+        class="makeStyles-subscribers-27"
+      />
+    </div>
+    <svg
+      height="300"
+      pointer-events="none"
+      style="max-width: 100%; height: auto; height: intrinsic;"
+      viewBox="-150,-150,300,300"
+      width="300"
+    >
+      <g
+        stroke=""
+        stroke-linejoin="round"
+        stroke-width="1"
+      >
+        <path
+          d="M9.184850993605149e-15,-150A150,150,0,0,1,142.65847744427302,-46.35254915624211L0,0Z"
+          fill="rgb(209, 60, 75)"
+        >
+          <title>
+            a
+10
+          </title>
+        </path>
+        <path
+          d="M142.65847744427302,-46.35254915624211A150,150,0,0,1,9.184850993605149e-15,150L0,0Z"
+          fill="rgb(254, 206, 126)"
+        >
+          <title>
+            b
+15
+          </title>
+        </path>
+        <path
+          d="M9.184850993605149e-15,150A150,150,0,0,1,-88.16778784387095,121.35254915624212L0,0Z"
+          fill="rgb(209, 236, 158)"
+        >
+          <title>
+            c
+5
+          </title>
+        </path>
+        <path
+          d="M-88.16778784387095,121.35254915624212A150,150,0,0,1,-2.7554552980815446e-14,-150L0,0Z"
+          fill="rgb(66, 136, 181)"
+        >
+          <title>
+            d
+20
+          </title>
+        </path>
+      </g>
+      <g
+        font-family="sans-serif"
+        font-size="14"
+        font-style="normal"
+        font-weight="normal"
+        text-anchor="middle"
+        text-decoration="none"
+      >
+        <text
+          transform="translate(70.53423027509677,-97.0820393249937)"
+        >
+          <tspan
+            font-weight="bold"
+            x="0"
+            y="0em"
+          >
+            a
+          </tspan>
+          <tspan
+            x="0"
+            y="1.1em"
+          >
+            10
+          </tspan>
+        </text>
+        <text
+          transform="translate(97.0820393249937,70.53423027509677)"
+        >
+          <tspan
+            font-weight="bold"
+            x="0"
+            y="0em"
+          >
+            b
+          </tspan>
+          <tspan
+            x="0"
+            y="1.1em"
+          >
+            15
+          </tspan>
+        </text>
+        <text
+          transform="translate(-37.08203932499368,114.12678195541844)"
+        >
+          <tspan
+            font-weight="bold"
+            x="0"
+            y="0em"
+          >
+            c
+          </tspan>
+          <tspan
+            x="0"
+            y="1.1em"
+          >
+            5
+          </tspan>
+        </text>
+        <text
+          transform="translate(-114.12678195541844,-37.08203932499367)"
+        >
+          <tspan
+            font-weight="bold"
+            x="0"
+            y="0em"
+          >
+            d
+          </tspan>
+          <tspan
+            x="0"
+            y="1.1em"
+          >
+            20
+          </tspan>
+        </text>
+      </g>
+    </svg>
+  </div>
+</div>
+`;
+
 exports[`render pie-chart widget with style 1`] = `
 <div>
   <div>
@@ -743,6 +901,306 @@ exports[`render the bar-chart widget with empty style 1`] = `
     </div>
     <div
       class="makeStyles-chart-21"
+    >
+      <svg
+        height="250"
+        pointer-events="none"
+        text-decoration="none"
+        viewBox="0,0,500,250"
+        width="500"
+      >
+        <g
+          fill="none"
+          font-family="sans-serif"
+          font-size="10"
+          style="font-size:12; font-style: normal; font-weight: normal"
+          text-anchor="end"
+          transform="translate(50,0)"
+        >
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(0,220.5)"
+          >
+            <line
+              stroke="currentColor"
+              x2="-6"
+            />
+            <line
+              stroke="currentColor"
+              stroke-opacity="0.1"
+              x2="450"
+            />
+            <text
+              dy="0.32em"
+              fill="currentColor"
+              x="-9"
+            >
+              0
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(0,173)"
+          >
+            <line
+              stroke="currentColor"
+              x2="-6"
+            />
+            <line
+              stroke="currentColor"
+              stroke-opacity="0.1"
+              x2="450"
+            />
+            <text
+              dy="0.32em"
+              fill="currentColor"
+              x="-9"
+            >
+              5
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(0,125.5)"
+          >
+            <line
+              stroke="currentColor"
+              x2="-6"
+            />
+            <line
+              stroke="currentColor"
+              stroke-opacity="0.1"
+              x2="450"
+            />
+            <text
+              dy="0.32em"
+              fill="currentColor"
+              x="-9"
+            >
+              10
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(0,78)"
+          >
+            <line
+              stroke="currentColor"
+              x2="-6"
+            />
+            <line
+              stroke="currentColor"
+              stroke-opacity="0.1"
+              x2="450"
+            />
+            <text
+              dy="0.32em"
+              fill="currentColor"
+              x="-9"
+            >
+              15
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(0,30.5)"
+          >
+            <line
+              stroke="currentColor"
+              x2="-6"
+            />
+            <line
+              stroke="currentColor"
+              stroke-opacity="0.1"
+              x2="450"
+            />
+            <text
+              dy="0.32em"
+              fill="currentColor"
+              x="-9"
+            >
+              20
+            </text>
+          </g>
+          <text
+            fill="currentColor"
+            text-anchor="start"
+            x="-50"
+            y="10"
+          >
+            values
+          </text>
+        </g>
+        <g
+          fill="steelblue"
+        >
+          <rect
+            height="95"
+            width="98.78048780487806"
+            x="60.975609756097555"
+            y="125"
+          >
+            <title>
+              a
+10.0
+            </title>
+          </rect>
+          <rect
+            height="142.5"
+            width="98.78048780487806"
+            x="170.7317073170732"
+            y="77.5"
+          >
+            <title>
+              b
+15.0
+            </title>
+          </rect>
+          <rect
+            height="47.5"
+            width="98.78048780487806"
+            x="280.4878048780488"
+            y="172.5"
+          >
+            <title>
+              c
+5.0
+            </title>
+          </rect>
+          <rect
+            height="190"
+            width="98.78048780487806"
+            x="390.2439024390244"
+            y="30"
+          >
+            <title>
+              d
+20.0
+            </title>
+          </rect>
+        </g>
+        <g
+          fill="none"
+          font-family="sans-serif"
+          font-size="10"
+          style="font-size:12; font-style: normal; font-weight: normal"
+          text-anchor="middle"
+          transform="translate(0,220)"
+        >
+          <path
+            class="domain"
+            d="M50.5,0.5H500.5"
+            stroke="currentColor"
+          />
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(110.3658536585366,0)"
+          >
+            <line
+              stroke="currentColor"
+              y2="6"
+            />
+            <text
+              dy="0.71em"
+              fill="currentColor"
+              y="9"
+            >
+              a
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(220.12195121951223,0)"
+          >
+            <line
+              stroke="currentColor"
+              y2="6"
+            />
+            <text
+              dy="0.71em"
+              fill="currentColor"
+              y="9"
+            >
+              b
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(329.8780487804878,0)"
+          >
+            <line
+              stroke="currentColor"
+              y2="6"
+            />
+            <text
+              dy="0.71em"
+              fill="currentColor"
+              y="9"
+            >
+              c
+            </text>
+          </g>
+          <g
+            class="tick"
+            opacity="1"
+            transform="translate(439.6341463414634,0)"
+          >
+            <line
+              stroke="currentColor"
+              y2="6"
+            />
+            <text
+              dy="0.71em"
+              fill="currentColor"
+              y="9"
+            >
+              d
+            </text>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`render the bar-chart widget with help hint 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-30"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myBarChart
+      </h6>
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+        focusable="false"
+        style="margin-left: 8px; font-size: 16px;"
+        title=""
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+        />
+      </svg>
+      <div
+        class="makeStyles-subscribers-31"
+      />
+    </div>
+    <div
+      class="makeStyles-chart-29"
     >
       <svg
         height="250"

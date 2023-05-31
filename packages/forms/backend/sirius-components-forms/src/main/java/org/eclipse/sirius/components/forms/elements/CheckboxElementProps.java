@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
@@ -37,6 +38,8 @@ public final class CheckboxElementProps implements IProps {
     private String label;
 
     private String iconURL;
+
+    private Supplier<String> helpTextProvider;
 
     private boolean value;
 
@@ -60,6 +63,10 @@ public final class CheckboxElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public boolean isValue() {
@@ -101,6 +108,8 @@ public final class CheckboxElementProps implements IProps {
         private String label;
 
         private String iconURL;
+
+        private Supplier<String> helpTextProvider;
 
         private boolean value;
 
@@ -144,6 +153,11 @@ public final class CheckboxElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public CheckboxElementProps build() {
             CheckboxElementProps checkboxElementProps = new CheckboxElementProps();
             checkboxElementProps.id = Objects.requireNonNull(this.id);
@@ -153,6 +167,7 @@ public final class CheckboxElementProps implements IProps {
             checkboxElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkboxElementProps.style = this.style; // Optional on purpose
             checkboxElementProps.children = Objects.requireNonNull(this.children);
+            checkboxElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return checkboxElementProps;
         }
     }

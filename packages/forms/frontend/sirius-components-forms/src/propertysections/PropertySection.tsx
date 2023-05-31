@@ -148,7 +148,9 @@ export const PropertySection = ({
       />
     );
   } else if (isLink(widget)) {
-    propertySection = <LinkPropertySection widget={widget} key={widget.id} />;
+    propertySection = (
+      <LinkPropertySection editingContextId={editingContextId} formId={formId} widget={widget} key={widget.id} />
+    );
   } else if (isButton(widget)) {
     propertySection = (
       <ButtonPropertySection
@@ -161,9 +163,25 @@ export const PropertySection = ({
       />
     );
   } else if (isLabelWidget(widget)) {
-    propertySection = <LabelWidgetPropertySection widget={widget} subscribers={subscribers} key={widget.id} />;
+    propertySection = (
+      <LabelWidgetPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        key={widget.id}
+      />
+    );
   } else if (isChartWidget(widget)) {
-    propertySection = <ChartWidgetPropertySection widget={widget} subscribers={subscribers} key={widget.id} />;
+    propertySection = (
+      <ChartWidgetPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        key={widget.id}
+      />
+    );
   } else if (isFlexboxContainer(widget)) {
     propertySection = (
       <FlexboxContainerPropertySection
@@ -178,10 +196,19 @@ export const PropertySection = ({
     );
   } else if (isTree(widget)) {
     propertySection = (
-      <TreePropertySection widget={widget} key={widget.id} subscribers={subscribers} setSelection={setSelection} />
+      <TreePropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        subscribers={subscribers}
+        setSelection={setSelection}
+      />
     );
   } else if (isImage(widget)) {
-    propertySection = <ImagePropertySection widget={widget} key={widget.id} />;
+    propertySection = (
+      <ImagePropertySection editingContextId={editingContextId} formId={formId} widget={widget} key={widget.id} />
+    );
   } else if (isRichText(widget)) {
     propertySection = (
       <RichTextPropertySection

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.forms;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.charts.IChart;
@@ -64,6 +65,8 @@ public final class ChartWidget extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -88,13 +91,19 @@ public final class ChartWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public ChartWidget build() {
             ChartWidget chartWidget = new ChartWidget();
             chartWidget.id = Objects.requireNonNull(this.id);
             chartWidget.label = Objects.requireNonNull(this.label);
-            chartWidget.iconURL = this.iconURL;
+            chartWidget.iconURL = this.iconURL; // Optional on purpose
             chartWidget.chart = Objects.requireNonNull(this.chart);
             chartWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
+            chartWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return chartWidget;
         }
     }

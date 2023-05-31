@@ -16,7 +16,7 @@ import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
-import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
+import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -53,6 +53,7 @@ const defaultListItems: GQLListItem[] = [
 const defaultList: GQLList = {
   label: 'myList',
   iconURL: null,
+  hasHelpText: false,
   items: defaultListItems,
   style: null,
   __typename: 'List',
@@ -63,6 +64,7 @@ const defaultList: GQLList = {
 const defaultListWithStyle: GQLList = {
   label: 'myList',
   iconURL: null,
+  hasHelpText: false,
   items: defaultListItems,
   style: {
     color: 'RebeccaPurple',
@@ -180,4 +182,22 @@ test('should the click event sent on item click', async () => {
       expect(container).toMatchSnapshot();
     });
   });
+});
+
+test('render list widget with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ListPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={{ ...defaultList, hasHelpText: true }}
+          subscribers={[]}
+          readOnly={false}
+          setSelection={() => {}}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
 });

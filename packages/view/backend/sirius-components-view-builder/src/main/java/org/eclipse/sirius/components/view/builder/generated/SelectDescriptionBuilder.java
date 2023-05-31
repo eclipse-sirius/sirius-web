@@ -61,6 +61,16 @@ public class SelectDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public SelectDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getSelectDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

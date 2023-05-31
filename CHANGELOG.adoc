@@ -5,12 +5,13 @@
 === Shapes
 
 - Add disable / enable concept for widgets
-- Add support for Help Expressions in Form widgets
 - Add new custom widget to edit single and multi-valued references
+- Add support for Help Expressions in Form widgets
 
 === Architectural decision records
 
 - [ADR-103] Improves the existing feedback messages capability
+- [ADR-104] Add support for Help Expressions in Form widgets
 
 === Breaking changes
 
@@ -44,7 +45,11 @@ image:doc/screenshots/feedbackMessages.png[Feedback messages,30%,30%]
 There is an example of the `IFeedbackMessageService` interface usage in `DomainAttributeServices`.
 Note that in the end, the message list will be the only way to return info in payload, the single message will be removed.
 - https://github.com/eclipse-sirius/sirius-components/issues/2010[#2010] [diagram] Add a palette on node with the alternate diagram rendering.
-
+- https://github.com/eclipse-sirius/sirius-components/issues/1988[#1988] All Form widgets can now define (if relevant) a dynamically computed "help text".
+Widgets which define such a help text have a new "?" icon next to their labels; the actual help text is accessible as a tooltip on this icon.
+For View-based widgets, this materializes as an AQL `helpExpression`.
+The help text can include multiple lines (separated by `\n`), but no text formatting.
+:image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
 
 == v2023.6.0
 

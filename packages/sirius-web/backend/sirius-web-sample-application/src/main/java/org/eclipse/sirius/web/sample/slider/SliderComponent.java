@@ -62,6 +62,9 @@ public class SliderComponent implements IComponent {
         if (iconURL != null) {
             sliderElementPropsBuilder.iconURL(iconURL);
         }
+        if (sliderDescription.getHelpTextProvider() != null) {
+            sliderElementPropsBuilder.helpTextProvider(() -> sliderDescription.getHelpTextProvider().apply(variableManager));
+        }
 
         SliderElementProps sliderElementProps = sliderElementPropsBuilder.build();
 

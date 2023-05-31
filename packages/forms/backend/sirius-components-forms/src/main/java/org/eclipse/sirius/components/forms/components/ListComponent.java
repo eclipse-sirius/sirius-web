@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021, 2022 Obeo.
+ * Copyright (c) 2019, 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,6 +107,10 @@ public class ListComponent implements IComponent {
         if (style != null) {
             listElementPropsBuilder.style(style);
         }
+        if (listDescription.getHelpTextProvider() != null) {
+            listElementPropsBuilder.helpTextProvider(() -> listDescription.getHelpTextProvider().apply(variableManager));
+        }
+
         return new Element(ListElementProps.TYPE, listElementPropsBuilder.build());
     }
 

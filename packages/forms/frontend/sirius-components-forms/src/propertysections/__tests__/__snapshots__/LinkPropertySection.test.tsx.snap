@@ -2,9 +2,11 @@
 
 exports[`render label widget 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySectionLabel-2"
+  >
     <a
-      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-1 makeStyles-style-2 MuiTypography-colorPrimary"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-1 makeStyles-style-3 MuiTypography-colorPrimary"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
@@ -16,11 +18,43 @@ exports[`render label widget 1`] = `
 </div>
 `;
 
+exports[`render label widget with help hint 1`] = `
+<div>
+  <div
+    class="makeStyles-propertySectionLabel-8"
+  >
+    <a
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-7 makeStyles-style-9 MuiTypography-colorPrimary"
+      href="the/url/value"
+      id="labelId"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      myLabel
+    </a>
+    <svg
+      aria-hidden="true"
+      class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+      focusable="false"
+      style="margin-left: 8px; font-size: 16px;"
+      title=""
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
 exports[`render label widget with style 1`] = `
 <div>
-  <div>
+  <div
+    class="makeStyles-propertySectionLabel-5"
+  >
     <a
-      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-3 makeStyles-style-4 MuiTypography-colorPrimary"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-style-4 makeStyles-style-6 MuiTypography-colorPrimary"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"

@@ -26,6 +26,7 @@ const defaultSelect: GQLSelect = {
   id: 'selectId',
   label: 'SelectLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   value: '',
   options: [],
@@ -37,6 +38,7 @@ const selectWithStyle: GQLSelect = {
   id: 'selectId',
   label: 'SelectLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   value: '',
   options: [],
@@ -56,6 +58,7 @@ const selectWithEmptyStyle: GQLSelect = {
   id: 'selectId',
   label: 'SelectLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   value: '',
   options: [],
@@ -123,6 +126,23 @@ test('should render the select with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={selectWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the select with help hint', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <SelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={{ ...defaultSelect, hasHelpText: true }}
           subscribers={[]}
           readOnly={false}
         />

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
@@ -39,6 +40,8 @@ public final class MultiSelectElementProps implements IProps {
     private String label;
 
     private String iconURL;
+
+    private Supplier<String> helpTextProvider;
 
     private List<SelectOption> options;
 
@@ -64,6 +67,10 @@ public final class MultiSelectElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public List<SelectOption> getOptions() {
@@ -110,6 +117,8 @@ public final class MultiSelectElementProps implements IProps {
         private String label;
 
         private String iconURL;
+
+        private Supplier<String> helpTextProvider;
 
         private List<SelectOption> options;
 
@@ -160,6 +169,11 @@ public final class MultiSelectElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public MultiSelectElementProps build() {
             MultiSelectElementProps multiSelectElementProps = new MultiSelectElementProps();
             multiSelectElementProps.id = Objects.requireNonNull(this.id);
@@ -170,6 +184,7 @@ public final class MultiSelectElementProps implements IProps {
             multiSelectElementProps.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);
             multiSelectElementProps.style = this.style; // Optional on purpose
             multiSelectElementProps.children = Objects.requireNonNull(this.children);
+            multiSelectElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return multiSelectElementProps;
         }
     }

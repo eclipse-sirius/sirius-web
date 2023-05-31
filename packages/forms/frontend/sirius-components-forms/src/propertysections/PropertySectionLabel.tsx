@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { HelpTooltip } from './HelpTooltip';
 import { PropertySectionLabelProps } from './PropertySectionLabel.types';
 
 const usePropertySectionLabelStyles = makeStyles((theme) => ({
@@ -39,11 +40,14 @@ const usePropertySectionLabelStyles = makeStyles((theme) => ({
   },
 }));
 
-export const PropertySectionLabel = ({ label, subscribers }: PropertySectionLabelProps) => {
+export const PropertySectionLabel = ({ editingContextId, formId, widget, subscribers }: PropertySectionLabelProps) => {
   const classes = usePropertySectionLabelStyles();
   return (
     <div className={classes.propertySectionLabel}>
-      <Typography variant="subtitle2">{label}</Typography>
+      <Typography variant="subtitle2">{widget.label}</Typography>
+      {widget.hasHelpText ? (
+        <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
+      ) : null}
       <div className={classes.subscribers}>
         {subscribers.map((subscriber) => (
           <Tooltip title={subscriber.username} arrow key={subscriber.username}>

@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import {
   CheckboxPropertySectionProps,
@@ -162,7 +162,12 @@ export const CheckboxPropertySection = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <FormGroup row>
         <Checkbox
           name={widget.label}

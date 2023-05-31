@@ -103,8 +103,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new TextfieldStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return TextfieldDescription.newTextfieldDescription(UUID.randomUUID().toString())
+        TextfieldDescription.Builder builder = TextfieldDescription.newTextfieldDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewTextfieldDescription, "Textfield"))
                 .valueProvider(vm -> "")
@@ -112,9 +111,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewTextfieldDescription.getHelpExpression() != null && !viewTextfieldDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewTextfieldDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -131,8 +132,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new CheckboxStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return CheckboxDescription.newCheckboxDescription(UUID.randomUUID().toString())
+        CheckboxDescription.Builder builder = CheckboxDescription.newCheckboxDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewCheckboxDescription, "Checkbox"))
                 .valueProvider(vm -> true)
@@ -140,9 +140,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewCheckboxDescription.getHelpExpression() != null && !viewCheckboxDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewCheckboxDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -159,8 +161,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new SelectStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return SelectDescription.newSelectDescription(UUID.randomUUID().toString())
+        SelectDescription.Builder builder = SelectDescription.newSelectDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewSelectDescription, "Select"))
                 .valueProvider(vm -> "")
@@ -171,9 +172,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewSelectDescription.getHelpExpression() != null && !viewSelectDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewSelectDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -190,8 +193,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new TextareaStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return TextareaDescription.newTextareaDescription(UUID.randomUUID().toString())
+        TextareaDescription.Builder builder = TextareaDescription.newTextareaDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewTextareaDescription, "Textarea"))
                 .valueProvider(vm -> "")
@@ -199,9 +201,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewTextareaDescription.getHelpExpression() != null && !viewTextareaDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewTextareaDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -218,8 +222,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new MultiSelectStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return MultiSelectDescription.newMultiSelectDescription(UUID.randomUUID().toString())
+        MultiSelectDescription.Builder builder = MultiSelectDescription.newMultiSelectDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewMultiSelectDescription, "MultiSelect"))
                 .valuesProvider(vm -> List.of())
@@ -230,9 +233,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewMultiSelectDescription.getHelpExpression() != null && !viewMultiSelectDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewMultiSelectDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -249,8 +254,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new RadioStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return RadioDescription.newRadioDescription(UUID.randomUUID().toString())
+        RadioDescription.Builder builder = RadioDescription.newRadioDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewRadioDescription, "Radio"))
                 .optionIdProvider(vm -> "")
@@ -261,9 +265,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewRadioDescription.getHelpExpression() != null && !viewRadioDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewRadioDescription));
+        }
+        return builder.build();
 
     }
 
@@ -280,17 +286,18 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
 
         });
 
-        // @formatter:off
-        return FlexboxContainerDescription.newFlexboxContainerDescription(UUID.randomUUID().toString())
+        FlexboxContainerDescription.Builder builder = FlexboxContainerDescription.newFlexboxContainerDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewFlexboxContainerDescription, "FlexboxContainer"))
                 .flexDirection(flexDirection)
                 .children(children)
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (viewFlexboxContainerDescription.getHelpExpression() != null && !viewFlexboxContainerDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewFlexboxContainerDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -307,8 +314,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new ButtonStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return ButtonDescription.newButtonDescription(UUID.randomUUID().toString())
+        ButtonDescription.Builder builder = ButtonDescription.newButtonDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewButtonDescription, "Button"))
                 .buttonLabelProvider(vm -> viewButtonDescription.getButtonLabelExpression())
@@ -317,9 +323,11 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewButtonDescription.getHelpExpression() != null && !viewButtonDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewButtonDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -336,17 +344,18 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new LabelStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return LabelDescription.newLabelDescription(UUID.randomUUID().toString())
+        LabelDescription.Builder builder = LabelDescription.newLabelDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewLabelDescription, "Label"))
                 .valueProvider(vm -> "")
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewLabelDescription.getHelpExpression() != null && !viewLabelDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewLabelDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -363,17 +372,18 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new LinkStyleProvider(style).build();
         };
 
-        // @formatter:off
-        return LinkDescription.newLinkDescription(UUID.randomUUID().toString())
+        LinkDescription.Builder builder = LinkDescription.newLinkDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewLinkDescription, "Link"))
                 .urlProvider(vm -> "")
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewLinkDescription.getHelpExpression() != null && !viewLinkDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewLinkDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -390,7 +400,6 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             return new ListStyleProvider(style).build();
         };
 
-        // @formatter:off
         ListDescription.Builder builder = ListDescription.newListDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "List"))
@@ -406,8 +415,9 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
                 .styleProvider(styleProvider);
-        // @formatter:on
-
+        if (viewListDescription.getHelpExpression() != null && !viewListDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewListDescription));
+        }
         return builder.build();
     }
 
@@ -417,16 +427,17 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, viewImageDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
-        // @formatter:off
-        return ImageDescription.newImageDescription(UUID.randomUUID().toString())
+        ImageDescription.Builder builder = ImageDescription.newImageDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewImageDescription, "Image"))
                 .urlProvider(vm -> Optional.ofNullable(viewImageDescription.getUrlExpression()).orElse(""))
                 .maxWidthProvider(vm -> viewImageDescription.getMaxWidthExpression())
                 .diagnosticsProvider(vm -> List.of()).kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (viewImageDescription.getHelpExpression() != null && !viewImageDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewImageDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -435,17 +446,18 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, viewRichTextDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
-        // @formatter:off
-        return RichTextDescription.newRichTextDescription(UUID.randomUUID().toString())
+        RichTextDescription.Builder builder = RichTextDescription.newRichTextDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(viewRichTextDescription, "RichText"))
                 .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (viewRichTextDescription.getHelpExpression() != null && !viewRichTextDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewRichTextDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -498,16 +510,17 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, widgetDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
-        // @formatter:off
-        return ChartWidgetDescription.newChartWidgetDescription(chartDescription.getId())
+        ChartWidgetDescription.Builder builder = ChartWidgetDescription.newChartWidgetDescription(chartDescription.getId())
                 .idProvider(vm -> id)
                 .labelProvider(vm -> this.getWidgetLabel(widgetDescription, "Chart"))
                 .chartDescription(chartDescription)
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (widgetDescription.getHelpExpression() != null && !widgetDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(widgetDescription));
+        }
+        return builder.build();
     }
 
     @Override
@@ -525,6 +538,15 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
             widgetLabel = name;
         }
         return widgetLabel;
-
     }
+
+    public String getWidgetHelpText(org.eclipse.sirius.components.view.WidgetDescription widgetDescription) {
+        String helpText = "Help";
+        String helpExpression = widgetDescription.getHelpExpression();
+        if (helpExpression != null && !helpExpression.isBlank() && !helpExpression.startsWith(AQL_PREFIX)) {
+            helpText = helpExpression;
+        }
+        return helpText;
+    }
+
 }

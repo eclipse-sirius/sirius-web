@@ -17,8 +17,8 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLRadio } from '../../form/FormEventFragments.types';
 import {
-  editRadioMutation,
   RadioPropertySection,
+  editRadioMutation,
   updateWidgetFocusMutation,
 } from '../../propertysections/RadioPropertySection';
 import {
@@ -40,6 +40,7 @@ const defaultRadio: GQLRadio = {
   id: 'radioId',
   label: 'Status:',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   options: [
     {
@@ -61,6 +62,7 @@ const radioWithStyle: GQLRadio = {
   id: 'radioId',
   label: 'Status:',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   options: [
     {
@@ -89,6 +91,7 @@ const radioWithEmptyStyle: GQLRadio = {
   id: 'radioId',
   label: 'Status:',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   options: [
     {
@@ -376,6 +379,23 @@ test('should render the radio with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={radioWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the radio with help hint', async () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={{ ...defaultRadio, hasHelpText: true }}
           subscribers={[]}
           readOnly={false}
         />

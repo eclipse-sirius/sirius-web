@@ -43,6 +43,7 @@ export const commonFields = `
       kind
       message
     }
+    hasHelpText
   }
 `;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { getTextDecorationLineValue, LinkStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Link from '@material-ui/core/Link';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { LinkWidgetProps } from './WidgetEntry.types';
 
@@ -26,6 +27,11 @@ const useStyles = makeStyles<Theme, LinkStyleProps>((theme) => ({
   },
   selected: {
     color: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -55,21 +61,24 @@ export const LinkWidget = ({ widget, selection }: LinkWidgetProps) => {
 
   return (
     <div className={selected ? classes.selected : ''}>
-      <Link
-        ref={ref}
-        className={classes.style}
-        onClick={(event) => {
-          event.preventDefault();
-          setSelected(true);
-        }}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-        tabIndex={0}
-        href="#"
-        rel="noopener noreferrer"
-        target="_blank">
-        {widget.label}
-      </Link>
+      <div className={classes.propertySectionLabel}>
+        <Link
+          ref={ref}
+          className={classes.style}
+          onClick={(event) => {
+            event.preventDefault();
+            setSelected(true);
+          }}
+          onFocus={() => setSelected(true)}
+          onBlur={() => setSelected(false)}
+          tabIndex={0}
+          href="#"
+          rel="noopener noreferrer"
+          target="_blank">
+          {widget.label}
+        </Link>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
     </div>
   );
 };

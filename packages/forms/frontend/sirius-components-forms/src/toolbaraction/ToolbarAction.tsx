@@ -13,10 +13,11 @@
 import { useMutation } from '@apollo/client';
 import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
 import { GQLButton } from '../form/FormEventFragments.types';
+import { HelpTooltip } from '../propertysections/HelpTooltip';
 import { getTextDecorationLineValue } from './../propertysections/getTextDecorationLineValue';
 import {
   GQLErrorPayload,
@@ -193,21 +194,23 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
 
   return (
     <div>
-      <Button
-        data-testid={widget.buttonLabel}
-        size="small"
-        variant="contained"
-        color="primary"
-        onClick={onClick}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        disabled={readOnly}
-        classes={{ root: classes.style }}>
-        {widget.imageURL?.length > 0 ? (
-          <img className={classes.icon} width="16" height="16" alt={widget.label} src={getImageURL(widget)} />
-        ) : null}
-        {widget.buttonLabel}
-      </Button>
+      <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id}>
+        <Button
+          data-testid={widget.buttonLabel}
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={onClick}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          disabled={readOnly}
+          classes={{ root: classes.style }}>
+          {widget.imageURL?.length > 0 ? (
+            <img className={classes.icon} width="16" height="16" alt={widget.label} src={getImageURL(widget)} />
+          ) : null}
+          {widget.buttonLabel}
+        </Button>
+      </HelpTooltip>
     </div>
   );
 };

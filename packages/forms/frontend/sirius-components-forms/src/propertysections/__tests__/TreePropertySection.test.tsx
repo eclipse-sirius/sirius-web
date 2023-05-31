@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ test('should render the tree', () => {
     id: 'treeId',
     label: 'Default Tree',
     iconURL: null,
+    hasHelpText: false,
     nodes: [createNode('root1', null)],
     expandedNodesIds: [],
     diagnostics: [],
@@ -39,7 +40,13 @@ test('should render the tree', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+        <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={() => {}}
+        />
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -54,6 +61,7 @@ test('should render a multi-level tree correctly', () => {
     id: 'treeId',
     label: 'Deep Tree',
     iconURL: null,
+    hasHelpText: false,
     nodes: [
       createNode('1', null),
       createNode('2', null),
@@ -73,7 +81,13 @@ test('should render a multi-level tree correctly', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+        <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={() => {}}
+        />
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -104,6 +118,7 @@ test('should correctly interpret the order of nodes with the same parent in the 
     id: 'treeId',
     label: 'Deep Tree',
     iconURL: null,
+    hasHelpText: false,
     nodes: [
       createNode('2', null),
       createNode('1', null),
@@ -123,7 +138,13 @@ test('should correctly interpret the order of nodes with the same parent in the 
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+        <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={() => {}}
+        />
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -151,6 +172,7 @@ test('should only expand the specified nodes on initial render', () => {
     id: 'treeId',
     label: 'Deep Tree',
     iconURL: null,
+    hasHelpText: false,
     nodes: [
       createNode('1', null),
       createNode('2', null),
@@ -170,7 +192,13 @@ test('should only expand the specified nodes on initial render', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection widget={treeWidget} subscribers={[]} setSelection={() => {}} />
+        <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={() => {}}
+        />
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -196,6 +224,7 @@ test('should change the selection when a selectable node is clicked', () => {
     id: 'treeId',
     label: 'Tree',
     iconURL: null,
+    hasHelpText: false,
     nodes: [createNode('1', null), createNode('2', null), createNode('1.1', '1', true), createNode('1.2', '1', false)],
     expandedNodesIds: ['1', '2'],
     diagnostics: [],
@@ -205,6 +234,8 @@ test('should change the selection when a selectable node is clicked', () => {
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
         <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
           widget={treeWidget}
           subscribers={[]}
           setSelection={(newSelection: Selection) => {
@@ -239,6 +270,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     id: 'treeId',
     label: 'Tree',
     iconURL: null,
+    hasHelpText: false,
     nodes: [createNode('1', null), createNode('1.1', '1'), createNode('1.1.1', '1.1')],
     expandedNodesIds: ['1', '1.1'],
     diagnostics: [],
@@ -248,6 +280,8 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
         <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
           widget={treeWidget}
           subscribers={[]}
           setSelection={(newSelection: Selection) => {
@@ -287,4 +321,34 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
       expect(screen.getByText('Node-1.1.1')).toBeDefined();
     });
   });
+});
+
+test('should render the tree with a help hint', () => {
+  const treeWidget: GQLTree = {
+    __typename: 'TreeWidget',
+    id: 'treeId',
+    label: 'Default Tree',
+    iconURL: null,
+    hasHelpText: true,
+    nodes: [createNode('root1', null)],
+    expandedNodesIds: [],
+    diagnostics: [],
+  };
+
+  const { container } = render(
+    <MockedProvider>
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <TreePropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={treeWidget}
+          subscribers={[]}
+          setSelection={() => {}}
+        />
+      </ServerContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+  expect(screen.queryAllByRole('treeitem')).toHaveLength(1);
+  expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual(['Node-root1']);
 });

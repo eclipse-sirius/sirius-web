@@ -16,14 +16,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Popover from '@material-ui/core/Popover';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
 import { GQLTextarea, GQLWidget } from '../form/FormEventFragments.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { GQLSuccessPayload } from './ListPropertySection.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLCompletionProposal,
@@ -363,7 +364,12 @@ export const TextfieldPropertySection = ({
           onBlur();
         }
       }}>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <TextField
         name={widget.label}
         placeholder={widget.label}

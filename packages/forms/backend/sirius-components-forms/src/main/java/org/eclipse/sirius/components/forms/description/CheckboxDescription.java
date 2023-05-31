@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,6 +106,8 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, CheckboxStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
@@ -157,6 +159,11 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public CheckboxDescription build() {
             CheckboxDescription checkboxDescription = new CheckboxDescription();
             checkboxDescription.id = Objects.requireNonNull(this.id);
@@ -169,6 +176,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
             checkboxDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             checkboxDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             checkboxDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            checkboxDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return checkboxDescription;
         }
     }

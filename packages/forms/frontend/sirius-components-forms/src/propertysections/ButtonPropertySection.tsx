@@ -13,7 +13,7 @@
 import { useMutation } from '@apollo/client';
 import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
 import {
@@ -30,8 +30,8 @@ import {
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
 } from './ButtonPropertySection.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
@@ -190,7 +190,13 @@ export const ButtonPropertySection = ({
 
   return (
     <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} data-testid={widget.label} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        data-testid={widget.label}
+      />
       <Button
         data-testid={widget.buttonLabel}
         variant="contained"

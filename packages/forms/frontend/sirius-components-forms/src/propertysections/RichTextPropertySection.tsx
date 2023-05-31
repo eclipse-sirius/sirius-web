@@ -153,7 +153,12 @@ export const RichTextPropertySection = ({
 
   return (
     <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <div data-testid={widget.label}>
         <RichTextEditor
           value={widget.stringValue}

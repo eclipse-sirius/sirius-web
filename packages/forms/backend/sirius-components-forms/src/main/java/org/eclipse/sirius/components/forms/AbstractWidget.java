@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 
@@ -30,6 +31,8 @@ public abstract class AbstractWidget {
 
     protected List<Diagnostic> diagnostics;
 
+    protected Supplier<String> helpTextProvider;
+
     public String getId() {
         return this.id;
     }
@@ -40,6 +43,10 @@ public abstract class AbstractWidget {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public List<Diagnostic> getDiagnostics() {

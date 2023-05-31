@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.sample.slider;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.IProps;
@@ -34,6 +35,8 @@ public final class SliderElementProps implements IProps {
     private String label;
 
     private String iconURL;
+
+    private Supplier<String> helpTextProvider;
 
     private int minValue;
 
@@ -57,6 +60,10 @@ public final class SliderElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public int getMinValue() {
@@ -97,6 +104,8 @@ public final class SliderElementProps implements IProps {
         private String label;
 
         private String iconURL;
+
+        private Supplier<String> helpTextProvider;
 
         private int minValue;
 
@@ -140,6 +149,11 @@ public final class SliderElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public SliderElementProps build() {
             SliderElementProps sliderElementProps = new SliderElementProps();
             sliderElementProps.id = Objects.requireNonNull(this.id);
@@ -149,6 +163,7 @@ public final class SliderElementProps implements IProps {
             sliderElementProps.maxValue = this.maxValue;
             sliderElementProps.currentValue = this.currentValue;
             sliderElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            sliderElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return sliderElementProps;
         }
     }

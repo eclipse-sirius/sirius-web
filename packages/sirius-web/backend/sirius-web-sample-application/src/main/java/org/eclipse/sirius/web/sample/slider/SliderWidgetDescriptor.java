@@ -65,6 +65,10 @@ public class SliderWidgetDescriptor implements IWidgetDescriptor {
             if (props.getIconURL() != null) {
                 sliderBuilder.iconURL(props.getIconURL());
             }
+            if (props.getHelpTextProvider() != null) {
+                sliderBuilder.helpTextProvider(props.getHelpTextProvider());
+            }
+
             return Optional.of(sliderBuilder.build());
         }
         return Optional.empty();

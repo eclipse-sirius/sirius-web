@@ -36,6 +36,7 @@ const defaultCheckbox: GQLCheckbox = {
   id: 'checkboxId',
   label: 'CheckboxLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   booleanValue: false,
   style: null,
@@ -46,6 +47,7 @@ const checkboxWithStyle: GQLCheckbox = {
   id: 'checkboxId',
   label: 'CheckboxLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   booleanValue: false,
   style: {
@@ -58,6 +60,7 @@ const checkboxWithEmptyStyle: GQLCheckbox = {
   id: 'checkboxId',
   label: 'CheckboxLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   booleanValue: false,
   style: {
@@ -330,4 +333,21 @@ test('should render the checkbox with empty style', async () => {
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
+});
+
+test('should render a checkbox with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={{ ...defaultCheckbox, hasHelpText: true }}
+          subscribers={[]}
+          readOnly
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
 });

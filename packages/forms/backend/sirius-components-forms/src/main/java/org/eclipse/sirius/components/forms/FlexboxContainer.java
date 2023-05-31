@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.forms;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
@@ -26,8 +27,6 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class FlexboxContainer extends AbstractWidget {
-    private String label;
-
     private String flexDirection;
 
     private String flexWrap;
@@ -38,11 +37,6 @@ public final class FlexboxContainer extends AbstractWidget {
 
     private FlexboxContainer() {
         // Prevent instantiation
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     public String getFlexDirection() {
@@ -94,6 +88,8 @@ public final class FlexboxContainer extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -133,16 +129,22 @@ public final class FlexboxContainer extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public FlexboxContainer build() {
             FlexboxContainer flexboxContainer = new FlexboxContainer();
             flexboxContainer.id = Objects.requireNonNull(this.id);
             flexboxContainer.label = Objects.requireNonNull(this.label);
-            flexboxContainer.iconURL = this.iconURL;
+            flexboxContainer.iconURL = this.iconURL; // Optional on purpose
             flexboxContainer.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainer.flexWrap = Objects.requireNonNull(this.flexWrap);
             flexboxContainer.flexGrow = Objects.requireNonNull(this.flexGrow);
             flexboxContainer.children = Objects.requireNonNull(this.children);
             flexboxContainer.diagnostics = Objects.requireNonNull(this.diagnostics);
+            flexboxContainer.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return flexboxContainer;
         }
     }

@@ -13,8 +13,9 @@
 import { useMutation } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
 import { addWidgetMutation, moveWidgetMutation } from './FormDescriptionEditorEventFragment';
@@ -67,6 +68,11 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
     borderWidth: '1px',
     borderStyle: 'dashed',
     borderColor: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -221,21 +227,24 @@ export const FlexboxContainerWidget = ({
 
   return (
     <div className={classes.widget} tabIndex={0} ref={ref}>
-      <Typography
-        variant="subtitle2"
-        className={selected ? classes.selected : ''}
-        onFocus={() =>
-          setState((prevState) => {
-            return { ...prevState, selected: true };
-          })
-        }
-        onBlur={() =>
-          setState((prevState) => {
-            return { ...prevState, selected: false };
-          })
-        }>
-        {widget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography
+          variant="subtitle2"
+          className={selected ? classes.selected : ''}
+          onFocus={() =>
+            setState((prevState) => {
+              return { ...prevState, selected: true };
+            })
+          }
+          onBlur={() =>
+            setState((prevState) => {
+              return { ...prevState, selected: false };
+            })
+          }>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <div className={classes.container}>{children}</div>
       <div
         data-testid={`FlexboxContainer-Widgets-DropArea-${widget.id}`}

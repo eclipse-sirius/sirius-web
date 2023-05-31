@@ -61,6 +61,16 @@ public class RichTextDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public RichTextDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getRichTextDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

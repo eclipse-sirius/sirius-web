@@ -2320,6 +2320,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getWidgetDescription_HelpExpression() {
+        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTextfieldDescription() {
         return this.textfieldDescriptionEClass;
     }
@@ -4059,6 +4069,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__NAME);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__HELP_EXPRESSION);
 
         this.textfieldDescriptionEClass = this.createEClass(TEXTFIELD_DESCRIPTION);
         this.createEAttribute(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION);
@@ -4672,6 +4683,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEAttribute(this.getWidgetDescription_Name(), this.getIdentifier(), "name", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getWidgetDescription_LabelExpression(), this.getInterpretedExpression(), "labelExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetDescription_HelpExpression(), this.getInterpretedExpression(), "helpExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.textfieldDescriptionEClass, TextfieldDescription.class, "TextfieldDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

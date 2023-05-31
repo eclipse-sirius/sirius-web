@@ -24,6 +24,7 @@ const defaultLink: GQLLink = {
   label: 'myLabel',
   url: 'the/url/value',
   iconURL: null,
+  hasHelpText: false,
   style: {
     color: null,
     bold: null,
@@ -41,6 +42,7 @@ const defaultLinkWithStyle: GQLLink = {
   label: 'myLabel',
   url: 'the/url/value',
   iconURL: null,
+  hasHelpText: false,
   style: {
     color: 'RebeccaPurple',
     bold: true,
@@ -57,7 +59,7 @@ const defaultLinkWithStyle: GQLLink = {
 test('render label widget', () => {
   const { container } = render(
     <MockedProvider>
-      <LinkPropertySection widget={defaultLink} />
+      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={defaultLink} />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -66,7 +68,20 @@ test('render label widget', () => {
 test('render label widget with style', () => {
   const { container } = render(
     <MockedProvider>
-      <LinkPropertySection widget={defaultLinkWithStyle} />
+      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={defaultLinkWithStyle} />
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('render label widget with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <LinkPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={{ ...defaultLink, hasHelpText: true }}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();

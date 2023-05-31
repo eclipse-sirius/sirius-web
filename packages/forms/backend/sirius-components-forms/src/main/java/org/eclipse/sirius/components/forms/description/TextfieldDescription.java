@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,6 +112,8 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, TextfieldStyle> styleProvider = vm -> null;
 
         private Function<VariableManager, List<CompletionProposal>> completionProposalsProvider;
@@ -170,6 +172,11 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public TextfieldDescription build() {
             TextfieldDescription textfieldDescription = new TextfieldDescription();
             textfieldDescription.id = Objects.requireNonNull(this.id);
@@ -183,6 +190,7 @@ public final class TextfieldDescription extends AbstractWidgetDescription {
             textfieldDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             textfieldDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             textfieldDescription.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
+            textfieldDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return textfieldDescription;
         }
 

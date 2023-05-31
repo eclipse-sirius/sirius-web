@@ -123,21 +123,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider valueProvider = this.getStringValueProvider(viewTextfieldDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(viewTextfieldDescription.getBody());
         Function<VariableManager, TextfieldStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewTextfieldDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(TextfieldDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewTextfieldDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new TextfieldStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return TextfieldDescription.newTextfieldDescription(descriptionId)
+        TextfieldDescription.Builder builder = TextfieldDescription.newTextfieldDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
@@ -145,9 +142,12 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+
+        if (viewTextfieldDescription.getHelpExpression() != null && !viewTextfieldDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewTextfieldDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -159,21 +159,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewCheckboxDescription.getBody());
         Function<VariableManager, CheckboxStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewCheckboxDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(CheckboxDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewCheckboxDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new CheckboxStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return CheckboxDescription.newCheckboxDescription(descriptionId)
+        CheckboxDescription.Builder builder = CheckboxDescription.newCheckboxDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
@@ -181,9 +178,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewCheckboxDescription.getHelpExpression() != null && !viewCheckboxDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewCheckboxDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -198,21 +197,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         Function<VariableManager, List<?>> optionsProvider = this.getMultiValueProvider(candidateExpression);
         BiFunction<VariableManager, String, IStatus> selectNewValueHandler = this.getSelectNewValueHandler(viewSelectDescription.getBody());
         Function<VariableManager, SelectStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewSelectDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(SelectDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewSelectDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new SelectStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return SelectDescription.newSelectDescription(descriptionId)
+        SelectDescription.Builder builder = SelectDescription.newSelectDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
@@ -223,9 +219,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewSelectDescription.getHelpExpression() != null && !viewSelectDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewSelectDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -236,21 +234,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider valueProvider = this.getStringValueProvider(textAreaDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(textAreaDescription.getBody());
         Function<VariableManager, TextareaStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = textAreaDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(TextareaDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(textAreaDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new TextareaStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return TextareaDescription.newTextareaDescription(descriptionId)
+        TextareaDescription.Builder builder = TextareaDescription.newTextareaDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
@@ -258,9 +253,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (textAreaDescription.getHelpExpression() != null && !textAreaDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(textAreaDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -271,17 +268,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider valueProvider = this.getStringValueProvider(richTextDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(richTextDescription.getBody());
 
-        // @formatter:off
-        return org.eclipse.sirius.components.forms.description.RichTextDescription.newRichTextDescription(descriptionId)
+        org.eclipse.sirius.components.forms.description.RichTextDescription.Builder builder = org.eclipse.sirius.components.forms.description.RichTextDescription.newRichTextDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(diagnostic -> "");
+        if (richTextDescription.getHelpExpression() != null && !richTextDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(richTextDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -296,21 +294,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         Function<VariableManager, List<? extends Object>> optionsProvider = this.getMultiValueProvider(candidateExpression);
         BiFunction<VariableManager, List<String>, IStatus> multiSelectNewValueHandler = this.getMultiSelectNewValuesHandler(multiSelectDescription.getBody());
         Function<VariableManager, MultiSelectStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = multiSelectDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(MultiSelectDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(multiSelectDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new MultiSelectStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return MultiSelectDescription.newMultiSelectDescription(descriptionId)
+        MultiSelectDescription.Builder builder = MultiSelectDescription.newMultiSelectDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valuesProvider(valuesProvider)
@@ -321,9 +316,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (multiSelectDescription.getHelpExpression() != null && !multiSelectDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(multiSelectDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -345,21 +342,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getSelectNewValueHandler(radioDescription.getBody());
         Function<VariableManager, RadioStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = radioDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(RadioDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(radioDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new RadioStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return RadioDescription.newRadioDescription(descriptionId)
+        RadioDescription.Builder builder = RadioDescription.newRadioDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .optionIdProvider(optionIdProvider)
@@ -370,10 +364,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
-
+                .styleProvider(styleProvider);
+        if (radioDescription.getHelpExpression() != null && !radioDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(radioDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -381,21 +376,17 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String labelExpression = viewBarChartDescription.getYAxisLabelExpression();
         String keysExpression = viewBarChartDescription.getKeysExpression();
         String valuesExpression = viewBarChartDescription.getValuesExpression();
-
         Function<VariableManager, BarChartStyle> styleProvider = new BarChartStyleProvider(this.interpreter, viewBarChartDescription);
 
-        // @formatter:off
-        IChartDescription chartDescription = BarChartDescription.newBarChartDescription(this.getDescriptionId(viewBarChartDescription))
+        BarChartDescription.Builder builder = BarChartDescription.newBarChartDescription(this.getDescriptionId(viewBarChartDescription))
                 .label(viewBarChartDescription.getName())
                 .labelProvider(this.getStringValueProvider(labelExpression))
                 .keysProvider(this.getMultiValueProvider(keysExpression, String.class))
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
                 .styleProvider(styleProvider)
                 .width(viewBarChartDescription.getWidth())
-                .height(viewBarChartDescription.getHeight())
-                .build();
-        // @formatter:on
-        return this.createChartWidgetDescription(viewBarChartDescription, chartDescription);
+                .height(viewBarChartDescription.getHeight());
+        return this.createChartWidgetDescription(viewBarChartDescription, builder.build());
     }
 
     @Override
@@ -423,17 +414,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         List<AbstractWidgetDescription> children = new ArrayList<>();
         flexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
 
-        // @formatter:off
-        return FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
+        FlexboxContainerDescription.Builder builder = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .flexDirection(flexDirection)
                 .children(children)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (flexboxContainerDescription.getHelpExpression() != null && !flexboxContainerDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(flexboxContainerDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -445,21 +437,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider imageURLProvider = this.getStringValueProvider(viewButtonDescription.getImageExpression());
         Function<VariableManager, IStatus> pushButtonHandler = this.getOperationsHandler(viewButtonDescription.getBody());
         Function<VariableManager, ButtonStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewButtonDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(ButtonDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewButtonDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new ButtonStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return ButtonDescription.newButtonDescription(descriptionId)
+        ButtonDescription.Builder builder = ButtonDescription.newButtonDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .buttonLabelProvider(buttonLabelProvider)
@@ -468,9 +457,11 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewButtonDescription.getHelpExpression() != null && !viewButtonDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewButtonDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -480,30 +471,29 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(viewLabelDescription.getLabelExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(viewLabelDescription.getValueExpression());
         Function<VariableManager, LabelWidgetStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewLabelDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(LabelDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewLabelDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new LabelStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return LabelDescription.newLabelDescription(descriptionId)
+        LabelDescription.Builder builder = LabelDescription.newLabelDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider)
-                .build();
-        // @formatter:on
+                .styleProvider(styleProvider);
+        if (viewLabelDescription.getHelpExpression() != null && !viewLabelDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewLabelDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -513,30 +503,29 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(viewLinkDescription.getLabelExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(viewLinkDescription.getValueExpression());
         Function<VariableManager, LinkStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewLinkDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(LinkDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewLinkDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new LinkStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
-        return LinkDescription.newLinkDescription(descriptionId)
+        LinkDescription.Builder builder = LinkDescription.newLinkDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .urlProvider(valueProvider)
                 .styleProvider(styleProvider)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(diagnostic -> "");
+        if (viewLinkDescription.getHelpExpression() != null && !viewLinkDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewLinkDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -554,20 +543,17 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         Function<VariableManager, String> itemImageUrlProvider = this::getListItemImageURL;
 
         Function<VariableManager, ListStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewListDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
                     .map(ListDescriptionStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewListDescription::getStyle);
-            // @formatter:on
             if (effectiveStyle == null) {
                 return null;
             }
             return new ListStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        // @formatter:off
         ListDescription.Builder builder = ListDescription.newListDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
@@ -583,8 +569,9 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
-        // @formatter:on
-
+        if (viewListDescription.getHelpExpression() != null && !viewListDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewListDescription.getHelpExpression()));
+        }
         return builder.build();
     }
 
@@ -595,17 +582,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(imageDescription.getLabelExpression());
         StringValueProvider urlProvider = this.getStringValueProvider(imageDescription.getUrlExpression());
         StringValueProvider maxWidthProvider = this.getStringValueProvider(imageDescription.getMaxWidthExpression());
-        // @formatter:off
-        return ImageDescription.newImageDescription(descriptionId)
+        ImageDescription.Builder builder = ImageDescription.newImageDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .urlProvider(urlProvider)
                 .maxWidthProvider(maxWidthProvider)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (imageDescription.getHelpExpression() != null && !imageDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(imageDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     @Override
@@ -653,17 +641,17 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(widgetDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(widgetDescription.getLabelExpression());
-
-        // @formatter:off
-        return ChartWidgetDescription.newChartWidgetDescription(descriptionId)
+        ChartWidgetDescription.Builder builder = ChartWidgetDescription.newChartWidgetDescription(descriptionId)
                 .labelProvider(labelProvider)
                 .idProvider(idProvider)
                 .chartDescription(chartDescription)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .build();
-        // @formatter:on
+                .messageProvider(object -> "");
+        if (widgetDescription.getHelpExpression() != null && !widgetDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(widgetDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     private Function<VariableManager, String> getOptionIdProvider() {

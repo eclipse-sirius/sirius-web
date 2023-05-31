@@ -61,6 +61,16 @@ public class PieChartDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public PieChartDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getPieChartDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValuesExpression.
      *
      * @generated

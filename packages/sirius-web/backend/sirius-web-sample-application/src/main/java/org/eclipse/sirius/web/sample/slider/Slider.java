@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -80,6 +81,8 @@ public final class Slider extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private int minValue;
 
         private int maxValue;
@@ -87,6 +90,7 @@ public final class Slider extends AbstractWidget {
         private int currentValue;
 
         private Function<Integer, IStatus> newValueHandler;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -123,6 +127,11 @@ public final class Slider extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public Slider build() {
             Slider slider = new Slider();
             slider.id = Objects.requireNonNull(this.id);
@@ -133,6 +142,7 @@ public final class Slider extends AbstractWidget {
             slider.currentValue = Objects.requireNonNull(this.currentValue);
             slider.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             slider.diagnostics = Objects.requireNonNull(this.diagnostics);
+            slider.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return slider;
         }
     }

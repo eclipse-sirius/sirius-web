@@ -282,7 +282,12 @@ export const ListPropertySection = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0} fullWidth>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <Table size="small">
         <TableBody>
           {items.map((item) => (

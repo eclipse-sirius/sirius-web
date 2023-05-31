@@ -1,6 +1,7 @@
 type Slider implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   label: String!
   iconURL: String
   minValue: Int!

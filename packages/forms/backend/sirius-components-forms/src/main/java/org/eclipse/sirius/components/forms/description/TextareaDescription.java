@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -113,6 +113,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, TextareaStyle> styleProvider = vm -> null;
 
         private Function<VariableManager, List<CompletionProposal>> completionProposalsProvider;
@@ -171,6 +173,11 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public TextareaDescription build() {
             TextareaDescription textareaDescription = new TextareaDescription();
             textareaDescription.id = Objects.requireNonNull(this.id);
@@ -184,6 +191,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             textareaDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             textareaDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             textareaDescription.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
+            textareaDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return textareaDescription;
         }
     }

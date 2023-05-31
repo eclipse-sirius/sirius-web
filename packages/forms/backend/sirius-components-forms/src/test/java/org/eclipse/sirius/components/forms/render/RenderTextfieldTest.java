@@ -43,6 +43,14 @@ import org.junit.jupiter.api.Test;
  */
 public class RenderTextfieldTest {
 
+    private static final String TEXTFIELD_DESCRIPTION_ID = "textfieldDescriptionId";
+
+    private static final String TESTFIELD_ID = "testfieldId";
+
+    private static final String LABEL = "label";
+
+    private static final String VALUE = "value";
+
     private TextfieldStyle style;
 
     private Object self;
@@ -66,11 +74,13 @@ public class RenderTextfieldTest {
     @Test
     public void testRenderTextfieldWithoutProposalProvider() {
         // @formatter:off
-        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription("textfieldDescriptionId")
-                .idProvider(this.constantProvider("testfieldId"))
-                .labelProvider(this.constantProvider("label"))
-                .valueProvider(this.constantProvider("value"))
-                .newValueHandler((v, s) -> new Success()).diagnosticsProvider(variableManager -> List.of()).kindProvider(diagnostic -> "")
+        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .idProvider(this.constantProvider(TESTFIELD_ID))
+                .labelProvider(this.constantProvider(LABEL))
+                .valueProvider(this.constantProvider(VALUE))
+                .newValueHandler((v, s) -> new Success())
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(this.constantProvider(this.style)).build();
 
@@ -94,12 +104,14 @@ public class RenderTextfieldTest {
         List<CompletionProposal> proposals = List.of(new CompletionProposal("Proposal", "textToInsert", 0));
 
         // @formatter:off
-        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription("textfieldDescriptionId")
-                .idProvider(this.constantProvider("testfieldId"))
-                .labelProvider(this.constantProvider("label"))
-                .valueProvider(this.constantProvider("value"))
+        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .idProvider(this.constantProvider(TESTFIELD_ID))
+                .labelProvider(this.constantProvider(LABEL))
+                .valueProvider(this.constantProvider(VALUE))
                 .completionProposalsProvider(this.constantProvider(proposals))
-                .newValueHandler((v, s) -> new Success()).diagnosticsProvider(variableManager -> List.of()).kindProvider(diagnostic -> "")
+                .newValueHandler((v, s) -> new Success())
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(this.constantProvider(this.style)).build();
         // @formatter:on
@@ -116,6 +128,40 @@ public class RenderTextfieldTest {
         assertThat(renderedTextField.getCompletionProposalsProvider()).isNotNull();
         assertThat(renderedTextField.isSupportsCompletion()).isTrue();
         assertThat(renderedTextField.getCompletionProposalsProvider().apply(new CompletionRequest("", 0))).isEqualTo(proposals);
+    }
+
+    @Test
+    public void testRenderTextfieldWithHelpTextProvider() {
+        // @formatter:off
+        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .idProvider(this.constantProvider(TESTFIELD_ID))
+                .labelProvider(this.constantProvider(LABEL))
+                .valueProvider(this.constantProvider(VALUE))
+                .helpTextProvider((variableManager) -> {
+                    // Check that the helpTextProvider is given access to "self"
+                    var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+                    assertThat(optionalSelf).isPresent();
+                    assertThat(optionalSelf.get()).isSameAs(this.self);
+                    return "help";
+                })
+                .newValueHandler((v, s) -> new Success())
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
+                .styleProvider(this.constantProvider(this.style)).build();
+        // @formatter:on
+
+        FormDescription formDescription = this.createSingleWidgetForm(textDescription);
+        Form form = this.renderForm(formDescription);
+
+        assertThat(form).isNotNull();
+        assertThat(form.getPages()).hasSize(1);
+        assertThat(form.getPages().get(0).getGroups()).hasSize(1);
+        assertThat(form.getPages().get(0).getGroups().get(0).getWidgets()).hasSize(1);
+        assertThat(form.getPages().get(0).getGroups().get(0).getWidgets().get(0)).isInstanceOf(Textfield.class);
+        Textfield renderedTextField = (Textfield) form.getPages().get(0).getGroups().get(0).getWidgets().get(0);
+        assertThat(renderedTextField.getHelpTextProvider()).isNotNull();
+        assertThat(renderedTextField.getHelpTextProvider().get()).isEqualTo("help");
     }
 
     private Form renderForm(FormDescription formDescription) {

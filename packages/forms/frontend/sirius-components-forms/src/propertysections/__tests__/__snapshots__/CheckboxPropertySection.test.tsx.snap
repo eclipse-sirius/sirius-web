@@ -120,6 +120,75 @@ exports[`should display the error received 2`] = `
 </body>
 `;
 
+exports[`should render a checkbox with help hint 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-74"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        CheckboxLabel
+      </h6>
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+        focusable="false"
+        style="margin-left: 8px; font-size: 16px;"
+        title=""
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+        />
+      </svg>
+      <div
+        class="makeStyles-subscribers-75"
+      />
+    </div>
+    <div
+      class="MuiFormGroup-root MuiFormGroup-row"
+    >
+      <span
+        aria-disabled="true"
+        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-77 MuiCheckbox-root makeStyles-style-71 makeStyles-style-73 PrivateSwitchBase-disabled-79 Mui-disabled makeStyles-disabled-72 Mui-disabled Mui-disabled"
+        data-testid="CheckboxLabel"
+        tabindex="-1"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <input
+            class="PrivateSwitchBase-input-80"
+            data-indeterminate="false"
+            disabled=""
+            name="CheckboxLabel"
+            type="checkbox"
+            value=""
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+      </span>
+    </div>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
 exports[`should render a readOnly checkbox 1`] = `
 <div>
   <div

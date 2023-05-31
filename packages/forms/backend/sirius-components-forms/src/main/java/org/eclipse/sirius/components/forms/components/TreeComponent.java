@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,17 +63,18 @@ public class TreeComponent implements IComponent {
         expansionVariableManager.put(NODES_VARIABLE, nodes);
         List<String> expandedIds = treeDescription.getExpandedNodeIdsProvider().apply(expansionVariableManager);
 
-        // @formatter:off
-        TreeElementProps treeElementProps = TreeElementProps.newTreeElementProps(id)
+        TreeElementProps.Builder treeElementPropsBuilder = TreeElementProps.newTreeElementProps(id)
                 .label(label)
                 .iconURL(iconURL)
                 .children(children)
                 .nodes(nodes)
-                .expandedNodesIds(expandedIds)
-                .build();
-        // @formatter:on
+                .expandedNodesIds(expandedIds);
 
-        return new Element(TreeElementProps.TYPE, treeElementProps);
+        if (treeDescription.getHelpTextProvider() != null) {
+            treeElementPropsBuilder.helpTextProvider(() -> treeDescription.getHelpTextProvider().apply(variableManager));
+        }
+
+        return new Element(TreeElementProps.TYPE, treeElementPropsBuilder.build());
     }
 
     private List<TreeNode> computeChildren(List<Object> ancestors, VariableManager variableManager, TreeDescription treeDescription) {
