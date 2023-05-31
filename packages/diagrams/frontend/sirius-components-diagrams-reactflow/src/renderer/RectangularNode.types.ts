@@ -11,12 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface RectangularNodeData {
-  label: RectangularNodeLabel;
-  style: Partial<React.CSSProperties>;
-}
+import { Label } from './Label.types';
 
-export interface RectangularNodeLabel {
-  text: string;
-  style: Partial<React.CSSProperties>;
+export interface RectangularNodeData {
+  label: Label;
+  style: React.CSSProperties;
 }

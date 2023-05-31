@@ -11,7 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ImageNodeData {
-  imageURL: string;
+import { Label } from './Label.types';
+
+export interface ListNodeData {
+  label: Label;
+  style: React.CSSProperties;
+  listItems: ListItemData[];
+}
+
+export interface ListItemData {
+  id: string;
+  label: Label;
   style: React.CSSProperties;
 }

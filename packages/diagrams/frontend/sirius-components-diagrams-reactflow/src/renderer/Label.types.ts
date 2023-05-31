@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ImageNodeData {
-  imageURL: string;
+export interface Label {
+  text: string;
   style: React.CSSProperties;
 }
