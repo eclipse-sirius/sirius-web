@@ -110,7 +110,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
         this.customWidgetConverters = Objects.requireNonNull(customWidgetConverters);
-        this.feedbackMessageService = feedbackMessageService;
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -806,9 +806,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private Failure buildFailureWithFeedbackMessages(String technicalMessage) {
         var errorMessages = new ArrayList<>(List.of(technicalMessage));
-        if (Objects.nonNull(this.feedbackMessageService)) {
-            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-        }
+        errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
         return new Failure(String.join(", ", errorMessages));
     }
 

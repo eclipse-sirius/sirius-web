@@ -12,19 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.configuration;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 /**
  * Bundles the common dependencies that view tool services need into a single object for convenience.
  *
  * @author frouene
  */
-@Configuration
-public class ViewToolConfiguration {
+@Service
+public class ViewReconnectionToolsExecutorParameters {
 
     private final IURLParser urlParser;
 
@@ -34,11 +36,11 @@ public class ViewToolConfiguration {
 
     private final IObjectService objectService;
 
-    public ViewToolConfiguration(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService) {
-        this.urlParser = urlParser;
-        this.viewRepresentationDescriptionPredicate = viewRepresentationDescriptionPredicate;
-        this.viewRepresentationDescriptionSearchService = viewRepresentationDescriptionSearchService;
-        this.objectService = objectService;
+    public ViewReconnectionToolsExecutorParameters(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService) {
+        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     public IURLParser getUrlParser() {
