@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDia
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -75,18 +74,16 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
-    private final IObjectService objectService;
+    private final IDiagramIdProvider diagramIdProvider;
 
-    private final Function<EObject, UUID> idProvider = (eObject) -> {
-        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
-    };
+    private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewToolSectionsProvider(ViewToolConfiguration configuration, IDiagramDescriptionService diagramDescriptionService) {
+    public ViewToolSectionsProvider(ViewToolConfiguration configuration, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider) {
         this.urlParser = Objects.requireNonNull(configuration.getUrlParser());
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(configuration.getViewRepresentationDescriptionPredicate());
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(configuration.getViewRepresentationDescriptionSearchService());
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
-        this.objectService = Objects.requireNonNull(configuration.getObjectService());
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
     }
 
     @Override
@@ -185,17 +182,9 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         for (EdgeTool edgeTool : new ToolFinder().findEdgeTools(viewNodeDescription)) {
             List<NodeDescription> targetNodeDescriptionCandidates = new ArrayList<>();
             for (DiagramElementDescription viewDiagramElementDescription : edgeTool.getTargetElementDescriptions()) {
-                if (viewDiagramElementDescription instanceof org.eclipse.sirius.components.view.NodeDescription viewTagetNodeDescriptionCandidates) {
-                    String sourceElementId = this.objectService.getId(viewTagetNodeDescriptionCandidates);
-                    Optional<String> sourceId = this.getSourceId(diagramDescription.getId());
-
-                    if (sourceId.isPresent()) {
-                        String formattedNodeDescriptionId = IDiagramIdProvider.NODE_DESCRIPTION_KIND + '?' + IDiagramIdProvider.SOURCE_KIND + '=' + IDiagramIdProvider.VIEW_SOURCE_KIND + '&' + IDiagramIdProvider.SOURCE_ID + '=' + sourceId.get() + '&' + IDiagramIdProvider.SOURCE_ELEMENT_ID + '=' + sourceElementId;
-                        Optional<NodeDescription> nodeDescriptionTargetCandidate = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, formattedNodeDescriptionId);
-                        if (nodeDescriptionTargetCandidate.isPresent()) {
-                            targetNodeDescriptionCandidates.add(nodeDescriptionTargetCandidate.get());
-                        }
-                    }
+                if (viewDiagramElementDescription instanceof org.eclipse.sirius.components.view.NodeDescription) {
+                    Optional<NodeDescription> nodeDescriptionTargetCandidate = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription));
+                    nodeDescriptionTargetCandidate.ifPresent(targetNodeDescriptionCandidates::add);
                 }
             }
             String toolId = this.idProvider.apply(edgeTool).toString();
@@ -255,11 +244,6 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
     private Optional<String> getSourceElementId(String descriptionId) {
         var parameters = this.urlParser.getParameterValues(descriptionId);
         return Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
-    }
-
-    private Optional<String> getSourceId(String descriptionId) {
-        var parameters = this.urlParser.getParameterValues(descriptionId);
-        return Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ID)).orElse(List.of()).stream().findFirst();
     }
 
     private List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
