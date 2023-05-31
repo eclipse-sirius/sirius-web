@@ -40,14 +40,18 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, sliderDescription);
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-                return org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
+                var builder =  org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
                         .idProvider(vm -> id)
                         .labelProvider(vm -> SliderDescriptionPreviewConverterProvider.this.getWidgetLabel(sliderDescription, "Slider"))
                         .minValueProvider(vm -> 0)
                         .maxValueProvider(vm -> 100)
                         .currentValueProvider(vm -> 50)
-                        .newValueHandler(vm -> new Success())
-                        .build();
+                        .newValueHandler(vm -> new Success());
+                if (sliderDescription.getHelpExpression() != null && !sliderDescription.getHelpExpression().isBlank()) {
+                    String helpText = SliderDescriptionPreviewConverterProvider.this.getWidgetHelpText(sliderDescription);
+                    builder.helpTextProvider(variableManager -> helpText);
+                }
+                return builder.build();
             }
         };
     }
@@ -62,6 +66,15 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
             widgetLabel = name;
         }
         return widgetLabel;
+    }
+
+    public String getWidgetHelpText(org.eclipse.sirius.components.view.WidgetDescription widgetDescription) {
+        String helpText = "Help";
+        String helpExpression = widgetDescription.getHelpExpression();
+        if (helpExpression != null && !helpExpression.isBlank() && !helpExpression.startsWith("aql:")) {
+            helpText = helpExpression;
+        }
+        return helpText;
     }
 
 }

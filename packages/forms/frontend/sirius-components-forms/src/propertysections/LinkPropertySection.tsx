@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import Link from '@material-ui/core/Link';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { HelpTooltip } from './HelpTooltip';
 import { LinkPropertySectionProps, LinkStyleProps } from './LinkPropertySection.types';
 
 const useStyle = makeStyles<Theme, LinkStyleProps>(() => ({
@@ -23,12 +24,17 @@ const useStyle = makeStyles<Theme, LinkStyleProps>(() => ({
     fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 }));
 
 /**
  * Defines the content of a Link property section.
  */
-export const LinkPropertySection = ({ widget }: LinkPropertySectionProps) => {
+export const LinkPropertySection = ({ editingContextId, formId, widget }: LinkPropertySectionProps) => {
   const props: LinkStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -40,10 +46,13 @@ export const LinkPropertySection = ({ widget }: LinkPropertySectionProps) => {
   const classes = useStyle(props);
 
   return (
-    <div>
+    <div className={classes.propertySectionLabel}>
       <Link className={classes.style} id={widget.id} href={widget.url} rel="noopener noreferrer" target="_blank">
         {widget.label}
       </Link>
+      {widget.hasHelpText ? (
+        <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
+      ) : null}
     </div>
   );
 };

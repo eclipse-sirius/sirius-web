@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,8 @@ public final class ButtonElementProps implements IProps {
 
     private String imageURL;
 
+    private Supplier<String> helpTextProvider;
+
     private Supplier<IStatus> pushButtonHandler;
 
     private ButtonStyle style;
@@ -70,6 +72,10 @@ public final class ButtonElementProps implements IProps {
 
     public String getImageURL() {
         return this.imageURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public Supplier<IStatus> getPushButtonHandler() {
@@ -111,6 +117,8 @@ public final class ButtonElementProps implements IProps {
         private String buttonLabel;
 
         private String imageURL;
+
+        private Supplier<String> helpTextProvider;
 
         private Supplier<IStatus> pushButtonHandler;
 
@@ -157,6 +165,11 @@ public final class ButtonElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public ButtonElementProps build() {
             ButtonElementProps buttonElementProps = new ButtonElementProps();
             buttonElementProps.id = Objects.requireNonNull(this.id);
@@ -167,6 +180,7 @@ public final class ButtonElementProps implements IProps {
             buttonElementProps.pushButtonHandler = Objects.requireNonNull(this.pushButtonHandler);
             buttonElementProps.style = this.style; // Optional on purpose
             buttonElementProps.children = Objects.requireNonNull(this.children);
+            buttonElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return buttonElementProps;
         }
     }

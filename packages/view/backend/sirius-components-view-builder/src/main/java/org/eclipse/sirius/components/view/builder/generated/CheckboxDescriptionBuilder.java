@@ -61,6 +61,16 @@ public class CheckboxDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getCheckboxDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

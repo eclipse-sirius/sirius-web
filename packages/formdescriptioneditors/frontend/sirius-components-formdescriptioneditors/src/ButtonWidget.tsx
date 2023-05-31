@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,9 @@
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { ButtonStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ButtonWidgetState } from './ButtonWidget.types';
 import { ButtonWidgetProps } from './WidgetEntry.types';
@@ -41,6 +42,11 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   },
   selected: {
     color: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -131,9 +137,12 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
 
   return (
     <div>
-      <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
-        {widget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <Button
         data-testid={widget.label}
         classes={{ root: classes.style }}

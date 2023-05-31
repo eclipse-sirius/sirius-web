@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
@@ -90,6 +91,8 @@ public final class MultiSelect extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -129,16 +132,22 @@ public final class MultiSelect extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public MultiSelect build() {
             MultiSelect select = new MultiSelect();
             select.id = Objects.requireNonNull(this.id);
             select.label = Objects.requireNonNull(this.label);
-            select.iconURL = this.iconURL;
+            select.iconURL = this.iconURL; // Optional on purpose
             select.options = Objects.requireNonNull(this.options);
             select.values = this.values;
             select.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);
             select.style = this.style; // Optional on purpose
             select.diagnostics = Objects.requireNonNull(this.diagnostics);
+            select.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return select;
         }
     }

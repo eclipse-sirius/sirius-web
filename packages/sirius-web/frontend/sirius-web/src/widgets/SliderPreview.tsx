@@ -15,6 +15,7 @@ import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import ExtensionIcon from '@material-ui/icons/Extension';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { GQLSlider } from './SliderFragment.types';
 
@@ -25,6 +26,11 @@ const useStyles = makeStyles<Theme, SliderWidgetStyleProps>((theme) => ({
   },
   selected: {
     color: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -49,9 +55,12 @@ export const SliderPreview = ({ widget, selection }: SliderWidgetProps) => {
 
   return (
     <div>
-      <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {widget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <Slider
         ref={ref}
         onFocus={() => setSelected(true)}

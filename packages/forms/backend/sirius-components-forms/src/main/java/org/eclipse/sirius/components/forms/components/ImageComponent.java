@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,9 @@ public class ImageComponent implements IComponent {
         }
         if (maxWidth != null) {
             imageElementPropsBuilder.maxWidth(maxWidth);
+        }
+        if (imageDescription.getHelpTextProvider() != null) {
+            imageElementPropsBuilder.helpTextProvider(() -> imageDescription.getHelpTextProvider().apply(variableManager));
         }
         return new Element(ImageElementProps.TYPE, imageElementPropsBuilder.build());
         // @formatter:on

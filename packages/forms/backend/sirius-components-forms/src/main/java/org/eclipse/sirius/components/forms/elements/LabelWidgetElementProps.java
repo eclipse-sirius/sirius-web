@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.forms.elements;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
@@ -34,6 +35,8 @@ public final class LabelWidgetElementProps implements IProps {
 
     private String label;
 
+    private Supplier<String> helpTextProvider;
+
     private String value;
 
     private LabelWidgetStyle style;
@@ -50,6 +53,10 @@ public final class LabelWidgetElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public String getValue() {
@@ -88,6 +95,8 @@ public final class LabelWidgetElementProps implements IProps {
 
         private String value;
 
+        private Supplier<String> helpTextProvider;
+
         private LabelWidgetStyle style;
 
         private List<Element> children;
@@ -116,6 +125,11 @@ public final class LabelWidgetElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public LabelWidgetElementProps build() {
             LabelWidgetElementProps labelWidgetElementProps = new LabelWidgetElementProps();
             labelWidgetElementProps.id = Objects.requireNonNull(this.id);
@@ -123,6 +137,7 @@ public final class LabelWidgetElementProps implements IProps {
             labelWidgetElementProps.value = Objects.requireNonNull(this.value);
             labelWidgetElementProps.style = this.style; // Optional on purpose
             labelWidgetElementProps.children = Objects.requireNonNull(this.children);
+            labelWidgetElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return labelWidgetElementProps;
         }
     }

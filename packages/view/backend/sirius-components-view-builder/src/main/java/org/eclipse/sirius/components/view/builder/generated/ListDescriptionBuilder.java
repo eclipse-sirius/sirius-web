@@ -61,6 +61,16 @@ public class ListDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public ListDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getListDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

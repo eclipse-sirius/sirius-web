@@ -61,6 +61,16 @@ public class ImageDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public ImageDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getImageDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for UrlExpression.
      *
      * @generated

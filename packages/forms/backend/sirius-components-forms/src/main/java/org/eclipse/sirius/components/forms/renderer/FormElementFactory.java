@@ -157,6 +157,7 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             builder.style(props.getStyle());
         }
+
         return builder.build();
     }
 
@@ -172,6 +173,7 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             builder.style(props.getStyle());
         }
+
         return builder.build();
     }
 
@@ -226,11 +228,7 @@ public class FormElementFactory implements IElementFactory {
                 .map(Group.class::cast)
                 .toList();
 
-        return Page.newPage(props.getId())
-                .label(props.getLabel())
-                .toolbarActions(toolbarActions)
-                .groups(groups)
-                .build();
+        return Page.newPage(props.getId()).label(props.getLabel()).toolbarActions(toolbarActions).groups(groups).build();
     }
 
     private Group instantiateGroup(GroupElementProps props, List<Object> children) {
@@ -271,7 +269,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             checkboxBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            checkboxBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return checkboxBuilder.build();
         // @formatter:on
     }
@@ -291,6 +291,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             listBuilder.style(props.getStyle());
         }
+        if (props.getHelpTextProvider() != null) {
+            listBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return listBuilder.build();
     }
 
@@ -309,6 +312,9 @@ public class FormElementFactory implements IElementFactory {
         }
         if (props.getStyle() != null) {
             radioBuilder.style(props.getStyle());
+        }
+        if (props.getHelpTextProvider() != null) {
+            radioBuilder.helpTextProvider(props.getHelpTextProvider());
         }
 
         return radioBuilder.build();
@@ -332,7 +338,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             selectBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            selectBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return selectBuilder.build();
         // @formatter:on
     }
@@ -354,7 +362,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             multiSelectBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            multiSelectBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return multiSelectBuilder.build();
         // @formatter:on
     }
@@ -378,7 +388,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             textareaBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            textareaBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return textareaBuilder.build();
         // @formatter:on
     }
@@ -403,7 +415,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             textfieldBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            textfieldBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return textfieldBuilder.build();
     }
 
@@ -432,6 +446,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getIconURL() != null) {
             linkbuilder.iconURL(props.getIconURL());
         }
+        if (props.getHelpTextProvider() != null) {
+            linkbuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return linkbuilder.build();
     }
 
@@ -456,7 +473,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             buttonBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            buttonBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return buttonBuilder.build();
     }
 
@@ -481,7 +500,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             buttonBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            buttonBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return buttonBuilder.build();
     }
 
@@ -497,7 +518,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             labelBuilder.style(props.getStyle());
         }
-
+        if (props.getHelpTextProvider() != null) {
+            labelBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return labelBuilder.build();
         // @formatter:on
     }
@@ -519,6 +542,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getIconURL() != null) {
             chartBuilder.iconURL(props.getIconURL());
         }
+        if (props.getHelpTextProvider() != null) {
+            chartBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return chartBuilder.build();
     }
 
@@ -531,29 +557,35 @@ public class FormElementFactory implements IElementFactory {
                 .map(AbstractWidget.class::cast)
                 .toList();
 
-        return FlexboxContainer.newFlexboxContainer(props.getId())
+        FlexboxContainer.Builder builder = FlexboxContainer.newFlexboxContainer(props.getId())
                 .label(props.getLabel())
                 .flexDirection(props.getFlexDirection().toString())
                 .flexWrap("wrap")
                 .flexGrow(1)
                 .children(widgets)
-                .diagnostics(diagnostics)
-                .build();
-        // @formatter:on
+                .diagnostics(diagnostics);
+
+        if (props.getHelpTextProvider() != null) {
+            builder.helpTextProvider(props.getHelpTextProvider());
+        }
+        return builder.build();
     }
 
     private TreeWidget instantiateTree(TreeElementProps props, List<Object> children) {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
         // @formatter:off
-        return TreeWidget.newTreeWidget(props.getId())
+        TreeWidget.Builder builder = TreeWidget.newTreeWidget(props.getId())
                 .label(props.getLabel())
                 .iconURL(props.getIconURL())
                 .nodes(props.getNodes())
                 .expandedNodesIds(props.getExpandedNodesIds())
-                .diagnostics(diagnostics)
-                .build();
+                .diagnostics(diagnostics);
         // @formatter:on
+        if (props.getHelpTextProvider() != null) {
+            builder.helpTextProvider(props.getHelpTextProvider());
+        }
+        return builder.build();
     }
 
     private Image instantiateImage(ImageElementProps props, List<Object> children) {
@@ -572,6 +604,9 @@ public class FormElementFactory implements IElementFactory {
         if (props.getMaxWidth() != null) {
             imagebuilder.maxWidth(props.getMaxWidth());
         }
+        if (props.getHelpTextProvider() != null) {
+            imagebuilder.helpTextProvider(props.getHelpTextProvider());
+        }
         return imagebuilder.build();
     }
 
@@ -586,6 +621,9 @@ public class FormElementFactory implements IElementFactory {
                 .diagnostics(diagnostics);
         if (props.getIconURL() != null) {
             builder.iconURL(props.getIconURL());
+        }
+        if (props.getHelpTextProvider() != null) {
+            builder.helpTextProvider(props.getHelpTextProvider());
         }
         return builder.build();
         // @formatter:on

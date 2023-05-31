@@ -61,6 +61,16 @@ public class LinkDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public LinkDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getLinkDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

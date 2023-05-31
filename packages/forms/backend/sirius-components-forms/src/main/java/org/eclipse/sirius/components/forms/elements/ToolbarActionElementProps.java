@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,8 @@ public final class ToolbarActionElementProps implements IProps {
 
     private String iconURL;
 
+    private Supplier<String> helpTextProvider;
+
     private String toolbarActionLabel;
 
     private String imageURL;
@@ -62,6 +64,10 @@ public final class ToolbarActionElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public String getToolbarActionLabel() {
@@ -107,6 +113,8 @@ public final class ToolbarActionElementProps implements IProps {
         private String label;
 
         private String iconURL;
+
+        private Supplier<String> helpTextProvider;
 
         private String toolbarActionLabel;
 
@@ -157,6 +165,11 @@ public final class ToolbarActionElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public ToolbarActionElementProps build() {
             ToolbarActionElementProps buttonElementProps = new ToolbarActionElementProps();
             buttonElementProps.id = Objects.requireNonNull(this.id);
@@ -167,6 +180,7 @@ public final class ToolbarActionElementProps implements IProps {
             buttonElementProps.pushButtonHandler = Objects.requireNonNull(this.pushButtonHandler);
             buttonElementProps.style = this.style; // Optional on purpose
             buttonElementProps.children = Objects.requireNonNull(this.children);
+            buttonElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return buttonElementProps;
         }
     }

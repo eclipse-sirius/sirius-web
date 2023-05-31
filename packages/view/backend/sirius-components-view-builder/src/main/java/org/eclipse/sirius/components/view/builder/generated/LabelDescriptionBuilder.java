@@ -61,6 +61,16 @@ public class LabelDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public LabelDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getLabelDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

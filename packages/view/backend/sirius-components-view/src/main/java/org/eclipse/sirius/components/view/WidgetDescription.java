@@ -77,4 +77,27 @@ public interface WidgetDescription extends EObject {
      */
     void setLabelExpression(String value);
 
+    /**
+     * Returns the value of the '<em><b>Help Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Help Expression</em>' attribute.
+     * @see #setHelpExpression(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getWidgetDescription_HelpExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getHelpExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.WidgetDescription#getHelpExpression <em>Help
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Help Expression</em>' attribute.
+     * @see #getHelpExpression()
+     * @generated
+     */
+    void setHelpExpression(String value);
+
 } // WidgetDescription

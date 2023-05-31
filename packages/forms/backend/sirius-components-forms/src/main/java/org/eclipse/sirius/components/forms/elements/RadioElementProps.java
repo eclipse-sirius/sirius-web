@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.RadioOption;
@@ -39,6 +40,8 @@ public final class RadioElementProps implements IProps {
 
     private String iconURL;
 
+    private Supplier<String> helpTextProvider;
+
     private List<RadioOption> options;
 
     private Function<String, IStatus> newValueHandler;
@@ -61,6 +64,10 @@ public final class RadioElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public List<RadioOption> getOptions() {
@@ -102,6 +109,8 @@ public final class RadioElementProps implements IProps {
         private String label;
 
         private String iconURL;
+
+        private Supplier<String> helpTextProvider;
 
         private List<RadioOption> options;
 
@@ -145,6 +154,11 @@ public final class RadioElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public RadioElementProps build() {
             RadioElementProps radioElementProps = new RadioElementProps();
             radioElementProps.id = Objects.requireNonNull(this.id);
@@ -154,6 +168,7 @@ public final class RadioElementProps implements IProps {
             radioElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             radioElementProps.style = this.style; // Optional on purpose
             radioElementProps.children = Objects.requireNonNull(this.children);
+            radioElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return radioElementProps;
         }
     }

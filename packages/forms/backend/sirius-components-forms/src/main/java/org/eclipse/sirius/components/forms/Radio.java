@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
@@ -81,6 +82,8 @@ public final class Radio extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -115,15 +118,21 @@ public final class Radio extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public Radio build() {
             Radio radio = new Radio();
             radio.id = Objects.requireNonNull(this.id);
             radio.label = Objects.requireNonNull(this.label);
-            radio.iconURL = this.iconURL;
+            radio.iconURL = this.iconURL; // Optional on purpose
             radio.options = Objects.requireNonNull(this.options);
             radio.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             radio.style = this.style; // Optional on purpose
             radio.diagnostics = Objects.requireNonNull(this.diagnostics);
+            radio.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return radio;
         }
     }

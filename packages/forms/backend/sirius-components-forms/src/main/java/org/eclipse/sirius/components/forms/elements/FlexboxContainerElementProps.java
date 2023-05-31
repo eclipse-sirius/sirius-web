@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.forms.elements;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.FlexDirection;
@@ -34,6 +35,8 @@ public final class FlexboxContainerElementProps implements IProps {
 
     private String label;
 
+    private Supplier<String> helpTextProvider;
+
     private FlexDirection flexDirection;
 
     private List<Element> children;
@@ -48,6 +51,10 @@ public final class FlexboxContainerElementProps implements IProps {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public FlexDirection getFlexDirection() {
@@ -80,6 +87,8 @@ public final class FlexboxContainerElementProps implements IProps {
 
         private String label;
 
+        private Supplier<String> helpTextProvider;
+
         private FlexDirection flexDirection;
 
         private List<Element> children;
@@ -103,12 +112,18 @@ public final class FlexboxContainerElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public FlexboxContainerElementProps build() {
             FlexboxContainerElementProps flexboxContainerElementProps = new FlexboxContainerElementProps();
             flexboxContainerElementProps.id = Objects.requireNonNull(this.id);
             flexboxContainerElementProps.label = Objects.requireNonNull(this.label);
             flexboxContainerElementProps.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainerElementProps.children = Objects.requireNonNull(this.children);
+            flexboxContainerElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return flexboxContainerElementProps;
         }
     }

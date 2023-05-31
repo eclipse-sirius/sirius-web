@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import ImageIcon from '@material-ui/icons/Image';
 import { useEffect, useRef, useState } from 'react';
 import { ListWidgetProps } from './WidgetEntry.types';
@@ -39,6 +40,11 @@ const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
   },
   selected: {
     color: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -67,9 +73,12 @@ export const ListWidget = ({ widget, selection }: ListWidgetProps) => {
 
   return (
     <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
-      <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {widget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <Table size="small">
         <TableBody>
           <TableRow>

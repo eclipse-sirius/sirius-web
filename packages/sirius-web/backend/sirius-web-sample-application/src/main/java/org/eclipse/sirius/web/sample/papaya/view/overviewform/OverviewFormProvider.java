@@ -38,6 +38,13 @@ public class OverviewFormProvider implements IRepresentationDescriptionProvider 
         groupDescription.setSemanticCandidatesExpression("aql:self");
         groupDescription.setLabelExpression("Root");
 
+        var textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
+        textfieldDescription.setName("Textfield");
+        textfieldDescription.setLabelExpression("Root");
+        textfieldDescription.setValueExpression("root element");
+        textfieldDescription.setHelpExpression("aql:'This is a ' + self.eClass().name + ' element'");
+        groupDescription.getWidgets().add(textfieldDescription);
+
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);
 

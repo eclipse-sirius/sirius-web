@@ -61,6 +61,16 @@ public class FlexboxContainerDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public FlexboxContainerDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getFlexboxContainerDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Children.
      *
      * @generated

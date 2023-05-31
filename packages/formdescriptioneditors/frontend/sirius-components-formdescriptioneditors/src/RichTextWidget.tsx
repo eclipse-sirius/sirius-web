@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,14 @@
  *******************************************************************************/
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import SubjectIcon from '@material-ui/icons/Subject';
 import TitleIcon from '@material-ui/icons/Title';
@@ -57,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 }));
 
 const StyledToggleButtonGroup = withStyles((theme) => ({
@@ -88,9 +94,12 @@ export const RichTextWidget = ({ widget, selection }: RichTextWidgetProps) => {
 
   return (
     <div>
-      <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {widget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
         <Paper elevation={0} className={classes.paper}>
           <StyledToggleButtonGroup size="small">

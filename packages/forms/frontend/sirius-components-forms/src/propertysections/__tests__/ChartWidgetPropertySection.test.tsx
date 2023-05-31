@@ -137,6 +137,7 @@ const defaultPieChartWidget: GQLChartWidget = {
   id: 'id',
   label: 'myPieChart',
   iconURL: null,
+  hasHelpText: false,
   chart: defaultPieChart,
   __typename: 'ChartWidget',
   diagnostics: [],
@@ -145,6 +146,7 @@ const defaultPieChartWidgetWithStyle: GQLChartWidget = {
   id: 'id',
   label: 'myPieChart',
   iconURL: null,
+  hasHelpText: false,
   chart: defaultPieChartWithStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
@@ -153,6 +155,7 @@ const defaultPieChartWidgetWithEmptyStyle: GQLChartWidget = {
   id: 'id',
   label: 'myPieChart',
   iconURL: null,
+  hasHelpText: false,
   chart: defaultPieChartWithEmptyStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
@@ -162,6 +165,7 @@ const defaultBarChartWidget: GQLChartWidget = {
   id: 'id',
   label: 'myBarChart',
   iconURL: null,
+  hasHelpText: false,
   chart: defaultBarChart,
   __typename: 'ChartWidget',
   diagnostics: [],
@@ -171,6 +175,7 @@ const defaultBarChartWidgetWithStyle: GQLChartWidget = {
   id: 'id',
   label: 'myBarChart',
   iconURL: null,
+  hasHelpText: false,
   chart: defaultBarChartWithStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
@@ -180,6 +185,7 @@ const defaultBarChartWidgetWithEmptyStyle: GQLChartWidget = {
   id: 'id',
   label: 'myBarChart',
   iconURL: null,
+  hasHelpText: false,
   chart: defaultBarChartWithEmptyStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
@@ -188,7 +194,12 @@ const defaultBarChartWidgetWithEmptyStyle: GQLChartWidget = {
 test('render pie-chart widget', () => {
   const { container } = render(
     <MockedProvider>
-      <ChartWidgetPropertySection widget={defaultPieChartWidget} subscribers={[]} />
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultPieChartWidget}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -197,7 +208,12 @@ test('render pie-chart widget', () => {
 test('render pie-chart widget with style', () => {
   const { container } = render(
     <MockedProvider>
-      <ChartWidgetPropertySection widget={defaultPieChartWidgetWithStyle} subscribers={[]} />
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultPieChartWidgetWithStyle}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -206,7 +222,12 @@ test('render pie-chart widget with style', () => {
 test('render pie-chart widget with empty style', () => {
   const { container } = render(
     <MockedProvider>
-      <ChartWidgetPropertySection widget={defaultPieChartWidgetWithEmptyStyle} subscribers={[]} />
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultPieChartWidgetWithEmptyStyle}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -215,7 +236,12 @@ test('render pie-chart widget with empty style', () => {
 test('render the bar-chart widget', () => {
   const { container } = render(
     <MockedProvider>
-      <ChartWidgetPropertySection widget={defaultBarChartWidget} subscribers={[]} />
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultBarChartWidget}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -224,7 +250,12 @@ test('render the bar-chart widget', () => {
 test('render the bar-chart widget with style', () => {
   const { container } = render(
     <MockedProvider>
-      <ChartWidgetPropertySection widget={defaultBarChartWidgetWithStyle} subscribers={[]} />
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultBarChartWidgetWithStyle}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -233,7 +264,39 @@ test('render the bar-chart widget with style', () => {
 test('render the bar-chart widget with empty style', () => {
   const { container } = render(
     <MockedProvider>
-      <ChartWidgetPropertySection widget={defaultBarChartWidgetWithEmptyStyle} subscribers={[]} />
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultBarChartWidgetWithEmptyStyle}
+        subscribers={[]}
+      />
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('render pie-chart widget with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={{ ...defaultPieChartWidgetWithEmptyStyle, hasHelpText: true }}
+        subscribers={[]}
+      />
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+test('render the bar-chart widget with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ChartWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={{ ...defaultBarChartWidgetWithEmptyStyle, hasHelpText: true }}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();

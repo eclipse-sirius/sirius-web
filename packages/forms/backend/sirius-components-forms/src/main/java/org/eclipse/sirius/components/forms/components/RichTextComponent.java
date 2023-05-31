@@ -65,6 +65,9 @@ public class RichTextComponent implements IComponent {
         if (iconURL != null) {
             richTextElementPropsBuilder.iconURL(iconURL);
         }
+        if (richTextDescription.getHelpTextProvider() != null) {
+            richTextElementPropsBuilder.helpTextProvider(() -> richTextDescription.getHelpTextProvider().apply(variableManager));
+        }
         RichTextElementProps richTextElementProps = richTextElementPropsBuilder.build();
 
         return new Element(RichTextElementProps.TYPE, richTextElementProps);

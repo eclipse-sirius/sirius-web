@@ -45,5 +45,15 @@ public abstract class WidgetDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public WidgetDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getWidgetDescription().setHelpExpression(value);
+        return this;
+    }
+
 }
 

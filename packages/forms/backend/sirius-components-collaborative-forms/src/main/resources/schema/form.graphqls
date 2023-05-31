@@ -76,13 +76,15 @@ interface Widget {
   label: String!
   iconURL: String
   diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
 }
 
 type Checkbox implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   value: Boolean!
   style: CheckboxStyle
 }
@@ -93,9 +95,10 @@ type CheckboxStyle {
 
 type List implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   items: [ListItem!]!
   style: ListStyle
 }
@@ -108,6 +111,7 @@ type ListStyle {
   underline: Boolean
   strikeThrough: Boolean
 }
+
 type ListItem {
   id: ID!
   label: String!
@@ -118,9 +122,10 @@ type ListItem {
 
 type MultiSelect implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   options: [SelectOption!]!
   values: [String]
   style: MultiSelectStyle
@@ -138,9 +143,10 @@ type MultiSelectStyle {
 
 type Radio implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   options: [RadioOption!]!
   style: RadioStyle
 }
@@ -162,9 +168,10 @@ type RadioStyle {
 
 type Select implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   options: [SelectOption!]!
   value: String
   style: SelectStyle
@@ -187,9 +194,10 @@ type SelectStyle {
 
 type Textarea implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   value: String!
   style: TextareaStyle
   supportsCompletion: Boolean
@@ -207,9 +215,10 @@ type TextareaStyle {
 
 type Textfield implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   value: String!
   style: TextfieldStyle
   supportsCompletion: Boolean
@@ -227,9 +236,10 @@ type TextfieldStyle {
 
 type LabelWidget implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   value: String!
   style: LabelWidgetStyle
 }
@@ -245,9 +255,10 @@ type LabelWidgetStyle {
 
 type Link implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   url: String!
   style: LinkStyle
 }
@@ -263,11 +274,12 @@ type LinkStyle {
 
 type Button implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   buttonLabel: String
   imageURL: String
-  iconURL: String
   style: ButtonStyle
 }
 
@@ -283,11 +295,12 @@ type ButtonStyle {
 
 type ToolbarAction implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
+  iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   buttonLabel: String
   imageURL: String
-  iconURL: String
   style: ButtonStyle
 }
 
@@ -295,17 +308,19 @@ union Chart = BarChart | PieChart
 
 type ChartWidget implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   chart: Chart!
 }
 
 type FlexboxContainer implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   flexDirection: String!
   flexWrap: String!
   flexGrow: Int!
@@ -314,9 +329,10 @@ type FlexboxContainer implements Widget {
 
 type TreeWidget implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   nodes: [TreeNode!]!
   expandedNodesIds: [ID!]!
 }
@@ -332,18 +348,20 @@ type TreeNode {
 
 type Image implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   url: String!
   maxWidth: String
 }
 
 type RichText implements Widget {
   id: ID!
-  diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
   value: String!
 }
 
@@ -351,6 +369,7 @@ type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
   completionProposals(widgetId: ID!, currentText: String!, cursorPosition: Int!): [CompletionProposal!]!
+  helpText(widgetId: ID!): String
 }
 
 type CompletionProposal {

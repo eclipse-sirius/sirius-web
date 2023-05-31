@@ -17,9 +17,9 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTextfield } from '../../form/FormEventFragments.types';
 import {
+  TextfieldPropertySection,
   editTextfieldMutation,
   getCompletionProposalsQuery,
-  TextfieldPropertySection,
   updateWidgetFocusMutation,
 } from '../../propertysections/TextfieldPropertySection';
 import {
@@ -43,6 +43,7 @@ const defaultTextField: GQLTextfield = {
   id: 'textfieldId',
   label: 'Name:',
   iconURL: null,
+  hasHelpText: false,
   stringValue: 'Composite Processor',
   supportsCompletion: false,
   diagnostics: [],
@@ -54,6 +55,7 @@ const textFieldWithStyle: GQLTextfield = {
   id: 'textfieldId',
   label: 'Name:',
   iconURL: null,
+  hasHelpText: false,
   stringValue: 'Composite Processor',
   supportsCompletion: false,
   diagnostics: [],
@@ -73,6 +75,7 @@ const textFieldWithEmptyStyle: GQLTextfield = {
   id: 'textfieldId',
   label: 'Name:',
   iconURL: null,
+  hasHelpText: false,
   stringValue: 'Composite Processor',
   supportsCompletion: false,
   diagnostics: [],
@@ -340,6 +343,7 @@ test('should support completion if configured', async () => {
     id: 'textfieldId',
     label: 'Text:',
     iconURL: null,
+    hasHelpText: false,
     stringValue: 'fo',
     supportsCompletion: true,
     diagnostics: [],
@@ -490,6 +494,7 @@ test('should not trigger completion request if not configured', async () => {
     id: 'textfieldId',
     label: 'Text:',
     iconURL: null,
+    hasHelpText: false,
     stringValue: 'fo',
     supportsCompletion: false,
     diagnostics: [],
@@ -576,4 +581,21 @@ test('should not trigger completion request if not configured', async () => {
       expect(screen.queryByTestId('completion-proposals')).toBeNull();
     });
   });
+});
+
+test('should render the textfield with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={{ ...defaultTextField, hasHelpText: true }}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
 });

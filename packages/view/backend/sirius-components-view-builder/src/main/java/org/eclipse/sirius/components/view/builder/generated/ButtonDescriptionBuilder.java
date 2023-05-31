@@ -61,6 +61,16 @@ public class ButtonDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public ButtonDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getButtonDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ButtonLabelExpression.
      *
      * @generated

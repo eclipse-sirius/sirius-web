@@ -61,6 +61,16 @@ public class MultiSelectDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getMultiSelectDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

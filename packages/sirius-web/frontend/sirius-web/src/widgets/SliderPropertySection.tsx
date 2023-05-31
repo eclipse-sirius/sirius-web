@@ -154,7 +154,13 @@ export const SliderPropertySection = ({
 
   return (
     <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} data-testid={widget.label} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        data-testid={widget.label}
+      />
       <Slider
         data-testid={widget.label}
         disabled={readOnly}

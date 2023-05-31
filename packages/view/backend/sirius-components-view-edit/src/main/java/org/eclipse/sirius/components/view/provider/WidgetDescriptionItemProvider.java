@@ -61,6 +61,7 @@ public class WidgetDescriptionItemProvider extends ItemProviderAdapter
 
             this.addNamePropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
+            this.addHelpExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -86,6 +87,18 @@ public class WidgetDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_WidgetDescription_labelExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_labelExpression_feature", "_UI_WidgetDescription_type"),
                 ViewPackage.Literals.WIDGET_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Help Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addHelpExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetDescription_helpExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_helpExpression_feature", "_UI_WidgetDescription_type"),
+                ViewPackage.Literals.WIDGET_DESCRIPTION__HELP_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -123,6 +136,7 @@ public class WidgetDescriptionItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(WidgetDescription.class)) {
             case ViewPackage.WIDGET_DESCRIPTION__NAME:
             case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
+            case ViewPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

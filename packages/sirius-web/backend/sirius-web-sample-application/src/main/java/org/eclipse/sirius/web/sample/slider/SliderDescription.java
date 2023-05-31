@@ -91,11 +91,14 @@ public final class SliderDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
         private final String id;
+
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, String> helpTextProvider;
 
         private Function<VariableManager, Integer> minValueProvider;
 
@@ -104,9 +107,11 @@ public final class SliderDescription extends AbstractWidgetDescription {
         private Function<VariableManager, Integer> currentValueProvider;
 
         private Function<VariableManager, IStatus> newValueHandler;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
+
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
             return this;
@@ -119,6 +124,11 @@ public final class SliderDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
             return this;
         }
 
@@ -147,11 +157,12 @@ public final class SliderDescription extends AbstractWidgetDescription {
             sliderDescription.id = Objects.requireNonNull(this.id);
             sliderDescription.idProvider = Objects.requireNonNull(this.idProvider);
             sliderDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            sliderDescription.iconURLProvider = this.iconURLProvider;
+            sliderDescription.iconURLProvider = this.iconURLProvider; // Optional on purpose
             sliderDescription.minValueProvider = Objects.requireNonNull(this.minValueProvider);
             sliderDescription.maxValueProvider = Objects.requireNonNull(this.maxValueProvider);
             sliderDescription.currentValueProvider = Objects.requireNonNull(this.currentValueProvider);
             sliderDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
+            sliderDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return sliderDescription;
         }
     }

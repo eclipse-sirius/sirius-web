@@ -61,6 +61,16 @@ public class TextfieldDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getTextfieldDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

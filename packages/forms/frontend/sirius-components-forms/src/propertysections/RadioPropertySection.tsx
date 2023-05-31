@@ -17,10 +17,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditRadioInput,
@@ -175,7 +176,12 @@ export const RadioPropertySection = ({
   const selectedOption = widget.options.find((option) => option.selected);
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <RadioGroup
         classes={{ root: classes.radioGroupRoot }}
         aria-label={widget.label}

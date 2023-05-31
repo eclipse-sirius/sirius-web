@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,6 +88,8 @@ public final class LabelDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, LabelWidgetStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
@@ -129,6 +131,11 @@ public final class LabelDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public LabelDescription build() {
             LabelDescription textfieldDescription = new LabelDescription();
             textfieldDescription.id = Objects.requireNonNull(this.id);
@@ -139,6 +146,7 @@ public final class LabelDescription extends AbstractWidgetDescription {
             textfieldDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             textfieldDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             textfieldDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            textfieldDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return textfieldDescription;
         }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,20 @@
  *******************************************************************************/
 import { PieChart, PieChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
 import { GQLPieChart } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { PieChartWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles((theme) => ({
   selected: {
     color: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -70,9 +76,13 @@ export const PieChartWidget = ({ widget, selection }: PieChartWidgetProps) => {
       onBlur={() => setSelected(false)}
       ref={ref}
       tabIndex={0}>
-      <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {pieChartWidget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {pieChartWidget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
+
       <PieChart width={300} height={300} chart={chart} />
     </div>
   );

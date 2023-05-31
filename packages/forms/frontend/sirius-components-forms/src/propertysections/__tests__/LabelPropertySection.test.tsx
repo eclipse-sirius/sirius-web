@@ -24,6 +24,7 @@ const defaultLabel: GQLLabelWidget = {
   label: 'myLabel',
   stringValue: 'theLabelValue',
   iconURL: null,
+  hasHelpText: false,
   style: {
     color: null,
     bold: null,
@@ -41,6 +42,7 @@ const defaultLabelWithStyle: GQLLabelWidget = {
   label: 'myLabel',
   stringValue: 'theLabelValue',
   iconURL: null,
+  hasHelpText: false,
   style: {
     color: 'RebeccaPurple',
     bold: true,
@@ -57,7 +59,12 @@ const defaultLabelWithStyle: GQLLabelWidget = {
 test('render label widget', () => {
   const { container } = render(
     <MockedProvider>
-      <LabelWidgetPropertySection widget={defaultLabel} subscribers={[]} />
+      <LabelWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultLabel}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -66,7 +73,26 @@ test('render label widget', () => {
 test('render label widget with style', () => {
   const { container } = render(
     <MockedProvider>
-      <LabelWidgetPropertySection widget={defaultLabelWithStyle} subscribers={[]} />
+      <LabelWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={defaultLabelWithStyle}
+        subscribers={[]}
+      />
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('render label widget with help hint', () => {
+  const { container } = render(
+    <MockedProvider>
+      <LabelWidgetPropertySection
+        editingContextId="editingContextId"
+        formId="formId"
+        widget={{ ...defaultLabel, hasHelpText: true }}
+        subscribers={[]}
+      />
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();

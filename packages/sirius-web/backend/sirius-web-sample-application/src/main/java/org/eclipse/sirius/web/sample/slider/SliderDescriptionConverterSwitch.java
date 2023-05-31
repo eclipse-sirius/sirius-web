@@ -68,16 +68,17 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
         Function<VariableManager, Integer> currentValueProvider = this.getIntValueProvider(viewSliderDescription.getCurrentValueExpression());
         Function<VariableManager, IStatus> newValueHandler = this.getOperationsHandler(viewSliderDescription.getBody());
 
-        // @formatter:off
-        return org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(descriptionId)
+        var builder = org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .minValueProvider(minValueProvider)
                 .maxValueProvider(maxValueProvider)
                 .currentValueProvider(currentValueProvider)
-                .newValueHandler(newValueHandler)
-                .build();
-        // @formatter:on
+                .newValueHandler(newValueHandler);
+        if (viewSliderDescription.getHelpExpression() != null && !viewSliderDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewSliderDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 
     private Function<VariableManager, Integer> getIntValueProvider(String intValueExpression) {

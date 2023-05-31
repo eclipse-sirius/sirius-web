@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -137,6 +137,8 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -206,6 +208,11 @@ public final class TreeDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -222,6 +229,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
             treeDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             treeDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            treeDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return treeDescription;
         }
     }

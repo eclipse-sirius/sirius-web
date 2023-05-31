@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { getTextDecorationLineValue, LabelStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { LabelWidgetProps } from './WidgetEntry.types';
 
@@ -26,6 +27,11 @@ const useStyles = makeStyles<Theme, LabelStyleProps>((theme) => ({
   },
   selected: {
     color: theme.palette.primary.main,
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -55,9 +61,12 @@ export const LabelWidget = ({ widget, selection }: LabelWidgetProps) => {
 
   return (
     <div>
-      <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {widget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <Typography
         ref={ref}
         onFocus={() => setSelected(true)}

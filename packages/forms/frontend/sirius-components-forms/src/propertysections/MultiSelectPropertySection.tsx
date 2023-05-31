@@ -18,9 +18,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
   GQLEditMultiSelectMutationData,
   GQLEditMultiSelectPayload,
@@ -32,6 +31,7 @@ import {
   MultiSelectStyleProps,
 } from './MultiSelectPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<Theme, MultiSelectStyleProps>(() => ({
   style: {
@@ -182,7 +182,12 @@ export const MultiSelectPropertySection = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <Select
         value={widget.values}
         onChange={onChange}

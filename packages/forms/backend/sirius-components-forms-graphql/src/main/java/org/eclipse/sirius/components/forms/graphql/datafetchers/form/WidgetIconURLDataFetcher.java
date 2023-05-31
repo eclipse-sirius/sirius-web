@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 
@@ -33,24 +35,42 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
 
     private static final String ICON_URL_FIELD = "iconURL";
 
+    private static final List<String> CORE_WIDGET_TYPES = List.of(
+            "Button",
+            "ChartWidget",
+            "Checkbox",
+            "FlexboxContainer",
+            "Image",
+            "LabelWidget",
+            "Link",
+            "List",
+            "MultiSelect",
+            "Radio",
+            "RichText",
+            "Select",
+            "Textarea",
+            "Textfield",
+            "ToolbarAction",
+            "TreeWidget"
+    );
+
+
+    private final List<FieldCoordinates> allFieldCoordinates;
+
+    public WidgetIconURLDataFetcher(List<IWidgetDescriptor> customWidgetDescriptors) {
+        this.allFieldCoordinates = new ArrayList<>();
+        CORE_WIDGET_TYPES.stream()
+            .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
+            .forEach(this.allFieldCoordinates::add);
+        customWidgetDescriptors.stream()
+            .map(IWidgetDescriptor::getWidgetType)
+            .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
+            .forEach(this.allFieldCoordinates::add);
+    }
+
     @Override
     public List<FieldCoordinates> getFieldCoordinates() {
-        // @formatter:off
-        var widgetTypes = List.of(
-                "ChartWidget",
-                "Checkbox",
-                "FlexboxContainer",
-                "Link",
-                "List",
-                "MultiSelect",
-                "Radio",
-                "Select",
-                "Textarea",
-                "Textfield",
-                "TreeWidget"
-        );
-        return widgetTypes.stream().map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD)).toList();
-        // @formatter:on
+        return this.allFieldCoordinates;
     }
 
     @Override

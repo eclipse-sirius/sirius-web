@@ -122,6 +122,7 @@ export interface GQLWidget {
   iconURL: string | null;
   __typename: string;
   diagnostics: GQLDiagnostic[];
+  hasHelpText: boolean;
 }
 
 export interface GQLDiagnostic {

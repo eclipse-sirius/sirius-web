@@ -22,7 +22,9 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -33,6 +35,8 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.sample.configuration.StereotypeDescriptionRegistryConfigurer;
@@ -294,6 +298,41 @@ public class ViewFormIntegrationTests extends AbstractIntegrationTests {
         }
     }
 
+    private Optional<String> getHelpText(String editingContextId, String formId, String widgetId) {
+        var getHelpTextQuery = """
+                query helpText($editingContextId: ID!, $formId: ID!, $widgetId: ID!) {
+                    viewer {
+                      editingContext(editingContextId: $editingContextId) {
+                        representation(representationId: $formId) {
+                          description {
+                            ... on FormDescription {
+                              helpText(widgetId: $widgetId)
+                            }
+                          }
+                        }
+                      }
+                    }
+                }
+                """;
+
+        var getHelpTextExecutionInput = ExecutionInput.newExecutionInput()
+                .query(getHelpTextQuery)
+                .variables(Map.of("editingContextId", editingContextId, "formId", formId, "widgetId", widgetId))
+                .build();
+        var getHelpTextExecutionResult = this.graphQL.execute(getHelpTextExecutionInput);
+        assertThat(getHelpTextExecutionResult.getErrors()).isEmpty();
+
+        String helpText = null;
+        try {
+            var jsonResult = this.objectMapper.writeValueAsString(getHelpTextExecutionResult.toSpecification());
+            helpText = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representation.description.helpText");
+            return Optional.of(helpText);
+        } catch (JsonProcessingException exception) {
+            fail(exception.getMessage());
+        }
+        return Optional.empty();
+    }
+
     @Test
     @DisplayName("Given a domain and a view, when a document and a representation are created, then we can subscribe to the representation")
     public void givenDomainAndViewWhenDocumentAndRepresentationAreCreatedThenWeCanSubscribeToTheRepresentation() {
@@ -313,5 +352,32 @@ public class ViewFormIntegrationTests extends AbstractIntegrationTests {
                 .expectNextMatches(isEmptyFormRefreshedEventPayload)
                 .thenCancel()
                 .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    @DisplayName("Given a rendered form, we can retrieve the dynamically computed help text of a widget")
+    public void givenRenderedRormWeCanRetrieveTheDynamicallyComputedHelpTextOfAWidget() {
+        var configuration = new FormConfiguration(this.representationId.toString());
+        var input = new FormEventInput(UUID.randomUUID(), this.projectId.toString(), this.representationId.toString());
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), IFormEventProcessor.class, configuration, input);
+
+        AtomicReference<String> widgetId = new AtomicReference<>();
+        Predicate<IPayload> isEmptyFormRefreshedEventPayload = payload -> {
+            if (payload instanceof FormRefreshedEventPayload formRefreshedEventPayload) {
+                var form = formRefreshedEventPayload.form();
+                AbstractWidget firstWidget = form.getPages().get(0).getGroups().get(0).getWidgets().get(0);
+                widgetId.set(firstWidget.getId());
+                return firstWidget instanceof Textfield textField && textField.getHelpTextProvider() != null;
+            }
+            return false;
+        };
+
+        StepVerifier.create(payloadFlux)
+                .expectNextMatches(isEmptyFormRefreshedEventPayload)
+                .thenCancel()
+                .verify(Duration.ofSeconds(5));
+
+        var optionalHelpText = this.getHelpText(this.projectId.toString(), this.representationId.toString(), widgetId.get());
+        assertThat(optionalHelpText).contains("This is a Root element");
     }
 }

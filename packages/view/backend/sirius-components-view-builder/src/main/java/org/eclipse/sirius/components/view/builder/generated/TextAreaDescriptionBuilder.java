@@ -61,6 +61,16 @@ public class TextAreaDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public TextAreaDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getTextAreaDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { TreeItem as MuiTreeItem } from '@material-ui/lab';
@@ -64,7 +64,13 @@ const TreeItem = ({ node, nodes, setSelection }: TreeItemProps) => {
   );
 };
 
-export const TreePropertySection = ({ widget, setSelection, subscribers }: TreePropertySectionProps) => {
+export const TreePropertySection = ({
+  editingContextId,
+  formId,
+  widget,
+  setSelection,
+  subscribers,
+}: TreePropertySectionProps) => {
   let { nodes, expandedNodesIds } = widget;
 
   if (widget.nodes.length === 0) {
@@ -84,7 +90,12 @@ export const TreePropertySection = ({ widget, setSelection, subscribers }: TreeP
   const rootNodes = nodes.filter((node) => node.parentId === null);
   return (
     <div>
-      <PropertySectionLabel label={widget.label} subscribers={subscribers} />
+      <PropertySectionLabel
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+      />
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpanded={expandedNodesIds}

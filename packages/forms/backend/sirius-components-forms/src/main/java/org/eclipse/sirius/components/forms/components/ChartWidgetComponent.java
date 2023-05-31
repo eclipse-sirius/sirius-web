@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,9 @@ public class ChartWidgetComponent implements IComponent {
         // @formatter:on
         if (iconURL != null) {
             chartWidgetElementPropsBuilder.iconURL(iconURL);
+        }
+        if (chartWidgetDescription.getHelpTextProvider() != null) {
+            chartWidgetElementPropsBuilder.helpTextProvider(() -> chartWidgetDescription.getHelpTextProvider().apply(variableManager));
         }
         return new Element(ChartWidgetElementProps.TYPE, chartWidgetElementPropsBuilder.build());
     }

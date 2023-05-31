@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,6 +96,8 @@ public final class ToolbarAction extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -135,16 +137,22 @@ public final class ToolbarAction extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public ToolbarAction build() {
             ToolbarAction button = new ToolbarAction();
             button.id = Objects.requireNonNull(this.id);
             button.label = Objects.requireNonNull(this.label);
             button.buttonLabel = this.buttonLabel;
-            button.iconURL = this.iconURL;
-            button.imageURL = this.imageURL;
+            button.iconURL = this.iconURL; // Optional on purpose
+            button.imageURL = this.imageURL; // Optional on purpose
             button.pushButtonHandler = Objects.requireNonNull(this.pushButtonHandler);
             button.style = this.style; // Optional on purpose
             button.diagnostics = Objects.requireNonNull(this.diagnostics);
+            button.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return button;
         }
     }

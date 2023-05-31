@@ -1,0 +1,112 @@
+= ADR-104 - Add support for Help Expressions in Form widgets
+
+== Context
+
+In the desktop version of EEF-based properties views, widgets support an optional "Help" text which is exposed as a tooltip on widgets which define one.
+This is helpful to add user-oriented documentation on the property represented by the widget.
+It is not currently supported in the Sirius Components' _Form_ representation.
+
+== Decision
+
+All widget descriptions in the _Form_ representation (including the View-based Forms) will have an optional "help text provider".
+If defined, the corresponding widget instances will have a visible "?" icon which, when hovered, will display the corresponding help text to the end-user.
+The help content will be a plain text (no formatting).
+It will be computed in the context of the semantic element of the widget so that the text can be adapted to the current state of the element.
+
+== Solution
+
+=== Backend
+
+The overall design of the solution will follow the same approach as for completion support.
+
+We will add a new (optional) field `Function<VariableManager, String> helpTextProvider` to the core `AbstractWidgetDescription` class:
+
+```java
+public abstract class AbstractWidgetDescription extends AbstractControlDescription {
+    // Added:
+    protected Function<VariableManager, String> helpTextProvider;
+
+    public Function<VariableManager, String> getHelpTextProvider() {
+        return this.helpTextProvider;
+    }
+}
+```
+
+When a widget is rendered, this `Function<VariableManager, String>` is specialized into a plain, parameter-less `Supplier<String>` in the widget instance, with the `VariableManager` used for the rendering captured:
+
+```java
+public class CheckboxComponent implements IComponent {
+
+    @Override
+    public Element render() {
+        // ...
+        if (checkboxDescription.getHelpTextProvider() != null) {
+            checkboxElementPropsBuilder.helpTextProvider(() -> checkboxDescription.getHelpTextProvider().apply(variableManager));
+        }
+        ...
+    }
+}
+```
+
+This means the value of the help expression will *not* be evaluated as part of the widget's rendering.
+In the vast majority of form renders, no help text will need to be displayed for any widget.
+Computing them eagerly would incur both an additional runtime cost to each render of each form _and_ a network transfer cost for text values which will never be visible.
+
+Instead, the evaluation of a "help expression" will be done on-demand through a new GraphQL Query:
+
+```
+type FormDescription implements RepresentationDescription {
+    helpText(widgetId: ID!): String
+}
+```
+
+The event handler for this query will simply need to find the proper widget, and if it has a non-null `Supplier<String> getHelpTextProvider()`, invoke it.
+
+Although the actual help expression is not evaluated at render-time, we will provide a `hasHelpText: Boolean` field for each widget in the GraphQL Schema.
+This GraphQL field will be computed using a custom datafetcher:
+
+```java
+@QueryDataFetcher(type = "Widget", field = "hasHelpText")
+public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoordinates<Boolean> {
+    @Override
+    public Boolean get(DataFetchingEnvironment environment) throws Exception {
+        AbstractWidget item = environment.getSource();
+        return item.getHelpTextProvider() != null;
+    }
+}
+```
+
+This attribute will be used by the frontend to know if it should display a visual hint/icon to indicate that a help text is available for the widget.
+
+There will be no caching of the help expression's value.
+Each GraphQL Query invocation will trigger the evaluation of the expression.
+
+=== View
+
+In the View DSL, we will add a `helpExpression : IntepretedExpression` attribute the `WidgetDescription` _EClass_.
+During the View conversion, we will create a non-null `helpTextProvider` only if the WidgetDescription has a non-null and non-blank `helpExpression`:
+
+```java
+if (viewWidgetDescription.getHelpExpression() != null && !viewWidgetDescription.getHelpExpression().isBlank()) {
+    builder.helpTextProvider(this.getStringValueProvider(viewWidgetDescription.getHelpExpression()));
+}
+```
+
+This will allow users to clear the `helpExpression` field of a widget definition to mean "no help text".
+
+=== Frontend
+
+On the frontend, the Form representation will fetch the `hasHelpText` for all widgets, and use that to know if some help text is available on a given widget.
+When help text is available, a "?" icon (`HelpOutlineOutlined`) will be added to the right of the widget's label text.
+If the user hovers the mouse on the icon, the frontend will issue the GraphQL Query mentioned above to retrieve the proper help text, and display it inside a tooltip.
+
+The "preview" version of all widgets displaed inside a _FormDescriptionEditor_ will also show the "?" icon if (and only if) the widget defines a non-empty help expression.
+This icon will not show any toolip, it will just be a visual indication that the widget has/will have a help text at runtime.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+A similar feature could be added to all our representations (diagram elements, tree items...), but this is out of scope for the moment.

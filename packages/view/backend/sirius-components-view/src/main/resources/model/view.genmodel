@@ -236,6 +236,7 @@
     <genClasses image="false" ecoreClass="view.ecore#//WidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//WidgetDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//WidgetDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//WidgetDescription/helpExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//TextfieldDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextfieldDescription/valueExpression"/>

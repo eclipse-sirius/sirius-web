@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
@@ -94,6 +95,8 @@ public final class Textfield extends AbstractWidget {
 
         private List<Diagnostic> diagnostics;
 
+        private Supplier<String> helpTextProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -133,15 +136,21 @@ public final class Textfield extends AbstractWidget {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public Textfield build() {
             Textfield textfield = new Textfield();
             textfield.id = Objects.requireNonNull(this.id);
             textfield.label = Objects.requireNonNull(this.label);
-            textfield.iconURL = this.iconURL;
+            textfield.iconURL = this.iconURL; // Optional on purpose
             textfield.value = Objects.requireNonNull(this.value);
             textfield.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textfield.style = this.style; // Optional on purpose
             textfield.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
+            textfield.helpTextProvider = this.helpTextProvider; // Optional on purpose
             textfield.diagnostics = Objects.requireNonNull(this.diagnostics);
             return textfield;
         }

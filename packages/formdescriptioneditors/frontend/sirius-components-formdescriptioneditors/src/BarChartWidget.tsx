@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,9 @@
  *******************************************************************************/
 import { BarChart, BarChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
 import { GQLBarChart } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { BarChartWidgetProps } from './WidgetEntry.types';
 
@@ -23,6 +24,11 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
   chart: {
     overflowX: 'auto',
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 }));
 
@@ -84,9 +90,12 @@ export const BarChartWidget = ({ widget, selection }: BarChartWidgetProps) => {
       onBlur={() => setSelected(false)}
       ref={ref}
       tabIndex={0}>
-      <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-        {barChartWidget.label}
-      </Typography>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
       <div className={classes.chart}>
         <BarChart chart={chart} />
       </div>

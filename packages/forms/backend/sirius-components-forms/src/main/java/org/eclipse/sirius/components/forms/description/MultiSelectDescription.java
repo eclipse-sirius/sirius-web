@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -132,6 +132,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, MultiSelectStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
@@ -198,6 +200,11 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public MultiSelectDescription build() {
             MultiSelectDescription multiSelectDescription = new MultiSelectDescription();
             multiSelectDescription.id = Objects.requireNonNull(this.id);
@@ -213,6 +220,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             multiSelectDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             multiSelectDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             multiSelectDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            multiSelectDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return multiSelectDescription;
         }
 

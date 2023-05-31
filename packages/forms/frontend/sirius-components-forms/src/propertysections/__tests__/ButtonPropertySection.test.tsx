@@ -36,6 +36,7 @@ const defaultButton: GQLButton = {
   id: 'buttonId',
   label: 'Label',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   buttonLabel: 'ButtonLabel',
   imageURL: null,
@@ -43,13 +44,7 @@ const defaultButton: GQLButton = {
 };
 
 const buttonWithStyle: GQLButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: null,
-  diagnostics: [],
-  buttonLabel: 'ButtonLabel',
-  imageURL: null,
+  ...defaultButton,
   style: {
     backgroundColor: '#de1000',
     foregroundColor: '#fbb800',
@@ -62,13 +57,7 @@ const buttonWithStyle: GQLButton = {
 };
 
 const buttonWithEmptyStyle: GQLButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: null,
-  diagnostics: [],
-  buttonLabel: 'ButtonLabel',
-  imageURL: null,
+  ...defaultButton,
   style: {
     backgroundColor: '',
     foregroundColor: '',
@@ -348,6 +337,26 @@ test('should render the button with empty style', async () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={buttonWithEmptyStyle}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
+      </ServerContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the button with help hint', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        {' '}
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={{ ...defaultButton, hasHelpText: true }}
             subscribers={[]}
             readOnly={false}
           />

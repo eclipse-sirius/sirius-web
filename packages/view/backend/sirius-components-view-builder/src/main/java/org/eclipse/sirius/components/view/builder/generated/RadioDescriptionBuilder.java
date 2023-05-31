@@ -61,6 +61,16 @@ public class RadioDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for HelpExpression.
+     *
+     * @generated
+     */
+    public RadioDescriptionBuilder helpExpression(java.lang.String value) {
+        this.getRadioDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

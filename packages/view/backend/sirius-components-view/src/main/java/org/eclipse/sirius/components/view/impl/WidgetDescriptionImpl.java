@@ -77,6 +77,26 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getHelpExpression() <em>Help Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getHelpExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String HELP_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getHelpExpression() <em>Help Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getHelpExpression()
+     * @generated
+     * @ordered
+     */
+    protected String helpExpression = HELP_EXPRESSION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -147,12 +167,37 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
      * @generated
      */
     @Override
+    public String getHelpExpression() {
+        return this.helpExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setHelpExpression(String newHelpExpression) {
+        String oldHelpExpression = this.helpExpression;
+        this.helpExpression = newHelpExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION, oldHelpExpression, this.helpExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.WIDGET_DESCRIPTION__NAME:
                 return this.getName();
             case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
                 return this.getLabelExpression();
+            case ViewPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
+                return this.getHelpExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -172,6 +217,9 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
             case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression((String) newValue);
                 return;
+            case ViewPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
+                this.setHelpExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -190,6 +238,9 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
             case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
                 return;
+            case ViewPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
+                this.setHelpExpression(HELP_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -206,6 +257,8 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case ViewPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case ViewPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
+                return HELP_EXPRESSION_EDEFAULT == null ? this.helpExpression != null : !HELP_EXPRESSION_EDEFAULT.equals(this.helpExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -225,6 +278,8 @@ public abstract class WidgetDescriptionImpl extends MinimalEObjectImpl.Container
         result.append(this.name);
         result.append(", labelExpression: ");
         result.append(this.labelExpression);
+        result.append(", helpExpression: ");
+        result.append(this.helpExpression);
         result.append(')');
         return result.toString();
     }

@@ -26,6 +26,7 @@ const defaultMultiSelect: GQLMultiSelect = {
   id: 'multiSelectId',
   label: 'MultiSelectLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   values: [],
   options: [],
@@ -37,6 +38,7 @@ const multiSelectWithStyle: GQLMultiSelect = {
   id: 'multiSelectId',
   label: 'MultiSelectLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   values: [],
   options: [],
@@ -56,6 +58,7 @@ const multiSelectWithEmptyStyle: GQLMultiSelect = {
   id: 'multiSelectId',
   label: 'MultiSelectLabel',
   iconURL: null,
+  hasHelpText: false,
   diagnostics: [],
   values: [],
   options: [],
@@ -123,6 +126,23 @@ test('should render the multiSelect with empty style', async () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={multiSelectWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render the multiSelect help hint', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <MultiSelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={{ ...defaultMultiSelect, hasHelpText: true }}
           subscribers={[]}
           readOnly={false}
         />

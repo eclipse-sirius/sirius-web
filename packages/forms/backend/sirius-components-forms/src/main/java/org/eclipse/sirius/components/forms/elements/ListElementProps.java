@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021, 2022 Obeo.
+ * Copyright (c) 2019, 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.forms.elements;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.ListItem;
@@ -37,6 +38,8 @@ public final class ListElementProps implements IProps {
 
     private String iconURL;
 
+    private Supplier<String> helpTextProvider;
+
     private ListStyle style;
 
     private List<ListItem> items;
@@ -57,6 +60,10 @@ public final class ListElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public Supplier<String> getHelpTextProvider() {
+        return this.helpTextProvider;
     }
 
     public ListStyle getStyle() {
@@ -96,6 +103,8 @@ public final class ListElementProps implements IProps {
 
         private String iconURL;
 
+        private Supplier<String> helpTextProvider;
+
         private ListStyle style;
 
         private List<ListItem> items;
@@ -131,6 +140,11 @@ public final class ListElementProps implements IProps {
             return this;
         }
 
+        public Builder helpTextProvider(Supplier<String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public ListElementProps build() {
             ListElementProps listElementProps = new ListElementProps();
             listElementProps.id = Objects.requireNonNull(this.id);
@@ -139,6 +153,7 @@ public final class ListElementProps implements IProps {
             listElementProps.style = this.style; // Optional on purpose
             listElementProps.items = Objects.requireNonNull(this.items);
             listElementProps.children = Objects.requireNonNull(this.children);
+            listElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return listElementProps;
         }
     }

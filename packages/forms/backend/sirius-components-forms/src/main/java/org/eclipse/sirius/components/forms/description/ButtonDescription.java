@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,6 +112,8 @@ public final class ButtonDescription extends AbstractWidgetDescription {
 
         private Function<Object, String> messageProvider;
 
+        private Function<VariableManager, String> helpTextProvider;
+
         private Function<VariableManager, ButtonStyle> styleProvider = vm -> null;
 
         private Builder(String id) {
@@ -168,6 +170,11 @@ public final class ButtonDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder helpTextProvider(Function<VariableManager, String> helpTextProvider) {
+            this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
         public ButtonDescription build() {
             ButtonDescription buttonDescription = new ButtonDescription();
             buttonDescription.id = Objects.requireNonNull(this.id);
@@ -181,6 +188,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
             buttonDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             buttonDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             buttonDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            buttonDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             return buttonDescription;
         }
 
