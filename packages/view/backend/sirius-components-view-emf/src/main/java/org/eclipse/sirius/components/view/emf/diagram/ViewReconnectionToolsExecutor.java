@@ -38,7 +38,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.configuration.ViewToolConfiguration;
+import org.eclipse.sirius.components.view.emf.configuration.ViewReconnectionToolsExecutorParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -70,15 +70,15 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
-    public ViewReconnectionToolsExecutor(ViewToolConfiguration configuration, IEditService editService, List<IJavaServiceProvider> javaServiceProviders,
-            ApplicationContext applicationContext, IFeedbackMessageService feedbackMessageService) {
-        this.objectService = Objects.requireNonNull(configuration.getObjectService());
+    public ViewReconnectionToolsExecutor(ViewReconnectionToolsExecutorParameters parameters, IEditService editService, List<IJavaServiceProvider> javaServiceProviders,
+                                         ApplicationContext applicationContext, IFeedbackMessageService feedbackMessageService) {
+        this.objectService = Objects.requireNonNull(parameters.getObjectService());
         this.editService = Objects.requireNonNull(editService);
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(configuration.getViewRepresentationDescriptionSearchService());
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(parameters.getViewRepresentationDescriptionSearchService());
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
-        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(configuration.getViewRepresentationDescriptionPredicate());
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(parameters.getViewRepresentationDescriptionPredicate());
         this.applicationContext = Objects.requireNonNull(applicationContext);
-        this.feedbackMessageService = feedbackMessageService;
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override

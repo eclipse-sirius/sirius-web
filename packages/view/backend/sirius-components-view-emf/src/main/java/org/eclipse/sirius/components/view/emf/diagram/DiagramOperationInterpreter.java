@@ -59,16 +59,14 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
         this.editService = Objects.requireNonNull(editService);
         this.diagramContext = diagramContext;
         this.convertedNodes = Objects.requireNonNull(convertedNodes);
-        this.feedbackMessageService = feedbackMessageService;
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     public IStatus executeTool(Tool tool, VariableManager variableManager) {
         Optional<VariableManager> optionalVariableManager = this.executeOperations(tool.getBody(), variableManager);
         if (optionalVariableManager.isEmpty()) {
             var feedbackMessages = new ArrayList<>(List.of(String.format("Something went wrong while executing the tool '%s'", tool.getName())));
-            if (Objects.nonNull(this.feedbackMessageService)) {
-                feedbackMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-            }
+            feedbackMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
             return new Failure(String.join(", ", feedbackMessages));
         }
         return new Success();

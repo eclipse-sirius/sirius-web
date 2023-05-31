@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDia
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -44,7 +45,6 @@ import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.configuration.ViewToolConfiguration;
 import org.springframework.stereotype.Service;
 
 /**
@@ -76,14 +76,17 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
     private final IDiagramIdProvider diagramIdProvider;
 
+    private final IObjectService objectService;
+
     private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewToolSectionsProvider(ViewToolConfiguration configuration, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider) {
-        this.urlParser = Objects.requireNonNull(configuration.getUrlParser());
-        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(configuration.getViewRepresentationDescriptionPredicate());
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(configuration.getViewRepresentationDescriptionSearchService());
+    public ViewToolSectionsProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider, IObjectService objectService) {
+        this.urlParser = Objects.requireNonNull(urlParser);
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override

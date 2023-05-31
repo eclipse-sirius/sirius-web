@@ -74,7 +74,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         this.editService = Objects.requireNonNull(editService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
-        this.feedbackMessageService = feedbackMessageService;
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
