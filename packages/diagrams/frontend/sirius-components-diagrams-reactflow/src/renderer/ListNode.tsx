@@ -14,6 +14,7 @@
 import { memo } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { ListNodeData } from './ListNode.types';
+import { Palette } from './Palette';
 
 const listNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
@@ -53,7 +54,7 @@ const listItemStyle = (style: React.CSSProperties): React.CSSProperties => {
   };
 };
 
-export const ListNode = memo(({ data, isConnectable, selected }: NodeProps<ListNodeData>) => {
+export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<ListNodeData>) => {
   return (
     <div style={listNodeStyle(data.style, selected)}>
       <div style={listNodeHeaderStyle(data.label.style)}>{data.label.text}</div>
@@ -66,6 +67,7 @@ export const ListNode = memo(({ data, isConnectable, selected }: NodeProps<ListN
           );
         })}
       </div>
+      {selected ? <Palette diagramElementId={id} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
     </div>

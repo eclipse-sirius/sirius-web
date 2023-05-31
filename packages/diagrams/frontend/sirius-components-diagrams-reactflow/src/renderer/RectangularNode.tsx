@@ -15,6 +15,8 @@ import { memo } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { RectangularNodeData } from './RectangularNode.types';
 
+import { Palette } from './Palette';
+
 const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
   const rectangularNodeStyle: React.CSSProperties = {
     display: 'flex',
@@ -35,10 +37,11 @@ const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
   };
 };
 
-export const RectangularNode = memo(({ data, isConnectable, selected }: NodeProps<RectangularNodeData>) => {
+export const RectangularNode = memo(({ data, isConnectable, id, selected }: NodeProps<RectangularNodeData>) => {
   return (
     <div style={rectangularNodeStyle(data.style, selected)}>
       <div style={labelStyle(data.label.style)}>{data.label.text}</div>
+      {selected ? <Palette diagramElementId={id} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
     </div>
