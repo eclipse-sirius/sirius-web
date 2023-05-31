@@ -16,6 +16,7 @@ import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLRectangularNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { Diagram } from '../renderer/DiagramRenderer.types';
 import { ImageNodeData } from '../renderer/ImageNode.types';
+import { ListItemData, ListNodeData } from '../renderer/ListNode.types';
 import { RectangularNodeData } from '../renderer/RectangularNode.types';
 
 const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<RectangularNodeData> => {
@@ -38,13 +39,135 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
       style: {
         fontSize: labelStyle.fontSize,
         color: labelStyle.color,
+        fontWeight: labelStyle.bold ? 700 : 400,
+        textAlign: 'center',
       },
     },
   };
 
+  const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
+  const horitonzalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
+  const verticalAlignment = gqlNode.label.type.substring(
+    verticalAlignmentIndex + 'v_'.length,
+    horitonzalAlignmentIndex
+  );
+  const horizontalAliment = gqlNode.label.type.substring(horitonzalAlignmentIndex + '-h_'.length);
+
+  if (verticalAlignment === 'top') {
+    data.label.style.alignSelf = 'flex-start';
+  } else if (verticalAlignment === 'center') {
+    data.label.style.alignSelf = 'center';
+  } else if (verticalAlignment === 'bottom') {
+    data.label.style.alignSelf = 'flex-end';
+  }
+
+  if (horizontalAliment === 'start') {
+    data.label.style.marginRight = 'auto';
+  } else if (horizontalAliment === 'center') {
+    data.label.style.marginLeft = 'auto';
+    data.label.style.marginRight = 'auto';
+  } else if (horizontalAliment === 'end') {
+    data.label.style.marginLeft = 'auto';
+  }
+
+  if (gqlNode.label.type === 'label:inside-center') {
+    data.label.style.marginLeft = 'auto';
+    data.label.style.marginRight = 'auto';
+  }
+
   const node: Node<RectangularNodeData> = {
     id: gqlNode.id,
     type: 'rectangularNode',
+    data,
+    position,
+  };
+
+  if (gqlParentNode) {
+    node.parentNode = gqlParentNode.id;
+    node.extent = 'parent';
+  }
+
+  return node;
+};
+
+const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListNodeData> => {
+  const style = gqlNode.style as GQLRectangularNodeStyle;
+  const { position } = gqlNode;
+  const labelStyle = gqlNode.label.style;
+
+  const listItems: ListItemData[] = (gqlNode.childNodes ?? []).map((gqlChildNode) => {
+    return {
+      id: gqlChildNode.id,
+      label: {
+        text: gqlChildNode.label.text,
+        style: {},
+      },
+      style: {
+        fontSize: gqlChildNode.label.style.fontSize,
+        color: gqlChildNode.label.style.color,
+        fontWeight: gqlChildNode.label.style.bold ? 700 : 400,
+        textAlign: 'left',
+      },
+    };
+  });
+
+  const data: ListNodeData = {
+    style: {
+      backgroundColor: style.color,
+      borderColor: style.borderColor,
+      borderRadius: style.borderRadius,
+      borderWidth: style.borderSize,
+      borderStyle: style.borderStyle,
+    },
+    label: {
+      text: gqlNode.label.text,
+      style: {
+        fontSize: labelStyle.fontSize,
+        color: labelStyle.color,
+        fontWeight: labelStyle.bold ? 700 : 400,
+        textAlign: 'center',
+      },
+    },
+    listItems,
+  };
+
+  if (style.withHeader) {
+    data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+  }
+
+  const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
+  const horitonzalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
+  const verticalAlignment = gqlNode.label.type.substring(
+    verticalAlignmentIndex + 'v_'.length,
+    horitonzalAlignmentIndex
+  );
+  const horizontalAliment = gqlNode.label.type.substring(horitonzalAlignmentIndex + '-h_'.length);
+
+  if (verticalAlignment === 'top') {
+    data.label.style.alignSelf = 'flex-start';
+  } else if (verticalAlignment === 'center') {
+    data.label.style.alignSelf = 'center';
+  } else if (verticalAlignment === 'bottom') {
+    data.label.style.alignSelf = 'flex-end';
+  }
+
+  if (horizontalAliment === 'start') {
+    data.label.style.marginRight = 'auto';
+  } else if (horizontalAliment === 'center') {
+    data.label.style.marginLeft = 'auto';
+    data.label.style.marginRight = 'auto';
+  } else if (horizontalAliment === 'end') {
+    data.label.style.marginLeft = 'auto';
+  }
+
+  if (gqlNode.label.type === 'label:inside-center') {
+    data.label.style.marginLeft = 'auto';
+    data.label.style.marginRight = 'auto';
+  }
+
+  const node: Node<ListNodeData> = {
+    id: gqlNode.id,
+    type: 'listNode',
     data,
     position,
   };
@@ -86,13 +209,25 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
 
 const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]): void => {
   if (gqlNode.style.__typename === 'RectangularNodeStyle') {
-    nodes.push(toRectangularNode(gqlNode, parentNode));
+    const isList =
+      (gqlNode.childNodes ?? []).filter((gqlChildNode) => gqlChildNode.style.__typename === 'IconLabelNodeStyle')
+        .length > 0;
+    if (!isList) {
+      nodes.push(toRectangularNode(gqlNode, parentNode));
+
+      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
+      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+    } else {
+      nodes.push(toListNode(gqlNode, parentNode));
+
+      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
+    }
   } else if (gqlNode.style.__typename === 'ImageNodeStyle') {
     nodes.push(toImageNode(gqlNode, parentNode));
-  }
 
-  (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-  (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+    (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
+    (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+  }
 };
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {

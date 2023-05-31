@@ -24,6 +24,7 @@ import {
 } from 'reactflow';
 import { DiagramRendererProps } from './DiagramRenderer.types';
 import { ImageNode } from './ImageNode';
+import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
 
 import 'reactflow/dist/style.css';
@@ -31,6 +32,7 @@ import 'reactflow/dist/style.css';
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
   imageNode: ImageNode,
+  listNode: ListNode,
 };
 
 export const DiagramRenderer = ({ diagram }: DiagramRendererProps) => {

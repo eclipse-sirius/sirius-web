@@ -16,7 +16,7 @@ import { memo, useContext } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { ImageNodeData } from './ImageNode.types';
 
-const imageNodeStyle = (style: Partial<React.CSSProperties>): React.CSSProperties => {
+const imageNodeStyle = (style: React.CSSProperties): React.CSSProperties => {
   return { ...style };
 };
 

@@ -11,21 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { CSSProperties, memo } from 'react';
+import { memo } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { RectangularNodeData } from './RectangularNode.types';
 
-const rectangularNodeStyle = (style: Partial<React.CSSProperties>): React.CSSProperties => {
+const rectangularNodeStyle = (style: React.CSSProperties): React.CSSProperties => {
   return {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '20px',
+    padding: '8px',
     ...style,
   };
 };
 
-const labelStyle = (style: Partial<React.CSSProperties>): CSSProperties => {
+const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
   return {
     ...style,
   };
