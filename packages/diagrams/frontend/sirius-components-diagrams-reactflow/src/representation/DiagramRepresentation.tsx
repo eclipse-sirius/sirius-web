@@ -15,6 +15,7 @@ import { OnSubscriptionDataOptions, gql, useSubscription } from '@apollo/client'
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
+import { DiagramContext } from '../contexts/DiagramContext';
 import { convertDiagram } from '../converter/convertDiagram';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
@@ -91,8 +92,10 @@ export const DiagramRepresentation = ({
   }
 
   return (
-    <ReactFlowProvider>
-      <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
-    </ReactFlowProvider>
+    <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
+      <ReactFlowProvider>
+        <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+      </ReactFlowProvider>
+    </DiagramContext.Provider>
   );
 };
