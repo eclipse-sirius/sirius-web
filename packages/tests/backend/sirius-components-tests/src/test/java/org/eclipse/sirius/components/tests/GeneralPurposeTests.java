@@ -152,9 +152,12 @@ public class GeneralPurposeTests {
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.vscode/"))
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(".d.ts"))
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.mvn/wrapper/"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-web-customwidgets"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain-edit/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view-edit/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-web-customwidgets/"))
+                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-web-customwidgets-edit/"))
                     .toList();
             // @formatter:on
 
