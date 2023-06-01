@@ -8,6 +8,8 @@
 
 === Architectural decision records
 
+- [ADR-103] Improves the existing feedback messages capability
+
 === Breaking changes
 
 === Dependency update
@@ -26,6 +28,12 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/2034[#2034] [diagram] Integrate the workbench selection in the react-flow prototype
 - https://github.com/eclipse-sirius/sirius-components/issues/2047[#2047] [view] Activate architectural tests on `sirius-components-view-builder`
 - https://github.com/eclipse-sirius/sirius-components/issues/2036[#2036] [form] Add the concept of pageAction in form.
+- https://github.com/eclipse-sirius/sirius-components/issues/2015[#2015] [form] Add to the payload the possibility to return a list of messages, these messages will be displayed on the UI.
++
+image:doc/screenshots/feedbackMessages.png[Feedback messages,30%,30%]
++
+There is an example of the `IFeedbackMessageService` interface usage in `DomainAttributeServices`.
+Note that in the end, the message list will be the only way to return info in payload, the single message will be removed.
 
 == v2023.6.0
 

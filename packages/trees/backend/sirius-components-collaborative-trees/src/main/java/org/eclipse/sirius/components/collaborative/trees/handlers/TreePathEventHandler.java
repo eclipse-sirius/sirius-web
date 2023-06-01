@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.trees.handlers;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.TreePathSuccessPayl
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.trees.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +71,7 @@ public class TreePathEventHandler implements ITreeEventHandler {
                 if (resultPayload instanceof TreePathSuccessPayload) {
                     payload = resultPayload;
                 } else if (resultPayload instanceof ErrorPayload errorPayload) {
-                    this.logger.warn(errorPayload.message());
+                    this.logger.warn(errorPayload.messages().stream().map(Message::body).collect(Collectors.joining("; ")));
                 }
             }
         }

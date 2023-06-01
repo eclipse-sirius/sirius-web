@@ -95,12 +95,11 @@ public class ClickListItemEventHandler implements IFormEventHandler {
                     .orElse(new Failure(""));
             // @formatter:on
 
-            if (status instanceof Success) {
-                Success success = (Success) status;
+            if (status instanceof Success success) {
                 changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
-                payload = new SuccessPayload(formInput.id());
-            } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
+                payload = new SuccessPayload(formInput.id(), success.getMessages());
+            } else if (status instanceof Failure failure) {
+                payload = new ErrorPayload(formInput.id(), failure.getMessages());
             }
         }
 

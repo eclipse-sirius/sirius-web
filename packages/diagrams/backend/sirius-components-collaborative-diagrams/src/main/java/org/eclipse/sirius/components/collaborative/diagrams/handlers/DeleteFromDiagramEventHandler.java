@@ -44,6 +44,8 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
@@ -114,7 +116,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private void handleDelete(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
             DeleteFromDiagramInput diagramInput) {
-        List<String> errors = new ArrayList<>();
+        List<Message> errors = new ArrayList<>();
         boolean atLeastOneOk = false;
         Diagram diagram = diagramContext.getDiagram();
         List<String> deletedEdgeIds = new ArrayList<>();
@@ -125,12 +127,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 if (status instanceof Success) {
                     deletedEdgeIds.add(edgeId);
                     atLeastOneOk = true;
-                } else {
-                    errors.add(((Failure) status).getMessage());
+                }
+                if (status instanceof Failure failure) {
+                    errors.addAll(failure.getMessages());
                 }
             } else {
-                String message = this.messageService.edgeNotFound(edgeId.toString());
-                errors.add(message);
+                errors.add(new Message(this.messageService.edgeNotFound(edgeId), MessageLevel.ERROR));
             }
         }
         for (String nodeId : diagramInput.nodeIds()) {
@@ -139,12 +141,12 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 IStatus status = this.invokeDeleteNodeTool(optionalElement.get(), editingContext, diagramContext, diagramInput.deletionPolicy());
                 if (status instanceof Success) {
                     atLeastOneOk = true;
-                } else {
-                    errors.add(((Failure) status).getMessage());
+                }
+                if (status instanceof Failure failure) {
+                    errors.addAll(failure.getMessages());
                 }
             } else {
-                String message = this.messageService.nodeNotFound(nodeId.toString());
-                errors.add(message);
+                errors.add(new Message(this.messageService.nodeNotFound(nodeId), MessageLevel.ERROR));
             }
         }
 
@@ -153,24 +155,21 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         this.sendResponse(payloadSink, changeDescriptionSink, errors, atLeastOneOk, diagramContext, diagramInput);
     }
 
-    private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext,
+    private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<Message> errors, boolean atLeastOneSuccess,
+            IDiagramContext diagramContext,
             DeleteFromDiagramInput diagramInput) {
 
         var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
         IPayload payload = new DeleteFromDiagramSuccessPayload(diagramInput.id(), diagramContext.getDiagram());
         if (!errors.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(this.messageService.deleteFailed());
-            for (String error : errors) {
-                stringBuilder.append(error);
-            }
+            errors.add(new Message(this.messageService.deleteFailed(), MessageLevel.ERROR));
 
             changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
             if (atLeastOneSuccess) {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
             }
 
-            payload = new ErrorPayload(diagramInput.id(), stringBuilder.toString());
+            payload = new ErrorPayload(diagramInput.id(), errors);
         }
 
         payloadSink.tryEmitValue(payload);

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -23,6 +23,7 @@ import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
 import { GQLTextarea, GQLWidget } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { GQLSuccessPayload } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLCompletionProposal,
@@ -47,7 +48,6 @@ import {
   InitializeEvent,
   RequestCompletionEvent,
   SchemaValue,
-  ShowToastEvent,
   TextfieldPropertySectionContext,
   TextfieldPropertySectionEvent,
   textfieldPropertySectionMachine,
@@ -95,7 +95,16 @@ export const editTextfieldMutation = gql`
     editTextfield(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -106,7 +115,10 @@ export const updateWidgetFocusMutation = gql`
     updateWidgetFocus(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -115,6 +127,9 @@ export const updateWidgetFocusMutation = gql`
 const isTextarea = (widget: GQLWidget): widget is GQLTextarea => widget.__typename === 'Textarea';
 const isErrorPayload = (payload: GQLEditTextfieldPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (
+  payload: GQLEditTextfieldPayload | GQLUpdateWidgetFocusPayload
+): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 /**
  * Defines the content of a Textfield property section.
@@ -144,8 +159,8 @@ export const TextfieldPropertySection = ({
     TextfieldPropertySectionContext,
     TextfieldPropertySectionEvent
   >(textfieldPropertySectionMachine);
-  const { textfieldPropertySection, toast } = schemaValue as SchemaValue;
-  const { value, completionRequest, proposals, message } = context;
+  const { textfieldPropertySection } = schemaValue as SchemaValue;
+  const { value, completionRequest, proposals } = context;
 
   useEffect(() => {
     const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
@@ -174,26 +189,24 @@ export const TextfieldPropertySection = ({
     }
   };
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!updateTextfieldLoading) {
       let hasError = false;
       if (updateTextfieldError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
 
         hasError = true;
       }
       if (updateTextfieldData) {
         const { editTextfield } = updateTextfieldData;
         if (isErrorPayload(editTextfield)) {
-          const { message } = editTextfield;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
-
+          addMessages(editTextfield.messages);
           hasError = true;
+        }
+        if (isSuccessPayload(editTextfield)) {
+          addMessages(editTextfield.messages);
         }
       }
 
@@ -202,7 +215,7 @@ export const TextfieldPropertySection = ({
         dispatch(initializeEvent);
       }
     }
-  }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError, widget, dispatch]);
+  }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError, dispatch]);
 
   const [
     updateWidgetFocus,
@@ -225,18 +238,12 @@ export const TextfieldPropertySection = ({
   useEffect(() => {
     if (!updateWidgetFocusLoading) {
       if (updateWidgetFocusError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateWidgetFocusData) {
         const { updateWidgetFocus } = updateWidgetFocusData;
         if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addMessages(updateWidgetFocus.messages);
         }
       }
     }
@@ -253,9 +260,7 @@ export const TextfieldPropertySection = ({
   useEffect(() => {
     if (!proposalsLoading) {
       if (proposalsError) {
-        const message = proposalsError.message;
-        const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-        dispatch(showToastEvent);
+        addErrorMessage(proposalsError.message);
       }
       if (proposalsData) {
         const proposalsReceivedEvent: CompletionReceivedEvent = {
@@ -387,7 +392,6 @@ export const TextfieldPropertySection = ({
         }
       />
       {proposalsList}
-      <Toast message={message} open={toast === 'visible'} onClose={() => dispatch({ type: 'HIDE_TOAST' })} />
     </div>
   );
 };

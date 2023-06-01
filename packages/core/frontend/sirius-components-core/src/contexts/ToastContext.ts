@@ -10,20 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api;
 
-import java.util.Objects;
+import React from 'react';
+import { ToastContextValue } from './ToastContext.types';
 
-/**
- * Record used to represent a feedback message.
- *
- * @author frouene
- */
-public record FeedbackMessage(String message, FeedbackLevel level) {
+const value: ToastContextValue = {
+  useToast: () => {
+    return null;
+  },
+};
 
-    public FeedbackMessage {
-        Objects.requireNonNull(message);
-        Objects.requireNonNull(level);
-    }
-
-}
+export const ToastContext = React.createContext<ToastContextValue>(value);

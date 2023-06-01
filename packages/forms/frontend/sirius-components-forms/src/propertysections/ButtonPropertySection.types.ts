@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLButton, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLButton, GQLMessage, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface ButtonPropertySectionProps {
   editingContextId: string;
@@ -50,10 +50,12 @@ export interface GQLPushButtonPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload extends GQLPushButtonPayload {}
+export interface GQLSuccessPayload extends GQLPushButtonPayload {
+  messages: GQLMessage[];
+}
 
 export interface GQLErrorPayload extends GQLPushButtonPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLUpdateWidgetFocusMutationVariables {

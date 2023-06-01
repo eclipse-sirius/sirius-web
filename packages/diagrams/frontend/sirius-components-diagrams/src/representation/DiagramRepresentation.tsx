@@ -18,10 +18,11 @@ import {
   ServerContext,
   ServerContextValue,
   Toast,
+  useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
-import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
@@ -96,6 +97,7 @@ import {
   DiagramRefreshedEvent,
   DiagramRepresentationContext,
   DiagramRepresentationEvent,
+  diagramRepresentationMachine,
   HandleDiagramDescriptionResultEvent,
   HandleSelectedObjectInSelectionDialogEvent,
   HideToastEvent,
@@ -103,9 +105,9 @@ import {
   ResetSelectedObjectInSelectionDialogEvent,
   ResetToolsEvent,
   SchemaValue,
-  SelectZoomLevelEvent,
   SelectedElementEvent,
   SelectionEvent,
+  SelectZoomLevelEvent,
   SetActiveConnectorToolsEvent,
   SetActiveToolEvent,
   SetContextualMenuEvent,
@@ -115,7 +117,6 @@ import {
   ShowToastEvent,
   SubscribersUpdatedEvent,
   SwitchRepresentationEvent,
-  diagramRepresentationMachine,
 } from './DiagramRepresentationMachine';
 import { getDiagramDescriptionQuery } from './GetDiagramDescriptionQuery';
 import { GQLGetDiagramDescriptionData, GQLGetDiagramDescriptionVariables } from './GetDiagramDescriptionQuery.types';
@@ -949,6 +950,8 @@ export const DiagramRepresentation = ({
     [dispatch]
   );
 
+  const { addMessages } = useMultiToast();
+
   useEffect(() => {
     handleError(updateNodePositionLoading, updateNodePositionData, updateNodePositionError);
   }, [updateNodePositionLoading, updateNodePositionData, updateNodePositionError, handleError]);
@@ -976,10 +979,11 @@ export const DiagramRepresentation = ({
     if (invokeSingleClickOnDiagramElementToolData) {
       const { invokeSingleClickOnDiagramElementTool } = invokeSingleClickOnDiagramElementToolData;
       if (isInvokeSingleClickOnDiagramElementToolSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
-        const { newSelection } = invokeSingleClickOnDiagramElementTool;
+        const { newSelection, messages } = invokeSingleClickOnDiagramElementTool;
         if (newSelection?.entries.length ?? 0 > 0) {
           setSelection(newSelection);
         }
+        addMessages(messages);
       }
     }
   }, [
@@ -999,10 +1003,11 @@ export const DiagramRepresentation = ({
     if (invokeSingleClickOnTwoDiagramElementsToolData) {
       const { invokeSingleClickOnTwoDiagramElementsTool } = invokeSingleClickOnTwoDiagramElementsToolData;
       if (isInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(invokeSingleClickOnTwoDiagramElementsTool)) {
-        const { newSelection } = invokeSingleClickOnTwoDiagramElementsTool;
+        const { newSelection, messages } = invokeSingleClickOnTwoDiagramElementsTool;
         if (newSelection?.entries.length ?? 0 > 0) {
           setSelection(newSelection);
         }
+        addMessages(messages);
       }
     }
   }, [

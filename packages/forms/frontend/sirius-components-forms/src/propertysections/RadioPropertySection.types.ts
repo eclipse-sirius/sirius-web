@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLRadio, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLMessage, GQLRadio, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface RadioStyleProps {
   color: string | null;
@@ -38,10 +38,12 @@ export interface GQLEditRadioPayload {
 }
 
 export interface GQLErrorPayload extends GQLEditRadioPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
-export interface GQLSuccessPayload extends GQLEditRadioPayload {}
+export interface GQLSuccessPayload extends GQLEditRadioPayload {
+  messages: GQLMessage[];
+}
 
 export interface GQLUpdateWidgetFocusMutationData {
   updateWidgetFocus: GQLUpdateWidgetFocusPayload;

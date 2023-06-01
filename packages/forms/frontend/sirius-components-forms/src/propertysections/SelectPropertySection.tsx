@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -24,6 +24,7 @@ import {
   GQLEditSelectMutationData,
   GQLEditSelectPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusMutationData,
   SelectPropertySectionProps,
   SelectStyleProps,
@@ -45,7 +46,16 @@ export const editSelectMutation = gql`
     editSelect(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -56,7 +66,10 @@ const updateWidgetFocusMutation = gql`
     updateWidgetFocus(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -64,6 +77,8 @@ const updateWidgetFocusMutation = gql`
 
 const isErrorPayload = (payload: GQLEditSelectPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLEditSelectPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const SelectPropertySection = ({
   editingContextId,
@@ -83,7 +98,6 @@ export const SelectPropertySection = ({
   };
   const classes = useStyle(props);
 
-  const [message, setMessage] = useState(null);
   const [isFocused, setFocus] = useState(false);
 
   const [editSelect, { loading, error, data }] = useMutation<GQLEditSelectMutationData>(editSelectMutation);
@@ -101,15 +115,17 @@ export const SelectPropertySection = ({
     editSelect({ variables });
   };
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (data) {
         const { editSelect } = data;
-        if (isErrorPayload(editSelect)) {
-          setMessage(editSelect.message);
+        if (isErrorPayload(editSelect) || isSuccessPayload(editSelect)) {
+          addMessages(editSelect.messages);
         }
       }
     }
@@ -135,13 +151,12 @@ export const SelectPropertySection = ({
   useEffect(() => {
     if (!updateWidgetFocusLoading) {
       if (updateWidgetFocusError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateWidgetFocusData) {
         const { updateWidgetFocus } = updateWidgetFocusData;
         if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          setMessage(message);
+          addMessages(updateWidgetFocus.messages);
         }
       }
     }
@@ -204,7 +219,6 @@ export const SelectPropertySection = ({
         ))}
       </Select>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
-      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </FormControl>
   );
 };

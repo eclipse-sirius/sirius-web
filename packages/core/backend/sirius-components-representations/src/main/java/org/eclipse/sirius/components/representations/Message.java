@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,27 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.representations;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
- * The message when the representation description handler fails.
+ * Record used to represent a return with a specific level.
  *
- * @author gcoutable
+ * @author frouene
  */
-public class Failure implements IStatus {
+public record Message(String body, MessageLevel level) {
 
-    private final List<Message> messages;
-
-    public Failure(String message) {
-        this.messages = List.of(new Message(Objects.requireNonNull(message), MessageLevel.ERROR));
-    }
-
-    public Failure(List<Message> messages) {
-        this.messages = Objects.requireNonNull(messages);
-    }
-
-    public List<Message> getMessages() {
-        return this.messages;
+    public Message {
+        Objects.requireNonNull(body);
+        Objects.requireNonNull(level);
     }
 }

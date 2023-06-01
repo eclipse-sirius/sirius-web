@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -88,12 +88,21 @@ const pushButtonVariables: GQLPushButtonMutationVariables = {
     buttonId: 'buttonId',
   },
 };
-const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload', messages: [] };
 const pushButtonSuccessData: GQLPushButtonMutationData = { pushButton: successPayload };
 
 const pushButtonErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+    {
+      body: 'FeedbackMessage',
+      level: 'INFO',
+    },
+  ],
 };
 const pushButtonErrorData: GQLPushButtonMutationData = {
   pushButton: pushButtonErrorPayload,
@@ -117,23 +126,41 @@ const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
 
 const updateWidgetFocusErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+  ],
 };
 const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
   updateWidgetFocus: updateWidgetFocusErrorPayload,
+};
+
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
+  },
 };
 
 test('should render the button', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultButton}
-          subscribers={[]}
-          readOnly={false}
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultButton}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -144,13 +171,15 @@ test('should render a readOnly button', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultButton}
-          subscribers={[]}
-          readOnly
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultButton}
+            subscribers={[]}
+            readOnly
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -186,13 +215,15 @@ test('should send mutation when clicked', async () => {
   const { container } = render(
     <MockedProvider mocks={mocks}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultButton}
-          subscribers={[]}
-          readOnly={false}
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultButton}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -241,13 +272,15 @@ test('should display the error received', async () => {
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultButton}
-          subscribers={[]}
-          readOnly={false}
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultButton}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -262,7 +295,7 @@ test('should display the error received', async () => {
     await waitFor(() => {
       expect(updateWidgetFocusCalled).toBeTruthy();
       expect(pushButtonCalled).toBeTruthy();
-      expect(screen.getByTestId('toast')).not.toBeUndefined();
+      expect(mockEnqueue).toHaveBeenCalledTimes(3);
       expect(baseElement).toMatchSnapshot();
     });
   });
@@ -272,13 +305,15 @@ test('should render the button without style', () => {
   const { baseElement } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultButton}
-          subscribers={[]}
-          readOnly={false}
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultButton}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -289,13 +324,15 @@ test('should render the button with style', () => {
   const { baseElement } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={buttonWithStyle}
-          subscribers={[]}
-          readOnly={false}
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={buttonWithStyle}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -306,13 +343,15 @@ test('should render the button with empty style', async () => {
   const { baseElement } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ButtonPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={buttonWithEmptyStyle}
-          subscribers={[]}
-          readOnly={false}
-        />
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={buttonWithEmptyStyle}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );

@@ -385,3 +385,8 @@ export interface GQLRichText extends GQLWidget {
   label: string;
   stringValue: string;
 }
+
+export interface GQLMessage {
+  body: string;
+  level: string;
+}

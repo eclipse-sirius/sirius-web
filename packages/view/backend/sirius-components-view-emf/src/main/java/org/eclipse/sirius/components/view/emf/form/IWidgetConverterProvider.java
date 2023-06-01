@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.emf.form;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -24,5 +25,6 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
  * @author pcdavid
  */
 public interface IWidgetConverterProvider {
-    Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService);
+
+    Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLList, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLList, GQLMessage, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface ListStyleProps {
   color: string | null;
@@ -61,5 +61,9 @@ export interface GQLClickListItemInput {
 }
 
 export interface GQLErrorPayload extends GQLDeleteListItemPayload {
-  message: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLSuccessPayload extends GQLDeleteListItemPayload {
+  messages: GQLMessage[];
 }

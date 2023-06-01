@@ -11,12 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
 import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
-import { GQLClickListItemMutationData, GQLClickListItemMutationVariables } from '../ListPropertySection.types';
+import {
+  GQLClickListItemMutationData,
+  GQLClickListItemMutationVariables,
+  GQLSuccessPayload,
+} from '../ListPropertySection.types';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
@@ -83,22 +88,35 @@ const clickListItemVariables: GQLClickListItemMutationVariables = {
   },
 };
 
+const successPayload: GQLSuccessPayload = { messages: [], __typename: 'SuccessPayload' };
 const clickListItemSuccessData: GQLClickListItemMutationData = {
-  clickListItem: {
-    __typename: 'SuccessPayload',
+  clickListItem: successPayload,
+};
+
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
   },
 };
+
 test('render list widget', () => {
   const { container } = render(
     <MockedProvider>
-      <ListPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultList}
-        subscribers={[]}
-        readOnly={false}
-        setSelection={() => {}}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <ListPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultList}
+          subscribers={[]}
+          readOnly={false}
+          setSelection={() => {}}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -107,14 +125,16 @@ test('render list widget', () => {
 test('render list widget with style', () => {
   const { container } = render(
     <MockedProvider>
-      <ListPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultListWithStyle}
-        subscribers={[]}
-        readOnly={false}
-        setSelection={() => {}}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <ListPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultListWithStyle}
+          subscribers={[]}
+          readOnly={false}
+          setSelection={() => {}}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -135,14 +155,16 @@ test('should the click event sent on item click', async () => {
 
   const { container } = render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
-      <ListPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultListWithStyle}
-        subscribers={[]}
-        readOnly={false}
-        setSelection={() => {}}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <ListPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultListWithStyle}
+          subscribers={[]}
+          readOnly={false}
+          setSelection={() => {}}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();

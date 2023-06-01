@@ -91,7 +91,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                     payload = new DropOnDiagramSuccessPayload(diagramInput.id(), diagram);
                 } else if (status instanceof Failure failure) {
-                    payload = new ErrorPayload(diagramInput.id(), failure.getMessage());
+                    payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
                 }
             }
         }

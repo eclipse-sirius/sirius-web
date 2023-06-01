@@ -90,12 +90,12 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
                 .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.actionId()));
             // @formatter:on
 
-            if (status instanceof Success) {
+            if (status instanceof Success success) {
                 payload = new SuccessPayload(invokeEditingContextActionInput.id());
-                changeDescription = new ChangeDescription(((Success) status).getChangeKind(), editingContext.getId(), input);
-            } else if (status instanceof Failure) {
+                changeDescription = new ChangeDescription(success.getChangeKind(), editingContext.getId(), input);
+            } else if (status instanceof Failure failure) {
                 this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.actionId());
-                payload = new ErrorPayload(input.id(), ((Failure) status).getMessage());
+                payload = new ErrorPayload(input.id(), failure.getMessages());
             }
         }
 

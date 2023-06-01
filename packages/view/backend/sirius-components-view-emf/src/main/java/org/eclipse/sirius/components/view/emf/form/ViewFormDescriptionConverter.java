@@ -85,7 +85,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     @Override
     public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
-        List<Switch<AbstractWidgetDescription>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter, this.editService, this.objectService)).toList();
+        List<Switch<AbstractWidgetDescription>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter,
+                this.editService, this.objectService, this.feedbackMessageService)).toList();
         Switch<AbstractWidgetDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters), this.feedbackMessageService);
 
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.slider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,11 +24,14 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
@@ -41,13 +45,17 @@ import org.eclipse.sirius.web.customwidgets.util.CustomwidgetsSwitch;
  * @author pcdavid
  */
 public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<AbstractWidgetDescription> {
+
     private final AQLInterpreter interpreter;
 
     private final IEditService editService;
 
-    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -88,9 +96,12 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
             OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
             if (optionalVariableManager.isEmpty()) {
-                return new Failure("Something went wrong while handling the widget operations execution.");
+                List<Message> errorMessages = new ArrayList<>();
+                errorMessages.add(new Message("Something went wrong while handling the widget operations execution.", MessageLevel.ERROR));
+                errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+                return new Failure(errorMessages);
             } else {
-                return new Success();
+                return new Success(this.feedbackMessageService.getFeedbackMessages());
             }
         };
     }

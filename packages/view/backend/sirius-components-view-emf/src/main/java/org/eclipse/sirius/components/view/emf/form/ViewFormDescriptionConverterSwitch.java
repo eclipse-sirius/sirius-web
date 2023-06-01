@@ -69,6 +69,8 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
@@ -419,9 +421,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(flexboxContainerDescription.getLabelExpression());
         FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
         List<AbstractWidgetDescription> children = new ArrayList<>();
-        flexboxContainerDescription.getChildren().forEach(widget -> {
-            children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget));
-        });
+        flexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
 
         // @formatter:off
         return FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
@@ -589,12 +589,12 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     }
 
     @Override
-    public AbstractWidgetDescription caseImageDescription(org.eclipse.sirius.components.view.ImageDescription imageDecription) {
-        String descriptionId = this.getDescriptionId(imageDecription);
+    public AbstractWidgetDescription caseImageDescription(org.eclipse.sirius.components.view.ImageDescription imageDescription) {
+        String descriptionId = this.getDescriptionId(imageDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(imageDecription.getLabelExpression());
-        StringValueProvider urlProvider = this.getStringValueProvider(imageDecription.getUrlExpression());
-        StringValueProvider maxWidthProvider = this.getStringValueProvider(imageDecription.getMaxWidthExpression());
+        StringValueProvider labelProvider = this.getStringValueProvider(imageDescription.getLabelExpression());
+        StringValueProvider urlProvider = this.getStringValueProvider(imageDescription.getUrlExpression());
+        StringValueProvider maxWidthProvider = this.getStringValueProvider(imageDescription.getMaxWidthExpression());
         // @formatter:off
         return ImageDescription.newImageDescription(descriptionId)
                 .idProvider(idProvider)
@@ -615,7 +615,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private IStatus handleItemDeletion(VariableManager variableManager) {
         variableManager.get(ListComponent.CANDIDATE_VARIABLE, Object.class).ifPresent(this.editService::delete);
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+        return this.buildSuccessWithSemanticChangeAndFeedbackMessages();
     }
 
     private IStatus getListItemClickHandler(VariableManager variableManager, List<Operation> operations) {
@@ -624,7 +624,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
         if (optionalVariableManager.isEmpty()) {
             return this.buildFailureWithFeedbackMessages("Something went wrong while handling the item click.");
         } else {
-            return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
+            return this.buildSuccessWithSemanticChangeAndFeedbackMessages();
         }
     }
 
@@ -640,16 +640,13 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
-        return variableManager -> {
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
-        };
+        return variableManager -> this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
     }
 
     private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
-        return variableManager -> {
-            return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).toList();
-        };
+        return variableManager -> this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast)
+                .toList();
     }
 
     private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, IChartDescription chartDescription) {
@@ -678,7 +675,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private BiFunction<VariableManager, List<String>, IStatus> getMultiSelectNewValuesHandler(List<Operation> operations) {
         return (variableManager, newValue) -> {
-            IStatus status = this.buildFailureWithFeedbackMessages("An error occured while handling the new selected values.");
+            IStatus status = this.buildFailureWithFeedbackMessages("An error occurred while handling the new selected values.");
             Optional<IEditingContext> optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
             if (optionalEditingDomain.isPresent()) {
                 IEditingContext editingContext = optionalEditingDomain.get();
@@ -695,7 +692,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
                 if (optionalVariableManager.isEmpty()) {
                     status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the MultiSelect widget new values.");
                 } else {
-                    status = new Success();
+                    status = this.buildSuccessWithFeedbackMessages();
                 }
             }
             return status;
@@ -746,7 +743,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             if (optionalVariableManager.isEmpty()) {
                 return this.buildFailureWithFeedbackMessages("Something went wrong while handling the widget operations execution.");
             } else {
-                return new Success();
+                return this.buildSuccessWithFeedbackMessages();
             }
         };
     }
@@ -760,7 +757,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             if (optionalVariableManager.isEmpty()) {
                 return this.buildFailureWithFeedbackMessages("Something went wrong while handling the widget new value.");
             } else {
-                return new Success();
+                return this.buildSuccessWithFeedbackMessages();
             }
         };
     }
@@ -781,7 +778,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
             if (optionalVariableManager.isEmpty()) {
                 status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the Select widget new value.");
             } else {
-                status = new Success();
+                status = this.buildSuccessWithFeedbackMessages();
             }
             return status;
         };
@@ -805,9 +802,18 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
     }
 
     private Failure buildFailureWithFeedbackMessages(String technicalMessage) {
-        var errorMessages = new ArrayList<>(List.of(technicalMessage));
+        List<Message> errorMessages = new ArrayList<>();
+        errorMessages.add(new Message(technicalMessage, MessageLevel.ERROR));
         errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-        return new Failure(String.join(", ", errorMessages));
+        return new Failure(errorMessages);
+    }
+
+    private Success buildSuccessWithSemanticChangeAndFeedbackMessages() {
+        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+    }
+
+    private Success buildSuccessWithFeedbackMessages() {
+        return new Success(this.feedbackMessageService.getFeedbackMessages());
     }
 
 }

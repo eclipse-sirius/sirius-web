@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.core.api;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.representations.Message;
+
 /**
  * Interface of the service interacting with the list of stacked feedback messages.
  *
@@ -21,9 +23,9 @@ import java.util.List;
  */
 public interface IFeedbackMessageService {
 
-    void addFeedbackMessage(String message, FeedbackLevel level);
+    void addFeedbackMessage(Message message);
 
-    List<String> getFeedbackMessages();
+    List<Message> getFeedbackMessages();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -33,12 +35,12 @@ public interface IFeedbackMessageService {
     class NoOp implements IFeedbackMessageService {
 
         @Override
-        public void addFeedbackMessage(String message, FeedbackLevel level) {
+        public void addFeedbackMessage(Message message) {
 
         }
 
         @Override
-        public List<String> getFeedbackMessages() {
+        public List<Message> getFeedbackMessages() {
             return List.of();
         }
     }

@@ -304,9 +304,16 @@ export const invokeSingleClickOnDiagramElementToolMutation = gql`
             kind
           }
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -324,9 +331,16 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
             kind
           }
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }

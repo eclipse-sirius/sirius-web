@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -49,10 +50,14 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
+
     private final ViewFormDescriptionConverter converter;
 
-    public DomainPropertiesConfigurer(ViewFormDescriptionConverter converter) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public DomainPropertiesConfigurer(ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService) {
         this.converter = Objects.requireNonNull(converter);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -68,7 +73,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         view.getDescriptions().add(viewFormDescription);
 
         // Convert the View-based FormDescription and register the result into the system
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(DomainAttributeServices.class), List.of(), List.of(DomainPackage.eINSTANCE));
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DomainAttributeServices(this.feedbackMessageService)), List.of(DomainPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
             registry.add(formDescription);

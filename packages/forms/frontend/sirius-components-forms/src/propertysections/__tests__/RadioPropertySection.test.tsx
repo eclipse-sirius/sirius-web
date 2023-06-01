@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -120,12 +121,21 @@ const editRadioVariables: GQLEditRadioMutationVariables = {
     newValue: '1',
   },
 };
-const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const successPayload: GQLSuccessPayload = { messages: [], __typename: 'SuccessPayload' };
 const editRadioSuccessData: GQLEditRadioMutationData = { editRadio: successPayload };
 
 const editRadioErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+    {
+      body: 'FeedbackMessage',
+      level: 'INFO',
+    },
+  ],
 };
 const editRadioErrorData: GQLEditRadioMutationData = {
   editRadio: editRadioErrorPayload,
@@ -149,22 +159,40 @@ const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
 
 const updateWidgetFocusErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+  ],
 };
 const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
   updateWidgetFocus: updateWidgetFocusErrorPayload,
 };
 
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
+  },
+};
+
 test('should render the radio', () => {
   const { container } = render(
     <MockedProvider>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultRadio}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultRadio}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -173,13 +201,15 @@ test('should render the radio', () => {
 test('should render a readOnly radio', () => {
   const { container } = render(
     <MockedProvider>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultRadio}
-        subscribers={[]}
-        readOnly
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultRadio}
+          subscribers={[]}
+          readOnly
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -213,13 +243,15 @@ test('should send mutation when clicked', async () => {
   const mocks = [updateWidgetFocusSuccessMock, editRadioSuccessMock];
   const { container } = render(
     <MockedProvider mocks={mocks}>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultRadio}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultRadio}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -270,13 +302,15 @@ test('should display the error received', async () => {
   const mocks = [updateWidgetFocusErrorMock, editRadioErrorMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultRadio}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultRadio}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -294,7 +328,7 @@ test('should display the error received', async () => {
     await waitFor(() => {
       expect(updateWidgetFocusCalled).toBeTruthy();
       expect(editRadioCalled).toBeTruthy();
-      expect(screen.getByTestId('toast')).not.toBeUndefined();
+      expect(mockEnqueue).toHaveBeenCalledTimes(3);
       expect(baseElement).toMatchSnapshot();
     });
   });
@@ -303,13 +337,15 @@ test('should display the error received', async () => {
 test('should render the radio without style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultRadio}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultRadio}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -318,13 +354,15 @@ test('should render the radio without style', () => {
 test('should render the radio with style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={radioWithStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={radioWithStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -333,13 +371,15 @@ test('should render the radio with style', () => {
 test('should render the radio with empty style', async () => {
   const { baseElement } = render(
     <MockedProvider>
-      <RadioPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={radioWithEmptyStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={radioWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();

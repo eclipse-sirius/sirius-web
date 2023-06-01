@@ -11,12 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionComponentProps, PropertySectionLabel } from '@eclipse-sirius/sirius-components-forms';
-import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/core/Slider';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useState } from 'react';
 import { GQLSlider } from './SliderFragment.types';
@@ -26,6 +23,7 @@ import {
   GQLEditSliderMutationVariables,
   GQLEditSliderPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
@@ -37,7 +35,16 @@ export const editSliderMutation = gql`
     editSlider(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -48,7 +55,10 @@ export const updateWidgetFocusMutation = gql`
     updateWidgetFocus(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -56,6 +66,8 @@ export const updateWidgetFocusMutation = gql`
 
 const isErrorPayload = (payload: GQLEditSliderPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLEditSliderPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const SliderPropertySection = ({
   editingContextId,
@@ -66,21 +78,21 @@ export const SliderPropertySection = ({
 }: PropertySectionComponentProps<GQLSlider>) => {
   const { httpOrigin }: ServerContextValue = useContext(ServerContext);
 
-  const [message, setMessage] = useState<string | null>(null);
-
   const [editSlider, { loading, data, error }] = useMutation<GQLEditSliderMutationData, GQLEditSliderMutationVariables>(
     editSliderMutation
   );
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (data) {
         const { editSlider } = data;
-        if (isErrorPayload(editSlider)) {
-          setMessage(editSlider.message);
+        if (isErrorPayload(editSlider) || isSuccessPayload(editSlider)) {
+          addMessages(editSlider.messages);
         }
       }
     }
@@ -107,13 +119,12 @@ export const SliderPropertySection = ({
   useEffect(() => {
     if (!updateWidgetFocusLoading) {
       if (updateWidgetFocusError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateWidgetFocusData) {
         const { updateWidgetFocus } = updateWidgetFocusData;
         if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          setMessage(message);
+          addMessages(updateWidgetFocus.messages);
         }
       }
     }
@@ -156,22 +167,6 @@ export const SliderPropertySection = ({
         valueLabelDisplay="on"
         onChange={(_, value) => setDisplayedValue(value as number)}
         onChangeCommitted={onValueChanged}></Slider>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
-        message={message}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => setMessage(null)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-        data-testid="error"
-      />
     </div>
   );
 };

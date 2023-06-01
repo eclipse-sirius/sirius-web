@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 
 /**
@@ -24,7 +26,8 @@ import org.eclipse.sirius.components.representations.WorkbenchSelection;
  * @author pcdavid
  * @author hmarchadour
  */
-public record InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(UUID id, WorkbenchSelection newSelection) implements IPayload {
+public record InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(UUID id, WorkbenchSelection newSelection, List<Message> messages) implements IPayload {
+
     public InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
         Objects.requireNonNull(id);
     }

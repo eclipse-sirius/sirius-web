@@ -13,11 +13,15 @@
 package org.eclipse.sirius.web.sample.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.FormDescription;
 
 /**
@@ -26,6 +30,13 @@ import org.eclipse.sirius.components.view.FormDescription;
  * @author pcdavid
  */
 public final class DomainAttributeServices {
+
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public DomainAttributeServices(IFeedbackMessageService feedbackMessageService) {
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+    }
+
     public List<String> getAvailableDataTypes(EObject self) {
         return DataType.VALUES.stream().map(DataType::getName).toList();
     }
@@ -37,6 +48,10 @@ public final class DomainAttributeServices {
     public EObject setDataType(Attribute attr, String typeName) {
         var type = DataType.getByName(typeName);
         attr.setType(type);
+        if (type == null) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Reverting type of %s to the default type %s".formatted(attr.getName(),
+                    this.capitalize(DataType.STRING.getLiteral())), MessageLevel.WARNING));
+        }
         return attr;
     }
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLSubscriber, GQLTextarea, GQLTextfield } from '../form/FormEventFragments.types';
+import { GQLMessage, GQLSubscriber, GQLTextarea, GQLTextfield } from '../form/FormEventFragments.types';
 
 export interface TextfieldStyleProps {
   backgroundColor: string | null;
@@ -50,10 +50,12 @@ export interface GQLEditTextfieldPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload extends GQLEditTextfieldPayload {}
+export interface GQLSuccessPayload extends GQLEditTextfieldPayload {
+  messages: GQLMessage[];
+}
 
 export interface GQLErrorPayload extends GQLEditTextfieldPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLUpdateWidgetFocusMutationVariables {

@@ -79,27 +79,24 @@ public class PushButtonEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof PushButtonInput) {
-            PushButtonInput input = (PushButtonInput) formInput;
+        if (formInput instanceof PushButtonInput input) {
 
-            // @formatter:off
             Optional<AbstractWidget> optionalWidget = this.formQueryService.findWidget(form, input.buttonId());
             var handler = optionalWidget.filter(Button.class::isInstance)
-                                        .map(Button.class::cast)
-                                        .map(Button::getPushButtonHandler);
+                    .map(Button.class::cast)
+                    .map(Button::getPushButtonHandler);
             if (handler.isEmpty()) {
                 handler = optionalWidget.filter(ToolbarAction.class::isInstance)
-                                        .map(ToolbarAction.class::cast)
-                                        .map(ToolbarAction::getPushButtonHandler);
+                        .map(ToolbarAction.class::cast)
+                        .map(ToolbarAction::getPushButtonHandler);
             }
             IStatus status = handler.map(Supplier::get).orElse(new Failure(""));
-            // @formatter:on
 
-            if (status instanceof Success) {
-                payload = new SuccessPayload(formInput.id());
+            if (status instanceof Success success) {
+                payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
-            } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
+            } else if (status instanceof Failure failure) {
+                payload = new ErrorPayload(formInput.id(), failure.getMessages());
             }
         }
 

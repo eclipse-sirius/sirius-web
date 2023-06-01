@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-forms/src';
 
 export interface GQLEditSliderMutationData {
   editSlider: GQLEditSliderPayload;
@@ -30,10 +31,12 @@ export interface GQLEditSliderPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload extends GQLEditSliderPayload {}
+export interface GQLSuccessPayload extends GQLEditSliderPayload {
+  messages: GQLMessage[];
+}
 
 export interface GQLErrorPayload extends GQLEditSliderPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLUpdateWidgetFocusMutationVariables {
