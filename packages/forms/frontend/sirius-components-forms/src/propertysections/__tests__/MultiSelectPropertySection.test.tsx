@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
+import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { cleanup, render } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLMultiSelect } from '../../form/FormEventFragments.types';
@@ -69,16 +70,29 @@ const multiSelectWithEmptyStyle: GQLMultiSelect = {
   },
 };
 
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
+  },
+};
+
 test('should render the multiSelect without style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <MultiSelectPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultMultiSelect}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <MultiSelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultMultiSelect}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -87,13 +101,15 @@ test('should render the multiSelect without style', () => {
 test('should render the multiSelect with style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <MultiSelectPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={multiSelectWithStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <MultiSelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={multiSelectWithStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -102,13 +118,15 @@ test('should render the multiSelect with style', () => {
 test('should render the multiSelect with empty style', async () => {
   const { baseElement } = render(
     <MockedProvider>
-      <MultiSelectPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={multiSelectWithEmptyStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <MultiSelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={multiSelectWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();

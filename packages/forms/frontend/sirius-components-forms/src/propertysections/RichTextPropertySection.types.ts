@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLRichText, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLMessage, GQLRichText, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface RichTextPropertySectionProps {
   editingContextId: string;
@@ -41,10 +41,12 @@ export interface GQLEditRichTextPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload extends GQLEditRichTextPayload {}
+export interface GQLSuccessPayload extends GQLEditRichTextPayload {
+  messages: GQLMessage[];
+}
 
 export interface GQLErrorPayload extends GQLEditRichTextPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLUpdateWidgetFocusMutationVariables {

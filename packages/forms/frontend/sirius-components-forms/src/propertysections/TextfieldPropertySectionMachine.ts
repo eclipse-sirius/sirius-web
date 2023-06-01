@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,6 @@ import { CompletionRequest, GQLCompletionProposal } from './TextfieldPropertySec
 
 export interface TextfieldPropertySectionStateSchema {
   states: {
-    toast: {
-      states: {
-        visible: {};
-        hidden: {};
-      };
-    };
     textfieldPropertySection: {
       states: {
         pristine: {};
@@ -38,7 +32,6 @@ export interface TextfieldPropertySectionStateSchema {
 }
 
 export type SchemaValue = {
-  toast: 'visible' | 'hidden';
   textfieldPropertySection: 'pristine' | 'edited';
   completion: 'idle' | 'requested' | 'received';
 };
@@ -47,11 +40,8 @@ export interface TextfieldPropertySectionContext {
   value: string;
   completionRequest: CompletionRequest | null;
   proposals: GQLCompletionProposal[] | null;
-  message: string | null;
 }
 
-export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
-export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type InitializeEvent = { type: 'INITIALIZE'; value: string };
 export type ChangeValueEvent = { type: 'CHANGE_VALUE'; value: string };
 export type RequestCompletionEvent = { type: 'COMPLETION_REQUESTED'; currentText: string; cursorPosition: number };
@@ -61,8 +51,6 @@ export type CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
 export type TextfieldPropertySectionEvent =
   | InitializeEvent
   | ChangeValueEvent
-  | ShowToastEvent
-  | HideToastEvent
   | RequestCompletionEvent
   | CompletionReceivedEvent
   | CompletionDismissedEvent;
@@ -78,30 +66,8 @@ export const textfieldPropertySectionMachine = Machine<
       value: '',
       completionRequest: null,
       proposals: null,
-      message: null,
     },
     states: {
-      toast: {
-        initial: 'hidden',
-        states: {
-          hidden: {
-            on: {
-              SHOW_TOAST: {
-                target: 'visible',
-                actions: 'setMessage',
-              },
-            },
-          },
-          visible: {
-            on: {
-              HIDE_TOAST: {
-                target: 'hidden',
-                actions: 'clearMessage',
-              },
-            },
-          },
-        },
-      },
       textfieldPropertySection: {
         initial: 'pristine',
         states: {
@@ -196,13 +162,6 @@ export const textfieldPropertySectionMachine = Machine<
       updateValue: assign((_, event) => {
         const { value } = event as ChangeValueEvent;
         return { value };
-      }),
-      setMessage: assign((_, event) => {
-        const { message } = event as ShowToastEvent;
-        return { message };
-      }),
-      clearMessage: assign((_) => {
-        return { message: null };
       }),
       setCompletionRequest: assign((_, event) => {
         const { currentText, cursorPosition } = event as RequestCompletionEvent;

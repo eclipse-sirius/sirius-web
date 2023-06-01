@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import {
   ButtonPropertySectionProps,
   ButtonStyleProps,
@@ -24,6 +24,7 @@ import {
   GQLPushButtonMutationData,
   GQLPushButtonMutationVariables,
   GQLPushButtonPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
@@ -59,7 +60,16 @@ export const pushButtonMutation = gql`
     pushButton(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -70,7 +80,10 @@ export const updateWidgetFocusMutation = gql`
     updateWidgetFocus(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -78,6 +91,9 @@ export const updateWidgetFocusMutation = gql`
 
 const isErrorPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+
+const isSuccessPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 /**
  * Defines the content of a Button property section.
@@ -104,21 +120,21 @@ export const ButtonPropertySection = ({
 
   const { httpOrigin }: ServerContextValue = useContext(ServerContext);
 
-  const [message, setMessage] = useState<string | null>(null);
-
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation
   );
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (data) {
         const { pushButton } = data;
-        if (isErrorPayload(pushButton)) {
-          setMessage(pushButton.message);
+        if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
+          addMessages(pushButton.messages);
         }
       }
     }
@@ -146,13 +162,12 @@ export const ButtonPropertySection = ({
   useEffect(() => {
     if (!updateWidgetFocusLoading) {
       if (updateWidgetFocusError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateWidgetFocusData) {
         const { updateWidgetFocus } = updateWidgetFocusData;
         if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          setMessage(message);
+          addMessages(updateWidgetFocus.messages);
         }
       }
     }
@@ -190,7 +205,6 @@ export const ButtonPropertySection = ({
         ) : null}
         {widget.buttonLabel}
       </Button>
-      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </div>
   );
 };

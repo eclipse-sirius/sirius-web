@@ -305,6 +305,7 @@ union InvokeSingleClickOnTwoDiagramElementsToolPayload = ErrorPayload | InvokeSi
 type InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
   id: ID!
   newSelection: WorkbenchSelection
+  messages: [Message]!
 }
 
 input InvokeSingleClickOnDiagramElementToolInput {
@@ -321,8 +322,9 @@ input InvokeSingleClickOnDiagramElementToolInput {
 union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
 type InvokeSingleClickOnDiagramElementToolSuccessPayload {
-  id: ID!
-  newSelection: WorkbenchSelection
+    id: ID!
+    newSelection: WorkbenchSelection
+    messages: [Message]!
 }
 
 input UpdateNodeBoundsInput {

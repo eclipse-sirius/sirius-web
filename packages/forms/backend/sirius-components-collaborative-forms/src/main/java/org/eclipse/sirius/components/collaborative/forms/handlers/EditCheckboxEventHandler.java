@@ -88,11 +88,11 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
                     .orElse(new Failure(""));
             // @formatter:on
 
-            if (status instanceof Success) {
-                payload = new SuccessPayload(formInput.id());
+            if (status instanceof Success success) {
+                payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
-            } else if (status instanceof Failure) {
-                payload = new ErrorPayload(formInput.id(), ((Failure) status).getMessage());
+            } else if (status instanceof Failure failure) {
+                payload = new ErrorPayload(formInput.id(), failure.getMessages());
             }
         }
 

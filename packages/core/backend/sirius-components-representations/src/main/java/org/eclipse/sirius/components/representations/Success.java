@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.representations;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,13 +30,24 @@ public class Success implements IStatus {
 
     private final String changeKind;
 
+    private final List<Message> messages;
+
     public Success() {
         this("", new HashMap<>());
     }
 
+    public Success(List<Message> messages) {
+        this("", new HashMap<>(), messages);
+    }
+
     public Success(String changeKind, Map<String, Object> parameters) {
-        this.changeKind = Objects.requireNonNull(changeKind);
+        this(Objects.requireNonNull(changeKind), Objects.requireNonNull(parameters), List.of());
+    }
+
+    public Success(String changeKind, Map<String, Object> parameters, List<Message> messages) {
         this.parameters = Objects.requireNonNull(parameters);
+        this.changeKind = Objects.requireNonNull(changeKind);
+        this.messages = Objects.requireNonNull(messages);
     }
 
     public String getChangeKind() {
@@ -46,4 +58,7 @@ public class Success implements IStatus {
         return this.parameters;
     }
 
+    public List<Message> getMessages() {
+        return this.messages;
+    }
 }

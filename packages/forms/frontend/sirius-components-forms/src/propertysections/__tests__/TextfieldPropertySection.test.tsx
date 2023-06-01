@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -95,7 +96,7 @@ const editTextfieldVariables: GQLEditTextfieldMutationVariables = {
     newValue: 'Main Composite Processor',
   },
 };
-const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const successPayload: GQLSuccessPayload = { messages: [], __typename: 'SuccessPayload' };
 const editTextfieldSuccessData: GQLEditTextfieldMutationData = { editTextfield: successPayload };
 
 const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
@@ -116,22 +117,40 @@ const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
 
 const updateWidgetFocusErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+  ],
 };
 const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
   updateWidgetFocus: updateWidgetFocusErrorPayload,
 };
 
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
+  },
+};
+
 test('should render the textfield', () => {
   const { container } = render(
     <MockedProvider>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultTextField}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultTextField}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -140,13 +159,15 @@ test('should render the textfield', () => {
 test('should render a readOnly textfield', () => {
   const { container } = render(
     <MockedProvider>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultTextField}
-        subscribers={[]}
-        readOnly
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultTextField}
+          subscribers={[]}
+          readOnly
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -180,13 +201,15 @@ test('should display the edited value', async () => {
   const mocks = [updateWidgetFocusSuccessMock, editTextfieldSuccessMock];
   const { container } = render(
     <MockedProvider mocks={mocks}>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultTextField}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultTextField}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -232,13 +255,15 @@ test('should display the error received', async () => {
   const mocks = [updateWidgetFocusErrorMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultTextField}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultTextField}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -252,7 +277,7 @@ test('should display the error received', async () => {
 
     await waitFor(() => {
       expect(updateWidgetFocusCalled).toBeTruthy();
-      expect(screen.getByTestId('toast')).not.toBeUndefined();
+      expect(mockEnqueue).toHaveBeenCalledTimes(1);
       expect(baseElement).toMatchSnapshot();
     });
   });
@@ -261,13 +286,15 @@ test('should display the error received', async () => {
 test('should render the textfield without style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultTextField}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultTextField}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -276,13 +303,15 @@ test('should render the textfield without style', () => {
 test('should render the textfield with style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={textFieldWithStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={textFieldWithStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -291,13 +320,15 @@ test('should render the textfield with style', () => {
 test('should render the textfield with empty style', async () => {
   const { baseElement } = render(
     <MockedProvider>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={textFieldWithEmptyStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={textFieldWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -410,13 +441,15 @@ test('should support completion if configured', async () => {
   ];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={textFieldWithCompletion}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={textFieldWithCompletion}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -508,13 +541,15 @@ test('should not trigger completion request if not configured', async () => {
   const mocks = [updateWidgetFocusSuccessMock, leaveWidgetFocusSuccessMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
-      <TextfieldPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={textFieldWithoutCompletion}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={textFieldWithoutCompletion}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();

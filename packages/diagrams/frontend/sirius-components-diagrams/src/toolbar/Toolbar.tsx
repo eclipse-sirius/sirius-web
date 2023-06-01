@@ -60,7 +60,10 @@ const hideDiagramElementMutation = gql`
         id
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -74,7 +77,10 @@ const fadeDiagramElementMutation = gql`
         id
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }

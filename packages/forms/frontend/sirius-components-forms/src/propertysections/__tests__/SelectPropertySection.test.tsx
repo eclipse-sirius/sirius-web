@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
+import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { cleanup, render } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLSelect } from '../../form/FormEventFragments.types';
@@ -69,16 +70,29 @@ const selectWithEmptyStyle: GQLSelect = {
   },
 };
 
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
+  },
+};
+
 test('should render the select without style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <SelectPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultSelect}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <SelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultSelect}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -87,13 +101,15 @@ test('should render the select without style', () => {
 test('should render the select with style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <SelectPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={selectWithStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <SelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={selectWithStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -102,13 +118,15 @@ test('should render the select with style', () => {
 test('should render the select with empty style', async () => {
   const { baseElement } = render(
     <MockedProvider>
-      <SelectPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={selectWithEmptyStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <SelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={selectWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();

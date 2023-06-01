@@ -12,8 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
-import { useMachine } from '@xstate/react';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import { RichTextEditor } from '../richtexteditor/RichTextEditor';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -23,26 +22,29 @@ import {
   GQLEditRichTextMutationVariables,
   GQLEditRichTextPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
   RichTextPropertySectionProps,
 } from './RichTextPropertySection.types';
-import {
-  RichTextPropertySectionContext,
-  RichTextPropertySectionEvent,
-  RichTextPropertySectionMachine,
-  SchemaValue,
-  ShowToastEvent,
-} from './RichTextPropertySectionMachine';
 
 export const editRichTextMutation = gql`
   mutation editRichText($input: EditRichTextInput!) {
     editRichText(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -53,7 +55,10 @@ export const updateWidgetFocusMutation = gql`
     updateWidgetFocus(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -61,6 +66,9 @@ export const updateWidgetFocusMutation = gql`
 
 const isErrorPayload = (payload: GQLEditRichTextPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (
+  payload: GQLEditRichTextPayload | GQLUpdateWidgetFocusPayload
+): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 /**
  * Defines the content of a Rich Text property section.
@@ -73,13 +81,6 @@ export const RichTextPropertySection = ({
   subscribers,
   readOnly,
 }: RichTextPropertySectionProps) => {
-  const [{ value: schemaValue, context }, dispatch] = useMachine<
-    RichTextPropertySectionContext,
-    RichTextPropertySectionEvent
-  >(RichTextPropertySectionMachine);
-  const { toast } = schemaValue as SchemaValue;
-  const { message } = context;
-
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
   const sendEditedValue = (newValue) => {
@@ -94,25 +95,21 @@ export const RichTextPropertySection = ({
     editRichText({ variables });
   };
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!updateRichTextLoading) {
       if (updateRichTextError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateRichTextData) {
         const { editRichText } = updateRichTextData;
-        if (isErrorPayload(editRichText)) {
-          const { message } = editRichText;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+        if (isErrorPayload(editRichText) || isSuccessPayload(editRichText)) {
+          addMessages(editRichText.messages);
         }
       }
     }
-  }, [updateRichTextLoading, updateRichTextData, updateRichTextError, dispatch]);
+  }, [updateRichTextLoading, updateRichTextData, updateRichTextError]);
 
   const [
     updateWidgetFocus,
@@ -135,22 +132,16 @@ export const RichTextPropertySection = ({
   useEffect(() => {
     if (!updateWidgetFocusLoading) {
       if (updateWidgetFocusError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateWidgetFocusData) {
         const { updateWidgetFocus } = updateWidgetFocusData;
         if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addMessages(updateWidgetFocus.messages);
         }
       }
     }
-  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError, dispatch]);
+  }, [updateWidgetFocusLoading, updateWidgetFocusData, updateWidgetFocusError]);
 
   const onFocus = () => sendUpdateWidgetFocus(true);
   const onBlur = (currentText: string) => {
@@ -172,7 +163,6 @@ export const RichTextPropertySection = ({
           readOnly={readOnly}
         />
       </div>
-      <Toast message={message} open={toast === 'visible'} onClose={() => dispatch({ type: 'HIDE_TOAST' })} />
     </div>
   );
 };

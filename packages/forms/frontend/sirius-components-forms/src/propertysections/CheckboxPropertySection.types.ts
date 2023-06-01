@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLCheckbox, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLCheckbox, GQLMessage, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface CheckboxStyleProps {
   color: string | null;
@@ -33,10 +33,12 @@ export interface GQLEditCheckboxPayload {
 }
 
 export interface GQLErrorPayload extends GQLEditCheckboxPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
-export interface GQLSuccessPayload extends GQLEditCheckboxPayload {}
+export interface GQLSuccessPayload extends GQLEditCheckboxPayload {
+  messages: GQLMessage[];
+}
 
 export interface GQLUpdateWidgetFocusMutationData {
   updateWidgetFocus: GQLUpdateWidgetFocusPayload;

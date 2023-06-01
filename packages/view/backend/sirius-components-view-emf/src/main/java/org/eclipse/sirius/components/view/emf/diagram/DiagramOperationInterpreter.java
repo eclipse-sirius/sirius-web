@@ -26,6 +26,8 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
@@ -64,12 +66,14 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     public IStatus executeTool(Tool tool, VariableManager variableManager) {
         Optional<VariableManager> optionalVariableManager = this.executeOperations(tool.getBody(), variableManager);
+        List<Message> feedbackStackedMessages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
         if (optionalVariableManager.isEmpty()) {
-            var feedbackMessages = new ArrayList<>(List.of(String.format("Something went wrong while executing the tool '%s'", tool.getName())));
-            feedbackMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-            return new Failure(String.join(", ", feedbackMessages));
+            List<Message> errorMessages = new ArrayList<>();
+            errorMessages.add(new Message(String.format("Something went wrong while executing the tool '%s'", tool.getName()), MessageLevel.ERROR));
+            errorMessages.addAll(feedbackStackedMessages);
+            return new Failure(errorMessages);
         }
-        return new Success();
+        return new Success(this.feedbackMessageService.getFeedbackMessages());
     }
 
     @Override

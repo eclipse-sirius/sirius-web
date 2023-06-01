@@ -10,13 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api;
+import { ProviderContext } from 'notistack';
 
-/**
- * Enumeration used to indicate the feedback message level.
- *
- * @author frouene
- */
-public enum FeedbackLevel {
-    DEBUG, INFO, WARNING, ERROR,
+export interface ToastContextValue {
+  useToast: () => ProviderContext;
 }

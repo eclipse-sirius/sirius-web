@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -73,12 +74,21 @@ const editCheckboxVariables: GQLEditCheckboxMutationVariables = {
     newValue: true,
   },
 };
-const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload' };
+const successPayload: GQLSuccessPayload = { messages: [], __typename: 'SuccessPayload' };
 const editCheckboxSuccessData: GQLEditCheckboxMutationData = { editCheckbox: successPayload };
 
 const editCheckboxErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+    {
+      body: 'FeedbackMessage',
+      level: 'INFO',
+    },
+  ],
 };
 const editCheckboxErrorData: GQLEditCheckboxMutationData = {
   editCheckbox: editCheckboxErrorPayload,
@@ -102,22 +112,40 @@ const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
 
 const updateWidgetFocusErrorPayload: GQLErrorPayload = {
   __typename: 'ErrorPayload',
-  message: 'An error has occurred, please refresh the page',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+  ],
 };
 const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
   updateWidgetFocus: updateWidgetFocusErrorPayload,
 };
 
+const mockEnqueue = vi.fn();
+
+const toastContextMock: ToastContextValue = {
+  useToast: () => {
+    return {
+      enqueueSnackbar: mockEnqueue,
+      closeSnackbar: () => {},
+    };
+  },
+};
+
 test('should render the checkbox', () => {
   const { container } = render(
     <MockedProvider>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultCheckbox}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultCheckbox}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -126,13 +154,15 @@ test('should render the checkbox', () => {
 test('should render a readOnly checkbox', () => {
   const { container } = render(
     <MockedProvider>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultCheckbox}
-        subscribers={[]}
-        readOnly
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultCheckbox}
+          subscribers={[]}
+          readOnly
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -166,13 +196,15 @@ test('should send mutation when clicked', async () => {
   const mocks = [updateWidgetFocusSuccessMock, editCheckboxSuccessMock];
   const { container } = render(
     <MockedProvider mocks={mocks}>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultCheckbox}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultCheckbox}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -220,13 +252,15 @@ test('should display the error received', async () => {
   const mocks = [updateWidgetFocusErrorMock, editCheckboxErrorMock];
   const { baseElement } = render(
     <MockedProvider mocks={mocks}>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultCheckbox}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultCheckbox}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -241,7 +275,7 @@ test('should display the error received', async () => {
     await waitFor(() => {
       expect(updateWidgetFocusCalled).toBeTruthy();
       expect(editCheckboxCalled).toBeTruthy();
-      expect(screen.getByTestId('toast')).not.toBeUndefined();
+      expect(mockEnqueue).toHaveBeenCalledTimes(3);
       expect(baseElement).toMatchSnapshot();
     });
   });
@@ -250,13 +284,15 @@ test('should display the error received', async () => {
 test('should render the checkbox without style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={defaultCheckbox}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={defaultCheckbox}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -265,13 +301,15 @@ test('should render the checkbox without style', () => {
 test('should render the checkbox with style', () => {
   const { baseElement } = render(
     <MockedProvider>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={checkboxWithStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={checkboxWithStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
@@ -280,13 +318,15 @@ test('should render the checkbox with style', () => {
 test('should render the checkbox with empty style', async () => {
   const { baseElement } = render(
     <MockedProvider>
-      <CheckboxPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={checkboxWithEmptyStyle}
-        subscribers={[]}
-        readOnly={false}
-      />
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={checkboxWithEmptyStyle}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();

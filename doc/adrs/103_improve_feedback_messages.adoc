@@ -1,0 +1,50 @@
+= ADR-103 - Improves the existing feedback messages capability
+
+== Context
+
+We add an interface to return feedback messages to the UI, see link:./101_feedback_messages_on_actions.adoc[the adr] for more details.
+
+== Decision
+
+We have improved the possibility of returning a list of different messages, also on a success.
+We also have improved the representation of these messages to show them more clearly on the UI.
+
+=== Backend
+
+We changed the interface to:
+
+[source,java]
+----
+interface IFeedbackMessageService {
+    void addFeedbackMessage(Message message);
+}
+----
+with
+[source,java]
+----
+record Message(String body, MessageLevel level) {}
+----
+
+We add in the `ErrorPayload` and `SuccessPayload` records a list of `Message`.
+To begin with, we've kept the single message in order not to break the existing interface with the frontend.
+Note that in the end, the message list will be the only way to return information to the payload, and this single message will be deleted.
+
+=== Frontend
+
+To display these messages on the UI, we chose to use the notistack library (https://notistack.com/).
+
+The `SnackbarProvider` is defined in the `index.tsx` of `sirius-web` and declared a default action to close each message individually.
+
+We've added a custom hook `useMultiToast` that directly display the messages on the UI.
+To used it in a component,
+[source,typescript]
+----
+const { addErrorMessage, addMessages } = useMultiToast();
+----
+
+* `addErrorMessage` take a string in enter and display it with an error representation.
+* `addMessages` take a list of `GQLMessage` and display each message with the defined representation.
+
+== Status
+
+Accepted.

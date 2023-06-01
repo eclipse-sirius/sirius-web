@@ -16,9 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.sirius.components.core.api.FeedbackLevel;
-import org.eclipse.sirius.components.core.api.FeedbackMessage;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.representations.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -33,30 +32,17 @@ import org.springframework.web.context.annotation.RequestScope;
 public class FeedbackMessageService implements IFeedbackMessageService {
 
 
-    private final List<FeedbackMessage> feedbackMessages = Collections.synchronizedList(new ArrayList<>());
+    private final List<Message> feedbackMessages = Collections.synchronizedList(new ArrayList<>());
 
 
     @Override
-    public void addFeedbackMessage(String message, FeedbackLevel level) {
-        this.feedbackMessages.add(new FeedbackMessage(message, level));
+    public void addFeedbackMessage(Message message) {
+        this.feedbackMessages.add(message);
     }
 
     @Override
-    public List<String> getFeedbackMessages() {
-        return this.feedbackMessages
-                .stream()
-                .map(this::applyLevelEmoji)
-                .toList();
-    }
-
-    private String applyLevelEmoji(FeedbackMessage feedback) {
-        String prefix = switch (feedback.level()) {
-            case DEBUG -> new String(Character.toChars(0x1F41B));
-            case INFO -> new String(Character.toChars(0x2139));
-            case WARNING -> new String(Character.toChars(0x26A0));
-            case ERROR -> new String(Character.toChars(0x274C));
-        };
-        return String.format("%s %s", prefix, feedback.message());
+    public List<Message> getFeedbackMessages() {
+        return this.feedbackMessages;
     }
 
 }

@@ -12,9 +12,12 @@
  *******************************************************************************/
 export * from './contexts/ServerContext';
 export * from './contexts/ServerContext.types';
+export * from './contexts/ToastContext';
+export * from './contexts/ToastContext.types';
 export * from './dataTransferTypes';
 export * from './materialui';
 export * from './theme';
+export * from './workbench/MultiToast';
 export * from './workbench/Panels';
 export * from './workbench/RepresentationContext';
 export * from './workbench/Toast';

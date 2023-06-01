@@ -97,12 +97,11 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
                 variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
 
                 var status = treeDescription.getRenameHandler().apply(variableManager, input.newLabel());
-                if (status instanceof Success) {
-                    Success success = (Success) status;
+                if (status instanceof Success success) {
                     changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
                     payload = new SuccessPayload(treeInput.id());
-                } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(treeInput.id(), ((Failure) status).getMessage());
+                } else if (status instanceof Failure failure) {
+                    payload = new ErrorPayload(treeInput.id(), failure.getMessages());
                 }
             }
         }

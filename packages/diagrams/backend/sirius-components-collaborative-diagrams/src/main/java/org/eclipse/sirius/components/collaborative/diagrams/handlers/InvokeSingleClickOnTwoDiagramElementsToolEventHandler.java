@@ -125,10 +125,10 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
                     if (newSelectionParameter instanceof WorkbenchSelection workbenchSelection) {
                         newSelection = workbenchSelection;
                     }
-                    payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.id(), newSelection);
+                    payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.id(), newSelection, success.getMessages());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                 } else if (status instanceof Failure failure) {
-                    payload = new ErrorPayload(diagramInput.id(), failure.getMessage());
+                    payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
                 }
             }
         }

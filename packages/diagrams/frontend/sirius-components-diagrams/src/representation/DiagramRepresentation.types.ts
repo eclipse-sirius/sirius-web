@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-forms';
 import { GQLTool } from '../palette/ContextualPalette.types';
 import { Node } from '../sprotty/Diagram.types';
 
@@ -339,6 +340,7 @@ export interface GQLInvokeSingleClickOnDiagramElementToolSuccessPayload
   extends GQLInvokeSingleClickOnDiagramElementToolPayload {
   id: string;
   newSelection: GQLWorkbenchSelection;
+  messages: GQLMessage[];
 }
 
 export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {
@@ -370,6 +372,7 @@ export interface GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
   extends GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
   id: string;
   newSelection: GQLWorkbenchSelection;
+  messages: GQLMessage[];
 }
 
 export interface GQLUpdateEdgeRoutingPointsVariables {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLSelect, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLMessage, GQLSelect, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface SelectStyleProps {
   backgroundColor: string | null;
@@ -39,7 +39,11 @@ export interface GQLEditSelectPayload {
 }
 
 export interface GQLErrorPayload extends GQLEditSelectPayload, GQLUpdateWidgetFocusPayload {
-  message: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLSuccessPayload extends GQLEditSelectPayload {
+  messages: GQLMessage[];
 }
 
 export interface GQLUpdateWidgetFocusMutationData {

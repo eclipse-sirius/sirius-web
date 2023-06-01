@@ -49,6 +49,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
@@ -85,6 +89,20 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
     private UUID representationId;
 
     private DiagramRefreshedEventPayload initializedDiagramPayload;
+
+    //In order to use spring service with scope request, we simulate it.
+    @BeforeEach
+    public void simulateRequestContext() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+        RequestContextHolder.setRequestAttributes(requestAttributes);
+    }
+
+    @AfterEach
+    public void resetRequestContext() {
+        RequestContextHolder.resetRequestAttributes();
+    }
+
     @BeforeEach
     public void setup() {
         this.createStudio();

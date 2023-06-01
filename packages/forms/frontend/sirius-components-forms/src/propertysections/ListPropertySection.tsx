@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,6 +30,7 @@ import {
   GQLDeleteListItemMutationData,
   GQLDeleteListItemPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   ListPropertySectionProps,
   ListStyleProps,
 } from './ListPropertySection.types';
@@ -41,7 +42,16 @@ export const deleteListItemMutation = gql`
     deleteListItem(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -52,7 +62,16 @@ export const clickListItemMutation = gql`
     clickListItem(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -92,6 +111,8 @@ const NONE_WIDGET_ITEM_ID = 'none';
 
 const isErrorPayload = (payload: GQLDeleteListItemPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLDeleteListItemPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export function useClickHandler<T>(
   onSimpleClick: (element: T) => void,
@@ -138,7 +159,6 @@ export const ListPropertySection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useListPropertySectionStyles(props);
-  const [message, setMessage] = useState<string | null>(null);
   const { httpOrigin } = useContext(ServerContext);
 
   let items = [...widget.items];
@@ -173,15 +193,17 @@ export const ListPropertySection = ({
     deleteListItem({ variables });
   };
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!deleteLoading) {
       if (deleteError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (deleteData) {
         const { deleteListItem } = deleteData;
-        if (isErrorPayload(deleteListItem)) {
-          setMessage(deleteListItem.message);
+        if (isErrorPayload(deleteListItem) || isSuccessPayload(deleteListItem)) {
+          addMessages(deleteListItem.messages);
         }
       }
     }
@@ -190,12 +212,12 @@ export const ListPropertySection = ({
   useEffect(() => {
     if (!clickLoading) {
       if (clickError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (clickData) {
         const { clickListItem } = clickData;
-        if (isErrorPayload(clickListItem)) {
-          setMessage(clickListItem.message);
+        if (isErrorPayload(clickListItem) || isSuccessPayload(clickListItem)) {
+          addMessages(clickListItem.messages);
         }
       }
     }
@@ -271,7 +293,6 @@ export const ListPropertySection = ({
         </TableBody>
       </Table>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
-      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </FormControl>
   );
 };

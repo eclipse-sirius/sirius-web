@@ -125,8 +125,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
                 payload = new SuccessPayload(reconnectEdgeInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             } else {
-                String failureMessage = ((Failure) status).getMessage();
-                payload = new ErrorPayload(reconnectEdgeInput.id(), failureMessage);
+                payload = new ErrorPayload(reconnectEdgeInput.id(), ((Failure) status).getMessages());
                 // The frontend action has been send, thus, the edge has been reconnected on he frontend. We need to
                 // force the backend to send the refreshed diagram to "undo" the reconnect.
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);

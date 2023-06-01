@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -19,7 +19,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
@@ -28,6 +28,7 @@ import {
   GQLEditRadioMutationVariables,
   GQLEditRadioPayload,
   GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateWidgetFocusInput,
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
@@ -41,7 +42,16 @@ export const editRadioMutation = gql`
     editRadio(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -52,7 +62,10 @@ export const updateWidgetFocusMutation = gql`
     updateWidgetFocus(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -73,6 +86,8 @@ const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>(() => (
 
 const isErrorPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const RadioPropertySection = ({
   editingContextId,
@@ -91,8 +106,6 @@ export const RadioPropertySection = ({
   };
   const classes = useRadioPropertySectionStyles(props);
 
-  const [message, setMessage] = useState(null);
-
   const [editRadio, { loading, error, data }] = useMutation<GQLEditRadioMutationData>(editRadioMutation);
 
   const onChange = (event) => {
@@ -108,15 +121,17 @@ export const RadioPropertySection = ({
     editRadio({ variables });
   };
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (data) {
         const { editRadio } = data;
-        if (isErrorPayload(editRadio)) {
-          setMessage(editRadio.message);
+        if (isErrorPayload(editRadio) || isSuccessPayload(editRadio)) {
+          addMessages(editRadio.messages);
         }
       }
     }
@@ -143,13 +158,12 @@ export const RadioPropertySection = ({
   useEffect(() => {
     if (!updateWidgetFocusLoading) {
       if (updateWidgetFocusError) {
-        setMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (updateWidgetFocusData) {
         const { updateWidgetFocus } = updateWidgetFocusData;
         if (isErrorPayload(updateWidgetFocus)) {
-          const { message } = updateWidgetFocus;
-          setMessage(message);
+          addMessages(updateWidgetFocus.messages);
         }
       }
     }
@@ -190,7 +204,6 @@ export const RadioPropertySection = ({
         ))}
       </RadioGroup>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
-      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </FormControl>
   );
 };
