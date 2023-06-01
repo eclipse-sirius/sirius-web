@@ -10,6 +10,8 @@
 
 === Dependency update
 
+- [releng] Switch to Jacoco 0.8.10
+
 === Bug fixes
 
 === New Features
