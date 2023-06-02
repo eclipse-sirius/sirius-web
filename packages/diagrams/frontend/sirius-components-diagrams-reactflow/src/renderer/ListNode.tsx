@@ -15,13 +15,18 @@ import { memo } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { ListNodeData } from './ListNode.types';
 
-const listNodeStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return {
+const listNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
+  const listNodeStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     ...style,
   };
+  if (selected) {
+    listNodeStyle.outline = `var(--blue-lagoon) solid 1px`;
+  }
+
+  return listNodeStyle;
 };
 
 const listNodeHeaderStyle = (style: React.CSSProperties): React.CSSProperties => {
@@ -48,9 +53,9 @@ const listItemStyle = (style: React.CSSProperties): React.CSSProperties => {
   };
 };
 
-export const ListNode = memo(({ data, isConnectable }: NodeProps<ListNodeData>) => {
+export const ListNode = memo(({ data, isConnectable, selected }: NodeProps<ListNodeData>) => {
   return (
-    <div style={listNodeStyle(data.style)}>
+    <div style={listNodeStyle(data.style, selected)}>
       <div style={listNodeHeaderStyle(data.label.style)}>{data.label.text}</div>
       <div>
         {data.listItems.map((listItem) => {

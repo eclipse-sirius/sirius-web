@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { NodeData } from './DiagramRenderer.types';
 import { Label } from './Label.types';
 
-export interface RectangularNodeData {
+export interface RectangularNodeData extends NodeData {
   label: Label;
   style: React.CSSProperties;
 }

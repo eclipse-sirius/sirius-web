@@ -21,10 +21,13 @@ import { RectangularNodeData } from '../renderer/RectangularNode.types';
 
 const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<RectangularNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
-  const { position, size } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, position, size } = gqlNode;
   const labelStyle = gqlNode.label.style;
 
   const data: RectangularNodeData = {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
     style: {
       backgroundColor: style.color,
       borderColor: style.borderColor,
@@ -92,12 +95,12 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
 
 const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
-  const { position } = gqlNode;
   const labelStyle = gqlNode.label.style;
 
   const listItems: ListItemData[] = (gqlNode.childNodes ?? []).map((gqlChildNode) => {
+    const { id } = gqlChildNode;
     return {
-      id: gqlChildNode.id,
+      id,
       label: {
         text: gqlChildNode.label.text,
         style: {},
@@ -111,7 +114,11 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
     };
   });
 
+  const { targetObjectId, targetObjectLabel, targetObjectKind, position } = gqlNode;
   const data: ListNodeData = {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
     style: {
       backgroundColor: style.color,
       borderColor: style.borderColor,
@@ -182,14 +189,17 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
 
 const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ImageNodeData> => {
   const style = gqlNode.style as GQLImageNodeStyle;
-  const { position, size } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, position, size } = gqlNode;
 
   const data: ImageNodeData = {
+    targetObjectId,
+    targetObjectKind,
+    targetObjectLabel,
+    imageURL: style.imageURL,
     style: {
       width: `${size.width}px`,
       height: `${size.height}px`,
     },
-    imageURL: style.imageURL,
   };
 
   const node: Node<ImageNodeData> = {
@@ -266,6 +276,11 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   });
 
   return {
+    metadata: {
+      id: gqlDiagram.id,
+      label: gqlDiagram.metadata.label,
+      kind: gqlDiagram.metadata.kind,
+    },
     nodes,
     edges,
   };

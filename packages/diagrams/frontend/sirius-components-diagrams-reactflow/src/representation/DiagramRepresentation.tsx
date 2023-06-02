@@ -14,6 +14,7 @@
 import { OnSubscriptionDataOptions, gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { useState } from 'react';
+import { ReactFlowProvider } from 'reactflow';
 import { convertDiagram } from '../converter/convertDiagram';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
@@ -33,7 +34,12 @@ const subscription = gql(diagramEventSubscription);
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
 
-export const DiagramRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
+export const DiagramRepresentation = ({
+  editingContextId,
+  representationId,
+  selection,
+  setSelection,
+}: RepresentationComponentProps) => {
   const [state, setState] = useState<DiagramRepresentationState>({
     id: crypto.randomUUID(),
     diagram: null,
@@ -61,7 +67,7 @@ export const DiagramRepresentation = ({ editingContextId, representationId }: Re
   };
 
   const onSubscriptionComplete = () => {
-    setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
+    setState((prevState) => ({ ...prevState, diagram: null, convertedDiagram: null, complete: true }));
   };
 
   const { error } = useSubscription<GQLDiagramEventData>(subscription, {
@@ -84,5 +90,9 @@ export const DiagramRepresentation = ({ editingContextId, representationId }: Re
     return <div></div>;
   }
 
-  return <DiagramRenderer diagram={state.diagram} />;
+  return (
+    <ReactFlowProvider>
+      <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+    </ReactFlowProvider>
+  );
 };
