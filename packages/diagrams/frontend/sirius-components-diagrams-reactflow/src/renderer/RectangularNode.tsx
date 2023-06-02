@@ -15,12 +15,18 @@ import { memo } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { RectangularNodeData } from './RectangularNode.types';
 
-const rectangularNodeStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return {
+const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
+  const rectangularNodeStyle: React.CSSProperties = {
     display: 'flex',
     padding: '8px',
     ...style,
   };
+
+  if (selected) {
+    rectangularNodeStyle.outline = `var(--blue-lagoon) solid 1px`;
+  }
+
+  return rectangularNodeStyle;
 };
 
 const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
@@ -29,9 +35,9 @@ const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
   };
 };
 
-export const RectangularNode = memo(({ data, isConnectable }: NodeProps<RectangularNodeData>) => {
+export const RectangularNode = memo(({ data, isConnectable, selected }: NodeProps<RectangularNodeData>) => {
   return (
-    <div style={rectangularNodeStyle(data.style)}>
+    <div style={rectangularNodeStyle(data.style, selected)}>
       <div style={labelStyle(data.label.style)}>{data.label.text}</div>
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />

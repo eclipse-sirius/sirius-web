@@ -16,15 +16,21 @@ import { memo, useContext } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { ImageNodeData } from './ImageNode.types';
 
-const imageNodeStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return { ...style };
+const imageNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
+  const imageNodeStyle: React.CSSProperties = { ...style };
+
+  if (selected) {
+    imageNodeStyle.outline = `var(--blue-lagoon) solid 1px`;
+  }
+
+  return imageNodeStyle;
 };
 
-export const ImageNode = memo(({ data, isConnectable }: NodeProps<ImageNodeData>) => {
+export const ImageNode = memo(({ data, isConnectable, selected }: NodeProps<ImageNodeData>) => {
   const { httpOrigin } = useContext(ServerContext);
   return (
     <>
-      <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style)} />
+      <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style, selected)} />
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
     </>

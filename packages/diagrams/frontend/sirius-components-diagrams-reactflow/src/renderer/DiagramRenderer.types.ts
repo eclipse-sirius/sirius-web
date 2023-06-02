@@ -11,13 +11,29 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node } from 'reactflow';
 
 export interface DiagramRendererProps {
   diagram: Diagram;
+  selection: Selection;
+  setSelection: (selection: Selection) => void;
 }
 
 export interface Diagram {
+  metadata: DiagramMetadata;
   nodes: Node[];
   edges: Edge[];
+}
+
+export interface DiagramMetadata {
+  id: string;
+  kind: string;
+  label: string;
+}
+
+export interface NodeData {
+  targetObjectId: string;
+  targetObjectKind: string;
+  targetObjectLabel: string;
 }
