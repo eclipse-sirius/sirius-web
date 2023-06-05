@@ -12,10 +12,11 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -34,9 +35,22 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { Page } from './Page';
 import { PageListProps, PageListState } from './PageList.types';
+import { isFlexboxContainer } from './WidgetOperations';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+
+const recursiveWidgetSearch = (widget: GQLWidget, entryId: string): boolean => {
+  if (entryId === widget.id) {
+    return true;
+  }
+  if (isFlexboxContainer(widget)) {
+    {
+      return (widget as GQLFlexboxContainer).children.some((widget) => recursiveWidgetSearch(widget, entryId));
+    }
+  }
+  return false;
+};
 
 const usePageListStyles = makeStyles((theme) => ({
   rightDropArea: {
@@ -102,6 +116,36 @@ export const PageList = ({
 
   const [state, setState] = useState<PageListState>({ message: null, selectedPage: pages[0], pages });
   const { message } = state;
+
+  useEffect(() => {
+    const entry = selection.entries.at(0);
+    if (!entry) {
+      return;
+    }
+    let pageToSelect: GQLPage;
+    pageToSelect = state.pages.find((page) => entry.id === page.id);
+    if (!pageToSelect) {
+      pageToSelect = state.pages.find((page) => page.groups.some((group) => entry.id === group.id));
+    }
+    if (!pageToSelect) {
+      pageToSelect = state.pages.find((page) =>
+        page.groups.some((group) => group.toolbarActions.some((toolbar) => entry.id === toolbar.id))
+      );
+    }
+    if (!pageToSelect) {
+      pageToSelect = state.pages.find((page) => page.toolbarActions.some((toolbar) => entry.id === toolbar.id));
+    }
+    if (!pageToSelect) {
+      pageToSelect = state.pages.find((page) =>
+        page.groups.some((group) => group.widgets.some((widget) => recursiveWidgetSearch(widget, entry.id)))
+      );
+    }
+    if (pageToSelect && pageToSelect.id !== state.selectedPage.id) {
+      setState((prevState) => {
+        return { ...prevState, selectedPage: pageToSelect };
+      });
+    }
+  }, [selection]);
 
   useEffect(() => {
     setState((prevState) => {

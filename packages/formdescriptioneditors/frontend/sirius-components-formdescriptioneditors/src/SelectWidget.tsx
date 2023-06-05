@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,12 +49,22 @@ export const SelectWidget = ({ widget, selection }: SelectWidgetProps) => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
+    let cleanup = undefined;
+
     if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {
-      ref.current.focus();
+      const timeoutId = setTimeout(function () {
+        // added a timeout to compensate for a problem with MaterialUI's SelectInput component on focus while the element is not yet rendered
+        ref.current.focus();
+      }, 50);
+
       setSelected(true);
+
+      cleanup = () => clearTimeout(timeoutId);
     } else {
       setSelected(false);
     }
+
+    return cleanup;
   }, [selection, widget]);
 
   return (
