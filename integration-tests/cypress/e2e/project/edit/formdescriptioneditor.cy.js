@@ -128,4 +128,52 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.get('[data-testid^="FlexboxContainer-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
     cy.get('[title="Slider"]').should('be.visible');
   });
+
+  it('display the page of the element selected', () => {
+    // Creates a second page
+    cy.getByTestId('New Form Description-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click().get('[data-value="Page Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    // Adds a widget to the first page
+    cy.getByTestId('PageDescription').eq(0).dblclick();
+    cy.getByTestId('GroupDescription-more').eq(0).click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click().get('[data-value="Widgets Pie Chart Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    // Adds a widget to the second page
+    cy.getByTestId('PageDescription').eq(1).dblclick();
+    cy.getByTestId('GroupDescription-more').eq(1).click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click().get('[data-value="Widgets Bar Chart Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    // Select the widget from the first page must display it on the editor, and the first page must be selected
+    cy.getByTestId('PieChartDescription').click();
+    cy.getByTestId('PieChart').should('exist');
+    cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'true');
+    cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'false');
+    // Select the widget from the second page must display it on the editor, and the second page must be selected
+    cy.getByTestId('BarChartDescription').click();
+    cy.getByTestId('PieChart').should('not.exist');
+    cy.getByTestId('BarChart').should('exist');
+    cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'false');
+    cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'true');
+    // Check page selection for group
+    cy.getByTestId('GroupDescription').eq(0).click();
+    cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'true');
+    cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'false');
+    cy.getByTestId('GroupDescription').eq(1).click();
+    cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'false');
+    cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'true');
+    // Check page selection for page
+    cy.getByTestId('PageDescription').eq(0).click();
+    cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'true');
+    cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'false');
+    cy.getByTestId('PageDescription').eq(1).click();
+    cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'false');
+    cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'true');
+  });
 });

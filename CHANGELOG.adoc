@@ -56,6 +56,7 @@ It will start by improving a bit performances since diagrams were persisted twic
 - https://github.com/eclipse-sirius/sirius-components/issues/2008[#2008] [view] Make edge tool more robust for applications which use a custom IViewRepresentationDescriptionSearchService
 - https://github.com/eclipse-sirius/sirius-components/issues/2027[#2027] [diagram] Support both versions of the ITool interface in the imageURL data fetchers
 - https://github.com/eclipse-sirius/sirius-components/issues/2026[#2026] [view] Display the layout strategy description of a node description in the explorer view again
+- https://github.com/eclipse-sirius/sirius-components/issues/2018[#2018] [formdescriptioneditors] Fixed form editor selection to display the page containing the first element selected.
 
 === New Features
 
