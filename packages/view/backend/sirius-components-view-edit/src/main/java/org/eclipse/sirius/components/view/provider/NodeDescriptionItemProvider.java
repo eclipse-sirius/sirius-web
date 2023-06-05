@@ -141,6 +141,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__PALETTE);
+            this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(ViewPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
