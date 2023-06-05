@@ -96,10 +96,9 @@ jobs:
 
       - name: Store the vscode extension
         uses: actions/upload-artifact@v2
-        if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: vscode
-          path: vscode-extension/sirius-web-2023.4.0.vsix
+          path: vscode-extension/sirius-web-2023.4.2.vsix
           retention-days: 20
 
       - name: Compress the code coverage results
