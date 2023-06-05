@@ -29,7 +29,13 @@ public class SingleClickOnDiagramElementToolImageURLDataFetcher implements IData
 
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
-        ITool tool = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + tool.imageURL();
+        String url = "";
+        Object source = environment.getSource();
+        if (source instanceof org.eclipse.sirius.components.diagrams.tools.ITool tool) {
+            url = URLConstants.IMAGE_BASE_PATH + tool.getImageURL();
+        } else if (source instanceof ITool tool) {
+            url = URLConstants.IMAGE_BASE_PATH + tool.imageURL();
+        }
+        return url;
     }
 }

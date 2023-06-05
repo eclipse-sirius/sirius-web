@@ -54,6 +54,7 @@ It will start by improving a bit performances since diagrams were persisted twic
 - https://github.com/eclipse-sirius/sirius-components/issues/1991[#1991] [form] Fix an issue where widgets from different groups share the same ID.
 - https://github.com/eclipse-sirius/sirius-components/issues/1305[#1305] [diagram] Fix an issue where the default tools of the palette's tool sections where not updated.
 - https://github.com/eclipse-sirius/sirius-components/issues/2008[#2008] [view] Make edge tool more robust for applications which use a custom IViewRepresentationDescriptionSearchService.
+- https://github.com/eclipse-sirius/sirius-components/issues/2027[#2027] [diagram] Support both versions of the ITool interface in the imageURL data fetchers
 
 === New Features
 
