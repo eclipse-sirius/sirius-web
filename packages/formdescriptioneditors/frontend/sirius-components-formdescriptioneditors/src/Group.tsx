@@ -445,7 +445,8 @@ export const Group = ({
       editingContextId={editingContextId}
       representationId={representationId}
       formDescriptionEditor={formDescriptionEditor}
-      group={group}
+      toolbarActions={group.toolbarActions}
+      containerId={group.id}
       selection={selection}
       setSelection={setSelection}
     />

@@ -104,7 +104,8 @@ const isErrorPayload = (payload: GQLDeleteToolbarActionPayload): payload is GQLE
 export const ToolbarActionWidget = ({
   editingContextId,
   representationId,
-  group,
+  toolbarActions,
+  containerId,
   toolbarAction,
   selection,
   setSelection,
@@ -285,12 +286,12 @@ export const ToolbarActionWidget = ({
       return;
     }
 
-    let index: number = group.toolbarActions.indexOf(toolbarAction);
+    let index: number = toolbarActions.indexOf(toolbarAction);
     if (index <= 0) {
       index = 0;
     }
 
-    const movedToolbarActionIndex = group.toolbarActions.findIndex((tba: GQLToolbarAction) => tba.id === id);
+    const movedToolbarActionIndex = toolbarActions.findIndex((tba: GQLToolbarAction) => tba.id === id);
     if (movedToolbarActionIndex > -1 && movedToolbarActionIndex < index) {
       index--;
     }
@@ -298,7 +299,7 @@ export const ToolbarActionWidget = ({
       id: crypto.randomUUID(),
       editingContextId,
       representationId,
-      containerId: group.id,
+      containerId,
       toolbarActionId: id,
       index,
     };

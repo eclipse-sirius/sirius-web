@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class PageDescription {
+
     private String id;
 
     private Function<VariableManager, String> idProvider;
@@ -37,6 +38,8 @@ public final class PageDescription {
     private Function<VariableManager, List<?>> semanticElementsProvider;
 
     private List<GroupDescription> groupDescriptions;
+
+    private List<ButtonDescription> toolbarActionDescriptions;
 
     private Predicate<VariableManager> canCreatePredicate;
 
@@ -64,6 +67,10 @@ public final class PageDescription {
         return this.groupDescriptions;
     }
 
+    public List<ButtonDescription> getToolbarActionDescriptions() {
+        return this.toolbarActionDescriptions;
+    }
+
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
     }
@@ -85,6 +92,7 @@ public final class PageDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -94,6 +102,8 @@ public final class PageDescription {
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private List<GroupDescription> groupDescriptions;
+
+        private List<ButtonDescription> toolbarActionDescriptions = List.of();
 
         private Predicate<VariableManager> canCreatePredicate;
 
@@ -121,6 +131,11 @@ public final class PageDescription {
             return this;
         }
 
+        public Builder toolbarActionDescriptions(List<ButtonDescription> toolbarActionDescriptions) {
+            this.toolbarActionDescriptions = Objects.requireNonNull(toolbarActionDescriptions);
+            return this;
+        }
+
         public Builder canCreatePredicate(Predicate<VariableManager> predicate) {
             this.canCreatePredicate = Objects.requireNonNull(predicate);
             return this;
@@ -133,6 +148,7 @@ public final class PageDescription {
             pageDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             pageDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             pageDescription.groupDescriptions = Objects.requireNonNull(this.groupDescriptions);
+            pageDescription.toolbarActionDescriptions = Objects.requireNonNull(this.toolbarActionDescriptions);
             pageDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             return pageDescription;
         }

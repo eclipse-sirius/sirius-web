@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLGroup, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
+import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
 export interface ToolbarActionProps {
   editingContextId: string;
   representationId: string;
   formDescriptionEditor: GQLFormDescriptionEditor;
-  group: GQLGroup;
+  toolbarActions: GQLToolbarAction[];
+  containerId: string;
   toolbarAction: GQLToolbarAction;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;

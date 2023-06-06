@@ -276,6 +276,8 @@
         eType="#//InterpretedExpression" defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
         eType="#//GroupDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolbarActions" upperBound="-1"
+        eType="#//ButtonDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GroupDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>

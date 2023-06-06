@@ -72,7 +72,8 @@ export const ToolbarActions = ({
   editingContextId,
   representationId,
   formDescriptionEditor,
-  group,
+  toolbarActions,
+  containerId,
   selection,
   setSelection,
 }: ToolbarActionsProps) => {
@@ -123,7 +124,7 @@ export const ToolbarActions = ({
       id: crypto.randomUUID(),
       editingContextId,
       representationId,
-      containerId: group.id,
+      containerId,
     };
     const addToolbarActionVariables: GQLAddToolbarActionMutationVariables = { input: addToolbarActionInput };
     addToolbarAction({ variables: addToolbarActionVariables });
@@ -152,8 +153,8 @@ export const ToolbarActions = ({
       return;
     }
 
-    let index = group.toolbarActions.length;
-    if (group.toolbarActions.find((tba: GQLToolbarAction) => tba.id === id)) {
+    let index = toolbarActions.length;
+    if (toolbarActions.find((tba: GQLToolbarAction) => tba.id === id)) {
       index--; // Move at the end of the toolbar
     }
 
@@ -161,7 +162,7 @@ export const ToolbarActions = ({
       id: crypto.randomUUID(),
       editingContextId,
       representationId,
-      containerId: group.id,
+      containerId,
       toolbarActionId: id,
       index,
     };
@@ -171,14 +172,15 @@ export const ToolbarActions = ({
 
   return (
     <div className={classes.toolbar}>
-      {group.toolbarActions.map((toolbarAction: GQLToolbarAction) => (
+      {toolbarActions.map((toolbarAction: GQLToolbarAction) => (
         <div className={classes.toolbarAction} key={toolbarAction.id}>
           <ToolbarActionWidget
             data-testid={toolbarAction.id}
             editingContextId={editingContextId}
             representationId={representationId}
             formDescriptionEditor={formDescriptionEditor}
-            group={group}
+            toolbarActions={toolbarActions}
+            containerId={containerId}
             toolbarAction={toolbarAction}
             selection={selection}
             setSelection={setSelection}
@@ -186,7 +188,7 @@ export const ToolbarActions = ({
         </div>
       ))}
       <div
-        data-testid={`Group-ToolbarActions-DropArea-${group.id}`}
+        data-testid={`ToolbarActions-DropArea-${containerId}`}
         className={classes.toolbarActionDropArea}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
@@ -194,7 +196,7 @@ export const ToolbarActions = ({
         onDrop={handleDrop}
       />
       <div className={classes.newToolbarAction}>
-        <Tooltip title={'Add new Toolbar Action'} arrow data-testid={`Group-ToolbarActions-NewAction-${group.id}`}>
+        <Tooltip title={'Add new Toolbar Action'} arrow data-testid={`ToolbarActions-NewAction-${containerId}`}>
           <IconButton size="small" aria-label="add" color="primary" onClick={handleAddToolbarAction}>
             <AddIcon />
           </IconButton>

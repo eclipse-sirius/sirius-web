@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -133,11 +134,21 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getGroups() <em>Groups</em>}' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #getGroups()
      * @generated
      * @ordered
+     * @see #getGroups()
      */
     protected EList<GroupDescription> groups;
+
+    /**
+     * The cached value of the '{@link #getToolbarActions() <em>Toolbar Actions</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getToolbarActions()
+     */
+    protected EList<ButtonDescription> toolbarActions;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -270,10 +281,25 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
+    public EList<ButtonDescription> getToolbarActions() {
+        if (this.toolbarActions == null) {
+            this.toolbarActions = new EObjectContainmentEList<>(ButtonDescription.class, this, ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS);
+        }
+        return this.toolbarActions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ViewPackage.PAGE_DESCRIPTION__GROUPS:
                 return ((InternalEList<?>) this.getGroups()).basicRemove(otherEnd, msgs);
+            case ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS:
+                return ((InternalEList<?>) this.getToolbarActions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -296,6 +322,8 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getPreconditionExpression();
             case ViewPackage.PAGE_DESCRIPTION__GROUPS:
                 return this.getGroups();
+            case ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS:
+                return this.getToolbarActions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -325,6 +353,10 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
                 this.getGroups().clear();
                 this.getGroups().addAll((Collection<? extends GroupDescription>) newValue);
                 return;
+            case ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS:
+                this.getToolbarActions().clear();
+                this.getToolbarActions().addAll((Collection<? extends ButtonDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -352,6 +384,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
             case ViewPackage.PAGE_DESCRIPTION__GROUPS:
                 this.getGroups().clear();
                 return;
+            case ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS:
+                this.getToolbarActions().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -374,6 +409,8 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case ViewPackage.PAGE_DESCRIPTION__GROUPS:
                 return this.groups != null && !this.groups.isEmpty();
+            case ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS:
+                return this.toolbarActions != null && !this.toolbarActions.isEmpty();
         }
         return super.eIsSet(featureID);
     }

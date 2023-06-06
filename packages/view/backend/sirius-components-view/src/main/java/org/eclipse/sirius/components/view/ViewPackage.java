@@ -2916,13 +2916,22 @@ public interface ViewPackage extends EPackage {
     int PAGE_DESCRIPTION__GROUPS = 4;
 
     /**
+     * The feature id for the '<em><b>Toolbar Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PAGE_DESCRIPTION__TOOLBAR_ACTIONS = 5;
+
+    /**
      * The number of structural features of the '<em>Page Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PAGE_DESCRIPTION_FEATURE_COUNT = 5;
+    int PAGE_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Page Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -8116,12 +8125,24 @@ public interface ViewPackage extends EPackage {
     EReference getPageDescription_Groups();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.PageDescription#getToolbarActions <em>Toolbar Actions</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Toolbar Actions</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.PageDescription#getToolbarActions()
+     * @see #getPageDescription()
+     */
+    EReference getPageDescription_ToolbarActions();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.GroupDescription <em>Group
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Group Description</em>'.
-     * @see org.eclipse.sirius.components.view.GroupDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.GroupDescription
      */
     EClass getGroupDescription();
 
@@ -11117,12 +11138,20 @@ public interface ViewPackage extends EPackage {
         EReference PAGE_DESCRIPTION__GROUPS = eINSTANCE.getPageDescription_Groups();
 
         /**
+         * The meta object literal for the '<em><b>Toolbar Actions</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PAGE_DESCRIPTION__TOOLBAR_ACTIONS = eINSTANCE.getPageDescription_ToolbarActions();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
          * <em>Group Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDescription()
-         * @generated
          */
         EClass GROUP_DESCRIPTION = eINSTANCE.getGroupDescription();
 

@@ -47,7 +47,7 @@ import reactor.core.publisher.Sinks.One;
 public class AddToolbarActionEventHandlerTests {
 
     @Test
-    public void testAddToolbarAction() {
+    public void testAddToolbarActionToGroup() {
         FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
         PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
         GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
@@ -77,5 +77,36 @@ public class AddToolbarActionEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(SuccessPayload.class);
         assertThat(groupDescription.getToolbarActions()).hasSize(1);
+    }
+
+    @Test
+    public void testAddToolbarActionToPage() {
+        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        formDescription.getPages().add(pageDescription);
+        var objectService = new IObjectService.NoOp() {
+            @Override
+            public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
+                return Optional.of(pageDescription);
+            }
+        };
+        var handler = new AddToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+        var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId");
+
+        assertThat(handler.canHandle(input)).isTrue();
+
+        One<IPayload> payloadSink = Sinks.one();
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        IFormDescriptionEditorContext formDescriptionEditorContext = new FormDescriptionEditorContext(new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID()
+                .toString()));
+
+        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), formDescriptionEditorContext, input);
+
+        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
+        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
+        assertThat(pageDescription.getToolbarActions()).hasSize(1);
     }
 }

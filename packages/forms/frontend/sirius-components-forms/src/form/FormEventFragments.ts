@@ -429,6 +429,10 @@ export const formRefreshedEventPayloadFragment = (contributions: Array<WidgetCon
             }
           }
         }
+        toolbarActions {
+            ...commonFields
+            ...toolbarActionFields
+        }
       }
     }
   }

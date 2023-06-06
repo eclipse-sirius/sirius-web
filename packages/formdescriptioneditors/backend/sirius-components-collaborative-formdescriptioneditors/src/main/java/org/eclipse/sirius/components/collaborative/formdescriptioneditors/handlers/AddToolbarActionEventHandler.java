@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.springframework.stereotype.Service;
 
@@ -55,11 +56,9 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -99,12 +98,15 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
         }
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
-            if (container instanceof GroupDescription) {
-                var toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
-                toolbarActionDescription.setName("ToolbarAction");
-                var toolbarActionDescriptionStyle = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
-                toolbarActionDescription.setStyle(toolbarActionDescriptionStyle);
-                ((GroupDescription) container).getToolbarActions().add(toolbarActionDescription);
+            var toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
+            toolbarActionDescription.setName("ToolbarAction");
+            var toolbarActionDescriptionStyle = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
+            toolbarActionDescription.setStyle(toolbarActionDescriptionStyle);
+            if (container instanceof GroupDescription groupDescription) {
+                groupDescription.getToolbarActions().add(toolbarActionDescription);
+                success = true;
+            } else if (container instanceof PageDescription pageDescription) {
+                pageDescription.getToolbarActions().add(toolbarActionDescription);
                 success = true;
             }
         }

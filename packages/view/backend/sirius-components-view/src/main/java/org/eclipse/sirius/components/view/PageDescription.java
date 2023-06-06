@@ -138,4 +138,15 @@ public interface PageDescription extends EObject {
      */
     EList<GroupDescription> getGroups();
 
+    /**
+     * Returns the value of the '<em><b>Toolbar Actions</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.ButtonDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Toolbar Actions</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_ToolbarActions()
+     */
+    EList<ButtonDescription> getToolbarActions();
+
 } // PageDescription

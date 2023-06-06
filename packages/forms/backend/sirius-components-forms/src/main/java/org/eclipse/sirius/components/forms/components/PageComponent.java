@@ -52,20 +52,21 @@ public class PageComponent implements IComponent {
             String id = pageDescription.getIdProvider().apply(pageVariableManager);
             String label = pageDescription.getLabelProvider().apply(pageVariableManager);
 
-            // @formatter:off
-            List<Element> groupComponents = pageDescription.getGroupDescriptions().stream()
-                    .map(groupDescription -> {
-                        GroupComponentProps groupComponentProps = new GroupComponentProps(pageVariableManager, groupDescription, this.props.getWidgetDescriptors());
-                        return new Element(GroupComponent.class, groupComponentProps);
-                    })
-                    .toList();
+            List<Element> pageChildren = new ArrayList<>();
+
+            pageDescription.getToolbarActionDescriptions().stream()
+                    .map(toolbarActionDescription -> new Element(ToolbarActionComponent.class, new ToolbarActionComponentProps(pageVariableManager, toolbarActionDescription)))
+                    .forEach(pageChildren::add);
+
+            pageDescription.getGroupDescriptions().stream()
+                    .map(groupDescription -> new Element(GroupComponent.class, new GroupComponentProps(pageVariableManager, groupDescription, this.props.getWidgetDescriptors())))
+                    .forEach(pageChildren::add);
 
             PageElementProps pageElementProps = PageElementProps.newPageElementProps(id)
                     .label(label)
-                    .children(groupComponents)
+                    .children(pageChildren)
                     .build();
             Element pageElement = new Element(PageElementProps.TYPE, pageElementProps);
-            // @formatter:on
 
             children.add(pageElement);
         }
