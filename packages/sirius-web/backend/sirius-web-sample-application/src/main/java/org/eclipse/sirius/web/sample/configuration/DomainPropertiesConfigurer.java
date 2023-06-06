@@ -146,7 +146,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         LabelDescription cardinalityLabel = ViewFactory.eINSTANCE.createLabelDescription();
         cardinalityLabel.setName("Cardinality");
         cardinalityLabel.setLabelExpression("Cardinality");
-        cardinalityLabel.setValueExpression("aql:(if self.optional then '0' else '1' fi) + '..' + (if self.many then '*' else '1' fi)");
+        cardinalityLabel.setValueExpression("aql:(if self.optional then '0' else '1' endif) + '..' + (if self.many then '*' else '1' endif)");
         return cardinalityLabel;
     }
 
