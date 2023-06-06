@@ -43,10 +43,10 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('FormDescriptionEditor-Group').trigger('dragstart', { dataTransfer });
     cy.getByTestId('Page-DropArea').trigger('drop', { dataTransfer });
     // create a toolbar action in the first group
-    cy.get('[data-testid^="Group-ToolbarActions-NewAction-"]').eq(0).click();
+    cy.get('[data-testid^="ToolbarActions-NewAction-"]').eq(1).click();
     // move the toolbar action from the first group to the second one
     cy.getByTestId('ToolbarAction').trigger('dragstart', { dataTransfer });
-    cy.get('[data-testid^="Group-ToolbarActions-DropArea-"]').eq(1).trigger('drop', { dataTransfer });
+    cy.get('[data-testid^="ToolbarActions-DropArea-"]').eq(2).trigger('drop', { dataTransfer });
   });
 
   it('try to create an empty page', () => {

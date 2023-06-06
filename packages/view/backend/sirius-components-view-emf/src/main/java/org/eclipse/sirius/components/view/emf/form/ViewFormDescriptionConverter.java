@@ -117,6 +117,12 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .map(g -> this.instantiateGroup(g, dispatcher, interpreter))
                 .toList();
 
+        List<ButtonDescription> toolbarActionDescriptions = viewPageDescription.getToolbarActions().stream()
+                .map(dispatcher::doSwitch)
+                .filter(ButtonDescription.class::isInstance)
+                .map(ButtonDescription.class::cast)
+                .toList();
+
         String descriptionId = this.getDescriptionId(viewPageDescription);
         return PageDescription.newPageDescription(descriptionId)
                 .idProvider(this.getIdProvider(descriptionId))
@@ -124,6 +130,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .semanticElementsProvider(variableManager -> this.getSemanticElementsProvider(viewPageDescription, variableManager, interpreter))
                 .canCreatePredicate(variableManager -> this.canCreatePage(viewPageDescription, variableManager, interpreter))
                 .groupDescriptions(groupDescriptions)
+                .toolbarActionDescriptions(toolbarActionDescriptions)
                 .build();
     }
 

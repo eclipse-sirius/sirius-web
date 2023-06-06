@@ -57,6 +57,15 @@ const addToolbarActionVariables: GQLAddToolbarActionMutationVariables = {
   },
 };
 
+const addToolbarActionVariablesForPage: GQLAddToolbarActionMutationVariables = {
+  input: {
+    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+    editingContextId: 'editingContextId',
+    representationId: 'formDescriptionEditorId',
+    containerId: 'Page1',
+  },
+};
+
 const addToolbarActionSuccessData: GQLAddToolbarActionMutationData = {
   addToolbarAction: successPayload,
 };
@@ -165,14 +174,15 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
-        group={group}
+        toolbarActions={group.toolbarActions}
+        containerId={group.id}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
     </MockedProvider>
   );
 
-  const element: HTMLElement = screen.getByTestId(`Group-ToolbarActions-NewAction-${group.id}`);
+  const element: HTMLElement = screen.getByTestId(`ToolbarActions-NewAction-${group.id}`);
   element.click();
 
   await act(async () => {
@@ -262,7 +272,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
-        group={group}
+        toolbarActions={group.toolbarActions}
+        containerId={group.id}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
@@ -361,7 +372,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
-        group={group}
+        toolbarActions={group.toolbarActions}
+        containerId={group.id}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
@@ -462,14 +474,15 @@ test('move the existing ToolbarAction from/into the drop area located at the end
         editingContextId="editingContextId"
         representationId="formDescriptionEditorId"
         formDescriptionEditor={formDescriptionEditor}
-        group={group}
+        toolbarActions={group.toolbarActions}
+        containerId={group.id}
         selection={emptySelection}
         setSelection={emptySetSelection}
       />
     </MockedProvider>
   );
 
-  const element: HTMLElement = screen.getByTestId(`Group-ToolbarActions-DropArea-${group.id}`);
+  const element: HTMLElement = screen.getByTestId(`ToolbarActions-DropArea-${group.id}`);
 
   const dataTransfer: DataTransfer = new DataTransfer();
   dataTransfer.setData('draggedElementId', 'ToolbarAction2');
@@ -480,6 +493,77 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     await new Promise((resolve) => setTimeout(resolve, 0));
     await waitFor(() => {
       expect(moveToolbarActionAtTheEndCalled).toBeTruthy();
+    });
+  });
+});
+
+test('add ToolbarAction by clicking on the Add Toolbar Action button for a page', async () => {
+  const toolbarAction: GQLToolbarAction = {
+    id: 'ToolbarAction1',
+    label: 'ToolbarAction1',
+    iconURL: null,
+    __typename: 'ToolbarAction',
+    diagnostics: [],
+    buttonLabel: 'ToolbarAction1',
+    imageURL: null,
+    style: {
+      backgroundColor: null,
+      foregroundColor: null,
+      fontSize: null,
+      italic: null,
+      bold: null,
+      underline: null,
+      strikeThrough: null,
+    },
+  };
+
+  const page: GQLPage = {
+    id: 'Page1',
+    label: 'Page1',
+    toolbarActions: [toolbarAction],
+    groups: [],
+  };
+
+  const formDescriptionEditor: GQLFormDescriptionEditor = {
+    id: 'FormDescriptionEditor1',
+    pages: [page],
+  };
+
+  let addToolbarActionCalled: boolean = false;
+  const addToolbarActionSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: addToolbarActionMutation,
+      variables: addToolbarActionVariablesForPage,
+    },
+    result: () => {
+      addToolbarActionCalled = true;
+      return { data: addToolbarActionSuccessData };
+    },
+  };
+
+  const mocks: MockedResponse<Record<string, any>>[] = [addToolbarActionSuccessMock];
+
+  render(
+    <MockedProvider mocks={mocks}>
+      <ToolbarActions
+        editingContextId="editingContextId"
+        representationId="formDescriptionEditorId"
+        formDescriptionEditor={formDescriptionEditor}
+        toolbarActions={page.toolbarActions}
+        containerId={page.id}
+        selection={emptySelection}
+        setSelection={emptySetSelection}
+      />
+    </MockedProvider>
+  );
+
+  const element: HTMLElement = screen.getByTestId(`ToolbarActions-NewAction-${page.id}`);
+  element.click();
+
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await waitFor(() => {
+      expect(addToolbarActionCalled).toBeTruthy();
     });
   });
 });

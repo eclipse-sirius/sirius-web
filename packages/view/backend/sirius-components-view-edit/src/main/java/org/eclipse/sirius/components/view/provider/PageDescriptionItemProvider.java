@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -132,6 +133,7 @@ public class PageDescriptionItemProvider extends ItemProviderAdapter
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.PAGE_DESCRIPTION__GROUPS);
+            this.childrenFeatures.add(ViewPackage.Literals.PAGE_DESCRIPTION__TOOLBAR_ACTIONS);
         }
         return this.childrenFeatures;
     }
@@ -199,6 +201,7 @@ public class PageDescriptionItemProvider extends ItemProviderAdapter
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case ViewPackage.PAGE_DESCRIPTION__GROUPS:
+            case ViewPackage.PAGE_DESCRIPTION__TOOLBAR_ACTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -209,13 +212,18 @@ public class PageDescriptionItemProvider extends ItemProviderAdapter
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.PAGE_DESCRIPTION__GROUPS, ViewFactory.eINSTANCE.createGroupDescription()));
+
+        ButtonDescription toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
+        toolbarActionDescription.setName("ToolbarAction");
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.PAGE_DESCRIPTION__TOOLBAR_ACTIONS, toolbarActionDescription));
     }
 
     /**

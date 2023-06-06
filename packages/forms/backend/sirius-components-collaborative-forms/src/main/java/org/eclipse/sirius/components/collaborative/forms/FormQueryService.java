@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,13 +39,17 @@ public class FormQueryService implements IFormQueryService {
 
     @Override
     public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
-        // @formatter:off
+
         Optional<AbstractWidget> optionalWidget = form.getPages().stream()
                 .flatMap(page -> page.getGroups().stream())
                 .flatMap(group -> this.getAllWidgets(group).stream())
                 .filter(widget -> Objects.equals(widgetId, widget.getId()))
-                .findFirst();
-        // @formatter:on
+                .findFirst()
+                .or(() -> form.getPages().stream()
+                        .flatMap(page -> page.getToolbarActions().stream())
+                        .map(AbstractWidget.class::cast)
+                        .filter(widget -> Objects.equals(widgetId, widget.getId()))
+                        .findFirst());
 
         if (optionalWidget.isEmpty()) {
             this.logger.warn("The widget with the id {} has not been found", widgetId);

@@ -35,6 +35,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { Page } from './Page';
 import { PageListProps, PageListState } from './PageList.types';
+import { ToolbarActions } from './ToolbarActions';
 import { isFlexboxContainer } from './WidgetOperations';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
@@ -69,9 +70,9 @@ const usePageListStyles = makeStyles((theme) => ({
     borderStyle: 'dashed',
     borderColor: theme.palette.primary.main,
   },
-  pagesList: {
+  pagesListDropAreaAndToolbar: {
     display: 'flex',
-    justifyContent: 'left',
+    justifyContent: 'space-between',
   },
   tabsRoot: {
     minHeight: theme.spacing(4),
@@ -359,9 +360,22 @@ export const PageList = ({
     }
   };
 
+  const selectedPageToolbar = (
+    <ToolbarActions
+      data-testid={`Page-ToolbarActions-${state.selectedPage.id}`}
+      editingContextId={editingContextId}
+      representationId={representationId}
+      formDescriptionEditor={formDescriptionEditor}
+      toolbarActions={state.selectedPage.toolbarActions}
+      containerId={state.selectedPage.id}
+      selection={selection}
+      setSelection={setSelection}
+    />
+  );
+
   return (
     <div>
-      <div className={classes.pagesList}>
+      <div className={classes.pagesListDropAreaAndToolbar}>
         <Tabs
           classes={{ root: classes.tabsRoot }}
           value={state.selectedPage.id}
@@ -405,6 +419,7 @@ export const PageList = ({
           onDrop={handleDropArea}>
           <Typography variant="body1">{'Drag and drop a page here'}</Typography>
         </div>
+        {selectedPageToolbar}
       </div>
       <Page
         editingContextId={editingContextId}

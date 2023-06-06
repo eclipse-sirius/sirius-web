@@ -222,6 +222,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PageDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//PageDescription/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//PageDescription/groups"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//PageDescription/toolbarActions"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//GroupDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//GroupDescription/name"/>

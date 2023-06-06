@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.ButtonDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.PageDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -108,17 +109,24 @@ public class MoveToolbarActionEventHandler implements IFormDescriptionEditorEven
             var objectToMove = this.objectService.getObject(editingContext, toolbarActionId);
             if (objectToMove.filter(ButtonDescription.class::isInstance).isPresent()) {
                 ButtonDescription toolbarActionToMove = (ButtonDescription) objectToMove.get();
-                if (container instanceof GroupDescription) {
-                    try {
+                try {
+                    if (container instanceof GroupDescription groupDescription) {
                         if (container.equals(toolbarActionToMove.eContainer())) {
-                            ((GroupDescription) container).getToolbarActions().move(index, toolbarActionToMove);
+                            groupDescription.getToolbarActions().move(index, toolbarActionToMove);
                         } else {
-                            ((GroupDescription) container).getToolbarActions().add(index, toolbarActionToMove);
+                            groupDescription.getToolbarActions().add(index, toolbarActionToMove);
                         }
                         success = true;
-                    } catch (IndexOutOfBoundsException exception) {
-                        this.logger.warn(exception.getMessage(), exception);
+                    } else if (container instanceof PageDescription pageDescription) {
+                        if (container.equals(toolbarActionToMove.eContainer())) {
+                            pageDescription.getToolbarActions().move(index, toolbarActionToMove);
+                        } else {
+                            pageDescription.getToolbarActions().add(index, toolbarActionToMove);
+                        }
+                        success = true;
                     }
+                } catch (IndexOutOfBoundsException exception) {
+                    this.logger.warn(exception.getMessage(), exception);
                 }
             }
         }

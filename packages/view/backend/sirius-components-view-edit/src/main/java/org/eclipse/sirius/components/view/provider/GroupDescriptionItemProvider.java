@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.provider;
 
 import java.util.Collection;
@@ -290,7 +290,6 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         ButtonDescription toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
         toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
         toolbarActionDescription.setName("ToolbarAction");
-        toolbarActionDescription.setStyle(ViewFactory.eINSTANCE.createButtonDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS, toolbarActionDescription));
 
     }

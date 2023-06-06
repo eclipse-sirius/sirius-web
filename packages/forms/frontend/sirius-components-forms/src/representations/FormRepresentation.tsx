@@ -26,6 +26,7 @@ import {
 } from '../form/FormEventFragments';
 import { GQLFormEventSubscription } from '../form/FormEventFragments.types';
 import { Page } from '../pages/Page';
+import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
@@ -69,6 +70,18 @@ const useFormRepresentationStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    maxHeight: theme.spacing(4),
+    textTransform: 'none',
+  },
+  toolbarAction: {
+    paddingRight: theme.spacing(1),
+    whiteSpace: 'nowrap',
   },
 }));
 
@@ -151,8 +164,26 @@ export const FormRepresentation = ({
         />
       );
     } else {
+      let selectedPageToolbar = null;
+      if (form.pages[0].toolbarActions?.length > 0) {
+        selectedPageToolbar = (
+          <div className={classes.toolbar}>
+            {form.pages[0].toolbarActions.map((toolbarAction) => (
+              <div className={classes.toolbarAction} key={toolbarAction.id}>
+                <ToolbarAction
+                  editingContextId={editingContextId}
+                  formId={form.id}
+                  readOnly={readOnly}
+                  widget={toolbarAction}
+                />
+              </div>
+            ))}
+          </div>
+        );
+      }
       content = (
         <div data-testid="page" className={classes.page}>
+          {selectedPageToolbar}
           <Page
             editingContextId={editingContextId}
             formId={form.id}

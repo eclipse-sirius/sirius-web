@@ -2200,6 +2200,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EReference getPageDescription_ToolbarActions() {
+        return (EReference) this.pageDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getGroupDescription() {
         return this.groupDescriptionEClass;
     }
@@ -4025,6 +4035,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEReference(this.pageDescriptionEClass, PAGE_DESCRIPTION__GROUPS);
+        this.createEReference(this.pageDescriptionEClass, PAGE_DESCRIPTION__TOOLBAR_ACTIONS);
 
         this.groupDescriptionEClass = this.createEClass(GROUP_DESCRIPTION);
         this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__NAME);
@@ -4627,6 +4638,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPageDescription_Groups(), this.getGroupDescription(), null, "groups", null, 0, -1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPageDescription_ToolbarActions(), this.getButtonDescription(), null, "toolbarActions", null, 0, -1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.groupDescriptionEClass, GroupDescription.class, "GroupDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getGroupDescription_Name(), this.getIdentifier(), "name", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,

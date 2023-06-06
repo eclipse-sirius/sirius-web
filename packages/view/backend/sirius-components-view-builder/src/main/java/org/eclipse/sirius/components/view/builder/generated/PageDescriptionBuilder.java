@@ -78,14 +78,27 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setPreconditionExpression(value);
         return this;
     }
+
     /**
      * Setter for Groups.
      *
      * @generated
      */
-    public PageDescriptionBuilder groups(org.eclipse.sirius.components.view.GroupDescription ... values) {
+    public PageDescriptionBuilder groups(org.eclipse.sirius.components.view.GroupDescription... values) {
         for (org.eclipse.sirius.components.view.GroupDescription value : values) {
             this.getPageDescription().getGroups().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for ToolbarActions.
+     *
+     * @generated
+     */
+    public PageDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.ButtonDescription... values) {
+        for (org.eclipse.sirius.components.view.ButtonDescription value : values) {
+            this.getPageDescription().getToolbarActions().add(value);
         }
         return this;
     }

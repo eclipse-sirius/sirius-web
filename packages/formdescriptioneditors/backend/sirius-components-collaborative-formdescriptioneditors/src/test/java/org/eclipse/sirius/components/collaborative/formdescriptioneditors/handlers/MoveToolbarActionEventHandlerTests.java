@@ -63,9 +63,11 @@ public class MoveToolbarActionEventHandlerTests {
         ButtonDescription toolbarButton1 = ViewFactory.eINSTANCE.createButtonDescription();
         ButtonDescription toolbarButton2 = ViewFactory.eINSTANCE.createButtonDescription();
         ButtonDescription toolbarButton3 = ViewFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton4 = ViewFactory.eINSTANCE.createButtonDescription();
         groupDescription.getToolbarActions().add(toolbarButton1);
         groupDescription.getToolbarActions().add(toolbarButton2);
         groupDescription.getToolbarActions().add(toolbarButton3);
+        pageDescription.getToolbarActions().add(toolbarButton4);
 
         var objectService = new IObjectService.NoOp() {
             @Override
@@ -79,23 +81,32 @@ public class MoveToolbarActionEventHandlerTests {
                     result = Optional.of(toolbarButton2);
                 } else if ("button3".equals(objectId)) {
                     result = Optional.of(toolbarButton3);
+                } else if ("button4".equals(objectId)) {
+                    result = Optional.of(toolbarButton3);
                 } else if (formDescriptionEditor.getPages().get(0).getGroups().get(0).getId().equals(objectId)) {
                     result = Optional.of(groupDescription);
+                } else if (formDescriptionEditor.getPages().get(0).getId().equals(objectId)) {
+                    result = Optional.of(pageDescription);
                 }
                 return result;
             }
         };
 
-        this.invokMove(formDescriptionEditor, objectService, "button2", 0);
+        this.invokMove(formDescriptionEditor, objectService, formDescriptionEditor.getPages().get(0).getGroups().get(0)
+                .getId(), "button2", 0);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1, toolbarButton3));
-        this.invokMove(formDescriptionEditor, objectService, "button1", 2);
+        this.invokMove(formDescriptionEditor, objectService, formDescriptionEditor.getPages().get(0).getGroups().get(0)
+                .getId(), "button1", 2);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton3, toolbarButton1));
+        this.invokMove(formDescriptionEditor, objectService, formDescriptionEditor.getPages().get(0)
+                .getId(), "button3", 1);
+        assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1));
+        assertThat(pageDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton4, toolbarButton3));
     }
 
-    private void invokMove(FormDescriptionEditor formDescriptionEditor, NoOp objectService, String toolbarActionId, int index) {
+    private void invokMove(FormDescriptionEditor formDescriptionEditor, NoOp objectService, String containerId, String toolbarActionId, int index) {
         var handler = new MoveToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
-        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getPages().get(0).getGroups().get(0)
-                .getId(), toolbarActionId, index);
+        var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), containerId, toolbarActionId, index);
 
         assertThat(handler.canHandle(input)).isTrue();
 
