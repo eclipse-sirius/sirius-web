@@ -1,5 +1,22 @@
 = Changelog
 
+== v2023.8.0 (unreleased)
+
+=== Shapes
+
+=== Architectural decision records
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New Features
+
+=== Improvements
+
+
 == v2023.6.0
 
 === Shapes
