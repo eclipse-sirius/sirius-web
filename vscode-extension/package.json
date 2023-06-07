@@ -4,7 +4,7 @@
   "description": "Sirius Web extension for VSCode",
   "publisher": "eclipse-sirius",
   "license": "EPL-2.0",
-  "version": "2023.4.2",
+  "version": "2023.6.0",
   "homepage": "https://www.eclipse.org/sirius/sirius-web.html",
   "repository": {
     "type": "git",
