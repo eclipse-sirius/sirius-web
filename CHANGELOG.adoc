@@ -23,6 +23,8 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-components/issues/2039[#2039] [project] A new "Blank Studio" project template is available to create a project with the "studio" nature but no initial content
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/2034[#2034] [diagram] Integrate the workbench selection in the react-flow prototype
