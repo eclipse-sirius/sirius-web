@@ -95,9 +95,6 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .toList();
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> this.self(variableManager)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
                 .map(this.objectService::getId)
                 .orElse(null);
 
@@ -105,7 +102,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .label(Optional.ofNullable(viewFormDescription.getName()).orElse(DEFAULT_FORM_LABEL))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
-                .canCreatePredicate(variableManager -> this.canCreateForm(viewFormDescription, variableManager, interpreter))
+                .canCreatePredicate(variableManager -> this.canCreate(viewFormDescription.getDomainType(), viewFormDescription.getPreconditionExpression(), variableManager, interpreter))
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .pageDescriptions(pageDescriptions)
                 .build();
@@ -129,7 +126,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .idProvider(this.getIdProvider(descriptionId))
                 .labelProvider(variableManager -> this.computePageLabel(viewPageDescription, variableManager, interpreter))
                 .semanticElementsProvider(variableManager -> this.getSemanticElementsProvider(viewPageDescription, variableManager, interpreter))
-                .canCreatePredicate(variableManager -> this.canCreatePage(viewPageDescription, variableManager, interpreter))
+                .canCreatePredicate(variableManager -> this.canCreate(viewPageDescription.getDomainType(), viewPageDescription.getPreconditionExpression(), variableManager, interpreter))
                 .groupDescriptions(groupDescriptions)
                 .toolbarActionDescriptions(toolbarActionDescriptions)
                 .build();
@@ -201,20 +198,12 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString();
     }
 
-    private boolean canCreatePage(org.eclipse.sirius.components.view.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        String preconditionExpression = viewPageDescription.getPreconditionExpression();
-        if (preconditionExpression == null || preconditionExpression.isBlank()) {
-            return true;
-        }
-        return interpreter.evaluateExpression(variableManager.getVariables(), preconditionExpression).asBoolean().orElse(false);
-    }
-
-    private boolean canCreateForm(org.eclipse.sirius.components.view.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private boolean canCreate(String domainType, String preconditionExpression, VariableManager variableManager, AQLInterpreter interpreter) {
         boolean result = false;
-        Optional<EClass> optionalEClass = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
-                .filter(new DomainClassPredicate(viewFormDescription.getDomainType()));
+        Optional<EClass> optionalEClass = variableManager.get(VariableManager.SELF, EObject.class)
+                .map(EObject::eClass)
+                .filter(new DomainClassPredicate(domainType));
         if (optionalEClass.isPresent()) {
-            String preconditionExpression = viewFormDescription.getPreconditionExpression();
             if (preconditionExpression != null && !preconditionExpression.isBlank()) {
                 result = interpreter.evaluateExpression(variableManager.getVariables(), preconditionExpression).asBoolean().orElse(false);
             } else {

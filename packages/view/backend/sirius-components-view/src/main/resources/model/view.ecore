@@ -270,6 +270,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="PageDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"
+        defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"

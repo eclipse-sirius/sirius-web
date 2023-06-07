@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view;
 
 import org.eclipse.emf.common.util.EList;
@@ -25,11 +25,13 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.PageDescription#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.PageDescription#getLabelExpression <em>Label Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.PageDescription#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.PageDescription#getSemanticCandidatesExpression <em>Semantic Candidates
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.PageDescription#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.PageDescription#getGroups <em>Groups</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.PageDescription#getToolbarActions <em>Toolbar Actions</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription()
@@ -37,15 +39,14 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface PageDescription extends EObject {
-
     /**
      * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Name</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
      * @see #setName(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_Name()
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
      */
     String getName();
 
@@ -53,9 +54,10 @@ public interface PageDescription extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.PageDescription#getName <em>Name</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Name</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
+     * @generated
      */
     void setName(String value);
 
@@ -64,10 +66,10 @@ public interface PageDescription extends EObject {
      * -->
      *
      * @return the value of the '<em>Label Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setLabelExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_LabelExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getLabelExpression();
 
@@ -75,11 +77,35 @@ public interface PageDescription extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.PageDescription#getLabelExpression <em>Label
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Label Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Label Expression</em>' attribute.
      * @see #getLabelExpression()
+     * @generated
      */
     void setLabelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Domain Type</b></em>' attribute. The default value is <code>""</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Domain Type</em>' attribute.
+     * @see #setDomainType(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_DomainType()
+     * @model default="" dataType="org.eclipse.sirius.components.view.DomainType"
+     * @generated
+     */
+    String getDomainType();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.PageDescription#getDomainType <em>Domain
+     * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Domain Type</em>' attribute.
+     * @see #getDomainType()
+     * @generated
+     */
+    void setDomainType(String value);
 
     /**
      * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. The default value is
@@ -143,9 +169,9 @@ public interface PageDescription extends EObject {
      * type {@link org.eclipse.sirius.components.view.ButtonDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Toolbar Actions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_ToolbarActions()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_ToolbarActions()
      */
     EList<ButtonDescription> getToolbarActions();
 

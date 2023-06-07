@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,9 @@ public final class FormCreationParameters {
 
     private String id;
 
-    private List<Object> objects;
+    private Object object;
+
+    private List<Object> selection;
 
     private FormDescription formDescription;
 
@@ -47,8 +49,16 @@ public final class FormCreationParameters {
         return this.id;
     }
 
-    public List<Object> getObjects() {
-        return this.objects;
+    public static Builder newFormCreationParameters(FormCreationParameters formCreationParameters) {
+        return new Builder(formCreationParameters.getId())
+                .formDescription(formCreationParameters.getFormDescription())
+                .editingContext(formCreationParameters.getEditingContext())
+                .object(formCreationParameters.getObject())
+                .selection(formCreationParameters.getSelection());
+    }
+
+    public Object getObject() {
+        return this.object;
     }
 
     public FormDescription getFormDescription() {
@@ -63,13 +73,8 @@ public final class FormCreationParameters {
         return new Builder(id);
     }
 
-    public static Builder newFormCreationParameters(FormCreationParameters formCreationParameters) {
-        // @formatter:off
-        return new Builder(formCreationParameters.getId())
-                .formDescription(formCreationParameters.getFormDescription())
-                .editingContext(formCreationParameters.getEditingContext())
-                .objects(formCreationParameters.getObjects());
-        // @formatter:on
+    public List<Object> getSelection() {
+        return this.selection;
     }
 
     @Override
@@ -85,9 +90,12 @@ public final class FormCreationParameters {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
-        private List<Object> objects;
+        private Object object;
+
+        private List<Object> selection;
 
         private FormDescription formDescription;
 
@@ -97,8 +105,13 @@ public final class FormCreationParameters {
             this.id = id;
         }
 
-        public Builder objects(List<Object> objects) {
-            this.objects = Objects.requireNonNull(objects);
+        public Builder object(Object object) {
+            this.object = Objects.requireNonNull(object);
+            return this;
+        }
+
+        public Builder selection(List<Object> selection) {
+            this.selection = Objects.requireNonNull(selection);
             return this;
         }
 
@@ -115,7 +128,8 @@ public final class FormCreationParameters {
         public FormCreationParameters build() {
             FormCreationParameters formCreationParameters = new FormCreationParameters();
             formCreationParameters.id = this.id;
-            formCreationParameters.objects = Objects.requireNonNull(this.objects);
+            formCreationParameters.object = Objects.requireNonNull(this.object);
+            formCreationParameters.selection = Objects.requireNonNull(this.selection);
             formCreationParameters.formDescription = Objects.requireNonNull(this.formDescription);
             formCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             return formCreationParameters;

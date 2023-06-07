@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,36 +57,32 @@ public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepre
         // We should probably not filter only diagram and selection representations but instead of
         // opening the floodgates, we will be conservative for now
 
-        // @formatter:off
         this.siriusConfigurations.stream()
-            .map(ISiriusConfiguration::getODesignPaths)
-            .flatMap(List::stream)
-            .map(this::getRepresentationDescriptions)
-            .flatMap(List::stream)
-            .filter(description -> description instanceof DiagramDescription || description instanceof SelectionDescription)
-            .forEach(registry::add);
-        // @formatter:on
+                .map(ISiriusConfiguration::getODesignPaths)
+                .flatMap(List::stream)
+                .map(this::getRepresentationDescriptions)
+                .flatMap(List::stream)
+                .filter(description -> description instanceof DiagramDescription || description instanceof SelectionDescription)
+                .forEach(registry::add);
     }
 
     @Override
     public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
-        // @formatter:off
         this.siriusConfigurations.stream()
-            .map(ISiriusConfiguration::getODesignPaths)
-            .flatMap(List::stream)
-            .map(this::getRepresentationDescriptions)
-            .flatMap(List::stream)
-            .filter(FormDescription.class::isInstance)
-            .map(FormDescription.class::cast)
-            .forEach(registry::add);
-        // @formatter:on
+                .map(ISiriusConfiguration::getODesignPaths)
+                .flatMap(List::stream)
+                .map(this::getRepresentationDescriptions)
+                .flatMap(List::stream)
+                .filter(FormDescription.class::isInstance)
+                .map(FormDescription.class::cast)
+                .map(FormDescription::getPageDescriptions)
+                .flatMap(List::stream)
+                .forEach(registry::add);
     }
 
     private List<IRepresentationDescription> getRepresentationDescriptions(String odesignPath) {
-        // @formatter:off
         return this.oDesignReader.read(new ClassPathResource(odesignPath))
                 .map(this.representationDescriptionProvider::getRepresentationDescriptions)
                 .orElse(List.of());
-        // @formatter:on
     }
 }

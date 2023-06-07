@@ -53,8 +53,10 @@ import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -79,7 +81,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
     private View view;
 
-    private FormDescription viewPropertiesFormDescription;
+    private PageDescription viewPropertiesFormDescription;
 
     private EditingContext editingContext;
 
@@ -121,7 +123,7 @@ public class ViewDetailsRenderingIntegrationTests {
     @Test
     public void testDiagramDescriptionProperties() {
         RepresentationDescription diagramDescription = this.view.getDescriptions().get(0);
-        Form propertiesForm = this.renderForm(diagramDescription, this.viewPropertiesFormDescription);
+        Form propertiesForm = this.renderViewProperties(diagramDescription, this.viewPropertiesFormDescription);
         assertThat(propertiesForm).isNotNull();
 
         this.checkDomainTypeField(propertiesForm, "Domain Type");
@@ -131,7 +133,7 @@ public class ViewDetailsRenderingIntegrationTests {
     @Test
     public void testFormDescriptionProperties() {
         RepresentationDescription formDescription = this.view.getDescriptions().get(1);
-        Form propertiesForm = this.renderForm(formDescription, this.viewPropertiesFormDescription);
+        Form propertiesForm = this.renderViewProperties(formDescription, this.viewPropertiesFormDescription);
         assertThat(propertiesForm).isNotNull();
 
         this.checkDomainTypeField(propertiesForm, "Domain Type");
@@ -207,16 +209,25 @@ public class ViewDetailsRenderingIntegrationTests {
         return textareas.get(0);
     }
 
-    private Form renderForm(EObject eObject, FormDescription formDescription) {
+    private Form renderViewProperties(EObject eObject, PageDescription pageDescription) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, List.of(eObject));
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
 
         FormRenderer formRenderer = new FormRenderer(List.of());
+
+        var formDescription = FormDescription.newFormDescription(UUID.nameUUIDFromBytes("view_properties_description".getBytes()).toString())
+                .label("View properties description")
+                .idProvider(new GetOrCreateRandomIdProvider())
+                .labelProvider(vm -> "Properties")
+                .targetObjectIdProvider(vm -> "")
+                .canCreatePredicate(vm -> false)
+                .pageDescriptions(List.of(pageDescription))
+                .build();
+
         FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of());
         Element element = new Element(FormComponent.class, props);
-        Form form = formRenderer.render(element);
-        return form;
+        return formRenderer.render(element);
     }
 
     private String domainTypeName(EClass klass) {

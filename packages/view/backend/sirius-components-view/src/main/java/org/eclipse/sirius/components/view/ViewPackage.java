@@ -2889,13 +2889,21 @@ public interface ViewPackage extends EPackage {
     int PAGE_DESCRIPTION__LABEL_EXPRESSION = 1;
 
     /**
+     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PAGE_DESCRIPTION__DOMAIN_TYPE = 2;
+
+    /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
+    int PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2904,7 +2912,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PAGE_DESCRIPTION__PRECONDITION_EXPRESSION = 3;
+    int PAGE_DESCRIPTION__PRECONDITION_EXPRESSION = 4;
 
     /**
      * The feature id for the '<em><b>Groups</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2913,7 +2921,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PAGE_DESCRIPTION__GROUPS = 4;
+    int PAGE_DESCRIPTION__GROUPS = 5;
 
     /**
      * The feature id for the '<em><b>Toolbar Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2922,7 +2930,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PAGE_DESCRIPTION__TOOLBAR_ACTIONS = 5;
+    int PAGE_DESCRIPTION__TOOLBAR_ACTIONS = 6;
 
     /**
      * The number of structural features of the '<em>Page Description</em>' class. <!-- begin-user-doc --> <!--
@@ -2931,7 +2939,7 @@ public interface ViewPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PAGE_DESCRIPTION_FEATURE_COUNT = 6;
+    int PAGE_DESCRIPTION_FEATURE_COUNT = 7;
 
     /**
      * The number of operations of the '<em>Page Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -8090,6 +8098,18 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.PageDescription#getDomainType <em>Domain Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Domain Type</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.PageDescription#getDomainType()
+     * @see #getPageDescription()
+     */
+    EAttribute getPageDescription_DomainType();
+
+    /**
+     * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.PageDescription#getSemanticCandidatesExpression <em>Semantic
      * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8141,8 +8161,8 @@ public interface ViewPackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Group Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.GroupDescription
+     * @generated
      */
     EClass getGroupDescription();
 
@@ -11114,6 +11134,14 @@ public interface ViewPackage extends EPackage {
         EAttribute PAGE_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getPageDescription_LabelExpression();
 
         /**
+         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PAGE_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getPageDescription_DomainType();
+
+        /**
          * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -11149,9 +11177,9 @@ public interface ViewPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
          * <em>Group Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDescription()
+         * @generated
          */
         EClass GROUP_DESCRIPTION = eINSTANCE.getGroupDescription();
 

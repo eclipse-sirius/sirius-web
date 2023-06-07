@@ -24,6 +24,9 @@
 - https://github.com/eclipse-sirius/sirius-components/issues/2058[#2058] [view] Fix an issue where the default icon for List widget candidates was missing when the candidates were not EObjects.
 - https://github.com/eclipse-sirius/sirius-components/issues/2060[#2060] [form] Fix an issue where the list widget was displayed on a single line inside a flexbox container, no matter the length of the labels of its items.
 - https://github.com/eclipse-sirius/sirius-components/issues/2076[#2076] [sirius-web] Fix `EditingDomainFactoryService` declaration to use an interface.
+- https://github.com/eclipse-sirius/sirius-components/issues/2032[#2032] [form] Add domainType on PageDescription in the view DSL and takes into account the impacts for the FormDescriptionAggregator.
+Change for `IPropertiesDescriptionRegistry` which now handles `PageDescription` directly instead of `FormDescription`.
+Add of the `selection` variable available in some context.
 
 === New Features
 

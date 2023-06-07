@@ -72,7 +72,8 @@ public class FormEventProcessorTests {
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
                 .editingContext(editingContext)
-                .objects(List.of(new Object()))
+                .object(new Object())
+                .selection(List.of())
                 .build();
         // @formatter:on
 
@@ -96,7 +97,8 @@ public class FormEventProcessorTests {
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
                 .editingContext(editingContext)
-                .objects(List.of(new Object()))
+                .object(new Object())
+                .selection(List.of())
                 .build();
         // @formatter:on
 
@@ -124,7 +126,8 @@ public class FormEventProcessorTests {
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
                 .editingContext(editingContext)
-                .objects(List.of(new Object()))
+                .object(new Object())
+                .selection(List.of())
                 .build();
         // @formatter:on
 

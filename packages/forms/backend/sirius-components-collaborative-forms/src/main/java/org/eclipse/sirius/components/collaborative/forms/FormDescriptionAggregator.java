@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -30,30 +32,31 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class FormDescriptionAggregator {
 
-    public Optional<FormDescription> aggregate(List<FormDescription> formDescriptions, List<Object> objects, IObjectService objectService) {
-        VariableManager pageVariableManager = new VariableManager();
-        pageVariableManager.put(VariableManager.SELF, objects);
 
-        List<PageDescription> pageDescriptions = formDescriptions.stream()
-                .flatMap(formDescription -> formDescription.getPageDescriptions().stream())
-                .filter(pageDescription -> pageDescription.getCanCreatePredicate().test(pageVariableManager))
-                .toList();
+    public Optional<FormDescription> aggregate(List<PageDescription> pageDescriptions, List<Object> objects, IObjectService objectService) {
+        List<PageDescription> eligiblePageDescriptions = new ArrayList<>();
 
-        if (pageDescriptions.isEmpty()) {
+
+        if (!objects.isEmpty()) {
+            VariableManager pageVariableManager = new VariableManager();
+            pageVariableManager.put(VariableManager.SELF, objects.get(0));
+            pageVariableManager.put(FormVariableProvider.SELECTION.name(), objects);
+
+            eligiblePageDescriptions.addAll(pageDescriptions.stream()
+                    .filter(pageDescription -> pageDescription.getCanCreatePredicate().test(pageVariableManager))
+                    .toList());
+        }
+
+
+        if (eligiblePageDescriptions.isEmpty()) {
             return Optional.empty();
         }
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
                 .map(objectService::getFullLabel)
                 .orElse("Properties");
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
                 .map(objectService::getId)
                 .orElse(null);
 
@@ -63,7 +66,7 @@ public class FormDescriptionAggregator {
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
-                .pageDescriptions(pageDescriptions)
+                .pageDescriptions(eligiblePageDescriptions)
                 .build());
     }
 }

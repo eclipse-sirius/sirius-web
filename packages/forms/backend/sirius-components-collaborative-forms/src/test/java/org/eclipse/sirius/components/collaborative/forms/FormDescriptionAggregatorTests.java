@@ -38,16 +38,16 @@ public class FormDescriptionAggregatorTests {
     @Test
     public void testAggregatorWithMatchingPages() {
         Object object = new Object();
-        List<FormDescription> formDescriptions = new ArrayList<>();
+        List<PageDescription> pageDescriptions = new ArrayList<>();
 
         FormDescription formDescription = this.createForm(object, 3, 2);
         FormDescription formDescription2 = this.createForm(object, 3, 1);
 
-        formDescriptions.add(formDescription);
-        formDescriptions.add(formDescription2);
+        pageDescriptions.addAll(formDescription.getPageDescriptions());
+        pageDescriptions.addAll(formDescription2.getPageDescriptions());
 
         FormDescriptionAggregator aggregator = new FormDescriptionAggregator();
-        Optional<FormDescription> optional = aggregator.aggregate(formDescriptions, List.of(object), new IObjectService.NoOp());
+        Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object), new IObjectService.NoOp());
 
         assertThat(optional).isPresent();
         assertThat(optional.get().getPageDescriptions()).hasSize(3);
@@ -56,16 +56,16 @@ public class FormDescriptionAggregatorTests {
     @Test
     public void testAggregatorWithNoMatchingPages() {
         Object object = new Object();
-        List<FormDescription> formDescriptions = new ArrayList<>();
+        List<PageDescription> pageDescriptions = new ArrayList<>();
 
         FormDescription formDescription = this.createForm(object, 3, 0);
         FormDescription formDescription2 = this.createForm(object, 3, 0);
 
-        formDescriptions.add(formDescription);
-        formDescriptions.add(formDescription2);
+        pageDescriptions.addAll(formDescription.getPageDescriptions());
+        pageDescriptions.addAll(formDescription2.getPageDescriptions());
 
         FormDescriptionAggregator aggregator = new FormDescriptionAggregator();
-        Optional<FormDescription> optional = aggregator.aggregate(formDescriptions, List.of(object), new IObjectService.NoOp());
+        Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object), new IObjectService.NoOp());
 
         assertThat(optional).isEmpty();
     }

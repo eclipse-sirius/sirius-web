@@ -36,9 +36,9 @@ public interface FormDescription extends RepresentationDescription {
      * {@link org.eclipse.sirius.components.view.PageDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Pages</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getFormDescription_Pages()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.ViewPackage#getFormDescription_Pages()
      */
     EList<PageDescription> getPages();
 
