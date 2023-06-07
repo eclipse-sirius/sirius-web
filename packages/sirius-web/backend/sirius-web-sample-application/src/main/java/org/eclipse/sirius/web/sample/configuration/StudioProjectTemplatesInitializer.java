@@ -90,7 +90,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private final IDiagramCreationService diagramCreationService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;;
+    private final IRepresentationPersistenceService representationPersistenceService;
 
     private final StereotypeBuilder stereotypeBuilder;
 
@@ -107,7 +107,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     @Override
     public boolean canHandle(String templateId) {
-        return StudioProjectTemplatesProvider.STUDIO_TEMPLATE_ID.equals(templateId);
+        return List.of(StudioProjectTemplatesProvider.STUDIO_TEMPLATE_ID, StudioProjectTemplatesProvider.BLANK_STUDIO_TEMPLATE_ID).contains(templateId);
     }
 
     @Override

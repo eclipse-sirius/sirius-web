@@ -29,16 +29,21 @@ public class StudioProjectTemplatesProvider implements IProjectTemplateProvider 
 
     public static final String STUDIO_TEMPLATE_ID = "studio-template";
 
+    public static final String BLANK_STUDIO_TEMPLATE_ID = "blank-studio-template";
+
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        // @formatter:off
         var studioTemplate = ProjectTemplate.newProjectTemplate(STUDIO_TEMPLATE_ID)
                 .label("Studio")
                 .imageURL("/images/Studio-Template.png")
                 .natures(List.of(new Nature("siriusComponents://nature?kind=studio")))
                 .build();
-        // @formatter:on
-        return List.of(studioTemplate);
+        var blankStudioTemplate = ProjectTemplate.newProjectTemplate(BLANK_STUDIO_TEMPLATE_ID)
+                .label("Blank Studio")
+                .imageURL("/images/Studio-Template.png")
+                .natures(List.of(new Nature("siriusComponents://nature?kind=studio")))
+                .build();
+        return List.of(studioTemplate, blankStudioTemplate);
     }
 
 }
