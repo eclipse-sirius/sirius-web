@@ -47,9 +47,10 @@ public interface ButtonDescriptionStyle extends WidgetDescriptionStyle, LabelSty
      * Sets the value of the '{@link org.eclipse.sirius.components.view.ButtonDescriptionStyle#getBackgroundColor
      * <em>Background Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Background Color</em>' reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Background Color</em>' reference.
      * @see #getBackgroundColor()
+     * @generated
      */
     void setBackgroundColor(UserColor value);
 

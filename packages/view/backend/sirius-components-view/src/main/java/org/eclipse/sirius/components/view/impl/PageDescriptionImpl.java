@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view.impl;
 
 import java.util.Collection;
@@ -38,13 +38,14 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getLabelExpression <em>Label
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getSemanticCandidatesExpression <em>Semantic
  * Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getGroups <em>Groups</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getToolbarActions <em>Toolbar
  * Actions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.PageDescriptionImpl#getGroups <em>Groups</em>}</li>
  * </ul>
  *
  * @generated
@@ -54,9 +55,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
+     * @see #getName()
      * @generated
      * @ordered
-     * @see #getName()
      */
     protected static final String NAME_EDEFAULT = null;
 
@@ -64,9 +65,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
+     * @see #getName()
      * @generated
      * @ordered
-     * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
 
@@ -89,6 +90,26 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @ordered
      */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected static final String DOMAIN_TYPE_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected String domainType = DOMAIN_TYPE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
@@ -114,9 +135,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getPreconditionExpression()
      * @generated
      * @ordered
-     * @see #getPreconditionExpression()
      */
     protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
 
@@ -124,9 +145,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getPreconditionExpression()
      * @generated
      * @ordered
-     * @see #getPreconditionExpression()
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
@@ -134,9 +155,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getGroups() <em>Groups</em>}' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getGroups()
      * @generated
      * @ordered
-     * @see #getGroups()
      */
     protected EList<GroupDescription> groups;
 
@@ -144,9 +165,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getToolbarActions() <em>Toolbar Actions</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getToolbarActions()
      * @generated
      * @ordered
-     * @see #getToolbarActions()
      */
     protected EList<ButtonDescription> toolbarActions;
 
@@ -213,6 +234,29 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
         this.labelExpression = newLabelExpression;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.PAGE_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDomainType() {
+        return this.domainType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDomainType(String newDomainType) {
+        String oldDomainType = this.domainType;
+        this.domainType = newDomainType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.PAGE_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
     }
 
     /**
@@ -316,6 +360,8 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getName();
             case ViewPackage.PAGE_DESCRIPTION__LABEL_EXPRESSION:
                 return this.getLabelExpression();
+            case ViewPackage.PAGE_DESCRIPTION__DOMAIN_TYPE:
+                return this.getDomainType();
             case ViewPackage.PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return this.getSemanticCandidatesExpression();
             case ViewPackage.PAGE_DESCRIPTION__PRECONDITION_EXPRESSION:
@@ -342,6 +388,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return;
             case ViewPackage.PAGE_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression((String) newValue);
+                return;
+            case ViewPackage.PAGE_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType((String) newValue);
                 return;
             case ViewPackage.PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression((String) newValue);
@@ -375,6 +424,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
             case ViewPackage.PAGE_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
                 return;
+            case ViewPackage.PAGE_DESCRIPTION__DOMAIN_TYPE:
+                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
+                return;
             case ViewPackage.PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
                 return;
@@ -403,6 +455,8 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case ViewPackage.PAGE_DESCRIPTION__LABEL_EXPRESSION:
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case ViewPackage.PAGE_DESCRIPTION__DOMAIN_TYPE:
+                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case ViewPackage.PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case ViewPackage.PAGE_DESCRIPTION__PRECONDITION_EXPRESSION:
@@ -430,6 +484,8 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
         result.append(this.name);
         result.append(", labelExpression: ");
         result.append(this.labelExpression);
+        result.append(", domainType: ");
+        result.append(this.domainType);
         result.append(", semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
         result.append(", preconditionExpression: ");

@@ -65,6 +65,7 @@ public class PageDescriptionItemProvider extends ItemProviderAdapter
 
             this.addNamePropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
+            this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
         }
@@ -92,6 +93,17 @@ public class PageDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_PageDescription_labelExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PageDescription_labelExpression_feature", "_UI_PageDescription_type"),
                 ViewPackage.Literals.PAGE_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Domain Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDomainTypePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_PageDescription_domainType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_PageDescription_domainType_feature", "_UI_PageDescription_type"),
+                ViewPackage.Literals.PAGE_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -196,6 +208,7 @@ public class PageDescriptionItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(PageDescription.class)) {
             case ViewPackage.PAGE_DESCRIPTION__NAME:
             case ViewPackage.PAGE_DESCRIPTION__LABEL_EXPRESSION:
+            case ViewPackage.PAGE_DESCRIPTION__DOMAIN_TYPE:
             case ViewPackage.PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case ViewPackage.PAGE_DESCRIPTION__PRECONDITION_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

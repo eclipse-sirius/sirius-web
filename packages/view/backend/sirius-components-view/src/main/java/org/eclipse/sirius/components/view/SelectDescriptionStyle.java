@@ -47,9 +47,10 @@ public interface SelectDescriptionStyle extends WidgetDescriptionStyle, LabelSty
      * Sets the value of the '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getBackgroundColor
      * <em>Background Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Background Color</em>' reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Background Color</em>' reference.
      * @see #getBackgroundColor()
+     * @generated
      */
     void setBackgroundColor(UserColor value);
 
@@ -69,9 +70,10 @@ public interface SelectDescriptionStyle extends WidgetDescriptionStyle, LabelSty
      * Sets the value of the '{@link org.eclipse.sirius.components.view.SelectDescriptionStyle#getForegroundColor
      * <em>Foreground Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Foreground Color</em>' reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Foreground Color</em>' reference.
      * @see #getForegroundColor()
+     * @generated
      */
     void setForegroundColor(UserColor value);
 

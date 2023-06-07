@@ -2170,7 +2170,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getPageDescription_SemanticCandidatesExpression() {
+    public EAttribute getPageDescription_DomainType() {
         return (EAttribute) this.pageDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -2180,7 +2180,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getPageDescription_PreconditionExpression() {
+    public EAttribute getPageDescription_SemanticCandidatesExpression() {
         return (EAttribute) this.pageDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -2190,8 +2190,18 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EAttribute getPageDescription_PreconditionExpression() {
+        return (EAttribute) this.pageDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getPageDescription_Groups() {
-        return (EReference) this.pageDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EReference) this.pageDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -2201,7 +2211,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      */
     @Override
     public EReference getPageDescription_ToolbarActions() {
-        return (EReference) this.pageDescriptionEClass.getEStructuralFeatures().get(5);
+        return (EReference) this.pageDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -4032,6 +4042,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.pageDescriptionEClass = this.createEClass(PAGE_DESCRIPTION);
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__NAME);
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__DOMAIN_TYPE);
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.pageDescriptionEClass, PAGE_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEReference(this.pageDescriptionEClass, PAGE_DESCRIPTION__GROUPS);
@@ -4632,6 +4643,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPageDescription_LabelExpression(), this.getInterpretedExpression(), "labelExpression", null, 0, 1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPageDescription_DomainType(), this.getDomainType(), "domainType", "", 0, 1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPageDescription_SemanticCandidatesExpression(), this.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self", 0, 1, PageDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPageDescription_PreconditionExpression(), this.getInterpretedExpression(), "preconditionExpression", "", 0, 1, PageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,

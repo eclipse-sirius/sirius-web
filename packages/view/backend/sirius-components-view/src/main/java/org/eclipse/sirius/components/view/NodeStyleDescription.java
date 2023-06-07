@@ -49,9 +49,10 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.NodeStyleDescription#getLabelColor <em>Label
      * Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Label Color</em>' reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Label Color</em>' reference.
      * @see #getLabelColor()
+     * @generated
      */
     void setLabelColor(UserColor value);
 

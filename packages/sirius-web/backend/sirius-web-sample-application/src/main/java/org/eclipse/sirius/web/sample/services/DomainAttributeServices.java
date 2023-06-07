@@ -55,6 +55,11 @@ public final class DomainAttributeServices {
         return attr;
     }
 
+    public EObject setValue(EObject eObject, String attributeName, Object value) {
+        eObject.eSet(eObject.eClass().getEStructuralFeature(attributeName), value);
+        return eObject;
+    }
+
     public String capitalize(String str) {
         return str.substring(0, 1).toUpperCase().concat(str.substring(1).toLowerCase());
     }

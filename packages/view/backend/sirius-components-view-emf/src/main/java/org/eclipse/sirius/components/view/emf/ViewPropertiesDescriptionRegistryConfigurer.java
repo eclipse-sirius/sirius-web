@@ -42,11 +42,9 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
-import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.diagram.NodeStylePropertiesConfigurer;
@@ -101,40 +99,16 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
     @Override
     public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
-        registry.add(this.getFormDescription());
+        registry.add(this.getPageDescription());
     }
 
-    private FormDescription getFormDescription() {
+    private PageDescription getPageDescription() {
         List<GroupDescription> groupDescriptions = new ArrayList<>();
         GroupDescription groupDescription = this.getGroupDescription();
 
         groupDescriptions.add(groupDescription);
 
-        List<PageDescription> pageDescriptions = new ArrayList<>();
-        PageDescription firstPageDescription = this.getPageDescription(groupDescriptions);
-        pageDescriptions.add(firstPageDescription);
-
-        // @formatter:off
-        Function<VariableManager, String> labelProvider = variableManager -> "Properties";
-        // @formatter:on
-
-        // @formatter:off
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
-                .map(this.objectService::getId)
-                .orElse(null);
-
-        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("view_properties_description".getBytes()).toString())
-                .label("View properties description")
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .labelProvider(labelProvider)
-                .targetObjectIdProvider(targetObjectIdProvider)
-                .canCreatePredicate(variableManager -> false)
-                .pageDescriptions(pageDescriptions)
-                .build();
-        // @formatter:on
+        return this.getPageDescription(groupDescriptions);
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
@@ -157,7 +131,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         };
 
         // @formatter:off
-        return PageDescription.newPageDescription("firstPageId")
+        return PageDescription.newPageDescription(UUID.nameUUIDFromBytes("view_properties_description".getBytes()).toString())
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
@@ -170,9 +144,6 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
     private boolean handles(VariableManager variableManager) {
         // @formatter:off
         Optional<EObject> selectedElement = variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
         boolean isViewElement = selectedElement
@@ -193,8 +164,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
             List<Object> objects = new ArrayList<>();
 
             Object self = variableManager.getVariables().get(VariableManager.SELF);
-            if (self instanceof EObject) {
-                EObject eObject = (EObject) self;
+            if (self instanceof EObject eObject) {
 
                 // @formatter:off
                 List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class))

@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.PropertiesConfigura
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +86,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof PropertiesConfiguration) {
             PropertiesConfiguration propertiesConfiguration = (PropertiesConfiguration) configuration;
 
-            List<FormDescription> formDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
+            List<PageDescription> pageDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
             // @formatter:off
             var objects = propertiesConfiguration.getObjectIds().stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
@@ -94,8 +95,8 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
             // @formatter:on
             if (!objects.isEmpty()) {
                 Optional<FormDescription> optionalFormDescription = Optional.empty();
-                if (!formDescriptions.isEmpty()) {
-                    optionalFormDescription = new FormDescriptionAggregator().aggregate(formDescriptions, objects, this.objectService);
+                if (!pageDescriptions.isEmpty()) {
+                    optionalFormDescription = new FormDescriptionAggregator().aggregate(pageDescriptions, objects, this.objectService);
                 }
                 FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
 
@@ -103,7 +104,8 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(propertiesConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
-                        .objects(objects)
+                        .object(objects.get(0))
+                        .selection(objects)
                         .build();
                 // @formatter:on
 

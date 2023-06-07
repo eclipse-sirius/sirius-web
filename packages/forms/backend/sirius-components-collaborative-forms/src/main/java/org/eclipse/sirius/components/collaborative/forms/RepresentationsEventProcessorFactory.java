@@ -82,7 +82,8 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationsConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
-                        .objects(List.of(object))
+                        .object(object)
+                        .selection(List.of())
                         .build();
                 // @formatter:on
 

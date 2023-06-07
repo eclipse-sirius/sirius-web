@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventP
 import org.eclipse.sirius.components.collaborative.forms.dto.RenameFormInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusSuccessPayload;
+import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -172,7 +173,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private Form refreshForm() {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, this.formCreationParameters.getObjects());
+        variableManager.put(VariableManager.SELF, this.formCreationParameters.getObject());
+        variableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
 

@@ -101,7 +101,8 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                     FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(formConfiguration.getId())
                             .editingContext(editingContext)
                             .formDescription(formDescription)
-                            .objects(List.of(object))
+                            .object(object)
+                            .selection(List.of())
                             .build();
                     // @formatter:on
 

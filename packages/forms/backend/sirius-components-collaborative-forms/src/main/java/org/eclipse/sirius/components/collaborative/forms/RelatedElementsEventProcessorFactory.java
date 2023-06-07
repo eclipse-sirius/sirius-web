@@ -90,7 +90,8 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(relatedElementsConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
-                        .objects(objects)
+                        .object(objects.get(0))
+                        .selection(objects)
                         .build();
                 // @formatter:on
 

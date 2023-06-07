@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
-import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.description.PageDescription;
 
 /**
  * Registry containing all the properties descriptions.
@@ -26,14 +26,14 @@ import org.eclipse.sirius.components.forms.description.FormDescription;
  */
 public class PropertiesDescriptionRegistry implements IPropertiesDescriptionRegistry {
 
-    private final Map<String, FormDescription> id2propertiesDescriptions = new HashMap<>();
+    private final Map<String, PageDescription> id2propertiesDescriptions = new HashMap<>();
 
     @Override
-    public void add(FormDescription formDescription) {
-        this.id2propertiesDescriptions.put(formDescription.getId(), formDescription);
+    public void add(PageDescription pageDescription) {
+        this.id2propertiesDescriptions.put(pageDescription.getId(), pageDescription);
     }
 
-    public List<FormDescription> getPropertiesDescriptions() {
+    public List<PageDescription> getPropertiesDescriptions() {
         return this.id2propertiesDescriptions.values().stream().toList();
     }
 

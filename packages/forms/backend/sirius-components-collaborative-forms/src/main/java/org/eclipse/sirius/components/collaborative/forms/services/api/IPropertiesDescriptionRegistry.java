@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.collaborative.forms.services.api;
 
 import org.eclipse.sirius.components.annotations.PublicApi;
-import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.description.PageDescription;
 
 /**
  * The registry of all the properties descriptions.
@@ -22,5 +22,6 @@ import org.eclipse.sirius.components.forms.description.FormDescription;
  */
 @PublicApi
 public interface IPropertiesDescriptionRegistry {
-    void add(FormDescription propertiesDescription);
+
+    void add(PageDescription propertiesDescription);
 }

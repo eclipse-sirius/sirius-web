@@ -51,6 +51,7 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for LabelExpression.
      *
@@ -60,6 +61,17 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setLabelExpression(value);
         return this;
     }
+
+    /**
+     * Setter for DomainType.
+     *
+     * @generated
+     */
+    public PageDescriptionBuilder domainType(java.lang.String value) {
+        this.getPageDescription().setDomainType(value);
+        return this;
+    }
+
     /**
      * Setter for SemanticCandidatesExpression.
      *

@@ -29,7 +29,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
@@ -40,7 +39,6 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
-import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -48,13 +46,11 @@ import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
@@ -78,8 +74,6 @@ import org.springframework.stereotype.Component;
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
     private static final String EMPTY = "";
-
-    private static final String UNNAMED = "<unnamed>";
 
     private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
 
@@ -106,8 +100,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         registry.add(this.getImageNodeStyleProperties());
     }
 
-    private FormDescription getImageNodeStyleProperties() {
-        String formDescriptionId = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString();
+    private PageDescription getImageNodeStyleProperties() {
+        String id = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString();
 
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.createShapeSelectionField(ViewPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
@@ -118,96 +112,52 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         // @formatter:off
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
-                    .filter(self -> self instanceof List<?>)
-                    .map(self -> (List<?>) self)
-                    .flatMap(self -> self.stream().findFirst())
                     .filter(ImageNodeStyleDescription.class::isInstance)
                     .isPresent();
 
-        return FormDescription.newFormDescription(formDescriptionId)
-                .label("Image Node Style")
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(UNNAMED))
-                .canCreatePredicate(variableManager -> true)
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(this.getTargetObjectIdProvider())
-                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
-                .build();
-        // @formatter:on
+        return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
-    private FormDescription getIconLabelNodeStyleProperties() {
-        String formDescriptionId = UUID.nameUUIDFromBytes("iconlabelnodestyle".getBytes()).toString();
+    private PageDescription getIconLabelNodeStyleProperties() {
+        String id = UUID.nameUUIDFromBytes("iconlabelnodestyle".getBytes()).toString();
 
-        // @formatter:off
         List<AbstractControlDescription> controls = this.getGeneralControlDescription();
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
-                .filter(self -> self instanceof IconLabelNodeStyleDescription)
+                .filter(IconLabelNodeStyleDescription.class::isInstance)
                 .isPresent();
 
-        return FormDescription.newFormDescription(formDescriptionId)
-                .label("IconLabel Node Style")
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class)
-                                                                 .map(NodeStyleDescription::getColor)
-                                                                 .filter(FixedColor.class::isInstance)
-                                                                 .map(FixedColor.class::cast)
-                                                                 .map(FixedColor::getValue)
-                                                                 .orElse(UNNAMED))
-                .canCreatePredicate(variableManager -> true)
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(this.getTargetObjectIdProvider())
-                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
-                .build();
-        // @formatter:on
+        return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
-    private FormDescription getRectangularNodeStyleProperties() {
-        String formDescriptionId = UUID.nameUUIDFromBytes("rectangularnodestyle".getBytes()).toString();
+    private PageDescription getRectangularNodeStyleProperties() {
 
-        // @formatter:off
+        String id = UUID.nameUUIDFromBytes("rectangularnodestyle".getBytes()).toString();
+
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.createCheckbox("nodestyle.isWithHeader", "With Header",
-            style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
-            (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
-            ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
+                style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
+                (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
+                ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
         controls.addAll(this.getGeneralControlDescription());
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
-                .filter(self -> self instanceof RectangularNodeStyleDescription)
+                .filter(RectangularNodeStyleDescription.class::isInstance)
                 .isPresent();
 
-        return FormDescription.newFormDescription(formDescriptionId)
-                .label("Rectangular Node Style")
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class)
-                                                                 .map(NodeStyleDescription::getColor)
-                                                                 .filter(FixedColor.class::isInstance)
-                                                                 .map(FixedColor.class::cast)
-                                                                 .map(FixedColor::getValue)
-                                                                 .orElse(UNNAMED))
-                .canCreatePredicate(variableManager -> true)
-                .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(this.getTargetObjectIdProvider())
-                .pageDescriptions(List.of(this.createSimplePageDescription(groupDescription, canCreatePagePredicate)))
-                .build();
-        // @formatter:on
+        return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
     private List<AbstractControlDescription> getGeneralControlDescription() {
         return List.of(
                 this.createExpressionField("nodestyle.widthExpression", "Width Expression",
-                                           style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
-                                           (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
-                                           ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
+                        style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
+                        (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
+                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
                 this.createExpressionField("nodestyle.heightExpression", "Height Expression",
                                            style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
                                            (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
@@ -279,22 +229,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                     ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
     }
 
-    private Function<VariableManager, String> getTargetObjectIdProvider() {
+    private PageDescription createSimplePageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
         // @formatter:off
-        return variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .map(obj -> EcoreUtil.getURI(obj).toString())
-                .orElse(null);
-        // @formatter:on
-    }
-
-    private PageDescription createSimplePageDescription(GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
-        // @formatter:off
-        return PageDescription.newPageDescription("page")
+        return PageDescription.newPageDescription(id)
                 .idProvider(variableManager -> "page")
                 .labelProvider(variableManager -> "Properties")
                 .semanticElementsProvider(this.semanticElementsProvider)
@@ -557,8 +494,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private String kindProvider(Object object) {
         String kind = "Unknown";
-        if (object instanceof Diagnostic) {
-            Diagnostic diagnostic = (Diagnostic) object;
+        if (object instanceof Diagnostic diagnostic) {
             switch (diagnostic.getSeverity()) {
                 case org.eclipse.emf.common.util.Diagnostic.ERROR:
                     kind = "Error";
@@ -578,8 +514,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private String messageProvider(Object object) {
-        if (object instanceof Diagnostic) {
-            Diagnostic diagnostic = (Diagnostic) object;
+        if (object instanceof Diagnostic diagnostic) {
             return diagnostic.getMessage();
         }
         return "";
