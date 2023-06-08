@@ -14,9 +14,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 
 /**
  * Builder for ColorPaletteBuilder.
+ *
+ * @author BuilderGenerator
  * @generated
  */
-@SuppressWarnings("checkstyle:JavadocType")
 public class ColorPaletteBuilder {
 
     /**

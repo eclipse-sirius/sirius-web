@@ -14,672 +14,747 @@ package org.eclipse.sirius.components.view.builder.generated;
 
 /**
  * Use to instantiate a new builder.
+ *
+ * @author BuilderGenerator
  * @generated
  */
-@SuppressWarnings("checkstyle:JavadocType")
 public class ViewBuilders {
     /**
      * Instantiate a ViewBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ViewBuilder newView() {
         return new ViewBuilder();
     }
 
     /**
      * Instantiate a ColorPaletteBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ColorPaletteBuilder newColorPalette() {
         return new ColorPaletteBuilder();
     }
 
     /**
      * Instantiate a FixedColorBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public FixedColorBuilder newFixedColor() {
         return new FixedColorBuilder();
     }
 
     /**
      * Instantiate a DiagramDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public DiagramDescriptionBuilder newDiagramDescription() {
         return new DiagramDescriptionBuilder();
     }
 
     /**
      * Instantiate a NodeDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public NodeDescriptionBuilder newNodeDescription() {
         return new NodeDescriptionBuilder();
     }
 
     /**
      * Instantiate a EdgeDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public EdgeDescriptionBuilder newEdgeDescription() {
         return new EdgeDescriptionBuilder();
     }
 
     /**
      * Instantiate a RectangularNodeStyleDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public RectangularNodeStyleDescriptionBuilder newRectangularNodeStyleDescription() {
         return new RectangularNodeStyleDescriptionBuilder();
     }
 
     /**
      * Instantiate a ImageNodeStyleDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ImageNodeStyleDescriptionBuilder newImageNodeStyleDescription() {
         return new ImageNodeStyleDescriptionBuilder();
     }
 
     /**
      * Instantiate a IconLabelNodeStyleDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public IconLabelNodeStyleDescriptionBuilder newIconLabelNodeStyleDescription() {
         return new IconLabelNodeStyleDescriptionBuilder();
     }
 
     /**
      * Instantiate a FreeFormLayoutStrategyDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public FreeFormLayoutStrategyDescriptionBuilder newFreeFormLayoutStrategyDescription() {
         return new FreeFormLayoutStrategyDescriptionBuilder();
     }
 
     /**
      * Instantiate a ListLayoutStrategyDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ListLayoutStrategyDescriptionBuilder newListLayoutStrategyDescription() {
         return new ListLayoutStrategyDescriptionBuilder();
     }
 
     /**
      * Instantiate a EdgeStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public EdgeStyleBuilder newEdgeStyle() {
         return new EdgeStyleBuilder();
     }
 
     /**
      * Instantiate a LabelEditToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public LabelEditToolBuilder newLabelEditTool() {
         return new LabelEditToolBuilder();
     }
 
     /**
      * Instantiate a DeleteToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public DeleteToolBuilder newDeleteTool() {
         return new DeleteToolBuilder();
     }
 
     /**
      * Instantiate a NodeToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public NodeToolBuilder newNodeTool() {
         return new NodeToolBuilder();
     }
 
     /**
      * Instantiate a EdgeToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public EdgeToolBuilder newEdgeTool() {
         return new EdgeToolBuilder();
     }
 
     /**
      * Instantiate a SourceEdgeEndReconnectionToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public SourceEdgeEndReconnectionToolBuilder newSourceEdgeEndReconnectionTool() {
         return new SourceEdgeEndReconnectionToolBuilder();
     }
 
     /**
      * Instantiate a TargetEdgeEndReconnectionToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public TargetEdgeEndReconnectionToolBuilder newTargetEdgeEndReconnectionTool() {
         return new TargetEdgeEndReconnectionToolBuilder();
     }
 
     /**
      * Instantiate a DropToolBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public DropToolBuilder newDropTool() {
         return new DropToolBuilder();
     }
 
     /**
      * Instantiate a ChangeContextBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ChangeContextBuilder newChangeContext() {
         return new ChangeContextBuilder();
     }
 
     /**
      * Instantiate a CreateInstanceBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public CreateInstanceBuilder newCreateInstance() {
         return new CreateInstanceBuilder();
     }
 
     /**
      * Instantiate a SetValueBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public SetValueBuilder newSetValue() {
         return new SetValueBuilder();
     }
 
     /**
      * Instantiate a UnsetValueBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public UnsetValueBuilder newUnsetValue() {
         return new UnsetValueBuilder();
     }
 
     /**
      * Instantiate a DeleteElementBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public DeleteElementBuilder newDeleteElement() {
         return new DeleteElementBuilder();
     }
 
     /**
      * Instantiate a CreateViewBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public CreateViewBuilder newCreateView() {
         return new CreateViewBuilder();
     }
 
     /**
      * Instantiate a DeleteViewBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public DeleteViewBuilder newDeleteView() {
         return new DeleteViewBuilder();
     }
 
     /**
      * Instantiate a ConditionalNodeStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalNodeStyleBuilder newConditionalNodeStyle() {
         return new ConditionalNodeStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalEdgeStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalEdgeStyleBuilder newConditionalEdgeStyle() {
         return new ConditionalEdgeStyleBuilder();
     }
 
     /**
      * Instantiate a FormDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public FormDescriptionBuilder newFormDescription() {
         return new FormDescriptionBuilder();
     }
 
     /**
      * Instantiate a PageDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public PageDescriptionBuilder newPageDescription() {
         return new PageDescriptionBuilder();
     }
 
     /**
      * Instantiate a GroupDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public GroupDescriptionBuilder newGroupDescription() {
         return new GroupDescriptionBuilder();
     }
 
     /**
      * Instantiate a TextfieldDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public TextfieldDescriptionBuilder newTextfieldDescription() {
         return new TextfieldDescriptionBuilder();
     }
 
     /**
      * Instantiate a CheckboxDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public CheckboxDescriptionBuilder newCheckboxDescription() {
         return new CheckboxDescriptionBuilder();
     }
 
     /**
      * Instantiate a SelectDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public SelectDescriptionBuilder newSelectDescription() {
         return new SelectDescriptionBuilder();
     }
 
     /**
      * Instantiate a MultiSelectDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public MultiSelectDescriptionBuilder newMultiSelectDescription() {
         return new MultiSelectDescriptionBuilder();
     }
 
     /**
      * Instantiate a TextAreaDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public TextAreaDescriptionBuilder newTextAreaDescription() {
         return new TextAreaDescriptionBuilder();
     }
 
     /**
      * Instantiate a RichTextDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public RichTextDescriptionBuilder newRichTextDescription() {
         return new RichTextDescriptionBuilder();
     }
 
     /**
      * Instantiate a RadioDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public RadioDescriptionBuilder newRadioDescription() {
         return new RadioDescriptionBuilder();
     }
 
     /**
      * Instantiate a BarChartDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public BarChartDescriptionBuilder newBarChartDescription() {
         return new BarChartDescriptionBuilder();
     }
 
     /**
      * Instantiate a PieChartDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public PieChartDescriptionBuilder newPieChartDescription() {
         return new PieChartDescriptionBuilder();
     }
 
     /**
      * Instantiate a FlexboxContainerDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public FlexboxContainerDescriptionBuilder newFlexboxContainerDescription() {
         return new FlexboxContainerDescriptionBuilder();
     }
 
     /**
      * Instantiate a ButtonDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ButtonDescriptionBuilder newButtonDescription() {
         return new ButtonDescriptionBuilder();
     }
 
     /**
      * Instantiate a ImageDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ImageDescriptionBuilder newImageDescription() {
         return new ImageDescriptionBuilder();
     }
 
     /**
      * Instantiate a TextfieldDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public TextfieldDescriptionStyleBuilder newTextfieldDescriptionStyle() {
         return new TextfieldDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalTextfieldDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalTextfieldDescriptionStyleBuilder newConditionalTextfieldDescriptionStyle() {
         return new ConditionalTextfieldDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a CheckboxDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public CheckboxDescriptionStyleBuilder newCheckboxDescriptionStyle() {
         return new CheckboxDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalCheckboxDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalCheckboxDescriptionStyleBuilder newConditionalCheckboxDescriptionStyle() {
         return new ConditionalCheckboxDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a SelectDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public SelectDescriptionStyleBuilder newSelectDescriptionStyle() {
         return new SelectDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalSelectDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalSelectDescriptionStyleBuilder newConditionalSelectDescriptionStyle() {
         return new ConditionalSelectDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a MultiSelectDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public MultiSelectDescriptionStyleBuilder newMultiSelectDescriptionStyle() {
         return new MultiSelectDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalMultiSelectDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalMultiSelectDescriptionStyleBuilder newConditionalMultiSelectDescriptionStyle() {
         return new ConditionalMultiSelectDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a TextareaDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public TextareaDescriptionStyleBuilder newTextareaDescriptionStyle() {
         return new TextareaDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalTextareaDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalTextareaDescriptionStyleBuilder newConditionalTextareaDescriptionStyle() {
         return new ConditionalTextareaDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a RadioDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public RadioDescriptionStyleBuilder newRadioDescriptionStyle() {
         return new RadioDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalRadioDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalRadioDescriptionStyleBuilder newConditionalRadioDescriptionStyle() {
         return new ConditionalRadioDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ButtonDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ButtonDescriptionStyleBuilder newButtonDescriptionStyle() {
         return new ButtonDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalButtonDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalButtonDescriptionStyleBuilder newConditionalButtonDescriptionStyle() {
         return new ConditionalButtonDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a BarChartDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public BarChartDescriptionStyleBuilder newBarChartDescriptionStyle() {
         return new BarChartDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalBarChartDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalBarChartDescriptionStyleBuilder newConditionalBarChartDescriptionStyle() {
         return new ConditionalBarChartDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a PieChartDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public PieChartDescriptionStyleBuilder newPieChartDescriptionStyle() {
         return new PieChartDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalPieChartDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalPieChartDescriptionStyleBuilder newConditionalPieChartDescriptionStyle() {
         return new ConditionalPieChartDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a LabelDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public LabelDescriptionBuilder newLabelDescription() {
         return new LabelDescriptionBuilder();
     }
 
     /**
      * Instantiate a LabelDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public LabelDescriptionStyleBuilder newLabelDescriptionStyle() {
         return new LabelDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalLabelDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalLabelDescriptionStyleBuilder newConditionalLabelDescriptionStyle() {
         return new ConditionalLabelDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a LinkDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public LinkDescriptionBuilder newLinkDescription() {
         return new LinkDescriptionBuilder();
     }
 
     /**
      * Instantiate a LinkDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public LinkDescriptionStyleBuilder newLinkDescriptionStyle() {
         return new LinkDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalLinkDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalLinkDescriptionStyleBuilder newConditionalLinkDescriptionStyle() {
         return new ConditionalLinkDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ListDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ListDescriptionBuilder newListDescription() {
         return new ListDescriptionBuilder();
     }
 
     /**
      * Instantiate a ListDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ListDescriptionStyleBuilder newListDescriptionStyle() {
         return new ListDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a ConditionalListDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public ConditionalListDescriptionStyleBuilder newConditionalListDescriptionStyle() {
         return new ConditionalListDescriptionStyleBuilder();
     }
 
     /**
      * Instantiate a DiagramPaletteBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public DiagramPaletteBuilder newDiagramPalette() {
         return new DiagramPaletteBuilder();
     }
 
     /**
      * Instantiate a NodePaletteBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public NodePaletteBuilder newNodePalette() {
         return new NodePaletteBuilder();
     }
 
     /**
      * Instantiate a EdgePaletteBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public EdgePaletteBuilder newEdgePalette() {
         return new EdgePaletteBuilder();
     }
 
     /**
      * Instantiate a SelectionDescriptionBuilder .
+     *
+     * @author BuilderGenerator
      * @generated
      */
-    @SuppressWarnings("checkstyle:JavadocType")
     public SelectionDescriptionBuilder newSelectionDescription() {
         return new SelectionDescriptionBuilder();
     }

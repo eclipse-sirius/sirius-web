@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
  * @author mcharfadi
  */
 public final class ArchitectureConstants {
-    public static final String SIRIUS_COMPONENTS_VIEW_BUILDER_PACKAGE = "org.eclipse.sirius.components.view.builder.providers";
+    public static final String SIRIUS_COMPONENTS_VIEW_BUILDER_PACKAGE = "org.eclipse.sirius.components.view.builder";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()

@@ -14,9 +14,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 
 /**
  * Builder for ImageDescriptionBuilder.
+ *
+ * @author BuilderGenerator
  * @generated
  */
-@SuppressWarnings("checkstyle:JavadocType")
 public class ImageDescriptionBuilder {
 
     /**

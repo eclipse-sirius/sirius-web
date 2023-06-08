@@ -103,9 +103,10 @@ public class BuilderGenerator {
                 classBodies.append("""
                             /**
                              * Instantiate a #builderClassName .
+                             *
+                             * @author BuilderGenerator
                              * @generated
                              */
-                            @SuppressWarnings("checkstyle:JavadocType")
                             public #builderClassName new#className() {
                                 return new #builderClassName();
                             }
@@ -136,9 +137,10 @@ public class BuilderGenerator {
 
                 /**
                  * Use to instantiate a new builder.
+                 *
+                 * @author BuilderGenerator
                  * @generated
                  */
-                @SuppressWarnings("checkstyle:JavadocType")
                 public class #factoryName {
                 #classbody
                 }
@@ -220,24 +222,25 @@ public class BuilderGenerator {
         if (clazz.isAbstract()) {
             builder.append("""
                     /*******************************************************************************
-                    * Copyright (c) 2023 Obeo.
-                    * This program and the accompanying materials
-                    * are made available under the terms of the Eclipse Public License v2.0
-                    * which accompanies this distribution, and is available at
-                    * https://www.eclipse.org/legal/epl-2.0/
-                    *
-                    * SPDX-License-Identifier: EPL-2.0
-                    *
-                    * Contributors:
-                    *     Obeo - initial API and implementation
-                    *******************************************************************************/
+                     * Copyright (c) 2023 Obeo.
+                     * This program and the accompanying materials
+                     * are made available under the terms of the Eclipse Public License v2.0
+                     * which accompanies this distribution, and is available at
+                     * https://www.eclipse.org/legal/epl-2.0/
+                     *
+                     * SPDX-License-Identifier: EPL-2.0
+                     *
+                     * Contributors:
+                     *     Obeo - initial API and implementation
+                     *******************************************************************************/
                     package #package;
 
                     /**
                      * Builder for #qualifiedType.
+                     *
+                     * @author BuilderGenerator
                      * @generated
                      */
-                    @SuppressWarnings("checkstyle:JavadocType")
                     public abstract class #builderClassName {
 
                         /**
@@ -269,9 +272,10 @@ public class BuilderGenerator {
 
                     /**
                      * Builder for #builderClassName.
+                     *
+                     * @author BuilderGenerator
                      * @generated
                      */
-                    @SuppressWarnings("checkstyle:JavadocType")
                     public class #builderClassName {
 
                     #classbody
