@@ -52,6 +52,8 @@ Widgets which define such a help text have a new "?" icon next to their labels; 
 For View-based widgets, this materializes as an AQL `helpExpression`.
 The help text can include multiple lines (separated by `\n`), but no text formatting.
 :image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
+- https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize. It is possible to reduce the size of a node less than the space needed to display all children.
+
 
 == v2023.6.0
 

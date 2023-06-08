@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { memo } from 'react';
-import { Handle, NodeProps, Position } from 'reactflow';
+import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { ListNodeData } from './ListNode.types';
 import { Palette } from './Palette';
 
@@ -21,6 +21,8 @@ const listNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSS
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
+    width: '100%',
+    height: '100%',
     ...style,
   };
   if (selected) {
@@ -56,20 +58,23 @@ const listItemStyle = (style: React.CSSProperties): React.CSSProperties => {
 
 export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<ListNodeData>) => {
   return (
-    <div style={listNodeStyle(data.style, selected)}>
-      <div style={listNodeHeaderStyle(data.label.style)}>{data.label.text}</div>
-      <div>
-        {data.listItems.map((listItem) => {
-          return (
-            <div key={listItem.id} style={listItemStyle(listItem.style)}>
-              {listItem.label.text}
-            </div>
-          );
-        })}
+    <>
+      <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
+      <div style={listNodeStyle(data.style, selected)}>
+        <div style={listNodeHeaderStyle(data.label.style)}>{data.label.text}</div>
+        <div>
+          {data.listItems.map((listItem) => {
+            return (
+              <div key={listItem.id} style={listItemStyle(listItem.style)}>
+                {listItem.label.text}
+              </div>
+            );
+          })}
+        </div>
+        {selected ? <Palette diagramElementId={id} /> : null}
+        <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
+        <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>
-      {selected ? <Palette diagramElementId={id} /> : null}
-      <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
-      <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
-    </div>
+    </>
   );
 });

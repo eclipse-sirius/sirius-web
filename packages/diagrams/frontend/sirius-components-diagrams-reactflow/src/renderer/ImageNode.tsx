@@ -13,12 +13,12 @@
 
 import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { memo, useContext } from 'react';
-import { Handle, NodeProps, Position } from 'reactflow';
+import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { ImageNodeData } from './ImageNode.types';
 import { Palette } from './Palette';
 
 const imageNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
-  const imageNodeStyle: React.CSSProperties = { ...style };
+  const imageNodeStyle: React.CSSProperties = { width: '100%', height: '100%', ...style };
 
   if (selected) {
     imageNodeStyle.outline = `var(--blue-lagoon) solid 1px`;
@@ -32,6 +32,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
 
   return (
     <>
+      <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style, selected)} />
       {selected ? <Palette diagramElementId={id} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
