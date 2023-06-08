@@ -17,7 +17,8 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/2034[#2034] [diagram] Integrate the workbench selection in the react-flow prototype
-
+- https://github.com/eclipse-sirius/sirius-components/issues/2047[#2047] [view] Activate architectural tests on `sirius-components-view-builder`
+`
 
 == v2023.6.0
 
