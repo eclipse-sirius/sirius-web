@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { memo } from 'react';
-import { Handle, NodeProps, Position } from 'reactflow';
+import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { RectangularNodeData } from './RectangularNode.types';
 
 import { Palette } from './Palette';
@@ -21,6 +21,8 @@ const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): Re
   const rectangularNodeStyle: React.CSSProperties = {
     display: 'flex',
     padding: '8px',
+    width: '100%',
+    height: '100%',
     ...style,
   };
 
@@ -39,11 +41,14 @@ const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
 
 export const RectangularNode = memo(({ data, isConnectable, id, selected }: NodeProps<RectangularNodeData>) => {
   return (
-    <div style={rectangularNodeStyle(data.style, selected)}>
-      <div style={labelStyle(data.label.style)}>{data.label.text}</div>
-      {selected ? <Palette diagramElementId={id} /> : null}
-      <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
-      <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
-    </div>
+    <>
+      <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
+      <div style={rectangularNodeStyle(data.style, selected)}>
+        <div style={labelStyle(data.label.style)}>{data.label.text}</div>
+        {selected ? <Palette diagramElementId={id} /> : null}
+        <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
+        <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
+      </div>
+    </>
   );
 });

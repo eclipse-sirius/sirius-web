@@ -34,8 +34,6 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
       borderRadius: style.borderRadius,
       borderWidth: style.borderSize,
       borderStyle: style.borderStyle,
-      width: `${size.width}px`,
-      height: `${size.height}px`,
     },
     label: {
       text: gqlNode.label.text,
@@ -83,6 +81,10 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
     type: 'rectangularNode',
     data,
     position,
+    style: {
+      width: `${size.width}px`,
+      height: `${size.height}px`,
+    },
   };
 
   if (gqlParentNode) {
@@ -196,10 +198,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
     targetObjectKind,
     targetObjectLabel,
     imageURL: style.imageURL,
-    style: {
-      width: `${size.width}px`,
-      height: `${size.height}px`,
-    },
+    style: {},
   };
 
   const node: Node<ImageNodeData> = {
@@ -207,6 +206,10 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
     type: 'imageNode',
     data,
     position,
+    style: {
+      width: `${size.width}px`,
+      height: `${size.height}px`,
+    },
   };
 
   if (gqlParentNode) {
