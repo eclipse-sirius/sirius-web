@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add disable / enable concept for widgets
+
 === Architectural decision records
 
 === Breaking changes
