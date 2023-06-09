@@ -20,11 +20,12 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.forms.dto.CompletionRequestInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.CompletionRequestSuccessPayload;
 import org.eclipse.sirius.components.forms.CompletionProposal;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -52,10 +53,13 @@ public class FormDescriptionCompletionProposalsDataFetcher implements IDataFetch
 
     private static final String CURSOR_POSITION_ARGUMENT = "cursorPosition";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IExceptionWrapper exceptionWrapper;
 
-    public FormDescriptionCompletionProposalsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    private final IEditingContextDispatcher editingContextDispatcher;
+
+    public FormDescriptionCompletionProposalsDataFetcher(IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
+        this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -69,13 +73,11 @@ public class FormDescriptionCompletionProposalsDataFetcher implements IDataFetch
 
         if (editingContextId.isPresent() && representationId.isPresent() && widgetId.isPresent()) {
             var input = new CompletionRequestInput(UUID.randomUUID(), editingContextId.get(), representationId.get(), widgetId.get(), currentText, cursorPosition);
-            // @formatter:off
-            return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId.get(), input)
+            return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input), input)
                     .filter(CompletionRequestSuccessPayload.class::isInstance)
                     .map(CompletionRequestSuccessPayload.class::cast)
                     .map(CompletionRequestSuccessPayload::proposals)
                     .toFuture();
-            // @formatter:on
         } else {
             return Mono.just(List.<CompletionProposal> of()).toFuture();
         }
