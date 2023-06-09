@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [peerDepsExternal(), react()],
   build: {
+    minify: false,
     lib: {
       name: 'sirius-components-widget-reference',
       entry: path.resolve(__dirname, 'src/index.ts'),

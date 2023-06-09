@@ -25,6 +25,8 @@ They will not be provided by the `sirius-components` package anymore.
 It is not available for applications anymore, and thus, applications that need a global error handling strategy will need to implement it by themselves.
 - https://github.com/eclipse-sirius/sirius-web/issues/2279[#2279] [core] Remove the package `sirius-components`.
 All of its remaining content was only relevant inside of Sirius Web and it has thus been migrated to this location
+- [releng] Stop minifying the code of Sirius Components packages.
+As a result the development of applications consuming Sirius Components packages will be easier and it will be the responsability of the application to minify everything (which they should already be doing).
 
 === Dependency update
 
